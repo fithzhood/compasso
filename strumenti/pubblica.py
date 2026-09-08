@@ -23,10 +23,19 @@ def main():
     io.open(html, 'w', encoding='utf-8', newline='\n').write(nuovo)
     print(f'versione ?v={n} scritta in {k} riferimenti')
     REPO.mkdir(parents=True, exist_ok=True)
+    # gli argomenti che non passano il validatore (magari ancora in scrittura) non si pubblicano
+    import subprocess
+    saltati = []
+    for f in sorted((SORGENTE / 'argomenti').glob('*.js')):
+        r = subprocess.run(['node', str(SORGENTE / 'strumenti' / 'verifica-argomento.js'), str(f)], capture_output=True, text=True, cwd=str(SORGENTE))
+        if r.returncode != 0:
+            saltati.append(f.name); print('SALTATO (non valido):', f.name)
     copiati = 0
     for src in SORGENTE.rglob('*'):
         rel = src.relative_to(SORGENTE)
         if any(p in ESCLUDI for p in rel.parts):
+            continue
+        if rel.parts[0] == 'argomenti' and src.name in saltati:
             continue
         dst = REPO / rel
         if src.is_dir():
