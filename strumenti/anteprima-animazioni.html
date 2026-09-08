@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anteprima animazioni — Compasso (strumento di collaudo)</title>
+  <link rel="stylesheet" href="../compasso.css">
+  <style>
+    body { padding: 16px; }
+    .griglia { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 14px; }
+    h2 { font-family: var(--font); font-size: .95rem; margin: 0 0 4px; color: var(--testo2); }
+    .barra { display: flex; gap: 8px; margin-bottom: 14px; align-items: center; }
+  </style>
+</head>
+<body>
+  <div class="barra"><button class="btn" id="tema" type="button">Tema</button><label>t = <input type="range" id="t" min="0" max="1000" value="600"></label><button class="btn" id="tutte" type="button">Avvia tutte</button></div>
+  <div class="griglia" id="g"></div>
+  <script src="../compasso-grafici.js"></script>
+  <script src="../compasso-animazioni.js"></script>
+  <script>
+    const g = document.getElementById('g');
+    CANIM.nomi().forEach(n => { const d = document.createElement('div'); d.innerHTML = '<h2>' + n + '</h2>'; CGRAF.render({ tipo: 'animazione', nome: n, autoplay: false }, d); g.appendChild(d); });
+    document.getElementById('tema').addEventListener('click', () => { document.documentElement.dataset.tema = document.documentElement.dataset.tema === 'scuro' ? 'chiaro' : 'scuro'; });
+    document.getElementById('t').addEventListener('input', e => { document.querySelectorAll('.cg-anim-ctrl input').forEach(r => { r.value = e.target.value; r.dispatchEvent(new Event('input')); }); });
+    document.getElementById('tutte').addEventListener('click', () => document.querySelectorAll('.cg-anim-replay').forEach(b => b.click()));
+    /* posiziona tutte a t (query ?t=0..1000, default 600); ?tema=scuro per il tema scuro */
+    const q = new URLSearchParams(location.search);
+    if (q.get('tema')) document.documentElement.dataset.tema = q.get('tema');
+    const t0 = q.get('t') != null ? +q.get('t') : 600;
+    document.getElementById('t').value = t0;
+    document.querySelectorAll('.cg-anim-ctrl input').forEach(r => { r.value = t0; r.dispatchEvent(new Event('input')); });
+  </script>
+</body>
+</html>

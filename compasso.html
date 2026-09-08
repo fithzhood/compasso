@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Compasso — la matematica, un argomento alla volta</title>
+  <meta name="description" content="Spiegazioni, esempi, flashcard, esercizi e quiz di matematica per il liceo, con Zenone la tartaruga che racconta i matematici.">
+  <meta name="theme-color" content="#f4f1ea">
+  <link rel="icon" href="compasso-icona.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="lib/katex/katex.min.css?v=1">
+  <link rel="stylesheet" href="compasso.css?v=1">
+</head>
+<body>
+  <header class="testata">
+    <div class="testata-int">
+      <a class="logo" href="#/" aria-label="Compasso, home">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16 6 L10 24 M16 6 L22 24 M12.5 18 h7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="6" r="2" fill="currentColor"/></svg>
+        <span>Compasso</span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="#/" data-pagina="home">Argomenti</a>
+        <a href="#/ripasso" data-pagina="ripasso">Ripasso<span class="conteggio" id="nav-ripasso" hidden>0</span></a>
+        <a href="#/matematici" data-pagina="matematici">Matematici</a>
+      </nav>
+      <button class="icona-btn" id="btn-tema" type="button" aria-label="Cambia tema chiaro/scuro" title="Tema chiaro/scuro">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path class="ic-luna" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <a class="icona-btn" href="#/impostazioni" aria-label="Impostazioni" title="Impostazioni">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <main id="app" aria-live="polite"></main>
+
+  <script src="lib/katex/katex.min.js?v=1"></script>
+  <script src="lib/katex/auto-render.min.js?v=1"></script>
+  <script src="compasso-grafici.js?v=1"></script>
+  <script src="compasso-animazioni.js?v=1"></script>
+  <script src="compasso-mascotte.js?v=1"></script>
+  <script src="compasso-indice.js?v=1"></script>
+  <script src="compasso.js?v=1"></script>
+</body>
+</html>
