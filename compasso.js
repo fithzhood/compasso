@@ -291,6 +291,7 @@
       if (sid === 'esercizi' && p.eserciziFatti.length) extra = ` <span class="spunta">${p.eserciziFatti.length}/${arg.esercizi.length}</span>`;
       navInt.appendChild(h(`<a class="scheda-tab${sid === scheda ? ' attiva' : ''}" href="#/argomento/${v.id}/${sid}">${ICONE[icona]}${nome}${extra}</a>`));
     });
+    const attiva = navInt.querySelector('.attiva'); if (attiva && attiva.scrollIntoView) setTimeout(() => attiva.scrollIntoView({ inline: 'center', block: 'nearest' }), 0);
     const pannello = app.querySelector('#pannello'); pannello.innerHTML = ''; pannello.className = 'pannello';
     const disegna = { teoria: schedaTeoria, esempi: schedaEsempi, flashcard: schedaFlashcard, esercizi: schedaEsercizi, quiz: schedaQuiz, formulario: schedaFormulario }[scheda] || schedaTeoria;
     disegna(pannello, arg, v, ancora);
