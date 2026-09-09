@@ -118,7 +118,7 @@ Sono invece **perpendicolari** (formano un angolo di $90°$) se e solo se il pro
 
 >* **Perpendicolarità:** $$m_1 \cdot m_2 = -1 \qquad \text{cioè} \qquad m_2 = -\dfrac{1}{m_1}$$ Il coefficiente angolare della perpendicolare è l'**opposto del reciproco** di $m_1$.
 
-Per esempio, la retta $r: y = 2x + 1$ ha $m_1 = 2$; la retta $s: y = -\dfrac{1}{2}x + 3$ ha $m_2 = -\dfrac{1}{2}$. Poiché $2 \cdot \left(-\dfrac{1}{2}\right) = -1$, $r$ e $s$ sono perpendicolari, come mostra il grafico.
+Per esempio, la retta $r: y = 2x$ ha $m_1 = 2$; la retta $s: y = -\dfrac{1}{2}x$ ha $m_2 = -\dfrac{1}{2}$. Poiché $2 \cdot \left(-\dfrac{1}{2}\right) = -1$, $r$ e $s$ sono perpendicolari, come mostra il grafico.
 
 [[grafico:perpendicolari]]
 

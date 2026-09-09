@@ -698,6 +698,18 @@
      GALLERIA DEI MATEMATICI
      ===================================================================== */
   const slug = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  /* stessa persona scritta in modi diversi ("Leonhard Euler", "Eulero", "Erone di Alessandria (e ...)") → una chiave sola */
+  const ALIAS = { euler: 'eulero', descartes: 'cartesio', hopital: 'de-l-hopital', lhopital: 'de-l-hopital', khwarizmi: 'al-khwarizmi', nepero: 'napier', neper: 'napier', tolomeo: 'tolomeo', ptolemy: 'tolomeo', pythagoras: 'pitagora', euclid: 'euclide', archimedes: 'archimede', thales: 'talete', regiomontanus: 'regiomontano' };
+  const FERMI = new Set(['di', 'da', 'de', 'del', 'della', 'dei', 'degli', 'von', 'van', 'la', 'le', 'il', 'lo', 'gli', 'i', 'the', 'alessandria', 'siracusa', 'cirene', 'pisa', 'milano', 'cusa', 'samo', 'mileto', 'elea', 'chio', 'cremona', 'norimberga', 'boemia', 'saint', 'vincent', 'jr', 'sr', 'ii', 'iii']);
+  function chiaveMatematico(nome) {
+    const base = String(nome).replace(/\([^)]*\)/g, '').trim();
+    if (/\s+e\s+/i.test(base) && base.split(/\s+e\s+/).length === 2 && /^[A-ZÀ-Ý]/.test(base.split(/\s+e\s+/)[1] || '')) return slug(base);   /* coppie: "Tartaglia e Cardano" restano coppie */
+    const tok = slug(base).split('-').filter(t => t && !FERMI.has(t));
+    if (!tok.length) return slug(base);
+    if (tok[0] === 'al' && tok[1]) return 'al-' + tok[1];
+    const ultimo = tok[tok.length - 1];
+    return ALIAS[ultimo] || ultimo;
+  }
   function annoDa(anni) {
     const m = String(anni).match(/(\d{3,4})/); if (!m) return null;
     let a = parseInt(m[1], 10); if (/a\.\s?C/i.test(anni)) a = -a; return a;
@@ -710,7 +722,14 @@
     const cont = h('<div class="fc-vuoto">Sto raccogliendo le storie da tutti gli argomenti…</div>'); app.appendChild(cont);
     Promise.all(IND.argomenti.map(a => caricaArgomento(a.id).catch(() => null))).then(argomenti => {
       const persone = {};
-      argomenti.forEach(arg => { if (!arg) return; (arg.aneddoti || []).forEach(an => { const k = slug(an.matematico); const p = persone[k] || (persone[k] = { nome: an.matematico, anni: an.anni, anno: annoDa(an.anni), storie: [] }); p.storie.push({ an, arg }); }); });
+      argomenti.forEach(arg => { if (!arg) return; (arg.aneddoti || []).forEach(an => {
+        const k = chiaveMatematico(an.matematico);
+        const p = persone[k] || (persone[k] = { chiave: k, nome: an.matematico, anni: an.anni, anno: annoDa(an.anni), storie: [] });
+        const pulito = String(an.matematico).replace(/\([^)]*\)/g, '').trim();
+        if (pulito.length < p.nome.length && !/^(gli|i|le|la)\s/i.test(pulito)) p.nome = pulito;   /* la forma più corta è di solito la più pulita */
+        if (p.anno == null && annoDa(an.anni) != null) { p.anno = annoDa(an.anni); p.anni = an.anni; }
+        p.storie.push({ an, arg });
+      }); });
       const lista = Object.values(persone).sort((a, b) => (a.anno == null ? 9999 : a.anno) - (b.anno == null ? 9999 : b.anno));
       cont.innerHTML = '';
       if (!lista.length) { cont.textContent = 'Nessun aneddoto disponibile.'; return; }
@@ -732,25 +751,28 @@
       const conAnno = lista.filter(p => p.anno != null);
       if (conAnno.length > 1) {
         const min = Math.min(...conAnno.map(p => p.anno)), max = Math.max(...conAnno.map(p => p.anno));
+        /* scala a tratti: l'antichità è lunga e vuota, gli ultimi cinque secoli sono pieni */
+        const nodi = [[min, 0], [0, 0.18], [1500, 0.38], [Math.max(max, 1950), 1]].filter((n, i, a) => i === 0 || n[0] > a[i - 1][0]);
+        const posTempo = anno => { for (let i = 1; i < nodi.length; i++) if (anno <= nodi[i][0]) return (nodi[i - 1][1] + (anno - nodi[i - 1][0]) / (nodi[i][0] - nodi[i - 1][0]) * (nodi[i][1] - nodi[i - 1][1])) * 100; return 100; };
         const lt = h('<div class="linea-tempo"><div class="asse"></div></div>'); const asse = lt.querySelector('.asse');
-        conAnno.forEach((p, i) => {
-          const x = (p.anno - min) / (max - min) * 100;
+        conAnno.forEach(p => {
+          const x = posTempo(p.anno);
           const t = h(`<span class="tacca" style="left:${x}%;background:${coloreDa(p.nome)}" title="${esc(p.nome)} (${esc(p.anni)})"></span>`);
           t.addEventListener('click', () => mostraDettaglio(p));
           asse.appendChild(t);
-          if (i % Math.ceil(conAnno.length / 8) === 0 || i === conAnno.length - 1) asse.appendChild(h(`<span class="anno ${i % 2 ? 'sopra' : ''}" style="left:${x}%">${p.anno < 0 ? -p.anno + ' a.C.' : p.anno}</span>`));
         });
+        [-1800, -500, 0, 500, 1000, 1500, 1650, 1800, 1950].filter(a => a >= min - 100 && a <= Math.max(max, 1950)).forEach((a, i) => asse.appendChild(h(`<span class="anno ${i % 2 ? 'sopra' : ''}" style="left:${posTempo(a)}%">${a < 0 ? -a + ' a.C.' : a}</span>`)));
         cont.appendChild(lt);
       }
       const griglia = h('<div class="griglia-mat"></div>');
       lista.forEach(p => {
         const c = h(`<div class="scheda mat" role="button" tabindex="0"><span class="ritratto" style="background:${coloreDa(p.nome)}">${esc(iniziali(p.nome))}</span><div><h3>${esc(p.nome)}</h3><small>${esc(p.anni)} · ${p.storie.length} ${p.storie.length === 1 ? 'storia' : 'storie'}</small></div></div>`);
-        c.addEventListener('click', () => { history.replaceState(null, '', '#/matematici/' + slug(p.nome)); mostraDettaglio(p); });
+        c.addEventListener('click', () => { history.replaceState(null, '', '#/matematici/' + p.chiave); mostraDettaglio(p); });
         c.addEventListener('keydown', e => { if (e.key === 'Enter') c.click(); });
         griglia.appendChild(c);
       });
       cont.appendChild(griglia);
-      if (sel) { const p = persone[sel]; if (p) mostraDettaglio(p); }
+      if (sel) { const p = persone[sel] || persone[chiaveMatematico(sel.replace(/-/g, ' '))]; if (p) mostraDettaglio(p); }
     });
   }
   function iniziali(nome) { const parti = nome.replace(/^(gli|i|le|la|il)\s+/i, '').split(/\s+e\s+|\s+/).filter(w => /^[A-ZÀ-Ý]/.test(w)); return (parti[0] || nome)[0] + (parti.length > 1 ? parti[parti.length - 1][0] : ''); }
@@ -793,7 +815,7 @@
   function raccontaAneddoto(arg) {
     const an = scegli(arg.aneddoti);
     const html = `<p class="chi">${esc(an.matematico)} <small>${esc(an.anni)}</small></p><p><b>${esc(an.titolo)}</b></p>${md(an.testo)}${an.legame ? '<p style="color:var(--testo2);font-size:.88rem">' + md(an.legame).replace(/^<p>|<\/p>$/g, '') + '</p>' : ''}`;
-    CMASC.dici(html, { tipo: 'aneddoto', html: true, espressione: 'felice', azioni: [{ testo: 'Un altro', fn: () => raccontaAneddoto(arg) }, { testo: 'Tutti i matematici', fn: () => naviga('#/matematici/' + slug(an.matematico)) }] });
+    CMASC.dici(html, { tipo: 'aneddoto', html: true, espressione: 'felice', azioni: [{ testo: 'Un altro', fn: () => raccontaAneddoto(arg) }, { testo: 'Tutti i matematici', fn: () => naviga('#/matematici/' + chiaveMatematico(an.matematico)) }] });
   }
   function menuMascotte() {
     if (CMASC.aperta()) { CMASC.chiudi(); return; }
