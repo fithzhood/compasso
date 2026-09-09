@@ -79,7 +79,7 @@ Le due derivate esistono, sono finite, ma sono diverse: $f$ non è derivabile in
 
 >! "Continua" non vuol dire "derivabile": si può disegnare $|x|$ senza staccare la penna dal foglio (continuità), ma nel vertice la direzione cambia bruscamente, e lì non esiste un'unica tangente.` },
 
-    { id: 'punti-non-derivabili', titolo: 'Punti di non derivabilità', testo: R`Quando le derivate destra e sinistra non coincidono, il punto si chiama **punto di non derivabilità**. Ce ne sono di tre tipi, a seconda di come si comportano quei due limiti:
+    { id: 'punti-non-derivabili', titolo: 'Punti di non derivabilità', testo: R`Quando le derivate destra e sinistra non coincidono in uno stesso numero finito, il punto si chiama **punto di non derivabilità**. Ce ne sono di tre tipi, a seconda di come si comportano quei due limiti:
 
 - **Punto angoloso**: $f'_+(x_0)$ e $f'_-(x_0)$ esistono finite ma sono diverse. Il grafico ha uno spigolo, con due tangenti distinte da destra e da sinistra (è il caso di $|x|$ in $x_0=0$, visto nella sezione precedente).
 - **Cuspide**: le derivate destra e sinistra sono infinite e di **segno opposto**. Il caso tipico è $f(x) = \sqrt[3]{x^2}$ in $x_0=0$: da destra la pendenza tende a $+\infty$, da sinistra a $-\infty$. Il grafico ha una "punta" appuntita.
@@ -112,7 +112,7 @@ Le prime due righe non dette a parole sono già state ricavate con la definizion
 
 La derivata di $\tan x = \dfrac{\sin x}{\cos x}$ si ottiene con la regola del quoziente (prossima sezione): $\dfrac{\cos x \cdot \cos x - \sin x\cdot(-\sin x)}{\cos^2 x} = \dfrac{\cos^2 x+\sin^2 x}{\cos^2 x} = \dfrac{1}{\cos^2 x}$.
 
->* Le funzioni $e^x$, $\sin x$ e $\cos x$ sono le più "comode" da derivare: $e^x$ è l'unica funzione (a parte $0$) che coincide con la propria derivata; $\sin$ e $\cos$ si scambiano ciclicamente derivando quattro volte.
+>* Le funzioni $e^x$, $\sin x$ e $\cos x$ sono le più "comode" da derivare: $e^x$ è l'unica funzione (a meno di un fattore costante) che coincide con la propria derivata; $\sin$ e $\cos$ si scambiano ciclicamente derivando quattro volte.
 
 >! La derivata di $a^x$ **non** è $x\,a^{x-1}$ (quella è la regola della potenza, che vale quando è la base a essere la variabile, con esponente fisso): qui è l'esponente a variare, e compare un fattore $\ln a$. Per esempio $(2^x)' = 2^x \ln 2$, non $x\cdot 2^{x-1}$.` },
 

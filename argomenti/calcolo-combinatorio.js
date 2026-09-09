@@ -65,7 +65,7 @@ Esempi: gli anagrammi (anche senza senso) della parola ROMA sono $4! = 24$; i mo
 
 Quando però alcuni oggetti sono **indistinguibili**, scambiarli fra loro non produce una fila nuova, e $n!$ conta più volte lo stesso risultato.
 
->* **Permutazioni con ripetizione:** se fra $n$ oggetti ce ne sono $n_1$ uguali fra loro, $n_2$ uguali fra loro, ..., $n_h$ uguali fra loro (con $n_1 + n_2 + \ldots + n_h = n$), le disposizioni distinte sono $$P_n^{(n_1,\, n_2,\, \ldots,\, n_h)} = \frac{n!}{n_1! \cdot n_2! \cdot \ldots \cdot n_h!}$$
+>* **Permutazioni con ripetizione:** se fra $n$ oggetti ce ne sono $n_1$ uguali fra loro, $n_2$ uguali fra loro, ..., $n_h$ uguali fra loro (con $n_1 + n_2 + \ldots + n_h = n$), le permutazioni distinte sono $$P_n^{(n_1,\, n_2,\, \ldots,\, n_h)} = \frac{n!}{n_1! \cdot n_2! \cdot \ldots \cdot n_h!}$$
 
 Esempio: gli anagrammi di MAMMA. Le lettere sono 5, con la M ripetuta 3 volte e la A ripetuta 2 volte, quindi $\dfrac{5!}{3! \cdot 2!} = \dfrac{120}{12} = 10$. In effetti le tre M sono uguali: le loro $3! = 6$ permutazioni interne danno sempre la stessa parola, e lo stesso vale per le due A.
 
@@ -203,7 +203,7 @@ Quest'ultimo merita un esempio. Per andare da $A$ a $B$ nella griglia $3 \times 
         { tipo: 'testo', p: [1.3, 1080], testo: 'n = {{n}}     n! = {{fact(n)}}     2ⁿ = {{2^n}}', ancora: 'start' }
       ],
       parametri: [{ nome: 'n', min: 1, max: 10, passo: 1, valore: 5, etichetta: 'n' }],
-      didascalia: 'Muovi n: la potenza 2ⁿ supera il cubo n³ solo da n = 10, ma il fattoriale n! li lascia entrambi indietro molto prima.'
+      didascalia: 'Muovi n: la potenza 2ⁿ supera stabilmente il cubo n³ solo da n = 10, ma il fattoriale n! li lascia entrambi indietro molto prima.'
     },
     binomiali: {
       tipo: 'barre',
@@ -244,7 +244,7 @@ Quest'ultimo merita un esempio. Per andare da $A$ a $B$ nella griglia $3 \times 
     ], risultato: R`24 pasti completi; 36 se il dolce è facoltativo` },
 
     { titolo: 'Sigle di tre lettere', problema: R`Con le 21 lettere dell'alfabeto italiano, quante sigle di 3 lettere si possono formare (a) se le lettere possono ripetersi, (b) se devono essere tutte diverse?`, passi: [
-      R`L'ordine conta: AB C e BAC sono sigle diverse. Sono quindi disposizioni.`,
+      R`L'ordine conta: ABC e BAC sono sigle diverse. Sono quindi disposizioni.`,
       R`(a) Con ripetizione: ogni posto ha 21 possibilità, $D'_{21,3} = 21^3 = 9261$.`,
       R`(b) Senza ripetizione: $D_{21,3} = 21 \cdot 20 \cdot 19 = 7980$.`,
       R`Le sigle con almeno una lettera ripetuta sono la differenza: $9261 - 7980 = 1281$.`
@@ -379,7 +379,7 @@ Quest'ultimo merita un esempio. Per andare da $A$ a $B$ nella griglia $3 \times 
 
     { matematico: 'Jacob Bernoulli', anni: '1655–1705', titolo: 'Un libro pubblicato otto anni dopo la morte', testo: R`Jacob Bernoulli, il maggiore della famiglia di matematici basilesi, lavorò per anni all'*Ars conjectandi*, il primo trattato sistematico di combinatoria e probabilità. La seconda parte del libro è una teoria ordinata di permutazioni, disposizioni e combinazioni, con la dimostrazione delle proprietà dei coefficienti binomiali; la quarta contiene il teorema che oggi chiamiamo legge dei grandi numeri. Bernoulli morì nel 1705 senza averlo finito, e l'opera uscì solo nel 1713, per iniziativa del nipote Nicolaus. Aveva chiesto che sulla sua tomba fosse incisa una spirale logaritmica con il motto *Eadem mutata resurgo*, «pur cambiata, risorgo la stessa»: lo scalpellino sbagliò e incise una spirale di Archimede.`, legame: R`L'*Ars conjectandi* è il testo in cui permutazioni, disposizioni e combinazioni diventano per la prima volta una teoria unitaria.` },
 
-    { matematico: 'Christian Kramp', anni: '1760–1826', titolo: 'Chi ha inventato il punto esclamativo', testo: R`Il simbolo $n!$ è molto più recente delle idee che rappresenta. Per tutto il Settecento i matematici scrivevano il fattoriale con notazioni ingombranti e diverse fra loro. Fu Christian Kramp, medico e poi professore di matematica a Strasburgo, a introdurre nel 1808, negli *Éléments d'arithmétique universelle*, il punto esclamativo posposto, spiegando che gli serviva una scrittura compatta perché nei suoi calcoli quel prodotto compariva di continuo. Fu Kramp anche a chiamare "fattoriale" quel numero. La notazione si diffuse in fretta proprio per la sua economia: un solo carattere al posto di una fila di puntini.`, legame: R`Quasi ogni formula di questo argomento si scrive con il punto esclamativo di Kramp.` },
+    { matematico: 'Christian Kramp', anni: '1760–1826', titolo: 'Chi ha inventato il punto esclamativo', testo: R`Il simbolo $n!$ è molto più recente delle idee che rappresenta. Per tutto il Settecento i matematici scrivevano il fattoriale con notazioni ingombranti e diverse fra loro. Fu Christian Kramp, medico e poi professore di matematica a Strasburgo, a introdurre nel 1808, negli *Éléments d'arithmétique universelle*, il punto esclamativo posposto, spiegando che gli serviva una scrittura compatta perché nei suoi calcoli quel prodotto compariva di continuo. Il nome, invece, non è suo: la parola *factorielle* era stata usata nel 1800 da Louis Arbogast, e Kramp la adottò al posto del suo *faculté*. La notazione si diffuse in fretta proprio per la sua economia: un solo carattere al posto di una fila di puntini.`, legame: R`Quasi ogni formula di questo argomento si scrive con il punto esclamativo di Kramp.` },
 
     { matematico: 'Gottfried Wilhelm Leibniz', anni: '1646–1716', titolo: 'A vent\'anni, l\'arte di combinare tutto', testo: R`Nel 1666, ad appena vent'anni, Leibniz pubblicò la *Dissertatio de arte combinatoria*. Il suo sogno era smisurato: costruire un alfabeto dei pensieri, in cui ogni concetto complesso fosse una combinazione di concetti semplici, e ridurre così il ragionamento a un calcolo. In caso di disaccordo, scriveva, non resterebbe che dirsi «calcoliamo». La parte matematica del libro studia in modo sistematico permutazioni e combinazioni, e vi compare la parola stessa «combinatoria» nel senso che le diamo oggi. Leibniz da vecchio giudicava quel testo giovanile e immaturo; eppure il progetto di una logica calcolabile che vi si intravede ha aspettato solo due secoli e mezzo, fino ai calcolatori.`, legame: R`È il testo che dà il nome al calcolo combinatorio e ne fa una disciplina a sé.` }
   ]
