@@ -273,7 +273,7 @@ In un gruppo di $23$ persone la probabilità che almeno due compiano gli anni lo
         { tipo: 'testo', p: [4, 1.08], testo: 'P = {{1 - exp(-n*(n - 1)/730)}}', ancora: 'start' }
       ],
       parametri: [{ nome: 'n', min: 1, max: 60, passo: 1, valore: 23, etichetta: 'n' }],
-      didascalia: 'Formula approssimata del paradosso del compleanno: con n = 23 si taglia la linea del 50%, con n = 50 si è già oltre il 97%.'
+      didascalia: 'Formula approssimata del paradosso del compleanno: con n = 23 si taglia la linea del 50%, con n = 50 si è già oltre il 96%.'
     }
   },
 
