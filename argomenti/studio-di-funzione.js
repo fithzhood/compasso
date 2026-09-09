@@ -235,8 +235,8 @@ Sulla cubica $f(x) = x^3 - 3x$ i passi sono già stati fatti: dominio $\mathbb{R
         { f: '6x', etichetta: 'f″', colore: 3 }
       ],
       punti: [
-        { x: -1, y: 0, etichetta: '', colore: 2 },
-        { x: 1, y: 0, etichetta: '', colore: 2 }
+        { x: -1, y: 0, etichetta: '−1', posizione: 'basso-sinistra', colore: 2 },
+        { x: 1, y: 0, etichetta: '1', posizione: 'basso-destra', colore: 2 }
       ],
       didascalia: "f, f' e f'' insieme: dove f' è sopra l'asse x la funzione sale; gli zeri di f' sono i punti stazionari; f'' cambia segno nel flesso."
     },
