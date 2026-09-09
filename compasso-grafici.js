@@ -190,12 +190,19 @@
     const maniglie = [];
     const modello = s => String(s).replace(/\{\{([^}]+)\}\}/g, (_, e) => { try { return fmt(num(e.trim(), vars)); } catch (x) { return '?'; } });
     const xr = spec.x || [-5, 5], yr = spec.y || [-5, 5];
-    const xmin = num(xr[0], vars), xmax = num(xr[1], vars), ymin = num(yr[0], vars), ymax = num(yr[1], vars);
+    let xmin = num(xr[0], vars), xmax = num(xr[1], vars), ymin = num(yr[0], vars), ymax = num(yr[1], vars);
+    /* figure geometriche: stessa scala sui due assi, altrimenti i cerchi diventano ellissi */
+    const geometrico = spec.proporzioni === 'uguali' || (spec.proporzioni !== 'libere' && (spec.assi === false || (spec.elementi || []).some(e => ['cerchio', 'angolo', 'poligono', 'ellisse'].includes(e.tipo))));
     const rapporto = (ymax - ymin) / (xmax - xmin);
     let H = Math.round(W * rapporto);
     if (spec.altezza) H = spec.altezza; else H = Math.max(220, Math.min(520, H));
     const m = { l: 34, r: 16, t: 14, b: 26 };
     const pw = W - m.l - m.r, ph = H - m.t - m.b;
+    if (geometrico) {
+      const kx = pw / (xmax - xmin), ky = ph / (ymax - ymin);
+      if (kx > ky) { const w = pw / ky, cx = (xmin + xmax) / 2; xmin = cx - w / 2; xmax = cx + w / 2; }
+      else if (ky > kx) { const hg = ph / kx, cy = (ymin + ymax) / 2; ymin = cy - hg / 2; ymax = cy + hg / 2; }
+    }
     const sx = x => m.l + (x - xmin) / (xmax - xmin) * pw;
     const sy = y => m.t + (ymax - y) / (ymax - ymin) * ph;
     const id = 'clip' + (++contatoreId);

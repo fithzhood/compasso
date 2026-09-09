@@ -145,6 +145,7 @@ sempre `x`. **Niente altro nome oltre a `x` e ai parametri.**
 ```js
 { tipo: 'piano', x: [-3, 5], y: [-5, 6],          // finestra (obbligatoria)
   passo: [1, 1],                                  // opzionale: passo delle tacche
+  proporzioni: 'uguali',                          // stessa scala sui due assi (automatico se ci sono cerchi, angoli, poligoni, ellissi o assi:false; 'libere' per disattivare)
   griglia: true, assi: true,                      // default true
   etichette: { x: 'x', y: 'y' },                  // nomi degli assi
   funzioni: [ { f: 'x^2 - 2x - 3', etichetta: 'y = x² − 2x − 3', colore: 1, tratteggio: false, dominio: [-3, 5] } ],
