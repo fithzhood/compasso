@@ -104,7 +104,7 @@ Nel grafico muovi $q$ nella retta $y=x+q$ rispetto alla circonferenza $x^2+y^2=2
 
 ### Tangente in un punto della circonferenza
 
-Se $P_0(x_0;y_0)$ è un punto che appartiene già alla circonferenza, la tangente in $P_0$ è, per una proprietà elementare, la retta **perpendicolare al raggio** $CP_0$ passante per $P_0$: si trova il coefficiente angolare del raggio, se ne prende l'antireciproco cambiato di segno, e si scrive l'equazione della retta per $P_0$ con quel coefficiente angolare.
+Se $P_0(x_0;y_0)$ è un punto che appartiene già alla circonferenza, la tangente in $P_0$ è, per una proprietà elementare, la retta **perpendicolare al raggio** $CP_0$ passante per $P_0$: si trova il coefficiente angolare del raggio, se ne prende il reciproco cambiato di segno, e si scrive l'equazione della retta per $P_0$ con quel coefficiente angolare.
 
 C'è anche una scorciatoia diretta, la **formula di sdoppiamento**: per la circonferenza $x^2+y^2+ax+by+c=0$,
 
@@ -273,7 +273,7 @@ Un esempio tipico: tre sensori si trovano in $A(0;0)$, $B(6;0)$ e $C(0;8)$, e si
 
     { titolo: 'L’equazione dai tre punti', problema: R`Determina l'equazione della circonferenza passante per $A(-1;0)$, $B(3;0)$, $C(0;3)$.`, passi: [
       R`Sostituisco ogni punto in $x^2+y^2+ax+by+c=0$: da $A$, $1-a+c=0$; da $B$, $9+3a+c=0$; da $C$, $9+3b+c=0$.`,
-      R`Dalla prima equazione: $c=a-1$. Sostituendo nella seconda: $9+3a+a-1=0 \Rightarrow 4a-1=-9$... ricontrollo: $9+3a+(a-1)=0 \Rightarrow 4a+8=0 \Rightarrow a=-2$, quindi $c=-3$.`,
+      R`Dalla prima equazione: $c=a-1$. Sostituendo nella seconda: $9+3a+(a-1)=0 \Rightarrow 4a+8=0 \Rightarrow a=-2$, quindi $c=-3$.`,
       R`Sostituendo $c=-3$ nella terza: $9+3b-3=0 \Rightarrow 3b+6=0 \Rightarrow b=-2$.`,
       R`Equazione: $x^2+y^2-2x-2y-3=0$. Condizione di esistenza: $1+1+3=5>0$ ✓. Centro $(1;1)$, raggio $\sqrt5$.`,
       R`Verifica sui tre punti: $A(-1;0)$: $1+0+2-0-3=0$ ✓; $B(3;0)$: $9+0-6-0-3=0$ ✓; $C(0;3)$: $0+9-0-6-3=0$ ✓.`
