@@ -218,7 +218,7 @@ Molti problemi applicati (orbite, riflettori, antenne) danno i dati proprio in q
   },
 
   esempi: [
-    { titolo: 'Fuochi ed eccentricità di un’ellisse', problema: R`Data l'ellisse $\dfrac{x^2}{25}+\dfrac{y^2}{16}=1$, trova semiassi, vertici, fuochi ed eccentricità.`, passi: [
+    { titolo: R`Fuochi ed eccentricità di un'ellisse`, problema: R`Data l'ellisse $\dfrac{x^2}{25}+\dfrac{y^2}{16}=1$, trova semiassi, vertici, fuochi ed eccentricità.`, passi: [
       R`$a^2=25$ e $b^2=16$, quindi $a=5$ e $b=4$. Poiché $a>b$, i fuochi sono sull'asse $x$.`,
       R`Vertici: $A(-5;0)$, $A'(5;0)$, $B(0;-4)$, $B'(0;4)$.`,
       R`$c^2=a^2-b^2=25-16=9$, quindi $c=3$: fuochi $F(-3;0)$, $F'(3;0)$.`,
@@ -231,19 +231,19 @@ Molti problemi applicati (orbite, riflettori, antenne) danno i dati proprio in q
       R`Eccentricità: $e=c/a=3/\sqrt{13}\approx0{,}83$.`
     ], risultato: R`$F(0;\pm3),\ e\approx0{,}83$` },
 
-    { titolo: 'Rette tangenti a un’ellisse da un punto esterno', problema: R`Determina per quali valori di $m$ la retta $y=mx+2$ è tangente all'ellisse $\dfrac{x^2}{3}+y^2=1$.`, passi: [
+    { titolo: R`Rette tangenti a un'ellisse da un punto esterno`, problema: R`Determina per quali valori di $m$ la retta $y=mx+2$ è tangente all'ellisse $\dfrac{x^2}{3}+y^2=1$.`, passi: [
       R`La retta ha $q=2$; l'ellisse ha $a^2=3$, $b^2=1$. Condizione di tangenza: $q^2=a^2m^2+b^2$.`,
       R`$4=3m^2+1$, quindi $3m^2=3$, cioè $m^2=1$.`,
       R`$m=1$ oppure $m=-1$: due rette tangenti, simmetriche rispetto all'asse $y$.`
     ], risultato: R`$m=1 \lor m=-1$` },
 
-    { titolo: 'Tangente a un’ellisse in un suo punto', problema: R`Scrivi la tangente all'ellisse $\dfrac{x^2}{8}+\dfrac{y^2}{2}=1$ nel suo punto $P_0(2;1)$.`, passi: [
+    { titolo: R`Tangente a un'ellisse in un suo punto`, problema: R`Scrivi la tangente all'ellisse $\dfrac{x^2}{8}+\dfrac{y^2}{2}=1$ nel suo punto $P_0(2;1)$.`, passi: [
       R`Verifico che $P_0$ sia sull'ellisse: $\dfrac{4}{8}+\dfrac{1}{2}=0{,}5+0{,}5=1$. ✓`,
       R`Sdoppiamento: sostituisco $x^2\to x\cdot x_0=2x$ e $y^2\to y\cdot y_0=y$: $\dfrac{2x}{8}+\dfrac{y}{2}=1$.`,
       R`Semplifico: $\dfrac{x}{4}+\dfrac{y}{2}=1$, e moltiplicando per $4$: $x+2y=4$.`
     ], risultato: R`$x+2y=4$` },
 
-    { titolo: 'Vertici, fuochi e asintoti di un’iperbole', problema: R`Data l'iperbole $\dfrac{x^2}{9}-\dfrac{y^2}{16}=1$, trova vertici, fuochi, asintoti ed eccentricità.`, passi: [
+    { titolo: R`Vertici, fuochi e asintoti di un'iperbole`, problema: R`Data l'iperbole $\dfrac{x^2}{9}-\dfrac{y^2}{16}=1$, trova vertici, fuochi, asintoti ed eccentricità.`, passi: [
       R`$a^2=9$, $b^2=16$: $a=3$, $b=4$. Vertici $A(-3;0)$, $A'(3;0)$.`,
       R`$c^2=a^2+b^2=9+16=25$, $c=5$: fuochi $F(-5;0)$, $F'(5;0)$.`,
       R`Asintoti: $y=\pm\dfrac{b}{a}x=\pm\dfrac43x$.`,
