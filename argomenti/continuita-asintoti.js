@@ -117,7 +117,7 @@ Si cercano **solo** nei punti esclusi dal dominio: dove si annulla un denominato
 
 I due limiti vanno calcolati separatamente: possono dare risultati diversi. Per $f(x) = \arctan x$ ci sono due asintoti orizzontali, $y = \frac{\pi}{2}$ a destra e $y = -\frac{\pi}{2}$ a sinistra.
 
-Per una funzione razionale fratta il confronto dei gradi basta: se il grado del numeratore è minore, l'asintoto orizzontale è $y = 0$; se i gradi sono uguali, è il rapporto dei coefficienti direttivi (per $\frac{3x-1}{x+2}$ è $y = 3$); se il numeratore ha grado maggiore di uno, l'asintoto orizzontale non c'è.
+Per una funzione razionale fratta il confronto dei gradi basta: se il grado del numeratore è minore, l'asintoto orizzontale è $y = 0$; se i gradi sono uguali, è il rapporto dei coefficienti direttivi (per $\frac{3x-1}{x+2}$ è $y = 3$); se il numeratore ha grado maggiore, l'asintoto orizzontale non c'è.
 
 >! Un asintoto orizzontale può essere **attraversato**, anche infinite volte: $f(x) = \frac{\sin x}{x}$ ha asintoto $y = 0$ e lo taglia in tutti i punti $x = k\pi$. Il divieto di attraversare vale (di solito) solo per gli asintoti verticali, che il grafico non può toccare perché lì la funzione non è definita.` },
 
