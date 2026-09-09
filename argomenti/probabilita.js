@@ -130,7 +130,7 @@ Con $n$ prove indipendenti, ciascuna con probabilità di successo $p$, la probab
 
 >* $$P(\text{almeno un successo in } n \text{ prove}) = 1 - (1-p)^n$$
 
-Lanciando quattro volte un dado, la probabilità di ottenere almeno un $6$ è $1 - \left(\dfrac{5}{6}\right)^4 = 1 - \dfrac{625}{1296} = \dfrac{671}{1296} \approx 0{,}518$: poco più di una volta su due. È il conto che rese ricco il cavaliere de Méré.
+Lanciando quattro volte un dado, la probabilità di ottenere almeno un $6$ è $1 - \left(\dfrac{5}{6}\right)^4 = 1 - \dfrac{625}{1296} = \dfrac{671}{1296} \approx 0{,}518$: poco più di una volta su due. È il conto su cui, si racconta, il cavaliere de Méré ci guadagnava.
 
 Nel grafico qui sotto muovi $p$ e osserva come cresce la probabilità di «almeno un successo» su tre prove: sale molto in fretta per $p$ piccoli, poi si appiattisce vicino a $1$.
 

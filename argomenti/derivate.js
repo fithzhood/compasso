@@ -108,7 +108,7 @@ Le due derivate esistono, sono finite, ma sono diverse: $f$ non è derivabile in
 | $\ln x$ | $\dfrac{1}{x}$ | $x>0$ |
 | $\log_a x$ | $\dfrac{1}{x\ln a}$ | $x>0,\ a>0,\ a\ne 1$ |
 
-Le prime due righe non dette a parole sono già state ricavate con la definizione nella sezione precedente, per $n=2$ e per $n=-1$ (visto che $\dfrac{1}{x}=x^{-1}$): la regola $(x^n)' = n\,x^{n-1}$ le contiene entrambe come casi particolari, e vale anche per $n$ non intero. Per esempio $\sqrt{x}=x^{1/2}$ dà $\dfrac{1}{2}x^{-1/2} = \dfrac{1}{2\sqrt{x}}$, coerente con la tabella.
+I casi $n=2$ e $n=-1$ (visto che $\dfrac{1}{x}=x^{-1}$) sono già stati ricavati con la definizione nella sezione sul rapporto incrementale: la regola $(x^n)' = n\,x^{n-1}$ li contiene entrambi come casi particolari, e vale anche per $n$ non intero. Per esempio $\sqrt{x}=x^{1/2}$ dà $\dfrac{1}{2}x^{-1/2} = \dfrac{1}{2\sqrt{x}}$, coerente con la tabella.
 
 La derivata di $\tan x = \dfrac{\sin x}{\cos x}$ si ottiene con la regola del quoziente (prossima sezione): $\dfrac{\cos x \cdot \cos x - \sin x\cdot(-\sin x)}{\cos^2 x} = \dfrac{\cos^2 x+\sin^2 x}{\cos^2 x} = \dfrac{1}{\cos^2 x}$.
 
