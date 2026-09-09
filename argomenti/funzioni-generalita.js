@@ -94,7 +94,7 @@ Esempio: $f(x) = 2x + 3$ è iniettiva e suriettiva su $\mathbb{R}$, quindi biuni
 
 >* Iniettiva: valori distinti restano distinti. Suriettiva: tutto il codominio viene coperto. Biunivoca: entrambe le cose insieme.
 
->! Una funzione **pari** (diversa dalla funzione nulla) non è mai iniettiva sul suo intero dominio simmetrico: $f(-x) = f(x)$ significa che $-x$ e $x$ hanno sempre la stessa immagine.` },
+>! Una funzione **pari** non è mai iniettiva sul suo intero dominio simmetrico (a meno del caso limite in cui il dominio si riduca al solo $0$): $f(-x) = f(x)$ significa che $-x$ e $x$ hanno sempre la stessa immagine.` },
 
     { id: 'crescenza-monotonia', titolo: 'Funzioni crescenti, decrescenti, monotone', testo: R`Una funzione $f$ è **crescente** in un intervallo $I$ del dominio se, presi comunque $x_1, x_2 \in I$ con $x_1 < x_2$, risulta $f(x_1) < f(x_2)$: aumentando $x$, aumenta anche $y$. È **decrescente** se invece $x_1 < x_2 \Rightarrow f(x_1) > f(x_2)$. Una funzione **monotona** è crescente oppure decrescente in tutto l'intervallo considerato.
 

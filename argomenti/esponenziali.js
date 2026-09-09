@@ -114,7 +114,7 @@ Quando le basi non sono uguali ma riconducibili a una base comune, si trasforman
 
 **Decadimento e dimezzamento.** Una sostanza (farmaco, isotopo radioattivo) che si dimezza a ogni intervallo fisso $T$, il **tempo di dimezzamento**, segue $$N(t) = N_0 \left(\dfrac12\right)^{t/T}.$$ Con $T=8$ giorni e $N_0=160$ mg, dopo $24$ giorni (cioè $3$ dimezzamenti) restano $N(24)=160\cdot\left(\frac12\right)^3=20$ mg.
 
-In tutti questi modelli il grafico ha lo stesso asintoto orizzontale della funzione esponenziale di base, semplicemente riscalato: per una crescita è il livello di partenza, per un decadimento è il valore a cui la quantità tende senza mai annullarsi del tutto.
+In tutti questi modelli il grafico ha lo stesso asintoto orizzontale della funzione esponenziale di base, la retta $y=0$: per una crescita è il livello a cui la curva si schiaccia tornando indietro nel tempo, per un decadimento è il valore a cui la quantità tende senza mai annullarsi del tutto.
 
 >! Il tasso $r$ nella formula dell'interesse composto è un numero decimale, non una percentuale intera: $5\%$ si scrive $r=0{,}05$, non $r=5$. Scrivere $C(t)=C_0(1+5)^t$ moltiplicherebbe il capitale per $6$ ogni periodo: un errore enorme.` },
 
@@ -124,7 +124,7 @@ In tutti questi modelli il grafico ha lo stesso asintoto orizzontale della funzi
 
 Per esempio $y=2^x-3$ ha lo stesso andamento di $y=2^x$ ma traslato in basso di $3$: passa per $(0;-2)$ e ha asintoto $y=-3$; da qui in avanti, pur restando crescente, la funzione assume anche valori negativi.
 
-**Riflessioni.** $y=-a^x$ ribalta il grafico rispetto all'asse $x$: il segno meno capovolge anche l'andamento, e la funzione diventa decrescente, sempre negativa. $y=a^{-x}$ ribalta rispetto all'asse $y$, e per le proprietà delle potenze coincide con $\left(\dfrac1a\right)^x$: una base $a>1$ diventa così una base minore di $1$, e viceversa.
+**Riflessioni.** $y=-a^x$ ribalta il grafico rispetto all'asse $x$: il segno meno capovolge anche l'andamento (con $a>1$ la funzione diventa decrescente) ed è sempre negativa. $y=a^{-x}$ ribalta rispetto all'asse $y$, e per le proprietà delle potenze coincide con $\left(\dfrac1a\right)^x$: una base $a>1$ diventa così una base minore di $1$, e viceversa.
 
 [[grafico:simmetriaBasi]]
 
