@@ -36,8 +36,8 @@
     @keyframes lab-mic-pop { from { transform: scale(.7); opacity: 0 } to { transform: none; opacity: 1 } }
     .lab-microscopio .griglia { stroke: var(--bordo); stroke-width: 1; opacity: .8; }
     .lab-microscopio .asse { stroke: var(--testo2); stroke-width: 1.6; opacity: .9; }
-    .lab-microscopio .numero { font: 12px var(--font); fill: var(--testo2); opacity: .85; }
-    .lab-microscopio .nome-asse { font: italic 700 14px var(--font); fill: var(--testo2); }
+    .lab-microscopio .numero { font: 14px var(--font); fill: var(--testo2); opacity: .85; }
+    .lab-microscopio .nome-asse { font: italic 700 16px var(--font); fill: var(--testo2); }
     .lab-microscopio .curva { fill: none; stroke: var(--accento); stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
     .lab-microscopio .buco { fill: var(--sup2); stroke: var(--accento); stroke-width: 2.6; }
     .lab-microscopio .buco-lente { fill: var(--sup); stroke: var(--accento); stroke-width: 3; }
@@ -52,8 +52,7 @@
     .lab-microscopio .espl { fill: var(--s1); stroke: var(--sup); stroke-width: 2; }
     .lab-microscopio .espl-alone { fill: var(--s1); opacity: 0; transition: opacity .15s; }
     .lab-microscopio .presa .espl-alone { opacity: .3; }
-    .lab-microscopio .etichetta { font: 700 14px var(--font); fill: var(--testo); paint-order: stroke; stroke: var(--sup2); stroke-width: 4.5; stroke-linejoin: round; }
-    .lab-microscopio .binario { stroke: var(--bordo2); stroke-width: 3; stroke-linecap: round; }
+    .lab-microscopio .etichetta { font: 700 16px var(--font); fill: var(--testo); paint-order: stroke; stroke: var(--sup2); stroke-width: 4.5; stroke-linejoin: round; }
     .lab-microscopio .lampo-lente { animation: lab-mic-lampo .35s ease-out; }
     @keyframes lab-mic-lampo { from { opacity: .35 } to { opacity: .9 } }
     @media (max-width: 600px) {
@@ -84,7 +83,7 @@
   }
   function fmtCorto(v) {
     if (v == null || !isFinite(v)) return '—';
-    if (Math.abs(v) >= 1e5) return virg(v.toExponential(2));
+    if (Math.abs(v) >= 1e7) return virg(v.toExponential(2));
     const s = v.toPrecision(8);
     return virg((s.indexOf('.') < 0 ? s : s.replace(/0+$/, '').replace(/\.$/, '')));
   }
