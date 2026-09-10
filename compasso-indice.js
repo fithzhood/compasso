@@ -13,7 +13,9 @@ window.COMPASSO_INDICE = {
      intro = quello che dice Zenone la prima volta che si apre. */
   laboratori: [
     { id: 'bilancia', argomento: 'equazioni-primo-grado', titolo: 'La bilancia', icona: '⚖️', sotto: 'Casse con la x, pesi e palloncini: risolvi l\'equazione tenendo i piatti in equilibrio.', intro: 'Qualunque cosa fai a un piatto, falla anche all\'altro: è l\'unica regola. Vinci quando su un piatto resta una cassa sola.' },
-    { id: 'marea', argomento: 'disequazioni-secondo-grado', titolo: 'Marea', icona: '🌊', sotto: 'Piega la barra, alza il mare fino a quota zero e scegli chi ci vive: alpinista o subacqueo.', intro: 'Le rive segnano le soluzioni dell\'equazione: portale lì e fermati. Sopra il mare è positivo, sotto è negativo.' }
+    { id: 'marea', argomento: 'disequazioni-secondo-grado', titolo: 'Marea', icona: '🌊', sotto: 'Piega la barra, alza il mare fino a quota zero e scegli chi ci vive: alpinista o subacqueo.', intro: 'Le rive segnano le soluzioni dell\'equazione: portale lì e fermati. Sopra il mare è positivo, sotto è negativo.' },
+    { id: 'tiro-a-segno', argomento: 'piano-cartesiano-retta', titolo: 'Tiro a segno', icona: '🎯', sotto: 'Punta la retta con due maniglie e falla passare esattamente sopra i palloncini.', intro: 'Sposta P e Q sui punti interi: la retta per due punti è una sola. Quando è al posto giusto, spara.' },
+    { id: 'mongolfiera', argomento: 'insiemi-numerici', titolo: 'La mongolfiera', icona: '🎈', sotto: 'Palloncini che tirano su, zavorre che tirano giù: la quota è la somma dei numeri relativi.', intro: 'Attacca palloncini e zavorre: dove si ferma la mongolfiera è la somma. Un +1 e un −1 insieme non la spostano di un dito.' }
   ],
   argomenti: [
     /* ---- Algebra ---- */
