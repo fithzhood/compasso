@@ -30,12 +30,17 @@ def main():
         r = subprocess.run(['node', str(SORGENTE / 'strumenti' / 'verifica-argomento.js'), str(f)], capture_output=True, text=True, cwd=str(SORGENTE))
         if r.returncode != 0:
             saltati.append(f.name); print('SALTATO (non valido):', f.name)
+    # i laboratori: almeno la sintassi
+    for f in sorted((SORGENTE / 'laboratori').glob('*.js')):
+        r = subprocess.run(['node', '--check', str(f)], capture_output=True, text=True, cwd=str(SORGENTE))
+        if r.returncode != 0:
+            saltati.append(f.name); print('SALTATO (sintassi):', f.name)
     copiati = 0
     for src in SORGENTE.rglob('*'):
         rel = src.relative_to(SORGENTE)
         if any(p in ESCLUDI for p in rel.parts):
             continue
-        if rel.parts[0] == 'argomenti' and src.name in saltati:
+        if rel.parts[0] in ('argomenti', 'laboratori') and src.name in saltati:
             continue
         dst = REPO / rel
         if src.is_dir():

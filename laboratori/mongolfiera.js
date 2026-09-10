@@ -19,7 +19,7 @@
     .lab-mongolfiera .num { fill: #fff; paint-order: stroke; stroke: rgba(0,0,0,.5); stroke-width: 3px; font-family: var(--font); font-weight: 700; }
     .lab-mongolfiera .tacca { stroke: var(--testo2); stroke-width: 1.3; }
     .lab-mongolfiera .tacca.forte { stroke: var(--testo); stroke-width: 2; }
-    .lab-mongolfiera .etichetta { font-family: var(--font); font-size: 11px; font-weight: 600; fill: var(--testo2); dominant-baseline: middle; }
+    .lab-mongolfiera .etichetta { font-family: var(--font); font-size: 10px; font-weight: 600; fill: var(--testo2); dominant-baseline: middle; }
     .lab-mongolfiera .etichetta.forte { fill: var(--testo); font-weight: 700; font-size: 12.5px; }
     .lab-mongolfiera .mira line { stroke: var(--accento); stroke-width: 1.6; stroke-dasharray: 5 5; opacity: .85; }
     .lab-mongolfiera .mira polygon { fill: var(--accento); }

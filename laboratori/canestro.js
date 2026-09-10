@@ -83,12 +83,12 @@
     const s = primo ? (seg < 0 ? '-' : '') : (seg < 0 ? ' - ' : ' + ');
     return s + corpo + simbolo;
   }
-  /* forma con il vertice: y = a(x − h)² + k   —  a = n/20, h = m/2, k = j/2 */
+  /* forma con il vertice: y = a(x − h)² + k   —  a in frazione, h e k come coordinate */
   function texVertice(a, h, k) {
-    const n = Math.round(a * 20), j = Math.round(k * 2);
+    const n = Math.round(a * 20);
     const dentro = '(x - ' + virgola(h) + ')^2';
-    let s = termine(n, 20, dentro, true) + termine(j, 2, '', false);
-    return 'y = ' + (s || '0');
+    const coda = k === 0 ? '' : (k > 0 ? ' + ' : ' - ') + virgola(Math.abs(k));
+    return 'y = ' + (termine(n, 20, dentro, true) + coda || '0');
   }
   /* forma normale: y = ax² + bx + c, con b = −2ah e c = ah² + k (esatti sulla griglia) */
   function texNormale(a, h, k) {
@@ -160,7 +160,7 @@
         p(0.5, 0, 0.72, 0.72); p(0.94, 0, 0.72, 0.72);          /* gambe */
         p(0.72, 0.72, 0.72, 1.34);                              /* busto */
         p(0.72, 1.28, 0.5, 0.95);                               /* braccio libero */
-        p(0.72, 1.3, 0.96, 1.8);                                /* braccio del tiro */
+        p(0.72, 1.3, 0.98, 1.82);                               /* braccio del tiro */
         gMano.appendChild(el('circle', { cx: SX(0.72), cy: SY(1.52), r: 7.5, fill: c, opacity: .82 }));
         gMano.appendChild(el('circle', { cx: SX(LX), cy: SY(LY), r: 3.5, fill: 'var(--accento)' }));
         gMano.appendChild(el('text', { x: SX(LX) + 12, y: SY(LY) - 8, fill: 'var(--testo2)', style: 'font: 600 14px var(--font)' }, 'mano (1; 2)'));
@@ -176,7 +176,264 @@
       const liv = () => LIVELLI[livello];
       const manoOk = () => Math.abs(yy(LX) - LY) < TOL;
 
-      /*__CONTINUA__*/
+      /* frase di Zenone quando il livello è vinto */
+      const VITTORIE = [
+        'Mano e canestro stanno alla stessa quota, e la parabola è simmetrica: il vertice non poteva che stare a metà, in x = 4.',
+        'Di nuovo alla stessa quota: il vertice sta a metà fra 1 e 8, cioè in 4,5. La quota k l\'ha decisa il passaggio per la mano.',
+        'Con a libero le soluzioni sono più d\'una: campana stretta e alta oppure larga e bassa, purché tocchi i due punti.',
+        'Vertice inchiodato, un solo numero da cercare: a. Cambiando a la campana si stringe o si allarga, ma il punto più alto resta lì.',
+        'Per scavalcare il difensore serve una campana più alta: il vertice sale, e a cresce in valore assoluto.',
+        'Il difensore stava proprio sotto il vertice: lì la parabola è al massimo, e il massimo vale k.',
+        'La formula era già il disegno: dentro la parentesi c\'è h col segno cambiato, dopo il + c\'è k, e davanti a dice l\'apertura.',
+        'Il soffitto è un tetto su k. Se il vertice non può salire, per arrivare lontano la parabola deve allargarsi: a vicino a zero.',
+        'Tre punti: la mano e i due anelli. Di parabole per tre punti ne passa una sola, quindi non restava nessuna libertà.',
+        'Ancora uno. Con la mano fissa in (1; 2), scelto il vertice l\'apertura è già decisa, e viceversa.'
+      ];
+      const AIUTO = 'Il vertice V è il punto più alto del tiro: trascinalo. Il numero a dice quanto è stretta la campana: vicino a −2 è stretta e la palla ricade subito, vicino a −0,1 è larga e la palla va lontano. Nella scrittura y = a(x − h)² + k il vertice si legge dentro la parentesi, col segno cambiato, e subito dopo il +. La palla parte dal punto della parabola che sta sopra la mano: se lì la curva non passa per (1; 2), il tiro non vale.';
+
+      let reti = [], rivelato = false;
+
+      /* ---------------- disegno ---------------- */
+      function disegnaCampo() {
+        vuota(gCampo); reti = [];
+        const L = liv();
+        if (L.soffitto) {
+          gCampo.appendChild(el('rect', { x: 20, y: 18, width: 460, height: Math.max(0, SY(L.soffitto) - 18), fill: 'var(--no)', opacity: .08 }));
+          gCampo.appendChild(el('line', { x1: 20, y1: SY(L.soffitto), x2: 480, y2: SY(L.soffitto), stroke: 'var(--no)', 'stroke-width': 3, opacity: .7 }));
+          gCampo.appendChild(el('text', { x: 26, y: SY(L.soffitto) - 8, fill: 'var(--no)', style: 'font: 600 14px var(--font)' }, 'soffitto ' + L.soffitto + ' m'));
+        }
+        if (L.difensore) {
+          const d = L.difensore, c = 'var(--s4)';
+          gCampo.appendChild(el('line', { x1: SX(d.x), y1: SY(0), x2: SX(d.x), y2: SY(d.h - 1.05), stroke: c, 'stroke-width': 7, 'stroke-linecap': 'round', opacity: .8 }));
+          gCampo.appendChild(el('circle', { cx: SX(d.x), cy: SY(d.h - 0.78), r: 8, fill: c, opacity: .8 }));
+          gCampo.appendChild(el('line', { x1: SX(d.x), y1: SY(d.h - 1.05), x2: SX(d.x - 0.24), y2: SY(d.h), stroke: c, 'stroke-width': 5, 'stroke-linecap': 'round', opacity: .8 }));
+          gCampo.appendChild(el('line', { x1: SX(d.x), y1: SY(d.h - 1.05), x2: SX(d.x + 0.24), y2: SY(d.h), stroke: c, 'stroke-width': 5, 'stroke-linecap': 'round', opacity: .8 }));
+          gCampo.appendChild(el('line', { x1: SX(d.x - 0.75), y1: SY(d.h), x2: SX(d.x + 0.75), y2: SY(d.h), stroke: 'var(--no)', 'stroke-width': 2, 'stroke-dasharray': '5 4', opacity: .75 }));
+          gCampo.appendChild(el('text', { x: SX(d.x), y: SY(d.h) - 9, 'text-anchor': 'middle', fill: 'var(--no)', style: 'font: 600 14px var(--font)' }, d.h + ' m'));
+        }
+        if (L.canestriNascosti && !rivelato) return;
+        canestri.forEach(c => {
+          const p = c[0], q = c[1], xb = p + 0.45;
+          gCampo.appendChild(el('line', { x1: SX(xb) + 3, y1: SY(0), x2: SX(xb) + 3, y2: SY(q + 1.2), stroke: 'var(--testo2)', 'stroke-width': 4, opacity: .5 }));
+          gCampo.appendChild(el('rect', { x: SX(xb), y: SY(q + 1.2), width: 7, height: 52, rx: 2, fill: 'var(--testo2)', opacity: .5 }));
+          const rete = el('g', { class: 'rete' });
+          for (let i = 0; i <= 4; i++) rete.appendChild(el('line', { x1: SX(p - 0.32 + i * 0.16), y1: SY(q), x2: SX(p - 0.17 + i * 0.085), y2: SY(q - 0.52), stroke: 'var(--testo2)', 'stroke-width': 1.4, opacity: .8 }));
+          rete.appendChild(el('line', { x1: SX(p - 0.25), y1: SY(q - 0.26), x2: SX(p + 0.25), y2: SY(q - 0.26), stroke: 'var(--testo2)', 'stroke-width': 1.2, opacity: .6 }));
+          gCampo.appendChild(rete); reti.push(rete);
+          gCampo.appendChild(el('line', { x1: SX(p - 0.34), y1: SY(q), x2: SX(p + 0.34), y2: SY(q), stroke: '#e2622f', 'stroke-width': 5, 'stroke-linecap': 'round' }));
+          gCampo.appendChild(el('text', { x: SX(p), y: SY(q - 0.6) + 15, 'text-anchor': 'middle', fill: 'var(--testo2)', style: 'font: 600 14px var(--font)' }, '(' + p + '; ' + q + ')'));
+        });
+      }
+
+      function disegnaCurva() {
+        const r = Math.sqrt((k + 1) / -a);
+        const x0 = Math.max(0, h - r), x1 = Math.min(10.4, h + r);
+        let d = '';
+        if (x1 > x0) {
+          const passi = 72;
+          for (let i = 0; i <= passi; i++) {
+            const x = x0 + (x1 - x0) * i / passi;
+            d += (i ? 'L' : 'M') + SX(x).toFixed(1) + ' ' + SY(yy(x)).toFixed(1) + ' ';
+          }
+        }
+        const ok = manoOk();
+        curva.setAttribute('d', d || 'M0 0');
+        curva.setAttribute('stroke', ok ? 'var(--accento)' : 'var(--testo2)');
+        curva.setAttribute('stroke-width', ok ? 3.5 : 2.5);
+        curva.setAttribute('opacity', ok ? 1 : .55);
+        curva.setAttribute('stroke-dasharray', ok ? 'none' : '7 6');
+        asse.setAttribute('x1', SX(h)); asse.setAttribute('x2', SX(h));
+        asse.setAttribute('y1', SY(k)); asse.setAttribute('y2', SY(0));
+      }
+
+      function disegnaManiglia() {
+        vuota(gManiglia);
+        const fisso = !!liv().vFissa, cx = SX(h), cy = SY(k);
+        gManiglia.appendChild(el('circle', { cx, cy, r: 11, fill: fisso ? 'var(--testo2)' : 'var(--accento)', stroke: 'var(--sup)', 'stroke-width': 3 }));
+        if (!fisso) gManiglia.appendChild(el('path', { d: `M${cx - 5} ${cy} h10 M${cx} ${cy - 5} v10`, stroke: 'var(--sup)', 'stroke-width': 2, 'stroke-linecap': 'round' }));
+        const sopra = k < 7.2;
+        gManiglia.appendChild(el('text', { x: cx, y: sopra ? cy - 19 : cy + 32, 'text-anchor': 'middle', fill: 'var(--testo)', style: 'font: 700 15px var(--font)' },
+          (fisso ? 'V fisso (' : 'V (') + virgolaTesto(h) + '; ' + virgolaTesto(k) + ')'));
+      }
+
+      function disegnaPalla(x, y) {
+        vuota(gPalla);
+        const cx = SX(x), cy = SY(Math.max(y, 0.18));
+        gPalla.appendChild(el('circle', { cx, cy, r: 9, fill: '#e2622f', stroke: '#8c3a12', 'stroke-width': 1.5 }));
+        gPalla.appendChild(el('path', { d: `M${cx - 9} ${cy} h18 M${cx} ${cy - 9} v18`, stroke: '#8c3a12', 'stroke-width': 1.1, fill: 'none', opacity: .8 }));
+      }
+
+      function aggiornaEq() {
+        eqV.innerHTML = ctx.tex(texVertice(a, h, k));
+        eqN.innerHTML = ctx.tex(texNormale(a, h, k));
+        valA.textContent = virgolaTesto(a);
+      }
+
+      function ridisegna() {
+        disegnaCurva(); disegnaManiglia(); disegnaPalla(LX, yy(LX)); aggiornaEq();
+        livEl.textContent = 'Livello ' + (livello + 1) + ' di ' + LIVELLI.length;
+      }
+
+      /* ---------------- livelli ---------------- */
+      function avviaLivello(n) {
+        cancelAnimationFrame(raf);
+        livello = n; vinto = false; animando = false; trascino = false; rivelato = false;
+        const L = LIVELLI[n];
+        if (L.casuale) {
+          let c, giri = 0;
+          do { c = CASUALI[Math.floor(Math.random() * CASUALI.length)]; giri++; }
+          while (giri < 12 && canestri.length && c[0] === canestri[0][0] && c[1] === canestri[0][1]);
+          canestri = [c.slice()];
+        } else canestri = L.canestri.map(c => c.slice());
+        h = L.vertice ? L.vertice[0] : 2.5;
+        k = L.vertice ? L.vertice[1] : 3;
+        a = L.aFissa ? L.a : -0.6;
+        slider.value = String(a);
+        slider.disabled = !!L.aFissa;
+        cursore.classList.toggle('spento', !!L.aFissa);
+        objEl.innerHTML = L.testo + (L.formula ? '<br>Da riprodurre: ' + ctx.tex(texVertice(L.formula.a, L.formula.h, L.formula.k)) : '');
+        msg.textContent = ''; msg.className = 'lab-messaggio';
+        bRic.textContent = 'Ricomincia'; bRic.disabled = false; bTira.disabled = false;
+        disegnaCampo(); ridisegna();
+      }
+
+      /* ---------------- il tiro ---------------- */
+      function pianoTiro() {
+        const L = liv();
+        const formulaOk = !L.formula || (h === L.formula.h && k === L.formula.k && Math.abs(a - L.formula.a) < 1e-9);
+        const attivi = (L.canestriNascosti && !formulaOk) ? [] : canestri;
+        const presi = attivi.map(c => Math.abs(yy(c[0]) - c[1]) < TOL);
+        const p = { esito: 'fuori', xFine: 10.3, presi, attivi, formulaOk, mano: manoOk(), mancato: -1, valutati: 0 };
+        let difFatto = false;
+        for (let x = LX; x <= 10.301; x += 0.02) {
+          const y = yy(x);
+          if (L.soffitto && y >= L.soffitto) { p.esito = 'soffitto'; p.xFine = x; return p; }
+          if (L.difensore && !difFatto && x >= L.difensore.x) {
+            difFatto = true;
+            if (yy(L.difensore.x) <= L.difensore.h) { p.esito = 'bloccato'; p.xFine = L.difensore.x; return p; }
+          }
+          while (p.valutati < attivi.length && x >= attivi[p.valutati][0]) {
+            if (!presi[p.valutati] && p.mancato < 0) p.mancato = p.valutati;
+            p.valutati++;
+            if (p.valutati === attivi.length && p.mancato < 0) { p.esito = 'canestro'; p.xFine = attivi[attivi.length - 1][0]; return p; }
+          }
+          if (y <= 0 && x > LX + 0.15) { p.esito = 'terra'; p.xFine = x; return p; }
+        }
+        return p;
+      }
+
+      function tira() {
+        if (animando) return;
+        const L = liv(), p = pianoTiro();
+        if (L.canestriNascosti && p.formulaOk && !rivelato) { rivelato = true; disegnaCampo(); }
+        animando = true; bTira.disabled = true; bRic.disabled = true; slider.disabled = true;
+        const dx = p.xFine - LX, dur = Math.max(600, Math.min(1150, 520 + dx * 95)), t0 = performance.now();
+        (function passo(t) {
+          const u = Math.min(1, (t - t0) / Math.max(1, dur)), x = LX + dx * u;
+          disegnaPalla(x, yy(x));
+          if (u < 1) raf = requestAnimationFrame(passo); else coda(p);
+        })(t0);
+      }
+
+      function coda(p) {
+        if (p.esito === 'canestro' && reti.length) { const r = reti[reti.length - 1]; r.classList.remove('gonfia'); void svg.getBoundingClientRect().width; r.classList.add('gonfia'); }
+        const xf = p.xFine, yf = Math.max(yy(xf), 0.18), t0 = performance.now(), dur = 460;
+        (function passo(t) {
+          const u = Math.min(1, (t - t0) / dur);
+          let x, y;
+          if (p.esito === 'canestro') { x = xf; y = yf - 1.2 * u; }
+          else if (p.esito === 'bloccato') { x = xf - 0.9 * u; y = yf * (1 - u * u); }
+          else if (p.esito === 'soffitto') { x = xf + 0.6 * u; y = yf * (1 - u * u); }
+          else { x = xf + 1.1 * u; y = 0.6 * Math.sin(Math.PI * u) * (1 - u * .4); }
+          disegnaPalla(x, y);
+          if (u < 1) raf = requestAnimationFrame(passo); else concludi(p);
+        })(t0);
+      }
+
+      function concludi(p) {
+        animando = false; bRic.disabled = false; bTira.disabled = false;
+        const L = liv();
+        slider.disabled = !!L.aFissa;
+        const dentro = p.esito === 'canestro' && p.presi.length > 0 && p.presi.every(Boolean);
+        if (dentro && p.mano && p.formulaOk) {
+          vinto = true;
+          msg.innerHTML = '<span class="vinto">Dentro. ' + ctx.tex(texVertice(a, h, k)) + '</span>';
+          msg.className = 'lab-messaggio ok';
+          ctx.completato(livello);
+          ctx.zenone(VITTORIE[livello] || 'Canestro.', { espressione: 'orgoglioso', durata: 7000 });
+          bRic.textContent = livello < LIVELLI.length - 1 ? 'Prossimo livello ▶' : 'Un altro tiro';
+          return;
+        }
+        let testo, zen, tipoZen = 'errore';
+        if (!p.formulaOk) {
+          const f = L.formula;
+          testo = 'Non è la parabola scritta.';
+          zen = (h !== f.h || k !== f.k)
+            ? 'Il vertice non è ancora quello della formula: dentro la parentesi c\'è x − h, quindi h si legge col segno cambiato, e k è il numero che segue.'
+            : 'Il vertice è giusto, l\'apertura no: a è il numero che sta davanti alla parentesi.';
+        } else if (!p.mano) {
+          const sotto = yy(LX) < LY;
+          testo = sotto ? 'La palla è partita da terra, non dalla mano.' : 'La palla è partita per aria, non dalla mano.';
+          zen = 'In x = 1 la tua parabola vale ' + virgolaTesto(yy(LX)) + ', ma la mano sta a 2: il tiro non parte da lì e non vale. Sistema prima quello.';
+        } else if (p.esito === 'bloccato') {
+          testo = 'Stoppata dal difensore.';
+          zen = 'In x = ' + L.difensore.x + ' la parabola deve stare sopra ' + L.difensore.h + ' m: serve una campana più alta, cioè un vertice più su.';
+        } else if (p.esito === 'soffitto') {
+          testo = 'Ha toccato il soffitto.';
+          zen = 'Il punto più alto del tiro è il vertice, e la sua quota è k: tienila sotto ' + L.soffitto + '. Per arrivare lontano senza salire serve una parabola larga, con a più vicino a zero.';
+        } else if (p.mancato >= 0) {
+          const c = p.attivi[p.mancato], d = yy(c[0]) - c[1];
+          testo = 'Fuori: ' + (d > 0 ? 'passata sopra' : 'passata sotto') + ' l\'anello di (' + c[0] + '; ' + c[1] + ').';
+          zen = 'In x = ' + c[0] + ' la parabola vale ' + virgolaTesto(yy(c[0])) + ' invece di ' + c[1] + '. Sposta il vertice o cambia a e guarda come si muove quel punto.';
+          tipoZen = 'commento';
+        } else {
+          testo = 'Caduta prima di arrivarci.';
+          zen = 'La campana è troppo stretta: con a più vicino a zero la parabola si allarga e la palla va più lontano.';
+          tipoZen = 'commento';
+        }
+        msg.textContent = testo; msg.className = 'lab-messaggio no';
+        ctx.zenone(zen, { tipo: tipoZen, espressione: 'pensa', durata: 7000 });
+      }
+
+      /* ---------------- dito e mouse ---------------- */
+      function mondo(ev) {
+        const r = svg.getBoundingClientRect();
+        if (!r.width || !r.height) return { x: 0, y: 0 };
+        return { x: ((ev.clientX - r.left) * (500 / r.width) - 45) / 40, y: (355 - (ev.clientY - r.top) * (400 / r.height)) / 40 };
+      }
+      function giu(ev) {
+        if (animando || liv().vFissa) return;
+        const m = mondo(ev);
+        if (Math.hypot(SX(m.x) - SX(h), SY(m.y) - SY(k)) > 58) return;
+        trascino = true; offX = h - m.x; offY = k - m.y;
+        gManiglia.classList.add('presa');
+        try { svg.setPointerCapture(ev.pointerId); } catch (e) { /* niente */ }
+        ev.preventDefault();
+      }
+      function muovi(ev) {
+        if (!trascino) return;
+        const m = mondo(ev);
+        const nh = morsa(mezzo(m.x + offX), H_MIN, H_MAX), nk = morsa(mezzo(m.y + offY), K_MIN, K_MAX);
+        if (nh !== h || nk !== k) { h = nh; k = nk; ridisegna(); }
+        ev.preventDefault();
+      }
+      function molla() { if (!trascino) return; trascino = false; gManiglia.classList.remove('presa'); }
+
+      svg.addEventListener('pointerdown', giu);
+      window.addEventListener('pointermove', muovi);
+      window.addEventListener('pointerup', molla);
+      window.addEventListener('pointercancel', molla);
+
+      slider.addEventListener('input', () => {
+        if (animando) return;
+        a = morsa(Math.round(parseFloat(slider.value) * 20) / 20, A_MIN, A_MAX);
+        ridisegna();
+      });
+      bTira.addEventListener('click', tira);
+      bRic.addEventListener('click', () => avviaLivello(vinto && livello < LIVELLI.length - 1 ? livello + 1 : livello));
+      bAiuto.addEventListener('click', () => ctx.zenone(AIUTO, { tipo: 'suggerimento', espressione: 'pensa', durata: 12000 }));
+
+      avviaLivello(livello);
 
       return function smonta() {
         cancelAnimationFrame(raf);
