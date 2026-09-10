@@ -37,10 +37,25 @@
   /* =====================================================================
      REGISTRO DEGLI ARGOMENTI (caricati al volo)
      ===================================================================== */
-  const registro = {}, inCorso = {};
-  window.COMPASSO = { registra(a) { registro[a.id] = a; } };
+  const registro = {}, inCorso = {}, registroLab = {}, labInCorso = {};
+  window.COMPASSO = { registra(a) { registro[a.id] = a; }, registraLab(l) { registroLab[l.id] = l; } };
   function voce(id) { return IND.argomenti.find(a => a.id === id); }
   function area(id) { return IND.aree.find(a => a.id === id); }
+  function labsDi(argId) { return (IND.laboratori || []).filter(l => l.argomento === argId); }
+  function caricaLab(id) {
+    if (registroLab[id]) return Promise.resolve(registroLab[id]);
+    if (labInCorso[id]) return labInCorso[id];
+    labInCorso[id] = new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.src = 'laboratori/' + id + '.js' + VER_TAG;
+      s.onload = () => { delete labInCorso[id]; registroLab[id] ? res(registroLab[id]) : rej(new Error('non registrato')); };
+      s.onerror = () => { delete labInCorso[id]; rej(new Error('file mancante')); };
+      document.head.appendChild(s);
+    });
+    return labInCorso[id];
+  }
+  let smontaLab = null;   /* pulizia del laboratorio aperto, chiamata a ogni cambio di pagina */
+  function chiudiLab() { if (smontaLab) { try { smontaLab(); } catch (e) { /* niente */ } smontaLab = null; } if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); }
   function caricaArgomento(id) {
     if (registro[id]) return Promise.resolve(registro[id]);
     if (inCorso[id]) return inCorso[id];
@@ -68,6 +83,8 @@
     penna: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',
     spunta: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>',
     formule: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M4 12h10M4 19h16"/></svg>',
+    lab: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6.5L4.5 19a1.5 1.5 0 0 0 1.3 2.2h12.4a1.5 1.5 0 0 0 1.3-2.2L14 9.5V3"/><path d="M7.5 15h9"/></svg>',
+    schermo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>',
     cerca: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
     mescola: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>',
     sinistra: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>',
@@ -141,7 +158,7 @@
   function route() {
     const parti = location.hash.replace(/^#\/?/, '').split('/').map(decodeURIComponent);
     const p = parti[0] || '';
-    CMASC.chiudi();
+    CMASC.chiudi(); chiudiLab();
     document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('attiva', a.dataset.pagina === (p || 'home')));
     if (p === 'argomento' && parti[1]) return paginaArgomento(parti[1], parti[2] || 'teoria', parti[3]);
     argCorrente = null;
@@ -224,6 +241,11 @@
       });
     });
 
+    if ((IND.laboratori || []).length) {
+      const bl = h('<section class="area-blocco lab-blocco"><div class="area-testa"><span class="simbolo simbolo-lab">🧪</span><div><h2>Laboratori</h2><p>Piccoli giochi con dentro un concetto: si impara con le mani, senza leggere niente prima.</p></div></div><div class="griglia-lab"></div></section>');
+      const g = bl.querySelector('.griglia-lab'); IND.laboratori.forEach(l => g.appendChild(tesseraLab(l, true)));
+      contenitoreAree.appendChild(bl);
+    }
     IND.aree.forEach(ar => {
       const blocco = h(`<section class="area-blocco"><div class="area-testa"><span class="simbolo" style="background:var(--${ar.colore})">${esc(ar.simbolo)}</span><div><h2>${esc(ar.nome)}</h2><p>${esc(ar.descrizione)}</p></div></div><div class="griglia-argomenti"></div></section>`);
       const griglia = blocco.querySelector('.griglia-argomenti');
@@ -285,17 +307,63 @@
     }
     const navInt = app.querySelector('.schede-nav-int'); navInt.innerHTML = '';
     const p = progresso(v.id);
-    SCHEDE.forEach(([sid, nome, icona]) => {
+    const schede = SCHEDE.slice();
+    if (labsDi(v.id).length) schede.splice(2, 0, ['lab', 'Laboratorio', 'lab']);
+    schede.forEach(([sid, nome, icona]) => {
       let extra = '';
       if (sid === 'quiz' && p.quizTot) extra = ` <span class="spunta">${p.quizMigliore}/${p.quizTot}</span>`;
       if (sid === 'esercizi' && p.eserciziFatti.length) extra = ` <span class="spunta">${p.eserciziFatti.length}/${arg.esercizi.length}</span>`;
-      navInt.appendChild(h(`<a class="scheda-tab${sid === scheda ? ' attiva' : ''}" href="#/argomento/${v.id}/${sid}">${ICONE[icona]}${nome}${extra}</a>`));
+      navInt.appendChild(h(`<a class="scheda-tab${sid === scheda ? ' attiva' : ''}${sid === 'lab' ? ' tab-lab' : ''}" href="#/argomento/${v.id}/${sid}">${ICONE[icona]}${nome}${extra}</a>`));
     });
     const attiva = navInt.querySelector('.attiva'); if (attiva && attiva.scrollIntoView) setTimeout(() => attiva.scrollIntoView({ inline: 'center', block: 'nearest' }), 0);
+    chiudiLab();
     const pannello = app.querySelector('#pannello'); pannello.innerHTML = ''; pannello.className = 'pannello';
-    const disegna = { teoria: schedaTeoria, esempi: schedaEsempi, flashcard: schedaFlashcard, esercizi: schedaEsercizi, quiz: schedaQuiz, formulario: schedaFormulario }[scheda] || schedaTeoria;
+    const disegna = { teoria: schedaTeoria, esempi: schedaEsempi, flashcard: schedaFlashcard, esercizi: schedaEsercizi, quiz: schedaQuiz, formulario: schedaFormulario, lab: schedaLab }[scheda] || schedaTeoria;
     disegna(pannello, arg, v, ancora);
     if (!ancora) window.scrollTo(0, 0);
+  }
+
+  /* ---------- scheda LABORATORIO: esperienze manipolative ---------- */
+  function tesseraLab(l, conArgomento) {
+    const va = voce(l.argomento);
+    return h(`<a class="scheda tessera tessera-lab" href="#/argomento/${l.argomento}/lab/${l.id}">
+      <div class="lab-icona">${esc(l.icona || '🧪')}</div>
+      <div><h3>${esc(l.titolo)}</h3><p>${esc(l.sotto)}</p>${conArgomento && va ? `<small class="lab-arg">${esc(va.titolo)}</small>` : ''}</div></a>`);
+  }
+  function schedaLab(pannello, arg, v, labId) {
+    const labs = labsDi(v.id);
+    if (!labId && labs.length === 1) labId = labs[0].id;
+    if (!labId) {
+      pannello.appendChild(h('<p class="intro-scheda">Qui si impara con le mani: ogni laboratorio è un piccolo gioco che nasconde dentro il concetto. Non c\'è niente da leggere prima.</p>'));
+      const g = h('<div class="griglia-lab"></div>'); labs.forEach(l => g.appendChild(tesseraLab(l))); pannello.appendChild(g); return;
+    }
+    const meta = labs.find(l => l.id === labId);
+    if (!meta) { pannello.appendChild(h('<div class="scheda fc-vuoto">Laboratorio sconosciuto.</div>')); return; }
+    const cornice = h(`<section class="lab-cornice">
+      <header class="lab-testa"><div><h2>${esc(meta.icona || '🧪')} ${esc(meta.titolo)}</h2><p>${esc(meta.sotto)}</p></div>
+        <div class="lab-azioni">${labs.length > 1 ? `<a class="btn piccolo" href="#/argomento/${v.id}/lab">Altri laboratori</a>` : ''}<button type="button" class="btn piccolo b-schermo" title="Schermo intero">${ICONE.schermo}</button></div></header>
+      <div class="lab-stage" data-lab="${esc(meta.id)}"><div class="fc-vuoto">Carico il laboratorio…</div></div>
+    </section>`);
+    pannello.appendChild(cornice);
+    const stage = cornice.querySelector('.lab-stage');
+    cornice.querySelector('.b-schermo').addEventListener('click', () => { if (document.fullscreenElement) document.exitFullscreen(); else cornice.requestFullscreen().catch(() => {}); });
+    const p = progresso(v.id); p.lab = p.lab || {}; const st = p.lab[meta.id] = p.lab[meta.id] || { livelli: [] };
+    const ctx = {
+      zenone: (testo, opz) => { if (stato.impostazioni.mascotte) CMASC.dici(testo, Object.assign({ tipo: 'commento', espressione: 'felice' }, opz || {})); },
+      completato: (livello) => { if (!st.livelli.includes(livello)) st.livelli.push(livello); salva(); },
+      stato: () => st, tema: () => document.documentElement.dataset.tema || 'chiaro', CGRAF: window.CGRAF,
+      md: s => md(s), tex: (s, d) => (window.katex ? katex.renderToString(s, { throwOnError: false, displayMode: !!d, strict: 'ignore' }) : esc(s))
+    };
+    caricaLab(meta.id).then(lab => {
+      if (!document.body.contains(stage)) return;
+      stage.innerHTML = '';
+      const sm = lab.monta(stage, ctx);
+      smontaLab = typeof sm === 'function' ? sm : null;
+      if (meta.intro && stato.impostazioni.mascotte && !sessionStorage.getItem('compasso.lab.' + meta.id)) {
+        sessionStorage.setItem('compasso.lab.' + meta.id, '1');
+        setTimeout(() => { if (document.body.contains(stage) && !CMASC.aperta()) CMASC.dici(meta.intro, { tipo: 'suggerimento', espressione: 'pensa' }); }, 1800);
+      }
+    }).catch(err => { stage.innerHTML = `<div class="fc-vuoto">Il laboratorio non si è caricato (${esc(err.message)}).</div>`; });
   }
 
   /* ---------- Teoria ---------- */

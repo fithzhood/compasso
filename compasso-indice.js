@@ -9,6 +9,12 @@ window.COMPASSO_INDICE = {
     { id: 'analisi', nome: 'Analisi', simbolo: '∫', descrizione: 'Limiti, derivate, studio di funzione e integrali.', colore: 'a5' },
     { id: 'dati', nome: 'Dati e probabilità', simbolo: '%', descrizione: 'Statistica, calcolo combinatorio e probabilità.', colore: 'a6' }
   ],
+  /* Laboratori: esperienze manipolative (file in laboratori/<id>.js, contratto in SCHEMA-LAB.md).
+     intro = quello che dice Zenone la prima volta che si apre. */
+  laboratori: [
+    { id: 'bilancia', argomento: 'equazioni-primo-grado', titolo: 'La bilancia', icona: '⚖️', sotto: 'Casse con la x, pesi e palloncini: risolvi l\'equazione tenendo i piatti in equilibrio.', intro: 'Qualunque cosa fai a un piatto, falla anche all\'altro: è l\'unica regola. Vinci quando su un piatto resta una cassa sola.' },
+    { id: 'marea', argomento: 'disequazioni-secondo-grado', titolo: 'Marea', icona: '🌊', sotto: 'Piega la barra, alza il mare fino a quota zero e scegli chi ci vive: alpinista o subacqueo.', intro: 'Le rive segnano le soluzioni dell\'equazione: portale lì e fermati. Sopra il mare è positivo, sotto è negativo.' }
+  ],
   argomenti: [
     /* ---- Algebra ---- */
     { id: 'insiemi-numerici', area: 'algebra', livello: 1, titolo: 'Insiemi numerici e potenze', breve: 'Naturali, interi, razionali, reali; proprietà delle potenze e notazione scientifica.', prerequisiti: [], parole: ['N', 'Z', 'Q', 'R', 'frazioni', 'potenze', 'esponente', 'notazione scientifica', 'irrazionali', 'valore assoluto'] },
