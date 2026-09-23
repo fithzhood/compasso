@@ -11,7 +11,7 @@ from pathlib import Path
 
 SORGENTE = Path(__file__).resolve().parent.parent
 REPO = Path(r'C:\Users\lfili\WebApps\compasso')
-ESCLUDI = {'.git', '__pycache__', 'HANDOFF.md'}
+ESCLUDI = {'.git', '__pycache__', 'HANDOFF.md', 'REVISIONE-2026-09.md'}
 
 def main():
     if len(sys.argv) < 2 or not sys.argv[1].isdigit():

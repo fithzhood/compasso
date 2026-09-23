@@ -4,214 +4,252 @@ COMPASSO.registra({
   id: 'calcolo-combinatorio',
   titolo: 'Calcolo combinatorio',
 
-  introduzione: R`Il calcolo combinatorio risponde a una domanda sola, ripetuta in mille forme: **in quanti modi si può fare una certa cosa?** Quante targhe diverse esistono, quanti anagrammi ha una parola, quante commissioni di tre persone si possono formare in una classe, quante colonne diverse si possono giocare a Superenalotto. Contare non significa elencare: quando i casi sono milioni, l'elenco è impossibile e serve una formula.
+  introduzione: R`Quante targhe diverse esistono? Quanti anagrammi ha la parola MATEMATICA? In quanti modi si sceglie una commissione di tre persone in una classe di venti? Sono tutte la stessa domanda: **in quanti modi si può fare una certa cosa?** Il calcolo combinatorio serve a rispondere senza scrivere l'elenco, che spesso avrebbe milioni di righe.
 
-Serve in prima battuta alla probabilità: la definizione classica dice che la probabilità di un evento è il rapporto fra casi favorevoli e casi possibili, e per calcolare quel rapporto bisogna saper contare bene sia il numeratore sia il denominatore. Ma il calcolo combinatorio si incontra anche altrove: nella lunghezza di una password, nel numero di partite possibili a scacchi, nel numero di modi in cui si possono distribuire i turni di un torneo.
+Ti servirà subito in probabilità: la probabilità di un evento è il rapporto fra casi favorevoli e casi possibili, e per calcolarla bisogna saper contare bene gli uni e gli altri.
 
-Gli strumenti da conoscere già sono pochi: le potenze, le frazioni e la capacità di leggere con attenzione un testo. È soprattutto questo, in realtà, l'ostacolo vero: la formula giusta si sceglie **dopo** aver capito se nel problema conta l'ordine e se gli elementi si possono ripetere.`,
+Come conoscenze bastano le potenze e le frazioni. La difficoltà vera è un'altra: capire dal testo del problema **se conta l'ordine** e **se gli elementi si possono ripetere**. La formula si sceglie dopo, e viene quasi da sola.`,
+
+  inBreve: [
+    R`Scelte fatte una dopo l'altra («un antipasto **e** un primo»): i modi si moltiplicano. Scelte alternative («un antipasto **oppure** un primo»): si sommano.`,
+    R`Prima di ogni formula, due domande: conta l'ordine? Lo stesso elemento può comparire più volte?`,
+    R`Ordine sì: disposizioni, $n^k$ con ripetizione e $n(n-1)\cdots(n-k+1)$ senza. Se si mettono in fila **tutti** gli elementi, sono permutazioni: $n!$.`,
+    R`Ordine no: combinazioni, $\binom{n}{k}$. Sono le disposizioni divise per $k!$, perché ogni gruppo di $k$ elementi si può ordinare in $k!$ modi.`,
+    R`I fattoriali non si calcolano per intero: si semplificano prima, come in $\dfrac{10!}{8!} = 10 \cdot 9$.`,
+    R`I coefficienti binomiali formano il triangolo di Tartaglia e sono i coefficienti dello sviluppo di $(a+b)^n$.`
+  ],
 
   sezioni: [
-    { id: 'principio-conteggio', titolo: 'Il principio fondamentale del conteggio', testo: R`Se ho 2 magliette e 3 paia di pantaloni, per sapere quanti completi diversi posso indossare non serve elencarli: per ognuna delle 2 magliette ci sono 3 pantaloni possibili, quindi i completi sono $2 \cdot 3 = 6$.
+    { id: 'principio-conteggio', titolo: 'Il principio fondamentale del conteggio', testo: R`Hai 2 magliette e 3 paia di pantaloni: quanti completi diversi puoi indossare? Non serve elencarli. Per ognuna delle 2 magliette puoi scegliere uno qualunque dei 3 pantaloni, quindi i completi sono $2 \cdot 3 = 6$.
 
->* **Principio fondamentale del conteggio (regola del prodotto):** se una scelta si compone di $k$ scelte successive, la prima realizzabile in $n_1$ modi, la seconda in $n_2$ modi, ..., la $k$-esima in $n_k$ modi, allora il numero totale di modi è $$n_1 \cdot n_2 \cdot \ldots \cdot n_k.$$
+>* **Principio fondamentale del conteggio (regola del prodotto).** Se una scelta si fa in più passi successivi, e il primo passo si può fare in $n_1$ modi, il secondo in $n_2$ modi, e così via fino al $k$-esimo in $n_k$ modi, allora i modi in tutto sono $$n_1 \cdot n_2 \cdot \ldots \cdot n_k.$$
 
-Il **diagramma ad albero** rende visibile il conto: dalla radice escono 2 rami (le magliette), da ciascuno ne escono altri 3 (i pantaloni). I percorsi completi dalla radice alle foglie sono 6, e ogni percorso è un completo.
+Il conto si può disegnare con un **diagramma ad albero**. Dal punto di partenza escono 2 rami, uno per maglietta; dalla punta di ciascuno ne escono 3, uno per paio di pantaloni. Ogni percorso dall'inizio fino a una punta finale è un completo, e le punte sono $2 \cdot 3 = 6$. Nel laboratorio «L'albero delle scelte» puoi far crescere l'albero un livello alla volta.
 
-[[grafico:albero]]
+C'è una condizione: il numero di possibilità di un passo non deve dipendere da *quale* scelta hai fatto prima. Solo così da ogni ramo esce lo stesso numero di rami nuovi, e si può moltiplicare.
 
-La condizione da rispettare è che il numero di possibilità di un passo non dipenda da *quale* scelta è stata fatta al passo precedente: solo così i rami sono tutti larghi uguali e si può moltiplicare. Nell'albero questo si vede benissimo, perché tutti i nodi di uno stesso livello hanno lo stesso numero di figli.
+Un esempio più grande: le targhe italiane hanno due lettere, tre cifre e due lettere, e le lettere ammesse sono 22. Quante targhe esistono?
 
-Un esempio serio: quante targhe italiane esistono nella forma due lettere, tre cifre, due lettere, se le lettere ammesse sono 22? Si moltiplicano le sette scelte: $22 \cdot 22 \cdot 10 \cdot 10 \cdot 10 \cdot 22 \cdot 22 = 22^4 \cdot 10^3 = 234\,256\,000$.
+~ 22 \cdot 22 \cdot 10 \cdot 10 \cdot 10 \cdot 22 \cdot 22 :: sette posti: 22 scelte per ogni lettera, 10 per ogni cifra
+~ \evid{22^4} \cdot \evid{10^3} :: raccolgo i fattori uguali in potenze
+~ \evid{234\,256} \cdot 1000 :: $22^4 = 484 \cdot 484 = 234\,256$
+~ \evidb{234\,256\,000} :: più di 234 milioni di targhe
 
->! Non confondere la regola del prodotto con il **principio della somma**. Se le scelte sono *successive* («un antipasto **e** un primo») i modi si moltiplicano; se sono *alternative* e si escludono a vicenda («un antipasto **oppure** un primo») i modi si sommano. Con 4 antipasti e 6 primi: 24 pasti completi, ma 10 piatti singoli.` },
+>! La regola del prodotto vale per le scelte fatte **una dopo l'altra** («un antipasto **e** un primo»). Se invece le scelte sono **alternative** («un antipasto **oppure** un primo»), i modi si sommano. Con 4 antipasti e 6 primi: $4 \cdot 6 = 24$ pasti con antipasto e primo, ma $4 + 6 = 10$ modi di ordinare un piatto solo.
 
-    { id: 'fattoriale', titolo: 'Il fattoriale', testo: R`Quasi tutte le formule del calcolo combinatorio si scrivono con il fattoriale.
+?? Al bar puoi prendere un panino (5 tipi) oppure una piadina (3 tipi). Quante scelte diverse hai?
+[x] $8$
+[ ] $15$
+[ ] $5^3 = 125$
+=> Prendi **una** cosa sola: o un panino o una piadina. Le due possibilità si escludono, quindi si sommano: $5 + 3 = 8$. Il $15$ conterebbe le coppie «un panino **e** una piadina», che non è quello che chiede la domanda.` },
 
->* **Fattoriale:** per $n$ intero positivo, $$n! = 1 \cdot 2 \cdot 3 \cdot \ldots \cdot n.$$ Si pone inoltre, per definizione, $0! = 1$.
+    { id: 'fattoriale', titolo: 'Il fattoriale', testo: R`In quanti modi si mettono in fila 4 amici? Per il primo posto ci sono 4 scelte, per il secondo ne restano 3, poi 2, poi 1: in tutto $4 \cdot 3 \cdot 2 \cdot 1 = 24$. Questo prodotto compare così spesso che ha un nome e un simbolo.
 
-Così $1! = 1$, $2! = 2$, $3! = 6$, $4! = 24$, $5! = 120$, $6! = 720$. Vale la relazione ricorsiva $n! = n \cdot (n-1)!$, che è il modo più rapido per passare da un fattoriale al successivo: $7! = 7 \cdot 720 = 5040$.
+>* **Fattoriale.** Per $n$ intero positivo, $n!$ (si legge «$n$ fattoriale») è il prodotto di tutti gli interi da $1$ a $n$: $$n! = 1 \cdot 2 \cdot 3 \cdot \ldots \cdot n.$$ Per definizione si pone anche $0! = 1$.
 
-La posizione $0! = 1$ non è un capriccio. Da un lato serve perché la relazione ricorsiva continui a valere anche per $n = 1$: da $1! = 1 \cdot 0!$ segue $0! = 1$. Dall'altro ha un significato: c'è esattamente **un** modo di ordinare zero oggetti, cioè non fare niente. Come il prodotto di nessun fattore, che vale 1.
+I primi valori: $1! = 1$, $2! = 2$, $3! = 6$, $4! = 24$, $5! = 120$, $6! = 720$. Per passare da un fattoriale al successivo basta una moltiplicazione, perché $n! = n \cdot (n-1)!$. Per esempio $7! = 7 \cdot 720 = 5040$.
 
-Il fattoriale cresce in modo impressionante, più in fretta di qualunque esponenziale: $10! = 3\,628\,800$, $13! = 6\,227\,020\,800$ supera già i sei miliardi, e $20! \approx 2{,}4 \cdot 10^{18}$. Nel grafico puoi confrontare $2^x$ e $x^3$ e leggere, per il valore di $n$ scelto, quanto valgono $n!$ e $2^n$: il fattoriale stacca tutti.
+Perché $0! = 1$? La regola $n! = n \cdot (n-1)!$ con $n = 1$ dice $1! = 1 \cdot 0!$, e questo funziona solo se $0! = 1$. Ha anche un senso concreto: c'è **un** solo modo di mettere in fila zero oggetti, cioè non fare niente.
 
-[[grafico:crescita]]
+Il fattoriale cresce molto in fretta, alla lunga più di $2^n$, di $10^n$ e di qualunque potenza con la base fissa: $2^{10} = 1024$, mentre $10! = 3\,628\,800$; e $20!$ è circa $2{,}4 \cdot 10^{18}$. Per questo nei conti non si calcola quasi mai per intero: si semplifica.
 
-Nelle formule il fattoriale non va quasi mai calcolato per intero: conviene semplificare. Per esempio $\dfrac{10!}{8!} = \dfrac{10 \cdot 9 \cdot 8!}{8!} = 10 \cdot 9 = 90$, e $\dfrac{(n+1)!}{n!} = n+1$.
+~ \dfrac{10!}{8!} :: sopra e sotto c'è lo stesso prodotto $1 \cdot 2 \cdot \ldots \cdot 8$
+~ \dfrac{10 \cdot 9 \cdot \evid{8!}}{\evid{8!}} :: scrivo $10!$ fermandomi a $8!$: $10! = 10 \cdot 9 \cdot 8!$
+~ 10 \cdot 9 = \evidb{90} :: semplifico $8!$
+
+Con le lettere il metodo è lo stesso: si scende dal fattoriale più grande finché compare quello più piccolo.
+
+~ \dfrac{(n+1)!}{(n-1)!} :: il fattoriale più grande è sopra
+~ \dfrac{(n+1) \cdot n \cdot \evid{(n-1)!}}{\evid{(n-1)!}} :: scendo di un fattore alla volta: $(n+1)! = (n+1) \cdot n \cdot (n-1)!$
+~ \evidb{n(n+1)} :: semplifico $(n-1)!$
+
+?? Quanto vale $\dfrac{12!}{10!}$?
+[x] $132$
+[ ] $2$
+[ ] $\left(\dfrac{6}{5}\right)!$
+=> $12! = 12 \cdot 11 \cdot 10!$, quindi $\dfrac{12!}{10!} = 12 \cdot 11 = 132$. Il $2$ viene da «$12 - 10 = 2$», ma i fattoriali non si sottraggono né si dividono come numeri normali: non esiste nessuna regola che dia $\dfrac{12!}{10!} = 2!$.
 
 >! Il fattoriale non si distribuisce: $\dfrac{10!}{8!} \ne \left(\dfrac{10}{8}\right)!$ e $(a+b)! \ne a! + b!$. Con $a = b = 2$: $4! = 24$, mentre $2! + 2! = 4$.` },
 
-    { id: 'disposizioni', titolo: 'Le disposizioni', testo: R`Si parla di disposizioni quando si scelgono $k$ elementi fra $n$ e **l'ordine conta**: cambiando l'ordine si ottiene un raggruppamento diverso.
+    { id: 'disposizioni', titolo: 'Le disposizioni', testo: R`In una gara corrono 8 atleti. In quanti modi può essere composto il podio, cioè oro, argento e bronzo? Qui **l'ordine conta**: Anna prima e Bruno secondo non è lo stesso podio di Bruno primo e Anna seconda. E nessuno può stare su due gradini.
 
->* **Disposizioni semplici** di $n$ elementi di classe $k$ (con $k \le n$, senza ripetizioni): $$D_{n,k} = n(n-1)(n-2)\cdots(n-k+1) = \frac{n!}{(n-k)!}$$
+~ 8 :: per l'oro va bene uno qualunque degli 8 atleti
+~ 8 \cdot \evid{7} :: per l'argento ne restano 7: chi ha vinto l'oro non può avere anche l'argento
+~ 8 \cdot 7 \cdot \evid{6} :: per il bronzo ne restano 6
+~ \evidb{336} :: tre posti, tre fattori che scendono di uno alla volta
 
-La forma da usare a mano è la prima: si moltiplicano $k$ fattori consecutivi decrescenti a partire da $n$. Il motivo è la regola del prodotto: per il primo posto ci sono $n$ scelte, per il secondo ne restano $n-1$, e così via fino al $k$-esimo posto, dove ne restano $n-k+1$.
+Scegliere $k$ elementi fra $n$ tenendo conto dell'ordine, senza usare due volte lo stesso, si dice formare una **disposizione semplice** di $n$ elementi di classe $k$ ($k$ è il numero dei posti da riempire).
 
-Esempio: in una gara con 8 atleti, in quanti modi si può formare il podio (oro, argento, bronzo)? L'ordine conta e nessuno può occupare due posti, quindi $D_{8,3} = 8 \cdot 7 \cdot 6 = 336$.
+>* **Disposizioni semplici** ($k \le n$): $$\begin{aligned} D_{n,k} &= \underbrace{n(n-1)\cdots(n-k+1)}_{k \text{ fattori}} \\ &= \frac{n!}{(n-k)!} \end{aligned}$$
 
->* **Disposizioni con ripetizione** di $n$ elementi di classe $k$: $$D'_{n,k} = n^k$$ Qui ogni elemento può essere riusato, quindi $k$ può essere anche maggiore di $n$.
+A mano si usa la prima forma: $k$ fattori che partono da $n$ e scendono di uno. La seconda è la stessa cosa scritta in breve: $8 \cdot 7 \cdot 6 = \dfrac{8 \cdot 7 \cdot 6 \cdot 5!}{5!} = \dfrac{8!}{5!}$.
 
-Ogni posto ha sempre tutte le $n$ possibilità, perché quanto scelto prima resta disponibile: $n \cdot n \cdot \ldots \cdot n$, con $k$ fattori.
+Se invece lo stesso elemento può essere usato più volte, ogni posto ha di nuovo tutte le $n$ possibilità. Quanti PIN di 4 cifre esistono? Per ciascuna delle 4 cifre ci sono 10 scelte, anche ripetute: $10 \cdot 10 \cdot 10 \cdot 10 = 10^4 = 10\,000$, da 0000 a 9999.
 
-Esempio: quanti PIN di 4 cifre esistono? $D'_{10,4} = 10^4 = 10\,000$, da 0000 a 9999. Quante colonne diverse ci sono in una schedina di 13 partite con tre esiti possibili? $3^{13} = 1\,594\,323$.
+>* **Disposizioni con ripetizione**: $$D'_{n,k} = n^k$$ La base è il numero degli elementi fra cui scegliere, l'esponente il numero dei posti. Qui $k$ può anche superare $n$.
 
->! La domanda da farsi è sempre la stessa: *lo stesso elemento può comparire due volte?* Se sì, $n^k$; se no, $\dfrac{n!}{(n-k)!}$. Con 5 elementi di classe 3 si passa da $125$ a $60$: non è una differenza da poco.` },
+Un altro esempio: una schedina del Totocalcio ha 13 partite e per ciascuna tre esiti possibili (1, X, 2). Le colonne diverse sono $3^{13} = 1\,594\,323$.
 
-    { id: 'permutazioni', titolo: 'Le permutazioni e gli anagrammi', testo: R`Una **permutazione** è un modo di mettere in fila *tutti* gli elementi disponibili: è il caso $k = n$ delle disposizioni semplici.
+?? Quanti PIN di 4 cifre si possono formare, se le cifre si possono ripetere?
+[x] $10^4 = 10\,000$
+[ ] $10 \cdot 9 \cdot 8 \cdot 7 = 5040$
+[ ] $4^{10} = 1\,048\,576$
+=> Ogni cifra del PIN ha 10 possibilità, qualunque cosa ci sia negli altri posti: $10^4$. Il conto $10 \cdot 9 \cdot 8 \cdot 7$ vieta le ripetizioni, che nei PIN sono permesse (1111 è un PIN valido). $4^{10}$ scambia base ed esponente: la base sono le scelte per ogni posto, l'esponente i posti.
 
->* **Permutazioni semplici** di $n$ oggetti distinti: $$P_n = n!$$ Infatti $D_{n,n} = \dfrac{n!}{0!} = n!$, e qui si vede a cosa serve la convenzione $0! = 1$.
+>! La domanda da farsi è sempre la stessa: *lo stesso elemento può comparire due volte?* Se sì, $n^k$; se no, $n(n-1)\cdots(n-k+1)$. Con 5 elementi e 3 posti si passa da $5^3 = 125$ a $5 \cdot 4 \cdot 3 = 60$.` },
 
-Esempi: gli anagrammi (anche senza senso) della parola ROMA sono $4! = 24$; i modi di disporre 10 libri su uno scaffale sono $10! = 3\,628\,800$; i modi di far sedere 6 persone su 6 sedie sono $6! = 720$.
+    { id: 'permutazioni', titolo: 'Le permutazioni e gli anagrammi', testo: R`Quanti anagrammi ha la parola ROMA, contando anche quelli senza senso come AMRO? Si usano **tutte** le 4 lettere, e conta l'ordine: 4 scelte per la prima lettera, 3 per la seconda, 2 per la terza, 1 per l'ultima. In tutto $4! = 24$.
 
-Quando però alcuni oggetti sono **indistinguibili**, scambiarli fra loro non produce una fila nuova, e $n!$ conta più volte lo stesso risultato.
+>* Una **permutazione** di $n$ oggetti distinti è un modo di metterli in fila tutti. Le permutazioni sono $$P_n = n!$$
 
->* **Permutazioni con ripetizione:** se fra $n$ oggetti ce ne sono $n_1$ uguali fra loro, $n_2$ uguali fra loro, ..., $n_h$ uguali fra loro (con $n_1 + n_2 + \ldots + n_h = n$), le permutazioni distinte sono $$P_n^{(n_1,\, n_2,\, \ldots,\, n_h)} = \frac{n!}{n_1! \cdot n_2! \cdot \ldots \cdot n_h!}$$
+È il caso $k = n$ delle disposizioni semplici: $D_{n,n} = \dfrac{n!}{0!} = n!$, e qui si vede a che cosa serve $0! = 1$. Altri esempi: 10 libri diversi si mettono su uno scaffale in $10! = 3\,628\,800$ modi; 6 persone si siedono su 6 sedie in $6! = 720$ modi.
 
-Esempio: gli anagrammi di MAMMA. Le lettere sono 5, con la M ripetuta 3 volte e la A ripetuta 2 volte, quindi $\dfrac{5!}{3! \cdot 2!} = \dfrac{120}{12} = 10$. In effetti le tre M sono uguali: le loro $3! = 6$ permutazioni interne danno sempre la stessa parola, e lo stesso vale per le due A.
+Le cose cambiano se alcuni oggetti sono **uguali**. MAMMA ha 5 lettere, ma scambiare fra loro due M non produce una parola nuova. Si contano gli anagrammi come se le lettere fossero tutte diverse, e poi si toglie quello che è stato contato più volte.
 
-Esempio più impegnativo: MATEMATICA ha 10 lettere, con A ripetuta 3 volte, M e T ripetute 2 volte ciascuna. Gli anagrammi sono $\dfrac{10!}{3! \cdot 2! \cdot 2!} = \dfrac{3\,628\,800}{24} = 151\,200$.
+~ 5! = 120 :: se le lettere fossero tutte diverse ($M_1\,A_1\,M_2\,M_3\,A_2$)
+~ \dfrac{120}{\evid{3!}} = 20 :: le tre M si scambiano fra loro in $3! = 6$ modi, e la parola resta la stessa: ogni anagramma era contato 6 volte
+~ \dfrac{20}{\evid{2!}} = \evidb{10} :: lo stesso per le due A, che si scambiano in $2! = 2$ modi
 
->! Si divide per il **fattoriale** delle molteplicità, non per le molteplicità: per MAMMA il denominatore è $3! \cdot 2! = 12$, non $3 \cdot 2 = 6$. Le lettere che compaiono una volta sola contribuiscono con $1! = 1$ e si possono ignorare.` },
+>* **Permutazioni con ripetizione.** Se fra gli $n$ oggetti ce ne sono $n_1$ uguali fra loro, $n_2$ uguali fra loro, ..., $n_h$ uguali fra loro (con $n_1 + n_2 + \ldots + n_h = n$), le file diverse sono $$P_n^{(n_1,\, n_2,\, \ldots,\, n_h)} = \frac{n!}{n_1! \cdot n_2! \cdot \ldots \cdot n_h!}$$
 
-    { id: 'combinazioni', titolo: 'Le combinazioni e il coefficiente binomiale', testo: R`Nelle disposizioni l'ordine conta. Ma se devo scegliere 3 rappresentanti fra 8 studenti, la terna Anna-Bruno-Carla è la stessa di Carla-Anna-Bruno: qui l'ordine **non** conta.
+Un esempio più lungo: MATEMATICA ha 10 lettere, con la A tre volte e la M e la T due volte ciascuna. Gli anagrammi sono $\dfrac{10!}{3! \cdot 2! \cdot 2!} = \dfrac{3\,628\,800}{24} = 151\,200$. Le lettere che compaiono una volta sola danno $1! = 1$ e non cambiano niente.
 
->* **Combinazioni semplici** di $n$ elementi di classe $k$ ($k \le n$): i sottoinsiemi di $k$ elementi distinti scelti fra $n$, senza tenere conto dell'ordine. $$C_{n,k} = \binom{n}{k} = \frac{D_{n,k}}{k!} = \frac{n!}{k!\,(n-k)!}$$
+?? Quanti anagrammi ha la parola NONNA?
+[x] $\dfrac{5!}{3!} = 20$
+[ ] $\dfrac{5!}{3} = 40$
+[ ] $5! = 120$
+=> Le lettere sono 5 e la N compare 3 volte, mentre O e A compaiono una volta: si divide per $3! = 6$ e si ottiene $20$. Dividere per $3$ è l'errore classico: le tre N si possono scambiare in $3! = 6$ modi, non in $3$.
 
-Il ragionamento è questo: ogni gruppo di $k$ elementi, se lo si ordina, produce $k!$ disposizioni diverse. Le disposizioni sono dunque $k!$ volte più numerose delle combinazioni, e per passare dalle une alle altre si divide per $k!$.
+>! Si divide per il **fattoriale** di quante volte compare ogni lettera, non per il numero stesso: per MAMMA il denominatore è $3! \cdot 2! = 12$, non $3 \cdot 2 = 6$.` },
 
-Il simbolo $\binom{n}{k}$ si legge «$n$ su $k$» e si chiama **coefficiente binomiale**.
+    { id: 'combinazioni', titolo: 'Le combinazioni e il coefficiente binomiale', testo: R`Fra 8 studenti bisogna scegliere una commissione di 3. Qui l'ordine **non** conta: Anna, Bruno e Carla formano la stessa commissione in qualunque ordine li nomini. Il trucco è contare come se l'ordine contasse, e poi correggere.
 
-Esempio: quante commissioni di 3 persone si possono formare in un gruppo di 8? $$\binom{8}{3} = \frac{8 \cdot 7 \cdot 6}{3!} = \frac{336}{6} = 56.$$
+~ 8 \cdot 7 \cdot 6 = 336 :: se l'ordine contasse (presidente, vice, segretario) sarebbero disposizioni
+~ \dfrac{336}{\evid{3!}} :: ma ogni terzetto, come Anna-Bruno-Carla, compare nel conto $3! = 6$ volte, una per ogni ordine possibile
+~ \dfrac{336}{6} = \evidb{56} :: le commissioni sono 56
 
-Esempio: in una stanza con 10 persone che si salutano tutte, quante strette di mano avvengono? Una stretta di mano è una coppia non ordinata: $\binom{10}{2} = \dfrac{10 \cdot 9}{2} = 45$.
+Un gruppo di $k$ elementi scelti fra $n$, senza badare all'ordine, si chiama **combinazione semplice** di $n$ elementi di classe $k$. In pratica è un sottoinsieme di $k$ elementi.
 
-Il conto pratico più comodo è $\dfrac{n(n-1)\cdots(n-k+1)}{k!}$: $k$ fattori sopra e $k!$ sotto. Per il Superenalotto, $\binom{90}{6} = 622\,614\,630$.
+>* **Combinazioni semplici** ($k \le n$): $$C_{n,k} = \binom{n}{k} = \frac{D_{n,k}}{k!} = \frac{n!}{k!\,(n-k)!}$$ Il simbolo $\binom{n}{k}$ si legge «$n$ su $k$» e si chiama **coefficiente binomiale**.
+
+Per il conto a mano la forma più comoda è: $k$ fattori che scendono da $n$ sopra, e $k!$ sotto. Per esempio, 10 persone si salutano tutte con una stretta di mano: una stretta di mano è una coppia di persone, senza ordine, quindi sono $\binom{10}{2} = \dfrac{10 \cdot 9}{2} = 45$. Le sestine possibili al Superenalotto sono $\binom{90}{6} = 622\,614\,630$.
+
+Nel laboratorio «L'albero delle scelte» puoi vedere i rami che diventano lo stesso gruppo quando l'ordine smette di contare.
+
+?? In una classe di 20 studenti si eleggono 2 rappresentanti, con lo stesso ruolo. In quanti modi?
+[x] $\binom{20}{2} = 190$
+[ ] $20 \cdot 19 = 380$
+[ ] $20^2 = 400$
+=> I due rappresentanti hanno lo stesso ruolo, quindi la coppia Luca-Sara è la stessa di Sara-Luca: l'ordine non conta, e $\dfrac{20 \cdot 19}{2} = 190$. Il $380$ conta ogni coppia due volte, come se ci fossero un rappresentante e un vice. Il $400$ permetterebbe di eleggere due volte la stessa persona.
 
 ### Combinazioni con ripetizione (cenno)
 
-Se lo stesso elemento può essere scelto più volte e l'ordine non conta (per esempio 3 palline di gelato scegliendo fra 5 gusti, anche ripetuti), il numero di scelte è $$C'_{n,k} = \binom{n+k-1}{k}.$$ Nel caso del gelato: $\binom{7}{3} = 35$.
+Se lo stesso elemento può essere scelto più volte e l'ordine non conta, per esempio 3 palline di gelato scelte fra 5 gusti, anche uguali, le scelte sono $$C'_{n,k} = \binom{n+k-1}{k}.$$ Nel caso del gelato: $\binom{7}{3} = 35$.
 
->! Chiedersi sempre se l'ordine cambia il risultato. «Podio» sì (oro e argento non sono la stessa cosa), «commissione» no. Con 8 elementi di classe 3 la differenza è fra $336$ e $56$.` },
+>! Chiediti sempre se scambiare due elementi cambia il risultato. In un podio sì (oro e argento non sono la stessa cosa), in una commissione no. Con 8 elementi e 3 posti la differenza è fra $336$ e $56$.` },
 
-    { id: 'proprieta-binomiale', titolo: 'Proprietà del coefficiente binomiale e triangolo di Tartaglia', testo: R`I coefficienti binomiali hanno proprietà che permettono di calcolarli senza fattoriali.
+    { id: 'proprieta-binomiale', titolo: 'Proprietà del coefficiente binomiale e triangolo di Tartaglia', testo: R`Quanto vale $\binom{20}{18}$? Con la formula servirebbero 18 fattori sopra e $18!$ sotto. Ma scegliere i 18 che entrano in un gruppo è come scegliere i 2 che restano fuori, e $\binom{20}{2} = \dfrac{20 \cdot 19}{2} = 190$. Le proprietà dei coefficienti binomiali servono proprio a risparmiare conti.
 
-- **Casi limite:** $\binom{n}{0} = \binom{n}{n} = 1$ (c'è un solo modo di non scegliere nulla, e uno solo di prendere tutto) e $\binom{n}{1} = \binom{n}{n-1} = n$.
-- **Simmetria:** $\binom{n}{k} = \binom{n}{n-k}$. Scegliere i $k$ elementi che entrano equivale a scegliere gli $n-k$ che restano fuori. Per esempio $\binom{20}{18} = \binom{20}{2} = 190$.
-- **Formula di Stifel:** $\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$, per $1 \le k \le n-1$. Fissato un elemento, i gruppi di $k$ o lo contengono (e allora restano $k-1$ posti da riempire fra $n-1$) oppure no (e allora tutti i $k$ posti si scelgono fra gli altri $n-1$).
-- **Somma di una riga:** $\displaystyle\sum_{k=0}^{n} \binom{n}{k} = 2^n$: è il numero di tutti i sottoinsiemi di un insieme di $n$ elementi, perché ogni elemento o c'è o non c'è.
+| proprietà | formula | perché |
+|---|---|---|
+| casi limite | $\binom{n}{0} = \binom{n}{n} = 1$ | un solo modo di non prendere nulla, uno solo di prendere tutto |
+| | $\binom{n}{1} = \binom{n}{n-1} = n$ | scegliere un elemento, o l'unico da lasciare fuori |
+| simmetria | $\binom{n}{k} = \binom{n}{n-k}$ | scegliere chi entra equivale a scegliere chi resta fuori |
+| Stifel | $\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$ | vedi sotto |
+| somma di una riga | $\binom{n}{0} + \binom{n}{1} + \ldots + \binom{n}{n} = 2^n$ | ogni elemento o c'è o non c'è: $2^n$ sottoinsiemi |
 
-La formula di Stifel genera il **triangolo di Tartaglia**: si parte da 1, ogni riga comincia e finisce con 1 e ogni altro numero è la somma dei due che gli stanno sopra.
+La **formula di Stifel** (vale per $1 \le k \le n-1$) si capisce fissando un elemento, per esempio Anna. I gruppi di $k$ persone o contengono Anna, e allora restano da scegliere $k-1$ persone fra le altre $n-1$; oppure non la contengono, e allora tutte le $k$ si scelgono fra le altre $n-1$. Le due possibilità si escludono, quindi si sommano.
 
-$$\begin{matrix} & & & 1 & & & \\ & & 1 & & 1 & & \\ & 1 & & 2 & & 1 & \\ 1 & & 3 & & 3 & & 1 \end{matrix}$$
+?? Quanto vale $\binom{20}{17}$?
+[x] $1140$
+[ ] $6840$
+[ ] $340$
+=> Per la simmetria $\binom{20}{17} = \binom{20}{3} = \dfrac{20 \cdot 19 \cdot 18}{3!} = \dfrac{6840}{6} = 1140$. Chi risponde $6840$ ha dimenticato di dividere per $3!$, cioè ha contato i gruppi come se l'ordine contasse.
 
-La riga $n$ (contando da 0) contiene i coefficienti $\binom{n}{0}, \binom{n}{1}, \ldots, \binom{n}{n}$. Le righe sono simmetriche, il massimo sta al centro e la somma dei numeri della riga $n$ vale $2^n$: la riga 6, qui sotto, somma $1+6+15+20+15+6+1 = 64 = 2^6$.
+Con la formula di Stifel si costruisce il **triangolo di Tartaglia**: ogni riga comincia e finisce con 1, e ogni altro numero è la somma dei due che gli stanno sopra.
 
-[[grafico:binomiali]]
+$$\begin{array}{c} 1 \\ 1 \quad 1 \\ 1 \quad 2 \quad 1 \\ 1 \quad 3 \quad 3 \quad 1 \\ 1 \quad 4 \quad 6 \quad 4 \quad 1 \\ 1 \quad 5 \quad 10 \quad 10 \quad 5 \quad 1 \\ 1 \quad 6 \quad 15 \quad 20 \quad 15 \quad 6 \quad 1 \end{array}$$
 
-Quella forma "a campana" non è casuale: è la stessa che si vede quando tante palline cadono in una macchina di Galton, deviando a destra o a sinistra a ogni chiodo.
+La riga $n$ (contando da 0) contiene $\binom{n}{0}, \binom{n}{1}, \ldots, \binom{n}{n}$. Nella riga 6, per esempio, $\binom{6}{2} = 15$ è il terzo numero, e la somma è $1 + 6 + 15 + 20 + 15 + 6 + 1 = 64 = 2^6$. Ogni riga è simmetrica, per la proprietà di simmetria.
+
+I numeri di una riga crescono verso il centro e poi calano, come una campana. È la stessa forma che fanno tante palline in una macchina di Galton, dove ogni pallina rimbalza a destra o a sinistra su ogni chiodo: in una casella arrivano tante palline quanti sono i percorsi che ci portano, e i percorsi si contano con $\binom{n}{k}$.
 
 [[animazione:galton]]
 
->! $\binom{n}{k}$ è sempre un numero **intero**, anche se la formula contiene una divisione. Se ti viene un numero con la virgola, hai sbagliato un conto.` },
+>! $\binom{n}{k}$ è sempre un numero **intero**, anche se nella formula c'è una divisione. Se ti viene un numero con la virgola, hai sbagliato un conto.` },
 
-    { id: 'binomio-newton', titolo: 'Il binomio di Newton', testo: R`I coefficienti binomiali si chiamano così perché compaiono nello sviluppo delle potenze di un binomio. Si conoscono già i primi casi: $(a+b)^2 = a^2 + 2ab + b^2$ e $(a+b)^3 = a^3 + 3a^2b + 3ab^2 + b^3$. I coefficienti $1, 2, 1$ e $1, 3, 3, 1$ sono le righe 2 e 3 del triangolo di Tartaglia.
+    { id: 'binomio-newton', titolo: 'Il binomio di Newton', testo: R`Conosci già $(a+b)^2 = a^2 + 2ab + b^2$ e $(a+b)^3 = a^3 + 3a^2b + 3ab^2 + b^3$. Guarda i coefficienti: $1, 2, 1$ e $1, 3, 3, 1$. Sono le righe 2 e 3 del triangolo di Tartaglia, ed è per questo che i $\binom{n}{k}$ si chiamano coefficienti *binomiali*.
 
->* **Binomio di Newton:** per ogni $n$ intero positivo $$(a+b)^n = \sum_{k=0}^{n} \binom{n}{k} a^{n-k} b^k.$$
+Il motivo si vede scrivendo $(a+b)^3 = (a+b)(a+b)(a+b)$. Per sviluppare, da ogni parentesi prendi o $a$ o $b$ e moltiplichi. Il termine $a^2b$ esce ogni volta che prendi $b$ da una parentesi sola e $a$ dalle altre due: la parentesi da cui prendere $b$ si sceglie in $\binom{3}{1} = 3$ modi, quindi il coefficiente è $3$.
 
-Il motivo è combinatorio: $(a+b)^n$ è il prodotto di $n$ fattori uguali, e sviluppando si sceglie da ciascun fattore o $a$ o $b$. Un termine contiene $b^k$ quando si è scelto $b$ in $k$ fattori su $n$: i modi di farlo sono $\binom{n}{k}$, ed è quello il coefficiente.
+>* **Binomio di Newton.** Per ogni $n$ intero positivo $$(a+b)^n = \sum_{k=0}^{n} \binom{n}{k} a^{n-k} b^k$$ cioè $(a+b)^n = \binom{n}{0}a^n + \binom{n}{1}a^{n-1}b + \binom{n}{2}a^{n-2}b^2 + \ldots + \binom{n}{n}b^n$.
 
-Da qui si leggono le regole pratiche dello sviluppo:
+Regole pratiche per scrivere lo sviluppo:
 
 - i termini sono $n+1$;
-- l'esponente di $a$ scende da $n$ a 0, quello di $b$ sale da 0 a $n$, e la loro somma è sempre $n$;
-- il **termine generale** (quello di posto $k+1$) è $\binom{n}{k}a^{n-k}b^k$;
-- i coefficienti sono la riga $n$ del triangolo di Tartaglia, quindi simmetrici;
-- ponendo $a = b = 1$ si ritrova che la somma dei coefficienti vale $2^n$.
+- l'esponente di $a$ scende da $n$ a 0, quello di $b$ sale da 0 a $n$, e in ogni termine la loro somma è $n$;
+- i coefficienti sono la riga $n$ del triangolo di Tartaglia;
+- il **termine generale**, quello di posto $k+1$, è $\binom{n}{k}a^{n-k}b^k$.
 
-Esempio: $$(a+b)^4 = a^4 + 4a^3b + 6a^2b^2 + 4ab^3 + b^4.$$
+Per esempio $(a+b)^4 = a^4 + 4a^3b + 6a^2b^2 + 4ab^3 + b^4$. Se nel binomio c'è un segno meno o un coefficiente, si mette tutto dentro $a$ e $b$:
 
-Se un termine è negativo basta trattarlo come tale. Per $(2x-1)^3$ si pone $a = 2x$ e $b = -1$:
-$$(2x-1)^3 = (2x)^3 + 3(2x)^2(-1) + 3(2x)(-1)^2 + (-1)^3 = 8x^3 - 12x^2 + 6x - 1.$$
-I segni si alternano, perché le potenze pari di $-1$ danno $+1$ e quelle dispari $-1$.
+~ (2x-1)^3 :: $a = 2x$, $b = -1$; i coefficienti sono la riga 3: $1, 3, 3, 1$
+~ \begin{aligned} &(2x)^3 + 3(2x)^2(\evid{-1}) \\ &+ 3(2x)(\evid{-1})^2 + (\evid{-1})^3 \end{aligned} :: l'esponente di $2x$ scende da 3 a 0, quello di $-1$ sale da 0 a 3
+~ \evid{8x^3} + 3 \cdot \evid{4x^2} \cdot (-1) + 3 \cdot 2x \cdot 1 - 1 :: calcolo le potenze elevando **tutta** la parentesi: $(2x)^2 = 4x^2$
+~ \evidb{8x^3 - 12x^2 + 6x - 1} :: i segni si alternano: le potenze dispari di $-1$ valgono $-1$
+
+Quando serve un solo termine, non si sviluppa tutto: si usa il termine generale. Qual è il termine con $x^2$ in $(x-3)^5$?
+
+~ \binom{5}{k}\, x^{5-k} (-3)^k :: termine generale con $a = x$, $b = -3$, $n = 5$
+~ 5 - k = 2 \;\Rightarrow\; \evid{k = 3} :: voglio $x^2$: impongo che l'esponente di $x$ sia 2
+~ \binom{5}{\evid{3}} x^2 (-3)^{\evid{3}} = 10 \cdot (-27)\, x^2 :: sostituisco $k = 3$
+~ \evidb{-270\,x^2} :: il segno è meno perché $-3$ è elevato a una potenza dispari
+
+?? Qual è il primo termine dello sviluppo di $(2x+1)^4$?
+[x] $16x^4$
+[ ] $2x^4$
+[ ] $8x^4$
+=> Il primo termine è $a^4$ con $a = 2x$, cioè $(2x)^4 = 2^4 x^4 = 16x^4$. Scrivere $2x^4$ vuol dire elevare alla quarta solo la $x$ e dimenticare il $2$; $8x^4$ viene dal moltiplicare $2 \cdot 4$ invece di fare $2^4$.
 
 >! Quando $a$ o $b$ non sono lettere semplici vanno messi **tra parentesi** ed elevati per intero: in $(2x-1)^3$ il primo termine è $(2x)^3 = 8x^3$, non $2x^3$.` },
 
-    { id: 'riconoscere', titolo: 'Come riconoscere il raggruppamento', testo: R`La difficoltà vera non è calcolare, è capire quale formula usare. Due domande bastano quasi sempre.
+    { id: 'riconoscere', titolo: 'Come riconoscere il raggruppamento', testo: R`Nei problemi di calcolo combinatorio il conto è quasi sempre breve. Quello che si sbaglia è la scelta della formula, e per sceglierla bastano due domande.
 
->* 1. **Conta l'ordine?** Cioè: scambiando due elementi ottengo un raggruppamento diverso? 2. **Gli elementi si possono ripetere?**
+>* 1. **Conta l'ordine?** Cioè: se scambio due elementi, ottengo un risultato diverso? 2. **Lo stesso elemento può comparire più volte?**
 
-| Ordine | Ripetizioni | Raggruppamento | Formula |
-|---|---|---|---|
-| sì | sì | disposizioni con ripetizione | $n^k$ |
-| sì | no | disposizioni semplici | $\dfrac{n!}{(n-k)!}$ |
-| sì, tutti gli elementi | no | permutazioni | $n!$ |
-| sì, con elementi uguali | — | permutazioni con ripetizione | $\dfrac{n!}{n_1!\cdots n_h!}$ |
-| no | no | combinazioni | $\dbinom{n}{k}$ |
-| no | sì | combinazioni con ripetizione | $\dbinom{n+k-1}{k}$ |
+| ordine? | ripetizioni? | si usano |
+|---|---|---|
+| sì | sì | disposizioni con ripetizione: $n^k$ |
+| sì | no | disposizioni semplici: $\dfrac{n!}{(n-k)!}$ |
+| sì, tutti | no | permutazioni: $n!$ |
+| sì, tutti | oggetti uguali | permutazioni con ripetizione: $\dfrac{n!}{n_1!\cdots n_h!}$ |
+| no | no | combinazioni: $\dbinom{n}{k}$ |
+| no | sì | combinazioni con ripetizione: $\dbinom{n+k-1}{k}$ |
 
-Una terza domanda utile: **li prendo tutti o solo alcuni?** Se $k = n$ e non ci sono ripetizioni si è nel caso delle permutazioni.
+Una terza domanda aiuta: **li prendo tutti o solo alcuni?** Se si mettono in fila tutti gli $n$ elementi, senza ripetizioni, sono permutazioni.
 
-I problemi ricorrenti, con la loro etichetta:
+?? Con le cifre da 1 a 9, quanti numeri di 3 cifre **tutte diverse** si possono scrivere?
+[x] $9 \cdot 8 \cdot 7 = 504$
+[ ] $\binom{9}{3} = 84$
+[ ] $9^3 = 729$
+=> In un numero l'ordine conta: 123 e 321 sono numeri diversi. Le cifre non si ripetono, quindi sono disposizioni semplici: $9 \cdot 8 \cdot 7 = 504$. Con $\binom{9}{3}$ si conterebbero solo i *gruppi* di tre cifre, come se 123 e 321 fossero lo stesso numero; $9^3$ ammetterebbe anche 112 o 555.
 
-- **targhe, PIN, password, colonne di una schedina, risultati di lanci ripetuti**: ordine sì, ripetizioni sì → $n^k$;
-- **podio, primi tre classificati, assegnare cariche diverse (presidente, vice, segretario)**: ordine sì, ripetizioni no → $D_{n,k}$;
-- **anagrammi**: permutazioni, con ripetizione se ci sono lettere uguali;
+I problemi che si incontrano più spesso, con la loro etichetta:
+
+- **targhe, PIN, password, colonne di una schedina, lanci ripetuti di un dado**: ordine sì, ripetizioni sì → $n^k$;
+- **podio, primi tre classificati, cariche diverse (presidente, vice, segretario)**: ordine sì, ripetizioni no → $D_{n,k}$;
+- **anagrammi, persone in fila, libri su uno scaffale**: permutazioni, con ripetizione se ci sono oggetti uguali;
 - **commissioni, squadre, strette di mano, mani di carte, sottoinsiemi, diagonali di un poligono**: ordine no → $\binom{n}{k}$;
-- **percorsi su un reticolo**: si conta *quali* passi sono verticali.
+- **percorsi su un reticolo**: si sceglie *quali* passi vanno verso l'alto.
 
-Quest'ultimo merita un esempio. Per andare da $A$ a $B$ nella griglia $3 \times 3$ muovendosi solo a destra (D) o in alto (A), ogni percorso è una parola di 6 lettere con 3 D e 3 A: basta decidere quali 3 dei 6 passi sono verso l'alto. I percorsi sono $\binom{6}{3} = 20$.
+Quest'ultimo merita un esempio. Da $A$ a $B$, nella griglia qui sotto, ci si muove solo a destra (D) o in alto (A). Ogni percorso fa 6 passi, 3 a destra e 3 in alto, quindi è una «parola» con 3 D e 3 A. Per scriverla basta decidere quali 3 dei 6 passi vanno in alto: i percorsi sono $\binom{6}{3} = 20$.
 
 [[grafico:reticolo]]
 
->! Se il problema aggiunge un vincolo («almeno una vocale», «i due fratelli non insieme»), spesso conviene contare **tutti** i casi e poi togliere quelli che non vanno bene.` }
+>! Se il problema aggiunge un vincolo («almeno una vocale», «i due fratelli non vicini»), spesso conviene contare **tutti** i casi e poi togliere quelli che non vanno bene.` }
   ],
 
   grafici: {
-    albero: {
-      tipo: 'piano', x: [0, 10], y: [0, 7], assi: false, griglia: false, proporzioni: 'libere',
-      elementi: [
-        { tipo: 'segmento', da: [0.8, 3.5], a: [4, 5.4], colore: 1 },
-        { tipo: 'segmento', da: [0.8, 3.5], a: [4, 1.6], colore: 1 },
-        { tipo: 'segmento', da: [4, 5.4], a: [7.6, 6.6], colore: 3 },
-        { tipo: 'segmento', da: [4, 5.4], a: [7.6, 5.4], colore: 3 },
-        { tipo: 'segmento', da: [4, 5.4], a: [7.6, 4.2], colore: 3 },
-        { tipo: 'segmento', da: [4, 1.6], a: [7.6, 2.8], colore: 3 },
-        { tipo: 'segmento', da: [4, 1.6], a: [7.6, 1.6], colore: 3 },
-        { tipo: 'segmento', da: [4, 1.6], a: [7.6, 0.4], colore: 3 },
-        { tipo: 'punto', p: [0.8, 3.5], etichetta: 'inizio', posizione: 'sinistra' },
-        { tipo: 'punto', p: [4, 5.4], etichetta: 'A', posizione: 'alto', colore: 1 },
-        { tipo: 'punto', p: [4, 1.6], etichetta: 'B', posizione: 'basso', colore: 1 },
-        { tipo: 'punto', p: [7.6, 6.6], etichetta: 'A1', posizione: 'destra', colore: 3 },
-        { tipo: 'punto', p: [7.6, 5.4], etichetta: 'A2', posizione: 'destra', colore: 3 },
-        { tipo: 'punto', p: [7.6, 4.2], etichetta: 'A3', posizione: 'destra', colore: 3 },
-        { tipo: 'punto', p: [7.6, 2.8], etichetta: 'B1', posizione: 'destra', colore: 3 },
-        { tipo: 'punto', p: [7.6, 1.6], etichetta: 'B2', posizione: 'destra', colore: 3 },
-        { tipo: 'punto', p: [7.6, 0.4], etichetta: 'B3', posizione: 'destra', colore: 3 },
-        { tipo: 'testo', p: [0.4, 6.6], testo: '2 magliette (A, B) × 3 pantaloni (1, 2, 3) = 6 completi', ancora: 'start' }
-      ],
-      didascalia: 'Diagramma ad albero: 2 rami al primo livello, 3 rami da ciascuno al secondo. Le foglie sono 2 · 3 = 6.'
-    },
-    crescita: {
-      tipo: 'piano', x: [1, 10], y: [0, 1150], passo: [1, 200], proporzioni: 'libere',
-      etichette: { x: 'n', y: 'valore' },
-      funzioni: [
-        { f: '2^x', etichetta: 'y = 2ˣ', colore: 1, dominio: [1, 10] },
-        { f: 'x^3', etichetta: 'y = x³', colore: 3, dominio: [1, 10] }
-      ],
-      elementi: [
-        { tipo: 'verticale', x: 'n', tratteggio: true, colore: 4 },
-        { tipo: 'testo', p: [1.3, 1080], testo: 'n = {{n}}     n! = {{fact(n)}}     2ⁿ = {{2^n}}', ancora: 'start' }
-      ],
-      parametri: [{ nome: 'n', min: 1, max: 10, passo: 1, valore: 5, etichetta: 'n' }],
-      didascalia: 'Muovi n: la potenza 2ⁿ supera stabilmente il cubo n³ solo da n = 10, ma il fattoriale n! li lascia entrambi indietro molto prima.'
-    },
-    binomiali: {
-      tipo: 'barre',
-      categorie: ['0', '1', '2', '3', '4', '5', '6'],
-      valori: [1, 6, 15, 20, 15, 6, 1],
-      etichettaX: 'k', etichettaY: 'C(6, k)',
-      didascalia: 'La riga n = 6 del triangolo di Tartaglia: simmetrica, massima al centro, di somma 64 = 2⁶.'
-    },
     reticolo: {
       tipo: 'piano', x: [-0.7, 3.7], y: [-0.7, 3.7], assi: false, griglia: false,
       elementi: [
@@ -228,10 +266,9 @@ Quest'ultimo merita un esempio. Per andare da $A$ a $B$ nella griglia $3 \times 
         { tipo: 'segmento', da: [2, 2], a: [3, 2], colore: 2 },
         { tipo: 'segmento', da: [3, 2], a: [3, 3], colore: 2 },
         { tipo: 'punto', p: [0, 0], etichetta: 'A', posizione: 'basso' },
-        { tipo: 'punto', p: [3, 3], etichetta: 'B', posizione: 'alto' },
-        { tipo: 'testo', p: [-0.6, 3.5], testo: 'percorso D D A A D A — in tutto C(6, 3) = 20 percorsi', ancora: 'start' }
+        { tipo: 'punto', p: [3, 3], etichetta: 'B', posizione: 'alto' }
       ],
-      didascalia: 'Da A a B con soli passi a destra (D) e in alto (A): 6 passi, di cui 3 verso l\'alto. I percorsi sono C(6, 3) = 20.'
+      didascalia: 'Segui il percorso arancione da A a B e scrivi un passo alla volta: D D A A D A. Qualunque altro percorso è un\'altra parola con 3 D e 3 A.'
     }
   },
 
@@ -283,11 +320,11 @@ Quest'ultimo merita un esempio. Per andare da $A$ a $B$ nella griglia $3 \times 
     { nome: 'Regola del prodotto', formula: R`n_1 \cdot n_2 \cdot \ldots \cdot n_k`, nota: R`Vale per scelte **successive** e indipendenti. Se le scelte sono alternative, i modi si sommano.` },
     { nome: 'Fattoriale', formula: R`n! = 1 \cdot 2 \cdot 3 \cdot \ldots \cdot n, \qquad 0! = 1`, nota: R`Relazione ricorsiva: $n! = n \cdot (n-1)!$.` },
     { nome: 'Disposizioni semplici', formula: R`D_{n,k} = \frac{n!}{(n-k)!} = n(n-1)\cdots(n-k+1)`, nota: R`Ordine sì, ripetizioni no, con $k \le n$. A mano: $k$ fattori decrescenti a partire da $n$.` },
-    { nome: 'Disposizioni con ripetizione', formula: R`D^{\,r}_{n,k} = n^k`, nota: R`Ordine sì, ripetizioni sì. Qui $k$ può superare $n$.` },
+    { nome: 'Disposizioni con ripetizione', formula: R`D'_{n,k} = n^k`, nota: R`Ordine sì, ripetizioni sì. Qui $k$ può superare $n$.` },
     { nome: 'Permutazioni semplici', formula: R`P_n = n!`, nota: R`Tutti gli $n$ oggetti, distinti, messi in fila.` },
     { nome: 'Permutazioni con ripetizione', formula: R`P_n^{(n_1, n_2, \ldots, n_h)} = \frac{n!}{n_1! \cdot n_2! \cdot \ldots \cdot n_h!}`, nota: R`Gli anagrammi di una parola con lettere ripetute, dove $n_1 + \ldots + n_h = n$.` },
     { nome: 'Combinazioni semplici', formula: R`C_{n,k} = \binom{n}{k} = \frac{n!}{k!\,(n-k)!}`, nota: R`Ordine no, ripetizioni no. Vale anche $\binom{n}{k} = \dfrac{D_{n,k}}{k!}$.` },
-    { nome: 'Combinazioni con ripetizione', formula: R`C^{\,r}_{n,k} = \binom{n+k-1}{k}`, nota: R`Ordine no, ripetizioni sì.` },
+    { nome: 'Combinazioni con ripetizione', formula: R`C'_{n,k} = \binom{n+k-1}{k}`, nota: R`Ordine no, ripetizioni sì.` },
     { nome: 'Simmetria del coefficiente binomiale', formula: R`\binom{n}{k} = \binom{n}{n-k}`, nota: R`Scegliere chi entra equivale a scegliere chi resta fuori. Conviene calcolare con il $k$ più piccolo.` },
     { nome: 'Formula di Stifel', formula: R`\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}`, nota: R`Con $1 \le k \le n-1$: è la regola che costruisce il triangolo di Tartaglia.` },
     { nome: 'Somma di una riga del triangolo', formula: R`\sum_{k=0}^{n} \binom{n}{k} = 2^n`, nota: R`È il numero dei sottoinsiemi di un insieme di $n$ elementi.` },
@@ -299,7 +336,7 @@ Quest'ultimo merita un esempio. Per andare da $A$ a $B$ nella griglia $3 \times 
   flashcards: [
     { id: 'fc-01', sezione: 'principio-conteggio', tipo: 'definizione', fronte: R`Principio fondamentale del conteggio`, retro: R`Se una scelta si compone di $k$ scelte successive, realizzabili rispettivamente in $n_1, n_2, \ldots, n_k$ modi, i modi complessivi sono $n_1 \cdot n_2 \cdot \ldots \cdot n_k$.` },
     { id: 'fc-02', sezione: 'principio-conteggio', tipo: 'concetto', fronte: R`Quando si moltiplica e quando si somma?`, retro: R`Scelte successive («A **e** B»): si moltiplica. Scelte alternative che si escludono («A **oppure** B»): si somma.` },
-    { id: 'fc-03', sezione: 'principio-conteggio', tipo: 'concetto', fronte: R`Che cosa rappresentano le foglie di un diagramma ad albero?`, retro: R`Tutti i raggruppamenti possibili: ogni percorso dalla radice a una foglia è una scelta completa.` },
+    { id: 'fc-03', sezione: 'principio-conteggio', tipo: 'concetto', fronte: R`Che cosa rappresentano le punte finali (le «foglie») di un diagramma ad albero?`, retro: R`Tutti i raggruppamenti possibili: ogni percorso dal punto di partenza a una punta finale è una scelta completa.` },
     { id: 'fc-04', sezione: 'fattoriale', tipo: 'definizione', fronte: R`Fattoriale di $n$`, retro: R`$n! = 1 \cdot 2 \cdot 3 \cdot \ldots \cdot n$, il prodotto di tutti gli interi da 1 a $n$.` },
     { id: 'fc-05', sezione: 'fattoriale', tipo: 'concetto', fronte: R`Perché si pone $0! = 1$?`, retro: R`Perché la relazione $n! = n \cdot (n-1)!$ valga anche per $n = 1$, e perché c'è esattamente un modo di ordinare zero oggetti.` },
     { id: 'fc-06', sezione: 'fattoriale', tipo: 'procedura', fronte: R`Come si semplifica $\dfrac{10!}{8!}$?`, retro: R`Si scrive $10! = 10 \cdot 9 \cdot 8!$ e si semplifica: $10 \cdot 9 = 90$. Mai calcolare i fattoriali per intero.` },
@@ -345,9 +382,9 @@ Quest'ultimo merita un esempio. Per andare da $A$ a $B$ nella griglia $3 \times 
     { id: 'q-02', domanda: R`Quanto vale $0!$?`, opzioni: [R`$0$`, R`$1$`, R`non è definito`, R`dipende dal contesto`], corretta: 1, spiegazione: R`Si pone $0! = 1$ perché la relazione $n! = n\cdot(n-1)!$ valga anche per $n = 1$ e perché c'è un solo modo di ordinare zero oggetti. Senza questa convenzione la formula $P_n = D_{n,n} = \dfrac{n!}{0!}$ non funzionerebbe.` },
     { id: 'q-03', domanda: R`In quale raggruppamento l'ordine degli elementi **non** conta?`, opzioni: [R`disposizioni semplici`, R`permutazioni`, R`combinazioni`, R`disposizioni con ripetizione`], corretta: 2, spiegazione: R`Le combinazioni sono sottoinsiemi: $\{A, B, C\}$ e $\{C, A, B\}$ sono lo stesso gruppo. In tutti gli altri casi elencati scambiare due elementi produce un raggruppamento diverso.` },
     { id: 'q-04', domanda: R`Il numero di disposizioni con ripetizione di $n$ elementi di classe $k$ è…`, opzioni: [R`$n^k$`, R`$k^n$`, R`$\dfrac{n!}{(n-k)!}$`, R`$\dbinom{n}{k}$`], corretta: 0, spiegazione: R`Ogni posto ha tutte le $n$ possibilità e i posti sono $k$: $n \cdot n \cdot \ldots \cdot n = n^k$. La base è il numero di elementi disponibili, l'esponente il numero di posti.` },
-    { id: 'q-05', domanda: R`Perché $\dbinom{n}{k} = \dfrac{D_{n,k}}{k!}$?`, opzioni: [R`perché ogni combinazione, ordinata in tutti i modi, dà $k!$ disposizioni diverse`, R`perché $k!$ conta gli elementi che restano fuori`, R`perché le combinazioni sono raggruppamenti ordinati`, R`perché $n! = k! \cdot (n-k)!$`], corretta: 0, spiegazione: R`Le disposizioni sono $k!$ volte più numerose delle combinazioni, perché ogni gruppo di $k$ elementi si può ordinare in $k!$ modi. L'ultima opzione è falsa: in generale $n! \ne k!(n-k)!$.` },
+    { id: 'q-05', domanda: R`Perché $\dbinom{n}{k} = \dfrac{D_{n,k}}{k!}$?`, opzioni: [R`perché ogni combinazione, ordinata in tutti i modi, dà $k!$ disposizioni diverse`, R`perché $k!$ conta gli elementi che restano fuori`, R`perché le combinazioni sono raggruppamenti ordinati`, R`perché $n! = k! \cdot (n-k)!$`], corretta: 0, spiegazione: R`Le disposizioni sono $k!$ volte più numerose delle combinazioni, perché ogni gruppo di $k$ elementi si può ordinare in $k!$ modi. L'uguaglianza $n! = k!\,(n-k)!$ invece è falsa: con $n = 4$ e $k = 2$ darebbe $24 = 4$.` },
     { id: 'q-06', domanda: R`Usando la simmetria del coefficiente binomiale, $\dbinom{12}{10}$ vale…`, opzioni: [R`$66$`, R`$120$`, R`$220$`, R`$12$`], corretta: 0, spiegazione: R`$\dbinom{12}{10} = \dbinom{12}{2} = \dfrac{12 \cdot 11}{2} = 66$. Il valore $220$ è $\dbinom{12}{3}$ e $12$ è $\dbinom{12}{1}$.` },
-    { id: 'q-07', domanda: R`La formula di Stifel afferma che…`, opzioni: [R`$\dbinom{n}{k} = \dbinom{n}{n-k}$`, R`$\dbinom{n}{k} = \dbinom{n+1}{k} + \dbinom{n+1}{k+1}$`, R`$\dbinom{n}{k} = \dbinom{n-1}{k-1} + \dbinom{n-1}{k}$`, R`$\dbinom{n}{k} = \dbinom{n-1}{k} \cdot k$`], corretta: 2, spiegazione: R`Ogni numero del triangolo di Tartaglia è la somma dei due che gli stanno sopra, cioè dei due coefficienti della riga precedente. La prima opzione è vera, ma è la simmetria, non Stifel.` },
+    { id: 'q-07', domanda: R`La formula di Stifel afferma che…`, opzioni: [R`$\dbinom{n}{k} = \dbinom{n}{n-k}$`, R`$\dbinom{n}{k} = \dbinom{n+1}{k} + \dbinom{n+1}{k+1}$`, R`$\dbinom{n}{k} = \dbinom{n-1}{k-1} + \dbinom{n-1}{k}$`, R`$\dbinom{n}{k} = \dbinom{n-1}{k} \cdot k$`], corretta: 2, spiegazione: R`Ogni numero del triangolo di Tartaglia è la somma dei due che gli stanno sopra, cioè dei due coefficienti della riga precedente. L'uguaglianza $\dbinom{n}{k} = \dbinom{n}{n-k}$ è vera, ma è la simmetria, non Stifel.` },
     { id: 'q-08', domanda: R`La somma dei numeri della riga $n$ del triangolo di Tartaglia vale…`, opzioni: [R`$2^n$`, R`$n!$`, R`$n^2$`, R`$2n$`], corretta: 0, spiegazione: R`$\displaystyle\sum_{k=0}^{n}\binom{n}{k} = 2^n$: contando i sottoinsiemi di un insieme di $n$ elementi per cardinalità si ottengono i coefficienti binomiali, e in totale i sottoinsiemi sono $2^n$ perché ogni elemento o c'è o non c'è.` },
     { id: 'q-09', domanda: R`Quanti termini ha lo sviluppo di $(a+b)^7$?`, opzioni: [R`$7$`, R`$8$`, R`$14$`, R`$128$`], corretta: 1, spiegazione: R`L'indice $k$ va da 0 a 7, quindi i termini sono $7 + 1 = 8$. Il numero $128 = 2^7$ è la somma dei coefficienti, non il numero dei termini.` },
     { id: 'q-10', domanda: R`In ogni termine dello sviluppo di $(a+b)^n$, la somma degli esponenti di $a$ e di $b$ vale…`, opzioni: [R`$n$`, R`$n+1$`, R`$2n$`, R`dipende dal termine`], corretta: 0, spiegazione: R`Il termine generale è $\dbinom{n}{k}a^{n-k}b^k$ e $(n-k) + k = n$ sempre. È un controllo rapido per accorgersi di un errore nello sviluppo.` },
@@ -373,7 +410,7 @@ Quest'ultimo merita un esempio. Per andare da $A$ a $B$ nella griglia $3 \times 
   ],
 
   aneddoti: [
-    { matematico: 'Blaise Pascal e Pierre de Fermat', anni: '1623–1662 e 1601–1665', titolo: 'Una partita interrotta e cinque lettere', testo: R`Nel 1654 il cavaliere de Méré, un nobile giocatore, pose a Pascal un vecchio rompicapo: se una partita a più riprese viene interrotta prima della fine, come si divide equamente la posta fra due giocatori che sono a punteggi diversi? Pascal ne scrisse a Fermat, e i due si scambiarono una manciata di lettere in cui, per risolvere il "problema delle parti", contarono tutti i modi in cui la partita avrebbe potuto proseguire. Fermat elencava i casi, Pascal usava il triangolo aritmetico: strade diverse, stesso risultato. Da quella corrispondenza nasce il calcolo delle probabilità. Poco dopo Pascal ebbe la sua celebre esperienza mistica, si cucì nella giacca il *Mémorial* che la ricordava e lasciò quasi del tutto la matematica per la teologia.`, legame: R`Contare i casi possibili con i coefficienti binomiali: è esattamente il ponte fra questo argomento e la probabilità.` },
+    { matematico: 'Blaise Pascal e Pierre de Fermat', anni: '1623–1662 e 1601–1665', titolo: 'Una partita interrotta e poche lettere', testo: R`Nel 1654 il cavaliere de Méré, un nobile giocatore, pose a Pascal un vecchio rompicapo: se una partita a più riprese viene interrotta prima della fine, come si divide equamente la posta fra due giocatori che sono a punteggi diversi? Pascal ne scrisse a Fermat, e i due si scambiarono una manciata di lettere in cui, per risolvere il "problema delle parti", contarono tutti i modi in cui la partita avrebbe potuto proseguire. Fermat elencava i casi, Pascal usava il triangolo aritmetico: strade diverse, stesso risultato. Da quella corrispondenza nasce il calcolo delle probabilità. Poco dopo Pascal ebbe la sua celebre esperienza mistica, si cucì nella giacca il *Mémorial* che la ricordava e lasciò quasi del tutto la matematica per la teologia.`, legame: R`Contare i casi possibili con i coefficienti binomiali: è esattamente il ponte fra questo argomento e la probabilità.` },
 
     { matematico: 'Niccolò Tartaglia', anni: '1500–1557', titolo: 'Il triangolo che cambia nome a ogni confine', testo: R`In Italia si chiama triangolo di Tartaglia perché il matematico bresciano lo pubblicò nel *General trattato di numeri et misure* (1556); in Francia e nei paesi anglosassoni si chiama triangolo di Pascal, dal *Traité du triangle arithmétique* che Pascal scrisse nel 1654. Nessuno dei due, però, lo inventò. In India la disposizione era nota come *meru-prastara* e compare nel commento di Halayudha (X secolo) a un trattato di metrica di Pingala, di oltre mille anni prima, dove serviva a contare le combinazioni di sillabe lunghe e brevi nei versi. In Cina è il "triangolo di Yang Hui", che nel 1261 lo attribuiva a Jia Xian, vissuto due secoli prima. In Persia lo usavano al-Karaji e Omar Khayyam.`, legame: R`È la tabella dei coefficienti binomiali: la stessa figura che genera lo sviluppo di $(a+b)^n$ con la formula di Stifel.` },
 

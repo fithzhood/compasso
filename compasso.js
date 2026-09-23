@@ -25,13 +25,19 @@
     const t = stato.impostazioni.tema;
     const scuro = t === 'scuro' || (t === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
     document.documentElement.dataset.tema = scuro ? 'scuro' : 'chiaro';
-    const meta = document.querySelector('meta[name=theme-color]'); if (meta) meta.content = scuro ? '#13151b' : '#f4f1ea';
+    const meta = document.querySelector('meta[name=theme-color]'); if (meta) meta.content = scuro ? '#131a1c' : '#f5f2ea';
   }
   applicaTema();
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applicaTema);
-  document.getElementById('btn-tema').addEventListener('click', () => {
+  document.getElementById('btn-tema').addEventListener('click', (ev) => {
     const scuro = document.documentElement.dataset.tema === 'scuro';
-    stato.impostazioni.tema = scuro ? 'chiaro' : 'scuro'; salva(); applicaTema();
+    const cambia = () => { stato.impostazioni.tema = scuro ? 'chiaro' : 'scuro'; salva(); applicaTema(); };
+    if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) return cambia();
+    const r = ev.currentTarget.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+    const raggio = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    document.startViewTransition(cambia).ready.then(() => {
+      document.documentElement.animate({ clipPath: [`circle(0 at ${x}px ${y}px)`, `circle(${raggio}px at ${x}px ${y}px)`] }, { duration: 550, easing: 'cubic-bezier(.2,.7,.2,1)', pseudoElement: '::view-transition-new(root)' });
+    }).catch(() => {});
   });
 
   /* =====================================================================
@@ -96,8 +102,10 @@
   /* =====================================================================
      MINI-MARKDOWN + KATEX
      ===================================================================== */
+  /* \evid{…} evidenzia la parte che cambia (evidenziatore che passa), \evidb{…} con il secondo colore */
+  const KATEX_OPZ = { throwOnError: false, strict: 'ignore', output: 'html', macros: { '\\evid': '\\htmlClass{evid}{#1}', '\\evidb': '\\htmlClass{evid evid2}{#1}' }, trust: c => c.command === '\\htmlClass' };
   function tex(src, display) {
-    try { return katex.renderToString(src, { throwOnError: false, displayMode: !!display, strict: 'ignore', output: 'html' }); }
+    try { return katex.renderToString(src, Object.assign({}, KATEX_OPZ, { displayMode: !!display, macros: Object.assign({}, KATEX_OPZ.macros) })); }
     catch (e) { return '<code>' + esc(src) + '</code>'; }
   }
   function inline(s) {
@@ -107,6 +115,8 @@
     if (src == null) return '';
     const mat = [];
     let s = String(src);
+    /* righe di derivazione "~ LATEX :: commento": il LaTeX va reso prima dell'escape */
+    s = s.replace(/^[ \t]*~[ \t]+(.+?)(?:[ \t]+::[ \t]+(.*))?[ \t]*$/gm, (_, t, c) => { mat.push(tex(t, true)); return '~ \x01' + (mat.length - 1) + '\x01' + (c ? ' \x02 ' + c : ''); });
     s = s.replace(/\$\$([\s\S]+?)\$\$/g, (_, t) => { mat.push(tex(t, true)); return '' + (mat.length - 1) + ''; });
     s = s.replace(/\$([^$\n]+?)\$/g, (_, t) => { mat.push(tex(t, false)); return '' + (mat.length - 1) + ''; });
     s = esc(s);
@@ -121,11 +131,36 @@
       righeT.forEach((r, i) => { const tag = i === 0 ? 'th' : 'td'; html += '<tr>' + r.map(c => '<' + tag + '>' + c + '</' + tag + '>').join('') + '</tr>'; });
       out.push(html + '</table></div>'); tab = null;
     };
-    const chiudiTutto = () => { chiudiPar(); chiudiLista(); chiudiQuote(); chiudiTab(); };
+    /* derivazione: righe "~ formula :: commento" consecutive, svelate un passo alla volta */
+    let der = null, prova = null;
+    const chiudiDer = () => {
+      if (!der) return;
+      out.push('<div class="derivazione"><ol class="d-passi">' + der.map(([f, c]) => '<li class="d-passo"><div class="d-f">' + f + '</div>' + (c ? '<div class="d-c">' + inline(c) + '</div>' : '') + '</li>').join('') + '</ol></div>');
+      der = null;
+    };
+    /* prova tu: "?? domanda", poi "[x] giusta" / "[ ] sbagliata", poi "=> spiegazione" (senza opzioni: risposta da svelare) */
+    const chiudiProva = () => {
+      if (!prova) return;
+      const P = prova; prova = null;
+      const ops = P.opzioni.map(o => '<button type="button" class="prova-op"' + (o.ok ? ' data-ok="1"' : '') + '><span class="prova-lettera"></span><span>' + inline(o.t) + '</span></button>').join('');
+      out.push('<div class="prova" data-modo="' + (P.opzioni.length ? 'scelta' : 'rivela') + '"><div class="prova-testa"><span class="prova-ico">?</span>Prova tu</div><div class="prova-domanda"><p>' + inline(P.domanda.join(' ')) + '</p></div>' +
+        (P.opzioni.length ? '<div class="prova-opzioni">' + ops + '</div>' : '<button type="button" class="btn piccolo prova-rivela">Pensaci, poi tocca qui</button>') +
+        '<div class="prova-spiega"><p>' + inline(P.spiega.join(' ')) + '</p></div></div>');
+    };
+    const chiudiTutto = () => { chiudiPar(); chiudiLista(); chiudiQuote(); chiudiTab(); chiudiDer(); chiudiProva(); };
     for (let riga of righe) {
       const r = riga.trim();
       let m;
       if (!r) { chiudiTutto(); continue; }
+      if ((m = r.match(/^~ (\x01\d+\x01)(?: \x02 (.*))?$/))) { if (!der) { chiudiTutto(); der = []; } der.push([m[1], m[2] || '']); continue; }
+      if (der) chiudiDer();
+      if ((m = r.match(/^\?\?\s+(.+)$/))) { chiudiTutto(); prova = { domanda: [m[1]], opzioni: [], spiega: [], fase: 'domanda' }; continue; }
+      if (prova) {
+        if ((m = r.match(/^\[([ xX])\]\s+(.+)$/))) { prova.opzioni.push({ ok: m[1] !== ' ', t: m[2] }); prova.fase = 'opzioni'; continue; }
+        if ((m = r.match(/^=&gt;\s*(.*)$/))) { prova.spiega.push(m[1]); prova.fase = 'spiega'; continue; }
+        if (prova.fase === 'domanda') prova.domanda.push(r); else if (prova.fase === 'spiega') prova.spiega.push(r); else prova.opzioni[prova.opzioni.length - 1].t += ' ' + r;
+        continue;
+      }
       if ((m = r.match(/^\[\[grafico:([^\]]+)\]\]$/))) { chiudiTutto(); out.push('<div class="grafico-slot" data-grafico="' + esc(m[1]) + '"></div>'); continue; }
       if ((m = r.match(/^\[\[animazione:([^\]]+)\]\]$/))) { chiudiTutto(); out.push('<div class="grafico-slot" data-animazione="' + esc(m[1]) + '"></div>'); continue; }
       if ((m = r.match(/^###\s+(.+)$/))) { chiudiTutto(); out.push('<h4>' + inline(m[1]) + '</h4>'); continue; }
@@ -147,7 +182,162 @@
       if (spec) { try { CGRAF.render(spec, slot); } catch (e) { slot.textContent = 'Grafico non disponibile (' + e.message + ')'; } }
       else slot.textContent = 'Grafico "' + slot.dataset.grafico + '" mancante';
     });
+    radice.querySelectorAll('.derivazione').forEach(montaDerivazione);
+    radice.querySelectorAll('.prova').forEach(montaProva);
   }
+  /* derivazione svelata un passo alla volta; con la stampa o senza animazioni si vede tutta */
+  function montaDerivazione(d) {
+    const passi = [...d.querySelectorAll('.d-passo')];
+    if (passi.length < 2 || d.dataset.pronta) return;
+    d.dataset.pronta = '1';
+    const barra = h(`<div class="d-barra"><button type="button" class="btn piccolo primario d-avanti">Passo successivo ${ICONE.destra}</button><button type="button" class="btn piccolo d-tutto">Mostra tutto</button><span class="d-conta"></span></div>`);
+    d.appendChild(barra);
+    const avanti = barra.querySelector('.d-avanti'), tutto = barra.querySelector('.d-tutto'), conta = barra.querySelector('.d-conta');
+    let n = 1;
+    const aggiorna = (nuovo) => {
+      passi.forEach((p, i) => { p.classList.toggle('nascosto', i >= n); p.classList.toggle('ultimo', i === n - 1); if (i === nuovo) { p.classList.remove('entra'); void p.offsetWidth; p.classList.add('entra'); } });
+      conta.textContent = n + ' di ' + passi.length;
+      const fine = n >= passi.length;
+      avanti.innerHTML = fine ? 'Ricomincia' : 'Passo successivo ' + ICONE.destra;
+      avanti.classList.toggle('primario', !fine); tutto.hidden = fine;
+      d.classList.toggle('finita', fine);
+    };
+    d.classList.add('a-passi');
+    avanti.addEventListener('click', () => { if (n >= passi.length) { n = 1; aggiorna(0); } else { n++; aggiorna(n - 1); } });
+    tutto.addEventListener('click', () => { n = passi.length; aggiorna(-1); });
+    aggiorna(-1);
+  }
+  function montaProva(p) {
+    if (p.dataset.pronta) return; p.dataset.pronta = '1';
+    const spiega = p.querySelector('.prova-spiega');
+    const ops = [...p.querySelectorAll('.prova-op')];
+    ops.forEach((b, i) => { b.querySelector('.prova-lettera').textContent = 'ABCDEF'[i]; });
+    if (p.dataset.modo === 'scelta') {
+      /* le opzioni si rimescolano, così la giusta non sta sempre nello stesso posto */
+      const cont = p.querySelector('.prova-opzioni'); mescola(ops).forEach((b, i) => { b.querySelector('.prova-lettera').textContent = 'ABCDEF'[i]; cont.appendChild(b); });
+      ops.forEach(b => b.addEventListener('click', () => {
+        if (p.classList.contains('risolta')) return;
+        const ok = !!b.dataset.ok;
+        b.classList.add(ok ? 'giusta' : 'sbagliata');
+        if (ok) { p.classList.add('risolta'); ops.forEach(o => { o.disabled = true; }); spiega.classList.add('aperta'); festa(b); }
+        else { b.disabled = true; if (ops.filter(o => o.disabled).length >= ops.length - 1) { ops.forEach(o => { if (o.dataset.ok) o.classList.add('giusta'); o.disabled = true; }); p.classList.add('risolta'); spiega.classList.add('aperta'); } }
+      }));
+    } else {
+      const btn = p.querySelector('.prova-rivela');
+      btn.addEventListener('click', () => { spiega.classList.add('aperta'); p.classList.add('risolta'); btn.hidden = true; });
+    }
+  }
+
+  /* =====================================================================
+     MOVIMENTO: comparsa allo scorrimento, cursore delle schede, barra di
+     lettura, coriandoli. Tutto spento con prefers-reduced-motion.
+     ===================================================================== */
+  const MOTO = !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window;
+  if (MOTO) document.documentElement.classList.add('js-rivela');
+  const RIVELA = '.tessera, .tessera-lab, .area-testa, .sezione, .intro, .in-breve, .riquadro, .cg-figura, .derivazione, .prova, .esempio, .formula, .esercizio, .mat, .prosa > .tabella-scroll, .sezione p > .katex-display, .quiz-avvio, .mat-dettaglio';
+  let osservatore = null;
+  function mostraEl(el) {
+    el.classList.add('visibile');
+    setTimeout(() => el.classList.add('fatto'), 1500);   /* libera le transizioni di hover, e fa da rete se il browser congela */
+    el.querySelectorAll('.cg-curva').forEach(c => {
+      if (c.dataset.tracciata || c.getAttribute('stroke-dasharray')) return; c.dataset.tracciata = '1';
+      c.setAttribute('pathLength', '1'); c.classList.add('traccia');
+      setTimeout(() => { c.classList.remove('traccia'); c.removeAttribute('pathLength'); }, 1800);
+    });
+    el.querySelectorAll('.cg-barra').forEach((b, i) => { if (b.dataset.cresciuta) return; b.dataset.cresciuta = '1'; b.style.setProperty('--i', i); b.classList.add('cresce'); setTimeout(() => b.classList.remove('cresce'), 1800); });
+    el.querySelectorAll('[data-conta]').forEach(contaSu);
+  }
+  function animaPagina(radice) {
+    if (!MOTO) { radice.querySelectorAll('[data-conta]').forEach(b => { b.textContent = b.dataset.conta; }); return; }
+    if (!osservatore) osservatore = new IntersectionObserver(voci => voci.forEach(v => { if (v.isIntersecting) { osservatore.unobserve(v.target); mostraEl(v.target); } }), { rootMargin: '0px 0px -6% 0px', threshold: 0.01 });
+    radice.querySelectorAll(RIVELA).forEach(el => {
+      if (el.dataset.rivela) return; el.dataset.rivela = '1';
+      const par = el.parentElement;
+      if (par && /griglia|formulario/.test(par.className)) el.style.setProperty('--i', Math.min([...par.children].indexOf(el), 8));
+      el.classList.add('rivela'); osservatore.observe(el);
+    });
+    radice.querySelectorAll('[data-conta]:not([data-contato])').forEach(b => { if (!b.closest('.rivela')) contaSu(b); });
+  }
+  function contaSu(b) {
+    if (b.dataset.contato) return; b.dataset.contato = '1';
+    const fine = +b.dataset.conta || 0; if (!fine || !MOTO) { b.textContent = fine; return; }
+    const t0 = performance.now(), durata = Math.min(1200, 500 + fine * 40);
+    const passo = (t) => { const k = Math.min(1, (t - t0) / durata); b.textContent = Math.round(fine * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(passo); };
+    requestAnimationFrame(passo);
+    setTimeout(() => { b.textContent = fine; }, durata + 400);
+  }
+  /* ogni volta che il contenuto cambia, si guardano i pezzi nuovi */
+  let animaInCoda = false;
+  new MutationObserver(() => { if (animaInCoda) return; animaInCoda = true; requestAnimationFrame(() => { animaInCoda = false; animaPagina(app); }); }).observe(app, { childList: true, subtree: true });
+
+  /* il cursore che scivola sotto la scheda attiva */
+  let cursore = null;
+  function cursoreSchede(anima) {
+    const navInt = app.querySelector('.schede-nav-int'); if (!navInt) return;
+    const att = navInt.querySelector('.scheda-tab.attiva'); if (!att) return;
+    let c = navInt.querySelector('.tab-cursore'); if (!c) { c = document.createElement('span'); c.className = 'tab-cursore'; navInt.prepend(c); }
+    const x = att.offsetLeft, w = att.offsetWidth;
+    if (cursore && anima && MOTO) { c.style.transition = 'none'; c.style.transform = 'translateX(' + cursore.x + 'px)'; c.style.width = cursore.w + 'px'; void c.offsetWidth; c.style.transition = ''; }
+    else c.style.transition = 'none';
+    c.style.transform = 'translateX(' + x + 'px)'; c.style.width = w + 'px';
+    if (!anima || !MOTO) { void c.offsetWidth; c.style.transition = ''; }
+    cursore = { x, w };
+  }
+  window.addEventListener('resize', () => cursoreSchede(false));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => cursoreSchede(false));
+
+  /* barra di lettura nella teoria */
+  const lettura = document.createElement('div'); lettura.className = 'lettura'; lettura.hidden = true; lettura.innerHTML = '<i></i>'; document.body.appendChild(lettura);
+  function aggiornaLettura() {
+    const teoria = app.querySelector('.teoria');
+    if (!teoria) { lettura.hidden = true; return; }
+    const alto = teoria.getBoundingClientRect().top + scrollY, basso = alto + teoria.offsetHeight - innerHeight;
+    const p = Math.max(0, Math.min(1, (scrollY - alto + 140) / Math.max(1, basso - alto + 140)));
+    lettura.hidden = false; lettura.firstChild.style.setProperty('--p', p.toFixed(4));
+  }
+  let letturaInCoda = false;
+  window.addEventListener('scroll', () => { if (letturaInCoda) return; letturaInCoda = true; requestAnimationFrame(() => { letturaInCoda = false; aggiornaLettura(); }); }, { passive: true });
+
+  /* coriandoli di simboli quando una risposta è giusta */
+  const SIMBOLI = ['+', '−', '×', '÷', 'π', '√', '∞', '=', 'x', 'Σ', '½', '∫'];
+  function festa(el) {
+    if (!MOTO || !el) return;
+    const r = el.getBoundingClientRect(), cx = r.left + Math.min(r.width / 2, 70), cy = r.top + r.height / 2;
+    for (let i = 0; i < 12; i++) {
+      const c = document.createElement('span'); c.className = 'coriandolo'; c.textContent = SIMBOLI[(i + Math.floor(Math.random() * 12)) % 12];
+      const ang = Math.random() * Math.PI * 2, d = 45 + Math.random() * 75;
+      c.style.left = cx + 'px'; c.style.top = cy + 'px'; c.style.color = 'var(--s' + (1 + i % 4) + ')';
+      c.style.setProperty('--dx', (Math.cos(ang) * d).toFixed(1) + 'px'); c.style.setProperty('--dy', (Math.sin(ang) * d - 30).toFixed(1) + 'px'); c.style.setProperty('--r', (Math.random() * 240 - 120).toFixed(0) + 'deg');
+      document.body.appendChild(c); setTimeout(() => c.remove(), 1000);
+    }
+  }
+
+  /* la costruzione dell'esagono col compasso, nella home */
+  function costruzioneSVG() {
+    const C = 130, R = 90, V = [...Array(6)].map((_, k) => [C + R * Math.cos(k * Math.PI / 3), C + R * Math.sin(k * Math.PI / 3)]);
+    const f = n => n.toFixed(1);
+    let archi = '';
+    V.forEach((v, k) => {
+      const w = V[(k + 1) % 6], th = Math.atan2(w[1] - v[1], w[0] - v[0]), a0 = th - 0.3, a1 = th + 0.3;
+      archi += `<path class="c-traccia c-arco" pathLength="1" style="animation-delay:${(1.9 + k * 0.2).toFixed(2)}s" d="M${f(v[0] + R * Math.cos(a0))} ${f(v[1] + R * Math.sin(a0))} A${R} ${R} 0 0 1 ${f(v[0] + R * Math.cos(a1))} ${f(v[1] + R * Math.sin(a1))}"/>`;
+    });
+    const punti = V.map((v, k) => `<circle class="c-punto" cx="${f(v[0])}" cy="${f(v[1])}" r="4" style="animation-delay:${(2.1 + k * 0.2).toFixed(2)}s"/>`).join('');
+    const esagono = 'M' + V.map(v => f(v[0]) + ' ' + f(v[1])).join(' L') + ' Z';
+    const triangolo = 'M' + [0, 2, 4].map(k => f(V[k][0]) + ' ' + f(V[k][1])).join(' L') + ' Z';
+    return `<svg viewBox="0 0 260 260" aria-hidden="true">
+      <circle class="c-traccia c-cerchio" pathLength="1" cx="${C}" cy="${C}" r="${R}"/>
+      ${archi}
+      <path class="c-traccia c-esagono" pathLength="1" d="${esagono}"/>
+      <path class="c-traccia c-triangolo" pathLength="1" d="${triangolo}"/>
+      <path class="c-traccia c-raggio" pathLength="1" d="M${C} ${C} L${f(V[0][0])} ${f(V[0][1])}"/>
+      <text class="c-lettera" x="${C + 30}" y="${C - 6}" style="animation-delay:5.8s">r</text>
+      ${punti}<circle class="c-punto c-centro" cx="${C}" cy="${C}" r="4.5" style="animation-delay:.1s"/>
+      <g class="c-compasso"><line x1="${C}" y1="${C}" x2="${C + 45}" y2="${C - 105}"/><line x1="${C + R}" y1="${C}" x2="${C + 45}" y2="${C - 105}"/><circle cx="${C + 45}" cy="${C - 105}" r="7"/><line x1="${C + 45}" y1="${C - 112}" x2="${C + 45}" y2="${C - 128}"/></g>
+    </svg>`;
+  }
+
+  /* per i collaudi: rende un pezzo di markdown dentro la pagina (usato da strumenti/banco.js) */
+  window.COMPASSO.prova = (src, dove) => { const d = frammento(src, null); (dove || app).appendChild(d); return d; };
   function frammento(src, arg) { const d = document.createElement('div'); d.className = 'prosa'; d.innerHTML = md(src); montaGrafici(d, arg); return d; }
 
   /* =====================================================================
@@ -169,7 +359,7 @@
   }
   window.addEventListener('hashchange', route);
 
-  function svuota() { app.innerHTML = ''; window.scrollTo(0, 0); }
+  function svuota() { app.innerHTML = ''; window.scrollTo(0, 0); lettura.hidden = true; }
 
   /* =====================================================================
      HOME
@@ -206,16 +396,17 @@
     const ultimo = stato.ultimo && voce(stato.ultimo);
     const eroe = h(`<section class="scheda eroe">
       <div>
-        <h1>La matematica, un argomento alla volta</h1>
-        <p>Spiegazioni, esempi svolti, flashcard da scegliere, esercizi e quiz di teoria per il liceo. E Zenone, la tartaruga, che ti racconta chi ha inventato tutto questo.</p>
+        <div class="eroe-sopra">Matematica per il liceo</div>
+        <h1>La matematica, <em>un passo alla volta</em></h1>
+        <p>Per ogni argomento c'è la spiegazione, con i calcoli che si aprono un passaggio per volta, poi esempi, esercizi e quiz per metterti alla prova. Nei laboratori i concetti si toccano con le mani. Zenone, la tartaruga, ti dà un consiglio quando serve.</p>
         <div class="eroe-stat">
-          <span class="stat"><b>${visitati}</b>/${IND.argomenti.length} argomenti aperti</span>
-          <span class="stat"><b>${superati}</b> quiz superati</span>
-          <span class="stat"><b>${daRip}</b> ${daRip === 1 ? 'carta' : 'carte'} da ripassare ${daRip ? '<a href="#/ripasso">→ ripassa</a>' : ''}</span>
-          ${ultimo ? `<a class="stat" href="#/argomento/${ultimo.id}" style="text-decoration:none">Riprendi: <b style="font-size:1rem">${esc(ultimo.titolo)}</b></a>` : ''}
+          ${ultimo ? `<a class="stat riprendi" href="#/argomento/${ultimo.id}">Riprendi: <b>${esc(ultimo.titolo)}</b> →</a>` : ''}
+          <span class="stat"><b data-conta="${visitati}">0</b>su ${IND.argomenti.length} argomenti aperti</span>
+          <span class="stat"><b data-conta="${superati}">0</b>quiz superati</span>
+          <span class="stat"><b data-conta="${daRip}">0</b>${daRip === 1 ? 'carta' : 'carte'} da ripassare ${daRip ? '<a href="#/ripasso">→ ripassa</a>' : ''}</span>
         </div>
       </div>
-      <div class="eroe-mascotte">${CMASC.SVG}</div>
+      <div class="costruzione">${costruzioneSVG()}</div>
     </section>`);
     app.appendChild(eroe);
 
@@ -242,8 +433,8 @@
     });
 
     if ((IND.laboratori || []).length) {
-      const bl = h('<section class="area-blocco lab-blocco"><div class="area-testa"><span class="simbolo simbolo-lab">🧪</span><div><h2>Laboratori</h2><p>Piccoli giochi con dentro un concetto: si impara con le mani, senza leggere niente prima.</p></div></div><div class="griglia-lab"></div></section>');
-      const g = bl.querySelector('.griglia-lab'); IND.laboratori.forEach(l => g.appendChild(tesseraLab(l, true)));
+      const bl = h(`<section class="area-blocco lab-blocco"><div class="area-testa"><span class="simbolo simbolo-lab">🧪</span><div><h2>Laboratori</h2><p>Piccoli giochi con dentro un concetto: si impara con le mani, senza leggere niente prima. Sono ${IND.laboratori.length}, nell'ordine degli argomenti.</p></div></div><div class="griglia-lab"></div></section>`);
+      const g = bl.querySelector('.griglia-lab'); const ordine = id => IND.argomenti.findIndex(a => a.id === id); IND.laboratori.slice().sort((x, y) => ordine(x.argomento) - ordine(y.argomento)).forEach(l => g.appendChild(tesseraLab(l, true)));
       contenitoreAree.appendChild(bl);
     }
     IND.aree.forEach(ar => {
@@ -294,15 +485,17 @@
     let testa = app.querySelector('.arg-testa');
     if (!testa) {
       svuota();
-      testa = h(`<header class="arg-testa">
+      testa = h(`<header class="arg-testa" style="--colore-area:var(--${ar.colore})">
+        <span class="filigrana" aria-hidden="true">${esc(ar.simbolo)}</span>
         <div class="briciole"><a href="#/">Argomenti</a> › <span class="etichetta area" style="background:var(--${ar.colore})">${esc(ar.nome)}</span> <span class="etichetta livello-${v.livello}">${['', '1º–2º anno', '3º–4º anno', '5º anno'][v.livello]}</span></div>
         <h1>${esc(arg.titolo)}</h1>
+        <p class="sottotitolo">${esc(v.breve || '')}</p>
         <div class="prerequisiti">${v.prerequisiti.length ? 'Prima conviene sapere: ' + v.prerequisiti.map(pid => { const pv = voce(pid); return pv ? `<a href="#/argomento/${pid}">${esc(pv.titolo)}</a>` : ''; }).join('') : 'Nessun prerequisito: si parte da qui.'}</div>
       </header>`);
       app.appendChild(testa);
       const nav = h('<nav class="schede-nav"><div class="schede-nav-int"></div></nav>');
       app.appendChild(nav);
-      app.appendChild(h('<div id="pannello" class="pannello"></div>'));
+      app.appendChild(h(`<div id="pannello" class="pannello" style="--colore-area:var(--${ar.colore})"></div>`));
       app.appendChild(h(`<div class="versione">Compasso v${VERSIONE}</div>`));
     }
     const navInt = app.querySelector('.schede-nav-int'); navInt.innerHTML = '';
@@ -316,17 +509,19 @@
       navInt.appendChild(h(`<a class="scheda-tab${sid === scheda ? ' attiva' : ''}${sid === 'lab' ? ' tab-lab' : ''}" href="#/argomento/${v.id}/${sid}">${ICONE[icona]}${nome}${extra}</a>`));
     });
     const attiva = navInt.querySelector('.attiva'); if (attiva && attiva.scrollIntoView) setTimeout(() => attiva.scrollIntoView({ inline: 'center', block: 'nearest' }), 0);
+    cursoreSchede(true);
     chiudiLab();
     const pannello = app.querySelector('#pannello'); pannello.innerHTML = ''; pannello.className = 'pannello';
     const disegna = { teoria: schedaTeoria, esempi: schedaEsempi, flashcard: schedaFlashcard, esercizi: schedaEsercizi, quiz: schedaQuiz, formulario: schedaFormulario, lab: schedaLab }[scheda] || schedaTeoria;
     disegna(pannello, arg, v, ancora);
     if (!ancora) window.scrollTo(0, 0);
+    requestAnimationFrame(aggiornaLettura);
   }
 
   /* ---------- scheda LABORATORIO: esperienze manipolative ---------- */
   function tesseraLab(l, conArgomento) {
     const va = voce(l.argomento);
-    return h(`<a class="scheda tessera tessera-lab" href="#/argomento/${l.argomento}/lab/${l.id}">
+    return h(`<a class="scheda tessera-lab${l.nuovo ? ' nuovo' : ''}" href="#/argomento/${l.argomento}/lab/${l.id}">
       <div class="lab-icona">${esc(l.icona || '🧪')}</div>
       <div><h3>${esc(l.titolo)}</h3><p>${esc(l.sotto)}</p>${conArgomento && va ? `<small class="lab-arg">${esc(va.titolo)}</small>` : ''}</div></a>`);
   }
@@ -352,7 +547,7 @@
       zenone: (testo, opz) => { if (stato.impostazioni.mascotte) CMASC.dici(testo, Object.assign({ tipo: 'commento', espressione: 'felice' }, opz || {})); },
       completato: (livello) => { if (!st.livelli.includes(livello)) st.livelli.push(livello); salva(); },
       stato: () => st, tema: () => document.documentElement.dataset.tema || 'chiaro', CGRAF: window.CGRAF,
-      md: s => md(s), tex: (s, d) => (window.katex ? katex.renderToString(s, { throwOnError: false, displayMode: !!d, strict: 'ignore' }) : esc(s))
+      md: s => md(s), tex: (s, d) => (window.katex ? tex(s, d) : esc(s))
     };
     caricaLab(meta.id).then(lab => {
       if (!document.body.contains(stage)) return;
@@ -372,9 +567,14 @@
     const som = wrap.querySelector('.sommario'), col = wrap.querySelector('.colonna');
     som.appendChild(h('<a href="#/argomento/' + v.id + '/teoria/intro">Introduzione</a>'));
     const intro = h('<section class="intro sezione-intro" id="sez-intro"></section>'); intro.appendChild(frammento(arg.introduzione, arg)); col.appendChild(intro);
+    if (Array.isArray(arg.inBreve) && arg.inBreve.length) {
+      const ib = h('<aside class="in-breve rivela"><h3><span class="ib-ico">✦</span>In breve: cosa devi portarti via</h3><ul></ul></aside>');
+      arg.inBreve.forEach((t, i) => { const li = document.createElement('li'); li.style.setProperty('--i', i); li.innerHTML = md(t).replace(/^<p>|<\/p>$/g, ''); ib.querySelector('ul').appendChild(li); });
+      col.appendChild(ib);
+    }
     arg.sezioni.forEach((s, i) => {
       som.appendChild(h(`<a href="#/argomento/${v.id}/teoria/${s.id}">${i + 1}. ${esc(s.titolo)}</a>`));
-      const sez = h(`<section class="scheda sezione" id="sez-${esc(s.id)}"><h2><span class="num">${i + 1}.</span>${esc(s.titolo)}</h2></section>`);
+      const sez = h(`<section class="scheda sezione" id="sez-${esc(s.id)}"><h2><span class="num">${i + 1}</span>${esc(s.titolo)}</h2></section>`);
       sez.appendChild(frammento(s.testo, arg)); col.appendChild(sez);
     });
     const fine = h(`<div class="riga-btn" style="margin:10px 0 30px"><a class="btn primario" href="#/argomento/${v.id}/esempi">Vai agli esempi svolti ${ICONE.destra}</a><a class="btn" href="#/argomento/${v.id}/flashcard">Ripassa con le flashcard</a></div>`);
@@ -391,13 +591,29 @@
 
   /* ---------- Esempi ---------- */
   function schedaEsempi(pan, arg) {
-    pan.appendChild(h('<p class="sotto-pagina">Esercizi svolti passo per passo, dal più semplice al più difficile. Prova a fare ogni passaggio prima di leggerlo.</p>'));
+    pan.appendChild(h('<p class="sotto-pagina">Esercizi svolti, dal più semplice al più difficile. La soluzione si apre un passo alla volta: prima di aprire il passo successivo, prova a farlo tu.</p>'));
     arg.esempi.forEach((e, i) => {
-      const card = h(`<article class="scheda esempio"><h3>Esempio ${i + 1} · ${esc(e.titolo)}</h3><div class="problema prosa"></div><ol class="passi"></ol></article>`);
+      const card = h(`<article class="scheda esempio rivela"><h3><span class="es-num">${i + 1}</span>${esc(e.titolo)}</h3><div class="problema prosa"></div><ol class="passi"></ol><div class="esempio-barra"><button type="button" class="btn primario piccolo e-avanti">Primo passo ${ICONE.destra}</button><button type="button" class="btn piccolo e-tutto">Mostra tutta la soluzione</button><span class="e-conta"></span></div></article>`);
       card.querySelector('.problema').innerHTML = md(e.problema);
       const ol = card.querySelector('.passi');
-      e.passi.forEach(p => { const li = document.createElement('li'); li.className = 'prosa'; li.innerHTML = md(p); ol.appendChild(li); });
-      if (e.risultato) { const r = h('<div class="risultato-finale prosa"></div>'); r.innerHTML = md(e.risultato); card.appendChild(r); }
+      e.passi.forEach(p => { const li = document.createElement('li'); li.className = 'prosa nascosto'; li.innerHTML = md(p); ol.appendChild(li); });
+      let r = null;
+      if (e.risultato) { r = h('<div class="risultato-finale prosa nascosto"></div>'); r.innerHTML = md(e.risultato); card.insertBefore(r, card.querySelector('.esempio-barra')); }
+      const lis = [...ol.children], avanti = card.querySelector('.e-avanti'), tutto = card.querySelector('.e-tutto'), conta = card.querySelector('.e-conta');
+      let n = 0;
+      const mostra = (anima) => {
+        lis.forEach((li, k) => { const vis = k < n; if (vis && li.classList.contains('nascosto') && anima) { li.classList.add('entra'); } li.classList.toggle('nascosto', !vis); });
+        const fine = n >= lis.length;
+        if (r) { if (fine && r.classList.contains('nascosto') && anima) r.classList.add('entra'); r.classList.toggle('nascosto', !fine); }
+        ol.hidden = n === 0;
+        avanti.hidden = fine; tutto.hidden = fine;
+        avanti.innerHTML = (n === 0 ? 'Primo passo ' : 'Passo successivo ') + ICONE.destra;
+        conta.textContent = fine ? '' : (n ? n + ' passi su ' + lis.length : lis.length + ' passi');
+        card.classList.toggle('completo', fine);
+      };
+      avanti.addEventListener('click', () => { n++; mostra(true); });
+      tutto.addEventListener('click', () => { n = lis.length; mostra(true); });
+      mostra(false);
       montaGrafici(card, arg); pan.appendChild(card);
     });
   }
@@ -406,7 +622,7 @@
   function schedaFormulario(pan, arg) {
     const g = h('<div class="formulario"></div>');
     arg.formulario.forEach(f => {
-      const c = h(`<div class="scheda formula"><h3>${esc(f.nome)}</h3><div class="f"></div>${f.nota ? '<div class="nota prosa"></div>' : ''}</div>`);
+      const c = h(`<div class="scheda formula"><h3>${md(f.nome).replace(/^<p>|<\/p>$/g, '')}</h3><div class="f"></div>${f.nota ? '<div class="nota prosa"></div>' : ''}</div>`);
       c.querySelector('.f').innerHTML = tex(f.formula, true);
       if (f.nota) c.querySelector('.nota').innerHTML = md(f.nota);
       g.appendChild(c);
@@ -562,8 +778,12 @@
     return String(s).toLowerCase().replace(/\s+/g, '').replace(/−/g, '-').replace(/×|·/g, '*').replace(/≤/g, '<=').replace(/≥/g, '>=').replace(/≠/g, '!=').replace(/²/g, '^2').replace(/³/g, '^3').replace(/,/g, '.').replace(/\.$/, '').replace(/\*\*/g, '^').replace(/^x=/, '').replace(/[«»"']/g, '');
   }
   function numeroDa(s) {
-    s = String(s).trim().replace(/−/g, '-').replace(/,/g, '.').replace(/\s+/g, '');
-    let m = s.match(/^([-+]?\d+(?:\.\d+)?)\/([-+]?\d+(?:\.\d+)?)$/); if (m) return parseFloat(m[1]) / parseFloat(m[2]);
+    s = String(s).trim().replace(/−/g, '-').replace(/,/g, '.').replace(/\s+/g, '').replace(/pi|Π/gi, 'π').replace(/[*·]/g, '');
+    /* multipli e frazioni di π: π, -π, 2π, 3π/4, π/2, 0.5π */
+    let m = s.match(/^([-+]?)(\d+(?:\.\d+)?)?π(?:\/(\d+(?:\.\d+)?))?$/); if (m) return (m[1] === '-' ? -1 : 1) * (m[2] ? parseFloat(m[2]) : 1) * Math.PI / (m[3] ? parseFloat(m[3]) : 1);
+    m = s.match(/^([-+]?\d+(?:\.\d+)?)\/([-+]?\d+(?:\.\d+)?)$/); if (m) return parseFloat(m[1]) / parseFloat(m[2]);
+    /* potenze del numero e: e, 2e, e^2, e^-1 */
+    m = s.match(/^([-+]?)(\d+(?:\.\d+)?)?e(?:\^\(?([-+]?\d+(?:\.\d+)?)\)?)?$/); if (m) return (m[1] === '-' ? -1 : 1) * (m[2] ? parseFloat(m[2]) : 1) * Math.exp(m[3] ? parseFloat(m[3]) : 1);
     m = s.match(/^([-+]?)(?:√|sqrt\(?)(\d+(?:\.\d+)?)\)?$/); if (m) return (m[1] === '-' ? -1 : 1) * Math.sqrt(parseFloat(m[2]));
     if (/^[-+]?\d+(?:\.\d+)?$/.test(s)) return parseFloat(s);
     if (/^[-+]?(inf|∞|infinito)$/.test(s)) return s.startsWith('-') ? -Infinity : Infinity;
@@ -572,7 +792,8 @@
   function numeriDa(s) {
     s = String(s).replace(/−/g, '-').replace(/,/g, '.');
     s = s.replace(/±\s*(\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)?)/g, '-$1 $1');
-    const trovati = s.match(/[-+]?\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)?/g) || [];
+    s = s.replace(/pi|Π/gi, 'π').replace(/[*·]/g, '');
+    const trovati = s.match(/[-+]?(?:\d+(?:\.\d+)?)?π(?:\/\d+(?:\.\d+)?)?|[-+]?\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)?/g) || [];
     return trovati.map(numeroDa).filter(n => isFinite(n));
   }
   const vicino = (a, b, tol) => Math.abs(a - b) <= (tol != null ? tol : Math.max(0.01, Math.abs(b) * 1e-3));
@@ -580,6 +801,7 @@
     if (r.tipo === 'numero') { const n = numeroDa(valoreUtente); return isFinite(n) && vicino(n, r.valore, r.tolleranza); }
     if (r.tipo === 'numeri') {
       const dati = numeriDa(valoreUtente); if (dati.length !== r.valori.length) return false;
+      if (r.ordinati) return dati.every((d, i) => vicino(d, r.valori[i], r.tolleranza));
       const resto = r.valori.slice();
       for (const d of dati) { const k = resto.findIndex(v => vicino(d, v, r.tolleranza)); if (k < 0) return false; resto.splice(k, 1); }
       return true;
@@ -693,7 +915,7 @@
           cont.querySelectorAll('button').forEach(x => { x.disabled = true; });
           b.classList.add(o.giusta ? 'giusta' : 'sbagliata');
           cont.querySelectorAll('button').forEach((x, j) => { if (d.opz[j].giusta) x.classList.add('giusta'); });
-          if (o.giusta) punteggio++;
+          if (o.giusta) { punteggio++; festa(b); }
           esiti.push({ q: d.q, ok: o.giusta });
           const sp = card.querySelector('.quiz-spiega'); sp.hidden = false; sp.innerHTML = md(d.q.spiegazione);
           card.querySelector('.b-avanti').hidden = false;
@@ -786,7 +1008,7 @@
   function paginaMatematici(sel) {
     paginaCorrente = 'matematici'; document.title = 'I matematici — Compasso';
     svuota();
-    app.appendChild(h('<h1 class="titolo-pagina">Le persone dietro le formule</h1><p class="sotto-pagina">Tutti gli aneddoti che Zenone racconta, raccolti per matematico. Tocca un nome per leggere le storie e vedere in quali argomenti compare.</p>'));
+    app.appendChild(h('<div><h1 class="titolo-pagina">Le persone dietro le formule</h1><p class="sotto-pagina">Tutti gli aneddoti che Zenone racconta, raccolti per matematico. Tocca un nome per leggere le storie e vedere in quali argomenti compare.</p></div>'));
     const cont = h('<div class="fc-vuoto">Sto raccogliendo le storie da tutti gli argomenti…</div>'); app.appendChild(cont);
     Promise.all(IND.argomenti.map(a => caricaArgomento(a.id).catch(() => null))).then(argomenti => {
       const persone = {};

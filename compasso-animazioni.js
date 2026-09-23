@@ -517,7 +517,13 @@
     const play = ctrl.querySelector('.cg-anim-play'), range = ctrl.querySelector('input'), fase = ctrl.querySelector('.cg-anim-fase');
     let t = 0, inCorso = false, ultimo = 0, giaPartita = false;
     function didascalia() { let s = ''; (A.fasi || []).forEach(([t0, testo]) => { if (t >= t0) s = testo; }); return s; }
-    function disegna() { while (svg.firstChild) svg.removeChild(svg.firstChild); A.disegna(svg, t); range.value = Math.round(t * 1000); fase.textContent = didascalia(); play.textContent = inCorso ? '❚❚' : (t >= 1 ? '↺' : '▶'); }
+    /* sul telefono il disegno largo 600 si rimpicciolisce: le scritte si ingrandiscono in proporzione */
+    function scalaTesti() {
+      const w = svg.clientWidth; if (!w || w >= 470) return;
+      const k = Math.min(1.45, 440 / w);
+      svg.querySelectorAll('text').forEach(tx => { const fs = parseFloat(tx.getAttribute('font-size')) || 13; tx.setAttribute('font-size', (fs * k).toFixed(1)); tx.style.fontSize = (fs * k).toFixed(1) + 'px'; });
+    }
+    function disegna() { while (svg.firstChild) svg.removeChild(svg.firstChild); A.disegna(svg, t); scalaTesti(); range.value = Math.round(t * 1000); fase.textContent = didascalia(); play.textContent = inCorso ? '❚❚' : (t >= 1 ? '↺' : '▶'); }
     function ciclo(ts) { if (!inCorso) return; t = Math.min(1, t + (ts - ultimo) / (A.durata || 7000)); ultimo = ts; disegna(); if (t >= 1) { inCorso = false; disegna(); return; } requestAnimationFrame(ciclo); }
     function avvia() { if (t >= 1) t = 0; inCorso = true; giaPartita = true; ultimo = performance.now(); requestAnimationFrame(ciclo); disegna(); }
     function ferma() { inCorso = false; disegna(); }

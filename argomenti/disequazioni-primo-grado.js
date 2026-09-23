@@ -4,28 +4,51 @@ COMPASSO.registra({
   id: 'disequazioni-primo-grado',
   titolo: 'Disequazioni di primo grado',
 
-  introduzione: R`Una **disequazione** è come un'equazione, ma al posto del segno di uguale compare un simbolo di confronto: $<$, $>$, $\le$ oppure $\ge$. Un'equazione di primo grado ha di solito un'unica soluzione; una disequazione di primo grado, come $3x - 2 < 7$, ne ha quasi sempre infinite: tutto un intervallo di numeri, per esempio $x < 3$.
+  introduzione: R`Un ascensore porta al massimo 600 kg. Dentro ci sono già persone per 420 kg: quante casse da 30 kg puoi aggiungere? Se chiami $x$ il numero di casse, la condizione è $420 + 30x \le 600$. La risposta non è un numero solo: vanno bene $0, 1, 2, \ldots$ fino a $6$ casse.
 
-Le disequazioni compaiono ogni volta che una domanda non chiede "quanto vale esattamente", ma "quali valori vanno bene": un ascensore che non deve superare un certo peso, una velocità che non deve scendere sotto un limite, un budget che non si può superare facendo acquisti. In tutti questi casi la risposta non è un numero solo, ma un margine.
+Una **disequazione** è come un'equazione, ma al posto dell'uguale c'è un segno di confronto: $<$, $>$, $\le$ oppure $\ge$. Per questo le soluzioni di solito non sono un numero, ma un intero tratto di numeri: $3x - 2 < 7$, per esempio, è vera per tutti i numeri minori di $3$.
 
-Per affrontare questo argomento serve saper risolvere le equazioni di primo grado, e conoscere le operazioni con monomi e frazioni algebriche: le stesse tecniche di calcolo, applicate però a un simbolo che si comporta secondo regole leggermente diverse.`,
+Ti serve saper risolvere le equazioni di primo grado, perché i passaggi sono quasi gli stessi. C'è una regola in più, quella del cambio di verso, ed è lì che si sbaglia.`,
+
+  inBreve: [
+    R`Una disequazione di solito ha infinite soluzioni: un intervallo di numeri, da scrivere per intero.`,
+    R`Sommare o togliere la stessa quantità ai due membri non cambia il verso; moltiplicare o dividere per un numero **negativo** lo capovolge.`,
+    R`Parentesi quadra (pallino pieno) se l'estremo è incluso, tonda (pallino vuoto) se è escluso; l'infinito vuole sempre la tonda.`,
+    R`Se la $x$ sparisce resta un confronto fra numeri: se è vero la soluzione è $\mathbb{R}$, se è falso è $\varnothing$.`,
+    R`In un sistema le disequazioni devono valere tutte insieme: la soluzione è la parte comune degli intervalli.`,
+    R`Nelle fratte non si moltiplica per il denominatore: si studia il segno con la tabella, e lo zero del denominatore è sempre escluso.`
+  ],
 
   sezioni: [
-    { id: 'disuguaglianze', titolo: 'Disuguaglianze e disequazioni', testo: R`Una **disuguaglianza** è un confronto tra due espressioni scritto con uno dei simboli $<$ (minore), $>$ (maggiore), $\le$ (minore o uguale), $\ge$ (maggiore o uguale) oppure $\ne$ (diverso). $3 < 5$ è una disuguaglianza vera; $7 < 2$ è falsa: in entrambe non c'è nessuna incognita, sono solo affermazioni su numeri.
+    { id: 'disuguaglianze', titolo: 'Disuguaglianze e disequazioni', testo: R`$3 < 5$ è vera, $7 < 2$ è falsa: sono confronti fra numeri, e hanno sempre una risposta. Un confronto così si chiama **disuguaglianza**, e si scrive con uno dei simboli $<$ (minore), $>$ (maggiore), $\le$ (minore o uguale), $\ge$ (maggiore o uguale).
 
-Una **disequazione** è invece una disuguaglianza in cui compare un'incognita, per esempio $2x - 1 > 3$. Qui il confronto non è né vero né falso in assoluto: dipende dal valore scelto per $x$. Risolvere una disequazione significa trovare **tutti** i valori dell'incognita che la rendono vera.
+Se nel confronto compare un'incognita, come in $2x - 6 > 0$, la risposta dipende da $x$: con $x = 5$ viene $4 > 0$, vera; con $x = 1$ viene $-4 > 0$, falsa. Questa è una **disequazione**.
 
->* **Risolvere una disequazione** vuol dire determinare l'insieme dei valori di $x$ che la soddisfano. A differenza di un'equazione, che di solito ha un numero finito di soluzioni, una disequazione ne ha quasi sempre **infinite**: un intero intervallo di numeri.
+>* **Risolvere una disequazione** vuol dire trovare **tutti** i valori dell'incognita che la rendono vera. Di solito sono infiniti: un intero tratto di numeri, che si chiama **intervallo**.
 
-Il confronto fra $2x - 1 = 3$ (equazione, un'unica soluzione, $x = 2$) e $2x - 1 > 3$ (disequazione, soluzione $x > 2$, cioè tutti i numeri maggiori di $2$) mostra bene la differenza: stessa espressione, ma un simbolo diverso cambia radicalmente il tipo di risposta che si cerca.
+Trascina $x$ nel grafico e cerca il punto in cui la disequazione passa da falsa a vera.
 
->! Un errore tipico all'inizio è cercare "la" soluzione di una disequazione come se fosse un'equazione. Non c'è un solo numero da trovare: c'è un intervallo, spesso illimitato, da descrivere per intero.` },
+[[grafico:provaValori]]
 
-    { id: 'intervalli', titolo: 'Gli intervalli', testo: R`La soluzione di una disequazione si può scrivere in tre modi equivalenti: con una disuguaglianza (per esempio $-2 \le x < 5$), con la notazione a intervallo (per esempio $[-2, 5)$), oppure disegnandola sulla **retta reale**.
+Vanno bene tutti i numeri a destra di $3$, e $3$ no: lì $2x - 6$ vale $0$, e $0 > 0$ è falso. La soluzione è $x > 3$. L'equazione $2x - 6 = 0$ invece ha una sola soluzione, $x = 3$: stessa espressione, ma il segno di confronto cambia il tipo di risposta.
 
-Un estremo **incluso** (simbolo $\le$ o $\ge$) si rappresenta con la parentesi quadra e, sulla retta, con un pallino pieno; un estremo **escluso** (simbolo $<$ o $>$) si rappresenta con la parentesi tonda e un pallino vuoto. Quando un lato non ha estremo, si usa $+\infty$ o $-\infty$ con la parentesi tonda: l'infinito non è un numero, quindi non può mai essere "incluso".
+?? Quante soluzioni ha la disequazione $x + 1 > 5$?
+[ ] una, $x = 4$
+[x] infinite: tutti i numeri maggiori di $4$
+[ ] infinite: tutti i numeri maggiori di $4$, e anche $4$
+=> Con $x = 4$ viene $5 > 5$, falso: $4$ è il confine ma non è una soluzione. Vanno bene $4{,}1$, $5$, $100$ e così via, cioè tutti i numeri con $x > 4$. Chi risponde «$x = 4$» ha risolto l'equazione $x + 1 = 5$ al posto della disequazione.
 
-| Disuguaglianza | Intervallo | Sulla retta reale |
+>! L'errore di partenza è cercare «la» soluzione come in un'equazione. Il numero che trovi alla fine dei calcoli è solo il **confine**: la risposta è tutto il tratto di numeri da una parte di quel confine.` },
+
+    { id: 'intervalli', titolo: 'Gli intervalli', testo: R`La soluzione di una disequazione si può scrivere in tre modi, che dicono la stessa cosa: con una disuguaglianza ($-2 \le x < 5$), con un **intervallo** ($[-2, 5)$), oppure con un disegno sulla **retta reale**.
+
+In tutti e tre conta una sola domanda: l'estremo è compreso o no?
+
+- estremo **incluso** ($\le$ o $\ge$): parentesi **quadra**, pallino **pieno**;
+- estremo **escluso** ($<$ o $>$): parentesi **tonda**, pallino **vuoto**;
+- se da un lato non c'è un estremo si scrive $+\infty$ o $-\infty$, sempre con la tonda: l'infinito non è un numero, quindi non può essere incluso.
+
+| disuguaglianza | intervallo | sulla retta reale |
 |---|---|---|
 | $a < x < b$ | $(a, b)$ | pallini vuoti in $a$ e $b$ |
 | $a \le x \le b$ | $[a, b]$ | pallini pieni in $a$ e $b$ |
@@ -35,116 +58,185 @@ Un estremo **incluso** (simbolo $\le$ o $\ge$) si rappresenta con la parentesi q
 
 [[grafico:intervalliNotazione]]
 
-Alcuni libri, seguendo un'usanza francese, scrivono l'intervallo aperto con le parentesi quadre "rovesciate", $]a, b[$, invece delle tonde $(a,b)$: il significato è identico, cambia solo la grafia.
+Molti libri italiani scrivono l'intervallo aperto con le quadre rovesciate: $]a, b[$ invece di $(a, b)$. Il significato è identico.
 
->* Parentesi **quadra** = estremo incluso ($\le$, $\ge$); parentesi **tonda** = estremo escluso ($<$, $>$). L'infinito ha sempre la tonda.
+>* Parentesi **quadra** = estremo incluso ($\le$, $\ge$). Parentesi **tonda** = estremo escluso ($<$, $>$). L'infinito ha sempre la tonda.
 
->! Attenzione a non confondere l'intervallo $(2, 5)$ (i numeri tra $2$ e $5$) con la coppia di coordinate $(2, 5)$ di un punto: il contesto chiarisce sempre di quale dei due si tratta, ma è bene saperlo.` },
+?? Come si scrive $x \ge -1$ con un intervallo?
+[x] $[-1, +\infty)$
+[ ] $(-1, +\infty)$
+[ ] $[-1, +\infty]$
+=> $\ge$ include $-1$, quindi quadra a sinistra; dall'altra parte c'è $+\infty$, che vuole sempre la tonda. $(-1, +\infty)$ esclude $-1$; $[-1, +\infty]$ «include» l'infinito, che non è un numero.
 
-    { id: 'principi-equivalenza', titolo: 'I principi di equivalenza e il cambio di verso', testo: R`Come per le equazioni, esistono due principi che permettono di trasformare una disequazione in un'altra equivalente (con le stesse soluzioni), più semplice da risolvere.
+>! $(2, 5)$ può voler dire due cose: l'intervallo dei numeri fra $2$ e $5$, oppure il punto di coordinate $2$ e $5$. Si capisce dal contesto: in questo capitolo è un intervallo.` },
 
-**Primo principio.** Si può sommare o sottrarre la stessa quantità a entrambi i membri: il verso della disequazione non cambia. Da $x - 5 > 2$ si ottiene $x > 7$ sommando $5$ a entrambi i membri.
+    { id: 'principi-equivalenza', titolo: 'I principi di equivalenza e il cambio di verso', testo: R`Anche per le disequazioni ci sono due principi, come per le equazioni: trasformano una disequazione in una più semplice con le stesse soluzioni (si dice **equivalente**). Il primo non ha sorprese, il secondo sì.
 
-**Secondo principio.** Si possono moltiplicare o dividere entrambi i membri per uno stesso numero diverso da zero, ma con una condizione fondamentale:
+>* **Primo principio.** Se sommi o togli la stessa quantità a entrambi i membri, il verso non cambia. Da $x - 5 > 2$, sommando $5$, si ha $x > 7$.
 
-- se si moltiplica (o divide) per un numero **positivo**, il verso resta invariato;
-- se si moltiplica (o divide) per un numero **negativo**, il verso si capovolge: $<$ diventa $>$, $\le$ diventa $\ge$, e viceversa.
+Il **verso** è il senso del segno di confronto: $<$ e $>$ hanno versi opposti, e così $\le$ e $\ge$.
 
-Il motivo si vede con un esempio numerico: $2 < 5$ è vera; moltiplicando entrambi i membri per $-1$ si otterrebbe $-2 < -5$, che è **falsa** ($-2$ è maggiore di $-5$, non minore). Per restare coerenti, il verso deve cambiare: $-2 > -5$.
-
-Applichiamo il principio a $-2x < 6$: dividendo per $-2$ (negativo), il verso si capovolge e si ottiene $x > -3$.
+Per il secondo principio prova tu. Parti da $2 < 5$ e moltiplica tutti e due i numeri per lo stesso $k$: sposta il cursore e guarda che cosa succede all'ordine quando $k$ diventa negativo.
 
 [[grafico:cambioVerso]]
 
->* **Cambio di verso:** moltiplicando o dividendo per un numero negativo, $<$ e $>$ si scambiano, e così $\le$ e $\ge$. Sommare o sottrarre non cambia mai il verso.
+Con $k = -1$, i numeri $2$ e $5$ diventano $-2$ e $-5$, e ora il più grande è $-2$. Moltiplicando per un numero negativo i numeri si scambiano di posto sulla retta, come in uno specchio, e il segno deve girarsi: $-2 > -5$.
 
->! L'errore più comune in assoluto in questo argomento è proprio dimenticare il cambio di verso quando si divide per un coefficiente negativo. Conviene controllare sempre il segno del numero per cui si sta dividendo, prima di scrivere il risultato.` },
+>* **Secondo principio.** Se moltiplichi o dividi entrambi i membri per lo stesso numero **positivo**, il verso resta. Se il numero è **negativo**, il verso si capovolge: $<$ diventa $>$, $\le$ diventa $\ge$, e viceversa.
 
-    { id: 'disequazioni-intere', titolo: 'Disequazioni intere', testo: R`Una disequazione di primo grado **intera** (senza l'incognita al denominatore) si riconduce sempre, dopo aver eliminato eventuali parentesi e ridotto i termini simili, alla **forma normale** $ax + b > 0$ (o con $<,\ \le,\ \ge$).
+~ -2x < 6 :: il coefficiente della $x$ è negativo
+~ \dfrac{-2x}{\evid{-2}} \evid{>} \dfrac{6}{\evid{-2}} :: divido per $-2$: è negativo, quindi il verso si capovolge
+~ x > \evidb{-3} :: semplifico
 
-Isolando $x$ si trovano tre casi, a seconda del segno di $a$:
+?? Da $-3x \le 12$ si ottiene…
+[ ] $x \le -4$
+[x] $x \ge -4$
+[ ] $x \ge 4$
+=> Si divide per $-3$, che è negativo: il verso si capovolge, e $12 : (-3) = -4$. Quindi $x \ge -4$. $x \le -4$ dimentica il cambio di verso; $x \ge 4$ sbaglia il segno del risultato.
 
-- se $a > 0$: si divide per $a$ senza cambiare verso, $x > -\dfrac{b}{a}$;
-- se $a < 0$: si divide per $a$ cambiando verso, $x < -\dfrac{b}{a}$;
-- se $a = 0$: l'incognita scompare e resta un confronto tra soli numeri, che è **sempre vero** oppure **sempre falso**.
+>! Dimenticare il cambio di verso quando si divide per un coefficiente negativo è l'errore più comune di tutto l'argomento. Prima di dividere, guarda il segno del numero per cui stai dividendo.` },
 
-Per esempio, $2x - 6 > 0$ ha $a = 2 > 0$: si ottiene $x > 3$. Graficamente, $y = 2x - 6$ è una retta, e la disequazione chiede dove questa retta sta **sopra** l'asse $x$: esattamente per $x > 3$.
+    { id: 'disequazioni-intere', titolo: 'Disequazioni intere', testo: R`Una disequazione è **intera** quando la $x$ non sta in nessun denominatore. Si risolve come un'equazione: si tolgono le parentesi, si portano le $x$ da una parte e i numeri dall'altra, si riducono i termini simili. Alla fine resta la **forma normale** $ax > b$ (o con $<$, $\le$, $\ge$).
 
-[[grafico:segnoRetta]]
+~ 3(x - 2) \le 5x + 4 :: si parte da qui
+~ 3x - 6 \le 5x + 4 :: tolgo la parentesi
+~ 3x \evid{- 5x} \le 4 \evid{+ 6} :: $x$ a sinistra, numeri a destra: il verso non cambia
+~ \evid{-2x} \le \evid{10} :: riduco; il coefficiente della $x$ è negativo
+~ x \evid{\ge} \evidb{-5} :: divido per $-2$ e capovolgo il verso
 
-Prova a spostare il punto sull'asse $x$ nel grafico seguente, e osserva quando $2p - 6$ diventa positivo.
+Controllo con un numero della soluzione, $x = 0$: $-6 \le 4$ ✓. E con uno fuori, $x = -6$: $-24 \le -26$ è falso, come deve essere.
 
-[[grafico:provaValori]]
+L'ultimo passo dipende dal segno di $a$:
 
-Il caso $a = 0$ dà luogo a due possibilità particolari. In $2(x + 3) > 2x - 1$, sviluppando si ottiene $2x + 6 > 2x - 1$, cioè $6 > -1$: vero per ogni numero, indipendentemente da $x$. La disequazione è **sempre vera**, con soluzione tutto $\mathbb{R}$. In $2(x - 1) > 2x + 5$, invece, si arriva a $-2 > 5$: falso sempre. La disequazione è **mai vera**, con soluzione l'**insieme vuoto** ($S = \varnothing$).
+| coefficiente | che cosa fai | soluzione di $ax > b$ |
+|---|---|---|
+| $a > 0$ | divido, il verso resta | $x > \frac{b}{a}$ |
+| $a < 0$ | divido e capovolgo il verso | $x < \frac{b}{a}$ |
+| $a = 0$ | non si divide: la $x$ è sparita | un confronto fra numeri |
 
->* Una disequazione intera di primo grado ha tre possibili tipi di soluzione: un intervallo (il caso normale), tutto $\mathbb{R}$ (sempre vera), oppure $\varnothing$ (mai vera).
+Il caso $a = 0$ merita un esempio. In $2(x + 3) > 2x - 1$, togliendo la parentesi si ha $2x + 6 > 2x - 1$. Portando le $x$ a sinistra spariscono, e resta $0 > -7$: vero, qualunque sia $x$. La disequazione è **sempre verificata**, $S = \mathbb{R}$. Con $2(x - 1) > 2x + 5$ si arriva invece a $0 > 7$, falso per ogni $x$: la disequazione è **impossibile**, $S = \varnothing$.
 
->! "Sempre vera" e "mai vera" non sono errori di calcolo: sono risposte legittime. Vanno riconosciute quando, semplificando, l'incognita $x$ scompare del tutto dai due membri.` },
+>* Una disequazione intera di primo grado può avere come soluzione un intervallo (il caso normale), tutto $\mathbb{R}$ (sempre verificata) oppure nessun numero, $S = \varnothing$ (impossibile).
 
-    { id: 'sistemi', titolo: 'Sistemi di disequazioni', testo: R`Un **sistema di disequazioni** è un insieme di due o più disequazioni che devono essere vere **contemporaneamente**. Si scrive con una parentesi graffa:
+?? Semplificando una disequazione arrivi a $0 \cdot x \ge 0$. La soluzione è…
+[x] $S = \mathbb{R}$: ogni numero va bene
+[ ] $S = \varnothing$
+[ ] $x \ge 0$
+=> $0 \cdot x$ vale $0$ per ogni $x$, e $0 \ge 0$ è vero: la disequazione è sempre verificata. Attenzione al simbolo: con $0 \cdot x > 0$ sarebbe stata impossibile, perché $0 > 0$ è falso. Chi scrive $x \ge 0$ ha diviso per zero.
+
+>! Quando la $x$ sparisce non hai sbagliato i calcoli: resta un confronto fra numeri, e la risposta è $\mathbb{R}$ se è vero, $\varnothing$ se è falso.` },
+
+    { id: 'sistemi', titolo: 'Sistemi di disequazioni', testo: R`Un **sistema di disequazioni** mette insieme due o più disequazioni che devono essere vere **tutte nello stesso momento**. Si scrive con la parentesi graffa, che si legge «e»:
 
 $$\begin{cases} 2x - 3 > -7 \\ -x + 5 \ge -3 \end{cases}$$
 
-Il metodo è sempre lo stesso: si risolve ogni disequazione **separatamente**, poi si disegnano tutte le soluzioni sulla stessa retta reale e si cerca l'**intersezione**, cioè la parte comune a tutti gli intervalli.
+Si risolve ogni disequazione per conto suo, poi si disegnano le soluzioni una sotto l'altra sulla retta reale e si prende la parte **comune**, che si chiama **intersezione**.
 
-Nell'esempio: dalla prima, $2x > -4$, cioè $x > -2$; dalla seconda, $-x \ge -8$, e dividendo per $-1$ (cambio di verso) $x \le 8$. L'intersezione tra $x > -2$ e $x \le 8$ è $-2 < x \le 8$.
+- Prima disequazione: $2x > -4$, quindi $x > -2$.
+- Seconda disequazione: $-x \ge -8$; divido per $-1$ e capovolgo il verso: $x \le 8$.
 
 [[grafico:sistemaIntersezione]]
 
->* La soluzione di un sistema è l'**intersezione**, non l'unione, delle soluzioni delle singole disequazioni: un valore deve soddisfarle tutte insieme, la parola "e" non lascia scelta.
+La parte comune va da $-2$ escluso a $8$ incluso: $-2 < x \le 8$.
 
-Se gli intervalli delle singole disequazioni non si sovrappongono affatto, il sistema **non ha soluzione**: per esempio $x > 4$ e $x < 1$ insieme non sono mai vere, perché nessun numero è allo stesso tempo maggiore di $4$ e minore di $1$ ($S = \varnothing$).
+>* La soluzione di un sistema è l'**intersezione** delle soluzioni: un numero va bene solo se soddisfa **tutte** le disequazioni.
 
->! Un errore frequente è unire gli intervalli invece di intersecarli, magari perché sembra "più generoso" prendere tutti i valori che vanno bene ad **almeno una** delle disequazioni. Ma un sistema chiede che valgano **tutte**.` },
+Se gli intervalli non hanno nessun tratto in comune, il sistema non ha soluzioni. Con $x > 4$ e $x < 1$, per esempio, nessun numero è insieme maggiore di $4$ e minore di $1$: $S = \varnothing$.
 
-    { id: 'fratte-prodotto', titolo: 'Disequazioni fratte e disequazioni prodotto', testo: R`Una **disequazione prodotto** confronta con $0$ un prodotto di fattori di primo grado, per esempio $(x + 1)(x - 3) < 0$. Si trovano gli **zeri** di ciascun fattore ($-1$ e $3$), si segnano sulla retta reale, e si costruisce la **tabella dei segni**: per ogni intervallo tra due zeri consecutivi si stabilisce il segno di ciascun fattore e si moltiplicano. Qui, tra $-1$ e $3$ un fattore è positivo e l'altro negativo: il prodotto è negativo, quindi soluzione $-1 < x < 3$.
+?? Il sistema formato da $x \ge 2$ e $x < 6$ ha soluzione…
+[x] $2 \le x < 6$
+[ ] tutti i numeri reali
+[ ] $x \ge 2$
+=> Servono tutte e due le condizioni: $x$ deve essere almeno $2$ **e** minore di $6$. «Tutti i numeri reali» è l'unione dei due intervalli (ogni numero ne soddisfa almeno una), che risponde a un'altra domanda. Rispondere $x \ge 2$ vuol dire dimenticare la condizione $x < 6$.
 
-Una **disequazione fratta** ha l'incognita anche al denominatore, per esempio $\dfrac{x - 2}{x - 4} \ge 0$.
+>! Unire gli intervalli invece di intersecarli è l'errore tipico: l'unione prende i numeri che vanno bene ad **almeno una** disequazione, ma il sistema li vuole buoni per **tutte**.` },
 
->! Non si moltiplica **mai** entrambi i membri per il denominatore quando contiene l'incognita: il suo segno non è noto in anticipo, e moltiplicare per una quantità di segno ignoto può capovolgere il verso senza che ce ne accorgiamo.
+    { id: 'fratte-prodotto', titolo: 'Disequazioni fratte e disequazioni prodotto', testo: R`Come si risolve $(x + 1)(x - 3) < 0$? Non serve svolgere il prodotto: basta sapere il **segno** di ciascun fattore, perché il segno di un prodotto è il prodotto dei segni (meno per meno fa più). Una disequazione così si chiama **disequazione prodotto**.
 
-Il metodo giusto: si portano tutti i termini a un membro, ottenendo un'unica frazione confrontata con $0$ (già fatta, in questo caso), e si applica la stessa tabella dei segni usata per il prodotto, trattando numeratore e denominatore come fattori separati.
+1. Trova dove si annulla ogni fattore: $x + 1 = 0$ per $x = -1$, $x - 3 = 0$ per $x = 3$.
+2. Questi valori tagliano la retta in intervalli; dentro ciascuno, ogni fattore ha sempre lo stesso segno.
+3. Costruisci la **tabella dei segni** e moltiplica i segni in ogni colonna.
 
-| Intervallo | $x-2$ | $x-4$ | frazione |
+| | $x < -1$ | $-1 < x < 3$ | $x > 3$ |
 |---|---|---|---|
-| $x < 2$ | $-$ | $-$ | $+$ |
-| $x = 2$ | $0$ | $-$ | $0$ |
-| $2 < x < 4$ | $+$ | $-$ | $-$ |
-| $x = 4$ | $+$ | $0$ | non esiste |
-| $x > 4$ | $+$ | $+$ | $+$ |
+| $x + 1$ | $-$ | $+$ | $+$ |
+| $x - 3$ | $-$ | $-$ | $+$ |
+| prodotto | $+$ | $-$ | $+$ |
 
-La disequazione chiede dove la frazione è $\ge 0$: per $x \le 2$ oppure $x > 4$. Il valore $x = 4$, che annulla il denominatore, resta **sempre escluso**, anche se il simbolo è $\ge$: lì la frazione semplicemente non esiste.
+Il prodotto è negativo solo nel tratto centrale: $-1 < x < 3$.
 
-[[grafico:frattaEsclusione]]
+Una **disequazione fratta** ha la $x$ anche al denominatore, come $\dfrac{x - 2}{x - 4} \ge 0$. Viene voglia di moltiplicare per $x - 4$ e liberarsene, ma non si può: il segno di $x - 4$ dipende da $x$, e se fosse negativo il verso andrebbe capovolto. Non sapendo se capovolgerlo, si sbaglia.
 
->* Nelle disequazioni fratte si confronta con $0$ e si studia il segno con la tabella; il denominatore non si moltiplica mai, e il suo zero è sempre escluso dalla soluzione.` },
+>* **Disequazione fratta:** porta tutto a un membro, in modo da avere una sola frazione confrontata con $0$. Poi studia il segno di numeratore e denominatore con la tabella, come per un prodotto. Il valore che annulla il denominatore è **sempre escluso**.
 
-    { id: 'letterali', titolo: 'Disequazioni letterali', testo: R`In una disequazione **letterale** (o parametrica) uno o più coefficienti sono indicati con una lettera, il **parametro**, e la soluzione dipende dal suo valore. Risolvere significa **discutere** tutti i casi possibili.
+Per $\dfrac{x - 2}{x - 4} \ge 0$ il numeratore si annulla in $2$, il denominatore in $4$:
 
-Il bivio decisivo, quando si isola $x$ dividendo per il coefficiente che la moltiplica, è sempre il **segno di quel coefficiente**. Per $kx > 3$:
+| | $x < 2$ | $2 < x < 4$ | $x > 4$ |
+|---|---|---|---|
+| $x - 2$ | $-$ | $+$ | $+$ |
+| $x - 4$ | $-$ | $-$ | $+$ |
+| frazione | $+$ | $-$ | $+$ |
 
-- se $k > 0$: si divide per un positivo, $x > \dfrac{3}{k}$;
-- se $k < 0$: si divide per un negativo, il verso cambia, $x < \dfrac{3}{k}$;
-- se $k = 0$: l'incognita scompare, resta $0 > 3$, falso: nessun $x$ va bene, qualunque esso sia.
+La frazione è positiva per $x < 2$ e per $x > 4$. Il simbolo è $\ge$, quindi vanno bene anche i punti dove la frazione vale $0$: in $x = 2$ sì, perché lì si annulla il numeratore; in $x = 4$ no, perché lì la frazione non esiste. Soluzione: $x \le 2$ oppure $x > 4$.
 
-La discussione va sempre fatta per **tutti** i valori del parametro, incluso il caso limite in cui il coefficiente si annulla: è proprio lì che si nasconde l'errore più comune, dimenticarsi che $k = 0$ è un caso a parte e non un sottocaso di $k > 0$ o $k < 0$.
+?? In $\dfrac{x + 5}{x - 1} \le 0$, gli estremi $-5$ e $1$ sono…
+[x] $-5$ incluso, $1$ escluso
+[ ] tutti e due inclusi, perché il simbolo è $\le$
+[ ] tutti e due esclusi
+=> In $-5$ la frazione vale $0$, e $0 \le 0$ è vero: incluso. In $1$ il denominatore si annulla e la frazione non esiste: escluso, qualunque sia il simbolo. La soluzione è $-5 \le x < 1$.
 
->* In una disequazione letterale $kx > c$ si distinguono sempre tre casi: $k > 0$ (verso invariato), $k < 0$ (verso capovolto), $k = 0$ (l'incognita scompare, resta un confronto tra numeri).
+>! Mai moltiplicare i due membri per un denominatore che contiene la $x$: non ne conosci il segno, quindi non sai se il verso va capovolto.` },
 
->! Non basta scrivere $x > 3/k$ e fermarsi: senza specificare il segno di $k$, quella scrittura da sola non dice nulla su quale verso abbia davvero la disequazione.` },
+    { id: 'letterali', titolo: 'Disequazioni letterali', testo: R`In $kx > 3$ la lettera $k$ è un **parametro**: un numero fissato che però non conosci. La soluzione cambia a seconda di quanto vale $k$, e **discutere** la disequazione vuol dire dare la risposta per ogni valore possibile.
 
-    { id: 'problemi', titolo: 'Problemi con le disequazioni', testo: R`Molti problemi non chiedono un valore preciso, ma un **intervallo** di valori accettabili: quante magliette si possono comprare al massimo con un certo budget, quale altezza minima deve avere un oggetto, quanti punti servono almeno per essere promossi. Sono situazioni tipiche delle disequazioni.
+Per isolare la $x$ devi dividere per $k$, e qui c'è il bivio: il verso resta o si capovolge a seconda del segno di $k$, e se $k = 0$ non puoi dividere affatto.
 
-Il procedimento è lo stesso delle equazioni: si sceglie l'incognita, si **traduce** ogni condizione del testo in una disequazione, si risolve, e infine si controlla che la soluzione **abbia senso nel contesto**.
+| valore di $k$ | che cosa fai | soluzione |
+|---|---|---|
+| $k > 0$ | divido, il verso resta | $x > \frac{3}{k}$ |
+| $k < 0$ | divido e capovolgo il verso | $x < \frac{3}{k}$ |
+| $k = 0$ | resta $0 > 3$, falso | nessuna: $S = \varnothing$ |
 
-Alcune parole chiave guidano la traduzione: "supera" si traduce con $>$, "non supera" con $\le$, "almeno" con $\ge$, "al più" o "al massimo" con $\le$, "meno di" con $<$.
+>* In una disequazione letterale $kx > c$ si distinguono sempre tre casi: $k > 0$ (verso invariato), $k < 0$ (verso capovolto), $k = 0$ (la $x$ sparisce e resta un confronto fra numeri).
 
-Esempio: *la somma tra il triplo di un numero naturale e $5$ non supera $20$: quali numeri soddisfano la condizione?* Detto $x$ il numero, la condizione si traduce in $3x + 5 \le 20$, cioè $x \le 5$. Poiché $x$ deve essere un numero naturale, le soluzioni accettabili sono $0, 1, 2, 3, 4, 5$: la disequazione dà un intervallo continuo, $x \le 5$, ma il contesto lo restringe a un insieme finito di numeri.
+Controllo con due valori. Con $k = 3$: $3x > 3$, cioè $x > 1$, e infatti $\frac{3}{3} = 1$. Con $k = -3$: $-3x > 3$, e dividendo per $-3$ si ha $x < -1$, come dice la tabella: $\frac{3}{-3} = -1$. ✓
 
->* Nei problemi, la disequazione risolta dà spesso un intervallo continuo di numeri reali; sono i vincoli del problema (numeri naturali, quantità positive, ecc.) a selezionare, tra questi, i valori che hanno davvero senso.
+?? Nella disequazione $(a - 1)\,x < 5$, per quali valori di $a$ la soluzione è $x > \frac{5}{a - 1}$?
+[x] per $a < 1$
+[ ] per $a > 1$
+[ ] per $a \ne 1$
+=> Il verso si capovolge quando si divide per un numero negativo, cioè quando $a - 1 < 0$, $a < 1$. Per $a > 1$ il verso resta: $x < \frac{5}{a - 1}$. «Per $a \ne 1$» mette insieme due casi che hanno risposte opposte.
 
->! Dimenticare i vincoli nascosti del contesto è l'errore più insidioso: una lunghezza non può essere negativa, un numero di persone non può essere frazionario, anche se l'algebra da sola non lo impedirebbe.` }
+>! Il caso in cui il coefficiente vale zero va trattato a parte: non è un sottocaso di «positivo» o «negativo». E scrivere solo $x > \frac{3}{k}$, senza dire per quali $k$ vale, è una risposta incompleta.` },
+
+    { id: 'problemi', titolo: 'Problemi con le disequazioni', testo: R`Molti problemi non chiedono un valore preciso ma un margine: quante magliette puoi comprare al massimo con un certo budget, quanti punti ti servono almeno per la sufficienza. Sono problemi da disequazione.
+
+Lo schema è quello delle equazioni: scegli l'incognita, traduci le condizioni del testo, risolvi, e alla fine controlla che la soluzione **abbia senso** nel problema. La traduzione passa da poche parole chiave:
+
+| il testo dice | si scrive |
+|---|---|
+| supera, più di | $>$ |
+| non supera, al massimo, al più | $\le$ |
+| almeno, non meno di | $\ge$ |
+| meno di | $<$ |
+
+Esempio: *la somma fra il triplo di un numero naturale e $5$ non supera $20$. Quali numeri vanno bene?* Chiamo $x$ il numero.
+
+~ 3x + 5 \le 20 :: «non supera» vuol dire «minore o uguale»
+~ 3x \le \evid{15} :: porto il $5$ a destra
+~ x \le \evidb{5} :: divido per $3$, che è positivo: il verso resta
+
+La disequazione dà tutti i numeri reali fino a $5$. Ma il testo parla di numeri **naturali**, quindi le risposte sono solo $0, 1, 2, 3, 4, 5$.
+
+>* La disequazione dà un intervallo di numeri reali; sono le condizioni del problema (numeri naturali, quantità positive…) a dire quali di quei numeri hanno senso.
+
+?? «Per la sufficienza Giulia deve prendere almeno 18 punti.» Se $x$ sono i suoi punti, la condizione è…
+[ ] $x > 18$
+[x] $x \ge 18$
+[ ] $x \le 18$
+=> «Almeno 18» vuol dire 18 o di più: anche $18$ va bene, quindi $\ge$. Con $>$ si escluderebbe proprio il $18$; $\le$ è la traduzione di «al massimo».
+
+>! Attento ai vincoli che il testo non scrive: una lunghezza non può essere negativa, un numero di persone non può avere la virgola. L'algebra da sola non lo sa.` }
   ],
 
   grafici: {
@@ -155,32 +247,39 @@ Esempio: *la somma tra il triplo di un numero naturale e $5$ non supera $20$: qu
         { da: 0, a: 3, chiusoDa: false, chiusoA: false, colore: 2, etichetta: '0 < x < 3' },
         { da: 4, a: 'inf', chiusoDa: true, colore: 3, etichetta: 'x ≥ 4' }
       ],
-      didascalia: 'Tre intervalli con notazioni diverse: chiuso, aperto, illimitato a destra.'
+      didascalia: 'Guarda i pallini: pieni dove l\'estremo è incluso (−4, −1 e 4), vuoti dove è escluso (0 e 3). L\'ultimo intervallo non ha fine a destra: arriva a +∞.'
     },
-    segnoRetta: {
-      tipo: 'piano', x: [-2, 8], y: [-11, 11], passo: [1, 2],
-      funzioni: [{ f: '2x-6', etichetta: 'y = 2x − 6', colore: 1 }],
-      elementi: [
-        { tipo: 'area', f: '2x-6', da: 3, a: 6, etichetta: 'y > 0' },
-        { tipo: 'punto', p: [3, 0], etichetta: 'x = 3', posizione: 'basso', colore: 4 }
-      ],
-      didascalia: 'Dove la retta sta sopra l\'asse x (per x > 3) la disequazione 2x − 6 > 0 è vera.'
-    },
+    /* i due punti «vera»/«falsa» sono invisibili (raggio minimo) e compaiono solo quando la loro
+       y è un numero: 0·ln(…) e 0·sqrt(…) danno NaN dal lato sbagliato, e il punto non si disegna */
     provaValori: {
-      tipo: 'piano', x: [-2, 8], y: [-11, 11], passo: [1, 2],
+      tipo: 'piano', x: [-2, 8], y: [-1.2, 1.6], passo: [1, 1], griglia: false, proporzioni: 'libere', altezza: 230,
+      etichette: { x: 'x', y: ' ' },
       parametri: [{ nome: 'p', min: -2, max: 8, passo: 0.5, valore: 0, nascosto: true }],
-      funzioni: [{ f: '2x-6', etichetta: 'y = 2x − 6', colore: 1 }],
       elementi: [
+        { tipo: 'testo', p: [3, 1.25], testo: '2x − 6 = {{2*p - 6}}' },
         { tipo: 'punto', p: ['p', 0], trascina: true, etichetta: 'x = {{p}}', posizione: 'basso', colore: 2 },
-        { tipo: 'testo', p: [-1.8, 9.5], testo: '2p − 6 = {{2*p - 6}}', ancora: 'start' }
+        { tipo: 'punto', p: ['p', '0.45 + 0*ln(2*p - 6)'], raggio: 0.01, etichetta: '{{2*p - 6}} > 0: VERA', posizione: 'alto', colore: 3 },
+        { tipo: 'punto', p: ['p', '0.45 + 0*sqrt(6 - 2*p)'], raggio: 0.01, etichetta: '{{2*p - 6}} > 0: falsa', posizione: 'alto', colore: 2 }
       ],
-      didascalia: 'Trascina il punto sull\'asse x: quando 2p − 6 è positivo il punto è a destra di 3.'
+      didascalia: 'Trascina il punto lungo l\'asse: per quali x la disequazione 2x − 6 > 0 è vera? E proprio in x = 3?'
     },
     cambioVerso: {
-      tipo: 'retta-reale', x: [-7, 3],
-      intervalli: [{ da: -3, a: 'inf', chiusoDa: false, colore: 1, etichetta: 'x > −3' }],
-      punti: [{ x: -3, etichetta: '−3', escluso: true }],
-      didascalia: 'Soluzione di −2x < 6: dividendo per −2 il verso cambia, x > −3 (estremo escluso).'
+      tipo: 'piano', x: [-11, 11], y: [-0.8, 3.6], passo: [2, 1], griglia: false, proporzioni: 'libere',
+      etichette: { x: '', y: ' ' },
+      parametri: [{ nome: 'k', min: -2, max: 2, passo: 0.5, valore: 1, etichetta: 'k' }],
+      elementi: [
+        { tipo: 'orizzontale', y: 2, colore: 1 },
+        { tipo: 'segmento', da: [2, 2], a: ['2*k', 0], tratteggio: true, colore: 4 },
+        { tipo: 'segmento', da: [5, 2], a: ['5*k', 0], tratteggio: true, colore: 4 },
+        { tipo: 'punto', p: [2, 2], etichetta: '2', posizione: 'alto', colore: 1 },
+        { tipo: 'punto', p: [5, 2], etichetta: '5', posizione: 'alto', colore: 1 },
+        { tipo: 'punto', p: ['2*k', 0], etichetta: '{{2*k}}', posizione: 'alto-sinistra', colore: 2 },
+        { tipo: 'punto', p: ['5*k', 0], etichetta: '{{5*k}}', posizione: 'alto-destra', colore: 2 },
+        { tipo: 'punto', p: [-10.8, '3.2 + 0*ln(k)'], raggio: 0.01, etichetta: '{{2*k}} < {{5*k}}: il verso resta', posizione: 'destra', colore: 3 },
+        { tipo: 'punto', p: [-10.8, '3.2 + 0*ln(-k)'], raggio: 0.01, etichetta: '{{2*k}} > {{5*k}}: verso capovolto', posizione: 'destra', colore: 2 },
+        { tipo: 'punto', p: [-10.8, '3.2 + 0*sqrt(-k*k)'], raggio: 0.01, etichetta: 'con k = 0 diventano uguali', posizione: 'destra', colore: 4 }
+      ],
+      didascalia: 'In alto ci sono 2 e 5, in basso 2k e 5k. Sposta k sotto lo zero: le linee si incrociano, e il più piccolo diventa il più grande.'
     },
     sistemaIntersezione: {
       tipo: 'retta-reale', x: [-6, 10],
@@ -189,16 +288,7 @@ Esempio: *la somma tra il triplo di un numero naturale e $5$ non supera $20$: qu
         { da: '-inf', a: 8, chiusoA: true, colore: 2, etichetta: '2ª: x ≤ 8' },
         { da: -2, a: 8, chiusoDa: false, chiusoA: true, colore: 3, etichetta: 'soluzione: −2 < x ≤ 8' }
       ],
-      didascalia: 'Le prime due righe mostrano le soluzioni singole; la terza, la loro intersezione.'
-    },
-    frattaEsclusione: {
-      tipo: 'retta-reale', x: [-2, 8],
-      intervalli: [
-        { da: '-inf', a: 2, chiusoA: true, colore: 1, etichetta: 'x ≤ 2' },
-        { da: 4, a: 'inf', chiusoDa: false, colore: 2, etichetta: 'x > 4' }
-      ],
-      punti: [{ x: 4, etichetta: '4 (c.e.)', escluso: true }],
-      didascalia: 'Soluzione di (x − 2)/(x − 4) ≥ 0: x = 4 resta sempre escluso, anche se il verso è "≥".'
+      didascalia: 'Le righe 1ª e 2ª sono le soluzioni delle singole disequazioni. Guarda la riga più in alto, la soluzione: tiene solo il tratto in cui le altre due si sovrappongono.'
     }
   },
 
@@ -209,17 +299,17 @@ Esempio: *la somma tra il triplo di un numero naturale e $5$ non supera $20$: qu
       R`Verifica con un valore della soluzione, $x = 5$: $2 \cdot 5 - 6 = 4 > 0$. ✓ Con $x = 0$ (fuori dalla soluzione): $-6 > 0$ è falso, coerente.`
     ], risultato: R`$x > 3$` },
 
-    { titolo: 'Una disequazione sempre vera', problema: R`Risolvi $2(x + 3) > 2x - 1$.`, passi: [
+    { titolo: 'Una disequazione sempre verificata', problema: R`Risolvi $2(x + 3) > 2x - 1$.`, passi: [
       R`Svolgo la parentesi: $2x + 6 > 2x - 1$.`,
       R`Porto le $x$ a sinistra: $2x - 2x > -1 - 6$, cioè $0 > -7$.`,
       R`L'incognita è scomparsa e resta un confronto tra numeri **vero**: la disequazione è soddisfatta da ogni $x$.`
-    ], risultato: R`Sempre vera: $S = \mathbb{R}$` },
+    ], risultato: R`Sempre verificata: $S = \mathbb{R}$` },
 
-    { titolo: 'Una disequazione mai vera', problema: R`Risolvi $2(x - 1) > 2x + 5$.`, passi: [
+    { titolo: 'Una disequazione impossibile', problema: R`Risolvi $2(x - 1) > 2x + 5$.`, passi: [
       R`Svolgo la parentesi: $2x - 2 > 2x + 5$.`,
       R`Porto le $x$ a sinistra: $2x - 2x > 5 + 2$, cioè $0 > 7$.`,
       R`È un confronto tra numeri **falso**: nessun valore di $x$ può renderlo vero.`
-    ], risultato: R`Mai vera: $S = \varnothing$` },
+    ], risultato: R`Impossibile: $S = \varnothing$` },
 
     { titolo: 'Un sistema di disequazioni', problema: R`Risolvi il sistema $\begin{cases} 2x - 3 > -7 \\ -x + 5 \ge -3 \end{cases}$.`, passi: [
       R`Prima disequazione: $2x - 3 > -7 \Rightarrow 2x > -4 \Rightarrow x > -2$.`,
@@ -246,10 +336,10 @@ Esempio: *la somma tra il triplo di un numero naturale e $5$ non supera $20$: qu
     { nome: 'Primo principio di equivalenza', formula: R`a > b \quad\Rightarrow\quad a + c > b + c`, nota: R`Si può sommare o sottrarre lo stesso numero a entrambi i membri: il verso non cambia.` },
     { nome: 'Secondo principio (fattore positivo)', formula: R`a > b, \ \ c > 0 \quad\Rightarrow\quad ac > bc`, nota: R`Moltiplicando o dividendo per un numero positivo il verso resta invariato.` },
     { nome: 'Secondo principio (fattore negativo)', formula: R`a > b, \ \ c < 0 \quad\Rightarrow\quad ac < bc`, nota: R`Moltiplicando o dividendo per un numero negativo il verso si capovolge.` },
-    { nome: 'Forma normale', formula: R`ax + b > 0 \quad (\text{oppure } <, \ \le, \ \ge)`, nota: R`Si porta tutto a un membro e si riducono i termini simili.` },
-    { nome: 'Soluzione con a positivo', formula: R`ax + b > 0 \ \Rightarrow\ x > -\frac{b}{a} \quad (a > 0)` },
-    { nome: 'Soluzione con a negativo', formula: R`ax + b > 0 \ \Rightarrow\ x < -\frac{b}{a} \quad (a < 0)`, nota: R`Dividendo per $a < 0$ il verso cambia.` },
-    { nome: 'Casi con a nullo', formula: R`a = 0, \ b > 0 \quad\Rightarrow\quad S = \mathbb{R} \qquad\qquad a = 0, \ b \le 0 \quad\Rightarrow\quad S = \varnothing`, nota: R`Quando $a = 0$ l'incognita scompare: resta un confronto tra numeri, sempre vero o sempre falso.` },
+    { nome: 'Forma normale', formula: R`ax > b \quad (\text{oppure } <, \ \le, \ \ge)`, nota: R`Le $x$ a sinistra, i numeri a destra, i termini simili ridotti.` },
+    { nome: 'Soluzione con a positivo', formula: R`ax > b \ \Rightarrow\ x > \frac{b}{a} \quad (a > 0)`, nota: R`Dividendo per un numero positivo il verso resta.` },
+    { nome: 'Soluzione con a negativo', formula: R`ax > b \ \Rightarrow\ x < \frac{b}{a} \quad (a < 0)`, nota: R`Dividendo per $a < 0$ il verso cambia.` },
+    { nome: 'Casi con a nullo', formula: R`0 \cdot x > b: \quad \begin{cases} b < 0 & S = \mathbb{R} \\ b \ge 0 & S = \varnothing \end{cases}`, nota: R`Quando $a = 0$ l'incognita scompare: resta il confronto $0 > b$, sempre vero o sempre falso.` },
     { nome: 'Notazioni di intervallo', formula: R`(a, b), \quad [a, b], \quad [a, b), \quad (a, b]`, nota: R`Aperto, chiuso, semiaperto a destra, semiaperto a sinistra: la parentesi quadra include l'estremo, quella tonda lo esclude.` },
     { nome: 'Scrittura di un sistema', formula: R`\begin{cases} f(x) > 0 \\ g(x) \ge 0 \end{cases}`, nota: R`La graffa significa "e": entrambe le condizioni devono valere insieme.` },
     { nome: 'Soluzione di un sistema', formula: R`S = S_1 \cap S_2`, nota: R`L'intersezione, non l'unione: un valore deve stare in ogni insieme soluzione.` },
@@ -267,9 +357,9 @@ Esempio: *la somma tra il triplo di un numero naturale e $5$ non supera $20$: qu
     { id: 'fc-07', sezione: 'principi-equivalenza', tipo: 'concetto', fronte: R`Primo principio di equivalenza delle disequazioni`, retro: R`Si può sommare o sottrarre lo stesso numero a entrambi i membri: il verso non cambia.` },
     { id: 'fc-08', sezione: 'principi-equivalenza', tipo: 'concetto', fronte: R`Secondo principio: moltiplicare per un numero positivo`, retro: R`Il verso della disequazione resta invariato.` },
     { id: 'fc-09', sezione: 'principi-equivalenza', tipo: 'concetto', fronte: R`Cosa succede moltiplicando (o dividendo) per un numero negativo?`, retro: R`Il verso della disequazione si capovolge: $>$ diventa $<$ e viceversa.` },
-    { id: 'fc-10', sezione: 'disequazioni-intere', tipo: 'procedura', fronte: R`Forma canonica di una disequazione intera`, retro: R`Si porta tutto a un membro e si isola $x$: $ax + b > 0$ (o $<, \ \le, \ \ge$).` },
-    { id: 'fc-11', sezione: 'disequazioni-intere', tipo: 'concetto', fronte: R`Disequazione sempre vera`, retro: R`Quando $x$ scompare e resta un confronto tra numeri vero (per esempio $5 > -2$): la soluzione è $\mathbb{R}$.` },
-    { id: 'fc-12', sezione: 'disequazioni-intere', tipo: 'concetto', fronte: R`Disequazione mai vera`, retro: R`Quando $x$ scompare e resta un confronto tra numeri falso (per esempio $3 < -1$): la soluzione è $S = \varnothing$.` },
+    { id: 'fc-10', sezione: 'disequazioni-intere', tipo: 'procedura', fronte: R`Forma normale di una disequazione intera`, retro: R`Tolte le parentesi, le $x$ a sinistra e i numeri a destra: $ax > b$ (o $<, \ \le, \ \ge$).` },
+    { id: 'fc-11', sezione: 'disequazioni-intere', tipo: 'concetto', fronte: R`Disequazione sempre verificata`, retro: R`Quando $x$ scompare e resta un confronto tra numeri vero (per esempio $5 > -2$): la soluzione è $\mathbb{R}$.` },
+    { id: 'fc-12', sezione: 'disequazioni-intere', tipo: 'concetto', fronte: R`Disequazione impossibile (mai verificata)`, retro: R`Quando $x$ scompare e resta un confronto tra numeri falso (per esempio $3 < -1$): la soluzione è $S = \varnothing$.` },
     { id: 'fc-13', sezione: 'sistemi', tipo: 'concetto', fronte: R`Soluzione di un sistema di disequazioni`, retro: R`L'intersezione delle soluzioni delle singole disequazioni: devono valere tutte insieme.` },
     { id: 'fc-14', sezione: 'sistemi', tipo: 'concetto', fronte: R`Quando un sistema non ha soluzione?`, retro: R`Quando gli intervalli delle singole disequazioni non si sovrappongono mai: l'intersezione è $\varnothing$.` },
     { id: 'fc-15', sezione: 'fratte-prodotto', tipo: 'procedura', fronte: R`Passi per una disequazione prodotto`, retro: R`Si trovano gli zeri di ogni fattore, si costruisce la tabella dei segni e si legge il segno del prodotto in ogni intervallo.` },
@@ -309,7 +399,7 @@ Esempio: *la somma tra il triplo di un numero naturale e $5$ non supera $20$: qu
     { id: 'q-11', domanda: R`Come si traduce in simboli la frase "il doppio di un numero non supera 10"?`, opzioni: [R`$2x < 10$`, R`$2x \ge 10$`, R`$2x > 10$`, R`$2x \le 10$`], corretta: 3, spiegazione: R`"Non supera" significa "è minore o uguale": la traduzione corretta è $2x \le 10$, che include anche il caso $2x = 10$.` },
     { id: 'q-12', domanda: R`Un sistema di due disequazioni ha soluzioni $x > 4$ e $x < 1$. Qual è la soluzione del sistema?`, opzioni: [R`$x > 4$`, R`Nessun numero: l'insieme vuoto`, R`Tutti i numeri reali`, R`$x < 1$`], corretta: 1, spiegazione: R`Nessun numero può essere contemporaneamente maggiore di $4$ e minore di $1$: gli intervalli non si intersecano, la soluzione è vuota.` },
     { id: 'q-13', domanda: R`Quale affermazione sulla disequazione prodotto $(x - 2)(x + 1) < 0$ è corretta?`, opzioni: [R`È verificata per $x$ compreso tra le due radici, $-1$ e $2$`, R`È verificata per $x$ esterno all'intervallo tra le radici`, R`Non ha soluzioni`, R`È verificata per ogni $x$`], corretta: 0, spiegazione: R`Con due fattori di primo grado e prodotto minore di zero, la soluzione è l'intervallo aperto tra le due radici, dove i due fattori hanno segno discorde.` },
-    { id: 'q-14', domanda: R`In un problema che chiede quante magliette al massimo si possono comprare con un budget fissato, la disequazione risolta dà $x \le 7,3$. Quante magliette si possono comprare?`, opzioni: [R`$7,3$, arrotondando`, R`$8$, arrotondando per eccesso`, R`$7$, il più grande intero che soddisfa la condizione`, R`$0$, perché la soluzione non è intera`], corretta: 2, spiegazione: R`Il numero di magliette è un intero, e deve rispettare $x \le 7,3$: il valore accettabile più alto è $7$, non $8$ (che supererebbe il budget) né un numero decimale.` }
+    { id: 'q-14', domanda: R`In un problema che chiede quante magliette al massimo si possono comprare con un budget fissato, la disequazione risolta dà $x \le 7{,}3$. Quante magliette si possono comprare?`, opzioni: [R`$7{,}3$`, R`$8$, arrotondando per eccesso`, R`$7$, il più grande intero che soddisfa la condizione`, R`$0$, perché la soluzione non è intera`], corretta: 2, spiegazione: R`Il numero di magliette è un intero, e deve rispettare $x \le 7{,}3$: il valore accettabile più alto è $7$, non $8$ (che supererebbe il budget) né un numero decimale.` }
   ],
 
   suggerimenti: [

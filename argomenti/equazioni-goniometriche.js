@@ -4,241 +4,361 @@ COMPASSO.registra({
   id: 'equazioni-goniometriche',
   titolo: 'Equazioni e disequazioni goniometriche',
 
-  introduzione: R`Un'equazione goniometrica è un'equazione in cui l'incognita compare dentro una funzione goniometrica: $\sin x$, $\cos x$, $\tan x$. A differenza delle equazioni algebriche, quasi tutte hanno **infinite soluzioni**, perché seno, coseno e tangente si ripetono uguali a ogni giro (o mezzo giro, per la tangente): trovata una soluzione, se ne trovano infinite altre sommando multipli del periodo.
+  introduzione: R`Una cabina della ruota panoramica sale e scende a ogni giro. Se ti chiedi in quali istanti si trova a $10$ metri di quota, trovi due istanti per ogni giro: uno mentre sale e uno mentre scende. Al giro dopo ce ne sono altri due, e così via all'infinito.
 
-Compaiono ogni volta che qualcosa oscilla o gira: l'altezza di un seggiolino sulla ruota panoramica in funzione del tempo, la corrente in un circuito a corrente alternata, il livello della marea in un porto. Chiedersi «quando il seggiolino è più alto di 10 metri» o «quando la marea supera i 2 metri» è, matematicamente, risolvere una disequazione goniometrica: la stessa domanda, applicata a fenomeni molto diversi.
+Le **equazioni goniometriche** funzionano allo stesso modo. Sono equazioni con l'incognita dentro una funzione goniometrica: $\sin x$, $\cos x$, $\tan x$. Seno e coseno tornano uguali ogni $2\pi$ (un giro completo), la tangente ogni $\pi$ (mezzo giro): trovata una soluzione, se ne trovano infinite altre aggiungendo giri interi. Per questo le soluzioni si scrivono con un $+2n\pi$ (o $+n\pi$), dove $n$ è un numero intero qualsiasi.
 
-Per affrontare bene questo argomento servono le equazioni di primo e secondo grado, le funzioni goniometriche seno, coseno e tangente (dominio, periodo, segno, angoli associati) e le formule goniometriche (duplicazione, somma e differenza), che spesso servono per ricondurre un'equazione complicata a una elementare.`,
+Il metodo è quasi sempre lo stesso: con passaggi algebrici e formule goniometriche si riporta l'equazione a una delle tre **elementari** ($\sin x = k$, $\cos x = k$, $\tan x = k$), e quella si risolve guardando la circonferenza goniometrica. Servono le equazioni di primo e secondo grado, i valori di seno, coseno e tangente degli angoli notevoli ($\frac{\pi}{6}$, $\frac{\pi}{4}$, $\frac{\pi}{3}$ e i loro associati) e le formule di addizione e duplicazione.`,
+
+  inBreve: [
+    R`Seno e coseno stanno sempre fra $-1$ e $1$: $\sin x = k$ e $\cos x = k$ hanno soluzioni solo se $-1 \le k \le 1$. La tangente invece può valere qualunque numero.`,
+    R`$\sin x = k$ ha due soluzioni per giro, simmetriche rispetto all'asse $y$: $x = \arcsin k$ e $x = \pi - \arcsin k$. $\cos x = k$ ne ha due simmetriche rispetto all'asse $x$: $x = \pm\arccos k$. A tutte si aggiunge $2n\pi$.`,
+    R`$\tan x = k$ ha una soluzione ogni mezzo giro: $x = \arctan k + n\pi$.`,
+    R`Le equazioni più complicate si riportano a quelle elementari: con una sostituzione ($t = \sin x$, e poi si tengono solo le $t$ fra $-1$ e $1$), con le formule goniometriche, oppure dividendo per $\cos^2 x$ nelle omogenee, dopo aver controllato che $\cos x = 0$ non sia soluzione.`,
+    R`Le disequazioni si risolvono sulla circonferenza: si colora l'arco dove l'ordinata (il seno) o l'ascissa (il coseno) sta sopra o sotto il valore dato, lo si scrive in senso antiorario e si aggiunge $2n\pi$ agli estremi.`
+  ],
 
   sezioni: [
-    { id: 'elementari-seno-coseno', titolo: 'Le equazioni elementari: seno e coseno', testo: R`Un'equazione goniometrica si dice **elementare** quando, dopo eventuali passaggi, si riduce a una delle forme $\sin x = k$, $\cos x = k$, $\tan x = k$, con $k$ numero noto. È il caso più semplice: tutti gli altri tipi di equazione goniometrica si riconducono, prima o poi, a una di queste.
+    { id: 'elementari-seno-coseno', titolo: 'Le equazioni elementari: seno e coseno', testo: R`Per quali angoli il seno vale $\frac12$? Il seno di un angolo è l'**ordinata** del suo punto sulla circonferenza goniometrica (centro nell'origine, raggio $1$). La domanda diventa: quali punti della circonferenza hanno ordinata $\frac12$? Si traccia la retta orizzontale $y = \frac12$ e si guarda dove taglia la circonferenza: in due punti, simmetrici rispetto all'asse $y$, cioè $\frac{\pi}{6}$ e $\frac{5\pi}{6}$.
 
->* Poiché $-1 \le \sin x \le 1$ e $-1 \le \cos x \le 1$ per ogni $x$, le equazioni $\sin x = k$ e $\cos x = k$ hanno soluzioni **se e solo se** $-1 \le k \le 1$; se $|k| > 1$ sono impossibili.
+[[grafico:senoCirconferenza]]
 
-Se $-1 \le k \le 1$, l'equazione $\sin x = k$ ha due famiglie di soluzioni, una ogni giro:
-$$x = \arcsin k + 2n\pi \qquad \lor \qquad x = \pi - \arcsin k + 2n\pi, \quad n \in \mathbb{Z}.$$
-La seconda famiglia viene dal fatto che $\sin(\pi - x) = \sin x$: due archi supplementari hanno lo stesso seno. Per esempio, $\sin x = \frac12$ dà $x = \frac{\pi}{6} + 2n\pi$ oppure $x = \frac{5\pi}{6} + 2n\pi$ (perché $\pi - \frac{\pi}{6} = \frac{5\pi}{6}$).
+Hai visto che il secondo angolo è sempre $180°$ meno il primo: due angoli con somma $\pi$ (si dicono **supplementari**) hanno lo stesso seno. Con $k = 1$ o $k = -1$ i due punti si fondono in uno solo. Se $k$ fosse più grande di $1$ o più piccolo di $-1$ la retta non toccherebbe più la circonferenza, e l'equazione sarebbe impossibile.
 
-[[grafico:senoElementare]]
+>* Un'equazione è **elementare** se ha la forma $\sin x = k$, $\cos x = k$ oppure $\tan x = k$, con $k$ un numero. Per il seno, se $-1 \le k \le 1$: $$x = \arcsin k + 2n\pi$$ oppure $$x = \pi - \arcsin k + 2n\pi$$ con $n$ intero qualsiasi. Se $|k| > 1$ non ci sono soluzioni.
 
-Per il coseno vale $\cos(-x) = \cos x$: due archi opposti hanno lo stesso coseno, quindi
-$$x = \pm\arccos k + 2n\pi, \quad n \in \mathbb{Z}.$$
-Muovendo il parametro $k$ nel grafico qui sotto, i due punti $\arccos k$ e $-\arccos k$ si avvicinano quando $k \to 1$, si allontanano quando $k \to -1$, e **spariscono** non appena $|k|$ supera $1$: l'equazione diventa impossibile, coerentemente con la condizione vista sopra.
+$\arcsin k$ è l'angolo fra $-\frac{\pi}{2}$ e $\frac{\pi}{2}$ che ha seno $k$: è quello che dà la calcolatrice. Il $2n\pi$ aggiunge o toglie giri interi, e un giro intero riporta nello stesso punto.
 
-[[grafico:cosenoParametro]]
+~ \sin x = -\frac{\sqrt3}{2} :: $k$ è fra $-1$ e $1$: ci sono soluzioni
+~ \arcsin\left(-\frac{\sqrt3}{2}\right) = \evid{-\frac{\pi}{3}} :: il primo punto, nel quarto quadrante
+~ \pi - \left(-\frac{\pi}{3}\right) = \evid{\frac{4\pi}{3}} :: il suo simmetrico rispetto all'asse $y$, nel terzo quadrante
+~ x = \evidb{-\frac{\pi}{3} + 2n\pi} \ \lor\ x = \evidb{\frac{4\pi}{3} + 2n\pi} :: aggiungo i giri interi a tutte e due
 
->! L'errore più comune è dimenticare una delle due famiglie di soluzioni: scrivere solo $x = \arcsin k + 2n\pi$ (o solo $x = \arccos k + 2n\pi$) perde metà delle soluzioni.` },
+Per il coseno si guarda l'**ascissa**. La retta diventa verticale, $x = k$, e taglia la circonferenza in due punti simmetrici rispetto all'asse $x$: i loro angoli sono opposti, perché $\cos(-x) = \cos x$.
 
-    { id: 'elementare-tangente', titolo: 'L\'equazione elementare: la tangente', testo: R`L'equazione $\tan x = k$ si comporta diversamente dalle altre due elementari: la tangente ha **codominio tutto $\mathbb{R}$** (nessun valore è escluso), quindi per **ogni** $k$ reale l'equazione ha soluzioni: non serve nessuna condizione su $k$, a differenza di $\sin x = k$ e $\cos x = k$.
+[[grafico:cosenoCirconferenza]]
 
->* Soluzione generale: $$x = \arctan k + n\pi, \quad n \in \mathbb{Z}.$$ Una sola famiglia, e con **periodo $\pi$**, non $2\pi$.
+>* Per il coseno, se $-1 \le k \le 1$: $$x = \pm\arccos k + 2n\pi, \qquad n \in \mathbb{Z}.$$ $\arccos k$ è l'angolo fra $0$ e $\pi$ che ha coseno $k$.
 
-Il motivo del periodo $\pi$ è che $\tan(x + \pi) = \tan x$: un mezzo giro sulla circonferenza porta al punto diametralmente opposto, che ha seno e coseno opposti ma lo stesso rapporto $\dfrac{\sin x}{\cos x}$, quindi la stessa tangente. È anche per questo che non serve una seconda famiglia di soluzioni come per $\sin x = k$: quella che sarebbe la "seconda famiglia" è già contenuta nella prima, spostando $n$.
+?? Quante soluzioni ha $\sin x = \frac12$ nell'intervallo $[0, 2\pi)$?
+[x] due: $\frac{\pi}{6}$ e $\frac{5\pi}{6}$
+[ ] una sola: $\frac{\pi}{6}$
+[ ] due: $\frac{\pi}{6}$ e $-\frac{\pi}{6}$
+[ ] infinite
+=> La retta $y = \frac12$ taglia la circonferenza in due punti simmetrici rispetto all'asse $y$: $\frac{\pi}{6}$ e $\pi - \frac{\pi}{6} = \frac{5\pi}{6}$. Chi risponde $\pm\frac{\pi}{6}$ applica la regola del coseno al seno: $-\frac{\pi}{6}$ ha seno $-\frac12$. Su tutto $\mathbb{R}$ le soluzioni sono infinite, ma in un giro sono due.
 
-Esempio: $\tan x = -1$. L'angolo con tangente $-1$ è $-\dfrac{\pi}{4}$ (o, equivalentemente, $\dfrac{3\pi}{4}$): $$x = -\frac{\pi}{4} + n\pi, \quad n \in \mathbb{Z}.$$
+>! Gli errori tipici sono due: dimenticare la seconda famiglia (scrivere solo $x = \arcsin k + 2n\pi$) e scambiare le regole, scrivendo $\pm\arcsin k$ per il seno o $\pi - \arccos k$ per il coseno. Nel dubbio disegna la retta sulla circonferenza: orizzontale per il seno, verticale per il coseno.
 
->! Attenzione al periodo: scrivere $x = \arctan k + 2n\pi$ (con $2\pi$ invece di $\pi$) fa perdere metà delle soluzioni, perché la tangente si ripete due volte più spesso di seno e coseno.
+Nella scheda **Laboratorio** c'è *La ruota panoramica*: la cabina sale e scende con il seno dell'angolo, e devi trovare tutti e due gli istanti in cui passa alla quota giusta.` },
 
-L'equazione non è definita dove $\cos x = 0$ (cioè $x = \frac{\pi}{2} + n\pi$): lì la tangente non esiste, ma questo non è mai un problema per risolvere $\tan x = k$, perché quei punti non possono comunque essere soluzioni.` },
+    { id: 'elementare-tangente', titolo: 'L\'equazione elementare: la tangente', testo: R`La tangente è il rapporto $\dfrac{\sin x}{\cos x}$. Sulla circonferenza goniometrica si legge così: si prolunga il raggio del punto fino alla retta verticale che tocca la circonferenza in $(1;0)$, e l'ordinata del punto d'incontro è $\tan x$. Quella retta sale e scende senza fine, quindi la tangente può valere qualunque numero reale: $\tan x = k$ ha soluzioni **per ogni** $k$, senza condizioni.
 
-    { id: 'riconducibili-elementari', titolo: 'Equazioni riconducibili alle elementari', testo: R`Molte equazioni non sono già nella forma $\sin x = k$, ma hanno la stessa funzione goniometrica applicata a **due argomenti diversi**, come $\sin(2x) = \sin\!\left(x + \frac{\pi}{3}\right)$. Si risolvono con le stesse idee usate per $\sin x = k$ (argomenti uguali, oppure supplementari), applicate ai due argomenti invece che a un argomento e un numero.
+Quanti angoli, in un giro, hanno la stessa tangente? Il raggio prolungato è una retta che passa per l'origine, e taglia la circonferenza in due punti diametralmente opposti, a mezzo giro di distanza. I due punti hanno seno e coseno cambiati entrambi di segno, quindi lo stesso rapporto. Per esempio $\frac{\pi}{4}$ e $\frac{5\pi}{4}$ hanno tutti e due tangente $1$. Basta allora una sola formula, che fa un passo di mezzo giro:
 
->* $$\sin\alpha = \sin\beta \iff \alpha = \beta + 2n\pi \ \lor\ \alpha = \pi - \beta + 2n\pi$$ $$\cos\alpha = \cos\beta \iff \alpha = \pm\beta + 2n\pi \qquad\qquad \tan\alpha = \tan\beta \iff \alpha = \beta + n\pi$$
+>* Per ogni numero reale $k$, l'equazione $\tan x = k$ ha le soluzioni $$x = \arctan k + n\pi$$ con $n$ intero qualsiasi. $\arctan k$ è l'angolo fra $-\frac{\pi}{2}$ e $\frac{\pi}{2}$ che ha tangente $k$. Il passo è $\pi$, non $2\pi$.
 
-Per $\sin(2x) = \sin\!\left(x + \frac{\pi}{3}\right)$ si impongono le due condizioni con $\alpha = 2x$ e $\beta = x + \frac{\pi}{3}$:
+Esempio: $\tan x = -1$. L'angolo fra $-\frac{\pi}{2}$ e $\frac{\pi}{2}$ con tangente $-1$ è $-\frac{\pi}{4}$, quindi $x = -\frac{\pi}{4} + n\pi$. Con $n = 1$ si trova $\frac{3\pi}{4}$, con $n = 2$ si trova $\frac{7\pi}{4}$: sono le due soluzioni fra $0$ e $2\pi$.
 
-1. $2x = x + \frac{\pi}{3} + 2n\pi \ \Rightarrow\ x = \frac{\pi}{3} + 2n\pi$;
-2. $2x = \pi - \left(x + \frac{\pi}{3}\right) + 2n\pi \ \Rightarrow\ 3x = \frac{2\pi}{3} + 2n\pi \ \Rightarrow\ x = \frac{2\pi}{9} + \frac{2n\pi}{3}$.
+?? Uno studente risolve $\tan x = \sqrt3$ e scrive $x = \frac{\pi}{3} + 2n\pi$. Che cosa ha perso?
+[x] le soluzioni $\frac{4\pi}{3} + 2n\pi$
+[ ] le soluzioni $-\frac{\pi}{3} + 2n\pi$
+[ ] le soluzioni $\frac{2\pi}{3} + 2n\pi$
+[ ] niente: la sua risposta è completa
+=> La tangente si ripete ogni $\pi$, quindi la risposta giusta è $x = \frac{\pi}{3} + n\pi$, che comprende anche $\frac{\pi}{3} + \pi = \frac{4\pi}{3}$: lì seno e coseno sono tutti e due negativi e il loro rapporto è ancora $\sqrt3$. Con $2n\pi$ si perde metà delle soluzioni. $-\frac{\pi}{3}$ e $\frac{2\pi}{3}$ hanno invece tangente $-\sqrt3$.
 
-Le soluzioni sono entrambe le famiglie insieme (l'unione, non l'intersezione: basta che valga una delle due).
+> La tangente non esiste dove $\cos x = 0$, cioè per $x = \frac{\pi}{2} + n\pi$. In $\tan x = k$ quei valori non danno fastidio, perché non possono essere soluzioni; quando però la tangente compare in un'equazione più complicata, bisogna scrivere la condizione $x \ne \frac{\pi}{2} + n\pi$.` },
 
-Un caso interessante è quando le due famiglie si "fondono": in $\cos(2x) = \cos x$ la condizione $2x = x + 2n\pi$ dà $x = 2n\pi$, mentre $2x = -x + 2n\pi$ dà $x = \frac{2n\pi}{3}$; la prima famiglia risulta già tutta contenuta nella seconda (basta prendere $n$ multiplo di $3$), quindi la soluzione completa è semplicemente $x = \frac{2n\pi}{3}$.
+    { id: 'riconducibili-elementari', titolo: 'Equazioni riconducibili alle elementari', testo: R`Che cosa si fa con $\sin 2x = \sin\left(x + \frac{\pi}{3}\right)$? A destra non c'è un numero, ma il ragionamento sulla circonferenza funziona lo stesso. Due angoli hanno lo stesso seno quando finiscono nello stesso punto (sono uguali, a meno di giri interi) oppure in punti simmetrici rispetto all'asse $y$ (sono supplementari, a meno di giri interi). Per il coseno la simmetria è rispetto all'asse $x$, per la tangente si ragiona sul mezzo giro.
 
->! Per il coseno non dimenticare il doppio segno: $\cos\alpha = \cos\beta$ richiede sia $\alpha = \beta + 2n\pi$ sia $\alpha = -\beta + 2n\pi$, non uno solo.` },
+>* Due angoli $\alpha$ e $\beta$ hanno lo stesso **seno** se $\alpha = \beta + 2n\pi$ oppure $\alpha = \pi - \beta + 2n\pi$; lo stesso **coseno** se $\alpha = \pm\beta + 2n\pi$; la stessa **tangente** se $\alpha = \beta + n\pi$.
 
-    { id: 'secondo-grado-in-una-funzione', titolo: 'Equazioni di secondo grado in una funzione goniometrica', testo: R`Un'equazione come $2\sin^2x - \sin x - 1 = 0$ contiene una sola funzione goniometrica, ma con l'esponente $2$: è **di secondo grado in $\sin x$** (o in $\cos x$, o in $\tan x$). Si risolve con una **sostituzione**: si pone $t = \sin x$, si risolve l'equazione di secondo grado in $t$, e infine si torna a $x$.
+Qui $\alpha = 2x$ e $\beta = x + \frac{\pi}{3}$. Il primo caso si risolve in una riga: $2x = x + \frac{\pi}{3} + 2n\pi$, cioè $x = \frac{\pi}{3} + 2n\pi$. Il secondo ha qualche passaggio in più:
 
->* Procedura: 1) sostituire $t = \sin x$ (o $\cos x$, o $\tan x$); 2) risolvere $at^2+bt+c=0$; 3) **accettare solo le soluzioni $t$ compatibili con la funzione scelta** ($-1 \le t \le 1$ per seno e coseno, nessun limite per la tangente); 4) per ogni $t$ accettabile, risolvere l'equazione elementare corrispondente.
+~ 2x = \pi - \left(x + \frac{\pi}{3}\right) + 2n\pi :: gli angoli sono supplementari
+~ 2x = \evid{\frac{2\pi}{3} - x} + 2n\pi :: tolgo la parentesi: $\pi - \frac{\pi}{3} = \frac{2\pi}{3}$
+~ \evid{3x} = \frac{2\pi}{3} + 2n\pi :: porto $-x$ al primo membro
+~ x = \evidb{\frac{2\pi}{9} + \frac{2n\pi}{3}} :: divido **ogni** termine per $3$, anche $2n\pi$
 
-Nell'esempio, $2t^2 - t - 1 = 0$ ha $\Delta = 1+8=9$ e soluzioni $t = 1$ e $t = -\frac12$: entrambe dentro $[-1,1]$, quindi entrambe da tenere. Restano da risolvere $\sin x = 1$ (che dà $x = \frac{\pi}{2}+2n\pi$) e $\sin x = -\frac12$ (che dà due famiglie).
+Le soluzioni sono le due famiglie insieme: basta che valga una delle due condizioni.
 
-Il controllo dell'intervallo non è un dettaglio formale: se la quadratica in $t$ avesse dato, per esempio, $t = 2$, quella soluzione andrebbe **scartata subito**, perché nessun $x$ rende $\sin x = 2$. Con la tangente invece non c'è alcun limite su $t$: qualunque soluzione della quadratica è accettabile, perché il codominio della tangente è $\mathbb{R}$.
+?? Dividendo per $3$ l'uguaglianza $3x = \frac{2\pi}{3} + 2n\pi$, che cosa si ottiene?
+[x] $x = \frac{2\pi}{9} + \frac{2n\pi}{3}$
+[ ] $x = \frac{2\pi}{9} + 2n\pi$
+[ ] $x = \frac{2\pi}{3} + \frac{2n\pi}{3}$
+=> Si divide per $3$ ogni termine, compreso $2n\pi$. Chi lascia $2n\pi$ perde due soluzioni su tre a ogni giro: questa famiglia, fra $0$ e $2\pi$, dà $\frac{2\pi}{9}$, $\frac{8\pi}{9}$ e $\frac{14\pi}{9}$, ottenute con $n = 0, 1, 2$.
 
->! Scordarsi il controllo su $t$ è l'errore tipico: si trova $t=2$ nella quadratica e si scrive $x = \arcsin 2 + \dots$, un'espressione che non ha senso perché $2 \notin [-1,1]$.` },
+Se da una parte c'è un seno e dall'altra un coseno, si trasforma uno dei due con gli angoli complementari, $\cos\beta = \sin\left(\frac{\pi}{2} - \beta\right)$, e ci si riporta a due seni.
 
-    { id: 'lineari-seno-coseno', titolo: 'Equazioni lineari in seno e coseno', testo: R`Un'equazione della forma $a\sin x + b\cos x = c$ (con $a$ e $b$ non entrambi nulli) si chiama **lineare in seno e coseno**: seno e coseno compaiono solo al primo grado. Ci sono tre modi per risolverla.
+A volte una famiglia è già contenuta nell'altra. In $\cos 2x = \cos x$ il caso $2x = x + 2n\pi$ dà $x = 2n\pi$, il caso $2x = -x + 2n\pi$ dà $x = \frac{2n\pi}{3}$; prendendo nella seconda $n$ multiplo di $3$ si ritrova la prima. La soluzione completa si può scrivere solo come $x = \frac{2n\pi}{3}$ (se le scrivi tutte e due va bene lo stesso, ripeti soltanto una parte delle soluzioni).
 
-**Il metodo dell'angolo aggiunto.** Si scrive $a\sin x + b\cos x$ come $R\sin(x+\varphi)$, con $R=\sqrt{a^2+b^2}$ e $\varphi$ l'angolo tale che $\cos\varphi=\frac{a}{R}$, $\sin\varphi=\frac{b}{R}$ (è la formula del seno della somma, usata al contrario). L'equazione diventa $R\sin(x+\varphi)=c$, cioè $\sin(x+\varphi)=\frac{c}{R}$: elementare, ma nella variabile $x+\varphi$.
+>! Per il coseno servono tutti e due i segni: $\alpha = \beta + 2n\pi$ **e** $\alpha = -\beta + 2n\pi$. Per la tangente la condizione è una sola, ma con passo $n\pi$.` },
 
->* L'equazione ha soluzioni **se e solo se** $\left|\frac{c}{R}\right|\le 1$, cioè $a^2+b^2\ge c^2$: il "raggio" $R$ deve essere almeno pari a $|c|$.
+    { id: 'secondo-grado-in-una-funzione', titolo: 'Equazioni di secondo grado in una funzione goniometrica', testo: R`In $2\sin^2x - \sin x - 1 = 0$ compare solo $\sin x$, una volta al quadrato e una volta al primo grado: è un'equazione **di secondo grado in $\sin x$**. Se al posto di $\sin x$ ci fosse una lettera, sapresti risolverla. Allora la lettera la si mette davvero: si pone $t = \sin x$.
+
+~ 2\sin^2x - \sin x - 1 = 0 :: compare solo $\sin x$
+~ 2\evid{t}^2 - \evid{t} - 1 = 0 :: pongo $t = \sin x$
+~ t = \frac{1 \pm 3}{4} :: formula risolutiva, con $\Delta = 1 + 8 = 9$
+~ \evid{t = 1} \ \lor\ \evid{t = -\frac12} :: tutte e due fra $-1$ e $1$: si tengono
+~ \sin x = 1 \ \lor\ \sin x = -\frac12 :: torno alla $x$: due equazioni elementari
+~ x = \evidb{\frac{\pi}{2} + 2n\pi} \ \lor\ x = \evidb{\frac{7\pi}{6} + 2n\pi} \ \lor\ x = \evidb{\frac{11\pi}{6} + 2n\pi} :: $\sin x = 1$ ha una sola soluzione per giro, $\sin x = -\frac12$ ne ha due
+
+>* **Procedura**: pongo $t = \sin x$ (o $\cos x$, o $\tan x$); risolvo l'equazione in $t$; se $t$ è un seno o un coseno **tengo solo le $t$ fra $-1$ e $1$** (con la tangente si tengono tutte); risolvo le equazioni elementari che restano.
+
+Se nell'equazione compaiono sia il seno sia il coseno, spesso basta $\sin^2 x = 1 - \cos^2 x$ per lasciarne uno solo. Per esempio $2\sin^2 x - 3\cos x = 0$ diventa $2 - 2\cos^2 x - 3\cos x = 0$, cioè, cambiando tutti i segni, $2\cos^2 x + 3\cos x - 2 = 0$: di secondo grado in $\cos x$.
+
+?? Risolvendo $2\cos^2x + 3\cos x - 2 = 0$ con $t = \cos x$ trovi $t = \frac12$ e $t = -2$. Che cosa fai con $t = -2$?
+[x] la scarto: nessun angolo ha coseno $-2$
+[ ] scrivo $x = \pm\arccos(-2) + 2n\pi$
+[ ] cambio segno e uso $t = 2$
+=> Il coseno sta sempre fra $-1$ e $1$, quindi $\cos x = -2$ è impossibile e $t = -2$ non dà soluzioni. Restano quelle di $\cos x = \frac12$, cioè $x = \pm\frac{\pi}{3} + 2n\pi$. Scrivere $\arccos(-2)$ vuol dire usare un simbolo che non indica nessun numero.
+
+>! Dimenticare il controllo su $t$ porta a scrivere cose come $x = \arcsin 2$, che non esistono. Con la tangente, invece, nessuna $t$ va scartata.` },
+
+    { id: 'lineari-seno-coseno', titolo: 'Equazioni lineari in seno e coseno', testo: R`In $\sqrt3\sin x + \cos x = 1$ seno e coseno compaiono insieme, tutti e due al primo grado. Un'equazione della forma $a\sin x + b\cos x = c$ si chiama **lineare in seno e coseno**. La difficoltà è che le funzioni sono due; i metodi che seguono servono a lasciarne una sola.
+
+### Il metodo dell'angolo aggiunto
+La somma $a\sin x + b\cos x$ assomiglia alla formula di addizione $\sin(x + \varphi) = \sin x\cos\varphi + \cos x\sin\varphi$. Per farla diventare proprio quella si raccoglie $R = \sqrt{a^2 + b^2}$:
+
+~ \sqrt3\sin x + \cos x = 1 :: qui $a = \sqrt3$, $b = 1$, $c = 1$
+~ \evid{2}\left(\frac{\sqrt3}{2}\sin x + \frac12\cos x\right) = 1 :: raccolgo $R = \sqrt{3 + 1} = 2$
+~ 2\left(\sin x\,\evid{\cos\frac{\pi}{6}} + \cos x\,\evid{\sin\frac{\pi}{6}}\right) = 1 :: $\frac{\sqrt3}{2}$ e $\frac12$ sono coseno e seno di $\frac{\pi}{6}$
+~ 2\,\evid{\sin\left(x + \frac{\pi}{6}\right)} = 1 :: riconosco la formula di addizione del seno
+~ x + \frac{\pi}{6} = \frac{\pi}{6} + 2n\pi \ \lor\ x + \frac{\pi}{6} = \frac{5\pi}{6} + 2n\pi :: $\sin\left(x + \frac{\pi}{6}\right) = \frac12$ è elementare
+~ x = \evidb{2n\pi} \ \lor\ x = \evidb{\frac{2\pi}{3} + 2n\pi} :: tolgo $\frac{\pi}{6}$ da tutte e due
+
+>* $a\sin x + b\cos x = R\sin(x + \varphi)$, con $R = \sqrt{a^2 + b^2}$, $\cos\varphi = \frac{a}{R}$ e $\sin\varphi = \frac{b}{R}$. Siccome il seno non supera mai $1$, l'equazione $a\sin x + b\cos x = c$ ha soluzioni **solo se** $|c| \le R$, cioè $a^2 + b^2 \ge c^2$.
+
+Nel grafico muovi $a$ e $b$ e guarda quando la curva smette di toccare la retta $y = 1$.
 
 [[grafico:linearAB]]
 
-**Il metodo grafico.** Ponendo $X=\cos x$, $Y=\sin x$, l'equazione $aY+bX=c$ è una retta, mentre $X^2+Y^2=1$ è la circonferenza goniometrica: le soluzioni corrispondono ai punti di intersezione. Se la retta è troppo lontana dal centro (distanza maggiore di $1$) non ci sono intersezioni: è lo stesso criterio $a^2+b^2\ge c^2$ visto sopra, letto come "distanza della retta dall'origine minore o uguale a $1$".
+?? Quante soluzioni ha $3\sin x + 4\cos x = 6$ in un giro?
+[x] nessuna
+[ ] due
+[ ] una
+=> $R = \sqrt{9 + 16} = 5$: il primo membro è $5\sin(x + \varphi)$ e non supera mai $5$, quindi non arriva a $6$. Il controllo $a^2 + b^2 \ge c^2$ ($25 \ge 36$, falso) si fa **prima** dei conti: senza, si arriva dopo molti passaggi a un seno uguale a $\frac65$.
 
-**Le formule parametriche.** Ponendo $t=\tan\frac{x}{2}$ si ha $\sin x = \frac{2t}{1+t^2}$, $\cos x = \frac{1-t^2}{1+t^2}$: sostituendo, l'equazione diventa di secondo grado (o di primo, se un coefficiente si annulla) in $t$.
+### Il metodo grafico
+Se chiami $X = \cos x$ e $Y = \sin x$, l'equazione diventa $bX + aY = c$: una retta. Il punto $(X; Y)$ deve stare anche sulla circonferenza goniometrica $X^2 + Y^2 = 1$. Le soluzioni sono i punti in cui la retta taglia la circonferenza; se la retta passa a distanza maggiore di $1$ dall'origine non ce ne sono, ed è di nuovo la condizione $a^2 + b^2 \ge c^2$.
 
->! Le formule parametriche non "vedono" $x=\pi+2n\pi$, perché lì $\tan\frac{x}{2}$ non è definita: quel valore va sempre controllato **a parte**, sostituendolo nell'equazione originale, altrimenti si rischia di perdere una soluzione.` },
+### Le formule parametriche
+Ponendo $t = \tan\frac{x}{2}$ valgono $\sin x = \frac{2t}{1 + t^2}$ e $\cos x = \frac{1 - t^2}{1 + t^2}$. Sostituendo, restano solo $t$: si moltiplica per $1 + t^2$ e si ottiene un'equazione di secondo grado (o di primo) in $t$.
 
-    { id: 'omogenee', titolo: 'Equazioni omogenee di secondo grado', testo: R`Un'equazione si dice **omogenea di secondo grado in seno e coseno** quando ogni termine ha grado $2$ nelle due funzioni, e il termine noto è zero: $$a\sin^2x + b\sin x\cos x + c\cos^2x = 0.$$
+>! $t = \tan\frac{x}{2}$ non esiste per $x = \pi + 2n\pi$, quindi la sostituzione non può trovare quei valori. Vanno sempre provati **a parte**, mettendoli nell'equazione di partenza, altrimenti si rischia di perdere una soluzione.` },
 
-Il trucco è dividere tutto per $\cos^2x$, per ottenere un'equazione nella sola $\tan x$: $$a\tan^2x + b\tan x + c = 0.$$ Ma dividere per un'espressione è lecito solo se non è zero, quindi **prima** bisogna chiedersi se $\cos x = 0$ è una soluzione.
+    { id: 'omogenee', titolo: 'Equazioni omogenee di secondo grado', testo: R`In $\sin^2x - \sin x\cos x - 2\cos^2x = 0$ ogni termine è fatto di due fattori fra seno e coseno ($\sin x \cdot \sin x$, $\sin x \cdot \cos x$, $\cos x \cdot \cos x$) e il termine noto manca. Un'equazione così si chiama **omogenea di secondo grado** in seno e coseno: $$a\sin^2x + b\sin x\cos x + c\cos^2x = 0.$$
 
->* Se $\cos x = 0$, allora $\sin^2x=1$ (perché $\sin^2x+\cos^2x=1$), e l'equazione diventa $a = 0$. Quindi $\cos x=0$ è soluzione dell'omogenea **se e solo se** $a=0$.
+L'idea è dividere tutto per $\cos^2 x$: ogni termine diventa una potenza di $\frac{\sin x}{\cos x} = \tan x$, e resta un'equazione nella sola tangente. Ma si può dividere solo per qualcosa che non vale zero, quindi **prima** bisogna controllare se $\cos x = 0$ è una soluzione.
 
-Se $a \ne 0$, si può dividere senza timore: nessuna soluzione va persa, perché $\cos x=0$ non era comunque accettabile. Si risolve $a\tan^2x+b\tan x+c=0$ come una normale equazione di secondo grado (questa volta senza limiti su $\tan x$, che può valere qualunque numero reale), e per ogni soluzione $t_i$ si scrive $x = \arctan t_i + n\pi$.
+~ \sin^2x - \sin x\cos x - 2\cos^2x = 0 :: omogenea, con $a = 1$
+~ \cos x = 0 \Rightarrow \sin^2 x = 1 \Rightarrow 1 - 0 - 0 = \evid{1 \ne 0} :: con $\cos x = 0$ l'equazione è falsa: non è soluzione
+~ \evid{\tan^2x - \tan x - 2 = 0} :: ora posso dividere per $\cos^2 x$
+~ (\tan x - 2)(\tan x + 1) = 0 :: due numeri con somma $1$ e prodotto $-2$
+~ x = \evidb{\arctan 2 + n\pi} \ \lor\ x = \evidb{-\frac{\pi}{4} + n\pi} :: due equazioni elementari in tangente
 
-Se invece $a = 0$, l'equazione si scompone direttamente: $\cos x\,(b\sin x + c\cos x) = 0$, quindi $\cos x = 0$ oppure $\tan x = -\frac{c}{b}$ (se $b \ne 0$).
+>* Se $\cos x = 0$ allora $\sin^2 x = 1$, e l'omogenea si riduce a $a = 0$. Quindi $\cos x = 0$ è soluzione **solo quando $a = 0$**, cioè quando manca il termine in $\sin^2 x$.
 
-> Un'equazione completa come $a\sin^2x+b\sin x\cos x+c\cos^2x = d$ (con $d\ne0$) si riconduce a un'omogenea scrivendo $d = d\,(\sin^2x+\cos^2x)$ e portando tutto a sinistra.` },
+Se $a \ne 0$ si divide senza perdere niente e si risolve $a\tan^2 x + b\tan x + c = 0$, senza scartare nessuna soluzione (la tangente può valere qualunque numero). Se $a = 0$ non si divide: si raccoglie $\cos x$, $\cos x\,(b\sin x + c\cos x) = 0$, e si trovano sia $\cos x = 0$ sia le soluzioni dell'altro fattore.
 
-    { id: 'disequazioni-elementari', titolo: 'Disequazioni elementari', testo: R`Una disequazione come $\sin x > k$ oppure $\cos x \le k$ si dice **elementare**. Non ha una formula unica come le equazioni: si risolve **leggendo un grafico**, quello della circonferenza goniometrica o quello della funzione.
+Quando il termine noto c'è, come in $a\sin^2 x + b\sin x\cos x + c\cos^2 x = d$, si scrive $d = d\,(\sin^2 x + \cos^2 x)$ e si porta tutto a sinistra: l'equazione diventa omogenea.
 
-**Con la circonferenza.** Si traccia la retta orizzontale $y = k$ (per il seno) o verticale $x = k$ (per il coseno): l'insieme dei punti della circonferenza con ordinata (o ascissa) maggiore di $k$ individua uno o due archi, di cui si leggono gli estremi.
+?? Nell'equazione $\sin^2x + \sin x\cos x = 1$ si scrive $1 = \sin^2x + \cos^2x$ e si porta tutto a sinistra. Che cosa si ottiene?
+[x] $\sin x\cos x - \cos^2x = 0$
+[ ] $\tan^2x + \tan x = 1$
+[ ] $\sin x\cos x = 0$
+=> $\sin^2 x$ si cancella e resta $\sin x\cos x - \cos^2 x = 0$, cioè $\cos x\,(\sin x - \cos x) = 0$: soluzioni $x = \frac{\pi}{2} + n\pi$ e $x = \frac{\pi}{4} + n\pi$. Dividere subito per $\cos^2 x$, fino a $\tan^2x + \tan x = 1$, è sbagliato due volte: $1$ diviso $\cos^2 x$ non fa $1$, e si perdono le soluzioni con $\cos x = 0$.` },
 
-[[grafico:circonferenza]]
+    { id: 'disequazioni-elementari', titolo: 'Disequazioni elementari', testo: R`Per quali angoli $\sin x > \frac12$? Il seno è l'ordinata, quindi si cercano i punti della circonferenza che stanno **sopra** la retta $y = \frac12$. Questa volta i punti buoni formano un arco intero, quello che va da $\frac{\pi}{6}$ a $\frac{5\pi}{6}$ passando per $\frac{\pi}{2}$. Le soluzioni sono quindi $\frac{\pi}{6} + 2n\pi < x < \frac{5\pi}{6} + 2n\pi$.
 
-**Con il grafico della funzione.** Si disegna $y = \sin x$ (o $y=\cos x$) insieme alla retta $y=k$, e si cercano i tratti in cui la curva sta sopra (per $>$) o sotto (per $<$) la retta. Per $\sin x > \frac12$, per esempio, la sinusoide sta sopra la retta $y=\frac12$ esattamente per $x \in \left(\frac{\pi}{6}, \frac{5\pi}{6}\right)$, e la stessa cosa si ripete ogni $2\pi$.
+[[grafico:disequazioneCirconferenza]]
 
-[[grafico:disequazioneArea]]
+Porta $k$ sotto lo zero: l'arco colorato si allunga, scende sotto l'asse $x$ e il suo primo estremo diventa un angolo negativo. Per $\sin x > -\frac12$, per esempio, l'arco parte da $-\frac{\pi}{6}$ e arriva a $\frac{7\pi}{6}$.
 
->* La soluzione di una disequazione elementare, a differenza di un'equazione, è quasi sempre un **intervallo** (o un'unione di intervalli), non un insieme di punti isolati; e va ripetuta con periodo $2\pi$ (o $\pi$ per la tangente).
+>* **Disequazioni elementari.** 1) Risolvo l'equazione associata e segno i due punti sulla circonferenza. 2) Scelgo l'arco giusto: sopra la retta $y = k$ per $\sin x > k$, sotto per $\sin x < k$; a destra della retta $x = k$ per $\cos x > k$, a sinistra per $\cos x < k$. 3) Scrivo l'arco percorrendolo in senso antiorario, dal primo estremo al secondo, e aggiungo $2n\pi$ a tutti e due.
 
-Si scrive $\frac{\pi}{6} + 2n\pi < x < \frac{5\pi}{6} + 2n\pi$, oppure, sulla retta reale, semplicemente l'intervallo dentro un periodo:
+~ 2\cos x - 1 > 0 :: disequazione di partenza
+~ \cos x > \evid{\frac12} :: isolo il coseno
+~ x = \evid{\pm\frac{\pi}{3}} :: l'equazione associata dà gli estremi dell'arco
+~ \evidb{-\frac{\pi}{3} + 2n\pi < x < \frac{\pi}{3} + 2n\pi} :: l'arco a destra della retta $x = \frac12$ passa per l'angolo $0$: in senso antiorario parte da $-\frac{\pi}{3}$
 
-[[grafico:disequazioneIntervallo]]
+Se servono solo le soluzioni fra $0$ e $2\pi$, quell'arco si spezza in due pezzi: $0 \le x < \frac{\pi}{3}$ e $\frac{5\pi}{3} < x < 2\pi$.
 
->! Con $\cos x < k$ (o $\sin x < k$) l'intervallo di solito comprende lo "spigolo" dove la circonferenza gira: conviene sempre disegnare, non fidarsi a memoria di dove sta il segno.` },
+?? Quale intervallo risolve $\cos x > \frac12$?
+[x] $-\frac{\pi}{3} + 2n\pi < x < \frac{\pi}{3} + 2n\pi$
+[ ] $\frac{\pi}{3} + 2n\pi < x < \frac{5\pi}{3} + 2n\pi$
+[ ] $\frac{5\pi}{3} + 2n\pi < x < \frac{\pi}{3} + 2n\pi$
+=> I punti con ascissa maggiore di $\frac12$ stanno sull'arco di destra, quello che contiene l'angolo $0$, dove il coseno vale $1$. L'intervallo da $\frac{\pi}{3}$ a $\frac{5\pi}{3}$ è l'arco di sinistra, dove invece $\cos x < \frac12$. Quello da $\frac{5\pi}{3}$ a $\frac{\pi}{3}$ non ha senso: il primo estremo è più grande del secondo, e nessun numero sta in mezzo.
 
-    { id: 'disequazioni-riconducibili', titolo: 'Disequazioni riconducibili', testo: R`Le disequazioni goniometriche più complesse — un **prodotto**, una **frazione**, un **polinomio di secondo grado** in una funzione goniometrica — si affrontano esattamente come le corrispondenti disequazioni algebriche, con un'unica differenza: ogni fattore, invece di dare un intervallo definitivo, dà un intervallo (o un'unione di intervalli) che si ripete a ogni periodo.
+Per la tangente basta mezzo giro, da $-\frac{\pi}{2}$ a $\frac{\pi}{2}$, dove la tangente cresce sempre. Per esempio $\tan x > 1$ vale per $\frac{\pi}{4} + n\pi < x < \frac{\pi}{2} + n\pi$.
 
->* Procedura: si studia il segno di **ciascun fattore** separatamente (ognuno è una disequazione elementare), si riportano i risultati in una **tabella dei segni** sullo stesso periodo (per esempio $[0, 2\pi)$), e si legge il segno del prodotto o del quoziente riga per riga, come per le funzioni razionali.
+>! Con $\ge$ e $\le$ gli estremi trovati con l'equazione associata sono compresi. Fanno eccezione i valori $\frac{\pi}{2} + n\pi$ nelle disequazioni con la tangente: lì la tangente non esiste, quindi sono sempre esclusi.` },
 
-Per $(2\sin x - 1)(2\cos x + 1) > 0$: il primo fattore è positivo per $x \in \left(\frac{\pi}{6}, \frac{5\pi}{6}\right)$, il secondo per $x \in \left(0, \frac{2\pi}{3}\right) \cup \left(\frac{4\pi}{3}, 2\pi\right)$. Si incrociano i segni in tabella, e il prodotto è positivo dove le due righe concordano.
+    { id: 'disequazioni-riconducibili', titolo: 'Disequazioni riconducibili', testo: R`Quando la disequazione è un prodotto, una frazione o un polinomio in una funzione goniometrica, si procede come per le disequazioni algebriche. L'unica differenza è che ogni fattore dà archi sulla circonferenza invece che intervalli sulla retta, e alla fine tutto si ripete ogni giro.
 
-Per le disequazioni **fratte**, come $\dfrac{2\cos x - 1}{\sin x} \ge 0$, si aggiungono le condizioni di esistenza (qui $\sin x \ne 0$): il denominatore si studia come gli altri fattori, ma i punti che lo annullano vanno **sempre esclusi** dalla soluzione finale, anche se la disequazione non è stretta.
+>* **Prodotti e frazioni**: studio il segno di **ogni fattore** per conto suo (sono disequazioni elementari), riporto i risultati in una **tabella dei segni** su un solo giro, per esempio da $0$ a $2\pi$, e leggo dove il prodotto (o il quoziente) ha il segno richiesto.
 
-Per le disequazioni di secondo grado in una funzione, come $2\sin^2x - \sin x - 1 \ge 0$, si sostituisce $t = \sin x$, si risolve la disequazione di secondo grado in $t$ dentro $[-1,1]$, e si torna a $x$ con le disequazioni elementari trovate.
+Esempio: $\sin x\,(2\cos x - 1) > 0$ fra $0$ e $2\pi$. Il primo fattore è positivo per $0 < x < \pi$. Il secondo è positivo quando $\cos x > \frac12$, cioè per $0 \le x < \frac{\pi}{3}$ e per $\frac{5\pi}{3} < x < 2\pi$. I punti in cui qualche fattore cambia segno, $0$, $\frac{\pi}{3}$, $\pi$, $\frac{5\pi}{3}$, dividono il giro in quattro tratti:
 
->! Il denominatore di una frazione goniometrica non è mai zero per definizione: i valori esclusi restano fuori dalla soluzione anche quando sembrerebbero soddisfare il verso della disequazione.` },
+| tratto | $\sin x$ | $2\cos x - 1$ | prodotto |
+|---|---|---|---|
+| $0 < x < \frac{\pi}{3}$ | $+$ | $+$ | $+$ |
+| $\frac{\pi}{3} < x < \pi$ | $+$ | $-$ | $-$ |
+| $\pi < x < \frac{5\pi}{3}$ | $-$ | $-$ | $+$ |
+| $\frac{5\pi}{3} < x < 2\pi$ | $-$ | $+$ | $-$ |
 
-    { id: 'sistemi-cenni', titolo: 'Sistemi di equazioni e disequazioni goniometriche (cenni)', testo: R`In alcuni problemi le condizioni da rispettare sono più di una: un'equazione e una disequazione, oppure due disequazioni, da soddisfare **contemporaneamente**. È un **sistema di condizioni goniometriche**, e si tratta come un sistema qualunque: si risolve ogni condizione per conto suo, poi si prendono le soluzioni comuni, cioè si fa l'**intersezione**.
+Le soluzioni sono $0 < x < \frac{\pi}{3}$ e $\pi < x < \frac{5\pi}{3}$ (più $2n\pi$).
 
-Per esempio: trova le soluzioni di $\sin x = \frac12$ che rendono anche $\cos x > 0$, con $x \in [0, 2\pi)$.
+Nelle **fratte**, come $\dfrac{2\cos x - 1}{\sin x} \ge 0$, il denominatore si studia come gli altri fattori, ma i valori che lo annullano non fanno mai parte delle soluzioni.
 
-- $\sin x = \frac12$ ha soluzioni $x = \frac{\pi}{6}$ e $x = \frac{5\pi}{6}$.
-- $\cos x > 0$ esclude $\frac{5\pi}{6}$ (dove il coseno è negativo) e mantiene $\frac{\pi}{6}$.
+?? Nella disequazione $\dfrac{2\cos x - 1}{\sin x} \ge 0$, quali valori vanno esclusi in ogni caso?
+[x] $x = 0$ e $x = \pi$
+[ ] $x = \frac{\pi}{3}$ e $x = \frac{5\pi}{3}$
+[ ] nessuno, perché c'è il $\ge$
+=> $0$ e $\pi$ annullano il denominatore: lì la frazione non esiste, e l'uguale del $\ge$ non li salva. $\frac{\pi}{3}$ e $\frac{5\pi}{3}$ annullano invece il numeratore: la frazione vale $0$, e con $\ge$ sono soluzioni.
+
+Con le disequazioni di secondo grado in una funzione si fa la sostituzione, come nelle equazioni, e si risolve in $t$:
+
+~ 2\sin^2x - \sin x - 1 \ge 0 :: di secondo grado in $\sin x$
+~ 2t^2 - t - 1 \ge 0 :: pongo $t = \sin x$
+~ t \le -\frac12 \ \lor\ t \ge 1 :: zeri $-\frac12$ e $1$, parabola verso l'alto: valori esterni
+~ \sin x \le -\frac12 \ \lor\ \evid{\sin x = 1} :: il seno non supera mai $1$: $\sin x \ge 1$ vale solo con l'uguale
+~ \evidb{\frac{7\pi}{6} + 2n\pi \le x \le \frac{11\pi}{6} + 2n\pi} \ \lor\ x = \evidb{\frac{\pi}{2} + 2n\pi} :: una disequazione e un'equazione elementari
+
+>! Nella tabella dei segni conviene usare un solo giro per tutti i fattori, lo stesso per tutti: se un fattore lo scrivi fra $0$ e $2\pi$ e un altro fra $-\pi$ e $\pi$, i tratti non si corrispondono più.` },
+
+    { id: 'sistemi-cenni', titolo: 'Sistemi di equazioni e disequazioni goniometriche (cenni)', testo: R`A volte le condizioni sono più di una e devono valere **insieme**: un'equazione e una disequazione, oppure due disequazioni. È un **sistema**, e si tratta come i sistemi di disequazioni algebriche: si risolve ogni condizione per conto suo, poi si tengono solo i valori che le soddisfano tutte. Questa parte comune si chiama **intersezione**.
+
+Esempio: quali soluzioni di $\sin x = \frac12$, fra $0$ e $2\pi$, hanno anche $\cos x > 0$?
+
+- $\sin x = \frac12$ dà $x = \frac{\pi}{6}$ e $x = \frac{5\pi}{6}$.
+- $\frac{5\pi}{6}$ sta nel secondo quadrante, dove il coseno è negativo: si scarta. $\frac{\pi}{6}$ sta nel primo, dove il coseno è positivo: si tiene.
 
 Resta solo $x = \frac{\pi}{6}$.
 
-Conviene sempre lavorare sullo stesso intervallo (per esempio $[0, 2\pi)$) per tutte le condizioni del sistema, così l'intersezione si legge direttamente sulla stessa striscia di valori, magari aiutandosi con più rette reali una sotto l'altra.
+>* Le soluzioni di un sistema sono l'**intersezione** delle soluzioni delle singole condizioni: basta che una condizione non valga per scartare il valore.
 
->* Le soluzioni di un sistema sono l'**intersezione**, non l'unione, delle soluzioni delle singole condizioni: basta che una condizione fallisca per scartare un valore.
+Conviene lavorare su un solo giro, lo stesso per tutte le condizioni, e disegnarle su più righe una sotto l'altra: la parte comune si legge in colonna.
 
->! Non confrontare direttamente due famiglie di soluzioni scritte con parametri $n$ diversi (una con $2n\pi$, l'altra magari con $n\pi$) senza prima riportarle sullo stesso intervallo numerico: è lì che si annidano gli errori di sistema.` }
+>! Due famiglie scritte con passi diversi, per esempio $\frac{\pi}{4} + n\pi$ e $\frac{\pi}{4} + 2n\pi$, non si confrontano a occhio. Scrivi i valori che ciascuna dà fra $0$ e $2\pi$ e confronta quelli.` }
   ],
 
   grafici: {
-    senoElementare: {
-      tipo: 'piano', x: [-7, 7], y: [-1.6, 1.6],
-      passo: [1, 0.5],
-      funzioni: [{ f: 'sin(x)', etichetta: 'y = sin x', colore: 1 }],
+    senoCirconferenza: {
+      tipo: 'piano', x: [-1.7, 1.7], y: [-1.35, 1.35], proporzioni: 'uguali', passo: [0.5, 0.5],
+      parametri: [{ nome: 'k', min: -1, max: 1, passo: 0.05, valore: 0.5, nascosto: true }],
       elementi: [
-        { tipo: 'orizzontale', y: 0.5, etichetta: 'y = 0,5' }
+        { tipo: 'cerchio', centro: [0, 0], raggio: 1, colore: 1 },
+        { tipo: 'orizzontale', y: 'k', colore: 2, tratteggio: true },
+        { tipo: 'angolo', vertice: [0, 0], da: [1, 0], a: ['sqrt(1-k^2)', 'k'], raggio: 0.28, colore: 3 },
+        { tipo: 'angolo', vertice: [0, 0], da: [-1, 0], a: ['-sqrt(1-k^2)', 'k'], raggio: 0.28, colore: 3 },
+        { tipo: 'segmento', da: [0, 0], a: ['sqrt(1-k^2)', 'k'], colore: 3 },
+        { tipo: 'segmento', da: [0, 0], a: ['-sqrt(1-k^2)', 'k'], colore: 3 },
+        { tipo: 'punto', p: ['sqrt(1-k^2)', 'k'], etichetta: 'α₁', posizione: 'alto-destra', colore: 3 },
+        { tipo: 'punto', p: ['-sqrt(1-k^2)', 'k'], etichetta: 'α₂', posizione: 'alto-sinistra', colore: 3 },
+        { tipo: 'punto', p: [0, 'k'], trascina: true, etichetta: 'k = {{k}}', posizione: 'basso-destra', colore: 2 },
+        { tipo: 'testo', p: [-1.65, 1.2], testo: 'α₁ = {{asin(k)*180/pi}}°', ancora: 'start' },
+        { tipo: 'testo', p: [1.65, 1.2], testo: 'α₂ = {{180 - asin(k)*180/pi}}°', ancora: 'end' }
       ],
-      punti: [
-        { x: -5.7596, y: 0.5, etichetta: 'π/6 − 2π', posizione: 'basso' },
-        { x: -3.6652, y: 0.5, etichetta: '5π/6 − 2π', posizione: 'alto' },
-        { x: 0.5236, y: 0.5, etichetta: 'π/6', posizione: 'alto' },
-        { x: 2.618, y: 0.5, etichetta: '5π/6', posizione: 'alto' },
-        { x: 6.8068, y: 0.5, etichetta: 'π/6 + 2π', posizione: 'basso' }
-      ],
-      didascalia: 'La retta y = 0,5 incontra la sinusoide infinite volte: ogni intersezione è una soluzione di sin x = 0,5, a distanza 2π dalla successiva sullo stesso ramo.'
+      didascalia: 'Trascina k su e giù lungo l\'asse y. La retta y = k taglia la circonferenza nei due angoli che hanno seno k: confronta α₁ e α₂, e guarda che cosa succede per k = 1.'
     },
-    cosenoParametro: {
-      tipo: 'piano', x: [-4, 4], y: [-2, 2],
-      parametri: [{ nome: 'k', min: -1.5, max: 1.5, passo: 0.1, valore: 0.6, etichetta: 'k' }],
-      funzioni: [{ f: 'cos(x)', etichetta: 'y = cos x', colore: 1 }],
-      elementi: [{ tipo: 'orizzontale', y: 'k', etichetta: 'y = k' }],
-      punti: [
-        { x: 'acos(k)', y: 'k', etichetta: 'arccos k', posizione: 'alto' },
-        { x: '-acos(k)', y: 'k', etichetta: '−arccos k', posizione: 'basso' }
-      ],
-      didascalia: 'Sposta k: per |k| ≤ 1 la retta taglia il coseno in due punti simmetrici rispetto a x = 0; oltre |k| = 1 i punti spariscono, perché arccos(k) non esiste più.'
-    },
-    disequazioneArea: {
-      tipo: 'piano', x: [-1, 4], y: [-1.4, 1.4],
-      funzioni: [{ f: 'sin(x)', etichetta: 'y = sin x', colore: 1 }],
+    cosenoCirconferenza: {
+      tipo: 'piano', x: [-1.7, 1.7], y: [-1.35, 1.35], proporzioni: 'uguali', passo: [0.5, 0.5],
+      parametri: [{ nome: 'k', min: -1, max: 1, passo: 0.05, valore: 0.5, nascosto: true }],
       elementi: [
-        { tipo: 'orizzontale', y: 0.5, etichetta: 'y = 0,5' },
-        { tipo: 'area', f: 'sin(x)', g: '0.5', da: 0.5236, a: 2.618, etichetta: 'sin x > 0,5' }
+        { tipo: 'cerchio', centro: [0, 0], raggio: 1, colore: 1 },
+        { tipo: 'verticale', x: 'k', colore: 2, tratteggio: true },
+        { tipo: 'angolo', vertice: [0, 0], da: [1, 0], a: ['k', 'sqrt(1-k^2)'], raggio: 0.28, colore: 3 },
+        { tipo: 'angolo', vertice: [0, 0], da: [1, 0], a: ['k', '-sqrt(1-k^2)'], raggio: 0.28, colore: 3 },
+        { tipo: 'segmento', da: [0, 0], a: ['k', 'sqrt(1-k^2)'], colore: 3 },
+        { tipo: 'segmento', da: [0, 0], a: ['k', '-sqrt(1-k^2)'], colore: 3 },
+        { tipo: 'punto', p: ['k', 'sqrt(1-k^2)'], etichetta: 'α', posizione: 'alto-destra', colore: 3 },
+        { tipo: 'punto', p: ['k', '-sqrt(1-k^2)'], etichetta: '−α', posizione: 'basso-destra', colore: 3 },
+        { tipo: 'punto', p: ['k', 0], trascina: true, etichetta: 'k = {{k}}', posizione: 'basso-destra', colore: 2 },
+        { tipo: 'testo', p: [-1.65, 1.2], testo: 'α = {{acos(k)*180/pi}}°', ancora: 'start' }
       ],
-      didascalia: 'La zona colorata è dove la sinusoide sta sopra la retta: esattamente l\'intervallo (π/6, 5π/6).'
+      didascalia: 'Trascina k lungo l\'asse x. La retta x = k taglia la circonferenza in due punti simmetrici rispetto all\'asse x: i loro angoli sono α e −α.'
     },
-    disequazioneIntervallo: {
-      tipo: 'retta-reale', x: [-1, 4],
-      intervalli: [{ da: 0.5236, a: 2.618, chiusoDa: false, chiusoA: false, etichetta: ']π/6; 5π/6[' }],
-      didascalia: 'La soluzione di sin x > 1/2 dentro un periodo, da ripetere poi ogni 2π.'
+    disequazioneCirconferenza: {
+      tipo: 'piano', x: [-1.7, 1.7], y: [-1.35, 1.35], proporzioni: 'uguali', passo: [0.5, 0.5], mirino: false,
+      parametri: [{ nome: 'k', min: -1, max: 1, passo: 0.05, valore: 0.5, nascosto: true }],
+      funzioni: [
+        { f: 'sqrt(1-x^2)', dominio: ['-sqrt(1-((k+abs(k))/2)^2)', 'sqrt(1-((k+abs(k))/2)^2)'], colore: 2 },
+        { f: '-sqrt(1-x^2)', dominio: [-1, '-sqrt(1-((k-abs(k))/2)^2)'], colore: 2 },
+        { f: '-sqrt(1-x^2)', dominio: ['sqrt(1-((k-abs(k))/2)^2)', 1], colore: 2 }
+      ],
+      elementi: [
+        { tipo: 'cerchio', centro: [0, 0], raggio: 1, colore: 1, tratteggio: true },
+        { tipo: 'orizzontale', y: 'k', colore: 3, tratteggio: true },
+        { tipo: 'punto', p: ['sqrt(1-k^2)', 'k'], colore: 2 },
+        { tipo: 'punto', p: ['-sqrt(1-k^2)', 'k'], colore: 2 },
+        { tipo: 'punto', p: [0, 'k'], trascina: true, etichetta: 'k = {{k}}', posizione: 'basso-destra', colore: 4 },
+        { tipo: 'testo', p: [-1.65, 1.2], testo: '{{asin(k)*180/pi}}° < x < {{180 - asin(k)*180/pi}}°', ancora: 'start' }
+      ],
+      didascalia: 'L\'arco colorato è quello dove sin x > k. Trascina k: sopra lo zero l\'arco resta in alto, sotto lo zero scende a coprire anche una parte del semicerchio inferiore.'
     },
     linearAB: {
-      tipo: 'piano', x: [-7, 7], y: [-2.5, 2.5],
+      tipo: 'piano', x: [-7, 7], y: [-2.5, 2.5], passo: [1, 1], altezza: 420,
       parametri: [
-        { nome: 'a', min: -2, max: 2, passo: 0.1, valore: 1, etichetta: 'a' },
-        { nome: 'b', min: -2, max: 2, passo: 0.1, valore: 1, etichetta: 'b' }
+        { nome: 'a', min: -2, max: 2, passo: 0.1, valore: 0.6, etichetta: 'a' },
+        { nome: 'b', min: -2, max: 2, passo: 0.1, valore: 0.5, etichetta: 'b' }
       ],
-      funzioni: [{ f: 'a*sin(x) + b*cos(x)', etichetta: 'y = a·sin x + b·cos x', colore: 1 }],
+      funzioni: [{ f: 'a*sin(x) + b*cos(x)', colore: 1 }],
       elementi: [
-        { tipo: 'orizzontale', y: 1, etichetta: 'y = 1' },
-        { tipo: 'testo', p: [-6.8, 2.15], testo: 'r = {{sqrt(a^2+b^2)}}', ancora: 'start' }
+        { tipo: 'orizzontale', y: 1, colore: 2 },
+        { tipo: 'testo', p: [-6.8, 1.2], testo: 'y = 1', ancora: 'start' },
+        { tipo: 'orizzontale', y: 'sqrt(a^2+b^2)', colore: 4, tratteggio: true },
+        { tipo: 'orizzontale', y: '-sqrt(a^2+b^2)', colore: 4, tratteggio: true },
+        { tipo: 'testo', p: [-6.8, 2.15], testo: 'R = {{sqrt(a^2+b^2)}}', ancora: 'start' }
       ],
-      didascalia: 'a·sin x + b·cos x = 1 ha soluzione solo se r = √(a² + b²) è almeno 1: muovi a e b finché la curva non tocca la retta y = 1.'
-    },
-    circonferenza: {
-      tipo: 'circonferenza-goniometrica', angolo: 50, mostra: ['sin', 'cos'],
-      didascalia: 'Sposta l\'angolo e osserva per quali valori l\'ordinata del punto (il seno) supera 0,5.'
+      didascalia: 'Muovi a e b. La curva blu y = a·sin x + b·cos x resta sempre fra le due linee tratteggiate y = R e y = −R, con R = √(a² + b²). Tocca la retta y = 1 solo quando R arriva almeno a 1.'
     }
   },
 
   esempi: [
-    { titolo: 'Un\'equazione elementare in seno', problema: R`Risolvi $\sin x = -\dfrac{\sqrt3}{2}$.`, passi: [
-      R`È già nella forma elementare $\sin x = k$ con $k = -\dfrac{\sqrt3}{2}$: poiché $|k|\le 1$, l'equazione ha soluzioni.`,
-      R`$\arcsin\!\left(-\dfrac{\sqrt3}{2}\right) = -\dfrac{\pi}{3}$: è l'arco (nel quarto quadrante) con quel seno.`,
-      R`Le due famiglie sono $x = -\dfrac{\pi}{3}+2n\pi$ e $x = \pi-\left(-\dfrac{\pi}{3}\right)+2n\pi = \dfrac{4\pi}{3}+2n\pi$.`
-    ], risultato: R`$x = -\dfrac{\pi}{3}+2n\pi \ \lor\ x=\dfrac{4\pi}{3}+2n\pi, \quad n\in\mathbb{Z}$` },
+    { titolo: 'Un\'equazione elementare in coseno', problema: R`Risolvi $2\cos x + \sqrt3 = 0$.`, passi: [
+      R`Isolo il coseno, come in un'equazione di primo grado: $\cos x = -\dfrac{\sqrt3}{2}$.`,
+      R`$k = -\dfrac{\sqrt3}{2}$ è fra $-1$ e $1$, quindi ci sono soluzioni.`,
+      R`L'angolo fra $0$ e $\pi$ con coseno $-\dfrac{\sqrt3}{2}$ è $\dfrac{5\pi}{6}$: nel secondo quadrante il coseno è negativo, e $\cos\dfrac{\pi}{6} = \dfrac{\sqrt3}{2}$.`,
+      R`Con il coseno le due soluzioni sono opposte: $x = \pm\dfrac{5\pi}{6} + 2n\pi$. Fra $0$ e $2\pi$ sono $\dfrac{5\pi}{6}$ e $-\dfrac{5\pi}{6} + 2\pi = \dfrac{7\pi}{6}$.`
+    ], risultato: R`$x = \pm\dfrac{5\pi}{6}+2n\pi, \quad n\in\mathbb{Z}$` },
 
-    { titolo: 'Un\'equazione riconducibile', problema: R`Risolvi $\sin(2x) = \sin\!\left(x+\dfrac{\pi}{3}\right)$.`, passi: [
-      R`Due seni uguali: o gli argomenti coincidono a meno di $2n\pi$, o sono supplementari a meno di $2n\pi$.`,
-      R`Primo caso: $2x = x+\dfrac{\pi}{3}+2n\pi \ \Rightarrow\ x = \dfrac{\pi}{3}+2n\pi$.`,
-      R`Secondo caso: $2x = \pi-\left(x+\dfrac{\pi}{3}\right)+2n\pi \ \Rightarrow\ 3x = \dfrac{2\pi}{3}+2n\pi \ \Rightarrow\ x=\dfrac{2\pi}{9}+\dfrac{2n\pi}{3}$.`
-    ], risultato: R`$x=\dfrac{\pi}{3}+2n\pi \ \lor\ x=\dfrac{2\pi}{9}+\dfrac{2n\pi}{3}, \quad n\in\mathbb{Z}$` },
+    { titolo: 'Seno uguale a coseno', problema: R`Risolvi $\sin 3x = \cos x$.`, passi: [
+      R`A sinistra c'è un seno, a destra un coseno: trasformo il coseno con gli angoli complementari, $\cos x = \sin\left(\dfrac{\pi}{2} - x\right)$.`,
+      R`L'equazione diventa $\sin 3x = \sin\left(\dfrac{\pi}{2} - x\right)$: due seni uguali, quindi angoli uguali oppure supplementari.`,
+      R`Angoli uguali: $3x = \dfrac{\pi}{2} - x + 2n\pi$, cioè $4x = \dfrac{\pi}{2} + 2n\pi$. Divido ogni termine per $4$: $x = \dfrac{\pi}{8} + \dfrac{n\pi}{2}$.`,
+      R`Angoli supplementari: $3x = \pi - \left(\dfrac{\pi}{2} - x\right) + 2n\pi = \dfrac{\pi}{2} + x + 2n\pi$, cioè $2x = \dfrac{\pi}{2} + 2n\pi$. Divido per $2$: $x = \dfrac{\pi}{4} + n\pi$.`
+    ], risultato: R`$x = \dfrac{\pi}{8} + \dfrac{n\pi}{2} \ \lor\ x = \dfrac{\pi}{4} + n\pi, \quad n\in\mathbb{Z}$` },
 
-    { titolo: 'Secondo grado in seno (sostituzione)', problema: R`Risolvi $2\sin^2x-\sin x-1=0$.`, passi: [
-      R`Pongo $t=\sin x$: $2t^2-t-1=0$, con $\Delta = 1+8=9$.`,
-      R`$t = \dfrac{1\pm3}{4}$: $t=1$ oppure $t=-\dfrac12$. Entrambi in $[-1,1]$: nessuno va scartato.`,
-      R`$\sin x = 1 \ \Rightarrow\ x=\dfrac{\pi}{2}+2n\pi$.`,
-      R`$\sin x = -\dfrac12 \ \Rightarrow\ x=\dfrac{7\pi}{6}+2n\pi \ \lor\ x=\dfrac{11\pi}{6}+2n\pi$.`
-    ], risultato: R`$x=\dfrac{\pi}{2}+2n\pi \ \lor\ x=\dfrac{7\pi}{6}+2n\pi \ \lor\ x=\dfrac{11\pi}{6}+2n\pi, \quad n\in\mathbb{Z}$` },
+    { titolo: 'Secondo grado in seno, con una soluzione da scartare', problema: R`Risolvi $2\sin^2x + 5\sin x - 3 = 0$.`, passi: [
+      R`Compare solo $\sin x$: pongo $t = \sin x$ e ottengo $2t^2 + 5t - 3 = 0$.`,
+      R`$\Delta = 25 + 24 = 49$, quindi $t = \dfrac{-5 \pm 7}{4}$: $t = \dfrac12$ oppure $t = -3$.`,
+      R`$t = -3$ si scarta: il seno non scende mai sotto $-1$.`,
+      R`Resta $\sin x = \dfrac12$: $x = \dfrac{\pi}{6} + 2n\pi$ oppure $x = \pi - \dfrac{\pi}{6} + 2n\pi = \dfrac{5\pi}{6} + 2n\pi$.`
+    ], risultato: R`$x=\dfrac{\pi}{6}+2n\pi \ \lor\ x=\dfrac{5\pi}{6}+2n\pi, \quad n\in\mathbb{Z}$` },
 
-    { titolo: 'Un\'equazione omogenea', problema: R`Risolvi $\sin^2x-\sin x\cos x-2\cos^2x=0$.`, passi: [
-      R`Controllo $\cos x=0$: allora $\sin^2x=1$ e l'equazione darebbe $1-0-0=1\ne0$. Non è soluzione: posso dividere per $\cos^2x$.`,
-      R`Divido: $\tan^2x-\tan x-2=0$.`,
-      R`Scompongo: $(\tan x-2)(\tan x+1)=0 \ \Rightarrow\ \tan x=2 \ \lor\ \tan x=-1$.`,
-      R`$\tan x=-1$ è un angolo noto: $x=\dfrac{3\pi}{4}+n\pi$. $\tan x=2$ non lo è: si lascia $x=\arctan2+n\pi$.`
-    ], risultato: R`$x=\dfrac{3\pi}{4}+n\pi \ \lor\ x=\arctan2+n\pi, \quad n\in\mathbb{Z}$` },
+    { titolo: 'Un\'omogenea in cui cos x = 0 è soluzione', problema: R`Risolvi $\sin x\cos x - \sqrt3\cos^2x = 0$.`, passi: [
+      R`È omogenea di secondo grado, ma manca il termine in $\sin^2 x$: $a = 0$.`,
+      R`Controllo $\cos x = 0$: il primo membro vale $0 - 0 = 0$, quindi è soluzione. Dividere per $\cos^2 x$ la farebbe perdere.`,
+      R`Raccolgo $\cos x$: $\cos x\,(\sin x - \sqrt3\cos x) = 0$. Un prodotto è zero se lo è uno dei fattori.`,
+      R`Primo fattore: $\cos x = 0$, cioè $x = \dfrac{\pi}{2} + n\pi$.`,
+      R`Secondo fattore: $\sin x = \sqrt3\cos x$. Qui $\cos x$ non può essere zero (sarebbe zero anche $\sin x$, impossibile), quindi divido per $\cos x$: $\tan x = \sqrt3$, cioè $x = \dfrac{\pi}{3} + n\pi$.`
+    ], risultato: R`$x=\dfrac{\pi}{2}+n\pi \ \lor\ x=\dfrac{\pi}{3}+n\pi, \quad n\in\mathbb{Z}$` },
 
-    { titolo: 'Un\'equazione lineare in seno e coseno', problema: R`Risolvi $\sin x+\cos x=1$ con il metodo delle formule parametriche.`, passi: [
-      R`Pongo $t=\tan\dfrac{x}{2}$: $\sin x=\dfrac{2t}{1+t^2}$, $\cos x=\dfrac{1-t^2}{1+t^2}$. Controllo a parte $x=\pi+2n\pi$, dove $t$ non esiste.`,
-      R`Sostituisco e moltiplico per $1+t^2$: $2t+1-t^2=1+t^2$.`,
-      R`Riordino: $2t-t^2=t^2 \ \Rightarrow\ 2t^2-2t=0 \ \Rightarrow\ 2t(t-1)=0 \ \Rightarrow\ t=0 \ \lor\ t=1$.`,
-      R`$t=0 \ \Rightarrow\ \dfrac{x}{2}=n\pi \ \Rightarrow\ x=2n\pi$; \quad $t=1 \ \Rightarrow\ \dfrac{x}{2}=\dfrac{\pi}{4}+n\pi \ \Rightarrow\ x=\dfrac{\pi}{2}+2n\pi$.`,
-      R`Controllo $x=\pi+2n\pi$: $\sin\pi+\cos\pi=0-1=-1\ne1$. Non è soluzione: non se ne perde nessuna.`
+    { titolo: 'Un\'equazione lineare con le formule parametriche', problema: R`Risolvi $\sin x+\cos x=1$ con le formule parametriche.`, passi: [
+      R`Pongo $t=\tan\dfrac{x}{2}$, così $\sin x=\dfrac{2t}{1+t^2}$ e $\cos x=\dfrac{1-t^2}{1+t^2}$. Mi segno di controllare alla fine $x=\pi+2n\pi$, dove $t$ non esiste.`,
+      R`Sostituisco e moltiplico tutto per $1+t^2$, che non è mai zero: $2t+1-t^2=1+t^2$.`,
+      R`Porto tutto a sinistra: $2t-2t^2=0$, cioè $2t(1-t)=0$. Quindi $t=0$ oppure $t=1$.`,
+      R`$t=0$ vuol dire $\tan\dfrac{x}{2}=0$: $\dfrac{x}{2}=n\pi$, cioè $x=2n\pi$.`,
+      R`$t=1$ vuol dire $\tan\dfrac{x}{2}=1$: $\dfrac{x}{2}=\dfrac{\pi}{4}+n\pi$, cioè $x=\dfrac{\pi}{2}+2n\pi$.`,
+      R`Controllo $x=\pi$: $\sin\pi+\cos\pi=0-1=-1\ne1$. Non è soluzione, quindi non ho perso niente.`
     ], risultato: R`$x=2n\pi \ \lor\ x=\dfrac{\pi}{2}+2n\pi, \quad n\in\mathbb{Z}$` },
 
-    { titolo: 'Una disequazione elementare', problema: R`Risolvi $2\cos x-1>0$.`, passi: [
-      R`Isolo il coseno: $\cos x>\dfrac12$.`,
-      R`Sulla circonferenza goniometrica, $\cos x=\dfrac12$ nei punti $x=\pm\dfrac{\pi}{3}$; il coseno supera $\dfrac12$ nell'arco centrale fra questi due punti.`,
-      R`Scrivo la soluzione dentro un periodo e la generalizzo con $2n\pi$.`
-    ], risultato: R`$-\dfrac{\pi}{3}+2n\pi < x < \dfrac{\pi}{3}+2n\pi, \quad n\in\mathbb{Z}$` }
+    { titolo: 'Una disequazione elementare', problema: R`Risolvi $\sqrt2\cos x + 1 < 0$.`, passi: [
+      R`Isolo il coseno: $\cos x < -\dfrac{1}{\sqrt2} = -\dfrac{\sqrt2}{2}$.`,
+      R`Equazione associata: $\cos x = -\dfrac{\sqrt2}{2}$ per $x = \pm\dfrac{3\pi}{4}$. Sono gli estremi dell'arco.`,
+      R`Il coseno è l'ascissa: cerco i punti a **sinistra** della retta verticale $x = -\dfrac{\sqrt2}{2}$. È l'arco che contiene $\pi$.`,
+      R`Percorso in senso antiorario, l'arco va da $\dfrac{3\pi}{4}$ a $-\dfrac{3\pi}{4} + 2\pi = \dfrac{5\pi}{4}$. Aggiungo $2n\pi$ agli estremi.`
+    ], risultato: R`$\dfrac{3\pi}{4}+2n\pi < x < \dfrac{5\pi}{4}+2n\pi, \quad n\in\mathbb{Z}$` }
   ],
 
   formulario: [
@@ -271,7 +391,7 @@ Conviene sempre lavorare sullo stesso intervallo (per esempio $[0, 2\pi)$) per t
     { id: 'fc-13', sezione: 'lineari-seno-coseno', tipo: 'formula', fronte: R`Metodo dell'angolo aggiunto`, retro: R`$a\sin x + b\cos x = R\sin(x+\varphi)$, con $R=\sqrt{a^2+b^2}$, $\cos\varphi=\frac{a}{R}$, $\sin\varphi=\frac{b}{R}$.` },
     { id: 'fc-14', sezione: 'lineari-seno-coseno', tipo: 'concetto', fronte: R`Quando $a\sin x + b\cos x = c$ ha soluzioni?`, retro: R`Quando $a^2+b^2 \ge c^2$, cioè $R \ge |c|$.` },
     { id: 'fc-15', sezione: 'lineari-seno-coseno', tipo: 'formula', fronte: R`Formule parametriche con $t=\tan\frac{x}{2}$`, retro: R`$\sin x = \dfrac{2t}{1+t^2}$, $\cos x = \dfrac{1-t^2}{1+t^2}$.` },
-    { id: 'fc-16', sezione: 'lineari-seno-coseno', tipo: 'concetto', fronte: R`Perché va controllato $x=\pi+2n\pi$ nel metodo parametrico?`, retro: R`Perché lì $\tan\frac{x}{2}$ non è definita: se ne perderebbe la verifica se non lo si controlla a parte.` },
+    { id: 'fc-16', sezione: 'lineari-seno-coseno', tipo: 'concetto', fronte: R`Perché va controllato $x=\pi+2n\pi$ nel metodo parametrico?`, retro: R`Perché lì $\tan\frac{x}{2}$ non esiste: la sostituzione non può trovare quei valori, quindi vanno provati a mano nell'equazione di partenza.` },
     { id: 'fc-17', sezione: 'omogenee', tipo: 'definizione', fronte: R`Equazione omogenea di secondo grado (in seno e coseno)`, retro: R`$a\sin^2x+b\sin x\cos x+c\cos^2x=0$: ogni termine ha grado $2$, il termine noto è zero.` },
     { id: 'fc-18', sezione: 'omogenee', tipo: 'procedura', fronte: R`Come si risolve un'equazione omogenea?`, retro: R`Si controlla se $\cos x=0$ è soluzione, poi (se non lo è) si divide per $\cos^2x$: si ottiene $a\tan^2x+b\tan x+c=0$.` },
     { id: 'fc-19', sezione: 'omogenee', tipo: 'concetto', fronte: R`Quando $\cos x = 0$ è soluzione dell'omogenea?`, retro: R`Solo se $a=0$: sostituendo $\cos x=0$ (e quindi $\sin^2x=1$) l'equazione diventa $a=0$.` },
@@ -282,25 +402,25 @@ Conviene sempre lavorare sullo stesso intervallo (per esempio $[0, 2\pi)$) per t
   ],
 
   esercizi: [
-    { id: 'es-01', difficolta: 1, testo: R`Risolvi $\sin x = \dfrac{1}{2}$ nell'intervallo $[0, 2\pi)$ (dai le soluzioni come valori decimali o come frazioni di $\pi$ scritte in forma numerica).`, suggerimenti: [R`Pensa alla circonferenza goniometrica: per quali archi l'ordinata vale $\frac12$?`, R`Ci sono due soluzioni: una nel primo quadrante, una nel secondo.`], risposta: { tipo: 'numeri', valori: [0.5236, 2.618] }, soluzione: [R`$\arcsin\dfrac12 = \dfrac{\pi}{6}$.`, R`Le due soluzioni in $[0,2\pi)$ sono $x=\dfrac{\pi}{6}$ e $x=\pi-\dfrac{\pi}{6}=\dfrac{5\pi}{6}$.`] },
+    { id: 'es-01', difficolta: 1, testo: R`Risolvi $\sin x = \dfrac{1}{2}$ nell'intervallo $[0, 2\pi)$ (nella casella scrivi i valori separati da punto e virgola, con $\pi$ o in decimali: per esempio «π/5» oppure «0,63»).`, suggerimenti: [R`Pensa alla circonferenza goniometrica: per quali archi l'ordinata vale $\frac12$?`, R`Ci sono due soluzioni: una nel primo quadrante, una nel secondo.`], risposta: { tipo: 'numeri', valori: [0.5236, 2.618] }, soluzione: [R`$\arcsin\dfrac12 = \dfrac{\pi}{6}$.`, R`Le due soluzioni in $[0,2\pi)$ sono $x=\dfrac{\pi}{6}$ e $x=\pi-\dfrac{\pi}{6}=\dfrac{5\pi}{6}$.`] },
 
-    { id: 'es-02', difficolta: 1, testo: R`Risolvi $\cos x = -1$ nell'intervallo $[0, 2\pi)$ (dai la soluzione come valore decimale o come frazione di $\pi$ scritta in forma numerica).`, suggerimenti: [R`Su quale punto della circonferenza goniometrica il coseno vale esattamente $-1$?`, R`È un unico punto, non due.`], risposta: { tipo: 'numero', valore: 3.1416, tolleranza: 0.01 }, soluzione: [R`Il coseno vale $-1$ solo nel punto $(-1,0)$ della circonferenza, cioè per $x=\pi$.`, R`In $[0,2\pi)$ c'è un'unica soluzione: $x=\pi$.`] },
+    { id: 'es-02', difficolta: 1, testo: R`Risolvi $\cos x = -1$ nell'intervallo $[0, 2\pi)$ (nella casella scrivi il valore decimale: per esempio $\frac{\pi}{5}\approx 0{,}63$).`, suggerimenti: [R`Su quale punto della circonferenza goniometrica il coseno vale esattamente $-1$?`, R`È un unico punto, non due.`], risposta: { tipo: 'numero', valore: 3.1416, tolleranza: 0.01 }, soluzione: [R`Il coseno vale $-1$ solo nel punto $(-1,0)$ della circonferenza, cioè per $x=\pi$.`, R`In $[0,2\pi)$ c'è un'unica soluzione: $x=\pi$.`] },
 
-    { id: 'es-03', difficolta: 1, testo: R`Risolvi $\tan x = -1$ nell'intervallo $[0, 2\pi)$ (dai le soluzioni come valori decimali o come frazioni di $\pi$ scritte in forma numerica).`, suggerimenti: [R`$\arctan(-1) = -\dfrac{\pi}{4}$: cerca l'angolo equivalente in $[0,2\pi)$.`, R`Il periodo della tangente è $\pi$: la seconda soluzione è la prima più $\pi$.`], risposta: { tipo: 'numeri', valori: [2.3562, 5.4978] }, soluzione: [R`$\tan x = -1$ per $x=\dfrac{3\pi}{4}$ (secondo quadrante).`, R`La seconda soluzione in $[0,2\pi)$ è $\dfrac{3\pi}{4}+\pi=\dfrac{7\pi}{4}$.`] },
+    { id: 'es-03', difficolta: 1, testo: R`Risolvi $\tan x = -1$ nell'intervallo $[0, 2\pi)$ (nella casella scrivi i valori separati da punto e virgola, con $\pi$ o in decimali: per esempio «π/5» oppure «0,63»).`, suggerimenti: [R`$\arctan(-1) = -\dfrac{\pi}{4}$: cerca l'angolo equivalente in $[0,2\pi)$.`, R`Il periodo della tangente è $\pi$: la seconda soluzione è la prima più $\pi$.`], risposta: { tipo: 'numeri', valori: [2.3562, 5.4978] }, soluzione: [R`$\tan x = -1$ per $x=\dfrac{3\pi}{4}$ (secondo quadrante).`, R`La seconda soluzione in $[0,2\pi)$ è $\dfrac{3\pi}{4}+\pi=\dfrac{7\pi}{4}$.`] },
 
-    { id: 'es-04', difficolta: 2, testo: R`Risolvi $\sin(2x) = \sin x$ nell'intervallo $[0, 2\pi)$ (dai le soluzioni come valori decimali o come frazioni di $\pi$ scritte in forma numerica).`, suggerimenti: [R`Porta tutto a un membro e usa la formula di duplicazione $\sin 2x = 2\sin x\cos x$.`, R`Dovresti arrivare a $\sin x\,(2\cos x - 1) = 0$: un prodotto nullo.`], risposta: { tipo: 'numeri', valori: [0, 1.0472, 3.1416, 5.236] }, soluzione: [R`$2\sin x\cos x - \sin x = 0 \Rightarrow \sin x\,(2\cos x-1)=0$.`, R`$\sin x = 0 \Rightarrow x=0 \lor x=\pi$.`, R`$\cos x = \dfrac12 \Rightarrow x=\dfrac{\pi}{3} \lor x=\dfrac{5\pi}{3}$.`, R`In $[0,2\pi)$: $x \in \left\{0, \dfrac{\pi}{3}, \pi, \dfrac{5\pi}{3}\right\}$.`] },
+    { id: 'es-04', difficolta: 2, testo: R`Risolvi $\sin(2x) = \sin x$ nell'intervallo $[0, 2\pi)$ (nella casella scrivi i valori separati da punto e virgola, con $\pi$ o in decimali: per esempio «π/5» oppure «0,63»).`, suggerimenti: [R`Porta tutto a un membro e usa la formula di duplicazione $\sin 2x = 2\sin x\cos x$.`, R`Dovresti arrivare a $\sin x\,(2\cos x - 1) = 0$: un prodotto nullo.`], risposta: { tipo: 'numeri', valori: [0, 1.0472, 3.1416, 5.236] }, soluzione: [R`$2\sin x\cos x - \sin x = 0 \Rightarrow \sin x\,(2\cos x-1)=0$.`, R`$\sin x = 0 \Rightarrow x=0 \lor x=\pi$.`, R`$\cos x = \dfrac12 \Rightarrow x=\dfrac{\pi}{3} \lor x=\dfrac{5\pi}{3}$.`, R`In $[0,2\pi)$: $x \in \left\{0, \dfrac{\pi}{3}, \pi, \dfrac{5\pi}{3}\right\}$.`] },
 
-    { id: 'es-05', difficolta: 2, testo: R`Risolvi $2\sin^2x + \sin x - 1 = 0$ nell'intervallo $[0, 2\pi)$ (dai le soluzioni come valori decimali o come frazioni di $\pi$ scritte in forma numerica).`, suggerimenti: [R`Poni $t = \sin x$ e risolvi la quadratica in $t$.`, R`Dovresti trovare $t=\dfrac12$ e $t=-1$: entrambi accettabili.`], risposta: { tipo: 'numeri', valori: [0.5236, 2.618, 4.7124] }, soluzione: [R`$t=\sin x$: $2t^2+t-1=0$, $\Delta=1+8=9$, $t=\dfrac{-1\pm3}{4}$: $t=\dfrac12$ o $t=-1$.`, R`$\sin x=\dfrac12 \Rightarrow x=\dfrac{\pi}{6} \lor x=\dfrac{5\pi}{6}$.`, R`$\sin x=-1 \Rightarrow x=\dfrac{3\pi}{2}$.`] },
+    { id: 'es-05', difficolta: 2, testo: R`Risolvi $2\sin^2x + \sin x - 1 = 0$ nell'intervallo $[0, 2\pi)$ (nella casella scrivi i valori separati da punto e virgola, con $\pi$ o in decimali: per esempio «π/5» oppure «0,63»).`, suggerimenti: [R`Poni $t = \sin x$ e risolvi la quadratica in $t$.`, R`Dovresti trovare $t=\dfrac12$ e $t=-1$: entrambi accettabili.`], risposta: { tipo: 'numeri', valori: [0.5236, 2.618, 4.7124] }, soluzione: [R`$t=\sin x$: $2t^2+t-1=0$, $\Delta=1+8=9$, $t=\dfrac{-1\pm3}{4}$: $t=\dfrac12$ o $t=-1$.`, R`$\sin x=\dfrac12 \Rightarrow x=\dfrac{\pi}{6} \lor x=\dfrac{5\pi}{6}$.`, R`$\sin x=-1 \Rightarrow x=\dfrac{3\pi}{2}$.`] },
 
-    { id: 'es-06', difficolta: 2, testo: R`Risolvi l'equazione omogenea $\sqrt3\sin^2x - 2\sin x\cos x - \sqrt3\cos^2x = 0$ nell'intervallo $[0, 2\pi)$ (dai le soluzioni come valori decimali o come frazioni di $\pi$ scritte in forma numerica).`, suggerimenti: [R`Controlla prima se $\cos x=0$ è soluzione: qui $a=\sqrt3\ne0$, quindi no.`, R`Dividi per $\cos^2x$: ottieni $\sqrt3\tan^2x-2\tan x-\sqrt3=0$.`], risposta: { tipo: 'numeri', valori: [1.0472, 2.618, 4.1888, 5.7596] }, soluzione: [R`$\cos x=0$ darebbe $\sqrt3\cdot1-0-0=\sqrt3\ne0$: non è soluzione, si può dividere per $\cos^2x$.`, R`$\sqrt3\tan^2x-2\tan x-\sqrt3=0$: $\Delta=4+12=16$, $\tan x=\dfrac{2\pm4}{2\sqrt3}$, cioè $\tan x=\sqrt3$ o $\tan x=-\dfrac{1}{\sqrt3}$.`, R`$\tan x=\sqrt3 \Rightarrow x=\dfrac{\pi}{3} \lor x=\dfrac{4\pi}{3}$.`, R`$\tan x=-\dfrac{1}{\sqrt3} \Rightarrow x=\dfrac{5\pi}{6} \lor x=\dfrac{11\pi}{6}$.`] },
+    { id: 'es-06', difficolta: 2, testo: R`Risolvi l'equazione omogenea $\sqrt3\sin^2x - 2\sin x\cos x - \sqrt3\cos^2x = 0$ nell'intervallo $[0, 2\pi)$ (nella casella scrivi i valori separati da punto e virgola, con $\pi$ o in decimali: per esempio «π/5» oppure «0,63»).`, suggerimenti: [R`Controlla prima se $\cos x=0$ è soluzione: qui $a=\sqrt3\ne0$, quindi no.`, R`Dividi per $\cos^2x$: ottieni $\sqrt3\tan^2x-2\tan x-\sqrt3=0$.`], risposta: { tipo: 'numeri', valori: [1.0472, 2.618, 4.1888, 5.7596] }, soluzione: [R`$\cos x=0$ darebbe $\sqrt3\cdot1-0-0=\sqrt3\ne0$: non è soluzione, si può dividere per $\cos^2x$.`, R`$\sqrt3\tan^2x-2\tan x-\sqrt3=0$: $\Delta=4+12=16$, $\tan x=\dfrac{2\pm4}{2\sqrt3}$, cioè $\tan x=\sqrt3$ o $\tan x=-\dfrac{1}{\sqrt3}$.`, R`$\tan x=\sqrt3 \Rightarrow x=\dfrac{\pi}{3} \lor x=\dfrac{4\pi}{3}$.`, R`$\tan x=-\dfrac{1}{\sqrt3} \Rightarrow x=\dfrac{5\pi}{6} \lor x=\dfrac{11\pi}{6}$.`] },
 
-    { id: 'es-07', difficolta: 2, testo: R`Risolvi $\sin x - \sqrt3\cos x = 1$ nell'intervallo $[0, 2\pi)$ con il metodo dell'angolo aggiunto (dai le soluzioni come valori decimali o come frazioni di $\pi$ scritte in forma numerica).`, suggerimenti: [R`Calcola $R=\sqrt{a^2+b^2}$ con $a=1$, $b=-\sqrt3$: dovresti trovare $R=2$.`, R`Riscrivi come $2\sin\left(x-\dfrac{\pi}{3}\right)=1$.`], risposta: { tipo: 'numeri', valori: [1.5708, 3.6652] }, soluzione: [R`$R=\sqrt{1+3}=2$. Poiché $\cos\dfrac{\pi}{3}=\dfrac12$ e $\sin\dfrac{\pi}{3}=\dfrac{\sqrt3}{2}$, si ha $\sin x-\sqrt3\cos x = 2\sin\left(x-\dfrac{\pi}{3}\right)$.`, R`L'equazione diventa $\sin\left(x-\dfrac{\pi}{3}\right)=\dfrac12$: $x-\dfrac{\pi}{3}=\dfrac{\pi}{6}+2n\pi$ oppure $x-\dfrac{\pi}{3}=\dfrac{5\pi}{6}+2n\pi$.`, R`$x=\dfrac{\pi}{2}+2n\pi$ oppure $x=\dfrac{7\pi}{6}+2n\pi$. In $[0,2\pi)$: $x=\dfrac{\pi}{2}$ e $x=\dfrac{7\pi}{6}$.`] },
+    { id: 'es-07', difficolta: 2, testo: R`Risolvi $\sin x - \sqrt3\cos x = 1$ nell'intervallo $[0, 2\pi)$ con il metodo dell'angolo aggiunto (nella casella scrivi i valori separati da punto e virgola, con $\pi$ o in decimali: per esempio «π/5» oppure «0,63»).`, suggerimenti: [R`Calcola $R=\sqrt{a^2+b^2}$ con $a=1$, $b=-\sqrt3$: dovresti trovare $R=2$.`, R`Riscrivi come $2\sin\left(x-\dfrac{\pi}{3}\right)=1$.`], risposta: { tipo: 'numeri', valori: [1.5708, 3.6652] }, soluzione: [R`$R=\sqrt{1+3}=2$. Poiché $\cos\dfrac{\pi}{3}=\dfrac12$ e $\sin\dfrac{\pi}{3}=\dfrac{\sqrt3}{2}$, si ha $\sin x-\sqrt3\cos x = 2\sin\left(x-\dfrac{\pi}{3}\right)$.`, R`L'equazione diventa $\sin\left(x-\dfrac{\pi}{3}\right)=\dfrac12$: $x-\dfrac{\pi}{3}=\dfrac{\pi}{6}+2n\pi$ oppure $x-\dfrac{\pi}{3}=\dfrac{5\pi}{6}+2n\pi$.`, R`$x=\dfrac{\pi}{2}+2n\pi$ oppure $x=\dfrac{7\pi}{6}+2n\pi$. In $[0,2\pi)$: $x=\dfrac{\pi}{2}$ e $x=\dfrac{7\pi}{6}$.`] },
 
-    { id: 'es-08', difficolta: 2, testo: R`Risolvi la disequazione $2\sin x + 1 \le 0$ nell'intervallo $[0, 2\pi)$ (dai gli estremi dell'intervallo soluzione come valori decimali o come frazioni di $\pi$ scritte in forma numerica).`, suggerimenti: [R`Isola il seno: $\sin x \le -\dfrac12$.`, R`Pensa alla circonferenza: dove l'ordinata è minore o uguale a $-\dfrac12$?`], risposta: { tipo: 'intervallo', da: 3.6652, a: 5.7596, chiusoDa: true, chiusoA: true }, soluzione: [R`$\sin x \le -\dfrac12$.`, R`$\sin x = -\dfrac12$ per $x=\dfrac{7\pi}{6}$ e $x=\dfrac{11\pi}{6}$; il seno è minore o uguale a $-\dfrac12$ nell'arco fra questi due punti (quello "sotto").`, R`Soluzione in $[0,2\pi)$: $\dfrac{7\pi}{6} \le x \le \dfrac{11\pi}{6}$.`] },
+    { id: 'es-08', difficolta: 2, testo: R`Risolvi la disequazione $2\sin x + 1 \le 0$ nell'intervallo $[0, 2\pi)$ (nelle caselle scrivi gli estremi in decimale: per esempio $\frac{\pi}{5}\approx 0{,}63$).`, suggerimenti: [R`Isola il seno: $\sin x \le -\dfrac12$.`, R`Pensa alla circonferenza: dove l'ordinata è minore o uguale a $-\dfrac12$?`], risposta: { tipo: 'intervallo', da: 3.6652, a: 5.7596, chiusoDa: true, chiusoA: true }, soluzione: [R`$\sin x \le -\dfrac12$.`, R`$\sin x = -\dfrac12$ per $x=\dfrac{7\pi}{6}$ e $x=\dfrac{11\pi}{6}$; il seno è minore o uguale a $-\dfrac12$ nell'arco fra questi due punti (quello "sotto").`, R`Soluzione in $[0,2\pi)$: $\dfrac{7\pi}{6} \le x \le \dfrac{11\pi}{6}$.`] },
 
-    { id: 'es-09', difficolta: 3, testo: R`Risolvi la disequazione $(2\sin x - 1)(2\cos x + 1) > 0$ nell'intervallo $[0, 2\pi)$.`, suggerimenti: [R`Studia il segno di ciascun fattore separatamente, come per una disequazione algebrica.`, R`$2\sin x - 1 > 0$ per $x \in \left(\dfrac{\pi}{6}, \dfrac{5\pi}{6}\right)$; $2\cos x+1>0$ per $x \in \left(0,\dfrac{2\pi}{3}\right)\cup\left(\dfrac{4\pi}{3},2\pi\right)$.`, R`Costruisci la tabella dei segni sui quattro punti $\dfrac{\pi}{6}, \dfrac{2\pi}{3}, \dfrac{5\pi}{6}, \dfrac{4\pi}{3}$ e cerca dove concordano.`], soluzione: [R`Primo fattore: $2\sin x-1>0 \iff \sin x>\dfrac12 \iff x\in\left(\dfrac{\pi}{6},\dfrac{5\pi}{6}\right)$.`, R`Secondo fattore: $2\cos x+1>0 \iff \cos x>-\dfrac12 \iff x\in\left(0,\dfrac{2\pi}{3}\right)\cup\left(\dfrac{4\pi}{3},2\pi\right)$.`, R`Tabella dei segni sui quattro punti $\dfrac{\pi}{6}<\dfrac{2\pi}{3}<\dfrac{5\pi}{6}<\dfrac{4\pi}{3}$: il prodotto è positivo su $\left(\dfrac{\pi}{6},\dfrac{2\pi}{3}\right)$ e su $\left(\dfrac{5\pi}{6},\dfrac{4\pi}{3}\right)$.`, R`Soluzione: $x\in\left(\dfrac{\pi}{6},\dfrac{2\pi}{3}\right)\cup\left(\dfrac{5\pi}{6},\dfrac{4\pi}{3}\right)$.`] },
+    { id: 'es-09', difficolta: 3, testo: R`Risolvi la disequazione $(2\sin x - 1)(2\cos x + 1) > 0$ nell'intervallo $[0, 2\pi)$.`, suggerimenti: [R`Studia il segno di ciascun fattore separatamente, come per una disequazione algebrica.`, R`$2\sin x - 1 > 0$ per $x \in \left(\dfrac{\pi}{6}, \dfrac{5\pi}{6}\right)$; $2\cos x+1>0$ per $x \in \left[0,\dfrac{2\pi}{3}\right)\cup\left(\dfrac{4\pi}{3},2\pi\right)$.`, R`Costruisci la tabella dei segni sui quattro punti $\dfrac{\pi}{6}, \dfrac{2\pi}{3}, \dfrac{5\pi}{6}, \dfrac{4\pi}{3}$ e cerca dove concordano.`], soluzione: [R`Primo fattore: $2\sin x-1>0 \iff \sin x>\dfrac12 \iff x\in\left(\dfrac{\pi}{6},\dfrac{5\pi}{6}\right)$.`, R`Secondo fattore: $2\cos x+1>0 \iff \cos x>-\dfrac12 \iff x\in\left[0,\dfrac{2\pi}{3}\right)\cup\left(\dfrac{4\pi}{3},2\pi\right)$.`, R`Tabella dei segni sui quattro punti $\dfrac{\pi}{6}<\dfrac{2\pi}{3}<\dfrac{5\pi}{6}<\dfrac{4\pi}{3}$: il prodotto è positivo su $\left(\dfrac{\pi}{6},\dfrac{2\pi}{3}\right)$ e su $\left(\dfrac{5\pi}{6},\dfrac{4\pi}{3}\right)$.`, R`Soluzione: $x\in\left(\dfrac{\pi}{6},\dfrac{2\pi}{3}\right)\cup\left(\dfrac{5\pi}{6},\dfrac{4\pi}{3}\right)$.`] },
 
-    { id: 'es-10', difficolta: 3, testo: R`Trova, con $x \in [0, 2\pi)$, l'unica soluzione del sistema $\cos x = -\dfrac12$, $\sin x < 0$ (dai la soluzione come valore decimale o come frazione di $\pi$ scritta in forma numerica).`, suggerimenti: [R`Risolvi prima $\cos x=-\dfrac12$ da sola: due soluzioni.`, R`Fra le due, tieni solo quella con seno negativo.`], risposta: { tipo: 'numero', valore: 4.1888, tolleranza: 0.01 }, soluzione: [R`$\cos x=-\dfrac12 \Rightarrow x=\dfrac{2\pi}{3} \lor x=\dfrac{4\pi}{3}$.`, R`$\sin\dfrac{2\pi}{3}=\dfrac{\sqrt3}{2}>0$: scartata. $\sin\dfrac{4\pi}{3}=-\dfrac{\sqrt3}{2}<0$: accettata.`, R`Soluzione del sistema: $x=\dfrac{4\pi}{3}$.`] }
+    { id: 'es-10', difficolta: 3, testo: R`Trova, con $x \in [0, 2\pi)$, l'unica soluzione del sistema $\cos x = -\dfrac12$, $\sin x < 0$ (nella casella scrivi il valore decimale: per esempio $\frac{\pi}{5}\approx 0{,}63$).`, suggerimenti: [R`Risolvi prima $\cos x=-\dfrac12$ da sola: due soluzioni.`, R`Fra le due, tieni solo quella con seno negativo.`], risposta: { tipo: 'numero', valore: 4.1888, tolleranza: 0.01 }, soluzione: [R`$\cos x=-\dfrac12 \Rightarrow x=\dfrac{2\pi}{3} \lor x=\dfrac{4\pi}{3}$.`, R`$\sin\dfrac{2\pi}{3}=\dfrac{\sqrt3}{2}>0$: scartata. $\sin\dfrac{4\pi}{3}=-\dfrac{\sqrt3}{2}<0$: accettata.`, R`Soluzione del sistema: $x=\dfrac{4\pi}{3}$.`] }
   ],
 
   quiz: [
@@ -329,7 +449,7 @@ Conviene sempre lavorare sullo stesso intervallo (per esempio $[0, 2\pi)$) per t
     { tipo: 'metodo', testo: R`Prima di scrivere $\arcsin k$ o $\arccos k$, controlla che $|k|\le 1$: se non lo è, l'equazione è impossibile e hai già finito.` },
     { tipo: 'trucco', testo: R`Nell'equazione lineare $a\sin x+b\cos x=c$, calcola subito $R=\sqrt{a^2+b^2}$: se $R<|c|$ non serve nemmeno risolvere, non ci sono soluzioni.` },
     { tipo: 'errore', testo: R`Nel metodo delle formule parametriche, dimenticare di controllare $x=\pi+2n\pi$ a parte: è l'unico valore che la sostituzione $t=\tan\frac{x}{2}$ non può rappresentare.` },
-    { tipo: 'metodo', testo: R`Per le disequazioni, disegna sempre la circonferenza o il grafico: fidarsi a memoria di dove sta il segno è la causa più comune di errore.` },
+    { tipo: 'metodo', testo: R`Per le disequazioni disegna sempre la circonferenza, con la retta $y = k$ o $x = k$, e colora l'arco giusto: è il modo più sicuro per non prendere l'arco opposto.` },
     { tipo: 'trucco', testo: R`In una disequazione fratta, il denominatore va sempre escluso dalla soluzione finale, anche quando il segno richiesto sembrerebbe includerlo.` }
   ],
 

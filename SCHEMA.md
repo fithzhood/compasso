@@ -108,6 +108,7 @@ L'utente sceglie quali carte studiare, quindi ogni carta deve reggersi da sola.
 - `risposta` (opzionale, ma mettila in **almeno metà** degli esercizi):
   - `{ tipo: 'numero', valore: 2.5, tolleranza: 0.01 }` — accetta anche frazioni scritte `5/2`
   - `{ tipo: 'numeri', valori: [-1, 3] }` — insieme di numeri, ordine libero (soluzioni di un'equazione)
+  - `{ tipo: 'numeri', valori: [5, 3], ordinati: true }` — numeri in quell'ordine (la coppia $(x; y)$ di un sistema)
   - `{ tipo: 'testo', accettate: ['x>3', 'x > 3', ']3;+inf['] }` — confronto normalizzato (minuscole, senza spazi, `,`→`.`); metti tutte le forme ragionevoli
   - `{ tipo: 'intervallo', da: -1, a: 3, chiusoDa: true, chiusoA: false }` — l'app propone
     un piccolo modulo (estremi + inclusione) e lo confronta
@@ -178,6 +179,7 @@ Il grafico ha già un mirino: passando il dito o il mouse mostra x e f(x).
 { tipo: 'retta-reale', x: [-5, 5],
   intervalli: [ { da: -2, a: 3, chiusoDa: true, chiusoA: false, etichetta: '−2 ≤ x < 3' },
                 { da: '-inf', a: 0, chiusoA: false, colore: 2 } ],
+  // riga: 0, 1, … mette più intervalli sulla stessa riga (es. x < −1 oppure x > 3 insieme)
   punti: [ { x: 1, etichetta: '1', escluso: true } ],
   didascalia: '...' }
 ```
@@ -211,8 +213,55 @@ parametri dichiarati (anche `nascosto: true` per non avere il cursore). Nei `tes
               { tipo: 'testo', p: [-4.5, 5.2], testo: 'somma = {{x1 + x2}}   prodotto = {{x1 * x2}}', ancora: 'start' } ],
   didascalia: 'Trascina x₁ e x₂.' }
 ```
+**Punto che scorre su una circonferenza:** aggiungi `giro: { parametro: 't', centro: [cx, cy], gradi: true }`
+a un punto con `trascina: true` e scrivi le sue coordinate in funzione di `t`
+(`p: ['cx + r*cos(t*pi/180)', 'cy + r*sin(t*pi/180)']`). Trascinandolo, `t` diventa l'angolo del dito
+visto dal centro (in gradi da 0 a 360 con `gradi: true`, altrimenti in radianti). Serve per gli angoli
+alla circonferenza, la circonferenza goniometrica, un punto su un'ellisse parametrizzata.
+
 Usa i punti trascinabili quando c'è qualcosa da *scoprire* muovendo (per esempio: due punti
 che definiscono una retta, un punto sulla circonferenza, i fuochi di un'ellisse).
+
+### Strumenti interattivi dentro il testo (revisione di settembre 2026)
+
+**Derivazione passo per passo.** Righe consecutive che iniziano con `~ ` (tilde e spazio): a
+sinistra la formula **senza `$`**, poi ` :: ` e un commento breve (markdown, può avere `$…$`).
+Lo studente le vede comparire una alla volta con «Passo successivo». Dentro la formula
+`\evid{…}` evidenzia (con un evidenziatore che passa) **la parte che cambia** rispetto al passo
+prima; `\evidb{…}` fa lo stesso con il secondo colore (per il risultato, o per una seconda
+cosa da seguire).
+```
+~ 5x - 3 = 2x + 9 :: si parte da qui
+~ 5x \evid{- 2x} = 9 \evid{+ 3} :: porto $2x$ a sinistra e $-3$ a destra, cambiando segno
+~ 3x = 12 :: sommo i termini simili
+~ x = \evidb{4} :: divido entrambi i membri per $3$
+```
+Usala per i calcoli che nel libro sono una colonna di passaggi: è il posto dove lo studente si
+perde. Da 3 a 8 righe. Il commento dice **perché** si fa il passo, non ripete la formula.
+
+**Prova tu.** Una domanda veloce in mezzo alla teoria, per controllare di aver capito prima di
+andare avanti. A scelta multipla (esattamente una `[x]`, le opzioni si rimescolano da sole):
+```
+?? Quale di questi passaggi è lecito?
+[ ] dividere entrambi i membri per $x$
+[x] sottrarre $5$ da entrambi i membri
+[ ] cambiare segno a un solo termine
+=> Il primo principio permette di aggiungere o togliere la stessa quantità ai due membri. Dividere per $x$ no: $x$ potrebbe valere zero.
+```
+Oppure a risposta da svelare (niente opzioni: lo studente ci pensa e tocca per vedere):
+```
+?? Qual è il grado di $3x^2 - x^5 + 1$?
+=> Cinque: conta l'esponente più alto dell'incognita, non il primo che si incontra.
+```
+Il blocco finisce alla prima riga vuota. Una o due per sezione al massimo, dove c'è un errore
+tipico da far emergere. Gli errori tipici nei distrattori, sempre.
+
+**In breve** (campo `inBreve`, facoltativo ma consigliato): 3–6 frasi in un array, mostrate in un
+riquadro sotto l'introduzione. Sono le cose da portarsi via, scritte come le direbbe
+l'insegnante alla fine della lezione, non come titoli.
+```js
+inBreve: [R`Un'equazione è un'uguaglianza vera solo per **alcuni** valori dell'incognita: trovarli è risolverla.`, R`...`],
+```
 
 ### `[[animazione:nome]]` — le animazioni pronte
 Piccoli "motion graphic" con avvio automatico, pausa e cursore di avanzamento; ognuno ha

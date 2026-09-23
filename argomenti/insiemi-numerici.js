@@ -4,78 +4,152 @@ COMPASSO.registra({
   id: 'insiemi-numerici',
   titolo: 'Insiemi numerici e potenze',
 
-  introduzione: R`I numeri che usiamo non sono tutti dello stesso tipo: contare le pecore di un gregge, misurare un debito, dividere una pizza in tre parti uguali o calcolare la diagonale di un quadrato richiedono insiemi di numeri via via più ampi. La matematica organizza questa crescita in una catena di insiemi, ognuno contenuto nel successivo: $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}$. Ogni ampliamento nasce per risolvere un'equazione che, nell'insieme precedente, non aveva soluzione.
+  introduzione: R`Per contare le pecore di un gregge bastano $0, 1, 2, 3, \dots$ Per scrivere un debito servono i numeri negativi. Per dividere una pizza in tre servono le frazioni. E la diagonale di un quadrato di lato $1$ non è nemmeno una frazione. Ogni volta che i numeri che hai non bastano più, se ne aggiunge un tipo nuovo.
 
-A questi insiemi si affiancano le potenze, che sono prima di tutto un modo compatto di scrivere prodotti ripetuti, e la notazione scientifica, che serve a scrivere senza fatica numeri enormi (la distanza Terra-Sole) o piccolissimi (il diametro di un atomo). Il valore assoluto, infine, è il modo di misurare "quanto è lontano un numero da zero", ignorando il segno.
+Così nasce una catena di insiemi, ognuno dentro il successivo: $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}$ (naturali, interi, razionali, reali). Il simbolo $\subset$ si legge «è contenuto in».
 
-Per seguire questo argomento bastano le operazioni aritmetiche imparate alle medie: addizione, sottrazione, moltiplicazione, divisione e le prime potenze. Da qui in poi tutta l'algebra del liceo — equazioni, disequazioni, funzioni — lavora dentro questi insiemi, quindi vale la pena avere le idee chiare fin da subito.`,
+Nello stesso argomento trovi gli strumenti per lavorare con questi numeri: le **potenze** (un modo corto di scrivere prodotti ripetuti), la **notazione scientifica** (per i numeri enormi o piccolissimi), il **valore assoluto** (la distanza da zero) e la scomposizione in **fattori primi**, con MCD e mcm. Bastano le operazioni delle medie; tutta l'algebra del liceo si appoggia su queste basi.`,
+
+  inBreve: [
+    R`Ogni insieme nuovo nasce perché nel precedente un'equazione non aveva soluzione: $x + 5 = 3$ chiede i negativi, $2x = 3$ chiede le frazioni.`,
+    R`Un numero si classifica nel **più piccolo** insieme che lo contiene: $\dfrac{6}{2} = 3$ è un intero, anche se è scritto come frazione.`,
+    R`I decimali limitati e periodici sono frazioni, quindi razionali; un decimale infinito senza periodo, come $\sqrt{2}$ o $\pi$, è irrazionale.`,
+    R`Nelle proprietà delle potenze serve la **stessa base**: nel prodotto gli esponenti si sommano, nella potenza di potenza si moltiplicano. E $a^{-n} = \dfrac{1}{a^n}$, con $a \ne 0$.`,
+    R`$|x|$ è la distanza di $x$ da zero, quindi non è mai negativo; $|a - b|$ è la distanza fra $a$ e $b$.`,
+    R`MCD: fattori primi comuni con l'esponente più piccolo. mcm: tutti i fattori con l'esponente più grande.`
+  ],
 
   sezioni: [
-    { id: 'insiemi-n-z-q', titolo: 'Naturali, interi, razionali', testo: R`I **numeri naturali** $\mathbb{N} = \{0, 1, 2, 3, \dots\}$ sono quelli con cui si conta: non esistono naturali negativi né naturali "tra" $3$ e $4$.
+    { id: 'insiemi-n-z-q', titolo: 'Naturali, interi, razionali', testo: R`Quanto fa $3 - 5$? Con i numeri per contare non si può fare: non esiste un numero di pecore che, aggiunto a $5$, dia $3$.
 
->* $\mathbb{N}$ serve per contare, ma non basta: l'equazione $x + 5 = 3$ non ha soluzione in $\mathbb{N}$, perché non esiste un naturale che sommato a $5$ dia $3$.
+I **numeri naturali** $\mathbb{N} = \{0, 1, 2, 3, \dots\}$ sono quelli con cui si conta. Non ci sono naturali negativi, né naturali «in mezzo» fra $3$ e $4$. Per questo l'equazione $x + 5 = 3$ in $\mathbb{N}$ non ha soluzione.
 
-Per risolvere equazioni come questa si introducono i **numeri interi** $\mathbb{Z} = \{\dots, -2, -1, 0, 1, 2, \dots\}$, che aggiungono ai naturali i loro opposti. Con $\mathbb{Z}$ la sottrazione è sempre possibile: $3 - 5 = -2$.
+Si aggiungono allora gli opposti dei naturali e si ottengono i **numeri interi** $\mathbb{Z} = \{\dots, -2, -1, 0, 1, 2, \dots\}$. Con gli interi la sottrazione si fa sempre: $3 - 5 = -2$.
 
-Ma anche $\mathbb{Z}$ ha un limite: $2x = 3$ non ha soluzione intera, perché non esiste un intero che moltiplicato per $2$ dia $3$. Servono i **numeri razionali**, l'insieme delle frazioni:
+Anche gli interi hanno un limite: $2x = 3$ non ha soluzione, perché nessun intero moltiplicato per $2$ dà $3$. Servono i **numeri razionali**, cioè le frazioni:
 
 $$\mathbb{Q} = \left\{ \frac{m}{n} \ \middle|\ m, n \in \mathbb{Z},\ n \ne 0 \right\}$$
 
-Ogni intero è anche razionale (basta scriverlo con denominatore $1$: $5 = \dfrac{5}{1}$), quindi $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q}$. In $\mathbb{Q}$ la divisione è sempre possibile, tranne che per $0$.
+Si legge: tutti i numeri $\dfrac{m}{n}$ con $m$ e $n$ interi e $n$ diverso da zero. Con i razionali si può sempre dividere, tranne per $0$.
 
-Attenzione a non confondere l'insieme con la scrittura: $\dfrac{6}{2}$ è una frazione, ma il numero che rappresenta, $3$, è intero. Un numero appartiene sempre al **più piccolo** insieme che lo contiene: $\dfrac{6}{2} \in \mathbb{Z}$ (e quindi anche $\in \mathbb{Q}$), non solo $\in \mathbb{Q}$.
+| insieme | che cosa aggiunge | equazione che risolve |
+|---|---|---|
+| $\mathbb{N}$ | i numeri per contare | $x + 3 = 5$ |
+| $\mathbb{Z}$ | i negativi | $x + 5 = 3$ |
+| $\mathbb{Q}$ | le frazioni | $2x = 3$ |
 
->! Errore frequente: pensare che "intero" voglia dire "positivo". $-8$ è un numero intero a tutti gli effetti; "naturale" invece esclude i negativi.` },
+Ogni intero è anche razionale: $5 = \dfrac{5}{1}$. Per questo si scrive $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q}$.
 
-    { id: 'numeri-reali', titolo: 'I numeri reali e la retta', testo: R`Nemmeno $\mathbb{Q}$ basta: come vedremo più avanti, non esiste nessuna frazione $\dfrac{m}{n}$ il cui quadrato sia $2$, eppure un quadrato di lato $1$ ha una diagonale ben precisa, lunga $\sqrt{2}$. I numeri come $\sqrt{2}$, che non si scrivono come frazione, si dicono **irrazionali**. L'unione dei razionali e degli irrazionali è l'insieme dei **numeri reali** $\mathbb{R}$.
+>* Un numero si classifica nel **più piccolo** insieme che lo contiene, guardando il numero e non come è scritto: $\dfrac{6}{2}$ è scritto come frazione, ma vale $3$, quindi è un intero.
 
->* $\mathbb{R}$ = numeri razionali $\cup$ numeri irrazionali. La catena completa è $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}$.
+?? Qual è il più piccolo insieme che contiene $-\dfrac{12}{4}$?
+[ ] $\mathbb{N}$
+[x] $\mathbb{Z}$
+[ ] $\mathbb{Q}$
+[ ] $\mathbb{R}$
+=> $-\dfrac{12}{4} = -3$: è un intero negativo, quindi sta in $\mathbb{Z}$ (e di conseguenza anche in $\mathbb{Q}$ e $\mathbb{R}$). Rispondere $\mathbb{Q}$ perché «c'è una frazione» è l'errore tipico: prima si semplifica, poi si classifica. Non è in $\mathbb{N}$ perché è negativo.
 
-A ogni numero reale corrisponde uno e un solo punto della retta orientata (fissata un'origine e un'unità di misura), e viceversa: per questo si parla di **retta reale**. I numeri negativi stanno a sinistra dell'origine, quelli positivi a destra, e la distanza dall'origine cresce con il valore assoluto del numero.
+>! «Intero» non vuol dire «positivo»: $-8$ è un intero a tutti gli effetti. Sono i **naturali** a escludere i negativi.` },
 
-[[grafico:retta]]
+    { id: 'numeri-reali', titolo: 'I numeri reali e la retta', testo: R`Disegna un quadrato di lato $1$. La sua diagonale ha una lunghezza precisa: per il teorema di Pitagora è il numero che al quadrato fa $2$, cioè $\sqrt{2}$. Eppure nessuna frazione, elevata al quadrato, dà esattamente $2$ (la dimostrazione è nella sezione sui numeri irrazionali).
 
-Sulla retta, razionali e irrazionali convivono senza lasciare spazi vuoti visibili: tra $-2$ e $\pi$ si affollano infiniti numeri di entrambi i tipi. La sezione sulla densità mostra perché, nonostante questo affollamento, $\mathbb{Q}$ da solo non "riempie" completamente la retta.
+I numeri come $\sqrt{2}$, che non si possono scrivere come frazione, si chiamano **irrazionali**. Razionali e irrazionali, messi insieme, formano i **numeri reali** $\mathbb{R}$.
 
-Il percorso di ampliamento non finisce qui: più avanti, per risolvere equazioni come $x^2 = -1$ (nessun numero reale elevato al quadrato è negativo), si introdurrà un insieme ancora più grande, i **numeri complessi** $\mathbb{C}$, con $\mathbb{R} \subset \mathbb{C}$.
+>* $\mathbb{R}$ = razionali + irrazionali. La catena completa è $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}$.
 
->! Errore frequente: credere che "numero reale" sia sinonimo di "numero razionale". $\pi$ e $\sqrt{2}$ sono reali a pieno titolo, semplicemente non sono frazioni.` },
+Su una retta fissi un punto $O$ (l'origine, che corrisponde a $0$), un verso e un'unità di misura. A ogni numero reale corrisponde allora uno e un solo punto, e a ogni punto un solo numero: per questo si parla di **retta reale**. I negativi stanno a sinistra di $O$, i positivi a destra.
 
-    { id: 'frazioni-decimali', titolo: 'Frazioni e numeri decimali', testo: R`Dividendo il numeratore per il denominatore, ogni frazione produce un numero decimale di uno di questi due tipi.
+Sulla retta razionali e irrazionali sono mescolati fittissimi: fra due numeri qualsiasi ce ne sono infiniti dell'uno e dell'altro tipo.
 
-Un decimale **limitato** ha un numero finito di cifre dopo la virgola: $\dfrac{3}{8} = 0{,}375$. Questo succede sempre e solo quando, ridotta ai minimi termini, la frazione ha al denominatore soltanto i fattori primi $2$ e $5$ (quelli della base $10$).
+?? Quale di questi numeri **non** è razionale?
+[ ] $0{,}\overline{3}$
+[ ] $\sqrt{9}$
+[x] $\sqrt{8}$
+[ ] $-\dfrac{5}{7}$
+=> $8$ non è un quadrato perfetto ($2^2 = 4$, $3^2 = 9$), quindi $\sqrt{8}$ è irrazionale. Attenzione a $\sqrt{9}$: il simbolo di radice non basta a renderlo irrazionale, perché $\sqrt{9} = 3$. E $0{,}\overline{3} = \dfrac{1}{3}$ è una frazione.
 
-Un decimale **periodico** ripete all'infinito lo stesso blocco di cifre, il **periodo**: $\dfrac{1}{3} = 0{,}\overline{3} = 0{,}333\dots$ è periodico **semplice** (il periodo comincia subito dopo la virgola); $\dfrac{1}{6} = 0{,}1\overline{6} = 0{,}1666\dots$ è periodico **misto**, con un **antiperiodo** ($1$) prima del periodo ($6$).
+Più avanti, per risolvere $x^2 = -1$ (nessun reale al quadrato dà un negativo), si userà un insieme ancora più grande, i **numeri complessi** $\mathbb{C}$.
 
-Il percorso inverso, dal decimale alla frazione che lo genera (la **frazione generatrice**), segue una regola precisa: al numeratore la differenza tra il numero scritto senza virgola (fino a un periodo) e la sua parte non periodica; al denominatore tanti $9$ quante le cifre del periodo, seguiti da tanti $0$ quante le cifre dell'antiperiodo (vedi formulario). Per esempio $0{,}41\overline{6} = \dfrac{416 - 41}{900} = \dfrac{375}{900} = \dfrac{5}{12}$.
+>! «Reale» non vuol dire «razionale». $\pi$ e $\sqrt{2}$ sono numeri reali a pieno titolo: semplicemente non sono frazioni.` },
 
->* Ogni numero decimale limitato o periodico è razionale (è una frazione); un decimale con infinite cifre **senza** alcun periodo non lo è.
+    { id: 'frazioni-decimali', titolo: 'Frazioni e numeri decimali', testo: R`Se dividi il numeratore per il denominatore, una frazione diventa un numero decimale. Può succedere una di due cose.
 
->! Errore frequente: pensare che $0{,}\overline{9}$ sia "quasi $1$, ma non proprio". Applicando la formula del periodico semplice, $0{,}\overline{9} = \dfrac{9}{9} = 1$: sono esattamente lo stesso numero, scritto in due modi.` },
+- Il decimale è **limitato**: ha un numero finito di cifre dopo la virgola, come $\dfrac{3}{8} = 0{,}375$.
+- Il decimale è **periodico**: da un certo punto in poi un blocco di cifre, il **periodo**, si ripete per sempre. Si scrive con una lineetta sopra: $\dfrac{1}{3} = 0{,}333\dots = 0{,}\overline{3}$.
 
-    { id: 'densita-completezza', titolo: 'Densità di Q e non completezza', testo: R`I numeri razionali hanno una proprietà sorprendente: tra due razionali distinti qualsiasi, per quanto vicini, ce n'è sempre un altro. Basta prendere la loro **media**: tra $\dfrac{1}{2}$ e $1$ c'è $\dfrac{3}{4}$; tra $\dfrac{1}{2}$ e $\dfrac{3}{4}$ c'è $\dfrac{5}{8}$; e così via, senza fine. Questa proprietà si chiama **densità**: $\mathbb{Q}$ è denso in $\mathbb{R}$.
+Un periodico è **semplice** se il periodo parte subito dopo la virgola ($0{,}\overline{3}$), **misto** se prima c'è qualche cifra che non si ripete, l'**antiperiodo**: in $\dfrac{1}{6} = 0{,}1\overline{6}$ l'antiperiodo è $1$ e il periodo è $6$.
 
->* **Densità di $\mathbb{Q}$:** tra due numeri razionali qualsiasi esistono infiniti altri numeri razionali.
+Come fai a sapere in anticipo quale dei due casi ti capita? Riduci la frazione ai minimi termini e scomponi il denominatore: se contiene **solo** i fattori primi $2$ e $5$ (quelli di $10$), il decimale è limitato; altrimenti è periodico.
 
-Eppure, per quanto denso, $\mathbb{Q}$ ha dei "buchi". Si considerino tutti i razionali il cui quadrato è minore di $2$: questo insieme cresce (per esempio contiene $1$, $1{,}4$, $1{,}41$, $1{,}414\dots$) ma non ha un confine superiore razionale che gli appartenga o che sia il "più piccolo" tra i confini razionali possibili — il candidato naturale sarebbe $\sqrt{2}$, che, come si vede nella prossima sezione, non è razionale. La retta dei soli razionali, vista da vicino, avrebbe un vuoto proprio dove dovrebbe stare $\sqrt{2}$.
+?? Quale di queste frazioni dà un decimale limitato?
+[x] $\dfrac{9}{30}$
+[ ] $\dfrac{1}{6}$
+[ ] $\dfrac{5}{12}$
+[ ] $\dfrac{2}{15}$
+=> $\dfrac{9}{30}$ ridotta è $\dfrac{3}{10}$, e $10 = 2 \cdot 5$: fa $0{,}3$. La trappola è guardare il $30$ prima di ridurre, vedere il fattore $3$ e scartarla. Le altre, ridotte, hanno un $3$ al denominatore e sono periodiche.
 
-$\mathbb{R}$ risolve il problema: aggiungendo tutti gli irrazionali, ogni punto della retta trova un numero che gli corrisponde. Questa proprietà si chiama **completezza**, e distingue $\mathbb{R}$ da $\mathbb{Q}$.
+### Dal decimale alla frazione
 
->! Errore frequente: confondere densità e completezza. Denso vuol dire "non ci sono coppie di razionali senza un altro razionale in mezzo"; completo vuol dire "non mancano numeri per rappresentare ogni punto della retta". $\mathbb{Q}$ ha la prima proprietà ma non la seconda.` },
+Anche il percorso inverso si può fare: ogni decimale periodico viene da una frazione, la sua **frazione generatrice**. Il trucco è far sparire il periodo con una sottrazione. Prova con $x = 0{,}41\overline{6}$:
 
-    { id: 'irrazionali', titolo: 'I numeri irrazionali', testo: R`Un numero **irrazionale** è un numero reale che non si può scrivere come frazione $\dfrac{m}{n}$ con $m, n$ interi: nella sua rappresentazione decimale ha infinite cifre, senza che nessun blocco si ripeta mai in modo periodico.
+~ x = 0{,}41666\dots :: il numero di partenza: antiperiodo $41$, periodo $6$
+~ \evid{1000}x = 416{,}666\dots :: sposto la virgola dopo il primo periodo
+~ \evid{100}x = 41{,}666\dots :: sposto la virgola dopo l'antiperiodo
+~ 1000x - 100x = 416 - 41 :: sottraggo: le code di $6$ sono uguali e si cancellano
+~ \evid{900}x = \evid{375} :: faccio le due sottrazioni
+~ x = \dfrac{375}{900} = \evidb{\dfrac{5}{12}} :: divido per $900$ e semplifico per $75$
 
-Il primo esempio scoperto nella storia, e il più famoso, è $\sqrt{2}$. Se ne può dare l'idea della dimostrazione per assurdo: si suppone che $\sqrt{2}$ sia razionale, cioè $\sqrt{2} = \dfrac{p}{q}$ con $p, q$ interi senza fattori comuni (frazione ridotta ai minimi termini). Elevando al quadrato, $p^2 = 2q^2$: quindi $p^2$ è pari, e questo costringe anche $p$ a essere pari (il quadrato di un dispari è sempre dispari). Scrivendo $p = 2k$, si ottiene $4k^2 = 2q^2$, cioè $q^2 = 2k^2$: con lo stesso ragionamento, anche $q$ deve essere pari. Ma allora $p$ e $q$ sono entrambi pari, contraddicendo l'ipotesi che non avessero fattori comuni. L'assurdo dimostra che $\sqrt{2}$ non può essere scritto come frazione.
+Da qui viene la regola del formulario: al numeratore il numero scritto fino al primo periodo meno l'antiperiodo ($416 - 41$), al denominatore tanti $9$ quante le cifre del periodo e tanti $0$ quante quelle dell'antiperiodo ($900$).
 
-Sono irrazionali anche $\sqrt{3}$, $\sqrt{5}$ e, in generale, la radice quadrata di ogni naturale che non sia un quadrato perfetto; e sono irrazionali due costanti che si incontreranno più avanti, $\pi$ (rapporto tra circonferenza e diametro) ed $e$ (base dei logaritmi naturali), anche se dimostrarlo è molto più difficile che per $\sqrt{2}$.
+>* Ogni decimale limitato o periodico è una frazione, quindi è razionale. Un decimale con infinite cifre **senza** periodo non lo è.
 
->* $\mathbb{R} = \mathbb{Q} \cup \{\text{numeri irrazionali}\}$. Esattamente come $\mathbb{Q}$, anche l'insieme degli irrazionali è denso in $\mathbb{R}$: tra due razionali c'è sempre un irrazionale, e viceversa.
+>! $0{,}\overline{9}$ non è «quasi $1$»: con la regola del periodico semplice $0{,}\overline{9} = \dfrac{9}{9} = 1$. Sono lo stesso numero scritto in due modi.` },
 
->! Errore frequente: pensare che basti "non vedere un periodo nelle prime cifre" per concludere che un numero è irrazionale. Un numero come $0{,}101001000100001\dots$ (con blocchi di zeri sempre più lunghi) è davvero irrazionale, ma solo perché si può dimostrare che non esiste **alcun** periodo, non perché non se ne vede uno a occhio nelle prime cifre.` },
+    { id: 'densita-completezza', titolo: 'Densità di Q e non completezza', testo: R`Fra i naturali $3$ e $4$ non c'è nessun altro naturale: dopo il $3$ viene subito il $4$. Con le frazioni non succede mai. Fra due razionali diversi, per quanto vicini, ce n'è sempre un altro: la loro **media**.
 
-    { id: 'potenze', titolo: 'Potenze ed esponenti', testo: R`Per un esponente **naturale** $n \ge 1$, la potenza $a^n$ è il prodotto di $n$ fattori uguali ad $a$: $a^n = a \cdot a \cdots a$. Per completare la definizione a $n = 0$ si pone $a^0 = 1$, purché $a \ne 0$ (il caso $0^0$ non ha un valore univoco e qui non si definisce).
+~ \dfrac{1}{2} \text{ e } 1 :: due razionali qualsiasi
+~ \dfrac{1}{2}\left(\dfrac{1}{2} + 1\right) = \evid{\dfrac{3}{4}} :: la media sta a metà strada, quindi in mezzo
+~ \dfrac{1}{2}\left(\dfrac{1}{2} + \dfrac{3}{4}\right) = \evid{\dfrac{5}{8}} :: ripeto fra $\dfrac{1}{2}$ e $\dfrac{3}{4}$
+~ \dfrac{1}{2}\left(\dfrac{1}{2} + \dfrac{5}{8}\right) = \evid{\dfrac{9}{16}} :: e si può andare avanti senza fine
 
-Da queste definizioni seguono le proprietà che permettono di calcolare senza sviluppare i prodotti:
+La media di due frazioni è ancora una frazione, e il procedimento non si ferma mai. Questa proprietà si chiama **densità**.
+
+>* **Densità di $\mathbb{Q}$:** fra due numeri razionali diversi ci sono sempre infiniti altri razionali.
+
+Sembrerebbe che le frazioni riempiano tutta la retta. Invece no: ci sono punti della retta che non corrispondono a nessuna frazione. Uno è il punto $\sqrt{2}$. Puoi avvicinarti quanto vuoi con frazioni, $1{,}4$, $1{,}41$, $1{,}414$, $1{,}4142$, ma nessuna arriva proprio lì, perché $\sqrt{2}$ non è una frazione. Con i soli razionali, in quel punto la retta avrebbe un buco.
+
+I numeri reali tappano tutti questi buchi: a ogni punto della retta corrisponde un numero reale. Questa proprietà si chiama **completezza**, ed è quella che $\mathbb{Q}$ non ha.
+
+>! Densità e completezza sono due cose diverse. **Denso**: fra due razionali ce n'è sempre un altro. **Completo**: ogni punto della retta ha il suo numero. $\mathbb{Q}$ è denso ma non completo; $\mathbb{R}$ è tutte e due le cose.` },
+
+    { id: 'irrazionali', titolo: 'I numeri irrazionali', testo: R`>* Un numero **irrazionale** è un numero reale che non si può scrivere come frazione $\dfrac{m}{n}$ con $m$ e $n$ interi. Scritto con la virgola, ha infinite cifre e nessun periodo.
+
+Come si fa a essere sicuri che $\sqrt{2}$ non sia una frazione? Provare tutte le frazioni è impossibile: sono infinite. Si ragiona **per assurdo**: si suppone che lo sia e si arriva a una contraddizione.
+
+Serve un fatto sui numeri pari: il quadrato di un numero dispari è dispari. Quindi, se un quadrato $p^2$ è pari, anche $p$ deve essere pari.
+
+~ \sqrt{2} = \dfrac{p}{q} :: supponiamo che sia una frazione, già ridotta ai minimi termini ($p$ e $q$ senza fattori comuni)
+~ 2 = \dfrac{\evid{p^2}}{\evid{q^2}} :: elevo al quadrato entrambi i membri
+~ p^2 = \evid{2q^2} :: moltiplico per $q^2$: $p^2$ è il doppio di un intero, quindi è pari, e allora anche $p$ è pari
+~ (\evid{2k})^2 = 2q^2 :: essendo pari, $p$ si scrive $2k$ con $k$ intero
+~ 4k^2 = 2q^2 \;\Rightarrow\; \evid{q^2 = 2k^2} :: divido per $2$: ora è $q^2$ a essere pari, quindi anche $q$ è pari
+~ \evidb{p \text{ e } q \text{ entrambi pari}} :: ma allora hanno il fattore $2$ in comune, contro l'ipotesi: assurdo
+
+L'unica ipotesi fatta era che $\sqrt{2}$ fosse una frazione, quindi è quella a essere falsa: $\sqrt{2}$ è irrazionale.
+
+Allo stesso modo sono irrazionali $\sqrt{3}$, $\sqrt{5}$ e la radice quadrata di ogni naturale che non sia un quadrato perfetto. Sono irrazionali anche $\pi$ (il rapporto fra circonferenza e diametro) ed $e$, che incontrerai con i logaritmi, anche se per loro la dimostrazione è molto più difficile.
+
+>! Non basta guardare le prime cifre e «non vedere un periodo». $0{,}101001000100001\dots$ (con blocchi di zeri sempre più lunghi) è irrazionale perché si può dimostrare che nessun blocco si ripete mai, non perché a occhio il periodo non si vede. Un periodo potrebbe anche essere lunghissimo.` },
+
+    { id: 'potenze', titolo: 'Potenze ed esponenti', testo: R`$2^5$ vuol dire $2 \cdot 2 \cdot 2 \cdot 2 \cdot 2$. In generale, per un esponente naturale $n \ge 1$, la **potenza** $a^n$ è il prodotto di $n$ fattori uguali ad $a$: $a$ si chiama **base**, $n$ **esponente**.
+
+Le proprietà delle potenze vengono tutte da qui: basta contare i fattori. Per esempio, perché $2^3 \cdot 2^2 = 2^5$?
+
+~ 2^3 \cdot 2^2 :: stessa base, $2$
+~ (\evid{2 \cdot 2 \cdot 2}) \cdot (\evid{2 \cdot 2}) :: scrivo i fattori: tre da una parte, due dall'altra
+~ 2^{\evid{3 + 2}} = 2^5 :: in tutto sono $3 + 2 = 5$ fattori uguali a $2$
+
+Ecco le cinque proprietà, che si usano per calcolare senza scrivere tutti i fattori:
 
 | proprietà | regola |
 |---|---|
@@ -85,78 +159,153 @@ Da queste definizioni seguono le proprietà che permettono di calcolare senza sv
 | potenza di un prodotto | $(a \cdot b)^n = a^n \cdot b^n$ |
 | potenza di un quoziente ($b \ne 0$) | $(a : b)^n = a^n : b^n$ |
 
-La proprietà del quoziente, applicata quando $n > m$, produce un esponente negativo: per esempio $\dfrac{2^3}{2^5} = 2^{3-5} = 2^{-2}$. Per dare senso a questo scritto si estende la potenza all'**esponente intero negativo**: $a^{-n} = \dfrac{1}{a^n}$, con $a \ne 0$. Con questa definizione le stesse cinque proprietà continuano a valere anche con esponenti negativi, senza eccezioni.
+>! Le proprietà del prodotto e del quoziente valgono solo con la **stessa base**: $2^3 \cdot 3^2$ **non** fa $6^5$ (fa $8 \cdot 9 = 72$). Con basi diverse si possono unire le potenze solo se hanno lo stesso esponente: $2^3 \cdot 5^3 = (2 \cdot 5)^3 = 10^3$.
 
-Un quadrato è sempre non negativo, ma occhio all'ordine delle operazioni: in $-3^2$ l'elevamento a potenza si esegue prima del meno, quindi $-3^2 = -9$; per elevare al quadrato anche il segno serve la parentesi, $(-3)^2 = 9$.
+### Esponente zero ed esponente negativo
 
-Le potenze con esponente naturale sono anche legate a una figura sorprendente: la somma dei primi $n$ numeri dispari è sempre un quadrato perfetto, $n^2$.
+Che cosa vuol dire $2^0$, o $2^{-2}$? «Moltiplicare $2$ per sé stesso zero volte» non ha senso. Si sceglie allora il significato che fa funzionare ancora la proprietà del quoziente.
 
-[[animazione:somma-dispari]]
+~ \dfrac{2^3}{2^3} = 2^{3 - 3} = \evid{2^0} :: con la proprietà del quoziente
+~ \dfrac{2^3}{2^3} = \dfrac{8}{8} = \evid{1} :: facendo il conto: un numero diviso per sé stesso
+~ \evidb{2^0 = 1} :: le due strade devono dare lo stesso risultato
 
->! Errore frequente: applicare la proprietà del prodotto a basi diverse, scrivendo $2^3 \cdot 3^2 = 6^5$. Le proprietà delle potenze richiedono la **stessa base** (o lo stesso esponente, per prodotti e quozienti "in croce" come $a^n \cdot b^n = (ab)^n$).` },
+Con lo stesso ragionamento si trova il significato dell'esponente negativo:
 
-    { id: 'notazione-scientifica', titolo: 'Notazione scientifica e ordine di grandezza', testo: R`Per scrivere numeri molto grandi o molto piccoli senza contare gli zeri a mano, si usa la **notazione scientifica**: $a \times 10^n$, dove $1 \le |a| < 10$ (il **coefficiente**, o mantissa) e $n$ è un intero (l'**esponente**).
+~ \dfrac{2^3}{2^5} = 2^{3 - 5} = \evid{2^{-2}} :: con la proprietà del quoziente
+~ \dfrac{2^3}{2^5} = \dfrac{\cancel{2 \cdot 2 \cdot 2}}{\cancel{2 \cdot 2 \cdot 2} \cdot 2 \cdot 2} = \evid{\dfrac{1}{2^2}} :: semplificando i fattori uguali
+~ \evidb{2^{-2} = \dfrac{1}{2^2} = \dfrac{1}{4}} :: di nuovo, le due strade devono coincidere
 
-Per esempio la distanza media Terra-Sole, circa $150\,000\,000$ km, si scrive $1{,}5 \times 10^8$ km; il raggio di un atomo di idrogeno, circa $0{,}00000005$ mm, si scrive $5 \times 10^{-8}$ mm. Per passare dalla forma estesa alla notazione scientifica si sposta la virgola fino a lasciare una sola cifra diversa da zero prima di essa, e si conta di quante posizioni ci si è spostati: quel numero (con il segno giusto) è l'esponente.
+>* Per ogni $a \ne 0$: $a^0 = 1$ e $a^{-n} = \dfrac{1}{a^n}$. L'esponente negativo **non** rende negativo il numero: indica il reciproco. Con queste definizioni le cinque proprietà valgono anche per gli esponenti negativi. Il caso $0^0$ non si definisce.
 
-Legato alla notazione scientifica c'è l'**ordine di grandezza**: la potenza di $10$ più vicina al numero. Per trovarlo si scrive il numero in notazione scientifica $a \times 10^n$ e si guarda il coefficiente $a$: se $a < 5$, l'ordine di grandezza è $10^n$; se $a \ge 5$, è la potenza successiva, $10^{n+1}$. Per esempio $346\,000 = 3{,}46 \times 10^5$ ha ordine di grandezza $10^5$ (perché $3{,}46 < 5$); invece $0{,}00068 = 6{,}8 \times 10^{-4}$ ha ordine di grandezza $10^{-3}$ (perché $6{,}8 \ge 5$, si sale di una potenza).
+?? Quanto vale $2^{-3}$?
+[ ] $-8$
+[ ] $-6$
+[x] $\dfrac{1}{8}$
+[ ] $\dfrac{1}{6}$
+=> $2^{-3} = \dfrac{1}{2^3} = \dfrac{1}{8}$. L'errore più comune è $-8$: il meno nell'esponente non passa davanti al numero, dice di prendere il reciproco. $-6$ e $\dfrac{1}{6}$ vengono dal moltiplicare base ed esponente, che non ha niente a che fare con le potenze.
 
-L'ordine di grandezza è comodo per stime rapide e per capire subito quanto sono diversi due numeri: la popolazione di un paese (ordine $10^7$) e quella del pianeta (ordine $10^{10}$) differiscono di tre ordini di grandezza, cioè di un fattore vicino a mille.
+### Il segno meno e le parentesi
 
->! Errore frequente: lasciare il coefficiente fuori dall'intervallo $[1, 10)$, per esempio scrivendo $34{,}6 \times 10^4$ invece di $3{,}46 \times 10^5$. Non è sbagliato come numero, ma non è notazione scientifica corretta.` },
+In $-3^2$ la potenza si calcola prima del meno, quindi $-3^2 = -(3 \cdot 3) = -9$. Per elevare al quadrato anche il segno serve la parentesi: $(-3)^2 = (-3) \cdot (-3) = 9$.
 
-    { id: 'valore-assoluto', titolo: 'Il valore assoluto', testo: R`Il **valore assoluto** (o modulo) di un numero $x$, scritto $|x|$, è la distanza di $x$ dallo zero sulla retta reale, senza tener conto del segno:
+### Perché si dice «al quadrato»
+
+$n^2$ si legge «$n$ al quadrato» perché $n^2$ puntini si dispongono esattamente in un quadrato di lato $n$. Guarda l'animazione: aggiungendo ogni volta una «L» di puntini, con $1, 3, 5, 7, \dots$ puntini, il quadrato cresce di un lato alla volta. Quindi la somma dei primi $n$ numeri dispari è sempre $n^2$.
+
+[[animazione:somma-dispari]]` },
+
+    { id: 'notazione-scientifica', titolo: 'Notazione scientifica e ordine di grandezza', testo: R`La distanza fra la Terra e il Sole è circa $150\,000\,000$ km; il raggio di un atomo di idrogeno è circa $0{,}00000005$ mm. Scritti così, per leggerli devi contare gli zeri. Con le potenze di $10$ diventano $1{,}5 \times 10^8$ km e $5 \times 10^{-8}$ mm.
+
+>* **Notazione scientifica:** un numero scritto come $a \times 10^n$, con $n$ intero e $1 \le |a| < 10$, cioè con **una sola cifra diversa da zero prima della virgola**. $a$ si chiama coefficiente, $n$ esponente.
+
+Per passare alla notazione scientifica sposti la virgola finché davanti resta una sola cifra diversa da zero, e conti di quanti posti l'hai spostata.
+
+~ 0{,}00068 :: numero minore di $1$
+~ 0{,}00068 \to \evid{6{,}8} :: sposto la virgola di $4$ posti verso destra, fin dopo il $6$
+~ 6{,}8 \times 10^{\evid{-4}} :: verso destra il numero diventa più grande, quindi compenso con esponente negativo, $-4$
+
+Con i numeri grandi la virgola va verso sinistra e l'esponente è positivo: $346\,000 = 3{,}46 \times 10^5$.
+
+La notazione scientifica rende facili i prodotti: moltiplichi i coefficienti fra loro e le potenze di $10$ fra loro.
+
+~ (3 \times 10^4) \cdot (5 \times 10^{-7}) :: il prodotto da calcolare
+~ (\evid{3 \cdot 5}) \times 10^{\evid{4 + (-7)}} :: coefficienti con coefficienti, potenze con potenze (si sommano gli esponenti)
+~ 15 \times 10^{-3} :: il coefficiente $15$ ha due cifre prima della virgola: non è ancora notazione scientifica
+~ \evidb{1{,}5 \times 10^{-2}} :: $15 = 1{,}5 \times 10$, quindi l'esponente sale di uno
+
+### Ordine di grandezza
+
+L'**ordine di grandezza** è la potenza di $10$ più vicina al numero: serve per le stime veloci e per confrontare numeri molto diversi. Scritto il numero come $a \times 10^n$, guardi il coefficiente:
+
+| coefficiente | ordine di grandezza | esempio |
+|---|---|---|
+| $a < 5$ | $10^n$ | $3{,}46 \times 10^5 \to 10^5$ |
+| $a \ge 5$ | $10^{n+1}$ | $6{,}8 \times 10^{-4} \to 10^{-3}$ |
+
+Nel secondo esempio si sale da $10^{-4}$ a $10^{-3}$: è la potenza successiva, anche se l'esponente in valore assoluto diminuisce.
+
+>! $34{,}6 \times 10^4$ vale proprio $346\,000$, ma non è notazione scientifica: davanti alla virgola ci sono due cifre. La forma corretta è $3{,}46 \times 10^5$.` },
+
+    { id: 'valore-assoluto', titolo: 'Il valore assoluto', testo: R`Quanto è lontano $-5$ da zero? Cinque passi, verso sinistra. E $5$? Cinque passi, verso destra. La distanza è la stessa: cambia solo il verso.
+
+>* Il **valore assoluto** (o modulo) di $x$, scritto $|x|$, è la distanza di $x$ da $0$ sulla retta. Una distanza non è mai negativa: $|5| = 5$, $|-5| = 5$, $|0| = 0$.
+
+In pratica: se il numero è positivo o zero lo lasci com'è, se è negativo gli togli il segno meno. Con una lettera al posto del numero questa regola si scrive così:
 
 $$|x| = \begin{cases} x & \text{se } x \ge 0 \\ -x & \text{se } x < 0 \end{cases}$$
 
-Per esempio $|5| = 5$ e $|-5| = 5$: due numeri opposti hanno lo stesso valore assoluto, perché sono alla stessa distanza da $0$, uno a destra e uno a sinistra. Più in generale, $|a - b|$ è la distanza fra i due numeri $a$ e $b$ sulla retta, in qualunque ordine si sottraggano: $|7 - 3| = |3 - 7| = 4$.
+La seconda riga spaventa: sembra dire che il valore assoluto può essere negativo. Invece se $x$ è negativo, $-x$ è positivo. Per esempio con $x = -5$ si ottiene $-x = -(-5) = 5$.
 
-Prova a trascinare il punto $P$ nel grafico: qualunque posizione scegli, $|p|$ misura sempre quanto $P$ è lontano dall'origine, e non è mai negativo.
+?? Se $x = -4$, quanto vale $-x$?
+[ ] $-4$
+[x] $4$
+[ ] non si può dire
+=> $-x$ vuol dire «l'opposto di $x$», e l'opposto di $-4$ è $4$. Pensare che $-x$ sia sempre negativo è l'errore tipico: il meno davanti a una lettera cambia il segno del numero che la lettera rappresenta, qualunque esso sia.
+
+### Distanza fra due numeri
+
+Con il valore assoluto si misura anche la distanza fra due numeri $a$ e $b$: è $|a - b|$. Trascina i punti $A$ e $B$ e confronta le due sottrazioni: $a - b$ e $b - a$ sono opposte, ma il loro valore assoluto è lo stesso ed è sempre la lunghezza del tratteggio.
 
 [[grafico:distanza]]
 
-Il valore assoluto compare spesso in geometria (la lunghezza di un segmento non è mai negativa) e in fisica (l'intensità di una grandezza, indipendentemente dal verso). Più avanti si studieranno equazioni e disequazioni che contengono il valore assoluto di un'espressione, ma il concetto di base è già tutto qui: una distanza.
+Per esempio la distanza fra $3$ e $7$ è $|7 - 3| = |3 - 7| = 4$, e quella fra $-2$ e $3$ è $|3 - (-2)| = 5$.
 
->! Errore frequente: pensare che $-x$ sia sempre un numero negativo. Se $x = -5$, allora $-x = 5$ è positivo: il segno "meno" davanti a una lettera cambia il segno del valore che la lettera rappresenta, non rende negativo il risultato per forza. Per questo, nella definizione di $|x|$, il caso $x < 0$ dà come risultato $-x$, che in quel caso è positivo.` },
+>! $|a + b|$ non è sempre $|a| + |b|$: con $a = 3$ e $b = -5$ si ha $|3 + (-5)| = |-2| = 2$, mentre $|3| + |-5| = 8$. Il valore assoluto di una somma si calcola **dopo** aver fatto la somma.` },
 
-    { id: 'numeri-primi-scomposizione', titolo: 'Numeri primi, scomposizione, MCD e mcm', testo: R`Un numero naturale maggiore di $1$ è **primo** se ha esattamente due divisori distinti: $1$ e se stesso. Il numero $1$ non è considerato primo (ha un solo divisore); i numeri maggiori di $1$ che non sono primi si dicono **composti**. Un modo antico ed efficace per trovarli tutti fino a un certo limite è il crivello di Eratostene: si scrivono i numeri in ordine e si cancellano via via tutti i multipli di ogni numero non ancora cancellato, a partire da $2$.
+    { id: 'numeri-primi-scomposizione', titolo: 'Numeri primi, scomposizione, MCD e mcm', testo: R`Il $12$ si può scrivere come $3 \cdot 4$, oppure $2 \cdot 6$. Il $7$ invece si può dividere solo per $1$ e per sé stesso: non si spezza in numeri più piccoli.
+
+>* Un naturale maggiore di $1$ è **primo** se ha esattamente due divisori: $1$ e sé stesso. Gli altri naturali maggiori di $1$ si dicono **composti**. Il numero $1$ non è primo: ha un solo divisore.
+
+Per trovare tutti i primi fino a un certo numero c'è un metodo antico, il **crivello di Eratostene**: parti dal $2$, cancelli tutti i suoi multipli, passi al primo numero non cancellato e ripeti. Quelli che restano sono i primi.
 
 [[animazione:crivello]]
 
-Ogni numero composto si può scrivere in un unico modo (a meno dell'ordine dei fattori) come prodotto di numeri primi: è il **teorema fondamentale dell'aritmetica**. Per esempio $360 = 2^3 \cdot 3^2 \cdot 5$.
+?? Quale di questi numeri è primo?
+[ ] $51$
+[ ] $57$
+[x] $59$
+[ ] $91$
+=> $59$ non è divisibile né per $2$, né per $3$, né per $5$, né per $7$ (e $8^2 = 64$ supera già $59$, quindi non serve provare oltre). Gli altri sembrano primi ma non lo sono: $51 = 3 \cdot 17$, $57 = 3 \cdot 19$, $91 = 7 \cdot 13$. Il trucco per $51$ e $57$: la somma delle cifre è divisibile per $3$.
 
->* La scomposizione in fattori primi è unica: per questo è lo strumento giusto per confrontare due numeri, come nel calcolo di MCD e mcm.
+### Scomporre in fattori primi
 
-Il **massimo comun divisore** (MCD) di due o più numeri è il più grande numero che li divide tutti; il **minimo comune multiplo** (mcm) è il più piccolo numero che è multiplo di tutti loro. Scomponendo in fattori primi, si trovano così: il MCD prendendo i fattori primi **comuni** con l'esponente **più piccolo**; il mcm prendendo tutti i fattori primi (comuni e non comuni) con l'esponente **più grande**.
+Ogni numero composto si scrive come prodotto di numeri primi in **un solo modo** (a parte l'ordine dei fattori): è il **teorema fondamentale dell'aritmetica**. Per trovare i fattori si divide ripetutamente per i primi, partendo dal più piccolo.
 
-Esempio: $36 = 2^2 \cdot 3^2$ e $60 = 2^2 \cdot 3 \cdot 5$. Il MCD prende $2$ e $3$ con l'esponente minimo tra i due numeri: $2^2 \cdot 3 = 12$. Il mcm prende $2$, $3$ e $5$ con l'esponente massimo: $2^2 \cdot 3^2 \cdot 5 = 180$.
+~ 360 :: il numero da scomporre
+~ 2 \cdot 180 :: $360$ è pari: divido per $2$
+~ 2 \cdot 2 \cdot 90 = 2^{\evid{2}} \cdot 90 :: anche $180$ è pari
+~ 2^{\evid{3}} \cdot 45 :: e anche $90$
+~ 2^3 \cdot \evid{3^2} \cdot 5 :: $45$ è dispari; $45 = 9 \cdot 5 = 3^2 \cdot 5$
 
->! Errore frequente: scambiare le due regole, cioè usare l'esponente massimo per il MCD o dimenticare nel mcm i fattori che compaiono in un solo numero. Un controllo rapido: il MCD non può mai essere più grande del più piccolo dei numeri di partenza; il mcm non può mai essere più piccolo del più grande.` }
+### MCD e mcm
+
+Il **massimo comun divisore** (MCD) di due numeri è il più grande numero che li divide entrambi. Il **minimo comune multiplo** (mcm) è il più piccolo numero che è multiplo di entrambi. Con la scomposizione si trovano senza tentativi:
+
+~ 36 = 2^2 \cdot 3^2 \qquad 60 = 2^2 \cdot 3 \cdot 5 :: scompongo tutti e due
+~ \text{MCD} = 2^{\evid{2}} \cdot 3^{\evid{1}} = 12 :: solo i fattori **comuni** ($2$ e $3$), con l'esponente **più piccolo**
+~ \text{mcm} = 2^{\evid{2}} \cdot 3^{\evid{2}} \cdot \evid{5} = 180 :: **tutti** i fattori, anche il $5$ che sta solo nel $60$, con l'esponente **più grande**
+
+>* MCD: fattori comuni, esponente minimo. mcm: fattori comuni e non comuni, esponente massimo.
+
+>! Scambiare le due regole è l'errore tipico. Un controllo rapido: il MCD non può superare il più piccolo dei numeri (qui $12 \le 36$); il mcm non può essere minore del più grande ($180 \ge 60$).` }
   ],
 
   grafici: {
-    retta: {
-      tipo: 'retta-reale', x: [-3, 4],
-      intervalli: [],
-      punti: [
-        { x: -2, etichetta: '−2' },
-        { x: -0.5, etichetta: '−1/2' },
-        { x: 0, etichetta: '0' },
-        { x: 1.41421356, etichetta: '√2' },
-        { x: 3.14159265, etichetta: 'π' }
-      ],
-      didascalia: 'Razionali (−2, −1/2, 0) e irrazionali (√2, π) sulla stessa retta: ogni numero reale ha il suo posto, senza vuoti.'
-    },
     distanza: {
-      tipo: 'piano', x: [-6, 6], y: [-2, 3],
-      parametri: [{ nome: 'p', min: -5, max: 5, passo: 0.5, valore: 3, nascosto: true }],
-      elementi: [
-        { tipo: 'segmento', da: [0, 0], a: ['p', 0], etichetta: '', tratteggio: true, colore: 2 },
-        { tipo: 'punto', p: [0, 0], etichetta: 'O', posizione: 'basso' },
-        { tipo: 'punto', p: ['p', 0], trascina: true, etichetta: 'P', posizione: 'alto', colore: 2 },
-        { tipo: 'testo', p: [-5.5, 2.2], testo: 'p = {{p}}    |p| = {{abs(p)}}', ancora: 'start' }
+      tipo: 'piano', x: [-5.5, 5.5], y: [-1, 3], passo: [1, 1], griglia: false, etichette: { x: '', y: '' },
+      parametri: [
+        { nome: 'a', min: -5, max: 5, passo: 0.5, valore: -2, nascosto: true },
+        { nome: 'b', min: -5, max: 5, passo: 0.5, valore: 3, nascosto: true }
       ],
-      didascalia: 'Trascina P lungo l\'asse: |p| è sempre la distanza fra P e l\'origine O, a destra o a sinistra non cambia nulla.'
+      elementi: [
+        { tipo: 'segmento', da: ['a', 0], a: ['b', 0], tratteggio: true, colore: 4 },
+        { tipo: 'punto', p: [0, 0] },
+        { tipo: 'punto', p: ['a', 0], trascina: true, etichetta: 'A', posizione: 'alto', colore: 1 },
+        { tipo: 'punto', p: ['b', 0], trascina: true, etichetta: 'B', posizione: 'alto', colore: 2 },
+        { tipo: 'testo', p: [-5.2, 2.5], testo: 'a − b = {{a - b}}      b − a = {{b - a}}', ancora: 'start' },
+        { tipo: 'testo', p: [-5.2, 1.6], testo: 'distanza = |a − b| = {{abs(a - b)}}', ancora: 'start' }
+      ],
+      didascalia: 'Trascina A e B: le due sottrazioni cambiano segno, il valore assoluto resta la lunghezza del tratteggio.'
     }
   },
 
@@ -183,7 +332,8 @@ Esempio: $36 = 2^2 \cdot 3^2$ e $60 = 2^2 \cdot 3 \cdot 5$. Il MCD prende $2$ e 
       R`Antiperiodo: $41$ (due cifre). Periodo: $6$ (una cifra).`,
       R`Numeratore: numero intero fino a un periodo, $416$, meno la parte non periodica, $41$: $416 - 41 = 375$.`,
       R`Denominatore: tanti $9$ quante le cifre del periodo (uno) seguiti da tanti $0$ quante le cifre dell'antiperiodo (due): $900$.`,
-      R`$0{,}41\overline{6} = \dfrac{375}{900}$. Dividendo numeratore e denominatore per $75$: $\dfrac{5}{12}$.`
+      R`Quindi $0{,}41\overline{6} = \dfrac{375}{900}$.`,
+      R`Semplifico: $375 = 3 \cdot 5^3$ e $900 = 2^2 \cdot 3^2 \cdot 5^2$ hanno in comune $3 \cdot 5^2 = 75$. Divido sopra e sotto per $75$ e ottengo $\dfrac{5}{12}$. Controllo: $5 : 12 = 0{,}41666\dots$ ✓`
     ], risultato: R`$\dfrac{5}{12}$` },
 
     { titolo: 'Notazione scientifica e ordine di grandezza', problema: R`Scrivi $0{,}0000523$ in notazione scientifica e trova il suo ordine di grandezza.`, passi: [
@@ -221,7 +371,7 @@ Esempio: $36 = 2^2 \cdot 3^2$ e $60 = 2^2 \cdot 3 \cdot 5$. Il MCD prende $2$ e 
     { id: 'fc-01', sezione: 'insiemi-n-z-q', tipo: 'definizione', fronte: R`Numeri naturali $\mathbb{N}$`, retro: R`$\{0, 1, 2, 3, \dots\}$: servono per contare, senza negativi né frazioni.` },
     { id: 'fc-02', sezione: 'insiemi-n-z-q', tipo: 'definizione', fronte: R`Numeri interi $\mathbb{Z}$`, retro: R`$\{\dots, -2, -1, 0, 1, 2, \dots\}$: naturali più i loro opposti. Rendono sempre possibile la sottrazione.` },
     { id: 'fc-03', sezione: 'insiemi-n-z-q', tipo: 'definizione', fronte: R`Numeri razionali $\mathbb{Q}$`, retro: R`Tutte le frazioni $\dfrac{m}{n}$ con $m, n$ interi e $n \ne 0$. Rendono sempre possibile la divisione (tranne per $0$).` },
-    { id: 'fc-04', sezione: 'insiemi-n-z-q', tipo: 'concetto', fronte: R`Perché si passa da $\mathbb{N}$ a $\mathbb{Z}$ a $\mathbb{Q}$?`, retro: R`Ogni insieme nuovo risolve un'equazione che nel precedente non aveva soluzione: $x + 5 = 3$ serve $\mathbb{Z}$, $2x = 3$ serve $\mathbb{Q}$.` },
+    { id: 'fc-04', sezione: 'insiemi-n-z-q', tipo: 'concetto', fronte: R`Perché si passa da $\mathbb{N}$ a $\mathbb{Z}$ a $\mathbb{Q}$?`, retro: R`Ogni insieme nuovo risolve un'equazione che nel precedente non aveva soluzione: per $x + 5 = 3$ serve $\mathbb{Z}$, per $2x = 3$ serve $\mathbb{Q}$.` },
     { id: 'fc-05', sezione: 'numeri-reali', tipo: 'definizione', fronte: R`Numeri reali $\mathbb{R}$`, retro: R`Unione di numeri razionali e numeri irrazionali. Corrispondono, uno a uno, ai punti della retta.` },
     { id: 'fc-06', sezione: 'numeri-reali', tipo: 'concetto', fronte: R`C'è un insieme più grande di $\mathbb{R}$?`, retro: R`Sì, i numeri complessi $\mathbb{C}$, con $\mathbb{R} \subset \mathbb{C}$: servono per equazioni come $x^2 = -1$.` },
     { id: 'fc-07', sezione: 'frazioni-decimali', tipo: 'concetto', fronte: R`Quando una frazione dà un decimale limitato?`, retro: R`Quando, ridotta ai minimi termini, il denominatore ha come fattori primi solo $2$ e/o $5$.` },
@@ -245,7 +395,7 @@ Esempio: $36 = 2^2 \cdot 3^2$ e $60 = 2^2 \cdot 3 \cdot 5$. Il MCD prende $2$ e 
   ],
 
   esercizi: [
-    { id: 'es-01', difficolta: 1, testo: R`A quale insieme, tra $\mathbb{N}$, $\mathbb{Z}$, $\mathbb{Q}$, indicalo come "N", "Z" o "Q", appartiene $-\dfrac{9}{3}$, scegliendo il più piccolo possibile?`, suggerimenti: [R`Prima semplifica la frazione.`, R`$-\dfrac{9}{3} = -3$: è un numero negativo, quindi non può essere naturale.`], risposta: { tipo: 'testo', accettate: ['z', 'zeta', 'interi'] }, soluzione: [R`$-\dfrac{9}{3} = -3$, un numero intero negativo.`, R`Non è naturale (è negativo), ma è intero: il più piccolo insieme che lo contiene è $\mathbb{Z}$.`] },
+    { id: 'es-01', difficolta: 1, testo: R`Qual è il più piccolo fra gli insiemi $\mathbb{N}$, $\mathbb{Z}$, $\mathbb{Q}$ che contiene $-\dfrac{9}{3}$? Rispondi con una lettera: N, Z oppure Q.`, suggerimenti: [R`Prima semplifica la frazione.`, R`$-\dfrac{9}{3} = -3$: è un numero negativo, quindi non può essere naturale.`], risposta: { tipo: 'testo', accettate: ['z', 'zeta', 'interi'] }, soluzione: [R`$-\dfrac{9}{3} = -3$, un numero intero negativo.`, R`Non è naturale (è negativo), ma è intero: il più piccolo insieme che lo contiene è $\mathbb{Z}$.`] },
     { id: 'es-02', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}\overline{45}$, ridotta ai minimi termini.`, suggerimenti: [R`È un periodico semplice: niente antiperiodo.`, R`Numeratore = il periodo $45$; denominatore = tanti $9$ quante le cifre del periodo.`], risposta: { tipo: 'numero', valore: 0.454545, tolleranza: 0.0005 }, soluzione: [R`$0{,}\overline{45} = \dfrac{45}{99}$.`, R`Dividendo per $9$: $\dfrac{5}{11}$.`] },
     { id: 'es-03', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}2\overline{3}$, ridotta ai minimi termini.`, suggerimenti: [R`Antiperiodo: $2$. Periodo: $3$.`, R`Numeratore: $23 - 2$. Denominatore: un $9$ (una cifra di periodo) e uno $0$ (una cifra di antiperiodo).`], risposta: { tipo: 'numero', valore: 0.233333, tolleranza: 0.0005 }, soluzione: [R`$0{,}2\overline{3} = \dfrac{23 - 2}{90} = \dfrac{21}{90}$.`, R`Dividendo per $3$: $\dfrac{7}{30}$.`] },
     { id: 'es-04', difficolta: 1, testo: R`Calcola $2^3 \cdot 2^{-5}$.`, suggerimenti: [R`Stessa base: somma gli esponenti.`, R`$3 + (-5) = -2$.`], risposta: { tipo: 'numero', valore: 0.25, tolleranza: 0.001 }, soluzione: [R`$2^3 \cdot 2^{-5} = 2^{3-5} = 2^{-2}$.`, R`$2^{-2} = \dfrac{1}{2^2} = \dfrac{1}{4} = 0{,}25$.`] },
@@ -260,7 +410,7 @@ Esempio: $36 = 2^2 \cdot 3^2$ e $60 = 2^2 \cdot 3 \cdot 5$. Il MCD prende $2$ e 
   ],
 
   quiz: [
-    { id: 'q-01', domanda: R`Qual è il più piccolo tra gli insiemi $\mathbb{N}$, $\mathbb{Z}$, $\mathbb{Q}$, $\mathbb{R}$ che contiene tutti gli altri?`, opzioni: [R`$\mathbb{Q}$`, R`$\mathbb{Z}$`, R`$\mathbb{R}$`, R`$\mathbb{N}$`], corretta: 2, spiegazione: R`La catena è $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}$: $\mathbb{R}$ è il più grande e contiene tutti gli altri.` },
+    { id: 'q-01', domanda: R`Quale fra gli insiemi $\mathbb{N}$, $\mathbb{Z}$, $\mathbb{Q}$, $\mathbb{R}$ contiene tutti gli altri?`, opzioni: [R`$\mathbb{Q}$`, R`$\mathbb{Z}$`, R`$\mathbb{R}$`, R`$\mathbb{N}$`], corretta: 2, spiegazione: R`La catena è $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}$: $\mathbb{R}$ è il più grande e contiene tutti gli altri. $\mathbb{Q}$ contiene $\mathbb{N}$ e $\mathbb{Z}$, ma non gli irrazionali come $\sqrt{2}$.` },
     { id: 'q-02', domanda: R`Il numero $-\dfrac{3}{4}$ appartiene…`, opzioni: [R`a $\mathbb{N}$ e a $\mathbb{Z}$`, R`solo a $\mathbb{Z}$`, R`a $\mathbb{Q}$ (e quindi a $\mathbb{R}$), ma non a $\mathbb{Z}$`, R`a $\mathbb{R}$, ma non a $\mathbb{Q}$`], corretta: 2, spiegazione: R`$-\dfrac{3}{4}$ non è un numero intero, quindi non appartiene a $\mathbb{Z}$; è una frazione, quindi appartiene a $\mathbb{Q}$ e di conseguenza a $\mathbb{R}$.` },
     { id: 'q-03', domanda: R`Quale affermazione sulla densità di $\mathbb{Q}$ è corretta?`, opzioni: [R`Tra due razionali distinti c'è sempre un altro razionale`, R`Tra due razionali distinti non c'è mai un altro razionale`, R`Solo tra alcune coppie di razionali c'è un altro razionale`, R`La densità riguarda solo i numeri interi`], corretta: 0, spiegazione: R`Basta prendere la media dei due razionali per trovarne sempre un altro compreso fra loro: si può ripetere all'infinito.` },
     { id: 'q-04', domanda: R`In che senso $\mathbb{Q}$ non è "completo"?`, opzioni: [R`Perché contiene troppi pochi numeri negativi`, R`Perché esistono punti della retta reale a cui non corrisponde nessun numero razionale`, R`Perché non tutte le frazioni sono in forma ridotta`, R`Perché non contiene lo $0$`], corretta: 1, spiegazione: R`Un punto come quello a distanza $\sqrt{2}$ dall'origine non corrisponde a nessun razionale: sono proprio questi "buchi" a rendere $\mathbb{Q}$ incompleto. $\mathbb{R}$ li colma.` },
@@ -289,9 +439,9 @@ Esempio: $36 = 2^2 \cdot 3^2$ e $60 = 2^2 \cdot 3 \cdot 5$. Il MCD prende $2$ e 
   ],
 
   aneddoti: [
-    { matematico: 'Pitagora e Ippaso di Metaponto', anni: 'VI secolo a.C.', titolo: 'Il numero che non doveva esistere', testo: R`Per la scuola pitagorica, una comunità quasi religiosa fondata a Crotone, "tutto è numero": ogni lunghezza doveva potersi esprimere come rapporto tra due numeri interi. Fu quindi uno shock enorme scoprire che la diagonale di un quadrato di lato $1$, lunga $\sqrt{2}$, non si può scrivere come nessuna frazione: esisteva una lunghezza reale che il loro sistema numerico non riusciva a catturare. Si racconta che fu Ippaso di Metaponto a rendere pubblica questa scoperta, violando la segretezza della setta, e che per punizione venisse annegato in mare — una leggenda tramandata dagli antichi, impossibile da verificare con certezza, ma che rende bene l'idea di quanto la scoperta degli irrazionali sconvolgesse la visione del mondo dei pitagorici.`, legame: R`È la prima scoperta storica di un numero irrazionale: esattamente il $\sqrt{2}$ di cui in questo argomento si vede l'idea della dimostrazione.` },
-    { matematico: 'Euclide', anni: 'IV–III secolo a.C.', titolo: 'Infiniti numeri primi, dimostrato senza contarli', testo: R`Negli "Elementi", il libro di geometria più ristampato della storia, Euclide non si limita alla geometria: nel nono libro dimostra che i numeri primi non finiscono mai, con un argomento che si può ripetere ancora oggi tale e quale. Si supponga che i numeri primi siano in numero finito, $p_1, p_2, \dots, p_n$: moltiplicandoli tutti insieme e aggiungendo $1$ si ottiene un numero che, diviso per uno qualsiasi dei $p_i$, dà sempre resto $1$. Questo numero, allora, o è esso stesso primo (e non era nell'elenco), oppure ha un fattore primo che non è nell'elenco: in entrambi i casi, l'elenco "completo" non lo era. Sempre negli Elementi, nel settimo libro, Euclide descrive anche un metodo — ancora oggi il più efficiente — per calcolare il massimo comun divisore di due numeri.`, legame: R`L'infinità dei numeri primi e l'algoritmo per il MCD vengono entrambi dagli Elementi di Euclide, duemilatrecento anni prima di questa pagina.` },
-    { matematico: 'Eratostene di Cirene', anni: 'circa 276–194 a.C.', titolo: R`Un bastone, un'ombra e un crivello`, testo: R`Eratostene dirigeva la Biblioteca di Alessandria, il più grande centro di sapere del mondo antico, ed è ricordato soprattutto per un calcolo sorprendente: misurando l'ombra di un bastone verticale ad Alessandria e confrontandola con l'assenza di ombra nello stesso istante a Siene (l'odierna Assuan), stimò la circonferenza della Terra con un errore di pochi punti percentuali, usando solo geometria elementare. Ma Eratostene diede il suo nome anche a un metodo molto più semplice, che ogni studente può eseguire a mano: il "crivello", un setaccio che elimina via via tutti i multipli dei numeri già trovati, lasciando alla fine solo i numeri primi.`, legame: R`È esattamente il crivello dell'animazione qui sopra: cancellare i multipli, uno per uno, per isolare i numeri primi.` },
+    { matematico: 'Pitagora e Ippaso di Metaponto', anni: 'VI secolo a.C.', titolo: 'Il numero che non doveva esistere', testo: R`Per la scuola pitagorica, una comunità quasi religiosa fondata a Crotone, "tutto è numero": ogni lunghezza doveva potersi esprimere come rapporto tra due numeri interi. Fu quindi uno shock enorme scoprire che la diagonale di un quadrato di lato $1$, lunga $\sqrt{2}$, non si può scrivere come nessuna frazione: esisteva una lunghezza reale che il loro sistema numerico non riusciva a catturare. Si racconta che fu Ippaso di Metaponto a rendere pubblica questa scoperta, violando la segretezza della setta, e che per punizione venisse annegato in mare. È una leggenda tramandata dagli antichi e impossibile da verificare, ma rende bene l'idea di quanto la scoperta degli irrazionali sconvolgesse la visione del mondo dei pitagorici.`, legame: R`È la prima scoperta storica di un numero irrazionale: esattamente il $\sqrt{2}$ di cui in questo argomento si vede l'idea della dimostrazione.` },
+    { matematico: 'Euclide', anni: 'IV–III secolo a.C.', titolo: 'Infiniti numeri primi, dimostrato senza contarli', testo: R`Negli "Elementi", il libro di geometria più ristampato della storia, Euclide non si limita alla geometria: nel nono libro dimostra che i numeri primi non finiscono mai, con un argomento che si può ripetere ancora oggi tale e quale. Si supponga che i numeri primi siano in numero finito, $p_1, p_2, \dots, p_n$: moltiplicandoli tutti insieme e aggiungendo $1$ si ottiene un numero che, diviso per uno qualsiasi dei $p_i$, dà sempre resto $1$. Questo numero, allora, o è esso stesso primo (e non era nell'elenco), oppure ha un fattore primo che non è nell'elenco: in entrambi i casi, l'elenco "completo" non lo era. Sempre negli Elementi, nel settimo libro, Euclide descrive anche un metodo per calcolare il massimo comun divisore di due numeri che i computer usano ancora oggi.`, legame: R`L'infinità dei numeri primi e l'algoritmo per il MCD vengono entrambi dagli Elementi di Euclide, duemilatrecento anni prima di questa pagina.` },
+    { matematico: 'Eratostene di Cirene', anni: 'circa 276–194 a.C.', titolo: R`Un bastone, un'ombra e un crivello`, testo: R`Eratostene dirigeva la Biblioteca di Alessandria, il più grande centro di sapere del mondo antico, ed è ricordato soprattutto per un calcolo sorprendente: misurando l'ombra di un bastone verticale ad Alessandria e confrontandola con l'assenza di ombra nello stesso istante a Siene (l'odierna Assuan), stimò la circonferenza della Terra con un risultato sorprendentemente vicino al vero, usando solo geometria elementare. Ma Eratostene diede il suo nome anche a un metodo molto più semplice, che ogni studente può eseguire a mano: il "crivello", un setaccio che elimina via via tutti i multipli dei numeri già trovati, lasciando alla fine solo i numeri primi.`, legame: R`È il crivello dell'animazione nella sezione sui numeri primi: si cancellano i multipli, uno dopo l'altro, e restano i primi.` },
     { matematico: 'Georg Cantor', anni: '1845–1918', titolo: 'Infiniti di misure diverse', testo: R`Cantor si chiese se tutti gli insiemi infiniti avessero "la stessa quantità" di elementi, e trovò una risposta che scandalizzò molti matematici del suo tempo: $\mathbb{Q}$, per quanto denso, si può mettere in corrispondenza biunivoca con $\mathbb{N}$ (è "numerabile"), mentre $\mathbb{R}$ no. Con il suo celebre argomento diagonale, Cantor dimostrò che nessuna lista, per quanto lunga, può contenere tutti i numeri reali: esistono infiniti "più grandi" di altri infiniti. Matematici autorevoli come Leopold Kronecker lo attaccarono duramente, arrivando a definirlo un "ciarlatano" e un "corruttore della gioventù"; Cantor soffrì di gravi crisi depressive e trascorse gli ultimi anni in una clinica. La sua teoria degli insiemi, però, è oggi alla base di tutta la matematica moderna.`, legame: R`La differenza fra $\mathbb{Q}$, denso ma "numerabile" e pieno di buchi, e $\mathbb{R}$, che quei buchi li riempie, è la stessa distinzione che Cantor rese precisa con il concetto di cardinalità.` }
   ]
 });

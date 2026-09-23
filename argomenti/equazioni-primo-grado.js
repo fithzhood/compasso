@@ -4,119 +4,212 @@ COMPASSO.registra({
   id: 'equazioni-primo-grado',
   titolo: 'Equazioni di primo grado',
 
-  introduzione: R`Un'**equazione di primo grado** è un'uguaglianza fra due espressioni in cui compare un'incognita, di solito $x$, elevata al massimo alla prima potenza: per esempio $3x - 7 = 2x + 5$. Risolverla vuol dire scoprire per quali valori di $x$ i due membri diventano davvero uguali. È lo strumento più usato di tutta la matematica: ogni volta che un problema chiede «qual è quel numero che...», la risposta passa da un'equazione.
+  introduzione: R`Un taxi costa 3 € alla partenza più 1,50 € per ogni chilometro. Hai 15 €: quanti chilometri puoi fare? Se chiami $x$ i chilometri, la domanda diventa $3 + 1{,}5x = 15$, e la risposta è $x = 8$.
 
-Un taxi costa 3 € fissi più 1,50 € al chilometro: con 15 € quanta strada si fa? La domanda è l'equazione $3 + 1{,}5x = 15$, e la soluzione $x = 8$ è il numero di chilometri. Lo stesso schema descrive la ricarica del telefono, la miscela di due soluzioni in laboratorio, l'età di due persone fra qualche anno, il punto in cui una retta attraversa un asse.
+Questa è un'**equazione di primo grado**: un'uguaglianza con un numero sconosciuto, l'**incognita**, che compare senza esponenti (niente $x^2$, niente $x^3$). Risolverla vuol dire trovare il valore dell'incognita che rende vera l'uguaglianza. Lo schema del taxi torna ovunque: ogni volta che un problema chiede «qual è quel numero che…», dietro c'è un'equazione.
 
-Per seguire bene servono il calcolo con monomi e polinomi (parentesi, prodotti), le frazioni con il minimo comune multiplo e, per le equazioni fratte, la scomposizione di una differenza di quadrati.`,
+Ti servono il calcolo con monomi e polinomi (togliere le parentesi), le frazioni con il minimo comune multiplo e, per le equazioni fratte, la scomposizione della differenza di due quadrati.`,
+
+  inBreve: [
+    R`Un'equazione è un'uguaglianza vera solo per alcuni valori dell'incognita: trovarli tutti è risolverla, e sostituirli nell'equazione di partenza è il modo per controllare.`,
+    R`Puoi aggiungere o togliere la stessa cosa a entrambi i membri, e moltiplicarli o dividerli per lo stesso numero **diverso da zero**: le soluzioni non cambiano.`,
+    R`Un termine che passa dall'altra parte dell'uguale cambia segno; tutti gli altri restano come sono.`,
+    R`Ridotta a $ax = b$: se $a \ne 0$ c'è una sola soluzione, $x = \frac{b}{a}$; se $a = 0$ è impossibile ($b \ne 0$) oppure indeterminata ($b = 0$).`,
+    R`Nelle fratte scrivi prima le condizioni di esistenza, e alla fine scarta le soluzioni che le violano.`,
+    R`Nelle letterali, prima di dividere per un'espressione che contiene il parametro, chiediti quando vale zero.`
+  ],
 
   sezioni: [
-    { id: 'identita-equazioni', titolo: 'Identità, equazioni e soluzioni', testo: R`Un'**uguaglianza** fra due espressioni letterali, come $2(x + 1) = 2x + 2$ oppure $2x + 1 = 7$, ha due **membri**: il primo a sinistra e il secondo a destra del segno $=$. Sostituendo un numero alla lettera, l'uguaglianza può risultare vera o falsa, e questo distingue due oggetti molto diversi.
+    { id: 'identita-equazioni', titolo: 'Identità, equazioni e soluzioni', testo: R`Prova a mettere qualche numero al posto di $x$ in queste due uguaglianze:
 
->* **Identità:** uguaglianza vera per *ogni* valore attribuito alle lettere. **Equazione:** uguaglianza vera solo per *alcuni* valori dell'**incognita**, o per nessuno. Un valore che rende vera l'equazione si chiama **soluzione** (o **radice**); l'insieme di tutte le soluzioni si indica con $S$.
+$$2(x + 1) = 2x + 2 \qquad\qquad 2x + 1 = 7$$
 
-$2(x + 1) = 2x + 2$ è un'identità: a sinistra e a destra c'è lo stesso polinomio, scritto in due modi. $2x + 1 = 7$ è un'equazione: con $x = 3$ diventa $7 = 7$, vera; con $x = 5$ diventa $11 = 7$, falsa. Quindi $3$ è soluzione, $5$ no, e $S = \{3\}$.
+Nella prima, qualunque numero scegli, i due lati danno lo stesso risultato: con $x = 0$ viene $2 = 2$, con $x = 5$ viene $12 = 12$. Nella seconda no: con $x = 3$ viene $7 = 7$, vera, ma con $x = 5$ viene $11 = 7$, falsa.
 
-**Risolvere** un'equazione significa trovare tutte le sue soluzioni. **Verificare** una soluzione significa sostituirla nell'equazione di partenza e controllare che i due membri diano lo stesso numero: costa poco e scopre quasi tutti gli errori.
+>* Un'**identità** è un'uguaglianza vera per **ogni** valore delle lettere. Un'**equazione** è vera solo per **alcuni** valori dell'**incognita**, o per nessuno. Ogni valore che la rende vera è una **soluzione**; l'insieme delle soluzioni si indica con $S$.
 
-Il **grado** di un'equazione è l'esponente massimo con cui compare l'incognita, dopo aver svolto i calcoli: $3x - 5 = x + 1$ è di primo grado (si dice anche **lineare**), $x^2 = 4$ è di secondo. Un'equazione è **numerica** se oltre all'incognita contiene solo numeri, **letterale** se contiene altre lettere; è **intera** se l'incognita non compare in nessun denominatore, **fratta** altrimenti.
+Quindi $2x + 1 = 7$ ha soluzione $3$, e $S = \{3\}$. Le due espressioni ai lati dell'uguale si chiamano **membri**: il primo a sinistra, il secondo a destra.
 
-| equazione | tipo |
-|---|---|
-| $3x - 5 = x + 1$ | numerica intera |
-| $\dfrac{x}{2} - 1 = \dfrac{x + 3}{4}$ | numerica intera (i denominatori sono numeri) |
-| $\dfrac{2}{x - 1} = 5$ | numerica fratta |
-| $ax + 1 = 2a$ | letterale intera |
+**Risolvere** un'equazione vuol dire trovare tutte le soluzioni. **Verificare** una soluzione vuol dire sostituirla nell'equazione di partenza e controllare che i due membri diano lo stesso numero: costa poco e scopre quasi tutti gli errori.
 
->! Una frazione con un numero al denominatore non rende l'equazione fratta: è fratta solo se l'incognita sta *sotto* la linea di frazione. E un'identità non "si risolve": è vera sempre, non c'è niente da trovare.` },
+Le parole per classificare le equazioni sono queste:
 
-    { id: 'principi-equivalenza', titolo: 'I principi di equivalenza', testo: R`Due equazioni sono **equivalenti** se hanno lo stesso insieme delle soluzioni. Risolvere un'equazione significa trasformarla, un passo alla volta, in equazioni equivalenti sempre più semplici, fino a leggere la soluzione. I passi leciti sono due.
+| parola | che cosa vuol dire | esempio |
+|---|---|---|
+| grado | l'esponente più alto dell'incognita, dopo aver fatto i calcoli | $3x - 5 = x + 1$ è di primo grado (o **lineare**) |
+| numerica | oltre all'incognita ci sono solo numeri | $3x - 5 = x + 1$ |
+| letterale | ci sono altre lettere, i parametri | $ax + 1 = 2a$ |
+| intera | l'incognita non sta in nessun denominatore | $\dfrac{x}{2} - 1 = \dfrac{x + 3}{4}$ |
+| fratta | l'incognita sta in almeno un denominatore | $\dfrac{2}{x - 1} = 5$ |
 
->* **Primo principio.** Aggiungendo o sottraendo a entrambi i membri uno stesso numero, o una stessa espressione intera nell'incognita, si ottiene un'equazione equivalente.
+?? L'equazione $\dfrac{x}{3} + 1 = \dfrac{x - 2}{5}$ è…
+[x] intera: sotto le linee di frazione ci sono solo numeri
+[ ] fratta: ci sono delle frazioni
+[ ] letterale: ci sono lettere dentro una frazione
+=> Conta solo dove sta l'incognita. Qui i denominatori sono $3$ e $5$, due numeri: l'equazione è intera. Sarebbe fratta se la $x$ stesse sotto la linea, come in $\dfrac{3}{x}$. E non è letterale, perché l'unica lettera è l'incognita.
 
->* **Secondo principio.** Moltiplicando o dividendo entrambi i membri per uno stesso numero **diverso da zero** si ottiene un'equazione equivalente.
+>! Il grado si guarda **dopo** aver fatto i calcoli. $x^2 + 3x = x^2 + 5$ sembra di secondo grado, ma le $x^2$ si cancellano e resta $3x = 5$: è di primo grado.` },
 
-L'immagine giusta è la **bilancia**: i due membri sono i piatti, e l'equilibrio non cambia se si toglie o si aggiunge la stessa cosa da tutte e due le parti, o se si raddoppia o dimezza tutto. Nel grafico i due membri di $2x + 1 = x + 4$ sono due rette: trascina il punto e osserva quando i loro valori coincidono.
+    { id: 'principi-equivalenza', titolo: 'I principi di equivalenza', testo: R`Come si passa da $5x - 3 = 2x + 9$ a $x = 4$ senza tirare a indovinare? Si trasforma l'equazione un passo alla volta, facendo in modo che a ogni passo le soluzioni restino le stesse. Due equazioni che hanno le stesse soluzioni si dicono **equivalenti**.
 
-[[grafico:bilancia]]
+Pensa a una bilancia a due piatti in equilibrio: i piatti sono i due membri. Se aggiungi o togli lo stesso peso da tutti e due, l'equilibrio resta. Se raddoppi o dimezzi il contenuto di tutti e due, anche. Scritta per bene, questa idea dà i due principi.
 
-Dai due principi discendono le regole pratiche che si usano di continuo.
+>* **Primo principio.** Se aggiungi o togli a entrambi i membri lo stesso numero (o la stessa espressione con la $x$), ottieni un'equazione equivalente.
 
-- **Regola del trasporto.** Un termine può passare da un membro all'altro cambiando segno: $3x + 5 = 11 \Rightarrow 3x = 11 - 5$. È il primo principio: si è sottratto $5$ da entrambi i membri.
-- **Regola di cancellazione.** Due termini uguali che compaiono in entrambi i membri si eliminano: $2x + 7 = x + 7 \Rightarrow 2x = x$.
-- **Cambio di segno.** Si possono cambiare i segni di *tutti* i termini di entrambi i membri: $-x = -4 \Rightarrow x = 4$. È il secondo principio con il fattore $-1$.
+>* **Secondo principio.** Se moltiplichi o dividi entrambi i membri per lo stesso numero **diverso da zero**, ottieni un'equazione equivalente.
 
-Esempio: $5x - 3 = 2x + 9$. Trasporto $2x$ a sinistra e $-3$ a destra: $5x - 2x = 9 + 3$, cioè $3x = 12$. Divido entrambi i membri per $3$: $x = 4$. Verifica: $20 - 3 = 17$ e $8 + 9 = 17$. ✓
+Nella scheda **Laboratorio** c'è proprio la bilancia: casse di peso sconosciuto e pesetti da togliere dai due piatti finché una cassa non resta da sola. Fare qualche livello prima degli esercizi aiuta a capire perché le regole qui sotto funzionano.
 
->! Quando si trasporta un termine si cambia il segno **solo a quel termine**, non a tutti gli altri. E si può dividere solo per un numero sicuramente diverso da zero: da $3x = 5x$ non si può dividere per $x$ e concludere $3 = 5$, perché $x$ vale proprio $0$ (infatti $3x - 5x = 0$ dà $-2x = 0$, $x = 0$).` },
+Dai principi vengono tre regole pratiche, che userai a ogni riga:
 
-    { id: 'forma-normale', titolo: 'La forma normale e i tre casi', testo: R`Applicando i principi di equivalenza, ogni equazione di primo grado intera si riduce a una forma standard: tutti i termini con l'incognita a sinistra, tutti i numeri a destra, termini simili ridotti.
+- **Trasporto.** Un termine passa da un membro all'altro cambiando segno. Da $3x + 5 = 11$ si passa a $3x = 11 - 5$: è il primo principio, hai tolto $5$ da entrambi i membri.
+- **Cancellazione.** Un termine uguale in entrambi i membri si può eliminare: $2x + 7 = x + 7$ diventa $2x = x$.
+- **Cambio di segno.** Puoi cambiare i segni di *tutti* i termini, in entrambi i membri: $-x = -4$ diventa $x = 4$. È il secondo principio con il fattore $-1$.
 
->* **Forma normale:** $$ax = b$$ dove $a$ è il coefficiente dell'incognita e $b$ è il termine noto. Da qui in poi tutto dipende da $a$ e da $b$.
+L'equazione dell'inizio si risolve così:
 
-- **$a \ne 0$: equazione determinata.** Dividendo per $a$ si trova l'unica soluzione $x = \dfrac{b}{a}$, e $S = \left\{\dfrac{b}{a}\right\}$.
-- **$a = 0$ e $b \ne 0$: equazione impossibile.** $0 \cdot x = b$ chiede a zero di valere quanto un numero diverso da zero: nessun $x$ ci riesce. $S = \varnothing$.
-- **$a = 0$ e $b = 0$: equazione indeterminata.** $0 \cdot x = 0$ è vera per qualunque $x$: era in realtà un'identità. $S = \mathbb{R}$.
+~ 5x - 3 = 2x + 9 :: si parte da qui
+~ 5x \evid{- 2x} = 9 \evid{+ 3} :: porto $2x$ a sinistra e $-3$ a destra: tutti e due cambiano segno
+~ \evid{3x} = \evid{12} :: sommo i termini simili
+~ x = \evidb{4} :: divido entrambi i membri per $3$ (secondo principio)
 
-Tre esempi, uno per caso. $3(x - 1) = x + 3$ dà $3x - 3 = x + 3$, cioè $2x = 6$ e $x = 3$: determinata. $2(x + 1) = 2x + 5$ dà $2x + 2 = 2x + 5$, cioè $0 \cdot x = 3$: impossibile. $2(x + 1) = 2x + 2$ dà $0 \cdot x = 0$: indeterminata.
+Verifica nell'equazione di partenza: $5 \cdot 4 - 3 = 17$ e $2 \cdot 4 + 9 = 17$. ✓
 
-Nel grafico $y = ax - b$ è una retta e la soluzione di $ax = b$ è il punto in cui la retta taglia l'asse $x$. Porta $a$ a zero con il cursore: la retta diventa orizzontale e il punto sparisce, perché una retta orizzontale non incontra mai l'asse $x$ (impossibile) oppure vi si sovrappone del tutto (indeterminata, quando anche $b = 0$).
+?? Da $7 - 2x = 3$ uno studente scrive $-2x = 3 + 7$. Che cosa ha sbagliato?
+[x] il $7$ passa a destra cambiando segno: doveva scrivere $-2x = 3 - 7$
+[ ] niente, il passaggio è giusto
+[ ] doveva cambiare segno anche a $-2x$
+=> Il $7$ è positivo: spostato a destra diventa $-7$. Quindi $-2x = -4$ e $x = 2$ (verifica: $7 - 4 = 3$ ✓). Il termine $-2x$ resta dov'è e non cambia: si cambia segno solo a quello che si sposta.
 
-[[grafico:rettaParametri]]
+>! Si divide solo per un numero sicuramente diverso da zero. Da $3x = 5x$, dividendo per $x$ verrebbe $3 = 5$, «impossibile». Ma $x$ può valere proprio $0$: trasportando si ha $-2x = 0$, cioè $x = 0$. La divisione per $x$ aveva buttato via la soluzione.` },
 
->! «Impossibile» non vuol dire «difficile» e «indeterminata» non vuol dire «non so risolverla»: sono due risposte precise, da scrivere per esteso. Scrivere $x = \dfrac{3}{0}$ oppure $x = \dfrac{0}{0}$ è un errore, perché la divisione per zero non esiste.` },
+    { id: 'forma-normale', titolo: 'La forma normale e i tre casi', testo: R`Qualunque equazione di primo grado intera, dopo aver tolto le parentesi e spostato i termini, finisce nello stesso modo: le $x$ tutte a sinistra, i numeri tutti a destra, i termini simili sommati.
 
-    { id: 'frazioni-numeriche', titolo: 'Equazioni con frazioni numeriche', testo: R`Se i denominatori sono numeri, l'equazione è ancora intera e ci si libera delle frazioni con il secondo principio: si moltiplicano entrambi i membri per il **minimo comune multiplo** dei denominatori.
+>* **Forma normale:** $ax = b$, dove $a$ è il **coefficiente** dell'incognita e $b$ il **termine noto**. Da qui in poi tutto dipende da $a$ e da $b$.
 
->* **Procedura.** 1) Si calcola il mcm dei denominatori. 2) Si scrive ogni termine con quel denominatore, compresi i termini senza frazione: con mcm $6$, il termine $1$ diventa $\dfrac{6}{6}$. 3) Si eliminano i denominatori, ormai uguali nei due membri. 4) Si risolve l'equazione intera che resta.
+Quasi sempre $a$ non è zero, e si divide. A volte però, riducendo, le $x$ si cancellano e resta $a = 0$. I casi possibili sono tre:
 
-Esempio: $\dfrac{x}{2} - \dfrac{x - 1}{3} = 1$. Il mcm è $6$:
-$$\frac{3x - 2(x - 1)}{6} = \frac{6}{6} \quad\Rightarrow\quad 3x - 2x + 2 = 6 \quad\Rightarrow\quad x = 4.$$
+| caso | l'equazione è | soluzioni |
+|---|---|---|
+| $a \ne 0$ | determinata | una sola: $x = \frac{b}{a}$ |
+| $a = 0$, $b \ne 0$ | impossibile | nessuna: $S = \varnothing$ |
+| $a = 0$, $b = 0$ | indeterminata | tutti i numeri: $S = \mathbb{R}$ |
+
+Con $a = 0$ il motivo è sempre lo stesso: $0 \cdot x$ fa zero, qualunque sia $x$. Se il secondo membro $b$ non è zero, nessun $x$ va bene; se è zero anche lui, vanno bene tutti.
+
+Le due equazioni qui sotto si somigliano molto, eppure finiscono in modo diverso. Guarda che cosa resta dopo la riduzione.
+
+~ 3(x - 1) = x + 3 :: prima equazione
+~ 3x - 3 = x + 3 :: tolgo la parentesi
+~ \evid{2x} = \evid{6} :: $x$ a sinistra, numeri a destra: $a = 2$, che non è zero
+~ x = \evidb{3} :: divido per $2$: determinata
+
+~ 2(x + 1) = 2x + 5 :: seconda equazione
+~ 2x + 2 = 2x + 5 :: tolgo la parentesi
+~ \evid{0 \cdot x} = \evid{3} :: le $x$ si cancellano: $a = 0$, ma $b = 3$
+~ S = \evidb{\varnothing} :: nessun numero moltiplicato per $0$ dà $3$: impossibile
+
+Con $2(x + 1) = 2x + 2$, invece, alla fine resta $0 \cdot x = 0$: vera per ogni $x$, quindi indeterminata. Era un'identità travestita.
+
+?? Riducendo un'equazione arrivi a $0 \cdot x = 0$. Che cosa scrivi?
+[ ] $x = 0$
+[ ] è impossibile
+[x] è indeterminata: ogni numero reale è soluzione
+=> $0 \cdot x$ fa $0$ qualunque sia $x$, quindi l'uguaglianza è sempre vera: $S = \mathbb{R}$. Scrivere $x = 0$ è l'errore più comune: $0$ è una soluzione, ma non l'unica. «Impossibile» è il caso $0 \cdot x = 3$, dove il secondo membro non è zero.
+
+>! «Impossibile» e «indeterminata» sono risposte precise, da scrivere per esteso, e non vogliono dire «non so risolverla». Non si scrive mai $x = \dfrac{3}{0}$ o $x = \dfrac{0}{0}$: la divisione per zero non esiste.` },
+
+    { id: 'frazioni-numeriche', titolo: 'Equazioni con frazioni numeriche', testo: R`Che cosa fai con $\dfrac{x}{2} - \dfrac{x - 1}{3} = 1$? Le frazioni danno fastidio, ma i denominatori sono numeri: l'equazione è ancora intera, e le frazioni si tolgono con il secondo principio, moltiplicando tutto per il **minimo comune multiplo** (mcm) dei denominatori.
+
+>* **Procedura.** 1) Calcola il mcm dei denominatori. 2) Scrivi ogni termine con quel denominatore, anche quelli senza frazione. 3) Elimina il denominatore, che ora è lo stesso nei due membri. 4) Risolvi l'equazione intera che resta.
+
+~ \dfrac{x}{2} - \dfrac{x - 1}{3} = 1 :: il mcm di $2$ e $3$ è $6$
+~ \dfrac{3x - 2\evid{(x - 1)}}{6} = \dfrac{\evid{6}}{6} :: tutto con denominatore $6$; il numeratore $x - 1$ va tra parentesi, e anche l'$1$ diventa $\frac{6}{6}$
+~ 3x \evid{- 2x + 2} = 6 :: tolgo il $6$ (moltiplico per $6$) e poi la parentesi: il meno cambia segno a **tutti e due** i termini
+~ x + 2 = 6 :: sommo i termini simili
+~ x = \evidb{4} :: porto il $2$ a destra
+
 Verifica: $\dfrac{4}{2} - \dfrac{3}{3} = 2 - 1 = 1$. ✓
 
-Il passaggio delicato è il segno meno davanti a una frazione: vale per **tutto** il numeratore. Nell'esempio, $-\dfrac{x - 1}{3}$ moltiplicato per $6$ diventa $-2(x - 1) = -2x + 2$, non $-2x - 2$. Conviene mettere il numeratore tra parentesi e svolgerle nel passaggio successivo.
+Il passaggio delicato è il meno davanti alla frazione: vale per **tutto** il numeratore. Per questo il numeratore si scrive tra parentesi, e le parentesi si tolgono solo nel passo dopo.
 
-Anche i coefficienti decimali si trattano così: $0{,}5x + 1{,}2 = 2$ diventa, moltiplicando per $10$, $5x + 12 = 20$, da cui $x = \dfrac{8}{5}$.
+?? Moltiplicando per $6$, il termine $-\dfrac{x - 1}{3}$ diventa…
+[ ] $-2x - 2$
+[x] $-2x + 2$
+[ ] $-2x - 1$
+=> $6 \cdot \left(-\dfrac{x - 1}{3}\right) = -2(x - 1) = -2x + 2$. Chi scrive $-2x - 2$ ha dato il meno solo alla $x$; chi scrive $-2x - 1$ ha moltiplicato per $2$ solo il primo termine del numeratore.
 
->! Il denominatore comune si può eliminare solo se è **lo stesso in entrambi i membri**: moltiplicare per il mcm solo il primo membro, o dimenticare un termine intero, rompe l'equivalenza e cambia le soluzioni. Errore gemello: "semplificare" un denominatore che compare in un solo termine.` },
+Anche i numeri con la virgola si tolgono così: $0{,}5x + 1{,}2 = 2$, moltiplicando per $10$, diventa $5x + 12 = 20$, da cui $x = \dfrac{8}{5}$.
 
-    { id: 'fratte', titolo: 'Equazioni fratte e condizioni di esistenza', testo: R`Un'equazione è **fratta** quando l'incognita compare in almeno un denominatore, come in $\dfrac{3}{x - 2} = 1$. Una frazione con denominatore zero non ha significato, quindi prima di tutto si escludono i valori di $x$ che annullano i denominatori.
+>! Si moltiplica per il mcm **ogni** termine di **entrambi** i membri. Dimenticare un termine senza frazione (l'$1$ dell'esempio) cambia le soluzioni.` },
 
->* **Condizioni di esistenza (c.e.):** i valori dell'incognita per cui tutti i denominatori sono diversi da zero. Si scrivono *prima* di fare qualunque calcolo, e alla fine ogni soluzione trovata va confrontata con esse: se le viola **non è accettabile** e si scarta.
+    { id: 'fratte', titolo: 'Equazioni fratte e condizioni di esistenza', testo: R`In $\dfrac{3}{x - 2} = 1$ la $x$ sta al denominatore: l'equazione è **fratta**. Qui c'è un pericolo nuovo. Se $x$ valesse $2$, il denominatore farebbe $0$, e una frazione con denominatore zero non ha significato. Quei valori vanno esclusi **prima** di cominciare.
+
+>* **Condizioni di esistenza (c.e.):** i valori dell'incognita per cui tutti i denominatori sono diversi da zero. Si scrivono all'inizio. Alla fine ogni soluzione trovata si confronta con le c.e.: se le viola **non è accettabile** e si scarta.
 
 La procedura:
 
-1. C.e.: si pone ogni denominatore $\ne 0$, scomponendolo se serve.
-2. Si porta tutto allo stesso denominatore, il mcm dei denominatori (che ora contiene $x$).
-3. Si eliminano i denominatori: è lecito perché, grazie alle c.e., non valgono zero.
-4. Si risolve l'equazione intera e si confrontano le soluzioni con le c.e.
+1. C.e.: poni ogni denominatore $\ne 0$, dopo averlo scomposto se serve.
+2. Porta tutto al denominatore comune, il mcm dei denominatori (che ora contiene la $x$).
+3. Elimina il denominatore: si può fare perché, grazie alle c.e., non vale zero.
+4. Risolvi l'equazione intera e confronta le soluzioni con le c.e.
 
-Esempio: $\dfrac{x + 1}{x - 2} = \dfrac{x - 3}{x + 2}$. C.e.: $x \ne 2$ e $x \ne -2$. Denominatore comune $(x - 2)(x + 2)$, quindi $(x + 1)(x + 2) = (x - 3)(x - 2)$, cioè $x^2 + 3x + 2 = x^2 - 5x + 6$. I termini $x^2$ si cancellano: $8x = 4$, $x = \dfrac{1}{2}$, accettabile perché rispetta le c.e. Verifica: $\dfrac{3/2}{-3/2} = -1$ e $\dfrac{-5/2}{5/2} = -1$. ✓
+~ \dfrac{x + 1}{x - 2} = \dfrac{x - 3}{x + 2} :: c.e.: $x \ne 2$ e $x \ne -2$
+~ (x + 1)\evid{(x + 2)} = (x - 3)\evid{(x - 2)} :: denominatore comune $(x - 2)(x + 2)$, che poi elimino
+~ x^2 + 3x + 2 = x^2 - 5x + 6 :: svolgo i prodotti
+~ \evid{8x} = \evid{4} :: le $x^2$ si cancellano; $x$ a sinistra e numeri a destra
+~ x = \evidb{\dfrac{1}{2}} :: rispetta le c.e., quindi è accettabile
 
-Esempio con scarto: $\dfrac{2x}{x - 3} - 1 = \dfrac{6}{x - 3}$. C.e.: $x \ne 3$. Moltiplicando per $x - 3$: $2x - (x - 3) = 6$, $x + 3 = 6$, $x = 3$. Ma $3$ viola la c.e.: la soluzione si scarta e l'equazione è **impossibile**.
+Verifica: $\dfrac{3/2}{-3/2} = -1$ e $\dfrac{-5/2}{5/2} = -1$. ✓
 
->! Un denominatore come $x^2 - 4$ va scomposto, $(x - 2)(x + 2)$, per vedere che esclude *due* valori. Un denominatore come $x^2 + 1$ invece non si annulla mai. E $2 - x$ è l'opposto di $x - 2$: conviene riscriverlo come $-(x - 2)$ prima di cercare il mcm.` },
+Quando invece la soluzione viola le c.e., si scarta:
 
-    { id: 'letterali', titolo: 'Equazioni letterali: la discussione', testo: R`Un'equazione è **letterale** se, oltre all'incognita, contiene altre lettere, dette **parametri**: rappresentano numeri fissati ma non specificati, e la soluzione dipende da essi. $ax = 2a$ non è una sola equazione ma infinite, una per ogni valore di $a$, e non tutte si comportano allo stesso modo.
+~ \dfrac{2x}{x - 3} - 1 = \dfrac{6}{x - 3} :: c.e.: $x \ne 3$
+~ 2x \evid{- (x - 3)} = 6 :: moltiplico per $x - 3$: l'$1$ diventa $x - 3$, con il meno davanti
+~ x + 3 = 6 :: tolgo la parentesi e riduco
+~ x = \evidb{3} :: ma $3$ viola la c.e.: si scarta, e l'equazione è **impossibile**
 
->* Si risolve come al solito, portando l'equazione alla forma $A\,x = B$, dove $A$ e $B$ contengono il parametro. Poi si **discute**: per i valori del parametro che annullano $A$ l'equazione è impossibile o indeterminata (a seconda che $B$ sia diverso da zero o nullo); per tutti gli altri è determinata, con $x = \dfrac{B}{A}$.
+?? Quali sono le c.e. di $\dfrac{1}{x^2 - 4} = \dfrac{2}{x}$?
+[ ] $x \ne 4$
+[ ] $x \ne 2$ e $x \ne 0$
+[x] $x \ne 2$, $x \ne -2$ e $x \ne 0$
+=> $x^2 - 4 = (x - 2)(x + 2)$ si annulla in **due** valori, $2$ e $-2$, e il secondo denominatore aggiunge $x \ne 0$. Chi scrive $x \ne 4$ ha dimenticato che la $x$ è al quadrato; chi scrive $x \ne 2$ e $x \ne 0$ ha perso la soluzione negativa di $x^2 = 4$.
 
-Esempio: $ax - 2 = x + a$. Porto i termini con $x$ a sinistra: $ax - x = a + 2$, e raccolgo l'incognita: $(a - 1)\,x = a + 2$.
+>! $2 - x$ è l'opposto di $x - 2$: conviene riscriverlo come $-(x - 2)$ prima di cercare il denominatore comune. E un denominatore come $x^2 + 1$ non si annulla mai: non dà nessuna c.e.` },
 
-- Se $a \ne 1$ posso dividere: $x = \dfrac{a + 2}{a - 1}$.
-- Se $a = 1$ resta $0 \cdot x = 3$: impossibile.
+    { id: 'letterali', titolo: 'Equazioni letterali: la discussione', testo: R`In $ax = 2a$ c'è una lettera in più. La $a$ non è l'incognita: è un **parametro**, un numero fissato che però non conosci. Un'equazione così è in realtà una famiglia di equazioni, una per ogni valore di $a$: con $a = 3$ è $3x = 6$, con $a = 0$ è $0 \cdot x = 0$. E non si comportano tutte allo stesso modo.
 
-Con $a = 3$, per controllo, l'equazione è $3x - 2 = x + 3$, cioè $2x = 5$ e $x = \dfrac{5}{2}$, che è proprio $\dfrac{3 + 2}{3 - 1}$. ✓
+>* **Discutere** un'equazione letterale vuol dire risolverla per **ogni** valore del parametro. La si porta alla forma $A\,x = B$ (dove $A$ e $B$ contengono il parametro). Dove $A \ne 0$ si divide: $x = \dfrac{B}{A}$. Dove $A = 0$ l'equazione è impossibile se $B \ne 0$, indeterminata se $B = 0$.
 
-Se il parametro compare in un denominatore, per esempio in $\dfrac{x}{a} = 1$, serve anche una condizione sul parametro ($a \ne 0$), esattamente come le c.e. delle equazioni fratte.
+~ ax - 2 = x + a :: $a$ è il parametro, $x$ l'incognita
+~ ax \evid{- x} = a \evid{+ 2} :: termini con la $x$ a sinistra, tutto il resto a destra
+~ \evid{(a - 1)}\,x = a + 2 :: raccolgo la $x$: il coefficiente è $a - 1$
+~ x = \evidb{\dfrac{a + 2}{a - 1}} :: divido, ma solo se $a - 1 \ne 0$, cioè $a \ne 1$
 
->! Dividere per $a - 1$ senza chiedersi se possa essere zero è l'errore classico: la soluzione $x = \dfrac{a + 2}{a - 1}$ scritta da sola, senza discussione, è incompleta. Il parametro non "vale qualcosa": va trattato per tutti i suoi valori possibili.` },
+Resta il caso $a = 1$, da guardare a parte. Sostituendo si ha $(1 - 1)\,x = 1 + 2$, cioè $0 \cdot x = 3$: impossibile. La risposta completa è quindi:
 
-    { id: 'problemi', titolo: 'Problemi risolti con le equazioni', testo: R`Un problema a parole si risolve traducendolo in un'equazione. La difficoltà non è quasi mai il calcolo, ma la traduzione: per questo conviene seguire sempre lo stesso schema.
+| valore del parametro | l'equazione è | soluzione |
+|---|---|---|
+| $a \ne 1$ | determinata | $x = \dfrac{a + 2}{a - 1}$ |
+| $a = 1$ | impossibile | nessuna |
 
->* **Schema.** 1) **Incognita:** si sceglie la grandezza da trovare (o quella da cui le altre si ricavano più facilmente), indicando l'unità di misura. 2) **Traduzione:** si esprimono le altre grandezze in funzione di $x$ e si scrive la condizione del testo come equazione. 3) **Risoluzione.** 4) **Verifica del senso:** la soluzione deve essere compatibile con il problema, non solo con l'equazione.
+Controllo con $a = 3$: l'equazione diventa $3x - 2 = x + 3$, cioè $2x = 5$ e $x = \dfrac{5}{2}$. La formula dà proprio $\dfrac{3 + 2}{3 - 1} = \dfrac{5}{2}$. ✓
 
-Qualche traduzione ricorrente:
+?? Per quale valore di $a$ l'equazione $(a + 2)\,x = 4$ è impossibile?
+[x] $a = -2$
+[ ] $a = 2$
+[ ] $a = 0$
+=> Il coefficiente $a + 2$ si annulla per $a = -2$: resta $0 \cdot x = 4$, impossibile. Con $a = 2$ l'equazione è $4x = 4$, con $a = 0$ è $2x = 4$: tutte e due determinate. Il caso da discutere non è quello in cui il parametro vale zero, ma quello in cui vale zero il **coefficiente** della $x$.
+
+Se il parametro sta in un denominatore, come in $\dfrac{x}{a} = 1$, serve anche una condizione sul parametro ($a \ne 0$), come le c.e. delle fratte.
+
+>! Scrivere solo $x = \dfrac{a + 2}{a - 1}$ e fermarsi è l'errore classico: hai diviso per $a - 1$ senza chiederti se può valere zero. La discussione dei casi fa parte della risposta.` },
+
+    { id: 'problemi', titolo: 'Problemi risolti con le equazioni', testo: R`Un problema a parole si risolve traducendolo in un'equazione. Il calcolo è quasi sempre la parte facile; quella difficile è la traduzione. Per questo conviene seguire ogni volta lo stesso schema.
+
+>* **Schema.** 1) **Incognita:** scegli che cosa chiamare $x$ (la grandezza cercata, o quella da cui si ricavano meglio le altre) e scrivilo, con l'unità di misura. 2) **Traduzione:** esprimi le altre grandezze con la $x$ e scrivi la condizione del testo come equazione. 3) **Risoluzione.** 4) **Senso:** controlla che la soluzione vada bene per il problema, non solo per l'equazione.
+
+Alcune traduzioni che tornano spesso nei testi:
 
 | il testo dice | si scrive |
 |---|---|
@@ -127,13 +220,26 @@ Qualche traduzione ricorrente:
 | la base supera l'altezza di 5 | base $= x + 5$ |
 | fra $x$ anni avrà | età attuale $+\, x$ |
 
-Esempio: la somma di tre numeri naturali consecutivi è $48$. Incognita: $x$ il più piccolo; gli altri sono $x + 1$ e $x + 2$. Equazione: $x + (x + 1) + (x + 2) = 48$, cioè $3x + 3 = 48$, $x = 15$. I numeri sono $15$, $16$, $17$: naturali, consecutivi, e la loro somma è $48$. ✓
+Esempio: la somma di tre numeri naturali consecutivi è $48$. Chiamo $x$ il più piccolo: gli altri due sono $x + 1$ e $x + 2$.
 
-La verifica del senso non è un formalismo. Se in un problema $x$ conta persone e si trova $x = 7{,}5$, oppure $x$ è una lunghezza e viene $-3$, l'equazione può essere stata risolta benissimo, ma la risposta al problema è che *non esiste* una soluzione con quelle condizioni, oppure che la traduzione va riletta.
+~ x + (x + 1) + (x + 2) = 48 :: la somma dei tre numeri è $48$
+~ \evid{3x + 3} = 48 :: sommo i termini simili
+~ 3x = \evid{45} :: porto il $3$ a destra
+~ x = \evidb{15} :: divido per $3$
 
->! Rispondere «$x = 15$» non basta: il problema chiedeva tre numeri. La risposta finale è quella alla domanda del testo, con le unità di misura se ci sono.` },
+Il più piccolo è $15$, quindi i numeri sono $15$, $16$ e $17$: naturali, consecutivi, e la somma fa $48$. ✓
 
-    { id: 'interpretazione-grafica', titolo: 'Lo zero della retta', testo: R`L'espressione $y = 2x - 4$ associa a ogni $x$ un valore $y$. Riportando le coppie $(x;\,y)$ nel piano cartesiano si ottengono punti allineati: il grafico di un'espressione di primo grado è sempre una **retta** (la studierai a fondo nel capitolo sul piano cartesiano).
+?? «Fra 4 anni Marco avrà il doppio degli anni che aveva 3 anni fa.» Se $x$ è l'età di Marco oggi, l'equazione è…
+[x] $x + 4 = 2(x - 3)$
+[ ] $2(x + 4) = x - 3$
+[ ] $x + 4 = 2x - 3$
+=> «Fra 4 anni» è $x + 4$, «3 anni fa» è $x - 3$, e il doppio va a quest'ultima: $x + 4 = 2(x - 3)$, da cui $x = 10$ (fra 4 anni ne avrà $14$, tre anni fa ne aveva $7$ ✓). La seconda scrittura raddoppia la quantità sbagliata; la terza dimentica la parentesi e raddoppia solo la $x$.
+
+Controllare il senso serve davvero. Se $x$ conta persone e trovi $x = 7{,}5$, o se $x$ è una lunghezza e trovi $-3$, l'equazione può anche essere risolta benissimo: vuol dire che con quei dati il problema non ha soluzione, oppure che la traduzione va riletta.
+
+>! Rispondi alla domanda del testo, con le unità di misura. Nell'esempio il problema chiedeva tre numeri: «$x = 15$» da solo non è la risposta.` },
+
+    { id: 'interpretazione-grafica', titolo: 'Lo zero della retta', testo: R`Un'espressione come $2x - 4$ dà un numero per ogni $x$. Se chiami $y$ quel numero e segni i punti $(x;\,y)$ nel piano cartesiano, li trovi tutti allineati su una **retta** (la studierai nel capitolo sul piano cartesiano).
 
 | $x$ | $y = 2x - 4$ |
 |---|---|
@@ -142,56 +248,32 @@ La verifica del senso non è un formalismo. Se in un problema $x$ conta persone 
 | $2$ | $0$ |
 | $3$ | $2$ |
 
-Risolvere $2x - 4 = 0$ significa chiedersi per quale $x$ la $y$ vale zero: è l'ascissa del punto in cui la retta attraversa l'asse $x$, che si chiama **zero** della retta. Nel grafico è il punto $(2;\,0)$.
+In quale riga della tabella $y$ vale zero? In quella con $x = 2$, che è proprio la soluzione di $2x - 4 = 0$. Nel disegno è il punto in cui la retta attraversa l'asse $x$, e si chiama **zero** della retta.
 
 [[grafico:zeroRetta]]
 
->* L'equazione $ax = b$ e la retta $y = ax - b$ sono la stessa domanda vista in due modi: la soluzione $x = \dfrac{b}{a}$ è l'ascissa del punto in cui la retta taglia l'asse $x$. Se $a \ne 0$ la retta è obliqua e taglia l'asse in un solo punto (determinata); se $a = 0$ è orizzontale, e o non lo tocca mai ($b \ne 0$, impossibile) o coincide con esso ($b = 0$, indeterminata).
+>* Risolvere $ax = b$ è come chiedersi dove la retta $y = ax - b$ taglia l'asse $x$. Se $a \ne 0$ la retta è inclinata e lo taglia in un solo punto (determinata). Se $a = 0$ la retta è orizzontale: o non tocca mai l'asse ($b \ne 0$, impossibile) o ci sta sopra ($b = 0$, indeterminata).
 
-Quando l'incognita sta in entrambi i membri, come in $2x + 1 = x + 4$, i due membri sono due rette e la soluzione è l'ascissa del loro punto di incontro: è quello che mostra il grafico della bilancia, dove le rette si incrociano in $x = 3$. Due rette parallele, come $y = 2x + 1$ e $y = 2x + 5$, non si incontrano mai: l'equazione $2x + 1 = 2x + 5$ è impossibile.
+Questo modo di guardare le equazioni ti servirà nelle disequazioni, dove conta se la retta sta sopra o sotto l'asse, e nei sistemi.
 
->! Il grafico dà l'idea, il calcolo dà la risposta: da un disegno si legge $x \approx 2{,}3$, non $x = \dfrac{7}{3}$. Le due cose vanno insieme, non una al posto dell'altra.` }
+?? La retta $y = 3x + 6$ taglia l'asse $x$ in…
+[ ] $x = 6$
+[ ] $x = 2$
+[x] $x = -2$
+=> Si risolve $3x + 6 = 0$: $3x = -6$, quindi $x = -2$. Chi risponde $6$ ha letto il punto in cui la retta taglia l'asse $y$, che è il termine noto; chi risponde $2$ ha dimenticato di cambiare segno al $6$ spostandolo.
+
+>! Da un disegno si legge al massimo un valore approssimato, come $x \approx 2{,}3$, mai il valore esatto $x = \dfrac{7}{3}$. Il disegno dà l'idea, la risposta la dà il calcolo.` }
   ],
 
   grafici: {
-    bilancia: {
-      tipo: 'piano', x: [-3, 6], y: [-4, 12], passo: [1, 2],
-      parametri: [{ nome: 'p', min: -2, max: 5, passo: 0.5, valore: 0, nascosto: true }],
-      funzioni: [
-        { f: '2x + 1', etichetta: 'y = 2x + 1', colore: 1 },
-        { f: 'x + 4', etichetta: 'y = x + 4', colore: 2 }
-      ],
-      elementi: [
-        { tipo: 'verticale', x: 'p', tratteggio: true, colore: 4 },
-        { tipo: 'punto', p: ['p', '2*p + 1'], etichetta: '{{2*p + 1}}', posizione: 'destra', colore: 1 },
-        { tipo: 'punto', p: ['p', 'p + 4'], etichetta: '{{p + 4}}', posizione: 'sinistra', colore: 2 },
-        { tipo: 'punto', p: ['p', 0], trascina: true, etichetta: 'x = {{p}}', posizione: 'basso', colore: 4 },
-        { tipo: 'testo', p: [-2.8, 11.2], testo: 'primo membro  2x + 1 = {{2*p + 1}}', ancora: 'start' },
-        { tipo: 'testo', p: [-2.8, 10], testo: 'secondo membro  x + 4 = {{p + 4}}', ancora: 'start' }
-      ],
-      didascalia: 'Trascina il punto sull\'asse x: i due membri di 2x + 1 = x + 4 valgono lo stesso solo per x = 3, dove le due rette si incontrano.'
-    },
-    rettaParametri: {
-      tipo: 'piano', x: [-5, 5], y: [-6, 6],
-      parametri: [
-        { nome: 'a', min: -3, max: 3, passo: 0.5, valore: 2, etichetta: 'a' },
-        { nome: 'b', min: -5, max: 5, passo: 0.5, valore: 4, etichetta: 'b' }
-      ],
-      funzioni: [{ f: 'a*x - b', etichetta: 'y = ax − b', colore: 1 }],
-      elementi: [
-        { tipo: 'punto', p: ['b/a', 0], etichetta: 'x = {{b/a}}', posizione: 'basso', colore: 2 },
-        { tipo: 'testo', p: [-4.8, 5.4], testo: 'ax = b  con  a = {{a}},  b = {{b}}   →   x = {{b/a}}', ancora: 'start' }
-      ],
-      didascalia: 'La soluzione di ax = b è il punto in cui la retta y = ax − b taglia l\'asse x. Con a = 0 la retta è orizzontale e il punto sparisce: impossibile (b ≠ 0) o indeterminata (b = 0).'
-    },
     zeroRetta: {
-      tipo: 'piano', x: [-2, 5], y: [-6, 5],
+      tipo: 'piano', x: [-2, 5], y: [-6, 5], passo: [1, 1],
       funzioni: [{ f: '2x - 4', etichetta: 'y = 2x − 4', colore: 1 }],
       punti: [
         { x: 2, y: 0, etichetta: 'x = 2', posizione: 'alto-sinistra', colore: 2 },
         { x: 0, y: -4, etichetta: '(0; −4)', posizione: 'destra', colore: 3 }
       ],
-      didascalia: 'La retta y = 2x − 4 taglia l\'asse x in x = 2: è la soluzione di 2x − 4 = 0. In x = 0 vale −4, il termine noto.'
+      didascalia: 'Passa il dito sulla retta: ritrovi i valori della tabella. Dove y vale 0, cioè dove la retta attraversa l\'asse x, c\'è la soluzione di 2x − 4 = 0.'
     }
   },
 
@@ -203,30 +285,37 @@ Quando l'incognita sta in entrambi i membri, come in $2x + 1 = x + 4$, i due mem
     ], risultato: R`$x = 12$, cioè $S = \{12\}$` },
 
     { titolo: 'Parentesi e frazioni numeriche', problema: R`Risolvi $\dfrac{x + 3}{4} - \dfrac{x - 2}{6} = \dfrac{x}{3} + 1$.`, passi: [
-      R`I denominatori sono numeri: l'equazione è intera. Il mcm di $4$, $6$ e $3$ è $12$; scrivo ogni termine con denominatore $12$, compreso l'$1$: $\dfrac{3(x + 3) - 2(x - 2)}{12} = \dfrac{4x + 12}{12}$.`,
-      R`I denominatori sono uguali: li elimino (secondo principio, moltiplico per $12$) e svolgo le parentesi, attenzione al meno davanti a $2(x - 2)$: $3x + 9 - 2x + 4 = 4x + 12$.`,
-      R`Riduco: $x + 13 = 4x + 12$. Trasporto: $x - 4x = 12 - 13$, cioè $-3x = -1$.`,
-      R`Divido per $-3$: $x = \dfrac{1}{3}$.`,
+      R`I denominatori sono solo numeri, quindi l'equazione è intera. Il mcm di $4$, $6$ e $3$ è $12$.`,
+      R`Scrivo ogni termine con denominatore $12$, compreso l'$1$, che diventa $\dfrac{12}{12}$: $\dfrac{3(x + 3) - 2(x - 2)}{12} = \dfrac{4x + 12}{12}$.`,
+      R`I denominatori sono uguali: li elimino moltiplicando entrambi i membri per $12$ (secondo principio). Resta $3(x + 3) - 2(x - 2) = 4x + 12$.`,
+      R`Tolgo le parentesi. Il meno davanti a $2(x - 2)$ cambia segno a tutti e due i termini: $3x + 9 - 2x + 4 = 4x + 12$.`,
+      R`Riduco i termini simili: $x + 13 = 4x + 12$.`,
+      R`Porto le $x$ a sinistra e i numeri a destra: $x - 4x = 12 - 13$, cioè $-3x = -1$.`,
+      R`Divido per $-3$: $x = \dfrac{-1}{-3} = \dfrac{1}{3}$.`,
       R`Verifica: primo membro $\dfrac{10/3}{4} - \dfrac{-5/3}{6} = \dfrac{5}{6} + \dfrac{5}{18} = \dfrac{10}{9}$; secondo membro $\dfrac{1}{9} + 1 = \dfrac{10}{9}$. ✓`
     ], risultato: R`$x = \dfrac{1}{3}$` },
 
     { titolo: 'Impossibile o indeterminata?', problema: R`Risolvi le due equazioni $3(x + 2) - 2x = x + 6$ e $2(x - 1) + 3 = 2x + 5$.`, passi: [
-      R`Prima equazione: $3x + 6 - 2x = x + 6$, cioè $x + 6 = x + 6$. Trasportando tutto a sinistra resta $0 \cdot x = 0$.`,
-      R`È vera per qualunque $x$: l'equazione è **indeterminata**, $S = \mathbb{R}$. In effetti era un'identità travestita.`,
-      R`Seconda equazione: $2x - 2 + 3 = 2x + 5$, cioè $2x + 1 = 2x + 5$. Cancellando $2x$ da entrambi i membri resta $0 \cdot x = 4$.`,
-      R`Nessun numero moltiplicato per $0$ dà $4$: l'equazione è **impossibile**, $S = \varnothing$. Graficamente, $y = 2x + 1$ e $y = 2x + 5$ sono rette parallele, che non si incontrano mai.`
+      R`Prima equazione. Tolgo la parentesi: $3x + 6 - 2x = x + 6$, cioè $x + 6 = x + 6$.`,
+      R`Porto tutto a sinistra: le $x$ si cancellano e anche i numeri, resta $0 \cdot x = 0$.`,
+      R`È vera per qualunque $x$: l'equazione è **indeterminata**, $S = \mathbb{R}$. Era un'identità travestita.`,
+      R`Seconda equazione. Tolgo la parentesi: $2x - 2 + 3 = 2x + 5$, cioè $2x + 1 = 2x + 5$.`,
+      R`Cancello $2x$ da entrambi i membri e porto l'$1$ a destra: resta $0 \cdot x = 4$.`,
+      R`Nessun numero moltiplicato per $0$ dà $4$: l'equazione è **impossibile**, $S = \varnothing$.`
     ], risultato: R`La prima è indeterminata ($S = \mathbb{R}$), la seconda è impossibile ($S = \varnothing$)` },
 
     { titolo: 'Un\'equazione fratta', problema: R`Risolvi $\dfrac{3}{x - 1} - \dfrac{2}{x} = \dfrac{1}{x(x - 1)}$.`, passi: [
       R`L'incognita è nei denominatori: equazione fratta. Condizioni di esistenza: $x - 1 \ne 0$ e $x \ne 0$, cioè $x \ne 1$ e $x \ne 0$.`,
-      R`Il mcm dei denominatori è $x(x - 1)$: $\dfrac{3x - 2(x - 1)}{x(x - 1)} = \dfrac{1}{x(x - 1)}$.`,
-      R`Grazie alle c.e. il denominatore non è zero e posso eliminarlo: $3x - 2x + 2 = 1$, cioè $x + 2 = 1$, $x = -1$.`,
+      R`Il mcm dei denominatori è $x(x - 1)$. Scrivo tutto con quel denominatore: $\dfrac{3x - 2(x - 1)}{x(x - 1)} = \dfrac{1}{x(x - 1)}$.`,
+      R`Grazie alle c.e. il denominatore non è zero, quindi posso eliminarlo: $3x - 2(x - 1) = 1$.`,
+      R`Tolgo la parentesi e riduco: $3x - 2x + 2 = 1$, cioè $x + 2 = 1$, da cui $x = -1$.`,
       R`Confronto con le c.e.: $-1$ è diverso da $0$ e da $1$, quindi è accettabile.`,
       R`Verifica: $\dfrac{3}{-2} - \dfrac{2}{-1} = -\dfrac{3}{2} + 2 = \dfrac{1}{2}$ e $\dfrac{1}{(-1)(-2)} = \dfrac{1}{2}$. ✓`
     ], risultato: R`$x = -1$` },
 
     { titolo: 'Un\'equazione letterale da discutere', problema: R`Risolvi e discuti $a^2 x - 1 = x + a$.`, passi: [
-      R`Porto i termini con $x$ a sinistra e gli altri a destra: $a^2 x - x = a + 1$. Raccolgo l'incognita: $(a^2 - 1)\,x = a + 1$.`,
+      R`Porto i termini con $x$ a sinistra e gli altri a destra: $a^2 x - x = a + 1$.`,
+      R`Raccolgo l'incognita, così il coefficiente di $x$ è in vista: $(a^2 - 1)\,x = a + 1$.`,
       R`Scompongo il coefficiente: $a^2 - 1 = (a - 1)(a + 1)$, quindi $(a - 1)(a + 1)\,x = a + 1$. Il coefficiente si annulla per $a = 1$ e per $a = -1$: sono i valori da discutere a parte.`,
       R`Se $a \ne 1$ e $a \ne -1$ posso dividere: $x = \dfrac{a + 1}{(a - 1)(a + 1)} = \dfrac{1}{a - 1}$. Equazione determinata.`,
       R`Se $a = 1$: $0 \cdot x = 2$, impossibile. Se $a = -1$: $0 \cdot x = 0$, indeterminata.`,
@@ -252,7 +341,7 @@ Quando l'incognita sta in entrambi i membri, come in $2x + 1 = x + 4$, i due mem
     { nome: 'Eliminazione dei denominatori numerici', formula: R`\frac{A}{m} = \frac{B}{n} \iff nA = mB \qquad (m, n \ne 0)`, nota: R`In pratica si moltiplicano entrambi i membri per il mcm dei denominatori.` },
     { nome: 'Equazione fratta', formula: R`\frac{N(x)}{D(x)} = 0 \iff N(x) = 0 \ \land\ D(x) \ne 0`, nota: R`La seconda condizione sono le c.e.: le soluzioni che annullano $D(x)$ si scartano.` },
     { nome: 'Equazione letterale', formula: R`A(a)\,x = B(a)`, nota: R`Se $A(a) \ne 0$: $x = \dfrac{B(a)}{A(a)}$. Se $A(a) = 0$: impossibile quando $B(a) \ne 0$, indeterminata quando $B(a) = 0$.` },
-    { nome: 'Zero della retta', formula: R`y = ax - b \ \Rightarrow\ y = 0 \text{ per } x = \frac{b}{a}`, nota: R`La retta taglia l'asse $x$ nel punto $\left(\dfrac{b}{a};\,0\right)$; con $a = 0$ è orizzontale.` }
+    { nome: 'Zero della retta', formula: R`y = ax - b \ \Rightarrow\ y = 0 \text{ per } x = \frac{b}{a} \quad (a \ne 0)`, nota: R`La retta taglia l'asse $x$ nel punto $\left(\dfrac{b}{a};\,0\right)$; con $a = 0$ è orizzontale.` }
   ],
 
   flashcards: [

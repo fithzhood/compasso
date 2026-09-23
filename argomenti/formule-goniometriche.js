@@ -4,156 +4,274 @@ COMPASSO.registra({
   id: 'formule-goniometriche',
   titolo: 'Formule goniometriche',
 
-  introduzione: R`Le formule goniometriche mettono in relazione seno, coseno e tangente di angoli diversi: la somma di due angoli, il doppio di un angolo, la metà di un angolo. Senza di esse la trigonometria si fermerebbe agli angoli notevoli ($30°$, $45°$, $60°$) letti sulla circonferenza goniometrica: con le formule si calcola $\sin75°$ sapendo solo $\sin30°$ e $\sin45°$, si trova $\cos2\alpha$ senza disegnare un nuovo triangolo, si trasforma $3\sin x + 4\cos x$ in un'unica sinusoide.
+  introduzione: R`Conosci $\sin30°$ e $\sin45°$. Quanto vale $\sin75°$? Viene spontaneo sommare, ma $\sin30° + \sin45° \approx 1{,}21$, più di $1$: impossibile per un seno. Il seno di una somma non è la somma dei seni. Le **formule goniometriche** dicono che cosa è davvero.
 
-Sono lo strumento con cui si risolvono le equazioni e le disequazioni goniometriche (l'argomento successivo), si semplificano espressioni con seno e coseno, si calcola l'angolo fra due rette a partire dai loro coefficienti angolari. Per secoli sono state anche un metodo di calcolo vero e proprio: prima dei logaritmi, gli astronomi trasformavano un prodotto di seni e coseni in una somma (le formule di Werner) per moltiplicare numeri grandi con la sola addizione.
+Partono quasi tutte da una formula sola, il coseno di una differenza. Da lì, con pochi passaggi, vengono le formule di addizione, poi quelle dell'angolo doppio (**duplicazione**), dell'angolo metà (**bisezione**) e le altre. In questa pagina ogni formula ha la sua dimostrazione passo per passo: se capisci come si ricava, non devi impararla a memoria parola per parola, e se la dimentichi la ricostruisci.
 
-Per seguire bene serve conoscere le funzioni goniometriche di base (seno, coseno, tangente, la circonferenza goniometrica, gli angoli associati) e saper risolvere equazioni di secondo grado e sistemi semplici.`,
+Servono a calcolare valori esatti di angoli non notevoli, a semplificare espressioni e soprattutto a risolvere le equazioni goniometriche, l'argomento successivo. Bisogna conoscere la circonferenza goniometrica, gli angoli notevoli, gli angoli associati e la relazione $\sin^2\alpha + \cos^2\alpha = 1$.`,
+
+  inBreve: [
+    R`$\sin(\alpha+\beta) \ne \sin\alpha + \sin\beta$: il seno di una somma si calcola con la formula di addizione, $\sin\alpha\cos\beta + \cos\alpha\sin\beta$.`,
+    R`Nel coseno il segno centrale va al contrario: $\cos(\alpha+\beta) = \cos\alpha\cos\beta - \sin\alpha\sin\beta$.`,
+    R`Ponendo $\beta = \alpha$ nelle formule di addizione vengono quelle di duplicazione: $\sin2\alpha = 2\sin\alpha\cos\alpha$ e $\cos2\alpha$ in tre forme.`,
+    R`Nella bisezione il segno davanti alla radice si decide guardando il quadrante di $\frac{\alpha}{2}$, non quello di $\alpha$.`,
+    R`$a\sin x + b\cos x$ è un'unica sinusoide di ampiezza $\sqrt{a^2+b^2}$: il suo massimo è quello, non $a+b$.`,
+    R`Per verificare un'identità si trasforma un membro solo fino a ottenere l'altro.`
+  ],
 
   sezioni: [
-    { id: 'addizione-sottrazione', titolo: 'Le formule di addizione e sottrazione', testo: R`Le formule di addizione permettono di calcolare seno, coseno e tangente della somma (o della differenza) di due angoli a partire dai valori dei singoli angoli.
+    { id: 'addizione-sottrazione', titolo: 'Le formule di addizione e sottrazione', testo: R`Le formule di addizione danno seno, coseno e tangente della somma di due angoli partendo dai valori dei due angoli separati. Quelle di sottrazione fanno lo stesso con la differenza.
 
->* **Formule di addizione:** $$\sin(\alpha+\beta) = \sin\alpha\cos\beta + \cos\alpha\sin\beta$$ $$\cos(\alpha+\beta) = \cos\alpha\cos\beta - \sin\alpha\sin\beta$$ Cambiando il segno di $\beta$ (con $\cos(-\beta)=\cos\beta$ e $\sin(-\beta)=-\sin\beta$) si ottengono le formule di sottrazione, con il segno centrale invertito.
+>* **Addizione e sottrazione:** $$\begin{array}{rl}\sin(\alpha\pm\beta) &= \sin\alpha\cos\beta \\ &\quad {}\pm \cos\alpha\sin\beta\end{array}$$ $$\begin{array}{rl}\cos(\alpha\pm\beta) &= \cos\alpha\cos\beta \\ &\quad {}\mp \sin\alpha\sin\beta\end{array}$$ $$\tan(\alpha\pm\beta) = \frac{\tan\alpha\pm\tan\beta}{1\mp\tan\alpha\tan\beta}$$ Il simbolo $\mp$ vuol dire «il segno opposto»: nel coseno, con la somma c'è il meno.
 
-Attenzione: $\sin(\alpha+\beta)$ **non** è $\sin\alpha+\sin\beta$, perché il seno non è una funzione lineare. Si vede subito con $\alpha=\beta=45°$: $\sin90°=1$, mentre $\sin45°+\sin45°=\sqrt2\approx1,41$.
+Con queste si calcola $\sin75°$:
 
-Una dimostrazione parte dalla distanza fra due punti della circonferenza goniometrica: i punti $A=(\cos\alpha,\sin\alpha)$ e $B=(\cos\beta,\sin\beta)$ distano $AB$ come si calcola con il teorema di Pitagora sulle coordinate, ma $AB$ è anche la corda dell'angolo al centro $\alpha-\beta$; uguagliando le due espressioni si ricava $\cos(\alpha-\beta)$, e da lì le altre formule. La stessa idea, in una forma più antica, usa il teorema di Tolomeo sui quadrilateri ciclici (vedi l'aneddoto in fondo alla pagina).
+~ \sin75° = \sin(\evid{45° + 30°}) :: scrivo $75°$ come somma di due angoli notevoli
+~ = \sin45°\cos30° + \cos45°\sin30° :: formula di addizione del seno
+~ = \dfrac{\sqrt2}{2}\cdot\dfrac{\sqrt3}{2} + \dfrac{\sqrt2}{2}\cdot\dfrac12 :: metto i valori degli angoli notevoli
+~ = \evidb{\dfrac{\sqrt6+\sqrt2}{4}} \approx 0{,}966 :: moltiplico e sommo le frazioni
 
-Dividendo numeratore e denominatore per $\cos\alpha\cos\beta$ si ottiene la tangente:
+?? Quanto vale $\cos(\alpha - \beta)$?
+[x] $\cos\alpha\cos\beta + \sin\alpha\sin\beta$
+[ ] $\cos\alpha\cos\beta - \sin\alpha\sin\beta$
+[ ] $\cos\alpha - \cos\beta$
+=> Nel coseno il segno centrale è opposto a quello fra gli angoli: con la differenza c'è il più. Quella con il meno è la formula della somma. $\cos\alpha - \cos\beta$ tratta il coseno come se si potesse «distribuire», ed è falsa: con $\alpha = \beta$ darebbe $0$, mentre $\cos 0 = 1$.
 
->* $$\tan(\alpha+\beta) = \frac{\tan\alpha+\tan\beta}{1-\tan\alpha\tan\beta}$$
+### Da dove vengono
 
-Esempio: $\sin75° = \sin(45°+30°) = \sin45°\cos30°+\cos45°\sin30° = \dfrac{\sqrt2}{2}\cdot\dfrac{\sqrt3}{2}+\dfrac{\sqrt2}{2}\cdot\dfrac12 = \dfrac{\sqrt6+\sqrt2}{4}$.
+Tutto parte dal coseno di una differenza. Prendi sulla circonferenza goniometrica i punti $A = (\cos\alpha,\ \sin\alpha)$ e $B = (\cos\beta,\ \sin\beta)$ e calcola la loro distanza in due modi.
 
-Il grafico verifica numericamente la formula: qualunque siano $\alpha$ e $\beta$, $\sin(\alpha+\beta)$ e $\sin\alpha\cos\beta+\cos\alpha\sin\beta$ restano uguali.
+~ \begin{array}{rl} AB^2 &= (\cos\alpha - \cos\beta)^2 \\ &\quad {}+ (\sin\alpha - \sin\beta)^2 \end{array} :: distanza fra due punti, al quadrato
+~ \begin{array}{rl} AB^2 &= \evid{(\cos^2\alpha + \sin^2\alpha)} \\ &\quad {}+ \evid{(\cos^2\beta + \sin^2\beta)} \\ &\quad {}- 2\cos\alpha\cos\beta \\ &\quad {}- 2\sin\alpha\sin\beta \end{array} :: sviluppo i quadrati e riordino i termini
+~ = 2 - 2(\cos\alpha\cos\beta + \sin\alpha\sin\beta) :: ogni parentesi di quadrati vale $1$
+~ AB^2 = \evid{2 - 2\cos(\alpha - \beta)} :: ruoto la figura finché $B$ va in $(1,\ 0)$: $A$ va nel punto dell'angolo $\alpha - \beta$ e la distanza non cambia; rifaccio lo stesso conto
+~ \cos(\alpha - \beta) = \evidb{\cos\alpha\cos\beta + \sin\alpha\sin\beta} :: confronto le due espressioni di $AB^2$
 
-[[grafico:sommaAngoli]]
+Le altre seguono in fretta. Cambiando $\beta$ in $-\beta$, con $\cos(-\beta) = \cos\beta$ e $\sin(-\beta) = -\sin\beta$, viene il coseno della somma, con il meno. Per il seno si passa dagli angoli complementari:
 
->! Nella formula del coseno il segno si **inverte**: addizione con il meno, sottrazione con il più (l'esatto contrario del seno). È l'errore più comune, insieme a dimenticare l'$1$ al denominatore della tangente.` },
+~ \sin(\alpha+\beta) = \cos\big(90° - (\alpha+\beta)\big) :: il seno di un angolo è il coseno del suo complementare
+~ = \cos\big(\evid{(90° - \alpha) - \beta}\big) :: riscrivo l'angolo come una differenza
+~ \begin{array}{rl} &= \cos(90°-\alpha)\cos\beta \\ &\quad {}+ \sin(90°-\alpha)\sin\beta \end{array} :: coseno di una differenza
+~ = \evidb{\sin\alpha\cos\beta + \cos\alpha\sin\beta} :: di nuovo i complementari: $\cos(90°-\alpha) = \sin\alpha$ e viceversa
 
-    { id: 'angolo-tra-rette', titolo: "L'angolo fra due rette", testo: R`Ogni retta non verticale forma con l'asse $x$ un angolo la cui tangente è il coefficiente angolare: $m=\tan\theta$. Se due rette hanno coefficienti angolari $m_1$ e $m_2$, l'angolo compreso fra loro si trova applicando la formula di sottrazione della tangente ai due angoli $\theta_1=\arctan m_1$ e $\theta_2=\arctan m_2$.
+La tangente viene dividendo $\sin(\alpha+\beta)$ per $\cos(\alpha+\beta)$, e poi numeratore e denominatore per $\cos\alpha\cos\beta$.
 
->* **Angolo fra due rette:** $$\tan\theta = \left|\frac{m_2-m_1}{1+m_1m_2}\right|$$ Il valore assoluto serve perché si prende sempre l'angolo acuto (o retto) fra le due rette, non quello ottuso supplementare.
+>! Nel coseno il segno si **inverte**: addizione con il meno, sottrazione con il più, al contrario del seno. È l'errore più comune, insieme a dimenticare l'$1$ al denominatore della tangente.` },
 
-Due casi particolari si riconoscono senza calcolare $\theta$: se $1+m_1m_2=0$ (cioè $m_1m_2=-1$) le rette sono **perpendicolari** ($\theta=90°$, la tangente non è definita); se $m_1=m_2$ il numeratore è zero e le rette sono **parallele** ($\theta=0°$), a meno che non siano la stessa retta.
+    { id: 'angolo-tra-rette', titolo: "L'angolo fra due rette", testo: R`Due rette si incrociano: che angolo formano? Se conosci i coefficienti angolari, la risposta viene dalla formula di sottrazione della tangente. Una retta non verticale forma con l'asse $x$ un angolo $\theta$ con $\tan\theta = m$, il suo coefficiente angolare. L'angolo fra due rette è la differenza fra i loro due angoli:
 
-Esempio: $r: y=2x+1$ e $s: y=-\dfrac13x+4$. Qui $m_1=2$ e $m_2=-\dfrac13$, quindi $$\tan\theta = \left|\frac{-\frac13-2}{1+2\cdot\left(-\frac13\right)}\right| = \left|\frac{-\frac73}{\frac13}\right| = 7,$$ da cui $\theta=\arctan7\approx81,9°$: le due rette formano un angolo quasi retto, ma non sono perpendicolari (per esserlo servirebbe $m_1m_2=-1$, mentre qui $m_1m_2=-\dfrac23$).
+~ \theta = \theta_2 - \theta_1 :: l'angolo fra le rette è la differenza degli angoli con l'asse $x$
+~ \tan\theta = \dfrac{\tan\theta_2 - \tan\theta_1}{1 + \tan\theta_1\tan\theta_2} :: tangente di una differenza
+~ \tan\theta = \evidb{\dfrac{m_2 - m_1}{1 + m_1 m_2}} :: al posto delle tangenti metto i coefficienti angolari
+
+>* **Angolo fra due rette:** $$\tan\theta = \left|\frac{m_2-m_1}{1+m_1m_2}\right|$$ Il valore assoluto serve a prendere l'angolo acuto fra le due rette, invece del suo supplementare ottuso.
+
+Esempio: $r: y = 2x + 1$ e $s: y = -\dfrac13 x + 4$. Con $m_1 = 2$ e $m_2 = -\dfrac13$: $$\tan\theta = \left|\frac{-\frac13-2}{1+2\cdot\left(-\frac13\right)}\right| = \left|\frac{-\frac73}{\frac13}\right| = 7$$ quindi $\theta = \arctan 7 \approx 81{,}9°$. Quasi retto, ma non retto.
 
 [[grafico:angoloRette]]
 
->! Il modulo va calcolato **sulla frazione intera**, dopo aver fatto tutti i calcoli, non separatamente su numeratore e denominatore: altrimenti si rischia di perdere il segno che indica se le rette sono perpendicolari.` },
+Nel grafico hai trovato i due casi speciali. Se $m_1 = m_2$ il numeratore vale zero e le rette sono **parallele**. Se $m_1 m_2 = -1$ è il denominatore a valere zero: la tangente non esiste, e l'angolo è di $90°$, le rette sono **perpendicolari**.
 
-    { id: 'duplicazione', titolo: 'Le formule di duplicazione', testo: R`Ponendo $\beta=\alpha$ nelle formule di addizione si ottengono le **formule di duplicazione**, che esprimono seno, coseno e tangente dell'angolo doppio.
+?? Che angolo formano le rette $y = 2x$ e $y = -\dfrac12 x + 3$?
+[x] $90°$
+[ ] non si può calcolare: il denominatore vale zero
+[ ] $0°$
+=> $m_1 m_2 = 2\cdot\left(-\frac12\right) = -1$: il denominatore si annulla, quindi la tangente di $\theta$ non esiste. Non vuol dire che l'angolo non c'è: l'unico angolo senza tangente fra $0°$ e $90°$ è proprio $90°$. $0°$ sarebbe il caso delle rette parallele, con $m_1 = m_2$.
 
->* $$\sin2\alpha = 2\sin\alpha\cos\alpha$$ $$\cos2\alpha = \cos^2\alpha-\sin^2\alpha = 2\cos^2\alpha-1 = 1-2\sin^2\alpha$$ $$\tan2\alpha = \frac{2\tan\alpha}{1-\tan^2\alpha}$$
+>! Il valore assoluto si prende sul risultato della frazione, non sui coefficienti angolari: con $m_1 = 2$ e $m_2 = -\frac13$ si sostituisce proprio $-\frac13$. Usando $+\frac13$ verrebbe $\tan\theta = 1$, cioè $45°$, invece di $\arctan 7$.` },
 
-Le tre forme di $\cos2\alpha$ sono la stessa formula riscritta con l'identità $\sin^2\alpha+\cos^2\alpha=1$: si sceglie quella più comoda a seconda di cosa si conosce (solo $\cos\alpha$, solo $\sin\alpha$, o entrambi).
+    { id: 'duplicazione', titolo: 'Le formule di duplicazione', testo: R`Che cosa succede al seno se raddoppi l'angolo? Raddoppia? No: $\sin 30° = \frac12$, ma $\sin 60° = \frac{\sqrt3}{2}$, che non è $1$. La risposta giusta viene dalle formule di addizione con due angoli uguali, $\beta = \alpha$:
 
-Esempio: se $\sin\alpha=\dfrac35$ e $\alpha$ è acuto, allora $\cos\alpha=\dfrac45$ (positivo, primo quadrante), e $$\sin2\alpha = 2\cdot\frac35\cdot\frac45=\frac{24}{25}, \qquad \cos2\alpha = 1-2\cdot\frac{9}{25}=\frac{7}{25}, \qquad \tan2\alpha=\frac{24/25}{7/25}=\frac{24}{7}.$$
+~ \sin2\alpha = \sin(\evid{\alpha + \alpha}) :: l'angolo doppio è una somma
+~ = \sin\alpha\cos\alpha + \cos\alpha\sin\alpha :: formula di addizione del seno
+~ = \evidb{2\sin\alpha\cos\alpha} :: i due termini sono uguali
 
-Il grafico mostra $y=\sin2x$ e $y=2\sin x\cos x$: la stessa curva, sovrapposta esattamente. La tratteggiata $y=2\sin x$ è invece l'errore tipico: raddoppiare l'angolo **non** raddoppia il seno.
+Lo stesso con il coseno, che si può poi riscrivere in tre modi grazie a $\sin^2\alpha + \cos^2\alpha = 1$:
 
-[[grafico:duplicazioneSeno]]
+~ \cos2\alpha = \cos\alpha\cos\alpha - \sin\alpha\sin\alpha :: formula di addizione del coseno con $\beta = \alpha$
+~ \cos2\alpha = \evidb{\cos^2\alpha - \sin^2\alpha} :: prima forma
+~ \cos2\alpha = \cos^2\alpha - (\evid{1 - \cos^2\alpha}) :: al posto di $\sin^2\alpha$ metto $1 - \cos^2\alpha$
+~ \cos2\alpha = \evidb{2\cos^2\alpha - 1} :: seconda forma
+~ \cos2\alpha = (\evid{1 - \sin^2\alpha}) - \sin^2\alpha :: dalla prima forma, al posto di $\cos^2\alpha$ metto $1 - \sin^2\alpha$
+~ \cos2\alpha = \evidb{1 - 2\sin^2\alpha} :: terza forma
 
->! $\sin2\alpha\ne2\sin\alpha$ e $\cos2\alpha\ne2\cos\alpha$: seno e coseno non sono funzioni lineari. Un altro errore frequente è confondere le tre forme equivalenti di $\cos2\alpha$ o usarne una senza controllare cosa è dato nel problema.` },
+>* **Duplicazione:** $$\sin2\alpha = 2\sin\alpha\cos\alpha$$ $$\begin{array}{rl}\cos2\alpha &= \cos^2\alpha-\sin^2\alpha \\ &= 2\cos^2\alpha-1 \\ &= 1-2\sin^2\alpha\end{array}$$ $$\tan2\alpha = \frac{2\tan\alpha}{1-\tan^2\alpha}$$ Delle tre forme di $\cos2\alpha$ scegli quella che usa il dato che hai: solo il coseno, solo il seno, o tutti e due.
 
-    { id: 'bisezione', titolo: 'Le formule di bisezione', testo: R`Risolvendo le formule di $\cos2\alpha$ rispetto a $\sin\alpha$ e $\cos\alpha$, e sostituendo $\alpha$ con $\dfrac\alpha2$, si ottengono le **formule di bisezione**.
+Esempio: $\sin\alpha = \dfrac35$ con $\alpha$ acuto. Allora $\cos\alpha = \dfrac45$ (primo quadrante), e $$\sin2\alpha = 2\cdot\frac35\cdot\frac45 = \frac{24}{25}$$ $$\cos2\alpha = 1 - 2\cdot\frac{9}{25} = \frac{7}{25}$$ $$\tan2\alpha = \frac{24/25}{7/25} = \frac{24}{7}$$
 
->* $$\sin\frac{\alpha}{2} = \pm\sqrt{\frac{1-\cos\alpha}{2}} \qquad\qquad \cos\frac{\alpha}{2} = \pm\sqrt{\frac{1+\cos\alpha}{2}}$$ Il segno **non** segue una regola fissa: si guarda in quale quadrante cade $\dfrac\alpha2$ e si sceglie il segno coerente con quel quadrante.
+?? Se $\sin\alpha = 0{,}6$ e $\alpha$ è acuto, quanto vale $\sin2\alpha$?
+[x] $0{,}96$
+[ ] $1{,}2$
+[ ] $0{,}48$
+=> $\cos\alpha = 0{,}8$, quindi $\sin2\alpha = 2\cdot 0{,}6\cdot 0{,}8 = 0{,}96$. $1{,}2$ è $2\sin\alpha$, l'errore di raddoppiare il seno: e infatti è più di $1$, impossibile per un seno. $0{,}48$ è $\sin\alpha\cos\alpha$ senza il $2$.
 
-Per la tangente esiste una forma senza radicali, che ha già il segno giusto incorporato:
+>! $\sin2\alpha \ne 2\sin\alpha$ e $\cos2\alpha \ne 2\cos\alpha$: il $2$ sta dentro, sull'angolo, e non si può portare fuori.` },
 
->* $$\tan\frac{\alpha}{2} = \pm\sqrt{\frac{1-\cos\alpha}{1+\cos\alpha}} = \frac{\sin\alpha}{1+\cos\alpha} = \frac{1-\cos\alpha}{\sin\alpha}$$
+    { id: 'bisezione', titolo: 'Le formule di bisezione', testo: R`Le formule di duplicazione vanno dall'angolo al suo doppio. Le formule di **bisezione** fanno il viaggio al contrario: dal coseno di un angolo al seno e al coseno della sua metà. Si ricavano dalla duplicazione del coseno.
 
-Esempio: calcolare $\cos22,5°$, cioè $\cos\dfrac{45°}{2}$. Con $\cos45°=\dfrac{\sqrt2}{2}$: $$\cos22,5° = \sqrt{\frac{1+\frac{\sqrt2}{2}}{2}} = \sqrt{\frac{2+\sqrt2}{4}} = \frac{\sqrt{2+\sqrt2}}{2}.$$ Il segno è positivo perché $22,5°$ è un angolo del primo quadrante.
+~ \cos2x = 1 - 2\sin^2 x :: una delle tre forme della duplicazione
+~ 2\sin^2 x = 1 - \cos2x :: isolo il termine con il seno
+~ \sin^2 x = \dfrac{1 - \cos2x}{2} :: divido per $2$
+~ \sin^2\dfrac{\alpha}{2} = \dfrac{1 - \cos\alpha}{\evid{2}} :: chiamo $\alpha$ l'angolo doppio: $x = \frac{\alpha}{2}$ e $2x = \alpha$
+~ \sin\dfrac{\alpha}{2} = \evidb{\pm\sqrt{\dfrac{1-\cos\alpha}{2}}} :: estraggo la radice, con i due segni
 
->! Dimenticarsi di scegliere il segno (o metterlo sempre positivo) è l'errore più comune: $\sin\dfrac\alpha2$, per esempio, è negativo se $\alpha$ è fra $360°$ e $720°$, perché allora $\dfrac\alpha2$ cade nel terzo o quarto quadrante. Il segno si decide guardando $\dfrac\alpha2$, non $\alpha$.` },
+Partendo da $\cos2x = 2\cos^2 x - 1$ viene allo stesso modo la formula del coseno.
 
-    { id: 'parametriche', titolo: 'Le formule parametriche', testo: R`Ponendo $t=\tan\dfrac\alpha2$ si scrivono $\sin\alpha$, $\cos\alpha$ e $\tan\alpha$ come funzioni razionali di $t$: sono le **formule parametriche**, utili perché trasformano un'equazione goniometrica in un'equazione algebrica in $t$.
+>* **Bisezione:** $$\sin\frac{\alpha}{2} = \pm\sqrt{\frac{1-\cos\alpha}{2}}$$ $$\cos\frac{\alpha}{2} = \pm\sqrt{\frac{1+\cos\alpha}{2}}$$ Il segno si sceglie guardando in quale quadrante cade $\dfrac{\alpha}{2}$.
 
->* $$\sin\alpha = \frac{2t}{1+t^2} \qquad \cos\alpha = \frac{1-t^2}{1+t^2} \qquad \tan\alpha = \frac{2t}{1-t^2} \qquad \text{con } t=\tan\frac{\alpha}{2}$$
+Per la tangente c'è la formula con la radice, e ci sono anche due forme senza radice, che hanno già il segno giusto:
 
-Si ricavano dalla duplicazione applicata all'angolo $\dfrac\alpha2$: $\sin\alpha=\sin\left(2\cdot\dfrac\alpha2\right)=2\sin\dfrac\alpha2\cos\dfrac\alpha2$, e dividendo e moltiplicando per $\cos\dfrac\alpha2$ tutto si riscrive in funzione di $t=\tan\dfrac\alpha2$.
+$$\tan\frac{\alpha}{2} = \pm\sqrt{\frac{1-\cos\alpha}{1+\cos\alpha}}$$ $$\tan\frac{\alpha}{2} = \frac{\sin\alpha}{1+\cos\alpha} = \frac{1-\cos\alpha}{\sin\alpha}$$
 
-Esempio: se $t=\tan\dfrac\alpha2=\dfrac12$, allora $$\sin\alpha = \frac{2\cdot\frac12}{1+\frac14} = \frac{1}{\frac54} = \frac45, \qquad \cos\alpha = \frac{1-\frac14}{1+\frac14} = \frac{\frac34}{\frac54} = \frac35.$$
+Esempio: $\cos22{,}5°$, cioè $\cos\dfrac{45°}{2}$. Con $\cos45° = \dfrac{\sqrt2}{2}$: $$\begin{array}{rl}\cos22{,}5° &= \displaystyle\sqrt{\frac{1+\frac{\sqrt2}{2}}{2}} = \sqrt{\frac{2+\sqrt2}{4}} \\ &= \displaystyle\frac{\sqrt{2+\sqrt2}}{2}\end{array}$$ Il segno è più perché $22{,}5°$ sta nel primo quadrante.
 
-Le formule parametriche hanno un limite: valgono solo se $\dfrac\alpha2$ non è un angolo retto, cioè se $\alpha\ne180°+k\cdot360°$, perché lì $\tan\dfrac\alpha2$ non esiste.
+?? Se $\alpha = 300°$, quanto vale $\sin\dfrac{\alpha}{2}$?
+[x] $\dfrac12$
+[ ] $-\dfrac12$
+[ ] $\dfrac{\sqrt3}{2}$
+=> $\sqrt{\frac{1-\cos300°}{2}} = \sqrt{\frac{1-\frac12}{2}} = \frac12$. Per il segno conta $\frac{\alpha}{2} = 150°$, nel secondo quadrante, dove il seno è positivo. Chi sceglie $-\frac12$ ha guardato $300°$, nel quarto quadrante: è l'errore tipico. $\frac{\sqrt3}{2}$ viene dall'usare $1 + \cos\alpha$, la formula del coseno.
 
->! Sostituendo $t=\tan\dfrac\alpha2$ in un'equazione si perde temporaneamente il valore $\alpha=180°$ (e i suoi multipli dispari): prima di usare le formule parametriche conviene controllare a parte se $180°$, più i giri, è soluzione.` },
+>! Il segno si decide guardando $\dfrac{\alpha}{2}$, non $\alpha$. E va deciso sempre: metterlo positivo per abitudine è l'errore più comune.` },
 
-    { id: 'prostaferesi-werner', titolo: 'Prostaferesi e formule di Werner', testo: R`Le formule di **Werner** trasformano un prodotto di seni o coseni in una somma; le formule di **prostaferesi** fanno il percorso inverso, da una somma (o differenza) a un prodotto. Si ricavano sommando o sottraendo le formule di addizione e sottrazione.
+    { id: 'parametriche', titolo: 'Le formule parametriche', testo: R`In un'equazione come $\sin x + \cos x = 1$ ci sono due funzioni diverse della stessa incognita, e non si sa come isolarla. Le **formule parametriche** scrivono seno, coseno e tangente usando un solo numero, $t = \tan\dfrac{\alpha}{2}$: l'equazione diventa un'equazione algebrica in $t$, che sai risolvere.
 
->* **Werner (prodotto → somma):** $$\sin\alpha\cos\beta = \frac12\big[\sin(\alpha+\beta)+\sin(\alpha-\beta)\big]$$ $$\cos\alpha\cos\beta = \frac12\big[\cos(\alpha-\beta)+\cos(\alpha+\beta)\big] \qquad \sin\alpha\sin\beta = \frac12\big[\cos(\alpha-\beta)-\cos(\alpha+\beta)\big]$$
+Ecco come si ottiene quella del seno:
 
->* **Prostaferesi (somma → prodotto):** $$\sin p+\sin q = 2\sin\frac{p+q}{2}\cos\frac{p-q}{2} \qquad\qquad \cos p+\cos q = 2\cos\frac{p+q}{2}\cos\frac{p-q}{2}$$
+~ \sin\alpha = 2\sin\dfrac{\alpha}{2}\cos\dfrac{\alpha}{2} :: duplicazione, con $\frac{\alpha}{2}$ come angolo di partenza
+~ = \dfrac{2\sin\frac{\alpha}{2}\cos\frac{\alpha}{2}}{\evid{\sin^2\frac{\alpha}{2} + \cos^2\frac{\alpha}{2}}} :: divido per $1$, scritto con la relazione fondamentale
+~ = \dfrac{2\tan\frac{\alpha}{2}}{\tan^2\frac{\alpha}{2} + 1} :: divido sopra e sotto per $\cos^2\frac{\alpha}{2}$
+~ = \evidb{\dfrac{2t}{1 + t^2}} :: chiamo $t$ la tangente di $\frac{\alpha}{2}$
 
-Un uso tipico: $\sin75°+\sin15°$ non si calcola sommando due valori con radicali diversi, ma con la prostaferesi diventa $2\sin45°\cos30° = 2\cdot\dfrac{\sqrt2}{2}\cdot\dfrac{\sqrt3}{2} = \dfrac{\sqrt6}{2}$, molto più semplice. Un caso particolare di Werner con $\alpha=\beta=x$ dà $\cos^2x=\dfrac{1+\cos2x}{2}$, la stessa formula vista al contrario nella sezione sulla duplicazione: utile per "abbassare il grado" nelle equazioni e negli integrali.
+Con $\cos\alpha = \cos^2\frac{\alpha}{2} - \sin^2\frac{\alpha}{2}$ e lo stesso trucco si ottiene la formula del coseno.
 
-[[grafico:cosQuadro]]
+>* **Formule parametriche**, con $t = \tan\dfrac{\alpha}{2}$: $$\sin\alpha = \frac{2t}{1+t^2} \qquad \cos\alpha = \frac{1-t^2}{1+t^2}$$ $$\tan\alpha = \frac{2t}{1-t^2}$$
 
-Prima dei logaritmi, la prostaferesi (dal greco, "addizione e sottrazione") era un metodo di calcolo reale: per moltiplicare due numeri grandi si cercavano i loro coseni su una tavola, si sommava, e si tornava indietro con la tavola inversa. Un prodotto costoso diventava un'addizione. Il metodo, sviluppato da Johannes Werner e usato nell'osservatorio di Tycho Brahe, restò lo standard finché Napier non pubblicò i logaritmi, nel 1614 (vedi l'aneddoto in fondo alla pagina).
+Esempio: se $t = \dfrac12$, allora $\sin\alpha = \dfrac{1}{1+\frac14} = \dfrac45$ e $\cos\alpha = \dfrac{1-\frac14}{1+\frac14} = \dfrac35$.
 
->! Prostaferesi e Werner si confondono facilmente perché sono l'una l'inversa dell'altra: Werner parte da un **prodotto** e arriva a una somma, la prostaferesi parte da una **somma** e arriva a un prodotto. Un modo per non sbagliare: guardare cosa c'è a sinistra dell'uguale nella formula che serve.` },
+Hanno un limite: $t = \tan\frac{\alpha}{2}$ deve esistere, quindi $\frac{\alpha}{2}$ non può essere $90°$ (più mezzi giri), cioè $\alpha \ne 180° + k\cdot360°$.
 
-    { id: 'angolo-aggiunto', titolo: "Il metodo dell'angolo aggiunto", testo: R`Una somma $a\sin x+b\cos x$, con $a$ e $b$ non entrambi nulli, si può sempre scrivere come un'unica sinusoide con un angolo "aggiunto" $\varphi$.
+?? Per quale angolo le formule parametriche **non** si possono usare?
+[x] $\alpha = 180°$
+[ ] $\alpha = 90°$
+[ ] $\alpha = 0°$
+=> Con $\alpha = 180°$ l'angolo metà è $90°$, e $\tan 90°$ non esiste. Con $\alpha = 90°$ è $\tan\alpha$ a non esistere, ma $t = \tan 45° = 1$ va benissimo, e infatti $\sin 90° = \frac{2}{1+1} = 1$. Con $\alpha = 0°$ si ha $t = 0$: nessun problema.
 
->* $$a\sin x+b\cos x = r\sin(x+\varphi), \qquad r=\sqrt{a^2+b^2}$$ dove $\varphi$ è l'angolo con $\cos\varphi=\dfrac{a}{r}$ e $\sin\varphi=\dfrac{b}{r}$ (se $a>0$, semplicemente $\varphi=\arctan\dfrac{b}{a}$).
+>! Se risolvi un'equazione con le parametriche, gli angoli $180° + k\cdot360°$ spariscono dal conto. Prima di cominciare, controlla a parte se sono soluzioni.` },
 
-Si dimostra sviluppando il secondo membro con la formula di addizione: $r\sin(x+\varphi)=r\cos\varphi\sin x+r\sin\varphi\cos x$, che coincide con $a\sin x+b\cos x$ proprio quando $r\cos\varphi=a$ e $r\sin\varphi=b$; elevando al quadrato e sommando si trova $r^2=a^2+b^2$.
+    { id: 'prostaferesi-werner', titolo: 'Prostaferesi e formule di Werner', testo: R`Le formule di **Werner** trasformano un prodotto di seni o coseni in una somma; quelle di **prostaferesi** fanno il viaggio inverso, da una somma a un prodotto. Nascono tutte e due sommando le formule di addizione e di sottrazione, che hanno termini in comune:
 
-Esempio: $3\sin x+4\cos x$. Qui $r=\sqrt{9+16}=5$ e $\varphi=\arctan\dfrac43\approx53,1°$ (l'angolo con coseno $\dfrac35$ e seno $\dfrac45$, entrambi positivi). Quindi $3\sin x+4\cos x=5\sin(x+53,1°)$: il massimo della funzione è $5$, non $3+4=7$.
+~ \sin(\alpha+\beta) = \sin\alpha\cos\beta + \evid{\cos\alpha\sin\beta} :: formula di addizione
+~ \sin(\alpha-\beta) = \sin\alpha\cos\beta - \evid{\cos\alpha\sin\beta} :: formula di sottrazione
+~ \begin{array}{rl} &\sin(\alpha+\beta) + \sin(\alpha-\beta) \\ &\quad {}= 2\sin\alpha\cos\beta \end{array} :: sommo membro a membro: i termini evidenziati si cancellano
+~ \begin{array}{rl} &\sin\alpha\cos\beta \\ &{}= \evidb{\tfrac12\big[\sin(\alpha+\beta) + \sin(\alpha-\beta)\big]} \end{array} :: divido per $2$ e scambio i membri: il prodotto è diventato una somma
 
-Il grafico sovrappone $y=a\sin x+b\cos x$ e $y=r\sin(x+\varphi)$ per i valori di $a$ e $b$ che scegli: coincidono sempre, quando $a>0$.
+Letta da destra a sinistra, con $p = \alpha + \beta$ e $q = \alpha - \beta$ (quindi $\alpha = \frac{p+q}{2}$ e $\beta = \frac{p-q}{2}$), la stessa uguaglianza trasforma la somma $\sin p + \sin q$ in un prodotto: è una formula di prostaferesi.
+
+>* **Werner** trasforma un prodotto in una somma, la **prostaferesi** una somma in un prodotto. Sono le stesse uguaglianze lette nei due versi.
+
+Le formule di Werner:
+
+$$\sin\alpha\cos\beta = \tfrac12\big[\sin(\alpha+\beta)+\sin(\alpha-\beta)\big]$$
+
+$$\cos\alpha\cos\beta = \tfrac12\big[\cos(\alpha-\beta)+\cos(\alpha+\beta)\big]$$
+
+$$\sin\alpha\sin\beta = \tfrac12\big[\cos(\alpha-\beta)-\cos(\alpha+\beta)\big]$$
+
+Le due formule di prostaferesi più usate:
+
+$$\sin p+\sin q = 2\sin\frac{p+q}{2}\cos\frac{p-q}{2}$$
+
+$$\cos p+\cos q = 2\cos\frac{p+q}{2}\cos\frac{p-q}{2}$$
+
+Un uso tipico: $\sin75° + \sin15°$ sembra una somma di due radicali scomodi, ma con la prostaferesi diventa $2\sin45°\cos30° = 2\cdot\dfrac{\sqrt2}{2}\cdot\dfrac{\sqrt3}{2} = \dfrac{\sqrt6}{2}$. E Werner con $\alpha = \beta = x$ dà $\cos^2 x = \dfrac{1+\cos2x}{2}$: un quadrato diventa un termine di primo grado, cosa utile nelle equazioni e, più avanti, negli integrali.
+
+?? Vuoi scrivere $2\cos3x\cos x$ come somma. Quale formula ti serve?
+[x] Werner
+[ ] prostaferesi
+[ ] duplicazione
+=> Hai un **prodotto** e vuoi una somma: è Werner. Viene $2\cos3x\cos x = \cos2x + \cos4x$. La prostaferesi fa il contrario, parte da una somma. La duplicazione servirebbe se gli angoli fossero uguali.
+
+>! Werner e prostaferesi si confondono perché sono una l'inversa dell'altra. Guarda che cosa hai in partenza: un **prodotto** vuole Werner, una **somma** vuole la prostaferesi.` },
+
+    { id: 'angolo-aggiunto', titolo: "Il metodo dell'angolo aggiunto", testo: R`Qual è il valore massimo di $y = 3\sin x + 4\cos x$? Verrebbe da dire $3 + 4 = 7$, ma seno e coseno non arrivano a $1$ nello stesso momento: quando uno è al massimo, l'altro vale zero. Guardalo nel grafico.
 
 [[grafico:angoloAggiunto]]
 
->* L'ampiezza $r=\sqrt{a^2+b^2}$ è anche il valore massimo che $a\sin x+b\cos x$ può assumere, e $-r$ il minimo: per questo il metodo serve nelle equazioni e disequazioni lineari in seno e coseno.
+La curva è ancora un'onda, solo più alta e spostata. Questo vale sempre: una somma $a\sin x + b\cos x$ si può scrivere come un'unica sinusoide $r\sin(x + \varphi)$. Per trovare $r$ e $\varphi$ si sviluppa la sinusoide con la formula di addizione e si confronta:
 
->! $\varphi=\arctan\dfrac ba$ è corretto solo se $a>0$: con $a<0$ la calcolatrice restituisce un angolo del quadrante sbagliato, e va corretto aggiungendo $180°$.` },
+~ \begin{array}{rl} r\sin(x+\varphi) &= r\sin x\cos\varphi \\ &\quad {}+ r\cos x\sin\varphi \end{array} :: formula di addizione del seno
+~ = (\evid{r\cos\varphi})\sin x + (\evid{r\sin\varphi})\cos x :: raccolgo $\sin x$ e $\cos x$
+~ r\cos\varphi = a \qquad r\sin\varphi = b :: perché sia uguale ad $a\sin x + b\cos x$
+~ r^2\cos^2\varphi + r^2\sin^2\varphi = a^2 + b^2 :: elevo al quadrato e sommo
+~ r = \evidb{\sqrt{a^2 + b^2}} :: la parte con $\varphi$ vale $r^2 \cdot 1$
 
-    { id: 'valori-esatti', titolo: 'Calcolare valori esatti con le formule', testo: R`Le formule di addizione, sottrazione, duplicazione e bisezione permettono di calcolare il valore esatto (con i radicali, non decimale) di molti angoli oltre ai classici $30°$, $45°$, $60°$: basta scrivere l'angolo come somma, differenza o metà di angoli noti.
+>* **Angolo aggiunto:** $$a\sin x + b\cos x = r\sin(x+\varphi)$$ con $r = \sqrt{a^2+b^2}$, $\cos\varphi = \dfrac{a}{r}$ e $\sin\varphi = \dfrac{b}{r}$. Il massimo della somma è $r$, il minimo $-r$.
 
-- $15° = 45°-30°$ (oppure $60°-45°$): formule di sottrazione.
-- $75° = 45°+30°$: formule di addizione.
-- $22,5° = \dfrac{45°}{2}$: formule di bisezione.
-- $105° = 60°+45°$, oppure $105°=\dfrac{210°}{2}$: entrambe le strade portano allo stesso risultato.
+Con $3\sin x + 4\cos x$: $r = \sqrt{9+16} = 5$, e $\varphi$ ha coseno $\frac35$ e seno $\frac45$, quindi $\varphi \approx 53{,}1°$. Allora $3\sin x + 4\cos x = 5\sin(x + 53{,}1°)$, e il massimo è $5$.
 
-Esempio: $\tan15° = \tan(45°-30°) = \dfrac{\tan45°-\tan30°}{1+\tan45°\tan30°} = \dfrac{1-\frac{\sqrt3}{3}}{1+\frac{\sqrt3}{3}}$. Moltiplicando numeratore e denominatore per $3$ si ottiene $\dfrac{3-\sqrt3}{3+\sqrt3}$, e razionalizzando (per $3-\sqrt3$) si arriva a $\tan15° = 2-\sqrt3$.
+?? Qual è il valore massimo di $5\sin x + 12\cos x$?
+[x] $13$
+[ ] $17$
+[ ] $12$
+=> $r = \sqrt{25 + 144} = \sqrt{169} = 13$. $17 = 5 + 12$ presuppone che seno e coseno valgano $1$ insieme, cosa impossibile. $12$ è il coefficiente più grande: la somma arriva più in alto, perché quando il coseno comincia a scendere il seno sta ancora salendo.
 
-Un controllo numerico è un'abitudine utile ogni volta che si manipolano radicali: $2-\sqrt3\approx0,268$, e infatti $\tan15°\approx0,268$. Se il valore decimale non torna, c'è un errore nei passaggi precedenti.
+>! Se $a > 0$ si può calcolare $\varphi = \arctan\dfrac{b}{a}$. Se $a < 0$ la calcolatrice dà un angolo del quadrante sbagliato, e bisogna aggiungere $180°$.` },
 
->* Non esiste un solo modo di scrivere un angolo come combinazione di angoli noti: conviene scegliere la scomposizione che porta ai calcoli più semplici, spesso quella con meno frazioni sotto radice.
+    { id: 'valori-esatti', titolo: 'Calcolare valori esatti con le formule', testo: R`Con le formule si calcola il valore esatto, con i radicali, di molti angoli oltre a $30°$, $45°$ e $60°$. Il trucco è scrivere l'angolo come somma, differenza o metà di angoli che conosci:
 
->! Uno stesso valore esatto può comparire in forme diverse ma equivalenti (per esempio $\dfrac{\sqrt6-\sqrt2}{4}$ e $\dfrac{\sqrt2(\sqrt3-1)}{4}$): prima di dire che due risposte sono diverse, conviene calcolarle numericamente e confrontarle.` },
+| angolo | come lo scrivi | formule |
+|---|---|---|
+| $15°$ | $45° - 30°$ | sottrazione |
+| $75°$ | $45° + 30°$ | addizione |
+| $22{,}5°$ | $\frac{45°}{2}$ | bisezione |
+| $105°$ | $60° + 45°$, oppure $\frac{210°}{2}$ | addizione o bisezione |
 
-    { id: 'identita-semplificazione', titolo: 'Identità goniometriche e semplificazione', testo: R`Un'**identità goniometrica** è un'uguaglianza vera per ogni valore ammissibile dell'angolo, non solo per alcuni (a differenza di un'equazione). Per verificarla si trasforma **un solo membro** — di solito il più complicato — fino a farlo coincidere con l'altro, usando le formule di duplicazione, bisezione o l'identità fondamentale $\sin^2\alpha+\cos^2\alpha=1$.
+Esempio: $\tan15°$.
 
-Esempio: verificare che $\dfrac{\sin2x}{1+\cos2x}=\tan x$ (per $\cos2x\ne-1$). Dal primo membro, sostituendo $\sin2x=2\sin x\cos x$ e $\cos2x=2\cos^2x-1$: $$\frac{2\sin x\cos x}{1+2\cos^2x-1} = \frac{2\sin x\cos x}{2\cos^2x} = \frac{\sin x}{\cos x} = \tan x. \ \checkmark$$
+~ \tan15° = \tan(\evid{45° - 30°}) :: $15°$ come differenza di angoli notevoli
+~ = \dfrac{\tan45° - \tan30°}{1 + \tan45°\tan30°} = \dfrac{1 - \frac{\sqrt3}{3}}{1 + \frac{\sqrt3}{3}} :: tangente di una differenza: nel denominatore il segno è più
+~ = \dfrac{3 - \sqrt3}{3 + \sqrt3} :: moltiplico sopra e sotto per $3$
+~ = \dfrac{(3 - \sqrt3)^2}{9 - 3} = \dfrac{12 - 6\sqrt3}{6} :: razionalizzo moltiplicando sopra e sotto per $3 - \sqrt3$
+~ = \evidb{2 - \sqrt3} :: divido per $6$
 
-Le stesse formule servono per **semplificare** un'espressione, cioè scriverla nella forma più corta possibile: $\sin^2x-\cos^2x$ diventa subito $-\cos2x$, invece di restare con due quadrati.
+Controllo con la calcolatrice: $2 - \sqrt3 \approx 0{,}268$, e $\tan15° \approx 0{,}268$. Quando lavori con i radicali, questo controllo scopre quasi tutti gli errori.
 
->* Per verificare un'identità **non si opera sui due membri come in un'equazione** (sommando o moltiplicando entrambi i lati): si trasforma un solo membro, con passaggi di equivalenza, fino a ottenere l'altro. Lavorare su entrambi rischia di "dimostrare" $0=0$ senza aver detto nulla sull'identità di partenza.
+?? Quanto vale $\cos75°$?
+[x] $\dfrac{\sqrt6 - \sqrt2}{4}$
+[ ] $\dfrac{\sqrt6 + \sqrt2}{4}$
+[ ] $\dfrac{\sqrt3 + \sqrt2}{2}$
+=> $\cos(45° + 30°) = \cos45°\cos30° - \sin45°\sin30° = \frac{\sqrt6}{4} - \frac{\sqrt2}{4}$. Con il più si ottiene $\cos15°$: è l'errore del segno nel coseno. $\frac{\sqrt3 + \sqrt2}{2}$ è $\cos30° + \cos45°$, e supera $1$.
 
->! Due espressioni possono sembrare diverse e valere lo stesso: prima di dichiarare falsa un'identità, conviene controllarla con un valore numerico dell'angolo (per esempio $x=30°$) invece di fidarsi solo dell'aspetto delle due scritture.` }
+>! Uno stesso valore può comparire in forme diverse: $\dfrac{\sqrt6 - \sqrt2}{4}$ e $\dfrac{\sqrt2(\sqrt3 - 1)}{4}$ sono lo stesso numero. Prima di dire che la tua risposta è diversa da quella del libro, confrontale con la calcolatrice.` },
+
+    { id: 'identita-semplificazione', titolo: 'Identità goniometriche e semplificazione', testo: R`Un'**identità goniometrica** è un'uguaglianza vera per **tutti** gli angoli per cui ha senso, non solo per alcuni come un'equazione. Per verificarla si prende un membro solo, di solito il più complicato, e lo si trasforma con le formule finché non diventa uguale all'altro.
+
+Esempio: verificare che $\dfrac{\sin2x}{1+\cos2x} = \tan x$ (dove i due membri esistono).
+
+~ \dfrac{\sin2x}{1+\cos2x} :: parto dal primo membro, il più complicato
+~ = \dfrac{\evid{2\sin x\cos x}}{1 + \evid{2\cos^2 x - 1}} :: duplicazione: per $\cos2x$ scelgo la forma con $2\cos^2 x - 1$, così l'$1$ si cancella
+~ = \dfrac{2\sin x\cos x}{2\cos^2 x} :: $1 - 1 = 0$
+~ = \dfrac{\sin x}{\cos x} = \evidb{\tan x} :: semplifico $2\cos x$: è il secondo membro
+
+>* Un'identità si verifica trasformando **un membro solo** fino a ottenere l'altro. Non si lavora sui due membri insieme come in un'equazione: si rischia di arrivare a $0 = 0$ senza aver dimostrato niente.
+
+Le stesse formule servono a **semplificare**, cioè a scrivere un'espressione nella forma più corta:
+
+~ \cos^4 x - \sin^4 x :: si semplifica così
+~ = (\cos^2 x - \sin^2 x)(\evid{\cos^2 x + \sin^2 x}) :: è una differenza di quadrati
+~ = (\cos^2 x - \sin^2 x)\cdot\evid{1} :: relazione fondamentale
+~ = \evidb{\cos2x} :: duplicazione del coseno
+
+?? A che cosa è uguale $\sin^2 x - \cos^2 x$?
+[x] $-\cos2x$
+[ ] $\cos2x$
+[ ] $1$
+=> $\cos2x = \cos^2 x - \sin^2 x$: qui l'ordine è rovesciato, quindi il risultato è $-\cos2x$. Scrivere $\cos2x$ vuol dire non aver guardato l'ordine dei termini. $1$ è $\sin^2 x + \cos^2 x$, con il più.
+
+>! Prima di dire che un'identità è falsa, provala con un numero, per esempio $x = 30°$: due scritture diverse possono valere lo stesso. Se invece con un numero i due membri vengono diversi, è falsa di sicuro.` }
   ],
 
   grafici: {
-    sommaAngoli: {
-      tipo: 'piano', x: [-1.7, 1.7], y: [-1.7, 2.1],
-      parametri: [
-        { nome: 'a', min: 0, max: 90, passo: 1, valore: 40, etichetta: 'α' },
-        { nome: 'b', min: 0, max: 90, passo: 1, valore: 35, etichetta: 'β' }
-      ],
-      elementi: [
-        { tipo: 'cerchio', centro: [0, 0], raggio: 1 },
-        { tipo: 'segmento', da: [0, 0], a: ['cos(a*pi/180)', 'sin(a*pi/180)'], etichetta: 'α', colore: 2 },
-        { tipo: 'segmento', da: [0, 0], a: ['cos(b*pi/180)', 'sin(b*pi/180)'], etichetta: 'β', colore: 3 },
-        { tipo: 'angolo', vertice: [0, 0], da: [1, 0], a: ['cos((a+b)*pi/180)', 'sin((a+b)*pi/180)'], etichetta: 'α+β', raggio: 0.5, colore: 4 },
-        { tipo: 'testo', p: [-1.65, 1.95], testo: 'sin(α+β) = {{sin((a+b)*pi/180)}}', ancora: 'start' },
-        { tipo: 'testo', p: [-1.65, 1.68], testo: 'sinα cosβ + cosα sinβ = {{sin(a*pi/180)*cos(b*pi/180)+cos(a*pi/180)*sin(b*pi/180)}}', ancora: 'start' }
-      ],
-      didascalia: 'Trascina α e β: i due numeri restano sempre uguali, qualunque angolo scegli. È la verifica numerica della formula di addizione del seno.'
-    },
     angoloRette: {
       tipo: 'piano', x: [-4, 4], y: [-4, 4],
       parametri: [
@@ -163,42 +281,28 @@ Le stesse formule servono per **semplificare** un'espressione, cioè scriverla n
       elementi: [
         { tipo: 'retta', m: 'm1', q: 0, etichetta: 'r', colore: 2 },
         { tipo: 'retta', m: 'm2', q: 0, etichetta: 's', colore: 3 },
-        { tipo: 'angolo', vertice: [0, 0], da: [1, 'm1'], a: [1, 'm2'], etichetta: 'θ', raggio: 1, colore: 4 },
-        { tipo: 'testo', p: [-3.8, 3.6], testo: 'tan θ = {{abs((m2-m1)/(1+m1*m2))}}', ancora: 'start' }
+        { tipo: 'testo', p: [-3.8, 3.6], testo: 'm₁ · m₂ = {{m1*m2}}', ancora: 'start' },
+        { tipo: 'testo', p: [-3.8, 3.1], testo: 'θ = {{atan(abs((m2-m1)/(1+m1*m2)))*180/pi}}°', ancora: 'start' }
       ],
-      didascalia: 'Trascina m₁ e m₂: l\'ampiezza dell\'angolo fra le due rette dipende solo dai coefficienti angolari.'
-    },
-    duplicazioneSeno: {
-      tipo: 'piano', x: [-6.3, 6.3], y: [-2.3, 2.3],
-      funzioni: [
-        { f: 'sin(2x)', etichetta: 'y = sin 2x', colore: 1 },
-        { f: '2*sin(x)*cos(x)', etichetta: 'y = 2 sin x cos x', colore: 3 },
-        { f: '2*sin(x)', etichetta: 'y = 2 sin x (errore)', colore: 4, tratteggio: true }
-      ],
-      didascalia: 'Le prime due curve coincidono sempre: sin 2x e 2 sin x cos x sono la stessa funzione. La tratteggiata è l\'errore tipico di raddoppiare solo il seno.'
+      didascalia: 'Lascia m₁ = 2 e muovi m₂ finché le rette non diventano perpendicolari (θ = 90°): quanto vale m₁ · m₂? Riprova con un altro m₁. Poi cerca quando θ = 0°.'
     },
     angoloAggiunto: {
-      tipo: 'piano', x: [-6.3, 6.3], y: [-6, 6],
+      tipo: 'piano', x: [-6.3, 6.3], y: [-7.5, 8], passo: [1, 1],
       parametri: [
-        { nome: 'a', min: -3, max: 3, passo: 0.1, valore: 3, etichetta: 'a' },
-        { nome: 'b', min: -4, max: 4, passo: 0.1, valore: 4, etichetta: 'b' }
+        { nome: 'a', min: 0, max: 4, passo: 0.1, valore: 3, etichetta: 'a' },
+        { nome: 'b', min: 0, max: 4, passo: 0.1, valore: 4, etichetta: 'b' }
       ],
       funzioni: [
-        { f: 'a*sin(x) + b*cos(x)', etichetta: 'y = a sin x + b cos x', colore: 1 },
-        { f: 'sqrt(a^2+b^2)*sin(x+atan(b/a))', etichetta: 'y = r sin(x + φ)', colore: 3, tratteggio: true }
+        { f: 'a*sin(x) + b*cos(x)', etichetta: 'y = a sin x + b cos x', colore: 1 }
       ],
       elementi: [
-        { tipo: 'testo', p: [-6.1, 5.4], testo: 'r = {{sqrt(a^2+b^2)}}', ancora: 'start' }
+        { tipo: 'orizzontale', y: 'sqrt(a^2+b^2)', etichetta: 'r', tratteggio: true, colore: 3 },
+        { tipo: 'orizzontale', y: '-sqrt(a^2+b^2)', etichetta: '−r', tratteggio: true, colore: 3 },
+        { tipo: 'orizzontale', y: 'a+b', etichetta: 'a + b', tratteggio: true, colore: 2 },
+        { tipo: 'testo', p: [-6.1, -6.2], testo: 'a + b = {{a+b}}', ancora: 'start' },
+        { tipo: 'testo', p: [-6.1, -7.1], testo: 'r = √(a² + b²) = {{sqrt(a^2+b^2)}}', ancora: 'start' }
       ],
-      didascalia: 'Con a > 0 le due curve coincidono sempre: a sin x + b cos x è una sinusoide di ampiezza r = √(a² + b²).'
-    },
-    cosQuadro: {
-      tipo: 'piano', x: [-6.3, 6.3], y: [-0.3, 1.3],
-      funzioni: [
-        { f: 'cos(x)^2', etichetta: 'y = cos²x', colore: 1 },
-        { f: '(1+cos(2x))/2', etichetta: 'y = (1 + cos 2x)/2', colore: 3, tratteggio: true }
-      ],
-      didascalia: 'cos²x e (1 + cos 2x)/2 sono la stessa funzione: la formula di duplicazione del coseno riscritta per isolare cos²x.'
+      didascalia: 'Muovi a e b. Le creste della curva toccano sempre la retta verde-acqua y = r = √(a² + b²), e non superano mai quella arancio y = a + b. Quando le due rette coincidono?'
     }
   },
 
@@ -207,8 +311,8 @@ Le stesse formule servono per **semplificare** un'espressione, cioè scriverla n
       R`$15°=45°-30°$: uso la formula di sottrazione del coseno, $\cos(\alpha-\beta)=\cos\alpha\cos\beta+\sin\alpha\sin\beta$.`,
       R`Sostituisco $\alpha=45°$, $\beta=30°$: $\cos15° = \cos45°\cos30°+\sin45°\sin30° = \dfrac{\sqrt2}{2}\cdot\dfrac{\sqrt3}{2}+\dfrac{\sqrt2}{2}\cdot\dfrac12$.`,
       R`Sommo le frazioni: $\cos15° = \dfrac{\sqrt6}{4}+\dfrac{\sqrt2}{4} = \dfrac{\sqrt6+\sqrt2}{4}$.`,
-      R`Controllo numerico: $\dfrac{\sqrt6+\sqrt2}{4}\approx\dfrac{2,449+1,414}{4}\approx0,966$, e infatti $\cos15°\approx0,966$. ✓`
-    ], risultato: R`$\cos15° = \dfrac{\sqrt6+\sqrt2}{4} \approx 0,966$` },
+      R`Controllo numerico: $\dfrac{\sqrt6+\sqrt2}{4}\approx\dfrac{2{,}449+1{,}414}{4}\approx0{,}966$, e infatti $\cos15°\approx0{,}966$. ✓`
+    ], risultato: R`$\cos15° = \dfrac{\sqrt6+\sqrt2}{4} \approx 0{,}966$` },
 
     { titolo: 'Addizione con due triangoli rettangoli', problema: R`Sapendo che $\sin\alpha=\dfrac{5}{13}$ con $\alpha$ acuto e $\cos\beta=\dfrac{3}{5}$ con $\beta$ acuto, calcola $\sin(\alpha+\beta)$.`, passi: [
       R`Con $\alpha$ acuto e $\sin\alpha=\dfrac{5}{13}$, dalla terna pitagorica $5$-$12$-$13$: $\cos\alpha=\dfrac{12}{13}$ (positivo, primo quadrante).`,
@@ -221,15 +325,15 @@ Le stesse formule servono per **semplificare** un'espressione, cioè scriverla n
       R`Nel secondo quadrante il seno è positivo: $\sin\alpha=\sqrt{1-\cos^2\alpha}=\sqrt{1-\dfrac19}=\sqrt{\dfrac89}=\dfrac{2\sqrt2}{3}$.`,
       R`$\sin2\alpha = 2\sin\alpha\cos\alpha = 2\cdot\dfrac{2\sqrt2}{3}\cdot\left(-\dfrac13\right) = -\dfrac{4\sqrt2}{9}$.`,
       R`$\cos2\alpha = 2\cos^2\alpha-1 = 2\cdot\dfrac19-1 = \dfrac29-1=-\dfrac79$.`,
-      R`Controllo: se $\alpha$ è fra $90°$ e $180°$, allora $2\alpha$ è fra $180°$ e $360°$, dove il seno può essere negativo: coerente con $\sin2\alpha<0$.`
+      R`Controllo: se $\alpha$ è fra $90°$ e $180°$, allora $2\alpha$ è fra $180°$ e $360°$, dove il seno è negativo: coerente con $\sin2\alpha<0$.`
     ], risultato: R`$\sin2\alpha=-\dfrac{4\sqrt2}{9}, \quad \cos2\alpha=-\dfrac{7}{9}$` },
 
     { titolo: 'Bisezione con scelta del segno', problema: R`Calcola $\sin15°$ con le formule di bisezione, sapendo che $15°=\dfrac{30°}{2}$.`, passi: [
       R`Uso $\sin\dfrac\alpha2=\pm\sqrt{\dfrac{1-\cos\alpha}{2}}$ con $\alpha=30°$, dove $\cos30°=\dfrac{\sqrt3}{2}$.`,
       R`$\sin15° = \sqrt{\dfrac{1-\frac{\sqrt3}{2}}{2}} = \sqrt{\dfrac{2-\sqrt3}{4}} = \dfrac{\sqrt{2-\sqrt3}}{2}$.`,
       R`Il segno è positivo perché $15°$ è un angolo del primo quadrante.`,
-      R`Controllo numerico: $\sqrt{2-\sqrt3}\approx\sqrt{0,268}\approx0,518$, quindi $\sin15°\approx0,259$: coincide con $\dfrac{\sqrt6-\sqrt2}{4}\approx0,259$, lo stesso valore scritto in un altro modo.`
-    ], risultato: R`$\sin15° = \dfrac{\sqrt{2-\sqrt3}}{2} \approx 0,259$` },
+      R`Controllo numerico: $\sqrt{2-\sqrt3}\approx\sqrt{0{,}268}\approx0{,}518$, quindi $\sin15°\approx0{,}259$: coincide con $\dfrac{\sqrt6-\sqrt2}{4}\approx0{,}259$, lo stesso valore scritto in un altro modo.`
+    ], risultato: R`$\sin15° = \dfrac{\sqrt{2-\sqrt3}}{2} \approx 0{,}259$` },
 
     { titolo: "Il metodo dell'angolo aggiunto", problema: R`Scrivi $y=\sin x-\sqrt3\cos x$ nella forma $r\sin(x+\varphi)$ e trova il valore massimo di $y$.`, passi: [
       R`Qui $a=1$ e $b=-\sqrt3$, quindi $r=\sqrt{a^2+b^2}=\sqrt{1+3}=2$.`,
@@ -252,15 +356,15 @@ Le stesse formule servono per **semplificare** un'espressione, cioè scriverla n
     { nome: 'Addizione della tangente', formula: R`\tan(\alpha+\beta) = \frac{\tan\alpha+\tan\beta}{1-\tan\alpha\tan\beta}`, nota: R`Per la sottrazione il segno del denominatore si inverte: $\tan(\alpha-\beta)=\dfrac{\tan\alpha-\tan\beta}{1+\tan\alpha\tan\beta}$.` },
     { nome: 'Angolo fra due rette', formula: R`\tan\theta = \left|\frac{m_2-m_1}{1+m_1m_2}\right|`, nota: R`$1+m_1m_2=0$ significa rette perpendicolari; $m_1=m_2$ significa rette parallele.` },
     { nome: 'Duplicazione del seno', formula: R`\sin2\alpha = 2\sin\alpha\cos\alpha` },
-    { nome: 'Duplicazione del coseno', formula: R`\cos2\alpha = \cos^2\alpha-\sin^2\alpha = 2\cos^2\alpha-1 = 1-2\sin^2\alpha`, nota: R`Tre forme equivalenti: si sceglie quella comoda a seconda del dato disponibile.` },
-    { nome: 'Duplicazione della tangente', formula: R`\tan2\alpha = \frac{2\tan\alpha}{1-\tan^2\alpha}`, nota: R`Non definita quando $\tan\alpha=\pm1$, cioè quando $\alpha=45°+k\cdot90°$.` },
+    { nome: 'Duplicazione del coseno', formula: R`\begin{array}{rl} \cos2\alpha &= \cos^2\alpha-\sin^2\alpha \\ &= 2\cos^2\alpha-1 \\ &= 1-2\sin^2\alpha \end{array}`, nota: R`Tre forme equivalenti: si sceglie quella comoda a seconda del dato disponibile.` },
+    { nome: 'Duplicazione della tangente', formula: R`\tan2\alpha = \frac{2\tan\alpha}{1-\tan^2\alpha}`, nota: R`Serve che $\tan\alpha$ esista ($\alpha\ne90°+k\cdot180°$) e che $\tan\alpha\ne\pm1$, cioè $\alpha\ne45°+k\cdot90°$.` },
     { nome: 'Bisezione del seno', formula: R`\sin\frac{\alpha}{2} = \pm\sqrt{\frac{1-\cos\alpha}{2}}`, nota: R`Il segno si sceglie guardando in quale quadrante cade $\dfrac\alpha2$.` },
     { nome: 'Bisezione del coseno', formula: R`\cos\frac{\alpha}{2} = \pm\sqrt{\frac{1+\cos\alpha}{2}}`, nota: R`Il segno si sceglie guardando in quale quadrante cade $\dfrac\alpha2$.` },
-    { nome: 'Bisezione della tangente', formula: R`\tan\frac{\alpha}{2} = \pm\sqrt{\frac{1-\cos\alpha}{1+\cos\alpha}} = \frac{\sin\alpha}{1+\cos\alpha} = \frac{1-\cos\alpha}{\sin\alpha}`, nota: R`Le ultime due forme hanno già il segno corretto incorporato.` },
-    { nome: 'Formule parametriche', formula: R`\sin\alpha = \frac{2t}{1+t^2}, \qquad \cos\alpha = \frac{1-t^2}{1+t^2}, \qquad \tan\alpha = \frac{2t}{1-t^2}`, nota: R`Con $t=\tan\dfrac\alpha2$. Non valgono per $\alpha=180°+k\cdot360°$.` },
+    { nome: 'Bisezione della tangente', formula: R`\begin{array}{rl} \tan\dfrac{\alpha}{2} &= \pm\sqrt{\dfrac{1-\cos\alpha}{1+\cos\alpha}} \\[1.2em] &= \dfrac{\sin\alpha}{1+\cos\alpha} = \dfrac{1-\cos\alpha}{\sin\alpha} \end{array}`, nota: R`Le ultime due forme hanno già il segno corretto incorporato.` },
+    { nome: 'Formule parametriche', formula: R`\begin{array}{c} \sin\alpha = \dfrac{2t}{1+t^2} \qquad \cos\alpha = \dfrac{1-t^2}{1+t^2} \\[1.2em] \tan\alpha = \dfrac{2t}{1-t^2} \end{array}`, nota: R`Con $t=\tan\dfrac\alpha2$. Non valgono per $\alpha=180°+k\cdot360°$.` },
     { nome: 'Prostaferesi (somma di seni)', formula: R`\sin p+\sin q = 2\sin\frac{p+q}{2}\cos\frac{p-q}{2}`, nota: R`Trasforma una somma in un prodotto; esistono formule analoghe per $\sin p-\sin q$, $\cos p+\cos q$, $\cos p-\cos q$.` },
     { nome: 'Werner (prodotto seno-coseno)', formula: R`\sin\alpha\cos\beta = \frac12\left[\sin(\alpha+\beta)+\sin(\alpha-\beta)\right]`, nota: R`Trasforma un prodotto in una somma; esistono formule analoghe per $\cos\alpha\cos\beta$ e $\sin\alpha\sin\beta$.` },
-    { nome: 'Angolo aggiunto', formula: R`a\sin x+b\cos x = r\sin(x+\varphi), \qquad r=\sqrt{a^2+b^2}`, nota: R`$\varphi$ soddisfa $\cos\varphi=\dfrac{a}{r}$ e $\sin\varphi=\dfrac{b}{r}$; se $a>0$, $\varphi=\arctan\dfrac{b}{a}$.` }
+    { nome: 'Angolo aggiunto', formula: R`\begin{array}{c} a\sin x+b\cos x = r\sin(x+\varphi) \\ r=\sqrt{a^2+b^2} \end{array}`, nota: R`$\varphi$ soddisfa $\cos\varphi=\dfrac{a}{r}$ e $\sin\varphi=\dfrac{b}{r}$; se $a>0$, $\varphi=\arctan\dfrac{b}{a}$.` }
   ],
 
   flashcards: [
@@ -291,23 +395,23 @@ Le stesse formule servono per **semplificare** un'espressione, cioè scriverla n
   ],
 
   esercizi: [
-    { id: 'es-01', difficolta: 1, testo: R`Calcola il valore di $\sin105°$ usando le formule di addizione (scrivi $105°=60°+45°$).`, suggerimenti: [R`Scrivi $105°$ come somma di due angoli noti.`, R`Applica la formula di addizione del seno.`, R`$\sin60°=\dfrac{\sqrt3}{2}$, $\cos60°=\dfrac12$, $\sin45°=\cos45°=\dfrac{\sqrt2}{2}$.`], risposta: { tipo: 'numero', valore: 0.9659, tolleranza: 0.001 }, soluzione: [R`$105°=60°+45°$.`, R`$\sin105° = \sin60°\cos45°+\cos60°\sin45° = \dfrac{\sqrt3}{2}\cdot\dfrac{\sqrt2}{2}+\dfrac12\cdot\dfrac{\sqrt2}{2}$.`, R`$=\dfrac{\sqrt6}{4}+\dfrac{\sqrt2}{4}=\dfrac{\sqrt6+\sqrt2}{4}\approx0,966$.`] },
-    { id: 'es-02', difficolta: 1, testo: R`Sapendo che $\cos\alpha=\dfrac45$, calcola $\cos2\alpha$.`, suggerimenti: [R`$\cos2\alpha$ ha tre forme equivalenti: scegli quella che usa solo $\cos\alpha$.`, R`$\cos2\alpha = 2\cos^2\alpha-1$.`], risposta: { tipo: 'numero', valore: 0.28, tolleranza: 0.001 }, soluzione: [R`$\cos\alpha=\dfrac45$, quindi $\cos^2\alpha=\dfrac{16}{25}$.`, R`$\cos2\alpha = 2\cdot\dfrac{16}{25}-1=\dfrac{32}{25}-1=\dfrac{7}{25}=0,28$.`] },
-    { id: 'es-03', difficolta: 1, testo: R`Calcola $\tan22,5°$ con le formule di bisezione, sapendo che $22,5°=\dfrac{45°}{2}$.`, suggerimenti: [R`$22,5°$ è la metà di un angolo noto.`, R`Usa la forma senza radicali: $\tan\dfrac\alpha2 = \dfrac{\sin\alpha}{1+\cos\alpha}$, con $\alpha=45°$.`, R`$\cos45°=\sin45°=\dfrac{\sqrt2}{2}$.`], risposta: { tipo: 'numero', valore: 0.4142, tolleranza: 0.001 }, soluzione: [R`$22,5°=\dfrac{45°}{2}$, con $\cos45°=\sin45°=\dfrac{\sqrt2}{2}$.`, R`$\tan22,5° = \dfrac{\sin45°}{1+\cos45°} = \dfrac{\frac{\sqrt2}{2}}{1+\frac{\sqrt2}{2}} = \dfrac{\sqrt2}{2+\sqrt2}$.`, R`Razionalizzando: $\dfrac{\sqrt2(2-\sqrt2)}{(2+\sqrt2)(2-\sqrt2)} = \dfrac{2\sqrt2-2}{2} = \sqrt2-1\approx0,414$.`] },
+    { id: 'es-01', difficolta: 1, testo: R`Calcola il valore di $\sin105°$ usando le formule di addizione (scrivi $105°=60°+45°$).`, suggerimenti: [R`Scrivi $105°$ come somma di due angoli noti.`, R`Applica la formula di addizione del seno.`, R`$\sin60°=\dfrac{\sqrt3}{2}$, $\cos60°=\dfrac12$, $\sin45°=\cos45°=\dfrac{\sqrt2}{2}$.`], risposta: { tipo: 'numero', valore: 0.9659, tolleranza: 0.005 }, soluzione: [R`$105°=60°+45°$.`, R`$\sin105° = \sin60°\cos45°+\cos60°\sin45° = \dfrac{\sqrt3}{2}\cdot\dfrac{\sqrt2}{2}+\dfrac12\cdot\dfrac{\sqrt2}{2}$.`, R`$=\dfrac{\sqrt6}{4}+\dfrac{\sqrt2}{4}=\dfrac{\sqrt6+\sqrt2}{4}\approx0{,}966$.`] },
+    { id: 'es-02', difficolta: 1, testo: R`Sapendo che $\cos\alpha=\dfrac45$, calcola $\cos2\alpha$.`, suggerimenti: [R`$\cos2\alpha$ ha tre forme equivalenti: scegli quella che usa solo $\cos\alpha$.`, R`$\cos2\alpha = 2\cos^2\alpha-1$.`], risposta: { tipo: 'numero', valore: 0.28, tolleranza: 0.001 }, soluzione: [R`$\cos\alpha=\dfrac45$, quindi $\cos^2\alpha=\dfrac{16}{25}$.`, R`$\cos2\alpha = 2\cdot\dfrac{16}{25}-1=\dfrac{32}{25}-1=\dfrac{7}{25}=0{,}28$.`] },
+    { id: 'es-03', difficolta: 1, testo: R`Calcola $\tan22{,}5°$ con le formule di bisezione, sapendo che $22{,}5°=\dfrac{45°}{2}$.`, suggerimenti: [R`$22{,}5°$ è la metà di un angolo noto.`, R`Usa la forma senza radicali: $\tan\dfrac\alpha2 = \dfrac{\sin\alpha}{1+\cos\alpha}$, con $\alpha=45°$.`, R`$\cos45°=\sin45°=\dfrac{\sqrt2}{2}$.`], risposta: { tipo: 'numero', valore: 0.4142, tolleranza: 0.005 }, soluzione: [R`$22{,}5°=\dfrac{45°}{2}$, con $\cos45°=\sin45°=\dfrac{\sqrt2}{2}$.`, R`$\tan22{,}5° = \dfrac{\sin45°}{1+\cos45°} = \dfrac{\frac{\sqrt2}{2}}{1+\frac{\sqrt2}{2}} = \dfrac{\sqrt2}{2+\sqrt2}$.`, R`Razionalizzando: $\dfrac{\sqrt2(2-\sqrt2)}{(2+\sqrt2)(2-\sqrt2)} = \dfrac{2\sqrt2-2}{2} = \sqrt2-1\approx0{,}414$.`] },
     { id: 'es-04', difficolta: 2, testo: R`Trova l'ampiezza dell'angolo (in gradi) fra le rette $y=3x-2$ e $y=-2x+5$.`, suggerimenti: [R`Il coefficiente angolare di una retta è la tangente dell'angolo che forma con l'asse $x$.`, R`Applica la formula dell'angolo fra due rette con $m_1=3$ e $m_2=-2$.`], risposta: { tipo: 'numero', valore: 45, tolleranza: 0.5 }, soluzione: [R`$m_1=3$, $m_2=-2$.`, R`$\tan\theta = \left|\dfrac{-2-3}{1+3\cdot(-2)}\right| = \left|\dfrac{-5}{-5}\right| = 1$.`, R`$\theta = \arctan1 = 45°$.`] },
-    { id: 'es-05', difficolta: 2, testo: R`Sapendo che $\tan\alpha=2$, calcola $\tan2\alpha$.`, suggerimenti: [R`Usa direttamente la formula di duplicazione della tangente.`, R`$\tan2\alpha = \dfrac{2\tan\alpha}{1-\tan^2\alpha}$, con $\tan\alpha=2$.`], risposta: { tipo: 'numero', valore: -1.3333, tolleranza: 0.001 }, soluzione: [R`$\tan2\alpha = \dfrac{2\cdot2}{1-4}$.`, R`$=\dfrac{4}{-3}=-\dfrac43\approx-1,333$.`] },
-    { id: 'es-06', difficolta: 2, testo: R`Scrivi $y=\sin x+\cos x$ nella forma $r\sin(x+\varphi)$ e trova il valore massimo di $y$.`, suggerimenti: [R`Identifica $a$ e $b$ nella scrittura $a\sin x+b\cos x$.`, R`Calcola $r=\sqrt{a^2+b^2}$: è anche il valore massimo della funzione.`], risposta: { tipo: 'numero', valore: 1.4142, tolleranza: 0.001 }, soluzione: [R`$a=1$, $b=1$: $r=\sqrt{1^2+1^2}=\sqrt2$.`, R`$\varphi=\arctan\dfrac11=45°$, quindi $y=\sqrt2\sin(x+45°)$.`, R`Il massimo è $r=\sqrt2\approx1,414$.`] },
+    { id: 'es-05', difficolta: 2, testo: R`Sapendo che $\tan\alpha=2$, calcola $\tan2\alpha$.`, suggerimenti: [R`Usa direttamente la formula di duplicazione della tangente.`, R`$\tan2\alpha = \dfrac{2\tan\alpha}{1-\tan^2\alpha}$, con $\tan\alpha=2$.`], risposta: { tipo: 'numero', valore: -1.3333, tolleranza: 0.005 }, soluzione: [R`$\tan2\alpha = \dfrac{2\cdot2}{1-4}$.`, R`$=\dfrac{4}{-3}=-\dfrac43\approx-1{,}333$.`] },
+    { id: 'es-06', difficolta: 2, testo: R`Scrivi $y=\sin x+\cos x$ nella forma $r\sin(x+\varphi)$ e trova il valore massimo di $y$.`, suggerimenti: [R`Identifica $a$ e $b$ nella scrittura $a\sin x+b\cos x$.`, R`Calcola $r=\sqrt{a^2+b^2}$: è anche il valore massimo della funzione.`], risposta: { tipo: 'numero', valore: 1.4142, tolleranza: 0.005 }, soluzione: [R`$a=1$, $b=1$: $r=\sqrt{1^2+1^2}=\sqrt2$.`, R`$\varphi=\arctan\dfrac11=45°$, quindi $y=\sqrt2\sin(x+45°)$.`, R`Il massimo è $r=\sqrt2\approx1{,}414$.`] },
     { id: 'es-07', difficolta: 2, testo: R`Semplifica l'espressione $\dfrac{\sin2x}{2\sin x}$ (per $\sin x\ne0$).`, suggerimenti: [R`Scrivi $\sin2x$ con la formula di duplicazione.`, R`Dopo aver sostituito, semplifica il fattore comune $2\sin x$ (lecito perché $\sin x\ne0$).`], risposta: { tipo: 'testo', accettate: ['cosx', 'cos(x)'] }, soluzione: [R`$\sin2x = 2\sin x\cos x$.`, R`$\dfrac{2\sin x\cos x}{2\sin x} = \cos x$.`] },
-    { id: 'es-08', difficolta: 2, testo: R`Usa le formule parametriche per calcolare $\sin\alpha$, sapendo che $\tan\dfrac\alpha2=\dfrac13$.`, suggerimenti: [R`Le formule parametriche esprimono $\sin\alpha$ in funzione di $t=\tan\dfrac\alpha2$.`, R`$\sin\alpha = \dfrac{2t}{1+t^2}$: sostituisci $t=\dfrac13$.`], risposta: { tipo: 'numero', valore: 0.6, tolleranza: 0.001 }, soluzione: [R`$t=\tan\dfrac\alpha2=\dfrac13$.`, R`$\sin\alpha = \dfrac{2t}{1+t^2} = \dfrac{2/3}{1+1/9} = \dfrac{2/3}{10/9} = \dfrac23\cdot\dfrac{9}{10}=\dfrac{18}{30}=0,6$.`] },
-    { id: 'es-09', difficolta: 2, testo: R`Verifica, calcolando entrambi i membri, che $\dfrac{\sin60°}{1+\cos60°}=\tan30°$.`, suggerimenti: [R`Calcola separatamente il primo membro (con $\sin60°$ e $\cos60°$) e il secondo ($\tan30°$).`, R`Se coincidono, la formula di bisezione della tangente è verificata in questo caso.`], risposta: { tipo: 'numero', valore: 0.5774, tolleranza: 0.001 }, soluzione: [R`Primo membro: $\dfrac{\sin60°}{1+\cos60°} = \dfrac{\frac{\sqrt3}{2}}{1+\frac12} = \dfrac{\frac{\sqrt3}{2}}{\frac32} = \dfrac{\sqrt3}{3}$.`, R`Secondo membro: $\tan30° = \dfrac{\sqrt3}{3}$.`, R`I due membri coincidono ($\approx0,577$): la formula di bisezione della tangente è verificata in questo caso.`] },
+    { id: 'es-08', difficolta: 2, testo: R`Usa le formule parametriche per calcolare $\sin\alpha$, sapendo che $\tan\dfrac\alpha2=\dfrac13$.`, suggerimenti: [R`Le formule parametriche esprimono $\sin\alpha$ in funzione di $t=\tan\dfrac\alpha2$.`, R`$\sin\alpha = \dfrac{2t}{1+t^2}$: sostituisci $t=\dfrac13$.`], risposta: { tipo: 'numero', valore: 0.6, tolleranza: 0.001 }, soluzione: [R`$t=\tan\dfrac\alpha2=\dfrac13$.`, R`$\sin\alpha = \dfrac{2t}{1+t^2} = \dfrac{2/3}{1+1/9} = \dfrac{2/3}{10/9} = \dfrac23\cdot\dfrac{9}{10}=\dfrac{18}{30}=0{,}6$.`] },
+    { id: 'es-09', difficolta: 2, testo: R`Verifica, calcolando entrambi i membri, che $\dfrac{\sin60°}{1+\cos60°}=\tan30°$.`, suggerimenti: [R`Calcola separatamente il primo membro (con $\sin60°$ e $\cos60°$) e il secondo ($\tan30°$).`, R`Se coincidono, la formula di bisezione della tangente è verificata in questo caso.`], risposta: { tipo: 'numero', valore: 0.5774, tolleranza: 0.005 }, soluzione: [R`Primo membro: $\dfrac{\sin60°}{1+\cos60°} = \dfrac{\frac{\sqrt3}{2}}{1+\frac12} = \dfrac{\frac{\sqrt3}{2}}{\frac32} = \dfrac{\sqrt3}{3}$.`, R`Secondo membro: $\tan30° = \dfrac{\sqrt3}{3}$.`, R`I due membri coincidono ($\approx0{,}577$): la formula di bisezione della tangente è verificata in questo caso.`] },
     { id: 'es-10', difficolta: 3, testo: R`Un'onda è descritta da $y=12\sin x+5\cos x$ (in cm). Trova l'ampiezza massima dell'oscillazione.`, suggerimenti: [R`Nella somma $a\sin x+b\cos x$, l'ampiezza massima è $r=\sqrt{a^2+b^2}$.`, R`Qui $a=12$ e $b=5$.`], risposta: { tipo: 'numero', valore: 13, tolleranza: 0.01 }, soluzione: [R`Qui $a=12$ (coefficiente del seno) e $b=5$ (coefficiente del coseno).`, R`$r=\sqrt{a^2+b^2}=\sqrt{144+25}=\sqrt{169}=13$.`, R`L'ampiezza massima dell'oscillazione è $13\ \text{cm}$.`] }
   ],
 
   quiz: [
-    { id: 'q-01', domanda: R`Qual è la formula corretta di $\cos(\alpha+\beta)$?`, opzioni: [R`$\cos\alpha\cos\beta+\sin\alpha\sin\beta$`, R`$\cos\alpha\cos\beta-\sin\alpha\sin\beta$`, R`$\sin\alpha\cos\beta+\cos\alpha\sin\beta$`, R`$\cos\alpha\sin\beta-\sin\alpha\cos\beta$`], corretta: 1, spiegazione: R`La prima opzione è la formula di $\cos(\alpha-\beta)$; la terza è $\sin(\alpha+\beta)$. Il segno centrale nell'addizione del coseno è un meno.` },
-    { id: 'q-02', domanda: R`Perché $\sin(\alpha+\beta)\ne\sin\alpha+\sin\beta$ in generale?`, opzioni: [R`Perché il seno non è una funzione lineare`, R`Perché $\alpha$ e $\beta$ devono essere uguali`, R`Perché la formula vale solo per angoli ottusi`, R`Perché serve sempre la calcolatrice`], corretta: 0, spiegazione: R`Il controesempio $\alpha=\beta=45°$ basta: $\sin90°=1$, mentre $\sin45°+\sin45°=\sqrt2\approx1,41$.` },
+    { id: 'q-01', domanda: R`Qual è la formula corretta di $\cos(\alpha+\beta)$?`, opzioni: [R`$\cos\alpha\cos\beta+\sin\alpha\sin\beta$`, R`$\cos\alpha\cos\beta-\sin\alpha\sin\beta$`, R`$\sin\alpha\cos\beta+\cos\alpha\sin\beta$`, R`$\cos\alpha\sin\beta-\sin\alpha\cos\beta$`], corretta: 1, spiegazione: R`Nell'addizione del coseno il segno centrale è un meno: $\cos\alpha\cos\beta-\sin\alpha\sin\beta$. Con il più si ottiene $\cos(\alpha-\beta)$; $\sin\alpha\cos\beta+\cos\alpha\sin\beta$ è invece $\sin(\alpha+\beta)$.` },
+    { id: 'q-02', domanda: R`Perché $\sin(\alpha+\beta)\ne\sin\alpha+\sin\beta$ in generale?`, opzioni: [R`Perché il seno non è una funzione lineare`, R`Perché $\alpha$ e $\beta$ devono essere uguali`, R`Perché la formula vale solo per angoli ottusi`, R`Perché serve sempre la calcolatrice`], corretta: 0, spiegazione: R`Il controesempio $\alpha=\beta=45°$ basta: $\sin90°=1$, mentre $\sin45°+\sin45°=\sqrt2\approx1{,}41$.` },
     { id: 'q-03', domanda: R`Quando due rette di coefficienti angolari $m_1$ e $m_2$ sono perpendicolari?`, opzioni: [R`$m_1=m_2$`, R`$m_1+m_2=0$`, R`$m_1\cdot m_2=-1$`, R`$m_1\cdot m_2=1$`], corretta: 2, spiegazione: R`Con $m_1m_2=-1$ il denominatore $1+m_1m_2$ si annulla e la tangente dell'angolo non è definita: l'angolo è retto.` },
-    { id: 'q-04', domanda: R`Quale delle seguenti è una forma corretta di $\cos2\alpha$?`, opzioni: [R`$2\sin\alpha\cos\alpha$`, R`$\sin^2\alpha-\cos^2\alpha$`, R`$\dfrac{2\tan\alpha}{1-\tan^2\alpha}$`, R`$1-2\sin^2\alpha$`], corretta: 3, spiegazione: R`La prima è $\sin2\alpha$, la terza è $\tan2\alpha$, la seconda è $-\cos2\alpha$ (segno sbagliato). $1-2\sin^2\alpha$ è una delle tre forme corrette.` },
+    { id: 'q-04', domanda: R`Quale delle seguenti è una forma corretta di $\cos2\alpha$?`, opzioni: [R`$2\sin\alpha\cos\alpha$`, R`$\sin^2\alpha-\cos^2\alpha$`, R`$\dfrac{2\tan\alpha}{1-\tan^2\alpha}$`, R`$1-2\sin^2\alpha$`], corretta: 3, spiegazione: R`$1-2\sin^2\alpha$ è una delle tre forme corrette. $2\sin\alpha\cos\alpha$ è $\sin2\alpha$, la frazione con le tangenti è $\tan2\alpha$, e $\sin^2\alpha-\cos^2\alpha$ ha i termini in ordine rovesciato: vale $-\cos2\alpha$.` },
     { id: 'q-05', domanda: R`La formula $\tan2\alpha=\dfrac{2\tan\alpha}{1-\tan^2\alpha}$ non è definita quando…`, opzioni: [R`$\tan\alpha=0$`, R`$\tan\alpha=\pm1$`, R`$\alpha=0°$`, R`$\alpha=180°$`], corretta: 1, spiegazione: R`Con $\tan\alpha=\pm1$ il denominatore $1-\tan^2\alpha$ si annulla.` },
     { id: 'q-06', domanda: R`Nelle formule di bisezione, da cosa dipende il segno davanti alla radice?`, opzioni: [R`Dal quadrante in cui cade $\dfrac\alpha2$`, R`Dal quadrante in cui cade $\alpha$`, R`Dal segno di $\alpha$`, R`Non dipende da nulla, è sempre positivo`], corretta: 0, spiegazione: R`Il segno di $\sin\dfrac\alpha2$ e $\cos\dfrac\alpha2$ dipende dal quadrante dell'angolo $\dfrac\alpha2$, non da quello di $\alpha$.` },
     { id: 'q-07', domanda: R`Le formule parametriche esprimono $\sin\alpha$, $\cos\alpha$ e $\tan\alpha$ in funzione di…`, opzioni: [R`$t=\tan\alpha$`, R`$t=\sin\dfrac\alpha2$`, R`$t=\tan\dfrac\alpha2$`, R`$t=\cos2\alpha$`], corretta: 2, spiegazione: R`Le formule parametriche usano sempre $t=\tan\dfrac\alpha2$, la tangente della metà dell'angolo.` },

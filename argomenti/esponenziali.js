@@ -4,177 +4,262 @@ COMPASSO.registra({
   id: 'esponenziali',
   titolo: 'Esponenziali',
 
-  introduzione: R`La funzione esponenziale è quella in cui la variabile non sta più alla base, ma all'**esponente**: $y = a^x$, con $a$ un numero positivo fisso. È un cambiamento profondo nel modo in cui le cose crescono: in una funzione lineare l'incremento a ogni passo è sempre lo stesso, mentre in una funzione esponenziale è la grandezza raggiunta a decidere quanto crescerà nel passo successivo. Per questo una crescita esponenziale, anche se all'inizio sembra lenta, finisce sempre per superare qualunque crescita lineare o polinomiale.
+  introduzione: R`Un batterio si divide in due ogni $20$ minuti. Dopo un'ora i batteri sono $8$, dopo due ore $64$, dopo cinque ore più di trentamila. A ogni passo non se ne aggiunge un numero fisso: il numero **raddoppia**, e più batteri ci sono più ne nascono. Dopo $t$ passi i batteri sono $2^t$, con la variabile all'esponente.
 
-Si incontra ogni volta che una quantità cambia di una **percentuale costante** a ogni intervallo di tempo: un capitale che frutta un interesse composto, una popolazione di batteri che raddoppia a intervalli regolari, il numero di persone raggiunte da un messaggio condiviso a catena, la dose di un farmaco che si dimezza nel sangue ogni tante ore. Anche il decadimento radioattivo, alla base della datazione con il carbonio-14, segue una legge esponenziale, solo con base minore di $1$.
+Una funzione come $y = 2^x$, o in generale $y = a^x$ con $a$ numero positivo, si chiama **esponenziale**. Descrive tutto quello che cambia della stessa percentuale a ogni intervallo di tempo: un capitale a interesse composto, una popolazione, un farmaco che si dimezza nel sangue ogni tante ore, un materiale radioattivo che decade. All'inizio può sembrare lenta, ma prima o poi supera qualunque crescita che aggiunge ogni volta la stessa quantità.
 
-Per seguire bene questo argomento servono le funzioni in generale (dominio, immagine, crescenza) e le proprietà delle potenze con esponente intero e razionale, oltre a saper maneggiare i radicali.`,
+In questo argomento si allargano le potenze a esponenti qualsiasi, si studia il grafico di $y = a^x$ e si risolvono equazioni e disequazioni con l'incognita all'esponente. Servono le proprietà delle potenze, i radicali e le equazioni e disequazioni di primo e secondo grado.`,
+
+  inBreve: [
+    R`Con base $a > 0$ la potenza $a^x$ ha senso per ogni numero reale $x$: $a^{-n} = \frac{1}{a^n}$, $a^{\frac{m}{n}} = \sqrt[n]{a^m}$, e le proprietà delle potenze restano le stesse.`,
+    R`Il grafico di $y = a^x$ passa sempre per $(0;1)$, sta sempre sopra l'asse $x$ e ha l'asintoto $y = 0$. È crescente se $a > 1$, decrescente se $0 < a < 1$.`,
+    R`Per risolvere un'equazione esponenziale si scrivono i due membri come potenze della stessa base e si uguagliano gli esponenti. Se la base compare con esponenti $x$ e $2x$ si pone $t = a^x$, e si scartano le $t$ negative o nulle.`,
+    R`Nelle disequazioni, togliendo la base, il verso resta com'è se $a > 1$ e si **rovescia** se $0 < a < 1$.`,
+    R`Una quantità che cambia della stessa percentuale a ogni passo segue $y = y_0 \cdot a^t$: crescita se $a > 1$, decadimento se $0 < a < 1$.`
+  ],
 
   sezioni: [
-    { id: 'potenze-esponente-reale', titolo: 'Potenze con esponente reale', testo: R`Fin qui l'esponente di una potenza è stato un numero intero: $a^n$ significa "$a$ moltiplicato per sé stesso $n$ volte", e $a^{-n} = \dfrac{1}{a^n}$. Con l'esponente **razionale** si estende la definizione mantenendo le stesse proprietà delle potenze:
+    { id: 'potenze-esponente-reale', titolo: 'Potenze con esponente reale', testo: R`Con un esponente intero una potenza è una moltiplicazione ripetuta: $2^3 = 2 \cdot 2 \cdot 2$. Ma che cosa vuol dire $2^{0{,}5}$, o $2^{-1}$? Per dare un significato a questi esponenti si sceglie l'unico che fa funzionare ancora le proprietà delle potenze. Per esempio $2^{0{,}5} \cdot 2^{0{,}5}$ deve fare $2^1 = 2$, quindi $2^{0{,}5}$ è il numero che moltiplicato per sé stesso dà $2$: $\sqrt2$.
 
->* **Potenza con esponente razionale:** $$a^{\frac{m}{n}} = \sqrt[n]{a^m}, \qquad a > 0.$$ Per esempio $8^{2/3} = \left(\sqrt[3]{8}\right)^2 = 2^2 = 4$: prima la radice, poi il quadrato (o nell'ordine opposto, il risultato non cambia).
+>* Per $a > 0$: $$a^0 = 1, \qquad a^{-n} = \frac{1}{a^n},$$ $$a^{\frac{m}{n}} = \sqrt[n]{a^m}.$$ L'esponente negativo fa il reciproco, il denominatore dell'esponente fa la radice.
 
-Perché la condizione $a>0$? Con basi negative alcune radici non esistono in $\mathbb{R}$ (per esempio $\sqrt{-4}$), e scritture equivalenti dello stesso esponente come frazione darebbero risultati diversi: una situazione poco maneggevole, che si evita richiedendo $a>0$.
+~ 8^{-\frac23} :: esponente negativo e frazionario
+~ \evid{\frac{1}{8^{\frac23}}} :: il meno all'esponente fa il reciproco
+~ \frac{1}{\left(\evid{\sqrt[3]{8}}\right)^2} :: il $3$ al denominatore dell'esponente fa la radice cubica
+~ \frac{1}{\evid{2}^2} = \evidb{\frac14} :: $\sqrt[3]{8} = 2$, poi il quadrato
 
-Resta un ultimo passo: che senso ha $2^{\sqrt2}$, dove l'esponente non è nemmeno una frazione? Non si può scrivere come radice, ma si può **avvicinare**: $\sqrt2 = 1{,}41421\ldots$ è il limite delle approssimazioni razionali $1$, $1{,}4$, $1{,}41$, $1{,}414$, $\ldots$, e i valori $2^1$, $2^{1{,}4}$, $2^{1{,}41}$, $2^{1{,}414}$, $\ldots$ si avvicinano a loro volta a un unico numero: quello è, per definizione, $2^{\sqrt2}$. Non è una dimostrazione rigorosa (quella richiede i limiti, visti più avanti), ma basta per accettare che, se $a>0$, l'espressione $a^x$ ha senso per **ogni** numero reale $x$, non solo per interi o frazioni.
+?? Quanto vale $4^{-\frac12}$?
+[x] $\frac12$
+[ ] $-2$
+[ ] $-\frac12$
+[ ] $2$
+=> $4^{\frac12} = \sqrt4 = 2$, e il meno all'esponente fa il reciproco: $\frac12$. Il meno all'esponente non rende negativo il risultato: con base positiva la potenza è sempre positiva.
+
+E un esponente irrazionale, come in $2^{\sqrt2}$? Non si può scrivere come radice, ma si può avvicinare: $\sqrt2 = 1{,}41421\ldots$, e le potenze $2^{1{,}4}$, $2^{1{,}41}$, $2^{1{,}414}$, … si avvicinano sempre di più a un numero preciso, circa $2{,}665$. Quel numero è $2^{\sqrt2}$. Così, con base positiva, $a^x$ ha senso per **ogni** numero reale $x$.
 
 [[grafico:scopriPotenza]]
 
->! $a^{1/n}$ non è definita in $\mathbb{R}$ se $a<0$ e $n$ è pari (per esempio $(-4)^{1/2}=\sqrt{-4}$ non esiste), mentre se $n$ è dispari lo è ($(-8)^{1/3}=-2$). Per evitare queste eccezioni, da qui in avanti si lavora sempre con basi $a>0$.` },
+>! Le basi negative si escludono. Con $a < 0$ lo stesso esponente scritto in due modi darebbe due risultati: $(-8)^{\frac13}$ dovrebbe essere $\sqrt[3]{-8} = -2$, ma $\frac13 = \frac26$ e $(-8)^{\frac26} = \sqrt[6]{64} = 2$. Per questo da qui in avanti la base è sempre positiva.` },
 
-    { id: 'proprieta-potenze', titolo: 'Le proprietà delle potenze', testo: R`Le proprietà delle potenze imparate con gli esponenti interi restano valide, senza eccezioni, anche con esponenti razionali o reali qualsiasi, purché le basi siano positive.
+    { id: 'proprieta-potenze', titolo: 'Le proprietà delle potenze', testo: R`Le proprietà delle potenze che conosci dagli esponenti interi valgono uguali con esponenti reali qualsiasi, purché le basi siano positive.
 
->* **Proprietà delle potenze**, per $a,b>0$ e $x,y \in \mathbb{R}$: $$a^x \cdot a^y = a^{x+y}, \qquad \dfrac{a^x}{a^y} = a^{x-y}, \qquad \left(a^x\right)^y = a^{xy}, \qquad (ab)^x = a^x b^x, \qquad a^0=1.$$
+>* **Proprietà delle potenze**, per $a, b > 0$ e $x, y$ reali: $$a^x \cdot a^y = a^{x+y}, \qquad \frac{a^x}{a^y} = a^{x-y},$$ $$\left(a^x\right)^y = a^{xy}, \qquad (ab)^x = a^x b^x.$$
 
-Servono per manipolare le espressioni prima di risolvere un'equazione o una disequazione. Per esempio $9^x$ si riscrive come $\left(3^2\right)^x = 3^{2x}$, e $\sqrt{2^x} = 2^{x/2}$: trasformazioni di questo tipo, basate su $\left(a^x\right)^y=a^{xy}$, servono continuamente per ricondurre due potenze alla stessa base.
+Nelle equazioni esponenziali servono soprattutto a due cose. La prima è **portare tutto alla stessa base**: $9^x = \left(3^2\right)^x = 3^{2x}$, e $\sqrt{2^x} = 2^{\frac{x}{2}}$. La seconda è **staccare un numero dall'esponente** e raccogliere:
 
-Un altro uso frequente è raccogliere un fattore comune: $2^{x+2} = 2^x \cdot 2^2 = 4 \cdot 2^x$, quindi un'equazione come $2^{x+2} - 2^x = 24$ diventa $4 \cdot 2^x - 2^x = 24$, cioè $3 \cdot 2^x = 24$, da cui $2^x = 8$.
+~ 2^{x+2} - 2^x = 24 :: la stessa potenza $2^x$ compare in due termini
+~ \evid{2^x \cdot 2^2} - 2^x = 24 :: $a^{x+y} = a^x \cdot a^y$ letta al contrario
+~ \evid{4} \cdot 2^x - 2^x = 24 :: $2^2 = 4$
+~ \evid{3} \cdot 2^x = 24 :: raccolgo $2^x$: $4 - 1 = 3$
+~ 2^x = \evid{8} = 2^3 :: divido per $3$ e scrivo $8$ come potenza di $2$
+~ x = \evidb{3} :: stessa base, esponenti uguali
 
->! $a^x \cdot b^x$ **non** diventa $a^x+b^x$ né $(a+b)^x$: le basi si moltiplicano fra loro, $a^x \cdot b^x = (ab)^x$, solo se gli **esponenti** sono uguali. E $a^x + a^y$ non si semplifica in $a^{x+y}$: le proprietà valgono per prodotti, quozienti e potenze di potenze, mai per le somme.` },
+?? Quanto fa $2^x + 2^x$?
+[x] $2^{x+1}$
+[ ] $4^x$
+[ ] $2^{2x}$
+[ ] $4^{2x}$
+=> $2^x + 2^x = 2 \cdot 2^x = 2^{x+1}$: due volte la stessa quantità. Le altre risposte applicano alla somma regole che valgono solo per il prodotto. Controllo con $x = 3$: $8 + 8 = 16 = 2^4$, mentre $4^3 = 64$.
 
-    { id: 'funzione-esponenziale', titolo: 'La funzione esponenziale e il suo grafico', testo: R`La **funzione esponenziale** di base $a$ è $y=a^x$, con $a>0$ e $a \ne 1$: la variabile è l'esponente, non la base.
+>! Le proprietà valgono per prodotti, quozienti e potenze di potenze, **mai per le somme**: $a^x + a^y$ non è $a^{x+y}$, e $(a + b)^x$ non è $a^x + b^x$. Si moltiplicano le basi, $a^x \cdot b^x = (ab)^x$, solo se gli esponenti sono uguali.` },
+
+    { id: 'funzione-esponenziale', titolo: 'La funzione esponenziale e il suo grafico', testo: R`Che differenza c'è fra aggiungere $2$ a ogni passo e moltiplicare per $2$ a ogni passo? All'inizio poca; dopo dieci passi, la prima strada porta a $21$, la seconda a $1024$. Guarda l'animazione.
 
 [[animazione:crescita-esponenziale]]
 
->* **Funzione esponenziale:** $y=a^x$, con $a>0$, $a \ne 1$. Dominio $\mathbb{R}$, immagine $(0,+\infty)$: il grafico passa sempre per $(0;1)$ (perché $a^0=1$) e ha come asintoto orizzontale la retta $y=0$, che non tocca mai, perché $a^x$ non è mai né nulla né negativa.
+La **funzione esponenziale** di base $a$ è $y = a^x$, con $a > 0$ e $a \ne 1$. La base $a = 1$ si esclude perché $1^x = 1$ sempre: sarebbe una retta orizzontale.
 
-Il comportamento dipende dal confronto fra $a$ e $1$:
-
-- se $a>1$ la funzione è **crescente**: più cresce $x$, più cresce $a^x$, sempre più in fretta;
-- se $0<a<1$ la funzione è **decrescente**: $a^x$ si avvicina a $0$ man mano che $x$ cresce.
-
-Prova a muovere il cursore $a$ nel grafico: la curva ruota intorno al punto fisso $(0;1)$, passando da crescente a decrescente quando $a$ attraversa il valore $1$.
+Nel grafico trascina il punto che sta sopra $x = 1$: la sua altezza è $a^1 = a$, quindi spostandolo cambi la base. Guarda quale punto resta fermo e che cosa succede quando $a$ scende sotto $1$.
 
 [[grafico:famigliaEsponenziali]]
 
-La ragione per cui si esclude $a=1$ è che $1^x=1$ per ogni $x$: sarebbe una funzione costante, non una vera esponenziale, priva di crescenza o decrescenza.
+>* **Funzione esponenziale** $y = a^x$ ($a > 0$, $a \ne 1$). Dominio: tutti i numeri reali. Valori: solo positivi. Passa sempre per $(0;1)$, perché $a^0 = 1$. Asintoto orizzontale: $y = 0$, cioè l'asse $x$, che la curva non tocca mai.
 
->! Il grafico di $y=a^x$ sta sempre **sopra** l'asse $x$: non esiste alcun valore di $x$ per cui $a^x=0$ oppure $a^x<0$. Un errore frequente è pensare che l'asintoto $y=0$ venga toccato per $x$ molto negativo (o molto positivo, se $0<a<1$): la curva si avvicina quanto si vuole, ma non lo raggiunge mai.` },
+Il verso dipende dal confronto fra $a$ e $1$:
 
-    { id: 'numero-e', titolo: 'Il numero di Nepero e la funzione esponenziale naturale', testo: R`Fra tutte le basi possibili, ce n'è una che compare così spesso in natura e in matematica da meritare un simbolo tutto suo: il **numero di Nepero** $e$.
+- se $a > 1$ la funzione è **crescente**, e sale sempre più in fretta;
+- se $0 < a < 1$ è **decrescente**, e scende verso $0$ al crescere di $x$.
 
->* **Numero di Nepero:** $$e = \lim_{n \to \infty} \left(1+\dfrac1n\right)^n \approx 2{,}718281828\ldots$$ È un numero irrazionale (anzi trascendente): la sua scrittura decimale non si ripete né termina mai.
+?? Per quali valori di $x$ si ha $3^x \le 0$?
+[x] per nessuno
+[ ] per $x \le 0$
+[ ] per $x < 0$
+=> $3^x$ è sempre positivo: per $x = 0$ vale $1$, per $x$ negativi vale una frazione positiva, per esempio $3^{-2} = \frac19$. Il grafico sta tutto sopra l'asse $x$. Chi risponde $x \le 0$ confonde "esponente negativo" con "risultato negativo".
 
-Il limite nasce da un problema concreto: capitalizzare un interesse sempre più spesso (mensilmente, giornalmente, istante per istante) fa crescere il montante, ma non senza limite, perché il fattore di crescita si avvicina proprio a $e$. Con $n=10$ si ottiene $\left(1+\frac1{10}\right)^{10} \approx 2{,}594$; con $n=1000$, $\approx 2{,}717$: i valori si stabilizzano intorno a $2{,}71828$.
+>! Per $x$ molto negativo (o molto positivo, se $0 < a < 1$) la curva si schiaccia sull'asse $x$ fino a sembrare appoggiata, ma non lo raggiunge mai: $a^x = 0$ non ha soluzioni.` },
 
-La funzione $y=e^x$, detta **esponenziale naturale**, ha una proprietà che nessun'altra base possiede: nel punto $(0;1)$ la retta tangente al grafico ha pendenza esattamente $1$, uguale al valore della funzione in quel punto. È il motivo per cui $e^x$ è la base "naturale" per l'analisi: la sua velocità di crescita istantanea coincide, in ogni punto, con il suo stesso valore.
+    { id: 'numero-e', titolo: 'Il numero di Nepero e la funzione esponenziale naturale', testo: R`Metti in banca $1$ euro al $100\%$ di interesse annuo. Dopo un anno hai $2$ euro. Se la banca ti accredita metà interesse ogni sei mesi hai $\left(1 + \frac12\right)^2 = 2{,}25$ euro; con un dodicesimo ogni mese, $\left(1 + \frac1{12}\right)^{12} \approx 2{,}613$. Più spesso si accredita, più si guadagna, ma sempre meno: il risultato non supera mai un certo numero, vicino a $2{,}718$.
+
+| accrediti in un anno ($n$) | $\left(1 + \frac1n\right)^n$ |
+|---|---|
+| $1$ | $2$ |
+| $12$ | $2{,}613\ldots$ |
+| $365$ | $2{,}7145\ldots$ |
+| $1\,000\,000$ | $2{,}71828\ldots$ |
+
+Quel numero è il **numero di Nepero**, $e$.
+
+>* $$e = \lim_{n \to \infty} \left(1 + \frac1n\right)^n \approx 2{,}71828\ldots$$ È irrazionale: le sue cifre decimali non finiscono e non si ripetono. La funzione $y = e^x$ si chiama **esponenziale naturale**.
+
+?? Che cosa succede a $\left(1 + \frac1n\right)^n$ quando $n$ diventa enorme?
+[x] si avvicina a $2{,}718\ldots$
+[ ] si avvicina a $1$, perché $1 + \frac1n$ si avvicina a $1$
+[ ] diventa enorme, perché l'esponente diventa enorme
+=> La base si avvicina a $1$ e l'esponente cresce: i due effetti si bilanciano, e il risultato si ferma vicino a $e$. Le altre due risposte guardano un pezzo solo; la tabella qui sopra mostra che cosa succede davvero.
+
+Perché proprio questa base? Nel grafico cambia la base $a$ e guarda la pendenza $m$ della tangente nel punto $(0;1)$. C'è una sola base per cui la pendenza vale esattamente $1$.
 
 [[grafico:tangenteE]]
 
-Con base $e$ si scrivono quasi tutti i modelli continui di crescita e decadimento (popolazioni, capitali, radioattività), spesso nella forma $e^{kt}$: il segno di $k$ decide se il fenomeno cresce o decade.
+Quella base è $e$. Con $e$ la velocità di crescita di $e^x$ in ogni punto è uguale al valore stesso di $e^x$: per questo nei modelli di crescita e decadimento continui (popolazioni, radioattività) si usa quasi sempre la forma $e^{kt}$, crescente se $k > 0$ e decrescente se $k < 0$.
 
->! $e$ non è una lettera scelta a caso, né un'approssimazione arrotondata di $2{,}7$: è un numero ben preciso, definito da quel limite, che in analisi compare quanto $\pi$ compare in geometria. Il logaritmo con base $e$ si chiama logaritmo naturale, $\ln x$, ed è il protagonista del prossimo argomento.` },
+>! $e$ è un numero preciso, definito da quel limite, e $2{,}7$ ne è solo un'approssimazione grossolana. Il logaritmo in base $e$ si chiama **logaritmo naturale**, $\ln x$, e lo trovi nell'argomento sui logaritmi.` },
 
-    { id: 'equazioni-esponenziali', titolo: 'Equazioni esponenziali', testo: R`Un'**equazione esponenziale** ha l'incognita a esponente. La strategia dipende da come sono fatte le basi.
+    { id: 'equazioni-esponenziali', titolo: 'Equazioni esponenziali', testo: R`In $2^x = 8$ l'incognita sta all'esponente: è un'**equazione esponenziale**. Scrivendo $8 = 2^3$ diventa $2^x = 2^3$, e l'unico modo perché due potenze di $2$ siano uguali è che abbiano lo stesso esponente: $x = 3$.
 
-### Basi già uguali
+>* Con $a > 0$ e $a \ne 1$: $$a^{f(x)} = a^{g(x)} \iff f(x) = g(x).$$ Vale perché esponenti diversi danno sempre potenze diverse: il grafico di $y = a^x$ sale (o scende) sempre, e non ripassa mai alla stessa altezza.
 
-Se l'equazione si riduce alla forma $a^{f(x)}=a^{g(x)}$ con la stessa base $a>0$, $a \ne 1$, si uguagliano gli esponenti:
+### Stessa base, anche se non si vede
+Se le basi sono potenze dello stesso numero, si riscrivono prima con quel numero:
 
->* $$a^{f(x)} = a^{g(x)} \iff f(x)=g(x), \qquad (a>0,\ a\ne1).$$ Vale perché $y=a^x$ è **iniettiva**: a esponenti diversi corrispondono sempre valori diversi.
+~ 8^x = 16^{x-1} :: $8$ e $16$ sono potenze di $2$
+~ \left(\evid{2^3}\right)^x = \left(\evid{2^4}\right)^{x-1} :: $8 = 2^3$, $16 = 2^4$
+~ 2^{\evid{3x}} = 2^{\evid{4x-4}} :: potenza di potenza: gli esponenti si moltiplicano
+~ 3x = 4x - 4 :: stessa base: uguaglio gli esponenti
+~ x = \evidb{4} :: equazione di primo grado
 
-Per esempio $3^{x+2}=3^{4x-1}$ dà subito $x+2=4x-1$, cioè $x=1$.
+Controllo: $8^4 = 4096$ e $16^3 = 4096$.
 
-### Basi riconducibili alla stessa base
+### La sostituzione $t = a^x$
+Quando compaiono $a^{2x}$ e $a^x$, la prima è il quadrato della seconda: con $t = a^x$ l'equazione diventa di secondo grado.
 
-Se le basi sono diverse ma sono potenze di uno stesso numero, si riscrivono prima. $8^x=16^{x-1}$ diventa $2^{3x}=2^{4(x-1)}$, cioè $3x=4x-4$, da cui $x=4$.
+~ 9^x - 4\cdot 3^x - 45 = 0 :: compaiono $9^x$ e $3^x$
+~ \left(3^x\right)^2 - 4\cdot 3^x - 45 = 0 :: $9^x = \left(3^2\right)^x = \left(3^x\right)^2$
+~ \evid{t}^2 - 4\evid{t} - 45 = 0 :: pongo $t = 3^x$, che è sempre positivo
+~ t = 9 \ \lor\ \evid{t = -5} :: due numeri con somma $4$ e prodotto $-45$
+~ 3^x = 9 = 3^2 \Rightarrow x = \evidb{2} :: $t = -5$ si scarta: $3^x$ non è mai negativo
 
-### Sostituzione $t=a^x$
+?? Nella sostituzione $t = 2^x$ trovi $t = 4$ e $t = -1$. Quali sono le soluzioni in $x$?
+[x] solo $x = 2$
+[ ] $x = 2$ e $x = -1$
+[ ] $x = 2$ e $x = 0$
+=> $2^x = 4$ dà $x = 2$. $2^x = -1$ non ha soluzioni, perché una potenza di $2$ è sempre positiva. Scrivere $x = -1$ vuol dire confondere il valore di $t$ con quello di $x$: $2^{-1}$ fa $\frac12$, non $-1$.
 
-Quando l'incognita compare in più potenze della stessa base, con esponenti multipli l'uno dell'altro, conviene porre $t=a^x$ e risolvere prima in $t$. $9^x-4\cdot3^x-45=0$, con $9^x=\left(3^x\right)^2$, diventa $t^2-4t-45=0$ ponendo $t=3^x$: si trova $t=9$ oppure $t=-5$. Poiché $3^x$ è sempre positivo, $t=-5$ va scartata; da $3^x=9=3^2$ si ricava $x=2$.
+>! Le $t$ negative o nulle vanno scartate **prima** di tornare alla $x$. E ricordati di tornarci: $t$ non è la soluzione, è il valore di $a^x$.` },
 
-Un'ultima situazione è quella in cui basta **isolare la potenza**: $2^x=8$ si risolve scrivendo $8=2^3$ e uguagliando gli esponenti, $x=3$; sul grafico è il punto in cui $y=2^x$ incontra la retta $y=8$.
+    { id: 'disequazioni-esponenziali', titolo: 'Disequazioni esponenziali', testo: R`Qual è più grande, $2^5$ o $2^3$? $2^5 = 32$, quindi il primo. E fra $\left(\frac12\right)^5$ e $\left(\frac12\right)^3$? $\left(\frac12\right)^5 = \frac1{32}$ e $\left(\frac12\right)^3 = \frac18$: questa volta vince l'esponente **più piccolo**. Con una base minore di $1$, moltiplicare più volte fa rimpicciolire.
 
-[[grafico:equazioneEsponenziale]]
+Nelle **disequazioni esponenziali** si portano i due membri alla stessa base e si confrontano gli esponenti, come nelle equazioni. Ma prima di togliere la base bisogna guardare se è maggiore o minore di $1$.
 
->! Nella sostituzione $t=a^x$ la condizione $t>0$ non è un dettaglio: ogni soluzione $t \le 0$ va scartata *prima* di tornare a $x$, altrimenti si cerca una $x$ per cui $a^x$ sarebbe negativo o nullo, cosa che non può mai accadere.` },
+>* Se $a > 1$: $$a^{f(x)} > a^{g(x)} \iff f(x) > g(x)$$ Se $0 < a < 1$: $$a^{f(x)} > a^{g(x)} \iff f(x) < g(x)$$ Con $a > 1$ la funzione è crescente e il verso **resta**; con $0 < a < 1$ è decrescente e il verso **si rovescia**.
 
-    { id: 'disequazioni-esponenziali', titolo: 'Disequazioni esponenziali', testo: R`Anche le **disequazioni esponenziali** con basi uguali si riducono a un confronto fra esponenti, ma con un'attenzione in più rispetto alle equazioni: bisogna guardare se la base è maggiore o minore di $1$.
+Esempio con $a > 1$: $3^{2x+1} \ge 3^{x+4}$ diventa $2x + 1 \ge x + 4$, cioè $x \ge 3$.
 
->* **Disequazioni esponenziali** (basi uguali): $$a>1: \quad a^{f(x)} > a^{g(x)} \iff f(x) > g(x) \qquad\qquad 0<a<1: \quad a^{f(x)} > a^{g(x)} \iff f(x) < g(x).$$ Con $a>1$ il verso della disuguaglianza si **conserva**; con $0<a<1$ si **inverte**.
+Con base minore di $1$:
 
-La ragione è il grafico: se $a>1$ la funzione è crescente, quindi esponenti più grandi danno valori più grandi, verso conservato. Se $0<a<1$ la funzione è decrescente: esponenti più grandi danno valori **più piccoli**, quindi il verso si rovescia.
+~ \left(\frac14\right)^{2x-1} \le \left(\frac14\right)^{x+5} :: base $\frac14$, minore di $1$
+~ 2x - 1 \ \evid{\ge}\ x + 5 :: tolgo la base e **rovescio il verso**
+~ \evid{x} \ge \evid{6} :: disequazione di primo grado
 
-Esempio con $a>1$: $3^{2x+1} \ge 3^{x+4}$ diventa $2x+1 \ge x+4$ (verso conservato), cioè $x \ge 3$.
+?? Risolvi $\left(\frac13\right)^x > 9$.
+[x] $x < -2$
+[ ] $x > -2$
+[ ] $x > 2$
+[ ] $x < 2$
+=> $9 = \left(\frac13\right)^{-2}$, quindi $\left(\frac13\right)^x > \left(\frac13\right)^{-2}$. La base è minore di $1$: il verso si rovescia, $x < -2$. Controllo con $x = -3$: $\left(\frac13\right)^{-3} = 27 > 9$, vero. Chi risponde $x > -2$ ha dimenticato di rovesciare il verso.
 
-Esempio con $0<a<1$: $\left(\dfrac14\right)^{2x-1} \le \left(\dfrac14\right)^{x+5}$ diventa $2x-1 \ge x+5$ (verso **invertito**, perché la base è $\frac14<1$), cioè $x \ge 6$.
+>! Prima di confrontare gli esponenti chiediti sempre: la base è maggiore o minore di $1$? Se hai trasformato le basi, guarda quella che resta alla fine: $\left(\frac14\right)^x$ si può anche scrivere $4^{-x}$, con base maggiore di $1$, e allora il verso resta ma l'esponente cambia segno.` },
 
-Quando le basi non sono uguali ma riconducibili a una base comune, si trasformano prima, esattamente come nelle equazioni, e solo dopo si confrontano gli esponenti con il verso giusto.
+    { id: 'modelli-crescita-decadimento', titolo: 'Modelli di crescita e decadimento', testo: R`Un capitale cresce del $5\%$ all'anno. Aggiungere il $5\%$ vuol dire moltiplicare per $1{,}05$: dopo un anno il capitale è $C_0 \cdot 1{,}05$, dopo due $C_0 \cdot 1{,}05^2$, dopo $t$ anni $C_0 \cdot 1{,}05^t$. Ogni volta che una grandezza cambia della **stessa percentuale** a ogni intervallo di tempo, si moltiplica sempre per lo stesso numero, e il risultato è un'esponenziale.
 
->! L'errore più comune è applicare sempre lo stesso verso, per abitudine presa dalle disequazioni fra numeri. Prima di confrontare gli esponenti, la domanda da farsi è sempre: la base è maggiore o minore di $1$? Da questo dipende tutto.` },
+>* **Modello esponenziale:** $$y(t) = y_0 \cdot a^t$$ $y_0$ è il valore iniziale (quello per $t = 0$), $a$ è il fattore per cui si moltiplica a ogni unità di tempo. Crescita del $p\%$: $a = 1 + \frac{p}{100}$. Calo del $p\%$: $a = 1 - \frac{p}{100}$.
 
-    { id: 'modelli-crescita-decadimento', titolo: 'Modelli di crescita e decadimento', testo: R`La funzione esponenziale è il modello naturale per ogni fenomeno che cambia di una **percentuale costante** a ogni intervallo di tempo, invece che di una quantità costante.
+**Interesse composto.** Con tasso $r$ (scritto come numero decimale: $5\% = 0{,}05$), un capitale $C_0$ dopo $t$ periodi diventa $C(t) = C_0(1 + r)^t$. Con $2000$ € al $5\%$, dopo $3$ anni: $2000 \cdot 1{,}05^3 = 2000 \cdot 1{,}157625 = 2315{,}25$ €.
 
->* **Modello esponenziale:** $$y(t) = y_0 \cdot a^t$$ con $y_0$ valore iniziale (per $t=0$) e $a$ fattore di crescita per ogni unità di tempo: $a>1$ per una crescita, $0<a<1$ per un decadimento.
+?? Un'auto perde il $20\%$ del suo valore ogni anno. Per quale numero si moltiplica il valore ogni anno?
+[x] $0{,}8$
+[ ] $0{,}2$
+[ ] $1{,}2$
+[ ] $-0{,}2$
+=> Se perde il $20\%$ ne resta l'$80\%$: si moltiplica per $1 - 0{,}2 = 0{,}8$. Moltiplicare per $0{,}2$ vorrebbe dire tenere solo un quinto del valore; $1{,}2$ è l'aumento del $20\%$.
 
-**Interesse composto.** Un capitale $C_0$ investito a un tasso $r$ per periodo (per esempio $r=0{,}05$ per il $5\%$) diventa, dopo $t$ periodi, $$C(t) = C_0(1+r)^t.$$ Con $C_0=2000$ € e $r=0{,}05$, dopo $3$ anni: $C(3) = 2000 \cdot 1{,}05^3 = 2000 \cdot 1{,}157625 = 2315{,}25$ €. La base è $a=1+r>1$: crescita.
+**Dimezzamento.** Una sostanza che si dimezza ogni intervallo fisso $T$ (il **tempo di dimezzamento**) segue $N(t) = N_0\left(\frac12\right)^{\frac{t}{T}}$: l'esponente $\frac{t}{T}$ conta quanti dimezzamenti ci sono stati.
 
-**Popolazioni.** Se una popolazione cresce del $2\%$ ogni anno, dopo $t$ anni vale $P(t) = P_0 \cdot 1{,}02^{\,t}$: stesso schema, con $a=1{,}02$.
+~ N(t) = 160 \cdot \left(\frac12\right)^{\frac{t}{8}} :: $160$ mg iniziali, dimezzamento ogni $8$ giorni
+~ N(24) = 160 \cdot \left(\frac12\right)^{\evid{3}} :: dopo $24$ giorni: $\frac{24}{8} = 3$ dimezzamenti
+~ N(24) = 160 \cdot \evid{\frac18} :: $\left(\frac12\right)^3 = \frac18$
+~ N(24) = \evidb{20}\ \text{mg} :: $160 \to 80 \to 40 \to 20$
 
-**Decadimento e dimezzamento.** Una sostanza (farmaco, isotopo radioattivo) che si dimezza a ogni intervallo fisso $T$, il **tempo di dimezzamento**, segue $$N(t) = N_0 \left(\dfrac12\right)^{t/T}.$$ Con $T=8$ giorni e $N_0=160$ mg, dopo $24$ giorni (cioè $3$ dimezzamenti) restano $N(24)=160\cdot\left(\frac12\right)^3=20$ mg.
+Nella scheda **Laboratorio** c'è *La provetta*: prima scrivi quanti batteri ti aspetti, poi fai scorrere il tempo e guardi la curva che impenna.
 
-In tutti questi modelli il grafico ha lo stesso asintoto orizzontale della funzione esponenziale di base, la retta $y=0$: per una crescita è il livello a cui la curva si schiaccia tornando indietro nel tempo, per un decadimento è il valore a cui la quantità tende senza mai annullarsi del tutto.
+>! Il tasso va scritto come numero decimale: il $5\%$ è $r = 0{,}05$, non $r = 5$. Con $r = 5$ la formula diventerebbe $C_0 \cdot 6^t$, e il capitale si moltiplicherebbe per sei ogni anno.` },
 
->! Il tasso $r$ nella formula dell'interesse composto è un numero decimale, non una percentuale intera: $5\%$ si scrive $r=0{,}05$, non $r=5$. Scrivere $C(t)=C_0(1+5)^t$ moltiplicherebbe il capitale per $6$ ogni periodo: un errore enorme.` },
+    { id: 'trasformazioni-grafico', titolo: 'Trasformazioni del grafico', testo: R`Il grafico di $y = 2^{x-h} + k$ è quello di $y = 2^x$ spostato. Nel grafico qui sotto trascina il punto $P$, che all'inizio sta in $(0;1)$: guarda come cambiano $h$, $k$ e l'asintoto.
 
-    { id: 'trasformazioni-grafico', titolo: 'Trasformazioni del grafico', testo: R`Le trasformazioni del grafico di $y=a^x$ seguono le stesse regole generali valide per qualunque funzione: spostamenti e ribaltamenti che si leggono direttamente dalla formula.
+[[grafico:traslazione]]
 
->* **Traslazioni:** $y=a^x+k$ sposta il grafico verticalmente di $k$: il punto $(0;1)$ diventa $(0;1+k)$ e l'**asintoto diventa $y=k$**. $y=a^{x-h}$ sposta il grafico orizzontalmente di $h$: il punto $(0;1)$ diventa $(h;1)$, l'asintoto resta $y=0$.
+>* **Traslazioni.** $y = a^{x-h} + k$ è il grafico di $y = a^x$ spostato di $h$ in orizzontale e di $k$ in verticale. Il punto $(0;1)$ va in $(h;\,1 + k)$ e l'asintoto diventa $y = k$. Con $h$ positivo il grafico va a **destra**, anche se nella formula c'è un meno.
 
-Per esempio $y=2^x-3$ ha lo stesso andamento di $y=2^x$ ma traslato in basso di $3$: passa per $(0;-2)$ e ha asintoto $y=-3$; da qui in avanti, pur restando crescente, la funzione assume anche valori negativi.
+Per esempio $y = 2^x - 3$ è $y = 2^x$ abbassata di $3$: passa per $(0;-2)$, ha asintoto $y = -3$ e, a differenza di $2^x$, assume anche valori negativi.
 
-**Riflessioni.** $y=-a^x$ ribalta il grafico rispetto all'asse $x$: il segno meno capovolge anche l'andamento (con $a>1$ la funzione diventa decrescente) ed è sempre negativa. $y=a^{-x}$ ribalta rispetto all'asse $y$, e per le proprietà delle potenze coincide con $\left(\dfrac1a\right)^x$: una base $a>1$ diventa così una base minore di $1$, e viceversa.
+**Ribaltamenti.** $y = -a^x$ è il ribaltamento rispetto all'asse $x$: ogni valore cambia segno, e il grafico sta tutto sotto l'asse. $y = a^{-x}$ è il ribaltamento rispetto all'asse $y$: per le proprietà delle potenze $a^{-x} = \left(\frac1a\right)^x$, quindi per esempio $2^{-x}$ e $\left(\frac12\right)^x$ sono la stessa funzione.
 
-[[grafico:simmetriaBasi]]
+?? Quale di queste funzioni ha lo stesso grafico di $y = \left(\frac13\right)^x$?
+[x] $y = 3^{-x}$
+[ ] $y = -3^x$
+[ ] $y = \frac13 \cdot 3^x$
+[ ] $y = 3^{\frac{x}{3}}$
+=> $3^{-x} = \left(3^{-1}\right)^x = \left(\frac13\right)^x$. $-3^x$ è invece sempre negativa: il meno sta davanti alla potenza e cambia segno al **risultato**, non all'esponente. Controllo con $x = 1$: $\left(\frac13\right)^1 = \frac13$, $3^{-1} = \frac13$, $-3^1 = -3$.
 
-Le curve $y=2^x$ e $y=\left(\frac12\right)^x$ sono specularmente simmetriche rispetto all'asse $y$: dove una cresce, l'altra decresce esattamente allo stesso ritmo, perché sono la stessa funzione vista con $x$ cambiato di segno.
-
->! Confondere $-a^x$ con $a^{-x}$ è l'errore più comune di questa sezione: il primo cambia il segno del **risultato** (ribalta su e giù), il secondo cambia il segno dell'**esponente** (ribalta destra e sinistra). Sono due trasformazioni diverse, con effetti diversi sul grafico.` }
+>! $-a^x$ e $a^{-x}$ sono due cose diverse. Nel primo il meno si applica al risultato (ribalta su e giù), nel secondo all'esponente (ribalta destra e sinistra). E $-2^x$ si legge $-(2^x)$, non $(-2)^x$.` }
   ],
 
   grafici: {
     scopriPotenza: {
       tipo: 'piano', x: [-3, 4], y: [-1, 10],
-      funzioni: [{ f: '2^x', etichetta: 'y = 2^x', colore: 1 }],
+      funzioni: [{ f: '2^x', etichetta: 'y = 2ˣ', colore: 1 }],
       parametri: [{ nome: 'p', min: -3, max: 3, passo: 0.1, valore: 1, nascosto: true }],
       elementi: [
         { tipo: 'punto', p: ['p', '2^p'], trascina: true, etichetta: 'P', posizione: 'alto', colore: 2 },
-        { tipo: 'testo', p: [-2.8, 9], testo: '2^p = {{2^p}}', ancora: 'start' }
+        { tipo: 'testo', p: [-2.8, 9], testo: '2ᵖ = {{2^p}}', ancora: 'start' }
       ],
-      didascalia: 'Trascina il punto P lungo la curva: qualunque numero reale p, anche non intero o negativo, dà un valore 2^p ben definito.'
+      didascalia: 'Trascina P lungo la curva. Portalo a p = 0,5 e leggi 1,41: è √2. Poi a p = −1 e a p = −2: che frazioni ottieni?'
     },
     famigliaEsponenziali: {
-      tipo: 'piano', x: [-4, 4], y: [-1, 10],
-      funzioni: [{ f: 'a^x', etichetta: 'y = a^x', colore: 1 }],
+      tipo: 'piano', x: [-4, 4], y: [-1, 8],
+      funzioni: [{ f: 'a^x', etichetta: 'y = aˣ', colore: 1 }],
       punti: [{ x: 0, y: 1, etichetta: '(0; 1)', posizione: 'basso-destra' }],
-      elementi: [{ tipo: 'orizzontale', y: 0, asintoto: true, etichetta: 'y = 0' }],
+      elementi: [
+        { tipo: 'orizzontale', y: 0, asintoto: true },
+        { tipo: 'segmento', da: [1, 0], a: [1, 'a'], tratteggio: true, colore: 2 },
+        { tipo: 'punto', p: [1, 'a'], trascina: true, etichetta: 'a = {{a}}', posizione: 'destra', colore: 2 }
+      ],
       parametri: [{ nome: 'a', min: 0.2, max: 4, passo: 0.1, valore: 2, etichetta: 'a' }],
-      didascalia: 'Muovi il cursore: per a > 1 la curva cresce, per 0 < a < 1 decresce; passa sempre per (0; 1) e si avvicina a y = 0 senza mai toccarlo.'
+      didascalia: 'Trascina il punto sopra x = 1 (o usa il cursore): la sua altezza è la base a. Quale punto non si muove mai? E che cosa succede per a = 1?'
     },
     tangenteE: {
-      tipo: 'piano', x: [-3, 3], y: [-1, 8],
-      funzioni: [{ f: 'e^x', etichetta: 'y = e^x', colore: 1 }],
-      punti: [{ x: 0, y: 1, etichetta: '(0; 1)', posizione: 'basso-destra', colore: 2 }],
-      elementi: [{ tipo: 'tangente', f: 'e^x', x0: 0, etichetta: 't' }],
-      didascalia: 'La tangente in (0; 1) ha pendenza 1: è la proprietà che caratterizza il numero e fra tutte le basi possibili.'
+      tipo: 'piano', x: [-3, 3], y: [-1, 6],
+      funzioni: [{ f: 'a^x', etichetta: 'y = aˣ', colore: 1 }],
+      elementi: [{ tipo: 'tangente', f: 'a^x', x0: 0, colore: 2 }],
+      parametri: [{ nome: 'a', min: 1.5, max: 4, passo: 0.01, valore: 2, etichetta: 'base a' }],
+      didascalia: 'Cambia la base finché la pendenza m della tangente in (0; 1) non vale 1. La base che trovi è circa 2,72: il numero e.'
     },
-    equazioneEsponenziale: {
-      tipo: 'piano', x: [-2, 5], y: [-1, 10],
-      funzioni: [{ f: '2^x', etichetta: 'y = 2^x', colore: 1 }],
-      punti: [{ x: 3, y: 8, etichetta: '(3; 8)', posizione: 'alto-sinistra', colore: 2 }],
-      elementi: [{ tipo: 'orizzontale', y: 8, etichetta: 'y = 8', colore: 3 }],
-      didascalia: 'Risolvere 2^x = 8 significa cercare l\'ascissa del punto in cui il grafico di y = 2^x incontra la retta y = 8.'
-    },
-    simmetriaBasi: {
-      tipo: 'piano', x: [-4, 4], y: [-1, 10],
-      funzioni: [
-        { f: '2^x', etichetta: 'y = 2^x', colore: 1 },
-        { f: '0.5^x', etichetta: 'y = (1/2)^x', colore: 3 }
+    traslazione: {
+      tipo: 'piano', x: [-5, 5], y: [-4, 7],
+      parametri: [
+        { nome: 'h', min: -4, max: 4, passo: 0.5, valore: 0, nascosto: true },
+        { nome: 'q', min: -2, max: 5, passo: 0.5, valore: 1, nascosto: true }
       ],
-      punti: [{ x: 0, y: 1, etichetta: '(0; 1)', posizione: 'basso' }],
-      elementi: [{ tipo: 'orizzontale', y: 0, asintoto: true, etichetta: 'y = 0' }],
-      didascalia: 'Le due curve sono simmetriche rispetto all\'asse y: (1/2)^x = 2^(-x), il grafico di una è il ribaltamento orizzontale dell\'altra.'
+      funzioni: [
+        { f: '2^x', colore: 4, tratteggio: true },
+        { f: '2^(x-h) + q - 1', colore: 1 }
+      ],
+      elementi: [
+        { tipo: 'orizzontale', y: 'q - 1', asintoto: true, colore: 2, etichetta: 'asintoto' },
+        { tipo: 'punto', p: ['h', 'q'], trascina: true, etichetta: 'P({{h}}; {{q}})', posizione: 'alto-sinistra', colore: 2 },
+        { tipo: 'testo', p: [-4.8, 6.3], testo: 'h = {{h}};  k = {{q - 1}}', ancora: 'start' }
+      ],
+      didascalia: 'Trascina P. La curva tratteggiata è y = 2ˣ, quella piena è la sua copia spostata: P si sposta di h in orizzontale e di k in verticale, e l\'asintoto lo segue in su e in giù.'
     }
   },
 
@@ -187,8 +272,8 @@ Le curve $y=2^x$ e $y=\left(\frac12\right)^x$ sono specularmente simmetriche ris
 
     { titolo: 'Equazione esponenziale a basi uguali', problema: R`Risolvi $2^{3x-1} = 2^{x+5}$.`, passi: [
       R`Le basi sono già uguali ($2$): la funzione $y=2^x$ è iniettiva, quindi l'uguaglianza vale se e solo se sono uguali gli esponenti.`,
-      R`$3x-1 = x+5$.`,
-      R`$2x=6$, quindi $x=3$.`,
+      R`Uguaglio gli esponenti: $3x-1 = x+5$.`,
+      R`Porto le $x$ a sinistra e i numeri a destra: $2x=6$, quindi $x=3$.`,
       R`Verifica: $2^{3\cdot3-1}=2^8=256$ e $2^{3+5}=2^8=256$. ✓`
     ], risultato: R`$x=3$` },
 
@@ -205,11 +290,12 @@ Le curve $y=2^x$ e $y=\left(\frac12\right)^x$ sono specularmente simmetriche ris
       R`Da $5^x=5$ si ha $x=1$; da $5^x=1=5^0$ si ha $x=0$.`
     ], risultato: R`$x=0 \lor x=1$` },
 
-    { titolo: 'Disequazione esponenziale con a > 1', problema: R`Risolvi $5^{2x-3} \ge 5^{x+1}$.`, passi: [
-      R`La base $5$ è maggiore di $1$: $y=5^x$ è crescente, quindi il verso della disuguaglianza si **conserva** confrontando gli esponenti.`,
-      R`$2x-3 \ge x+1$.`,
-      R`$x \ge 4$.`
-    ], risultato: R`$x \ge 4$` },
+    { titolo: 'Disequazione esponenziale con base minore di 1', problema: R`Risolvi $\left(\dfrac12\right)^{x-1} > 4$.`, passi: [
+      R`Scrivo $4$ come potenza di $\dfrac12$: $\left(\dfrac12\right)^{-2} = 2^2 = 4$. La disequazione diventa $\left(\dfrac12\right)^{x-1} > \left(\dfrac12\right)^{-2}$.`,
+      R`La base $\dfrac12$ è minore di $1$: $y=\left(\dfrac12\right)^x$ è decrescente, quindi togliendo la base il verso **si rovescia**: $x-1 < -2$.`,
+      R`Porto $-1$ a destra: $x < -1$.`,
+      R`Controllo con $x=-2$: $\left(\dfrac12\right)^{-3} = 8$, e $8>4$ è vero.`
+    ], risultato: R`$x < -1$` },
 
     { titolo: 'Un modello di crescita esponenziale', problema: R`Una coltura di batteri raddoppia ogni $20$ minuti. Se all'inizio ci sono $500$ batteri, quanti ce ne sono dopo $2$ ore?`, passi: [
       R`Il modello è $N(t) = N_0 \cdot a^t$: conviene misurare $t$ in periodi di raddoppio, così la base è semplicemente $a=2$.`,
@@ -287,7 +373,7 @@ Le curve $y=2^x$ e $y=\left(\frac12\right)^x$ sono specularmente simmetriche ris
     { id: 'q-06', domanda: R`Qual è l'equazione dell'asintoto del grafico di $y=a^x$?`, opzioni: [R`$x=0$`, R`$y=1$`, R`$y=0$`, R`$y=a$`], corretta: 2, spiegazione: R`$a^x$ si avvicina a $0$ senza mai raggiungerlo, per $x \to -\infty$ se $a>1$ o per $x \to +\infty$ se $0<a<1$: l'asintoto è $y=0$.` },
     { id: 'q-07', domanda: R`Perché nella funzione esponenziale si richiede $a \ne 1$?`, opzioni: [R`perché altrimenti il dominio non sarebbe più $\mathbb{R}$`, R`perché altrimenti $a^0$ non esisterebbe`, R`perché $1^x=1$ per ogni $x$: sarebbe una funzione costante, non una vera esponenziale`, R`perché altrimenti l'immagine conterrebbe numeri negativi`], corretta: 2, spiegazione: R`Con $a=1$ la funzione diventa $y=1$ per ogni $x$: costante, quindi né crescente né decrescente, priva delle proprietà tipiche dell'esponenziale.` },
     { id: 'q-08', domanda: R`Perché nella funzione esponenziale si richiede $a>0$?`, opzioni: [R`per convenzione, ma non ci sarebbe nessun problema matematico con $a \le 0$`, R`perché altrimenti la funzione sarebbe decrescente`, R`perché altrimenti il grafico non passerebbe per $(0;1)$`, R`perché con base negativa o nulla $a^x$ non è definita, o non è continua, per molti valori reali di $x$`], corretta: 3, spiegazione: R`Con $a \le 0$ molte potenze con esponente reale non danno un numero reale ben definito (radici di numeri negativi, ambiguità fra frazioni equivalenti): si perderebbe la continuità su tutto $\mathbb{R}$.` },
-    { id: 'q-09', domanda: R`Il numero di Nepero $e$ è definito come…`, opzioni: [R`$\lim_{n\to\infty}\left(1+\dfrac1n\right)^n$`, R`$\lim_{n\to\infty}\left(1-\dfrac1n\right)^n$`, R`$\lim_{n\to\infty} n^{1/n}$`, R`$\lim_{n\to\infty}\left(1+\dfrac1n\right)^{2n}$`], corretta: 0, spiegazione: R`È la definizione classica di $e$. Il secondo limite vale $1/e$, il terzo vale $1$, il quarto vale $e^2$: tutti diversi da $e$.` },
+    { id: 'q-09', domanda: R`Il numero di Nepero $e$ è definito come…`, opzioni: [R`$\lim_{n\to\infty}\left(1+\dfrac1n\right)^n$`, R`$\lim_{n\to\infty}\left(1-\dfrac1n\right)^n$`, R`$\lim_{n\to\infty} n^{1/n}$`, R`$\lim_{n\to\infty}\left(1+\dfrac1n\right)^{2n}$`], corretta: 0, spiegazione: R`È la definizione classica di $e$. Gli altri limiti danno numeri diversi: con $1-\frac1n$ viene $\frac1e$, $n^{1/n}$ tende a $1$, e con l'esponente $2n$ viene $e^2$.` },
     { id: 'q-10', domanda: R`Nel punto $(0;1)$, la retta tangente al grafico di $y=e^x$ ha pendenza…`, opzioni: [R`$e$`, R`$0$`, R`$1$`, R`$-1$`], corretta: 2, spiegazione: R`È la proprietà che caratterizza $e$ fra tutte le basi possibili: in $(0;1)$ la pendenza della tangente a $y=e^x$ vale esattamente $1$.` },
     { id: 'q-11', domanda: R`Per risolvere $a^{f(x)}=a^{g(x)}$, con $a>0$ e $a\ne1$, si può…`, opzioni: [R`uguagliare direttamente gli esponenti, $f(x)=g(x)$`, R`sommare gli esponenti`, R`uguagliare le basi, che sono già uguali, e ignorare gli esponenti`, R`risolvere solo se $f(x)$ e $g(x)$ sono entrambi positivi`], corretta: 0, spiegazione: R`La funzione $y=a^x$ è iniettiva: a esponenti diversi corrispondono sempre valori diversi, quindi l'uguaglianza fra le potenze equivale all'uguaglianza fra gli esponenti.` },
     { id: 'q-12', domanda: R`Nella disequazione $a^{f(x)} > a^{g(x)}$ con $0<a<1$, il confronto fra gli esponenti…`, opzioni: [R`resta invariato: $f(x) > g(x)$`, R`si inverte: $f(x) < g(x)$`, R`dipende dal segno di $f(x)$`, R`non è possibile: servono i logaritmi`], corretta: 1, spiegazione: R`Con $0<a<1$ la funzione è decrescente: valori maggiori dell'esponente danno risultati minori, quindi il verso della disuguaglianza si inverte.` },
@@ -310,9 +396,9 @@ Le curve $y=2^x$ e $y=\left(\frac12\right)^x$ sono specularmente simmetriche ris
   ],
 
   aneddoti: [
-    { matematico: 'La leggenda della scacchiera', anni: 'leggenda, origine incerta (Persia o India medievale)', titolo: 'I chicchi di grano che il mondo non ha', testo: R`Si racconta che l'inventore del gioco degli scacchi, alla corte di un sovrano orientale entusiasta del gioco, non avesse chiesto oro né gioielli come ricompensa, ma un premio apparentemente modesto: un chicco di grano sulla prima casella della scacchiera, due sulla seconda, quattro sulla terza, e così via raddoppiando fino alla sessantaquattresima. Il sovrano, sorpreso da una richiesta così umile, accettò subito, prima di far fare i conti ai suoi tesorieri. Il totale è $2^{64}-1$, un numero di venti cifre: più di mille volte tutto il grano prodotto oggi sul pianeta in un anno intero. Non esiste una versione storica certa di questo racconto, che compare con dettagli diversi in fonti arabe, persiane e indiane fin dal Medioevo, ma il conto alla base è del tutto reale e si rifà facilmente con carta e penna.`, legame: R`È l'esempio più immediato di quanto una crescita esponenziale, che raddoppia ogni passo, superi presto ogni immaginazione: dopo poche decine di caselle i numeri diventano già astronomici.` },
+    { matematico: 'La leggenda della scacchiera', anni: 'leggenda, origine incerta (Persia o India medievale)', titolo: 'I chicchi di grano che il mondo non ha', testo: R`Si racconta che l'inventore del gioco degli scacchi, alla corte di un sovrano orientale entusiasta del gioco, non avesse chiesto oro né gioielli come ricompensa, ma un premio apparentemente modesto: un chicco di grano sulla prima casella della scacchiera, due sulla seconda, quattro sulla terza, e così via raddoppiando fino alla sessantaquattresima. Il sovrano, sorpreso da una richiesta così umile, accettò subito, prima di far fare i conti ai suoi tesorieri. Il totale è $2^{64}-1$, un numero di venti cifre: all'incirca mille volte tutto il grano che si produce oggi sulla Terra in un anno. Non esiste una versione storica certa di questo racconto, che compare con dettagli diversi in fonti arabe, persiane e indiane fin dal Medioevo, ma il conto alla base è del tutto reale e si rifà facilmente con carta e penna.`, legame: R`È l'esempio più immediato di quanto una crescita esponenziale, che raddoppia ogni passo, superi presto ogni immaginazione: dopo poche decine di caselle i numeri diventano già astronomici.` },
     { matematico: 'Jacob Bernoulli', anni: '1654–1705', titolo: 'L\'interesse che cresce sempre più spesso', testo: R`Nel 1683 il matematico svizzero Jacob Bernoulli si pose una domanda molto pratica: se un capitale frutta un interesse del $100\%$ all'anno, conviene capitalizzarlo una volta sola, oppure due volte al $50\%$, o quattro volte al $25\%$, e così via sempre più spesso? Bernoulli calcolò che, capitalizzando $n$ volte all'anno una frazione $1/n$ di interesse, il capitale finale si ottiene elevando $\left(1+\frac1n\right)$ alla $n$: aumentando $n$ il risultato cresce, ma non senza limite. Bernoulli dimostrò che il valore resta sempre compreso fra $2$ e $3$, anche capitalizzando istante per istante. Non diede un nome a quel limite (ci avrebbe pensato Eulero mezzo secolo dopo), ma fu il primo a dimostrare che esisteva.`, legame: R`Quel limite è esattamente $e = \lim_{n\to\infty}\left(1+\frac1n\right)^n$: il problema dell'interesse composto capitalizzato sempre più spesso è la porta da cui il numero di Nepero è entrato in matematica.` },
-    { matematico: 'Leonhard Euler', anni: '1707–1783', titolo: 'La lettera che Eulero scelse per un numero', testo: R`Il numero che oggi chiamiamo $e$ non porta il nome di chi lo scoprì per primo: fu Eulero, fra il 1727 e il 1731, a scegliere la lettera $e$ per indicarlo, in un manoscritto giovanile e poi in una lettera del 1731 all'amico matematico Christian Goldbach. Non si sa con certezza se $e$ stesse per "esponenziale" o fosse semplicemente la prima vocale libera, dato che $a$, $b$, $c$, $d$ erano già usate altrove nei suoi appunti: Eulero stesso non lo spiegò mai. La notazione comparve in stampa per la prima volta nel suo libro di meccanica del 1736, e nel 1748, nell'*Introductio in analysin infinitorum*, Eulero ne calcolò le prime diciotto cifre decimali e ne mostrò le proprietà fondamentali, rendendolo una delle costanti più importanti dell'analisi matematica.`, legame: R`È la stessa costante che compare come base "naturale" della funzione esponenziale $e^x$, quella con tangente di pendenza $1$ nel punto $(0;1)$.` },
+    { matematico: 'Leonhard Euler', anni: '1707–1783', titolo: 'La lettera che Eulero scelse per un numero', testo: R`Il numero che oggi chiamiamo $e$ non porta il nome di chi lo scoprì per primo: fu Eulero, fra il 1727 e il 1731, a scegliere la lettera $e$ per indicarlo, in un manoscritto giovanile e poi in una lettera del 1731 all'amico matematico Christian Goldbach. Non si sa con certezza se $e$ stesse per "esponenziale" o fosse semplicemente la prima vocale libera, dato che $a$, $b$, $c$, $d$ erano già usate altrove nei suoi appunti: Eulero stesso non lo spiegò mai. La notazione comparve in stampa per la prima volta nel suo libro di meccanica del 1736, e nel 1748, nell'*Introductio in analysin infinitorum*, Eulero ne calcolò le prime ventitré cifre decimali e ne mostrò le proprietà fondamentali, rendendolo una delle costanti più importanti dell'analisi matematica.`, legame: R`È la stessa costante che compare come base "naturale" della funzione esponenziale $e^x$, quella con tangente di pendenza $1$ nel punto $(0;1)$.` },
     { matematico: 'Thomas Robert Malthus', anni: '1766–1834', titolo: 'Una popolazione che cresce più in fretta del cibo', testo: R`Nel 1798 l'economista inglese Thomas Malthus pubblicò anonimo il *Saggio sul principio di popolazione*, sostenendo che la popolazione umana, se non frenata, cresce **geometricamente** (cioè esponenzialmente, raddoppiando a intervalli regolari), mentre le risorse alimentari possono crescere al massimo **aritmeticamente**, cioè di quantità costanti nel tempo. La conclusione, allarmante per l'epoca, era che la popolazione avrebbe presto superato la capacità della Terra di sfamarla, portando inevitabilmente a carestie, guerre o epidemie come "correttivi" naturali. Le previsioni di Malthus si sono rivelate sbagliate nel lungo periodo, soprattutto perché non aveva previsto i progressi dell'agricoltura, ma il suo modello matematico influenzò profondamente il pensiero scientifico successivo, compresa la teoria della selezione naturale di Charles Darwin.`, legame: R`È il primo esempio storico famoso in cui la differenza fra crescita esponenziale ($a^t$) e crescita lineare viene usata per fare una previsione concreta, giusta o sbagliata che fosse.` },
     { matematico: 'Willard Libby', anni: '1908–1980', titolo: 'Un orologio nascosto negli atomi', testo: R`Nel 1949 il chimico americano Willard Libby mise a punto un metodo per stimare l'età di reperti organici (legno, ossa, tessuti) misurando quanto carbonio-14 residuo contengono. Il carbonio-14 è un isotopo radioattivo che si forma nell'atmosfera e viene assorbito da ogni essere vivente; quando l'organismo muore smette di rinnovarlo, e la quantità presente decade seguendo una legge esponenziale con tempo di dimezzamento di circa $5730$ anni. Misurando quanto carbonio-14 resta rispetto a quello atteso, si risale a quanto tempo è passato dalla morte. Il metodo, che valse a Libby il premio Nobel per la chimica nel 1960, ha permesso di datare reperti archeologici in tutto il mondo, dai Rotoli del Mar Morto ad antichi insediamenti.`, legame: R`È l'applicazione più concreta della formula del decadimento $N(t)=N_0\left(\frac12\right)^{t/T}$, con base minore di $1$ e tempo di dimezzamento $T$ che qui vale $5730$ anni invece che pochi giorni.` }
   ]

@@ -4,227 +4,311 @@ COMPASSO.registra({
   id: 'successioni',
   titolo: 'Successioni e progressioni',
 
-  introduzione: R`Una successione è un elenco ordinato di numeri, uno per ogni numero naturale: il primo termine, il secondo, il terzo, e così via senza fine. Formalmente è una funzione che ha come dominio l'insieme $\mathbb{N}$ (a partire da $1$) e come codominio $\mathbb{R}$: invece di scrivere $f(n)$ si scrive $a_n$, e invece di un grafico continuo si ottiene una nuvola di punti isolati, uno per ogni intero.
+  introduzione: R`Metti $1000$ euro su un conto che rende il $2\%$ all'anno. Dopo un anno hai $1020$ euro, dopo due $1040{,}40$, dopo tre $1061{,}21$, e così via. Questi importi, uno per ogni anno, formano una **successione**: un elenco di numeri in fila, con un primo, un secondo, un terzo termine, che non finisce mai.
 
-Le successioni descrivono tutto ciò che cresce (o cala) un passo alla volta: il capitale su un conto che matura interessi anno dopo anno, il numero di batteri che raddoppia ogni ora, la posizione di una pallina che rimbalza perdendo un po' di energia a ogni colpo, il numero di operazioni di un algoritmo ricorsivo. Due famiglie sono così comuni da avere un nome proprio: le **progressioni aritmetiche**, che crescono di una quantità fissa a ogni passo, e le **progressioni geometriche**, che vengono moltiplicate per un fattore fisso.
+Le successioni servono per tutto quello che cambia a passi: i risparmi anno dopo anno, i batteri che raddoppiano ogni ora, l'altezza di una pallina che a ogni rimbalzo perde un pezzo di slancio. Due tipi sono così frequenti da avere un nome: le **progressioni aritmetiche**, dove a ogni passo si aggiunge sempre lo stesso numero, e le **progressioni geometriche**, dove a ogni passo si moltiplica sempre per lo stesso numero. Il conto in banca qui sopra è una progressione geometrica: ogni anno l'importo si moltiplica per $1{,}02$.
 
-Per seguire questo argomento serve conoscere le funzioni (dominio, codominio, grafico) e le potenze con esponente intero; le progressioni geometriche richiamano direttamente le funzioni esponenziali.`,
+Serve conoscere le funzioni (dominio, grafico) e le potenze con esponente intero.`,
+
+  inBreve: [
+    R`Una successione è un elenco infinito e ordinato di numeri $a_1, a_2, a_3, \dots$, cioè una funzione che ha per dominio i numeri naturali. Si assegna con una formula in $n$ oppure per ricorrenza, dicendo come si passa da un termine al successivo.`,
+    R`In una progressione **aritmetica** si somma sempre la stessa ragione $d$: $a_n = a_1 + (n-1)d$. I suoi punti stanno su una retta.`,
+    R`La somma dei primi $n$ termini di una progressione aritmetica è $S_n = \dfrac{(a_1 + a_n)\,n}{2}$: la media fra il primo e l'ultimo, moltiplicata per quanti sono.`,
+    R`In una progressione **geometrica** si moltiplica sempre per la ragione $q$: $a_n = a_1 q^{n-1}$. Se $|q| < 1$ i termini si avvicinano a zero, e la somma di tutti gli infiniti termini vale $\dfrac{a_1}{1 - q}$.`,
+    R`Il principio di induzione dimostra una proprietà per ogni $n$ con due controlli: vale per il primo valore; se vale per un $k$ qualunque, allora vale anche per $k + 1$.`
+  ],
 
   sezioni: [
-    { id: 'definizione', titolo: 'Che cos\'è una successione', testo: R`Una **successione** $(a_n)$ è una funzione il cui dominio è l'insieme dei numeri naturali (a partire da $1$, o talvolta da $0$) e il cui codominio è $\mathbb{R}$. Invece della notazione $f(n)$ usata per le funzioni comuni, si usa il **pedice**: $a_n$ indica il valore che la successione assume in corrispondenza del numero naturale $n$, e si legge "a con indice enne" oppure "termine ennesimo".
+    { id: 'definizione', titolo: 'Che cos\'è una successione', testo: R`In una successione ogni numero ha il suo posto: il primo, il secondo, il terzo… Il numero che sta al posto $n$ si chiama **termine $n$-esimo** e si scrive $a_n$ (si legge «a con $n$»). Per esempio nell'elenco $2, 5, 8, 11, \dots$ si ha $a_1 = 2$, $a_2 = 5$, $a_4 = 11$.
 
->* **Definizione:** una successione è una funzione $a: \mathbb{N} \to \mathbb{R}$. Si scrive $a_n$ al posto di $a(n)$, e la successione si indica con $(a_n)_{n \in \mathbb{N}}$ oppure semplicemente $(a_n)$.
+>* Una **successione** è una funzione che a ogni numero naturale $n$ (da $1$ in poi, a volte da $0$) associa un numero reale $a_n$. Si scrive $a_n$ al posto di $a(n)$, e la successione intera si indica con $(a_n)$.
 
-Una successione si può definire in due modi.
+Ci sono due modi per assegnare una successione.
 
-**Per termine generale.** Si dà una formula esplicita che calcola $a_n$ direttamente da $n$, senza passare dai termini precedenti. Per esempio $a_n = 3n - 1$ dà, per $n = 1, 2, 3, 4, \dots$, i termini $2, 5, 8, 11, \dots$
+**Con il termine generale**: una formula che dà $a_n$ direttamente a partire da $n$. Con $a_n = 3n - 1$, per trovare il decimo termine basta fare $a_{10} = 3 \cdot 10 - 1 = 29$.
 
-**Per ricorrenza.** Si dà uno o più **termini iniziali** e una **legge ricorsiva** che calcola ogni termine a partire da quelli precedenti. La stessa successione di prima si ottiene anche così: $a_1 = 2$, $a_{n+1} = a_n + 3$. Per calcolare $a_4$ servono tutti i termini precedenti, uno dopo l'altro: non si può "saltare" a metà elenco come con il termine generale.
+**Per ricorrenza**: si dà il primo termine e la regola per passare da un termine al successivo. La stessa successione si scrive $a_1 = 2$, $a_{n+1} = a_n + 3$: «ogni termine è il precedente più $3$». Per arrivare al decimo termine, però, bisogna calcolare tutti quelli prima, uno dopo l'altro.
 
-Le due definizioni descrivono spesso la stessa successione, ma con logiche opposte: il termine generale guarda direttamente al posto $n$, la ricorrenza guarda al passo precedente. Alcune successioni molto naturali, come quella di Fibonacci, hanno una ricorrenza semplicissima ma un termine generale complicato.
+?? Con $a_1 = 2$ e $a_{n+1} = 3a_n - 1$, quanto vale $a_3$?
+[x] $14$
+[ ] $5$
+[ ] $8$
+=> Si va un passo alla volta: $a_2 = 3 \cdot 2 - 1 = 5$, poi $a_3 = 3 \cdot 5 - 1 = 14$. $5$ è il secondo termine, non il terzo. $8$ viene dal mettere $n = 3$ nella regola come se fosse una formula, $3 \cdot 3 - 1$: ma nella ricorrenza al posto della $a_n$ va il termine precedente, non l'indice.
 
->! L'indice $n$ è sempre un numero naturale: non ha senso chiedersi quanto vale $a_{2,5}$ o $a_{-1}$. Questo distingue le successioni dalle funzioni di variabile reale studiate finora, il cui dominio è di solito un intervallo.` },
+>! L'indice $n$ è un numero naturale: $a_{2{,}5}$ o $a_{-1}$ non esistono. Il dominio di una successione non è un intervallo, è fatto di numeri interi separati.` },
 
-    { id: 'grafico-monotonia', titolo: 'Grafico, successioni monotone e limitate', testo: R`Poiché il dominio di una successione è $\mathbb{N}$, il suo grafico non è una curva continua ma un insieme di **punti isolati**: uno per ogni $n = 1, 2, 3, \dots$, di coordinate $(n, a_n)$. Non ha senso "unire i puntini": tra $n = 3$ e $n = 4$ la successione non è definita, esattamente come non ha senso l'interesse maturato dopo $3,5$ anni se la banca lo accredita una volta l'anno.
+    { id: 'grafico-monotonia', titolo: 'Grafico, successioni monotone e limitate', testo: R`Il grafico di una successione è fatto di **punti staccati**, uno per ogni $n$, di coordinate $(n;\ a_n)$. I puntini non si uniscono: fra $n = 3$ e $n = 4$ la successione non esiste, come non esiste il saldo del conto «dopo tre anni e mezzo» se la banca accredita gli interessi una volta all'anno.
 
-Guardando la disposizione dei punti si riconoscono due proprietà.
+Dalla fila dei punti si vedono due proprietà.
 
-**Monotonia.** Una successione è **crescente** se $a_{n+1} > a_n$ per ogni $n$ (ogni punto sta più in alto del precedente), **decrescente** se $a_{n+1} < a_n$. Con le disuguaglianze deboli ($\ge$, $\le$) si parla di successione **non decrescente** o **non crescente**. Una successione è **monotona** se è, in senso stretto o largo, sempre crescente oppure sempre decrescente: non deve cambiare comportamento a metà strada.
+>* **Monotonia:** $(a_n)$ è **crescente** se $a_{n+1} > a_n$ per ogni $n$ (ogni punto sta più in alto del precedente), **decrescente** se $a_{n+1} < a_n$ per ogni $n$. Con $\ge$ o $\le$ si dice non decrescente o non crescente. È **monotona** se fa sempre la stessa cosa dall'inizio alla fine. **Limitatezza:** $(a_n)$ è **limitata** se tutti i termini stanno fra due numeri fissi $m$ ed $M$: $m \le a_n \le M$ per ogni $n$.
 
-**Limitatezza.** Una successione è **limitata superiormente** se esiste un numero $M$ tale che $a_n \le M$ per ogni $n$; **limitata inferiormente** se esiste $m$ con $a_n \ge m$ per ogni $n$; è **limitata** se lo è in entrambi i sensi.
+Esempi: $a_n = \dfrac{1}{n}$ è decrescente e limitata, perché sta sempre fra $0$ e $1$. $a_n = n^2$ è crescente e non è limitata: non scende mai sotto $1$, ma prima o poi supera qualunque numero. $a_n = (-1)^n$ salta fra $-1$ e $1$: non è monotona, però è limitata.
 
->* $a_n = \dfrac{1}{n}$ è decrescente (perché $\frac{1}{n+1} < \frac{1}{n}$) e limitata: $0 < a_n \le 1$ per ogni $n$. $a_n = n^2$ è crescente ma limitata solo inferiormente ($a_n \ge 1$): cresce senza fermarsi mai.
+Per dimostrare che una successione è crescente si studia il segno della differenza fra un termine e il precedente. Con $a_n = \dfrac{n}{n+1}$:
 
-Non tutte le successioni sono monotone: $a_n = (-1)^n$ vale alternativamente $-1$ e $1$, quindi non è né crescente né decrescente, ma è limitata, perché sta sempre tra $-1$ e $1$.
+~ a_{n+1} - a_n = \dfrac{n+1}{n+2} - \dfrac{n}{n+1} :: il termine dopo meno il termine prima
+~ = \dfrac{\evid{(n+1)^2 - n(n+2)}}{(n+1)(n+2)} :: faccio il denominatore comune
+~ = \dfrac{\evid{n^2 + 2n + 1 - n^2 - 2n}}{(n+1)(n+2)} :: sviluppo il numeratore
+~ = \dfrac{1}{(n+1)(n+2)} \evidb{> 0} :: resta $1$ fratto un numero positivo: ogni termine supera il precedente, la successione è crescente
 
->! Verificare la monotonia calcolando due o tre termini non basta: $a_{n+1} > a_n$ deve valere per *ogni* $n$, e va dimostrato in generale, per esempio studiando il segno di $a_{n+1} - a_n$, non solo controllato sui primi valori.` },
+>! Calcolare i primi tre termini non basta per dire che una successione è crescente: la disuguaglianza deve valere per **ogni** $n$, e va dimostrata in generale, come qui sopra.` },
 
-    { id: 'progressioni-aritmetiche', titolo: 'Le progressioni aritmetiche', testo: R`Una **progressione aritmetica** è una successione in cui ogni termine si ottiene dal precedente sommando sempre lo stesso numero, chiamato **ragione** e indicato con $d$: $$a_{n+1} = a_n + d.$$
+    { id: 'progressioni-aritmetiche', titolo: 'Le progressioni aritmetiche', testo: R`Un abbonamento in palestra costa $30$ euro di iscrizione più $20$ euro al mese. Il totale speso dopo $1, 2, 3, \dots$ mesi è $50, 70, 90, \dots$: ogni volta si aggiunge $20$.
 
->* **Termine generale:** $$a_n = a_1 + (n-1)d.$$ Il termine $a_n$ si ottiene da $a_1$ sommando $d$ tante volte quanti sono i passi da $1$ a $n$, cioè $n-1$ volte.
+>* Una **progressione aritmetica** è una successione in cui ogni termine è il precedente **più** un numero fisso $d$, la **ragione**: $a_{n+1} = a_n + d$. Il termine generale è $$a_n = a_1 + (n-1)d.$$
 
-Il segno di $d$ decide la monotonia: se $d > 0$ la progressione è crescente, se $d < 0$ è decrescente, se $d = 0$ è costante (tutti i termini uguali ad $a_1$). È sempre non limitata: superiormente se $d > 0$, inferiormente se $d < 0$; è limitata soltanto quando $d = 0$.
+Perché $n - 1$ e non $n$? Da $a_1$ ad $a_n$ ci sono $n - 1$ passi, e a ogni passo si aggiunge $d$. Per la palestra: $a_{12} = 50 + 11 \cdot 20 = 270$ euro dopo un anno.
 
-Esempio: $a_1 = 5$, $d = 3$. I termini sono $5, 8, 11, 14, 17, \dots$ e il decimo vale $a_{10} = 5 + 9 \cdot 3 = 32$.
+Il segno di $d$ decide tutto: con $d > 0$ la progressione cresce, con $d < 0$ cala, con $d = 0$ resta ferma. Tranne che con $d = 0$, non è limitata: prima o poi supera qualunque numero (se $d > 0$) o scende sotto qualunque numero (se $d < 0$).
 
-Graficamente, i punti $(n, a_n)$ di una progressione aritmetica stanno tutti allineati: la retta che li contiene è $y = a_1 + (x-1)d$, la stessa formula del termine generale con $x$ al posto di $n$. Non è un caso: una progressione aritmetica è, per così dire, una funzione lineare "campionata" solo sui numeri naturali.
-
-Prova a cambiare $a_1$ e $d$ nel grafico: i punti restano sempre allineati sulla retta tratteggiata, e cambia solo la loro posizione.
+Nel grafico trascina i primi due punti, $a_1$ e $a_2$, su e giù.
 
 [[grafico:progressione-aritmetica]]
 
->! $d$ è la differenza *tra un termine e il precedente* ($a_{n+1} - a_n$), non $a_n$ diviso $n$ o altre combinazioni. Si calcola facendo la differenza di due termini consecutivi qualunque: $d = a_3 - a_2 = a_2 - a_1$.` },
+Tutti gli altri termini li seguono, e restano sempre in fila su una retta: due termini bastano a decidere l'intera progressione. La pendenza della retta è proprio $d$, perché fra un punto e il successivo si va avanti di $1$ e si sale di $d$.
 
-    { id: 'somma-aritmetica', titolo: 'La somma di una progressione aritmetica', testo: R`Quanto vale la somma dei primi $n$ termini di una progressione aritmetica? Carl Friedrich Gauss, ancora bambino, trovò la scorciatoia sommando i numeri da $1$ a $100$ in coppie: primo più ultimo, secondo più penultimo, e così via. Ogni coppia dà la stessa somma, $a_1 + a_n$, e le coppie sono $\dfrac{n}{2}$.
+>! La ragione si calcola come differenza fra un termine e **il precedente**: $d = a_2 - a_1 = a_3 - a_2$. Se i termini che conosci non sono vicini, conta i passi che li separano.
+
+?? In una progressione aritmetica $a_3 = 10$ e $a_7 = 22$. Quanto vale $d$?
+[x] $3$
+[ ] $12$
+[ ] $2{,}4$
+=> Da $a_3$ ad $a_7$ ci sono $7 - 3 = 4$ passi, e in tutto si sale di $22 - 10 = 12$: quindi $d = \frac{12}{4} = 3$. $12$ è la salita totale, non quella di un passo. $2{,}4$ viene dal dividere per $5$, cioè dal contare i termini ($a_3, a_4, a_5, a_6, a_7$) invece dei passi.` },
+
+    { id: 'somma-aritmetica', titolo: 'La somma di una progressione aritmetica', testo: R`Quanto fa $1 + 2 + 3 + \dots + 100$? Si racconta che Gauss, da bambino, rispose in pochi secondi, sommando i numeri a coppie: il primo con l'ultimo, il secondo con il penultimo, e così via. Guarda perché funziona.
 
 [[animazione:gauss]]
 
->* **Somma dei primi $n$ termini:** $$S_n = a_1 + a_2 + \dots + a_n = \frac{(a_1 + a_n)\,n}{2}.$$ È "la media tra primo e ultimo termine, moltiplicata per quanti sono i termini".
+Scritto in colonna, il trucco è questo:
 
-Sostituendo $a_n = a_1 + (n-1)d$ si ottiene una forma equivalente che non richiede di conoscere $a_n$: $$S_n = \frac{\bigl(2a_1 + (n-1)d\bigr)\,n}{2}.$$
+~ S = 1 + 2 + \dots + 99 + 100 :: la somma che voglio
+~ S = \evid{100 + 99 + \dots + 2 + 1} :: la stessa somma, scritta al contrario
+~ 2S = \evid{101 + 101 + \dots + 101} :: sommo le due righe in colonna: ogni colonna fa $101$
+~ 2S = 100 \cdot 101 :: le colonne sono tante quanti i termini, cioè $100$
+~ S = \evidb{5050} :: divido per $2$
 
-Esempio: la somma dei primi $10$ termini di $5, 8, 11, 14, \dots$ ($a_1 = 5$, $d = 3$, $a_{10} = 32$): $$S_{10} = \frac{(5 + 32) \cdot 10}{2} = 185.$$
+Con una progressione aritmetica qualunque succede lo stesso: ogni colonna vale primo più ultimo, $a_1 + a_n$, perché scendendo di un posto da una parte si sale di un posto dall'altra.
+
+>* **Somma dei primi $n$ termini** di una progressione aritmetica: $$S_n = \frac{(a_1 + a_n)\,n}{2}.$$ È la media fra il primo e l'ultimo termine, moltiplicata per il numero dei termini.
+
+Se non conosci $a_n$, puoi sostituire $a_n = a_1 + (n-1)d$ e ottenere $S_n = \dfrac{\bigl(2a_1 + (n-1)d\bigr)\,n}{2}$. Per esempio, i primi $10$ termini di $5, 8, 11, \dots$ hanno $a_{10} = 5 + 9 \cdot 3 = 32$, e sommano $S_{10} = \dfrac{(5 + 32) \cdot 10}{2} = 185$.
+
+>! Nella formula $n$ è il **numero di termini** che sommi, non l'indice dell'ultimo. Da $a_5$ ad $a_{12}$ i termini sono $12 - 5 + 1 = 8$.
+
+?? Quanti termini ci sono nella somma $a_4 + a_5 + \dots + a_{20}$?
+[x] $17$
+[ ] $16$
+[ ] $20$
+=> Si fa ultimo indice meno primo indice, **più uno**: $20 - 4 + 1 = 17$. $16$ dimentica il $+1$ (conta i passi, non i termini); $20$ conta anche $a_1, a_2, a_3$, che non ci sono.
 
 ### Inserire medi aritmetici
 
-"Inserire $k$ medi aritmetici tra $a$ e $b$" significa costruire una progressione aritmetica che parte da $a$, arriva a $b$ dopo $k$ termini intermedi, e trovare quei termini intermedi. In totale la progressione ha $k + 2$ termini ($a$, i $k$ medi, $b$), quindi $b = a + (k+1)d$, da cui $$d = \frac{b - a}{k+1}.$$
+«Inserire $k$ medi aritmetici fra $a$ e $b$» vuol dire trovare $k$ numeri da mettere in mezzo in modo che tutta la fila sia una progressione aritmetica. La fila ha $k + 2$ termini, quindi da $a$ a $b$ ci sono $k + 1$ passi: $$d = \frac{b - a}{k + 1}.$$
 
-Esempio: inserire $3$ medi aritmetici tra $2$ e $14$. Qui $k = 3$, quindi $d = \dfrac{14-2}{4} = 3$: la progressione è $2, 5, 8, 11, 14$.
+Per esempio, $3$ medi fra $2$ e $14$: $d = \dfrac{14 - 2}{4} = 3$, e la fila è $2, 5, 8, 11, 14$. Con un solo medio ($k = 1$) si ottiene la media aritmetica $\dfrac{a + b}{2}$.` },
 
-Il caso $k = 1$ è il più comune: un solo medio aritmetico tra $a$ e $b$ è semplicemente la loro **media aritmetica**, $\dfrac{a+b}{2}$.
+    { id: 'progressioni-geometriche', titolo: 'Le progressioni geometriche', testo: R`Una colonia di batteri raddoppia ogni ora: $100$, $200$, $400$, $800$, … Qui a ogni passo non si aggiunge sempre lo stesso numero, si **moltiplica** sempre per lo stesso numero.
 
->! $n$ nella formula della somma è il numero di **termini**, non l'ultimo indice se la successione non parte da $1$. Se si sommano i termini da $a_5$ ad $a_{12}$, i termini sono $12 - 5 + 1 = 8$, non $12$.` },
+>* Una **progressione geometrica** è una successione in cui ogni termine è il precedente **per** un numero fisso $q \ne 0$, la **ragione**: $a_{n+1} = a_n \cdot q$ (con $a_1 \ne 0$). Il termine generale è $$a_n = a_1 \cdot q^{\,n-1}.$$
 
-    { id: 'progressioni-geometriche', titolo: 'Le progressioni geometriche', testo: R`Una **progressione geometrica** è una successione in cui ogni termine si ottiene dal precedente moltiplicandolo sempre per lo stesso numero, la **ragione** $q$ (con $a_1 \ne 0$ e $q \ne 0$): $$a_{n+1} = a_n \cdot q.$$
+Anche qui l'esponente è $n - 1$ perché da $a_1$ ad $a_n$ ci sono $n - 1$ passi. Con $a_1 = 3$ e $q = 2$ si ha $3, 6, 12, 24, \dots$ e $a_6 = 3 \cdot 2^5 = 96$.
 
->* **Termine generale:** $$a_n = a_1 \cdot q^{\,n-1}.$$ Ogni termine è il primo moltiplicato per $q$ tante volte quanti sono i passi da $1$ a $n$.
-
-Il comportamento dipende tutto dal valore di $q$ (supponendo $a_1 > 0$):
-
-- $q > 1$: i termini crescono sempre più in fretta (crescita esponenziale);
-- $q = 1$: successione costante;
-- $0 < q < 1$: i termini calano, avvicinandosi a $0$ senza mai raggiungerlo;
-- $q = -1$: i termini oscillano tra $a_1$ e $-a_1$, senza crescere né calare;
-- $-1 < q < 0$: i termini oscillano di segno, avvicinandosi a $0$;
-- $q < -1$: i termini oscillano di segno e crescono in valore assoluto.
-
-Esempio: $a_1 = 3$, $q = 2$: la progressione è $3, 6, 12, 24, 48, \dots$, e $a_6 = 3 \cdot 2^5 = 96$.
-
-Una progressione geometrica è, come quella aritmetica, una funzione già nota "campionata" sui naturali: qui è la funzione esponenziale $f(x) = a_1 \cdot q^{x-1}$ a passare esattamente per i punti $(n, a_n)$, quando $q > 0$. Il grafico qui sotto mostra i punti $1, q, q^2, \dots, q^7$ (cioè $a_1 = 1$): muovi il cursore di $q$ tra $-1{,}5$ e $1{,}5$ e osserva i comportamenti descritti sopra.
+Come si comporta una progressione geometrica dipende quasi tutto da $q$. Nel grafico $a_1 = 1$: trascina il secondo punto, che vale proprio $q$, oppure usa il cursore, e prova valori di $q$ maggiori di $1$, fra $0$ e $1$, fra $-1$ e $0$, minori di $-1$.
 
 [[grafico:progressione-geometrica]]
 
->! Il segno di $q$ non è il segno dei termini: con $a_1 > 0$ e $q < 0$ i termini **alternano** segno (positivo, negativo, positivo, …), non sono tutti negativi. Controlla sempre qualche termine a mano per evitare errori di segno.` },
+Con $a_1 > 0$ succede questo:
 
-    { id: 'serie-geometrica', titolo: 'La somma di una progressione geometrica e un cenno alla serie infinita', testo: R`Anche per la somma dei primi $n$ termini di una progressione geometrica c'è una scorciatoia. Si parte da $S_n = a_1 + a_1 q + a_1 q^2 + \dots + a_1 q^{n-1}$ e si moltiplica per $q$: $qS_n = a_1 q + a_1 q^2 + \dots + a_1 q^n$. Sottraendo, quasi tutti i termini si cancellano e resta $S_n - qS_n = a_1 - a_1 q^n$, da cui:
+| ragione | i termini… |
+|---|---|
+| $q > 1$ | crescono sempre più in fretta |
+| $q = 1$ | restano tutti uguali |
+| $0 < q < 1$ | calano e si avvicinano a $0$, senza arrivarci |
+| $-1 < q < 0$ | cambiano segno a ogni passo e si avvicinano a $0$ |
+| $q = -1$ | saltano fra $a_1$ e $-a_1$ |
+| $q < -1$ | cambiano segno a ogni passo e si allontanano da $0$ |
 
->* **Somma dei primi $n$ termini** (se $q \ne 1$): $$S_n = a_1 \cdot \frac{q^n - 1}{q - 1}.$$ Se $q = 1$ la formula non si può usare (denominatore nullo): la progressione è costante e $S_n = n \cdot a_1$.
+>! Con $q < 0$ i termini **non** sono tutti negativi: cambiano segno a ogni passo. Il segno di $a_n$ dipende da quante volte hai moltiplicato per un numero negativo.
 
-Esempio: $a_1 = 3$, $q = 2$, $n = 6$: $S_6 = 3 \cdot \dfrac{2^6 - 1}{2 - 1} = 3 \cdot 63 = 189$.
+?? Con $a_1 = 3$ e $q = -2$, quanto vale $a_4$?
+[x] $-24$
+[ ] $24$
+[ ] $48$
+=> $a_4 = 3 \cdot (-2)^3 = 3 \cdot (-8) = -24$: tre moltiplicazioni per un negativo danno un negativo. $24$ perde il segno; $48 = 3 \cdot (-2)^4$ usa l'esponente $4$ invece di $n - 1 = 3$.` },
 
-### Un cenno alla serie infinita
+    { id: 'serie-geometrica', titolo: 'La somma di una progressione geometrica e un cenno alla serie infinita', testo: R`Per sommare i termini di una progressione geometrica non servono le coppie di Gauss: c'è un altro trucco, moltiplicare tutta la somma per $q$. I termini scivolano di un posto e quasi tutti si cancellano.
 
-Che cosa succede a $S_n$ se si sommano **infiniti** termini? Se $|q| < 1$, la potenza $q^n$ si avvicina sempre di più a $0$ al crescere di $n$, perché moltiplicare ripetutamente per un numero minore di $1$ in valore assoluto rimpicciolisce. Nella formula della somma, $q^n \to 0$ e resta: $$S_n \to \frac{a_1}{1 - q}.$$ Sommare infiniti numeri, tutti diversi da zero, dà un risultato **finito**: è il cuore del paradosso di Achille e la tartaruga, che Zenone propose 24 secoli fa proprio per mettere in crisi questa idea.
+~ S_n = a_1 + a_1 q + a_1 q^2 + \dots + a_1 q^{n-1} :: la somma dei primi $n$ termini
+~ qS_n = \evid{a_1 q + a_1 q^2 + \dots + a_1 q^{n-1}} + a_1 q^n :: moltiplico per $q$: ogni termine diventa il successivo
+~ S_n - qS_n = a_1 - a_1 q^n :: sottraggo le due righe: il pezzo evidenziato è uguale in tutte e due e sparisce
+~ S_n(1 - q) = a_1(1 - q^n) :: raccolgo $S_n$ a sinistra e $a_1$ a destra
+~ S_n = \evidb{a_1 \cdot \dfrac{1 - q^n}{1 - q}} :: divido per $1 - q$, che non è zero se $q \ne 1$
+
+>* **Somma dei primi $n$ termini** di una progressione geometrica con $q \ne 1$: $$S_n = a_1 \cdot \frac{1 - q^n}{1 - q} = a_1 \cdot \frac{q^n - 1}{q - 1}.$$ Le due scritture sono uguali (ho cambiato segno sopra e sotto). Se $q = 1$ tutti i termini valgono $a_1$ e $S_n = n \cdot a_1$.
+
+Per esempio, con $a_1 = 3$, $q = 2$ e $n = 6$: $S_6 = 3 \cdot \dfrac{2^6 - 1}{2 - 1} = 3 \cdot 63 = 189$.
+
+### Sommare infiniti termini
+
+Si possono sommare infiniti numeri positivi e ottenere un numero finito? Il filosofo Zenone, circa $2500$ anni fa, pensava di no, e ne tirava fuori un paradosso: Achille non raggiungerebbe mai la tartaruga.
 
 [[animazione:achille-tartaruga]]
 
-Esempio: $\dfrac{1}{2} + \dfrac{1}{4} + \dfrac{1}{8} + \dots$ è una progressione geometrica con $a_1 = \dfrac{1}{2}$ e $q = \dfrac{1}{2}$: la somma della serie vale $\dfrac{1/2}{1 - 1/2} = 1$. Il grafico mostra le somme parziali che si avvicinano a $1$ senza mai superarlo.
+La risposta sta nella formula. Se $|q| < 1$, la potenza $q^n$ diventa piccolissima al crescere di $n$ (moltiplicare tante volte per un numero come $\frac12$ rimpicciolisce sempre di più). Nella formula, $1 - q^n$ si avvicina a $1$, e la somma si avvicina a un numero preciso.
 
-[[grafico:serie-dimezzata]]
+>* Se $|q| < 1$, la somma di **tutti** gli infiniti termini della progressione geometrica vale $$S = \frac{a_1}{1 - q}.$$ Per esempio $\frac12 + \frac14 + \frac18 + \dots = \dfrac{1/2}{1 - 1/2} = 1$.
 
->! La formula $S = \dfrac{a_1}{1-q}$ vale **solo** se $|q| < 1$. Se $|q| \ge 1$ la serie infinita non ha somma finita: o cresce senza limite, o, con $q = -1$, oscilla senza mai stabilizzarsi.` },
+Nel grafico ci sono le somme parziali $S_1, S_2, \dots, S_{15}$ con $a_1 = 1$. Muovi $q$ e guarda come si avvicinano alla linea tratteggiata, che vale $\frac{1}{1-q}$. Che cosa cambia quando $q$ è negativo?
 
-    { id: 'fibonacci', titolo: 'La successione di Fibonacci e il rapporto aureo', testo: R`La successione di Fibonacci è definita per ricorrenza, e non con un termine generale semplice (che pure esiste, ma è un'espressione con $\sqrt{5}$, tutt'altro che immediata):
+[[grafico:somme-parziali]]
 
->* $$F_1 = 1, \quad F_2 = 1, \quad F_{n+1} = F_n + F_{n-1} \quad (n \ge 2).$$ Ogni termine, da $F_3$ in poi, è la somma dei **due** precedenti: $1, 1, 2, 3, 5, 8, 13, 21, 34, \dots$
+Con $q$ positivo le somme parziali salgono verso il limite da sotto; con $q$ negativo i termini cambiano segno, e le somme saltano una volta sopra e una sotto, stringendosi attorno al limite.
 
-È una ricorrenza del secondo ordine: per calcolare un termine non basta conoscere il precedente, ne servono due. Leonardo Fibonacci la presentò nel 1202, nel *Liber Abaci*, come soluzione di un problema su una coppia di conigli che si riproducono un mese dopo l'altro.
+?? Quanto fa $1 + 2 + 4 + 8 + \dots$, sommando tutti gli infiniti termini?
+=> Non ha una somma finita: i termini crescono, e la somma supera qualunque numero. Se si usa lo stesso la formula si ottiene $\frac{1}{1 - 2} = -1$, un risultato assurdo (una somma di numeri positivi non può essere negativa). La formula $\frac{a_1}{1-q}$ si può usare solo dopo aver controllato che $|q| < 1$.
 
-Il rapporto tra un termine e il precedente, $\dfrac{F_{n+1}}{F_n}$, non è costante (altrimenti sarebbe una progressione geometrica), ma **si avvicina** sempre di più, al crescere di $n$, a un numero preciso:
+>! $\dfrac{a_1}{1 - q}$ vale **solo** se $|q| < 1$. Con $|q| \ge 1$ i termini non diventano piccoli, e le somme parziali non si avvicinano a nessun numero: la somma infinita non ha un valore.` },
 
->* **Rapporto aureo:** $$\varphi = \frac{1 + \sqrt{5}}{2} \approx 1{,}618\dots$$ $\varphi$ è l'unico numero positivo che soddisfa $\varphi^2 = \varphi + 1$: aggiungendo $1$ si ottiene il suo quadrato.
+    { id: 'fibonacci', titolo: 'La successione di Fibonacci e il rapporto aureo', testo: R`Nel 1202 Leonardo Fibonacci, nel *Liber Abaci*, contava le coppie di conigli di un allevamento in cui ogni coppia adulta genera una nuova coppia al mese. Mese dopo mese le coppie sono $1, 1, 2, 3, 5, 8, 13, \dots$: ogni numero è la somma dei due prima.
 
-Disegnando quadrati di lato $F_1, F_2, F_3, \dots$ accostati a spirale, e tracciando un arco in ognuno, si ottiene una spirale che approssima, non esattamente, la disposizione di semi, squame e conchiglie osservabile in molte piante e animali.
+>* La **successione di Fibonacci** è definita per ricorrenza: $F_1 = 1$, $F_2 = 1$ e $F_{n+1} = F_n + F_{n-1}$ per $n \ge 2$. Da $F_3$ in poi ogni termine è la somma dei **due** precedenti: $1, 1, 2, 3, 5, 8, 13, 21, 34, \dots$
+
+Qui per calcolare un termine non basta il precedente: ne servono due, ed è per questo che all'inizio si danno due termini. Nell'animazione ogni quadrato ha per lato la somma dei lati dei due quadrati precedenti, e si appoggia a loro.
 
 [[animazione:fibonacci-spirale]]
 
->! $\varphi$ non è "il numero che sta in ogni cosa bella": la sua presenza in natura è reale in alcuni casi (fillotassi delle piante) ma è stata esagerata in molti altri (opere d'arte, corpo umano). Meglio restare sui fatti verificabili: il limite del rapporto tra termini consecutivi di Fibonacci è $\varphi$, punto.` },
+Esiste anche un termine generale, ma contiene $\sqrt{5}$ ed è molto più scomodo della ricorrenza.
 
-    { id: 'induzione', titolo: 'Il principio di induzione', testo: R`Il **principio di induzione** è una tecnica per dimostrare che una proprietà $P(n)$ è vera per **tutti** i numeri naturali, da un certo punto in poi, senza controllarla uno per uno: sarebbe impossibile, essendo infiniti.
+Fibonacci non è una progressione geometrica: il rapporto fra un termine e il precedente non è fisso. Però si stabilizza: $\frac{8}{5} = 1{,}6$, $\frac{13}{8} = 1{,}625$, $\frac{21}{13} \approx 1{,}615$, $\frac{34}{21} \approx 1{,}619$…
 
-Lo schema ha due passi:
+>* Al crescere di $n$, il rapporto $\dfrac{F_{n+1}}{F_n}$ si avvicina al **rapporto aureo** $$\varphi = \frac{1 + \sqrt{5}}{2} \approx 1{,}618,$$ l'unico numero positivo con $\varphi^2 = \varphi + 1$.
 
-1. **Base:** si verifica che $P(n_0)$ è vera (di solito $n_0 = 1$).
-2. **Passo induttivo:** si suppone che $P(k)$ sia vera per un generico $k \ge n_0$ (l'**ipotesi induttiva**) e si dimostra che, di conseguenza, è vera anche $P(k+1)$.
+>! Del rapporto aureo si leggono molte esagerazioni (il corpo umano, i quadri famosi). Il fatto sicuro è questo: è il numero a cui si avvicinano i rapporti fra termini consecutivi di Fibonacci, e compare davvero nella disposizione di foglie e semi di alcune piante.` },
 
->* Se valgono entrambi i passi, $P(n)$ è vera per **ogni** $n \ge n_0$: è come una fila di tessere del domino, ognuna abbastanza vicina alla successiva da farla cadere. Far cadere la prima e garantire che ogni tessera fa cadere quella dopo basta per l'intera fila, per quanto lunga.
-
-**Esempio: la somma dei primi $n$ numeri dispari.** Si vuole dimostrare che $1 + 3 + 5 + \dots + (2n - 1) = n^2$ per ogni $n \ge 1$.
-
-*Base* ($n=1$): il primo membro è $1$ (un solo termine, il primo dispari), il secondo è $1^2 = 1$. Verificata.
-
-*Passo induttivo:* si suppone vera l'ipotesi $1 + 3 + \dots + (2k-1) = k^2$ e si dimostra che vale anche per $k+1$, cioè che $1 + 3 + \dots + (2k-1) + (2k+1) = (k+1)^2$. Per ipotesi la somma dei primi $k$ dispari è $k^2$, quindi il primo membro diventa $k^2 + (2k+1)$, che è proprio $(k+1)^2$. Passo verificato.
-
-Per il principio di induzione, la formula vale per ogni $n \ge 1$.
+    { id: 'induzione', titolo: 'Il principio di induzione', testo: R`Somma i primi numeri dispari: $1 = 1$, $1 + 3 = 4$, $1 + 3 + 5 = 9$, $1 + 3 + 5 + 7 = 16$. Escono i quadrati. L'animazione mostra perché: ogni nuovo dispari è una «L» che allarga il quadrato di un giro.
 
 [[animazione:somma-dispari]]
 
->! Nel passo induttivo non si dimostra $P(n)$ in generale: si dimostra un'implicazione, "*se* $P(k)$ è vera *allora* è vera anche $P(k+1)$". Dare per buona $P(k)$ non è un errore logico, è proprio l'ipotesi da cui si parte per quel passo.` },
+Ma come si dimostra che $1 + 3 + \dots + (2n - 1) = n^2$ vale per **tutti** gli $n$, visto che non si possono controllare uno per uno? Si usa il **principio di induzione**.
 
-    { id: 'limite-e-applicazioni', titolo: 'Il comportamento al crescere di n e qualche applicazione', testo: R`### Il comportamento per n grande
+>* **Principio di induzione.** Una proprietà $P(n)$ vale per ogni $n \ge n_0$ se si dimostrano due cose: la **base**, cioè che $P(n_0)$ è vera; il **passo induttivo**, cioè che se $P(k)$ è vera per un $k$ qualunque, allora è vera anche $P(k + 1)$.
 
-Che cosa succede ai termini di una successione quando $n$ diventa sempre più grande? Tre comportamenti sono particolarmente comuni (la definizione rigorosa si studia con i limiti delle funzioni; qui basta l'idea intuitiva).
+Pensa a una fila di tessere del domino. La base fa cadere la prima; il passo induttivo garantisce che ogni tessera che cade fa cadere quella dopo. Allora cadono tutte, per quanto lunga sia la fila.
 
-- **Successione convergente:** i termini si avvicinano sempre di più a un numero $L$, senza necessariamente raggiungerlo. Si scrive $\lim_{n \to \infty} a_n = L$. Esempio: $a_n = \dfrac{1}{n}$ dà $1, \ 0{,}5, \ 0{,}33\dots, \ 0{,}25, \dots$, sempre più vicino a $0$.
-- **Successione divergente:** i termini crescono, o calano, senza fermarsi mai, superando qualunque valore fissato in anticipo. Si scrive $\lim_{n \to \infty} a_n = +\infty$ (o $-\infty$). Esempio: $a_n = n^2$ dà $1, 4, 9, 16, \dots$, senza alcun limite superiore.
-- **Successione irregolare (o indeterminata):** non converge e non diverge. Esempio: $a_n = (-1)^n$ oscilla per sempre tra $-1$ e $1$, senza avvicinarsi a nessun valore fisso.
+Per la somma dei dispari, la base è $n = 1$: a sinistra c'è solo $1$, a destra $1^2 = 1$. Nel passo induttivo si suppone vero $1 + 3 + \dots + (2k - 1) = k^2$ (l'**ipotesi induttiva**) e si aggiunge il dispari successivo, $2k + 1$:
 
->* Una progressione geometrica con $|q| < 1$ **converge a $0$**; con $q > 1$ (e $a_1 > 0$) **diverge a $+\infty$**; con $q \le -1$ è **irregolare**. Una progressione aritmetica con $d \ne 0$ **diverge sempre**: a $+\infty$ se $d>0$, a $-\infty$ se $d<0$.
+~ 1 + 3 + \dots + (2k-1) + (2k+1) :: il primo membro di $P(k+1)$: i primi $k+1$ dispari
+~ = \evid{k^2} + (2k+1) :: per l'ipotesi induttiva, i primi $k$ dispari sommano $k^2$
+~ = k^2 + 2k + 1 :: tolgo la parentesi
+~ = \evidb{(k+1)^2} :: è il quadrato di un binomio: proprio il secondo membro di $P(k+1)$
 
-### Interesse semplice, interesse composto, decadimento
+Base e passo sono dimostrati, quindi la formula vale per ogni $n \ge 1$.
 
-Un capitale $C_0$ investito con **interesse semplice** al tasso $i$ (per esempio $i = 0{,}03$ per il $3\%$) matura ogni anno lo stesso importo, $C_0 \cdot i$: è una progressione **aritmetica** di ragione $d = C_0 i$, e dopo $n$ anni vale $C_n = C_0(1 + ni)$. Con l'**interesse composto**, invece, gli interessi maturano anche sugli interessi già accumulati: ogni anno il capitale viene moltiplicato per lo stesso fattore $1+i$, è una progressione **geometrica** di ragione $q = 1+i > 1$, e $C_n = C_0(1+i)^n$: diverge, e per $n$ grandi cresce molto più in fretta di quella aritmetica.
+>! Nel passo induttivo non si dà per buona la tesi: si dimostra un'implicazione, «**se** vale per $k$, **allora** vale per $k + 1$». Usare $P(k)$ è lecito, perché è l'ipotesi di quel passo.
 
-Un **decadimento** (radioattivo, la temperatura di un corpo che si raffredda, un farmaco smaltito dall'organismo) segue di solito una progressione geometrica con $0 < q < 1$: a ogni passo resta una frazione fissa della quantità precedente, e la successione converge a $0$. Il caso $q = \dfrac{1}{2}$ si chiama **dimezzamento**: dopo ogni passo ne resta la metà.
+?? La proprietà «$n = n + 1$» è falsa, ma il passo induttivo funziona: se $k = k + 1$, aggiungendo $1$ ai due membri si ha $k + 1 = k + 2$. Dov'è il trucco?
+=> Manca la base: $1 = 2$ è falso, quindi la prima tessera non cade e la catena non parte. Il passo induttivo da solo dimostra soltanto che *se* una tessera cadesse, cadrebbero anche le successive. Per questo la base va sempre controllata.` },
 
->! "Convergere a $0$" non vuol dire "diventare $0$ dopo un po'": una progressione geometrica con $0 < q < 1$ si avvicina a $0$ quanto si vuole, ma nessun termine è mai esattamente $0$, a meno che $a_1 = 0$.` }
+    { id: 'limite-e-applicazioni', titolo: 'Il comportamento al crescere di n e qualche applicazione', testo: R`### Dove va una successione
+
+Che cosa fanno i termini quando $n$ diventa grandissimo? Le possibilità sono tre (la definizione precisa è nell'argomento sui limiti; qui basta l'idea).
+
+- **Convergente**: i termini si avvicinano quanto si vuole a un numero $L$, e si scrive $\lim\limits_{n \to \infty} a_n = L$. Per esempio $a_n = \frac{1}{n}$ dà $1;\ 0{,}5;\ 0{,}33;\ 0{,}25; \dots$ e converge a $0$.
+- **Divergente**: i termini superano qualunque numero (oppure scendono sotto qualunque numero), e si scrive $\lim\limits_{n \to \infty} a_n = +\infty$ (o $-\infty$). Per esempio $a_n = n^2$: $1, 4, 9, 16, \dots$
+- **Irregolare**: né l'una né l'altra cosa. Per esempio $a_n = (-1)^n$ salta fra $-1$ e $1$ per sempre.
+
+>* Una progressione geometrica con $|q| < 1$ **converge a $0$**; con $q > 1$ (e $a_1 > 0$) **diverge a $+\infty$**; con $q \le -1$ è **irregolare**. Una progressione aritmetica con $d \ne 0$ **diverge**: a $+\infty$ se $d > 0$, a $-\infty$ se $d < 0$.
+
+>! Convergere a $0$ non vuol dire arrivare a $0$. Con $a_1 = 1$ e $q = \frac12$ i termini diventano piccoli quanto vuoi, ma nessuno vale esattamente $0$.
+
+### Interesse semplice e interesse composto
+
+Metti un capitale $C_0$ al tasso annuo $i$ (per esempio $i = 0{,}03$ per il $3\%$).
+
+Con l'**interesse semplice** ogni anno si aggiunge lo stesso importo $C_0 \cdot i$: è una progressione **aritmetica** di ragione $d = C_0 i$, e dopo $n$ anni il capitale è $C_n = C_0(1 + ni)$.
+
+Con l'**interesse composto** gli interessi di ogni anno si sommano al capitale e l'anno dopo fruttano anche loro: ogni anno il capitale si moltiplica per $1 + i$. È una progressione **geometrica** di ragione $q = 1 + i$, e $C_n = C_0(1 + i)^n$. All'inizio la differenza con l'interesse semplice è piccola, ma con gli anni diventa enorme.
+
+Lo stesso schema, con $0 < q < 1$, descrive le cose che calano di una frazione fissa a ogni passo: un farmaco smaltito dall'organismo, un materiale radioattivo. Se a ogni passo ne resta la metà ($q = \frac12$) si parla di **dimezzamento**.
+
+?? Un'auto da $20\,000$ euro perde il $15\%$ del suo valore ogni anno. Quanto vale dopo $3$ anni?
+[x] $20\,000 \cdot 0{,}85^3 \approx 12\,282$ euro
+[ ] $20\,000 \cdot (1 - 3 \cdot 0{,}15) = 11\,000$ euro
+[ ] $20\,000 \cdot 0{,}15^3 = 67{,}50$ euro
+=> Ogni anno resta l'$85\%$ del valore dell'anno prima: si moltiplica tre volte per $0{,}85$, come in una progressione geometrica. Il conto $1 - 3 \cdot 0{,}15$ toglie ogni anno il $15\%$ del prezzo **iniziale**, ma il $15\%$ si calcola sul valore già ridotto. Il conto con $0{,}15^3$ moltiplica per la parte che si perde invece che per quella che resta.` }
   ],
 
   grafici: {
     'progressione-aritmetica': {
       tipo: 'piano', x: [0, 9], y: [-15, 15], passo: [1, 5],
       parametri: [
-        { nome: 'a1', min: -3, max: 3, passo: 1, valore: 1, etichetta: 'a₁' },
-        { nome: 'd', min: -1.5, max: 1.5, passo: 0.5, valore: 1, etichetta: 'd' }
+        { nome: 'a1', min: -6, max: 6, passo: 0.5, valore: 1, nascosto: true },
+        { nome: 'a2', min: -6, max: 6, passo: 0.5, valore: 3, nascosto: true }
       ],
       punti: [
-        { x: 1, y: 'a1', etichetta: 'a₁ = {{a1}}', posizione: 'basso', colore: 1 },
-        { x: 2, y: 'a1+d', colore: 1 },
-        { x: 3, y: 'a1+2d', colore: 1 },
-        { x: 4, y: 'a1+3d', colore: 1 },
-        { x: 5, y: 'a1+4d', colore: 1 },
-        { x: 6, y: 'a1+5d', colore: 1 },
-        { x: 7, y: 'a1+6d', colore: 1 },
-        { x: 8, y: 'a1+7d', etichetta: 'a₈ = {{a1+7d}}', posizione: 'alto', colore: 1 }
+        { x: 3, y: 'a1 + 2*(a2 - a1)', colore: 1 },
+        { x: 4, y: 'a1 + 3*(a2 - a1)', colore: 1 },
+        { x: 5, y: 'a1 + 4*(a2 - a1)', colore: 1 },
+        { x: 6, y: 'a1 + 5*(a2 - a1)', colore: 1 },
+        { x: 7, y: 'a1 + 6*(a2 - a1)', colore: 1 },
+        { x: 8, y: 'a1 + 7*(a2 - a1)', colore: 1 }
       ],
       elementi: [
-        { tipo: 'retta', m: 'd', q: 'a1 - d', tratteggio: true, colore: 3, etichetta: 'y = a₁ + (x−1)d' }
+        { tipo: 'retta', m: 'a2 - a1', q: '2*a1 - a2', tratteggio: true, colore: 3 },
+        { tipo: 'punto', p: [1, 'a1'], trascina: true, colore: 2, etichetta: 'a₁', posizione: 'sinistra' },
+        { tipo: 'punto', p: [2, 'a2'], trascina: true, colore: 2, etichetta: 'a₂', posizione: 'sinistra' },
+        { tipo: 'testo', p: [0.3, 13], testo: 'd = {{a2 - a1}} ;  a₈ = {{a1 + 7*(a2 - a1)}}', ancora: 'start' }
       ],
-      didascalia: 'I primi 8 termini della progressione aritmetica: stanno tutti allineati sulla retta y = a₁ + (x−1)d. Trascina i cursori a₁ e d per vedere come cambiano.'
+      didascalia: 'Trascina su e giù i primi due termini, a₁ e a₂: gli altri li seguono. Guarda la ragione d e la retta tratteggiata.'
     },
     'progressione-geometrica': {
-      tipo: 'piano', x: [-1, 8], y: [-6, 6],
+      tipo: 'piano', x: [0, 9], y: [-3, 3],
       parametri: [
-        { nome: 'q', min: -1.5, max: 1.5, passo: 0.1, valore: 0.5, etichetta: 'q' }
+        { nome: 'q', min: -1.5, max: 1.5, passo: 0.05, valore: 0.7, etichetta: 'q' }
       ],
       punti: [
-        { x: 0, y: '1', etichetta: 'a₁ = 1', posizione: 'basso', colore: 1 },
-        { x: 1, y: 'q', colore: 1 },
-        { x: 2, y: 'q^2', colore: 1 },
-        { x: 3, y: 'q^3', colore: 1 },
-        { x: 4, y: 'q^4', colore: 1 },
-        { x: 5, y: 'q^5', colore: 1 },
-        { x: 6, y: 'q^6', colore: 1 },
-        { x: 7, y: 'q^7', etichetta: 'a₈ = {{q^7}}', posizione: 'alto', colore: 1 }
-      ],
-      didascalia: 'I termini 1, q, q², …, q⁷ per q tra −1,5 e 1,5: osserva quando si avvicinano a zero (|q|<1), quando crescono senza limite (|q|>1) e quando oscillano di segno (q<0).'
-    },
-    'serie-dimezzata': {
-      tipo: 'piano', x: [0, 9], y: [0, 1.2], passo: [1, 0.2],
-      punti: [
-        { x: 1, y: 0.5, colore: 1 },
-        { x: 2, y: 0.75, colore: 1 },
-        { x: 3, y: 0.875, colore: 1 },
-        { x: 4, y: 0.9375, colore: 1 },
-        { x: 5, y: 0.96875, colore: 1 },
-        { x: 6, y: 0.984375, colore: 1 },
-        { x: 7, y: 0.9921875, colore: 1 },
-        { x: 8, y: 0.99609375, etichetta: 'S₈', posizione: 'alto', colore: 1 }
+        { x: 1, y: 1, colore: 1 },
+        { x: 3, y: 'q^2', colore: 1 },
+        { x: 4, y: 'q^3', colore: 1 },
+        { x: 5, y: 'q^4', colore: 1 },
+        { x: 6, y: 'q^5', colore: 1 },
+        { x: 7, y: 'q^6', colore: 1 },
+        { x: 8, y: 'q^7', colore: 1 }
       ],
       elementi: [
-        { tipo: 'orizzontale', y: 1, tratteggio: true, colore: 3, etichetta: 'y = 1' }
+        { tipo: 'punto', p: [2, 'q'], trascina: true, colore: 2, etichetta: 'a₂ = q', posizione: 'alto' },
+        { tipo: 'testo', p: [0.3, 2.6], testo: 'q = {{q}} ;  a₈ = q⁷ = {{q^7}}', ancora: 'start' }
       ],
-      didascalia: 'Le somme parziali di 1/2 + 1/4 + 1/8 + … si avvicinano a 1 (la somma della serie) ma non lo raggiungono mai.'
+      didascalia: 'Qui a₁ = 1. Trascina il secondo punto (che vale q) o usa il cursore: prova q > 1, 0 < q < 1, −1 < q < 0 e q < −1.'
+    },
+    'somme-parziali': {
+      tipo: 'piano', x: [0, 16], y: [0, '1.25/(1 - q) + 0.45'], altezza: 330,
+      parametri: [
+        { nome: 'q', min: -0.8, max: 0.8, passo: 0.05, valore: 0.5, etichetta: 'q' }
+      ],
+      punti: [
+        { x: 1, y: '(1 - q^1)/(1 - q)', colore: 1 },
+        { x: 2, y: '(1 - q^2)/(1 - q)', colore: 1 },
+        { x: 3, y: '(1 - q^3)/(1 - q)', colore: 1 },
+        { x: 4, y: '(1 - q^4)/(1 - q)', colore: 1 },
+        { x: 5, y: '(1 - q^5)/(1 - q)', colore: 1 },
+        { x: 6, y: '(1 - q^6)/(1 - q)', colore: 1 },
+        { x: 7, y: '(1 - q^7)/(1 - q)', colore: 1 },
+        { x: 8, y: '(1 - q^8)/(1 - q)', colore: 1 },
+        { x: 9, y: '(1 - q^9)/(1 - q)', colore: 1 },
+        { x: 10, y: '(1 - q^10)/(1 - q)', colore: 1 },
+        { x: 11, y: '(1 - q^11)/(1 - q)', colore: 1 },
+        { x: 12, y: '(1 - q^12)/(1 - q)', colore: 1 },
+        { x: 13, y: '(1 - q^13)/(1 - q)', colore: 1 },
+        { x: 14, y: '(1 - q^14)/(1 - q)', colore: 1 },
+        { x: 15, y: '(1 - q^15)/(1 - q)', colore: 1 }
+      ],
+      elementi: [
+        { tipo: 'orizzontale', y: '1/(1 - q)', tratteggio: true, colore: 3 },
+        { tipo: 'testo', p: [15.7, '1.25/(1 - q) + 0.12'], testo: 'somma infinita = {{1/(1 - q)}}', ancora: 'end' }
+      ],
+      didascalia: 'Le somme parziali S₁, S₂, …, S₁₅ di 1 + q + q² + … Muovi q: con q positivo salgono verso la linea tratteggiata, con q negativo le saltano attorno.'
     }
   },
 
@@ -254,7 +338,8 @@ Un **decadimento** (radioattivo, la temperatura di un corpo che si raffredda, un
 
     { titolo: 'Progressione geometrica: termine, somma finita e somma infinita', problema: R`Una progressione geometrica ha $a_1 = 8$ e $q = \dfrac{1}{2}$. Calcola $a_5$, la somma dei primi $5$ termini e la somma dell'intera serie infinita.`, passi: [
       R`Termine generale: $a_5 = a_1 \cdot q^4 = 8 \cdot \left(\dfrac{1}{2}\right)^4 = \dfrac{8}{16} = 0{,}5$.`,
-      R`I primi cinque termini sono $8, 4, 2, 1, 0{,}5$: la somma è $S_5 = 15{,}5$. Con la formula: $S_5 = 8 \cdot \dfrac{(1/2)^5 - 1}{1/2 - 1} = 8 \cdot \dfrac{-31/32}{-1/2} = 15{,}5$. ✓`,
+      R`I primi cinque termini sono pochi, si possono scrivere: $8, 4, 2, 1, 0{,}5$. Sommati danno $S_5 = 15{,}5$.`,
+      R`Controllo con la formula della somma, per essere sicuro: $S_5 = 8 \cdot \dfrac{1 - (1/2)^5}{1 - 1/2} = 8 \cdot \dfrac{31/32}{1/2} = 15{,}5$. ✓`,
       R`Poiché $|q| = \dfrac{1}{2} < 1$, la serie infinita ha somma finita: $S = \dfrac{a_1}{1-q} = \dfrac{8}{1/2} = 16$.`
     ], risultato: R`$a_5 = 0{,}5, \ S_5 = 15{,}5, \ S_{\infty} = 16$` },
 
@@ -312,7 +397,7 @@ Un **decadimento** (radioattivo, la temperatura di un corpo che si raffredda, un
 
   esercizi: [
     { id: 'es-01', difficolta: 1, testo: R`Una successione è definita da $a_1 = 3$, $a_{n+1} = a_n + 4$. Quanto vale $a_5$?`, suggerimenti: [R`Calcola i termini uno alla volta, partendo da $a_1$.`, R`$a_2 = 7$, $a_3 = 11$: continua fino a $a_5$.`], risposta: { tipo: 'numero', valore: 19 }, soluzione: [R`$a_1=3$, $a_2=7$, $a_3=11$, $a_4=15$, $a_5=19$.`, R`È una progressione aritmetica di ragione $4$: $a_5 = a_1+4d = 3+4\cdot4=19$.`] },
-    { id: 'es-02', difficolta: 1, testo: R`Data $a_n = \dfrac{n}{n+2}$, calcola $a_4$.`, suggerimenti: [R`Sostituisci $n=4$ nella formula.`, R`Non semplificare $n$ con $n+2$: sono legati da un $+2$, non da un fattore comune.`], risposta: { tipo: 'numero', valore: 2/3, tolleranza: 0.001 }, soluzione: [R`$a_4 = \dfrac{4}{4+2} = \dfrac{4}{6} = \dfrac{2}{3} \approx 0{,}667$.`] },
+    { id: 'es-02', difficolta: 1, testo: R`Data $a_n = \dfrac{n}{n+2}$, calcola $a_4$.`, suggerimenti: [R`Sostituisci $n=4$ nella formula.`, R`Non semplificare $n$ con $n+2$: sono legati da un $+2$, non da un fattore comune.`], risposta: { tipo: 'numero', valore: 2/3, tolleranza: 0.005 }, soluzione: [R`$a_4 = \dfrac{4}{4+2} = \dfrac{4}{6} = \dfrac{2}{3} \approx 0{,}667$.`] },
     { id: 'es-03', difficolta: 1, testo: R`In una progressione aritmetica $a_1 = 7$ e $d = -2$. Calcola $a_{12}$.`, suggerimenti: [R`Usa $a_n = a_1 + (n-1)d$.`, R`Attento al segno: $d$ è negativo.`], risposta: { tipo: 'numero', valore: -15 }, soluzione: [R`$a_{12} = 7 + 11 \cdot (-2) = 7 - 22 = -15$.`] },
     { id: 'es-04', difficolta: 2, testo: R`Calcola la somma dei primi $15$ termini della progressione aritmetica con $a_1=4$ e $d=5$.`, suggerimenti: [R`Trova prima $a_{15}$.`, R`Poi usa $S_n = \dfrac{(a_1+a_n)\cdot n}{2}$.`], risposta: { tipo: 'numero', valore: 585 }, soluzione: [R`$a_{15} = 4 + 14\cdot 5 = 74$.`, R`$S_{15} = \dfrac{(4+74)\cdot 15}{2} = \dfrac{1170}{2} = 585$.`] },
     { id: 'es-05', difficolta: 2, testo: R`Inserendo $4$ medi aritmetici tra $3$ e $23$, quanto vale la ragione $d$?`, suggerimenti: [R`I termini totali sono $k+2$, con $k=4$.`, R`Usa $d = \dfrac{b-a}{k+1}$.`], risposta: { tipo: 'numero', valore: 4 }, soluzione: [R`$d = \dfrac{23-3}{4+1} = \dfrac{20}{5} = 4$.`, R`La progressione è $3, 7, 11, 15, 19, 23$: i quattro medi sono $7, 11, 15, 19$.`] },
@@ -330,7 +415,7 @@ Un **decadimento** (radioattivo, la temperatura di un corpo che si raffredda, un
     { id: 'q-02', domanda: R`Qual è la notazione corretta per il termine ennesimo di una successione?`, opzioni: [R`$a_n$`, R`$a^n$`, R`$a[n]$`, R`$n_a$`], corretta: 0, spiegazione: R`Si usa il pedice, non l'esponente: $a_n$ sta per $a(n)$.` },
     { id: 'q-03', domanda: R`Quali sono i due modi per definire una successione?`, opzioni: [R`Per somma e per prodotto`, R`Per crescenza e per limitatezza`, R`Per intervalli e per punti isolati`, R`Per termine generale e per ricorrenza`], corretta: 3, spiegazione: R`Il termine generale dà $a_n$ direttamente da $n$; la ricorrenza dà $a_n$ a partire dai termini precedenti.` },
     { id: 'q-04', domanda: R`Una successione è monotona se…`, opzioni: [R`è sempre positiva`, R`è sempre crescente oppure sempre decrescente`, R`è limitata`, R`ha limite finito`], corretta: 1, spiegazione: R`La monotonia riguarda il confronto tra termini consecutivi, non il segno né la limitatezza né l'esistenza di un limite.` },
-    { id: 'q-05', domanda: R`Una successione è limitata se…`, opzioni: [R`esistono $m$ ed $M$ tali che $m \le a_n \le M$ per ogni $n$`, R`è monotona`, R`il suo termine generale è un polinomio`, R`tende a zero`], corretta: 0, spiegazione: R`La limitatezza richiede che i termini restino sempre tra due valori fissati; non ha nulla a che vedere con la monotonia o con l'esistenza di un limite.` },
+    { id: 'q-05', domanda: R`Una successione è limitata se…`, opzioni: [R`esistono $m$ ed $M$ tali che $m \le a_n \le M$ per ogni $n$`, R`è monotona`, R`il suo termine generale è un polinomio`, R`tende a zero`], corretta: 0, spiegazione: R`La limitatezza richiede che i termini restino sempre tra due valori fissati. Non basta essere monotona ($a_n = n$ è crescente e non limitata), e non serve tendere a zero ($a_n = (-1)^n$ è limitata e non tende a niente).` },
     { id: 'q-06', domanda: R`Nella progressione aritmetica, la ragione $d$ è…`, opzioni: [R`il rapporto tra due termini consecutivi`, R`il primo termine`, R`la somma di tutti i termini`, R`la differenza tra un termine e il precedente`], corretta: 3, spiegazione: R`$d = a_{n+1} - a_n$: è una differenza, non un rapporto (quello è $q$, la ragione della progressione geometrica).` },
     { id: 'q-07', domanda: R`Il termine generale di una progressione aritmetica è…`, opzioni: [R`$a_n = a_1 \cdot d^{\,n-1}$`, R`$a_n = a_1 + (n-1)d$`, R`$a_n = a_1 + nd$`, R`$a_n = a_1 \cdot n + d$`], corretta: 1, spiegazione: R`Da $a_1$ a $a_n$ ci sono $n-1$ passi, non $n$: l'errore più comune è dimenticare il $-1$.` },
     { id: 'q-08', domanda: R`La somma dei primi $n$ termini di una progressione aritmetica è…`, opzioni: [R`$S_n = \dfrac{(a_1+a_n)\cdot n}{2}$`, R`$S_n = n \cdot a_1 \cdot d$`, R`$S_n = a_1 \cdot q^{\,n-1}$`, R`$S_n = \dfrac{a_1 - a_n}{2}$`], corretta: 0, spiegazione: R`È la media tra primo e ultimo termine, moltiplicata per il numero dei termini: l'idea di Gauss.` },

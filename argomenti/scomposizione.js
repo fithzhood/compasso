@@ -4,108 +4,195 @@ COMPASSO.registra({
   id: 'scomposizione',
   titolo: 'Scomposizione in fattori',
 
-  introduzione: R`Scomporre un polinomio significa scriverlo come **prodotto** di polinomi più semplici, proprio come si scrive $12 = 2^2 \cdot 3$. Per esempio $x^2 - 5x + 6 = (x - 2)(x - 3)$: due scritture diverse dello stesso polinomio, uguali per ogni valore di $x$. La prima è comoda per calcolare, la seconda per *capire*: dice subito che il polinomio vale zero per $x = 2$ e per $x = 3$.
+  introduzione: R`Con i prodotti notevoli hai imparato ad andare da $(x - 2)(x - 3)$ a $x^2 - 5x + 6$. Scomporre è fare la strada al contrario: partire da $x^2 - 5x + 6$ e ritrovare il prodotto $(x - 2)(x - 3)$. È come scrivere $12 = 2^2 \cdot 3$, ma con i polinomi.
 
-Scomporre serve dappertutto in algebra: per risolvere le equazioni di grado superiore al primo (un prodotto è zero solo se lo è uno dei fattori), per semplificare le frazioni algebriche, per calcolare MCD e mcm di polinomi e quindi il denominatore comune. Fuori dalla scuola la fattorizzazione conta così tanto che la sicurezza dei pagamenti online si regge su un fatto: scomporre un numero di centinaia di cifre nei suoi fattori primi è, in pratica, impossibile. Con i polinomi siamo più fortunati: esistono metodi che funzionano, e qui li trovi uno per uno, con lo schema per decidere quale provare.
+Perché fare la fatica? Perché la forma a prodotto dice cose che l'altra nasconde: per esempio che il polinomio vale zero per $x = 2$ e per $x = 3$. Ti servirà per risolvere le equazioni di grado superiore al primo, per semplificare le frazioni algebriche e per trovare il denominatore comune.
 
-Serve avere già confidenza con i prodotti notevoli (quadrato e cubo di binomio, somma per differenza) e con la divisione fra polinomi, in particolare con la regola di Ruffini.`,
+I metodi sono pochi: il raccoglimento, i prodotti notevoli letti al contrario, il trinomio speciale e la regola di Ruffini. La parte difficile è capire quale usare, e per questo c'è uno schema. Prima di cominciare ripassa i prodotti notevoli e la regola di Ruffini.`,
+
+  inBreve: [
+    R`Scomporre vuol dire scrivere un polinomio come **prodotto**: se alla fine hai una somma, non hai scomposto.`,
+    R`Prima si prova **sempre** il raccoglimento totale; poi si contano i termini per scegliere il metodo; se nient'altro funziona, Ruffini.`,
+    R`$A^2 - B^2 = (A + B)(A - B)$, mentre la somma di quadrati $A^2 + B^2$ non si scompone.`,
+    R`Per un quadrato di binomio controlla il **doppio prodotto**; per il trinomio $x^2 + sx + p$ cerca due numeri con somma $s$ e prodotto $p$.`,
+    R`La scomposizione è finita solo quando nessun fattore si scompone più. Controllo finale: rimoltiplica e devi ritrovare il polinomio di partenza.`,
+    R`Nelle frazioni algebriche si semplificano i **fattori**, mai gli addendi, e le condizioni di esistenza si scrivono prima di semplificare.`
+  ],
 
   sezioni: [
     { id: 'perche-scomporre', titolo: 'Che cosa vuol dire scomporre, e perché', testo: R`Un numero si scompone in fattori primi: $60 = 2^2 \cdot 3 \cdot 5$. Con i polinomi si fa la stessa cosa.
 
->* **Scomporre** (o *fattorizzare*) un polinomio significa scriverlo come prodotto di polinomi di grado più basso. Un polinomio che non si può scomporre si dice **irriducibile**: è il corrispondente di un numero primo. La scomposizione è **completa** quando tutti i fattori sono irriducibili.
+>* **Scomporre** (o *fattorizzare*) un polinomio significa scriverlo come **prodotto** di polinomi di grado più basso. Un polinomio che non si può scomporre si dice **irriducibile**: è l'equivalente di un numero primo. La scomposizione è **completa** quando tutti i fattori sono irriducibili.
 
-Per esempio $x^2 - 5x + 6 = (x - 2)(x - 3)$. Per convincersene basta rifare il prodotto: $(x - 2)(x - 3) = x^2 - 3x - 2x + 6 = x^2 - 5x + 6$. Invece $x^4 - 16 = (x^2 + 4)(x^2 - 4)$ è una scomposizione, ma non completa: $x^2 - 4$ si scompone ancora in $(x + 2)(x - 2)$.
+Per esempio $x^2 - 5x + 6 = (x - 2)(x - 3)$. Come fai a esserne sicuro? Rifai il prodotto e controlla che torni il polinomio di partenza:
 
-Perché scomporre? Tre motivi che tornano in tutto il biennio.
+~ (x - 2)(x - 3) :: la scomposizione da controllare
+~ x^2 \evid{- 3x - 2x} + 6 :: ogni termine per ogni termine
+~ \evidb{x^2 - 5x + 6} :: torna il polinomio di partenza: la scomposizione è giusta
 
-1. **Equazioni.** Un prodotto vale zero solo se almeno un fattore vale zero (legge di annullamento del prodotto). Da $(x - 2)(x - 3) = 0$ si legge subito $x = 2$ oppure $x = 3$; dalla forma $x^2 - 5x + 6 = 0$ no.
-2. **Frazioni algebriche.** Si semplificano solo dividendo numeratore e denominatore per uno stesso *fattore*: senza scomporre non si vede che cosa si può semplificare.
+Questo controllo va fatto **sempre**, alla fine di ogni esercizio: è il modo più sicuro per accorgersi di un segno sbagliato.
+
+Una scomposizione può essere giusta ma incompleta: $x^4 - 16 = (x^2 + 4)(x^2 - 4)$ è vera, però $x^2 - 4$ si scompone ancora in $(x + 2)(x - 2)$. Bisogna andare avanti finché nessun fattore si scompone più.
+
+?? Quale di queste è una scomposizione di $x^2 + 3x + 2$?
+[ ] $x(x + 3) + 2$
+[x] $(x + 1)(x + 2)$
+[ ] $x^2 + 3(x + 1) - 1$
+[ ] $(x + 3)(x + 2)$
+=> $(x + 1)(x + 2)$ è un prodotto, e sviluppato dà $x^2 + 2x + x + 2 = x^2 + 3x + 2$. $x(x + 3) + 2$ è uguale al polinomio, ma è una **somma** (c'è quel $+ 2$ fuori): non è una scomposizione. $(x + 3)(x + 2)$ è un prodotto, ma sviluppato dà $x^2 + 5x + 6$.
+
+### A che cosa serve
+
+1. **Equazioni.** Un prodotto vale zero solo se almeno un fattore vale zero (è la **legge di annullamento del prodotto**). Da $(x - 2)(x - 3) = 0$ leggi subito $x = 2$ oppure $x = 3$; da $x^2 - 5x + 6 = 0$ no.
+2. **Frazioni algebriche.** Si semplificano dividendo sopra e sotto per uno stesso *fattore*: senza scomporre non vedi che cosa si può semplificare.
 3. **MCD e mcm** di polinomi, che servono per il denominatore comune.
 
-Nel grafico la parabola $y = x^2 - 5x + 6$ taglia l'asse $x$ proprio in $2$ e $3$: i fattori $(x - 2)$ e $(x - 3)$ sono gli **zeri** del polinomio resi visibili.
-
-[[grafico:zeri]]
-
->! Scomporre è il contrario di sviluppare. $(x + 1)(x + 2)$ è un polinomio scomposto; $x^2 + 3x + 2$ è lo stesso polinomio sviluppato. Un errore frequente è "scomporre" e ottenere una somma, per esempio $x(x + 3) + 2$: non è una scomposizione, perché non è un prodotto.
-
-Il controllo finale è sempre lo stesso: moltiplicare i fattori trovati e verificare che torni il polinomio di partenza.` },
+>! Scomporre è il contrario di sviluppare: il risultato deve essere un prodotto di parentesi (ed eventualmente un numero o un monomio davanti), senza niente sommato fuori.` },
 
     { id: 'raccoglimento', titolo: 'Raccoglimento totale e parziale', testo: R`### Raccoglimento totale
 
-Se tutti i termini di un polinomio hanno un fattore in comune, lo si mette in evidenza con la proprietà distributiva letta al contrario: $AB + AC = A(B + C)$.
+In $6x^3 - 4x^2 + 2x$ ogni termine contiene un $2$ e almeno una $x$. Quel pezzo comune, $2x$, si può «tirare fuori» davanti a una parentesi: è la proprietà distributiva letta al contrario, $AB + AC = A(B + C)$.
 
->* **Raccoglimento totale:** si raccoglie il **MCD dei termini**, cioè il MCD dei coefficienti moltiplicato per ogni lettera comune a tutti i termini, presa con l'esponente più piccolo. Dentro la parentesi resta il quoziente di ciascun termine per il fattore raccolto.
+>* **Raccoglimento totale:** si raccoglie il **MCD dei termini** (il MCD dei coefficienti, per le lettere comuni a tutti i termini con l'esponente più piccolo). Nella parentesi resta ciascun termine diviso per il fattore raccolto.
 
-$6x^3 - 4x^2 + 2x = 2x(3x^2 - 2x + 1)$: il MCD di $6$, $4$, $2$ è $2$, e la $x$ compare in tutti i termini con esponente minimo $1$. Il fattore comune può anche essere un polinomio: $2a(x - 1) + 5(x - 1) = (x - 1)(2a + 5)$.
+~ 6x^3 - 4x^2 + 2x :: il polinomio
+~ \evid{2x} \cdot 3x^2 - \evid{2x} \cdot 2x + \evid{2x} \cdot 1 :: MCD di $6, 4, 2$ è $2$; la $x$ è in tutti con esponente minimo $1$: il fattore comune è $2x$
+~ \evid{2x}(3x^2 - 2x + 1) :: lo porto fuori; nella parentesi resta ogni termine diviso per $2x$
 
->! Quando un termine coincide con il fattore raccolto, nella parentesi resta $1$, non zero: $2x^2 + 2x = 2x(x + 1)$, non $2x \cdot x$. Se il primo termine è negativo conviene raccogliere anche il segno: $-x^2 - 3x = -x(x + 3)$.
+Il fattore comune può anche essere una parentesi intera: $2a(x - 1) + 5(x - 1) = (x - 1)(2a + 5)$.
+
+?? Completa: $2x^2 + 2x = 2x(\ldots)$
+[ ] $x$
+[ ] $x + 0$
+[x] $x + 1$
+[ ] $x + 2x$
+=> $2x : 2x = 1$, quindi nella parentesi resta $x + 1$. Mettere $0$, o dimenticare il termine, è l'errore tipico: quando un termine coincide con il fattore raccolto al suo posto resta $1$. Controllo: $2x(x + 1) = 2x^2 + 2x$ ✓.
+
+Se il primo termine è negativo conviene raccogliere anche il segno: $-x^2 - 3x = -x(x + 3)$. Dentro la parentesi i segni cambiano tutti.
 
 ### Raccoglimento parziale
 
-Quando non c'è un fattore comune a *tutti* i termini, può esserci a gruppi. Si raccoglie in ogni gruppo e, se le parentesi che restano sono uguali, si raccoglie di nuovo:
+A volte un fattore comune a **tutti** i termini non c'è, ma c'è **a gruppi**. Si raccoglie in ogni gruppo e, se le parentesi che restano sono uguali, si raccoglie una seconda volta.
 
-$$ax + ay + bx + by = a(x + y) + b(x + y) = (x + y)(a + b).$$
+~ x^3 - 2x^2 + 3x - 6 :: quattro termini, nessun fattore comune a tutti
+~ \evid{x^2}(x - 2) + \evid{3}(x - 2) :: raccolgo $x^2$ dai primi due e $3$ dagli ultimi due
+~ \evid{(x - 2)}(x^2 + 3) :: le parentesi sono uguali: le raccolgo
 
-Esempio: $x^3 - 2x^2 + 3x - 6 = x^2(x - 2) + 3(x - 2) = (x - 2)(x^2 + 3)$.
+Se dopo il primo passo le parentesi non coincidono, prova a raggruppare in un altro modo (primo con terzo, secondo con quarto).
 
-Il metodo funziona solo se dopo il primo raccoglimento le parentesi coincidono; se non coincidono si prova a raggruppare in modo diverso (primo con terzo, secondo con quarto). Attenzione ai segni: in $x^3 + x^2 - x - 1$ il secondo gruppo è $-x - 1 = -(x + 1)$, e si ottiene $x^2(x + 1) - (x + 1) = (x + 1)(x^2 - 1)$, che si scompone ancora: $(x + 1)(x + 1)(x - 1) = (x + 1)^2(x - 1)$.
+>! Attenzione al segno meno davanti al secondo gruppo. In $x^3 + x^2 - x - 1$ il secondo gruppo è $-x - 1 = -(x + 1)$: si ottiene $x^2(x + 1) - (x + 1) = (x + 1)(x^2 - 1)$. Scrivere $x^2(x + 1) - (x - 1)$ fa perdere tutto. E poi si continua: $x^2 - 1 = (x + 1)(x - 1)$, quindi il risultato è $(x + 1)^2(x - 1)$.
 
 >* Il raccoglimento totale è **sempre** la prima cosa da provare: rende più piccoli i numeri e fa comparire i prodotti notevoli che altrimenti restano nascosti.` },
 
-    { id: 'differenza-quadrati', titolo: 'Differenza di quadrati', testo: R`È il prodotto notevole "somma per differenza" letto al contrario.
+    { id: 'differenza-quadrati', titolo: 'Differenza di quadrati', testo: R`Sai già che $(A + B)(A - B) = A^2 - B^2$ (somma per differenza). Letta da destra a sinistra, questa uguaglianza scompone.
 
->* **Differenza di quadrati:** $$A^2 - B^2 = (A + B)(A - B)$$ Si riconosce da tre indizi: **due** termini, entrambi **quadrati**, separati da un **meno**.
+>* **Differenza di quadrati:** $$A^2 - B^2 = (A + B)(A - B)$$ Si riconosce da tre indizi: **due** termini, tutti e due **quadrati**, separati da un **meno**.
 
-$A$ e $B$ sono le basi dei due quadrati: in $x^2 - 9$ sono $x$ e $3$, quindi $x^2 - 9 = (x + 3)(x - 3)$. Altri esempi:
+Il lavoro vero è trovare le **basi** $A$ e $B$, cioè ciò che è elevato al quadrato:
 
-- $4a^2 - 25b^2 = (2a + 5b)(2a - 5b)$, perché $4a^2 = (2a)^2$ e $25b^2 = (5b)^2$;
-- $x^2 - \dfrac{1}{4} = \left(x + \dfrac{1}{2}\right)\left(x - \dfrac{1}{2}\right)$;
-- $x^4 - 1 = (x^2 + 1)(x^2 - 1) = (x^2 + 1)(x + 1)(x - 1)$: il fattore $x^2 - 1$ è a sua volta una differenza di quadrati, e la scomposizione va portata fino in fondo.
+~ 4a^2 - 25b^2 :: due termini, un meno in mezzo
+~ (\evid{2a})^2 - (\evid{5b})^2 :: $4a^2 = (2a)^2$ e $25b^2 = (5b)^2$: le basi sono $2a$ e $5b$
+~ (\evid{2a} + \evid{5b})(\evid{2a} - \evid{5b}) :: somma delle basi per differenza delle basi
 
-Le basi possono essere polinomi: $(x + 1)^2 - 4 = (x + 1 + 2)(x + 1 - 2) = (x + 3)(x - 1)$.
+Altri esempi:
 
-La figura mostra perché la formula è vera: da un quadrato di lato $a$ si toglie un quadrato di lato $b$; quello che resta si taglia in due rettangoli che, affiancati, formano un rettangolo di lati $a + b$ e $a - b$.
+- $x^2 - 9 = (x + 3)(x - 3)$, con basi $x$ e $3$;
+- $x^2 - \dfrac{1}{4} = \left(x + \dfrac{1}{2}\right)\left(x - \dfrac{1}{2}\right)$, con basi $x$ e $\dfrac{1}{2}$;
+- $(x + 1)^2 - 4 = (x + 1 + 2)(x + 1 - 2) = (x + 3)(x - 1)$: una base può essere un polinomio intero;
+- $x^4 - 1 = (x^2 + 1)(x^2 - 1) = (x^2 + 1)(x + 1)(x - 1)$: il fattore $x^2 - 1$ è a sua volta una differenza di quadrati, e si va avanti.
+
+Perché la formula funziona? Guarda la figura: a sinistra, da un quadrato di lato $a$ è stato tolto l'angolo $b^2$; i due rettangoli colorati che restano, rimessi in fila a destra, formano un rettangolo alto $a - b$ e lungo $a + b$. Stessa area, scritta in due modi.
 
 [[grafico:differenza-quadrati]]
 
->! La **somma** di quadrati non si scompone: $x^2 + 9$ è irriducibile, perché non vale mai zero e nessun prodotto di binomi lo dà. E $x^2 - 9$ **non** è $(x - 3)^2$: quest'ultimo sviluppato fa $x^2 - 6x + 9$.
+?? Come si scompone $x^2 - 9$?
+[ ] $(x - 3)^2$
+[x] $(x + 3)(x - 3)$
+[ ] $(x + 9)(x - 9)$
+[ ] non si scompone
+=> Le basi sono $x$ e $3$ (perché $9 = 3^2$): somma per differenza, $(x + 3)(x - 3)$. $(x - 3)^2$ sviluppato fa $x^2 - 6x + 9$, un altro polinomio. $(x + 9)(x - 9)$ usa $9$ come base, ma la base è la radice di $9$.
 
-Prima di tutto, come sempre, si raccoglie: $3x^2 - 12 = 3(x^2 - 4) = 3(x + 2)(x - 2)$. Senza il raccoglimento $3x^2$ non è il quadrato di un monomio e si rischia di fermarsi.` },
+>! La **somma** di quadrati non si scompone: $x^2 + 9$ è irriducibile. Non vale mai zero, quindi non può avere un fattore come $(x - a)$.
+
+Prima di tutto, come sempre, si raccoglie: $3x^2 - 12 = 3(x^2 - 4) = 3(x + 2)(x - 2)$. Senza il raccoglimento $3x^2$ non sembra un quadrato e si rischia di fermarsi.` },
 
     { id: 'quadrati', titolo: 'Quadrato di binomio e di trinomio', testo: R`### Quadrato di binomio
 
->* $$A^2 + 2AB + B^2 = (A + B)^2 \qquad A^2 - 2AB + B^2 = (A - B)^2$$ Si riconosce da **tre** termini: due sono quadrati (con il segno più), il terzo è il **doppio prodotto** delle basi, con il segno più o meno.
+$$\begin{gathered} A^2 + 2AB + B^2 = (A + B)^2 \\ A^2 - 2AB + B^2 = (A - B)^2 \end{gathered}$$
 
-Il controllo decisivo è sul doppio prodotto. In $x^2 + 6x + 9$ le basi sono $x$ e $3$, e $2 \cdot x \cdot 3 = 6x$: è $(x + 3)^2$. In $4x^2 - 12x + 9$ le basi sono $2x$ e $3$, e $2 \cdot 2x \cdot 3 = 12x$: è $(2x - 3)^2$, con il meno perché il doppio prodotto è negativo. In $x^2 + 5x + 9$, invece, il doppio prodotto dovrebbe essere $6x$: **non** è un quadrato.
+>* **Quadrato di binomio.** Si riconosce da **tre** termini: due sono quadrati (con il segno più), il terzo è il **doppio prodotto** delle basi, con il segno più o meno.
 
-L'animazione mostra il quadrato di lato $x + 3$ costruito con i pezzi: un quadrato $x^2$, due rettangoli $3x$ e un quadratino $9$. Scomporre $x^2 + 6x + 9$ vuol dire rimettere insieme i pezzi.
+Tre termini con due quadrati non bastano: il controllo decisivo è sul **doppio prodotto**.
+
+~ 4x^2 - 12x + 9 :: tre termini
+~ (\evid{2x})^2 \ldots (\evid{3})^2 :: i quadrati sono $4x^2 = (2x)^2$ e $9 = 3^2$: le basi sono $2x$ e $3$
+~ 2 \cdot 2x \cdot 3 = \evid{12x} :: calcolo il doppio prodotto delle basi: coincide con il termine di mezzo
+~ \evidb{(2x - 3)^2} :: il termine di mezzo è negativo, quindi fra le basi va il meno
+
+In $x^2 + 5x + 9$, invece, le basi sarebbero $x$ e $3$ e il doppio prodotto dovrebbe essere $6x$, non $5x$: **non** è un quadrato.
+
+?? Quale di questi trinomi è il quadrato di un binomio?
+[ ] $x^2 + 4x + 16$
+[x] $x^2 + 8x + 16$
+[ ] $x^2 + 16x + 16$
+[ ] $x^2 - 8x - 16$
+=> Le basi sono $x$ e $4$, il doppio prodotto è $2 \cdot x \cdot 4 = 8x$: $x^2 + 8x + 16 = (x + 4)^2$. In $x^2 + 4x + 16$ il termine di mezzo è il prodotto semplice, non il doppio. In $x^2 - 8x - 16$ il $16$ è negativo, e un quadrato non è mai negativo.
+
+L'animazione costruisce il quadrato di lato $x + 3$ con i pezzi: un quadrato $x^2$, due rettangoli $3x$ e un quadratino $9$. Scomporre $x^2 + 6x + 9$ vuol dire rimettere insieme i pezzi e riconoscere il quadrato.
 
 [[animazione:completamento-quadrato]]
 
+>! I quadrati sono sempre positivi: $-x^2 - 6x - 9$ non è un quadrato di binomio, ma lo diventa raccogliendo il segno: $-(x^2 + 6x + 9) = -(x + 3)^2$.
+
 ### Quadrato di trinomio
 
->* $$A^2 + B^2 + C^2 + 2AB + 2AC + 2BC = (A + B + C)^2$$ **Sei** termini: tre quadrati e tre doppi prodotti, uno per ogni coppia di basi.
+$$\begin{gathered} A^2 + B^2 + C^2 + 2AB + 2AC + 2BC \\ = (A + B + C)^2 \end{gathered}$$
 
-$x^2 + 4y^2 + 1 + 4xy + 2x + 4y$: le basi sono $x$, $2y$, $1$; i doppi prodotti $2 \cdot x \cdot 2y = 4xy$, $2 \cdot x \cdot 1 = 2x$, $2 \cdot 2y \cdot 1 = 4y$ ci sono tutti. È $(x + 2y + 1)^2$. Con i segni misti si guarda ogni doppio prodotto: $x^2 + y^2 + 4 - 2xy + 4x - 4y = (x - y + 2)^2$, perché $-2xy$ dice che $x$ e $y$ hanno segni opposti, $+4x$ che $x$ e $2$ hanno lo stesso segno.
+>* **Quadrato di trinomio.** **Sei** termini: tre quadrati e tre doppi prodotti, uno per ogni coppia di basi.
 
->! I quadrati sono sempre positivi: $-x^2 - 6x - 9$ non è un quadrato di binomio, ma lo diventa raccogliendo il segno: $-(x^2 + 6x + 9) = -(x + 3)^2$. E $x^2 + 9$ non è $(x + 3)^2$: manca il doppio prodotto.` },
+~ x^2 + 4y^2 + 1 + 4xy + 2x + 4y :: sei termini
+~ (\evid{x})^2 + (\evid{2y})^2 + (\evid{1})^2 + \ldots :: tre quadrati: le basi sono $x$, $2y$, $1$
+~ \ldots + \evid{4xy} + \evid{2x} + \evid{4y} :: controllo i tre doppi prodotti: $2 \cdot x \cdot 2y = 4xy$, $2 \cdot x \cdot 1 = 2x$, $2 \cdot 2y \cdot 1 = 4y$. Ci sono tutti
+~ \evidb{(x + 2y + 1)^2} :: tutti i doppi prodotti sono positivi, quindi le basi hanno lo stesso segno
+
+Con i segni misti ogni doppio prodotto dice qualcosa: $x^2 + y^2 + 4 - 2xy + 4x - 4y = (x - y + 2)^2$, perché $-2xy$ dice che $x$ e $y$ hanno segni opposti e $+4x$ che $x$ e $2$ hanno lo stesso segno.` },
 
     { id: 'cubi', titolo: 'Cubo di binomio, somma e differenza di cubi', testo: R`### Cubo di binomio
 
->* $$A^3 + 3A^2B + 3AB^2 + B^3 = (A + B)^3 \qquad A^3 - 3A^2B + 3AB^2 - B^3 = (A - B)^3$$ **Quattro** termini: due cubi e due **tripli prodotti**. Nel cubo di una differenza i segni si alternano.
+$$\begin{gathered} A^3 + 3A^2B + 3AB^2 + B^3 \\ = (A + B)^3 \end{gathered}$$
 
-$x^3 + 6x^2 + 12x + 8$: i cubi sono $x^3$ e $8 = 2^3$, le basi $x$ e $2$; i tripli prodotti sono $3 \cdot x^2 \cdot 2 = 6x^2$ e $3 \cdot x \cdot 2^2 = 12x$. Tutto torna: è $(x + 2)^3$. Allo stesso modo $8x^3 - 12x^2 + 6x - 1 = (2x - 1)^3$: basi $2x$ e $1$, tripli prodotti $3 \cdot (2x)^2 \cdot 1 = 12x^2$ e $3 \cdot 2x \cdot 1^2 = 6x$, segni alternati.
+$$\begin{gathered} A^3 - 3A^2B + 3AB^2 - B^3 \\ = (A - B)^3 \end{gathered}$$
+
+>* **Cubo di binomio.** **Quattro** termini: due cubi e due **tripli prodotti**. Nel cubo di una differenza i segni si alternano.
+
+~ 8x^3 - 12x^2 + 6x - 1 :: quattro termini
+~ (\evid{2x})^3 \ldots (\evid{1})^3 :: i cubi sono $8x^3 = (2x)^3$ e $1 = 1^3$: le basi sono $2x$ e $1$
+~ \ldots \evid{12x^2} \ldots \evid{6x} \ldots :: controllo i due tripli prodotti: $3 \cdot (2x)^2 \cdot 1 = 12x^2$ e $3 \cdot 2x \cdot 1^2 = 6x$. Ci sono
+~ \evidb{(2x - 1)^3} :: i segni si alternano $+ - + -$: è il cubo di una differenza
+
+Allo stesso modo $x^3 + 6x^2 + 12x + 8 = (x + 2)^3$: basi $x$ e $2$, tripli prodotti $3 \cdot x^2 \cdot 2 = 6x^2$ e $3 \cdot x \cdot 2^2 = 12x$, tutti i segni più.
 
 ### Somma e differenza di cubi
 
->* $$A^3 + B^3 = (A + B)(A^2 - AB + B^2) \qquad A^3 - B^3 = (A - B)(A^2 + AB + B^2)$$ **Due** termini, entrambi cubi. Il secondo fattore si chiama **falso quadrato**: somiglia a un quadrato di binomio ma ha $AB$ al posto di $2AB$, ed è irriducibile.
+$$\begin{gathered} A^3 + B^3 \\ = (A + B)(A^2 - AB + B^2) \end{gathered}$$
 
-$x^3 + 8 = (x + 2)(x^2 - 2x + 4)$ e $27a^3 - b^3 = (3a - b)(9a^2 + 3ab + b^2)$. Per ricordare i segni: nel binomio lo stesso segno del polinomio di partenza, nel falso quadrato il segno opposto sul termine di mezzo, e sempre più sull'ultimo quadrato.
+$$\begin{gathered} A^3 - B^3 \\ = (A - B)(A^2 + AB + B^2) \end{gathered}$$
 
-A differenza dei quadrati, qui anche la **somma** si scompone: $x^3 + 8$ vale zero per $x = -2$, e infatti contiene il fattore $(x + 2)$.
+>* **Somma e differenza di cubi.** **Due** termini, entrambi cubi. Il secondo fattore si chiama **falso quadrato**: somiglia a un quadrato di binomio ma ha $AB$ al posto di $2AB$, ed è irriducibile.
 
->! $A^3 + B^3$ non è $(A + B)^3$: il cubo del binomio ha quattro termini. E il falso quadrato non va "scomposto": $x^2 - 2x + 4$ non è $(x - 2)^2$, che sviluppato fa $x^2 - 4x + 4$.` },
+~ 27a^3 - b^3 :: due termini, un meno
+~ (\evid{3a})^3 - (\evid{b})^3 :: le basi sono $3a$ e $b$
+~ (3a - b)(\ldots) :: nel binomio, le basi con lo **stesso** segno del polinomio di partenza
+~ (3a - b)(\evid{9a^2} + \evid{3ab} + \evid{b^2}) :: falso quadrato: quadrato della prima base, prodotto delle basi con il segno **opposto**, quadrato della seconda
+
+?? Come si scompone $x^3 + 8$?
+[ ] $(x + 2)^3$
+[ ] $(x + 2)(x^2 + 2x + 4)$
+[x] $(x + 2)(x^2 - 2x + 4)$
+[ ] non si scompone, è una somma
+=> È una somma di cubi con basi $x$ e $2$: $(x + 2)(x^2 - 2x + 4)$, con il segno opposto nel termine di mezzo del falso quadrato. $(x + 2)^3$ sviluppato ha quattro termini. E a differenza della somma di quadrati, la somma di cubi **si scompone**: $x^3 + 8$ vale zero per $x = -2$, quindi ha il fattore $(x + 2)$.
+
+>! Il falso quadrato non va «scomposto» come se fosse un quadrato: $x^2 - 2x + 4$ non è $(x - 2)^2$, che sviluppato fa $x^2 - 4x + 4$.` },
 
     { id: 'trinomio-speciale', titolo: 'Il trinomio speciale', testo: R`### Il caso $x^2 + sx + p$
 
@@ -118,40 +205,64 @@ Sviluppando $(x + m)(x + n)$ si ottiene $x^2 + (m + n)x + mn$: il coefficiente d
 - $x^2 + 2x - 15$: prodotto $-15$, somma $2$: sono $5$ e $-3$, quindi $(x + 5)(x - 3)$;
 - $x^2 - x - 6$: prodotto $-6$, somma $-1$: sono $-3$ e $2$, quindi $(x - 3)(x + 2)$.
 
-I segni si leggono dal prodotto: se $p > 0$ i due numeri sono **concordi**, con il segno di $s$; se $p < 0$ sono **discordi**, e quello più grande in valore assoluto ha il segno di $s$.
+I segni si leggono dal prodotto: se $p > 0$ i due numeri sono **concordi** (stesso segno), e il segno è quello di $s$; se $p < 0$ sono **discordi**, e quello più grande in valore assoluto ha il segno di $s$. Vediamo come si ragiona su $x^2 + 2x - 15$:
 
-Nel grafico i due zeri $x_1$ e $x_2$ si trascinano: il prodotto $(x - x_1)(x - x_2)$ si ridisegna e sopra compare il trinomio corrispondente, $x^2 - (x_1 + x_2)\,x + x_1 x_2$. I numeri $m$ e $n$ del trinomio speciale sono gli opposti degli zeri.
+~ x^2 + 2x - 15 :: somma $s = 2$, prodotto $p = -15$
+~ p < 0 \;\Rightarrow\; \text{segni opposti} :: un prodotto negativo viene da un positivo e un negativo
+~ 1 \cdot 15 \qquad \evid{3 \cdot 5} :: le coppie che danno $15$; la somma $2$ è una differenza piccola: provo $3$ e $5$
+~ \evid{+5} + (\evid{-3}) = 2 :: la somma è positiva, quindi il più grande, $5$, prende il più
+~ \evidb{(x + 5)(x - 3)} :: i due numeri entrano nelle parentesi con il loro segno
 
-[[grafico:radici]]
+?? Come si scompone $x^2 - 7x + 10$?
+[ ] $(x + 2)(x + 5)$
+[x] $(x - 2)(x - 5)$
+[ ] $(x - 2)(x + 5)$
+[ ] $(x - 1)(x - 10)$
+=> Prodotto $+10$: segni uguali; somma $-7$: tutti e due negativi. $-2$ e $-5$ danno somma $-7$ e prodotto $10$. $(x + 2)(x + 5)$ è l'errore tipico: numeri giusti, segni sbagliati (sviluppato dà $x^2 + 7x + 10$). $(x - 1)(x - 10)$ ha il prodotto giusto ma la somma è $-11$.
 
 ### Il caso $ax^2 + bx + c$
 
-Se il coefficiente di $x^2$ non è $1$, si cercano due numeri $m$ e $n$ con $m + n = b$ e $m \cdot n = a \cdot c$; con essi si **spezza** il termine di primo grado, $bx = mx + nx$, e si conclude con un raccoglimento parziale.
+Se il coefficiente di $x^2$ non è $1$, si cercano due numeri con somma $b$ e prodotto $a \cdot c$ (non solo $c$). Con essi si **spezza** il termine di primo grado in due pezzi e si finisce con un raccoglimento parziale.
 
-$2x^2 + 7x + 3$: $a \cdot c = 6$ e $b = 7$, quindi $6$ e $1$. Allora $2x^2 + 6x + x + 3 = 2x(x + 3) + (x + 3) = (x + 3)(2x + 1)$.
+~ 3x^2 - 5x - 2 :: $a = 3$, $b = -5$, $c = -2$
+~ a \cdot c = \evid{-6} \qquad b = \evid{-5} :: cerco due numeri con prodotto $-6$ e somma $-5$: sono $-6$ e $1$
+~ 3x^2 \evid{- 6x + x} - 2 :: spezzo $-5x$ in $-6x + x$
+~ \evid{3x}(x - 2) + \evid{1}(x - 2) :: raccolgo a coppie: $3x$ dai primi due, $1$ dagli ultimi due
+~ \evidb{(x - 2)(3x + 1)} :: le parentesi sono uguali: le raccolgo
 
-$3x^2 - 5x - 2$: $a \cdot c = -6$ e $b = -5$, quindi $-6$ e $1$. Allora $3x^2 - 6x + x - 2 = 3x(x - 2) + (x - 2) = (x - 2)(3x + 1)$.
+Allo stesso modo $2x^2 + 7x + 3$: $a \cdot c = 6$ e $b = 7$, quindi $6$ e $1$, e $2x^2 + 6x + x + 3 = 2x(x + 3) + (x + 3) = (x + 3)(2x + 1)$.
 
->! I due numeri trovati vanno nei fattori **con il loro segno**: per $x^2 - 5x + 6$ sono $-2$ e $-3$, quindi $(x - 2)(x - 3)$ e non $(x + 2)(x + 3)$. Se non esistono due interi con quella somma e quel prodotto, il trinomio può essere irriducibile oppure avere fattori con coefficienti non interi: se ne riparla con le equazioni di secondo grado.` },
+>! Se non esistono due interi con quella somma e quel prodotto, il trinomio può essere irriducibile oppure avere fattori con coefficienti non interi: se ne riparla con le equazioni di secondo grado.` },
 
-    { id: 'ruffini', titolo: 'Scomporre con Ruffini', testo: R`Quando i metodi precedenti falliscono, per un polinomio in una sola lettera resta la strada di Ruffini, che si fonda su due teoremi.
+    { id: 'ruffini', titolo: 'Scomporre con Ruffini', testo: R`Quando i metodi precedenti non funzionano, per un polinomio in una sola lettera resta la strada di Ruffini. L'idea: se trovi un numero $a$ che annulla il polinomio, allora $(x - a)$ è uno dei suoi fattori.
 
->* **Teorema del resto:** il resto della divisione di $P(x)$ per $(x - a)$ è $P(a)$. **Teorema di Ruffini:** $P(x)$ è divisibile per $(x - a)$ se e solo se $P(a) = 0$, cioè se $a$ è uno **zero** del polinomio.
+>* **Teorema di Ruffini:** $P(x)$ è divisibile per $(x - a)$ se e solo se $P(a) = 0$, cioè se $a$ è uno **zero** del polinomio. (Viene dal **teorema del resto**: il resto della divisione di $P(x)$ per $(x - a)$ è proprio $P(a)$.)
 
-Trovato uno zero $a$, si può scrivere $P(x) = (x - a) \cdot Q(x)$, dove $Q(x)$ è il quoziente calcolato con la regola di Ruffini e ha un grado in meno. Poi si continua con $Q(x)$.
+Trovato uno zero $a$, dividi con la regola di Ruffini e ottieni $P(x) = (x - a) \cdot Q(x)$, dove il quoziente $Q(x)$ ha un grado in meno. Poi continui a scomporre $Q(x)$.
 
 ### Dove cercare gli zeri
 
-Non si prova a caso. Se $P(x)$ ha coefficienti interi, gli **zeri interi** stanno fra i **divisori del termine noto**, positivi e negativi. Se il coefficiente del termine di grado massimo non è $1$, ci possono essere anche zeri frazionari $\dfrac{p}{q}$, con $p$ divisore del termine noto e $q$ divisore del primo coefficiente.
+Non si prova a caso. Se $P(x)$ ha coefficienti interi, gli **zeri interi** stanno fra i **divisori del termine noto**, positivi e negativi. Se il primo coefficiente non è $1$, ci possono essere anche zeri frazionari $\dfrac{p}{q}$, con $p$ divisore del termine noto e $q$ divisore del primo coefficiente.
 
-Esempio: $P(x) = x^3 - 2x^2 - 5x + 6$. Il termine noto è $6$: i candidati sono $\pm 1$, $\pm 2$, $\pm 3$, $\pm 6$. Si prova $P(1) = 1 - 2 - 5 + 6 = 0$: trovato. La tabella di Ruffini con $a = 1$:
+~ P(x) = x^3 - 2x^2 - 5x + 6 :: il polinomio da scomporre
+~ \pm 1,\ \pm 2,\ \pm 3,\ \pm 6 :: i candidati: i divisori del termine noto $6$, con tutti e due i segni
+~ P(\evid{1}) = 1 - 2 - 5 + 6 = \evidb{0} :: provo il più semplice: funziona, quindi $(x - 1)$ è un fattore
+
+?? Quali sono i candidati zeri interi di $x^3 + 4x^2 + x - 6$?
+[ ] $\pm 1, \pm 4$
+[ ] $1, 2, 3, 6$
+[x] $\pm 1, \pm 2, \pm 3, \pm 6$
+[ ] $\pm 1, \pm 6$
+=> Si cercano fra i divisori del termine noto, $-6$, presi con tutti e due i segni: $\pm 1, \pm 2, \pm 3, \pm 6$. Dimenticare i negativi è l'errore tipico (qui due zeri su tre sono negativi: $-2$ e $-3$). Il $4$ è il coefficiente di $x^2$, che non c'entra.
+
+Tornando a $x^3 - 2x^2 - 5x + 6$ con lo zero $a = 1$, ecco la tabella di Ruffini:
 
 | | $1$ | $-2$ | $-5$ | $6$ |
 |---|---|---|---|---|
 | $1$ | | $1$ | $-1$ | $-6$ |
 | | $1$ | $-1$ | $-6$ | $0$ |
 
-L'ultima riga dà il quoziente $Q(x) = x^2 - x - 6$ e il resto $0$, come deve essere. $Q(x)$ è un trinomio speciale: due numeri con somma $1$ e prodotto $-6$ sono $3$ e $-2$, quindi $Q(x) = (x - 3)(x + 2)$ e
+L'ultima riga dà il quoziente $Q(x) = x^2 - x - 6$ e il resto $0$, come deve essere. $Q(x)$ è un trinomio speciale: due numeri con somma $-1$ e prodotto $-6$ sono $-3$ e $2$, quindi $Q(x) = (x - 3)(x + 2)$ e
 
 $$x^3 - 2x^2 - 5x + 6 = (x - 1)(x - 3)(x + 2).$$
 
@@ -159,7 +270,7 @@ Due scorciatoie. Se la **somma dei coefficienti** è zero, allora $P(1) = 0$ e $
 
 >! Nella tabella vanno scritti **tutti** i coefficienti, in ordine di grado decrescente, compresi gli zeri dei termini mancanti: per $x^3 - 7x + 6$ la prima riga è $1$, $0$, $-7$, $6$. E un candidato che non funziona non vuol dire che il metodo fallisce: si prova il successivo.` },
 
-    { id: 'schema-decisione', titolo: 'In che ordine provare i metodi', testo: R`Davanti a un polinomio nuovo la domanda giusta non è "quale formula", ma "in che ordine provo". Lo schema che segue basta per quasi tutti gli esercizi del biennio.
+    { id: 'schema-decisione', titolo: 'In che ordine provare i metodi', testo: R`Davanti a un polinomio nuovo conviene chiedersi in che ordine provare i metodi, prima ancora di scegliere una formula. Lo schema che segue basta per quasi tutti gli esercizi del biennio.
 
 >* Prima il **raccoglimento totale**; poi si **contano i termini** e si prova il metodo adatto; se niente funziona, **Ruffini**. Ottenuto un prodotto, si ricomincia da **ogni fattore** finché sono tutti irriducibili, e si chiude con il **controllo**: moltiplicando i fattori deve tornare il polinomio di partenza.
 
@@ -171,13 +282,25 @@ Due scorciatoie. Se la **somma dei coefficienti** è zero, allora $P(1) = 0$ e $
 | 6 | quadrato di trinomio; raccoglimento parziale (3 + 3 oppure 2 + 2 + 2) |
 | qualunque | Ruffini, se c'è una sola lettera e il resto non funziona |
 
-Tre esempi seguendo lo schema.
+Ecco lo schema all'opera su $2x^4 - 32$:
 
-$2x^4 - 32$: raccolgo $2$ e ottengo $2(x^4 - 16)$; due termini, differenza di quadrati: $2(x^2 + 4)(x^2 - 4)$; il fattore $x^2 - 4$ è ancora una differenza di quadrati: $2(x^2 + 4)(x + 2)(x - 2)$. Il fattore $x^2 + 4$ è una somma di quadrati, irriducibile: fine.
+~ 2x^4 - 32 :: primo passo, sempre: c'è un fattore comune?
+~ \evid{2}(x^4 - 16) :: sì, il $2$. Nella parentesi restano due termini: provo la differenza di quadrati
+~ 2(\evid{x^2 + 4})(\evid{x^2 - 4}) :: $x^4 = (x^2)^2$ e $16 = 4^2$: basi $x^2$ e $4$
+~ 2(x^2 + 4)(\evid{x + 2})(\evid{x - 2}) :: ricomincio da ogni fattore: $x^2 - 4$ è ancora una differenza di quadrati
+~ \evidb{2(x^2 + 4)(x + 2)(x - 2)} :: $x^2 + 4$ è una somma di quadrati, irriducibile: ho finito
 
-$3x^2 + 6x + 3$: tre termini, ma nessun quadrato evidente. Raccolgo $3$: $3(x^2 + 2x + 1) = 3(x + 1)^2$. Senza il raccoglimento il quadrato non si vedeva.
+Altri due casi in cui lo schema evita di bloccarsi:
 
-$x^3 - x^2 - 4x + 4$: quattro termini; non è un cubo di binomio (mancano i tripli prodotti), quindi raccoglimento parziale: $x^2(x - 1) - 4(x - 1) = (x - 1)(x^2 - 4) = (x - 1)(x + 2)(x - 2)$.
+- $3x^2 + 6x + 3$: tre termini, ma $3x^2$ non sembra un quadrato. Raccolgo $3$: $3(x^2 + 2x + 1) = 3(x + 1)^2$. Senza il raccoglimento il quadrato non si vedeva.
+- $x^3 - x^2 - 4x + 4$: quattro termini; non è un cubo di binomio (i cubi non ci sono), quindi raccoglimento parziale: $x^2(x - 1) - 4(x - 1) = (x - 1)(x^2 - 4) = (x - 1)(x + 2)(x - 2)$.
+
+?? Qual è la scomposizione completa di $x^3 - 9x$?
+[ ] $x(x^2 - 9)$
+[x] $x(x + 3)(x - 3)$
+[ ] $(x + 3)(x - 3)$
+[ ] $x(x - 3)^2$
+=> Raccolgo $x$: $x(x^2 - 9)$, poi $x^2 - 9$ è una differenza di quadrati: $x(x + 3)(x - 3)$. $x(x^2 - 9)$ è giusta ma **non completa**: è l'errore di chi si ferma troppo presto. $(x + 3)(x - 3)$ ha perso la $x$ raccolta.
 
 >! L'errore più comune è fermarsi troppo presto: $(x^2 - 4)$ dentro un prodotto è una scomposizione a metà. Il secondo è saltare il raccoglimento e concludere che "non è un prodotto notevole".` },
 
@@ -194,30 +317,34 @@ Esempio: $A = x^2 - 1 = (x + 1)(x - 1)$, $B = x^2 + 2x + 1 = (x + 1)^2$, $C = 2x
 
 ### Frazioni algebriche
 
-Una **frazione algebrica** è il quoziente di due polinomi, come $\dfrac{x^2 - 4}{x^2 + 4x + 4}$. Ha senso solo se il denominatore non vale zero: le **condizioni di esistenza** (c.e.) si trovano scomponendo il denominatore e imponendo che ogni fattore sia diverso da zero. Qui $x^2 + 4x + 4 = (x + 2)^2$, quindi c.e.: $x \ne -2$.
+Una **frazione algebrica** è il quoziente di due polinomi, come $\dfrac{x^2 - 4}{x^2 + 4x + 4}$. Siccome non si divide per zero, ha senso solo dove il denominatore non vale zero: queste sono le **condizioni di esistenza** (c.e.). Si trovano scomponendo il denominatore e chiedendo che ogni fattore sia diverso da zero.
 
-Per **semplificare** si scompongono numeratore e denominatore e si dividono entrambi per i fattori comuni, cioè per il loro MCD:
+Per **semplificare** si scompongono numeratore e denominatore e si dividono tutti e due per i fattori comuni:
 
-$$\frac{x^2 - 4}{x^2 + 4x + 4} = \frac{(x + 2)(x - 2)}{(x + 2)^2} = \frac{x - 2}{x + 2}, \qquad x \ne -2.$$
+~ \dfrac{x^2 - 4}{x^2 + 4x + 4} :: la frazione da semplificare
+~ \dfrac{x^2 - 4}{\evid{(x + 2)^2}} \qquad x \ne -2 :: scompongo il denominatore (quadrato di binomio) e scrivo **subito** le c.e.
+~ \dfrac{\evid{(x + 2)(x - 2)}}{(x + 2)^2} :: scompongo il numeratore (differenza di quadrati)
+~ \dfrac{\cancel{(x + 2)}(x - 2)}{\cancel{(x + 2)}(x + 2)} :: il fattore $(x + 2)$ è sopra e sotto: lo semplifico una volta
+~ \evidb{\dfrac{x - 2}{x + 2}} \qquad x \ne -2 :: risultato, con le c.e. della frazione di partenza
 
-Per sommare frazioni con denominatori diversi, il denominatore comune è il **mcm** dei denominatori: $\dfrac{1}{x - 1} + \dfrac{1}{x^2 - 1} = \dfrac{(x + 1) + 1}{(x + 1)(x - 1)} = \dfrac{x + 2}{(x + 1)(x - 1)}$, con c.e. $x \ne 1$ e $x \ne -1$.
+?? Quale semplificazione è corretta?
+[ ] $\dfrac{x + 3}{x} = 3$
+[ ] $\dfrac{x^2 + 4}{x^2} = 4$
+[x] $\dfrac{3x + 6}{3} = x + 2$
+[ ] $\dfrac{x + 6}{2} = x + 3$
+=> $3x + 6 = 3(x + 2)$: il $3$ è un **fattore** di tutto il numeratore e si semplifica con il $3$ sotto. Nelle altre si cancellano **addendi**, che non si può fare: con $x = 1$, $\dfrac{1 + 3}{1} = 4$, non $3$. In $\dfrac{x + 6}{2}$ il $2$ dividerebbe solo il $6$ e non la $x$.
 
->! Si semplificano i **fattori**, mai gli addendi: $\dfrac{x^2 + 4}{x^2}$ non è $4$ e $\dfrac{x + 3}{x}$ non è $3$. E le c.e. vanno scritte **prima** di semplificare: $\dfrac{x^2 - 1}{x - 1}$ si semplifica in $x + 1$, che sembra definito ovunque, ma per $x = 1$ la frazione di partenza non esiste.` }
+Per sommare frazioni con denominatori diversi, il denominatore comune è il **mcm** dei denominatori:
+
+~ \dfrac{1}{x - 1} + \dfrac{1}{x^2 - 1} :: denominatori diversi
+~ \dfrac{1}{x - 1} + \dfrac{1}{\evid{(x + 1)(x - 1)}} :: scompongo: c.e. $x \ne 1$ e $x \ne -1$
+~ \dfrac{\evid{(x + 1)} + 1}{(x + 1)(x - 1)} :: il mcm è $(x + 1)(x - 1)$; alla prima frazione manca il fattore $(x + 1)$
+~ \evidb{\dfrac{x + 2}{(x + 1)(x - 1)}} :: sommo i numeratori
+
+>! Le c.e. vanno scritte **prima** di semplificare: $\dfrac{x^2 - 1}{x - 1}$ si semplifica in $x + 1$, che sembra definito ovunque, ma per $x = 1$ la frazione di partenza non esiste. Il risultato va scritto con $x \ne 1$.` }
   ],
 
   grafici: {
-    zeri: {
-      tipo: 'piano', x: [-1, 6], y: [-2, 7],
-      funzioni: [{ f: 'x^2 - 5x + 6', etichetta: 'y = x² − 5x + 6', colore: 1 }],
-      punti: [
-        { x: 2, y: 0, etichetta: 'x = 2', posizione: 'basso', colore: 2 },
-        { x: 3, y: 0, etichetta: 'x = 3', posizione: 'basso', colore: 2 }
-      ],
-      elementi: [
-        { tipo: 'testo', p: [2.5, 3.2], testo: 'x² − 5x + 6 = (x − 2)(x − 3)' }
-      ],
-      didascalia: 'La parabola y = x² − 5x + 6 incontra l\'asse x in 2 e 3: sono gli zeri dei fattori (x − 2) e (x − 3).'
-    },
     'differenza-quadrati': {
       tipo: 'piano', x: [-2.4, 16.8], y: [-1.6, 7.2], assi: false, griglia: false,
       elementi: [
@@ -240,22 +367,7 @@ Per sommare frazioni con denominatori diversi, il denominatore comune è il **mc
         { tipo: 'segmento', da: [14.5, 3.6], a: [7.5, 3.6], etichetta: 'a + b', colore: 4 },
         { tipo: 'testo', p: [11, 6.6], testo: '(a + b)(a − b)' }
       ],
-      didascalia: 'Dal quadrato di lato a si toglie il quadratino b²; i due rettangoli che restano, affiancati, formano il rettangolo (a + b) × (a − b).'
-    },
-    radici: {
-      tipo: 'piano', x: [-5, 5], y: [-7, 7],
-      parametri: [
-        { nome: 'x1', min: -4, max: 4, passo: 0.5, valore: 2, nascosto: true },
-        { nome: 'x2', min: -4, max: 4, passo: 0.5, valore: 3, nascosto: true }
-      ],
-      funzioni: [{ f: '(x - x1)(x - x2)', etichetta: 'y = (x − x₁)(x − x₂)', colore: 1 }],
-      elementi: [
-        { tipo: 'punto', p: ['x1', 0], trascina: true, etichetta: 'x₁ = {{x1}}', posizione: 'basso', colore: 2 },
-        { tipo: 'punto', p: ['x2', 0], trascina: true, etichetta: 'x₂ = {{x2}}', posizione: 'basso', colore: 2 },
-        { tipo: 'testo', p: [-4.7, 6.2], testo: 'x₁ + x₂ = {{x1 + x2}}      x₁ · x₂ = {{x1 * x2}}', ancora: 'start' },
-        { tipo: 'testo', p: [-4.7, 5.2], testo: '(x − x₁)(x − x₂) = x² − ({{x1 + x2}})x + ({{x1 * x2}})', ancora: 'start' }
-      ],
-      didascalia: 'Trascina x₁ e x₂: il trinomio ha per coefficiente di x l\'opposto della somma degli zeri e per termine noto il loro prodotto.'
+      didascalia: 'Segui i colori: il rettangolo arancione in alto si gira e va a destra di quello blu; insieme fanno (a + b) × (a − b).'
     }
   },
 
@@ -293,7 +405,9 @@ Per sommare frazioni con denominatori diversi, il denominatore comune è il **mc
     { titolo: 'Con la regola di Ruffini', problema: R`Scomponi $P(x) = x^3 + 2x^2 - 5x - 6$.`, passi: [
       R`Nessun fattore comune, nessun prodotto notevole, il raccoglimento parziale non dà parentesi uguali: uso Ruffini. Il termine noto è $-6$, quindi i candidati sono $\pm 1$, $\pm 2$, $\pm 3$, $\pm 6$.`,
       R`$P(1) = 1 + 2 - 5 - 6 = -8 \ne 0$. $P(-1) = -1 + 2 + 5 - 6 = 0$: $x = -1$ è uno zero, quindi $(x + 1)$ è un fattore.`,
-      R`Tabella di Ruffini con $a = -1$ e coefficienti $1$, $2$, $-5$, $-6$: abbasso $1$; $-1 \cdot 1 = -1$, e $2 - 1 = 1$; $-1 \cdot 1 = -1$, e $-5 - 1 = -6$; $-1 \cdot (-6) = 6$, e $-6 + 6 = 0$. Quoziente $Q(x) = x^2 + x - 6$, resto $0$.`,
+      R`Divido con Ruffini: $a = -1$, coefficienti $1$, $2$, $-5$, $-6$. Abbasso il primo, $1$.`,
+      R`Moltiplico per $a$ e sommo al successivo: $-1 \cdot 1 = -1$ e $2 - 1 = 1$; poi $-1 \cdot 1 = -1$ e $-5 - 1 = -6$; infine $-1 \cdot (-6) = 6$ e $-6 + 6 = 0$. Il resto è $0$, come doveva essere.`,
+      R`I numeri $1$, $1$, $-6$ sono i coefficienti del quoziente, di secondo grado: $Q(x) = x^2 + x - 6$, e $P(x) = (x + 1)(x^2 + x - 6)$.`,
       R`$Q(x)$ è un trinomio speciale: prodotto $-6$, somma $1$, cioè $3$ e $-2$: $Q(x) = (x + 3)(x - 2)$.`,
       R`Quindi $P(x) = (x + 1)(x + 3)(x - 2)$. Controllo: $(x + 1)(x + 3) = x^2 + 4x + 3$, e $(x^2 + 4x + 3)(x - 2) = x^3 - 2x^2 + 4x^2 - 8x + 3x - 6 = x^3 + 2x^2 - 5x - 6$. ✓`
     ], risultato: R`$(x + 1)(x + 3)(x - 2)$` },
@@ -318,7 +432,7 @@ Per sommare frazioni con denominatori diversi, il denominatore comune è il **mc
     { nome: 'Trinomio speciale', formula: R`x^2 + sx + p = (x + m)(x + n), \quad m + n = s,\ mn = p` },
     { nome: 'Trinomio con a ≠ 1', formula: R`ax^2 + bx + c = ax^2 + mx + nx + c, \quad m + n = b,\ mn = ac`, nota: R`Poi si conclude con un raccoglimento parziale.` },
     { nome: 'Teorema del resto', formula: R`P(x) : (x - a) \ \text{ha resto } P(a)` },
-    { nome: 'Teorema di Ruffini', formula: R`(x - a) \mid P(x) \iff P(a) = 0`, nota: R`Gli zeri interi si cercano fra i divisori del termine noto; quelli frazionari $\frac{p}{q}$ con $q$ divisore del primo coefficiente.` },
+    { nome: 'Teorema di Ruffini', formula: R`(x - a) \mid P(x) \iff P(a) = 0`, nota: R`Gli zeri interi si cercano fra i divisori del termine noto; quelli frazionari $\frac{p}{q}$ con $p$ divisore del termine noto e $q$ divisore del primo coefficiente.` },
     { nome: 'MCD e mcm di polinomi', formula: R`\text{MCD}: \text{fattori comuni, esponente minimo} \qquad \text{mcm}: \text{fattori comuni e non, esponente massimo}` },
     { nome: 'Frazione algebrica', formula: R`\frac{N(x)}{D(x)}, \qquad \text{c.e.: } D(x) \ne 0`, nota: R`Si semplifica dividendo numeratore e denominatore per i fattori comuni, mai per gli addendi.` }
   ],
@@ -345,7 +459,7 @@ Per sommare frazioni con denominatori diversi, il denominatore comune è il **mc
     { id: 'fc-19', sezione: 'trinomio-speciale', tipo: 'concetto', fronte: R`Segni dei due numeri nel trinomio speciale`, retro: R`Se $p > 0$ sono concordi, con il segno di $s$. Se $p < 0$ sono discordi, e il più grande in valore assoluto ha il segno di $s$.` },
     { id: 'fc-20', sezione: 'ruffini', tipo: 'definizione', fronte: R`Teorema del resto`, retro: R`Il resto della divisione di $P(x)$ per $(x - a)$ è $P(a)$.` },
     { id: 'fc-21', sezione: 'ruffini', tipo: 'definizione', fronte: R`Teorema di Ruffini`, retro: R`$P(x)$ è divisibile per $(x - a)$ se e solo se $P(a) = 0$.` },
-    { id: 'fc-22', sezione: 'ruffini', tipo: 'procedura', fronte: R`Dove si cercano gli zeri per Ruffini?`, retro: R`Fra i divisori (positivi e negativi) del termine noto; se il primo coefficiente non è $1$, anche fra le frazioni $\frac{p}{q}$ con $q$ divisore del primo coefficiente.` },
+    { id: 'fc-22', sezione: 'ruffini', tipo: 'procedura', fronte: R`Dove si cercano gli zeri per Ruffini?`, retro: R`Fra i divisori (positivi e negativi) del termine noto; se il primo coefficiente non è $1$, anche fra le frazioni $\frac{p}{q}$ con $p$ divisore del termine noto e $q$ divisore del primo coefficiente.` },
     { id: 'fc-23', sezione: 'ruffini', tipo: 'concetto', fronte: R`Somma dei coefficienti uguale a zero`, retro: R`Allora $P(1) = 0$ e $(x - 1)$ è un fattore. Se coefficienti pari e dispari hanno la stessa somma, $P(-1) = 0$ e $(x + 1)$ è un fattore.` },
     { id: 'fc-24', sezione: 'schema-decisione', tipo: 'procedura', fronte: R`In che ordine si provano i metodi?`, retro: R`1) Raccoglimento totale. 2) Conta i termini: 2 → quadrati o cubi; 3 → quadrato di binomio o trinomio speciale; 4 → cubo o parziale; 6 → quadrato di trinomio o parziale. 3) Ruffini. Poi si ripete su ogni fattore.` },
     { id: 'fc-25', sezione: 'mcd-mcm-frazioni', tipo: 'procedura', fronte: R`MCD e mcm di polinomi`, retro: R`Si scompongono. MCD: fattori comuni con l'esponente minimo. mcm: fattori comuni e non comuni con l'esponente massimo.` },
@@ -402,7 +516,7 @@ Per sommare frazioni con denominatori diversi, il denominatore comune è il **mc
   aneddoti: [
     { matematico: 'Euclide', anni: 'circa 300 a.C.', titolo: 'L\'algoritmo più antico ancora in uso', testo: R`Degli *Elementi* di Euclide si ricordano i triangoli e i cerchi, ma tre dei tredici libri parlano di numeri interi. Il libro VII si apre con un procedimento per trovare la "massima misura comune" di due numeri: si toglie il più piccolo dal più grande, poi si ripete con il resto, finché non si arriva a zero. È l'**algoritmo di Euclide**, lo stesso che i computer usano oggi per il MCD, e funziona anche con i polinomi, sostituendo le sottrazioni con divisioni con resto. Di Euclide non si sa quasi nulla: insegnò ad Alessandria sotto Tolomeo I. Si racconta che uno studente, dopo il primo teorema, gli chiese che cosa ci avrebbe guadagnato; Euclide fece dare al ragazzo una moneta, «visto che deve guadagnare qualcosa da ciò che impara», e lo congedò.`, legame: R`Il MCD di polinomi che qui si calcola scomponendo in fattori è lo stesso oggetto che Euclide calcolava per i numeri, con l'algoritmo che porta il suo nome.` },
     { matematico: 'Blaise Pascal', anni: '1623–1662', titolo: 'Il triangolo con quattro nomi', testo: R`I coefficienti del cubo di binomio, $1, 3, 3, 1$, sono una riga del triangolo in cui ogni numero è la somma dei due sopra di lui. In Francia si chiama triangolo di Pascal, perché nel 1654 Pascal ne scrisse un trattato intero, il *Traité du triangle arithmétique*, dimostrandone le proprietà con il principio di induzione, che fu fra i primi a usare in modo esplicito. In Italia però si chiama triangolo di Tartaglia, che lo aveva pubblicato un secolo prima; in Iran si chiama di Khayyam, in Cina di Yang Hui, che lo disegnò nel 1261, e i matematici indiani lo conoscevano da secoli. Pascal era un prodigio: a sedici anni scrisse un trattato sulle coniche, a diciannove costruì una macchina calcolatrice per aiutare il padre, esattore delle tasse. A trentun anni abbandonò quasi del tutto la matematica per la religione.`, legame: R`Le righe del triangolo sono i coefficienti di $(A + B)^n$: quella del cubo, $1, 3, 3, 1$, è la firma da riconoscere per scomporre un cubo di binomio.` },
-    { matematico: 'Sophie Germain', anni: '1776–1831', titolo: 'La scomposizione che porta il nome di una donna', testo: R`A tredici anni, chiusa in casa a Parigi durante la Rivoluzione, Sophie Germain lesse della morte di Archimede e decise di studiare matematica. I genitori le tolsero il fuoco e le candele per farla smettere; lei studiava di notte avvolta nelle coperte. L'École Polytechnique non ammetteva donne, così si procurò le dispense e mandò i compiti sotto il nome di uno studente, Antoine-Auguste Le Blanc. Con lo stesso nome scrisse per anni a Gauss, che scoprì la verità solo dopo che lei, nel 1806, fece intervenire un generale francese per proteggerlo durante l'occupazione di Braunschweig. Gauss le rispose con una lettera di ammirazione rimasta famosa. Fu la prima donna premiata dall'Accademia delle Scienze di Parigi, per uno studio sulle vibrazioni delle lastre. Porta il suo nome l'identità $a^4 + 4b^4 = (a^2 + 2b^2 + 2ab)(a^2 + 2b^2 - 2ab)$.`, legame: R`L'identità di Sophie Germain si dimostra con i metodi di questo argomento: si aggiunge e toglie $4a^2b^2$ per completare il quadrato $(a^2 + 2b^2)^2$, e poi si applica la differenza di quadrati.` },
+    { matematico: 'Sophie Germain', anni: '1776–1831', titolo: 'La scomposizione che porta il nome di una donna', testo: R`A tredici anni, chiusa in casa a Parigi durante la Rivoluzione, Sophie Germain lesse della morte di Archimede e decise di studiare matematica. I genitori le tolsero il fuoco e le candele per farla smettere; lei studiava di notte avvolta nelle coperte. L'École Polytechnique non ammetteva donne, così si procurò le dispense e mandò i compiti sotto il nome di uno studente, Antoine-Auguste Le Blanc. Con lo stesso nome scrisse per anni a Gauss, che scoprì la verità solo dopo che lei, nel 1806, fece intervenire un generale francese per proteggerlo durante l'occupazione di Braunschweig. Gauss le rispose con una lettera di ammirazione rimasta famosa. Fu la prima donna premiata dall'Accademia delle Scienze di Parigi, per uno studio sulle vibrazioni delle lastre. Porta il suo nome l'identità $a^4 + 4b^4 = (a^2 + 2b^2 + 2ab)(a^2 + 2b^2 - 2ab)$.`, legame: R`$a^4 + 4b^4$ è una somma di quadrati che si scompone lo stesso, ma non con una formula diretta: si aggiunge e toglie $4a^2b^2$ per completare il quadrato $(a^2 + 2b^2)^2$, e poi si applica la differenza di quadrati.` },
     { matematico: 'Paolo Ruffini', anni: '1765–1822', titolo: 'Il medico che divideva i polinomi', testo: R`Paolo Ruffini era un medico di Modena, e lo restò per tutta la vita: la matematica la faceva nel tempo che avanzava fra i pazienti. Nel 1798 rifiutò di giurare fedeltà alla Repubblica Cisalpina e perse la cattedra all'università; tornò a curare i malati e intanto scrisse, nel 1799, un libro di cinquecento pagine in cui sosteneva che per le equazioni di quinto grado non può esistere una formula risolutiva. Quasi nessuno lo lesse, e la dimostrazione aveva una lacuna, ma l'idea era giusta: oggi si parla di teorema di Abel–Ruffini. La regola che porta il suo nome compare in una memoria del 1804, premiata dalla Società Italiana delle Scienze, sul calcolo delle radici delle equazioni numeriche. Divenuto rettore dell'università, durante l'epidemia di tifo del 1817 continuò a visitare i malati, si contagiò e non si riprese mai del tutto.`, legame: R`La regola di Ruffini è il metodo con cui, trovato uno zero fra i divisori del termine noto, si abbassa il grado del polinomio e si continua a scomporre.` },
     { matematico: 'Niels Henrik Abel', anni: '1802–1829', titolo: 'Sei pagine per chiudere una domanda di tre secoli', testo: R`Dopo la formula di Cardano per il terzo grado e quella di Ferrari per il quarto, per quasi trecento anni i matematici cercarono la formula per il quinto. Nel 1824 un norvegese di ventun anni, Niels Henrik Abel, dimostrò che non esiste: nessuna formula con radici può risolvere l'equazione generale di quinto grado. Povero, stampò la dimostrazione a proprie spese e la compresse in sei pagine per risparmiare sulla tipografia, tanto che quasi nessuno riuscì a seguirla; Gauss non la lesse nemmeno. Un lungo lavoro spedito all'Accademia di Parigi fu smarrito da Cauchy. Abel si ammalò di tubercolosi e morì nell'aprile del 1829, a ventisei anni. Due giorni dopo arrivò da Berlino la lettera che gli offriva la cattedra universitaria che aveva sempre sperato. Il Premio Abel, istituito dalla Norvegia nel 2002, è oggi il riconoscimento più importante della matematica.`, legame: R`Poiché dal quinto grado in su non esiste una formula, per scomporre un polinomio di grado alto non c'è scorciatoia: si cerca uno zero fra i divisori del termine noto e si abbassa il grado con Ruffini.` }
   ]

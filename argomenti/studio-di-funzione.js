@@ -4,212 +4,324 @@ COMPASSO.registra({
   id: 'studio-di-funzione',
   titolo: 'Studio di funzione',
 
-  introduzione: R`Studiare una funzione significa ricostruirne il grafico senza calcolare centinaia di punti: si guarda dove è definita, dove sale e dove scende, dove ha le sue vette e le sue conche, come si piega e dove se ne va all'infinito. Tutte queste informazioni sono nascoste nella derivata prima e nella derivata seconda, e tre teoremi — Rolle, Lagrange e de l'Hôpital — sono le chiavi che le tirano fuori.
+  introduzione: R`Studiare una funzione vuol dire ricostruirne il grafico senza calcolare cento punti: dove è definita, dove sale e dove scende, dove ha le sue cime e le sue valli, da che parte si piega, dove va a finire all'infinito. Queste informazioni stanno nella derivata prima e nella derivata seconda.
 
-Non è solo un esercizio da libro di testo. Ogni volta che si cerca il massimo di qualcosa — il ricavo più alto, il materiale minimo per costruire una scatola, il percorso più veloce, la dose più efficace — si sta risolvendo un problema di massimo o di minimo, e il metodo è sempre lo stesso: si scrive la grandezza come funzione di una variabile e si guarda dove la derivata cambia segno. Il principio di Fermat, per cui la luce sceglie il cammino di tempo minimo, è un problema di questo tipo risolto nel Seicento.
+I teoremi di Rolle e di Lagrange spiegano perché il segno della derivata dice se la funzione sale o scende. Il teorema di de l'Hôpital scioglie molti dei limiti che nello studio si incontrano di continuo.
 
-Serve avere già in mano il calcolo dei limiti (comprese le forme indeterminate e gli asintoti) e le regole di derivazione: qui la derivata non si calcola per esercizio, si usa per leggere una funzione.`,
+Serve anche fuori dal libro: il ricavo più alto, il materiale minimo per una scatola, il percorso più rapido sono problemi di **massimo e minimo**. Il metodo è sempre lo stesso: si scrive la grandezza come funzione di una variabile e si guarda dove la derivata cambia segno.
+
+Servono i limiti (forme indeterminate e asintoti compresi) e le regole di derivazione.`,
+
+  inBreve: [
+    R`Rolle: se $f$ è continua in $[a; b]$, derivabile dentro e $f(a) = f(b)$, in qualche punto interno la tangente è orizzontale. Lagrange: in qualche punto interno la tangente è parallela alla corda fra gli estremi.`,
+    R`Su un intervallo, $f' > 0$ vuol dire $f$ crescente e $f' < 0$ decrescente. C'è un massimo dove $f'$ passa da $+$ a $-$, un minimo dove passa da $-$ a $+$.`,
+    R`$f'(x_0) = 0$ non basta per un massimo o un minimo, e $f''(x_0) = 0$ non basta per un flesso: serve sempre il cambio di segno.`,
+    R`$f'' > 0$: concavità verso l'alto. $f'' < 0$: concavità verso il basso.`,
+    R`De l'Hôpital vale solo per le forme $\frac{0}{0}$ e $\frac{\infty}{\infty}$, e si derivano numeratore e denominatore separatamente.`,
+    R`Lo studio si fa in ordine: dominio, segno, limiti e asintoti, derivata prima, derivata seconda, grafico.`
+  ],
 
   sezioni: [
-    { id: 'rolle', titolo: 'Il teorema di Rolle', testo: R`Il primo teorema che collega il comportamento di una funzione al valore della sua derivata riguarda una situazione molto particolare: una funzione che, dopo un tratto di strada, torna alla quota di partenza.
+    { id: 'rolle', titolo: 'Il teorema di Rolle', testo: R`Parti dal livello del mare, cammini in montagna e alla fine torni al livello del mare. Da qualche parte sei stato in cima a una salita, o in fondo a una discesa, e lì per un attimo il sentiero era in piano. È il teorema di Rolle.
 
->* **Teorema di Rolle.** Se $f$ è continua nell'intervallo chiuso $[a; b]$, derivabile in ogni punto dell'intervallo aperto $(a; b)$ e assume valori uguali agli estremi, $f(a) = f(b)$, allora esiste almeno un punto $c \in (a; b)$ tale che $f'(c) = 0$.
+>* **Teorema di Rolle.** Se $f$ è continua nell'intervallo chiuso $[a; b]$, derivabile in ogni punto dell'intervallo aperto $(a; b)$ e $f(a) = f(b)$, allora esiste almeno un punto $c \in (a; b)$ con $f'(c) = 0$.
 
-Il significato geometrico è immediato: se il grafico parte e arriva alla stessa altezza, da qualche parte deve avere la tangente orizzontale. Se la funzione sale, prima o poi deve ridiscendere, e nel punto più alto la tangente è piatta.
+In parole: se il grafico parte e arriva alla stessa altezza, in qualche punto in mezzo la tangente è orizzontale.
 
-Esempio: $f(x) = \sin x$ nell'intervallo $[0; \pi]$. È continua e derivabile ovunque, e $\sin 0 = \sin \pi = 0$: le ipotesi valgono. La tesi si verifica direttamente, perché $f'(x) = \cos x$ si annulla in $c = \dfrac{\pi}{2}$, che sta dentro l'intervallo.
+Esempio: $f(x) = \sin x$ su $[0; \pi]$. È continua e derivabile ovunque, e $\sin 0 = \sin \pi = 0$. La derivata $\cos x$ si annulla in $c = \frac{\pi}{2}$, che sta dentro l'intervallo.
 
-[[grafico:rolle]]
+Le tre ipotesi servono tutte. Ecco che cosa succede togliendone una alla volta.
 
-Le tre ipotesi servono tutte, e si vede togliendone una alla volta:
+| ipotesi che manca | esempio | che cosa succede |
+|---|---|---|
+| continuità in $[a; b]$ | $f(x) = x$ per $0 \le x < 1$, $f(1) = 0$ | $f'(x) = 1$ sempre |
+| derivabilità in $(a; b)$ | $\lvert x \rvert$ su $[-1; 1]$ | $f'$ vale $-1$ o $1$, mai $0$ |
+| $f(a) = f(b)$ | $f(x) = x$ su $[0; 1]$ | $f'(x) = 1$ sempre |
 
-- **senza continuità**: $f(x) = x$ per $0 \le x < 1$ e $f(1) = 0$. Qui $f(0) = f(1) = 0$ e la funzione è derivabile all'interno, ma $f'(x) = 1$ non si annulla mai. Manca la continuità in $x = 1$.
-- **senza derivabilità**: $f(x) = |x|$ in $[-1; 1]$. È continua, $f(-1) = f(1) = 1$, ma la derivata vale $-1$ a sinistra e $+1$ a destra: mai zero. Il punto angoloso in $0$ rovina tutto.
-- **senza $f(a) = f(b)$**: $f(x) = x$ in $[0; 1]$ è continua e derivabile, ma $f'(x) = 1 \ne 0$.
+?? $f(x) = x^2$ su $[-1; 2]$. Il teorema di Rolle garantisce un punto con tangente orizzontale?
+[ ] sì, ed è $c = 0$
+[x] no: $f(-1) = 1$ e $f(2) = 4$ sono diversi, quindi il teorema non si applica
+[ ] no, perché $f$ non è derivabile in $0$
+=> Manca un'ipotesi: i valori agli estremi sono diversi. La tangente orizzontale in $x = 0$ c'è lo stesso, ma non è il teorema a garantirla. Quando le ipotesi non valgono, il teorema non dice niente, né sì né no.
 
->! Il teorema dice che il punto $c$ **esiste**, non dice dove sia né quanti ce ne siano. Per $f(x) = \sin x$ in $[0; 2\pi]$ i punti con tangente orizzontale sono due.
+>! Il teorema dice che $c$ **esiste**, non dove sia né quanti siano. Per $\sin x$ su $[0; 2\pi]$ i punti con tangente orizzontale sono due.
 
-> Le due ipotesi non riguardano lo stesso insieme: la continuità si chiede sull'intervallo **chiuso**, la derivabilità solo su quello **aperto**. Così $f(x) = \sqrt{1 - x^2}$ in $[-1; 1]$ rientra nel teorema, anche se negli estremi la tangente è verticale.` },
+> La continuità si chiede sull'intervallo **chiuso**, la derivabilità solo su quello **aperto**. Per questo $f(x) = \sqrt{1 - x^2}$ su $[-1; 1]$ rientra nel teorema, anche se agli estremi la tangente è verticale.` },
 
-    { id: 'lagrange', titolo: 'Il teorema di Lagrange', testo: R`Il teorema di Rolle si generalizza subito: se il grafico non torna alla quota di partenza, la tangente da qualche parte non sarà orizzontale, ma parallela alla corda che unisce gli estremi.
+    { id: 'lagrange', titolo: 'Il teorema di Lagrange', testo: R`Se il grafico non torna alla quota di partenza, la tangente orizzontale può mancare. C'è però sempre un punto in cui la tangente ha la stessa pendenza della **corda**, il segmento che unisce il primo e l'ultimo punto del grafico.
 
 >* **Teorema di Lagrange** (o del valor medio). Se $f$ è continua in $[a; b]$ e derivabile in $(a; b)$, esiste almeno un punto $c \in (a; b)$ tale che $$f'(c) = \frac{f(b) - f(a)}{b - a}.$$
 
-Il secondo membro è il coefficiente angolare della corda che congiunge $A(a; f(a))$ e $B(b; f(b))$; il primo membro è la pendenza della tangente in $c$. La tesi dice dunque: **esiste un punto in cui la tangente è parallela alla corda**.
+A destra c'è la pendenza della corda da $A(a; f(a))$ a $B(b; f(b))$, a sinistra la pendenza della tangente in $c$. Il teorema dice: **esiste un punto in cui la tangente è parallela alla corda**.
+
+Nel grafico trascina $A$ e $B$ lungo la curva. Le rette viola sono le tangenti nei punti $c$: guarda quanti sono, e prova a portare $A$ e $B$ alla stessa altezza.
 
 [[grafico:lagrange]]
 
-Rolle è il caso particolare in cui la corda è orizzontale: se $f(a) = f(b)$ il rapporto vale zero e si ritrova $f'(c) = 0$. Vale anche il viceversa: si dimostra Lagrange applicando Rolle alla differenza fra $f$ e la retta della corda, cioè alla funzione $$h(x) = f(x) - f(a) - \frac{f(b) - f(a)}{b - a}(x - a),$$ che è continua, derivabile e vale zero sia in $a$ sia in $b$.
+Quando $f(a) = f(b)$ la corda è orizzontale, la sua pendenza vale zero e si ritrova $f'(c) = 0$: Rolle è un caso particolare di Lagrange. Ed è anche il modo di dimostrarlo: si applica Rolle alla differenza fra $f$ e la retta della corda, $$h(x) = f(x) - f(a) - \frac{f(b) - f(a)}{b - a}(x - a),$$ che è continua, derivabile e vale zero sia in $a$ sia in $b$.
 
-Esempio: $f(x) = x^2$ in $[0; 3]$. Il rapporto vale $\dfrac{9 - 0}{3 - 0} = 3$; da $f'(c) = 2c = 3$ si ricava $c = \dfrac{3}{2}$, che appartiene a $(0; 3)$.
+Esempio: $f(x) = x^2$ su $[0; 3]$.
 
-C'è una lettura cinematica che aiuta a ricordarlo: se in due ore ho percorso $180$ km, la mia velocità media è stata $90$ km/h, e in almeno un istante il tachimetro segnava esattamente $90$. La velocità istantanea, prima o poi, uguaglia quella media.
+~ \frac{f(3) - f(0)}{3 - 0} = \frac{9 - 0}{3} = \evid{3} :: la pendenza della corda
+~ f'(c) = 2c :: la pendenza della tangente in un punto $c$
+~ 2c = 3 :: il teorema promette un $c$ in cui sono uguali
+~ c = \evidb{\frac{3}{2}} :: e infatti sta in $(0; 3)$
 
-[[animazione:secante-tangente]]
+Con la velocità si ricorda bene: se in due ore percorri $180$ km, la media è $90$ km/h, e in almeno un istante il tachimetro ha segnato proprio $90$.
 
->! Anche qui la derivabilità deve valere in **tutti** i punti interni. Per $f(x) = |x|$ in $[-1; 2]$ il rapporto è $\dfrac{2 - 1}{3} = \dfrac{1}{3}$, ma la derivata vale solo $\pm 1$: nessun $c$ funziona, perché in $0$ la funzione non è derivabile.
+>! Anche qui la derivabilità deve valere in **tutti** i punti interni. Per $|x|$ su $[-1; 2]$ la corda ha pendenza $\frac{2 - 1}{3} = \frac{1}{3}$, ma la derivata vale solo $-1$ o $1$: nessun $c$ va bene, perché in $0$ la funzione non è derivabile.
 
-> Scritta come $f(b) = f(a) + f'(c)\,(b - a)$, la tesi si chiama **formula degli incrementi finiti**: dice di quanto è cresciuta la funzione, usando una sola derivata calcolata in un punto opportuno.` },
+> Scritta come $f(b) = f(a) + f'(c)\,(b - a)$, la tesi si chiama **formula degli incrementi finiti**: dice di quanto è cresciuta la funzione usando una sola derivata, calcolata in un punto opportuno.` },
 
-    { id: 'conseguenze', titolo: 'Segno della derivata e monotonia', testo: R`Il teorema di Lagrange, da solo, sembra una curiosità; le sue conseguenze sono invece lo strumento che si usa in ogni studio di funzione.
+    { id: 'conseguenze', titolo: 'Segno della derivata e monotonia', testo: R`Il teorema di Lagrange serve soprattutto per quello che se ne ricava: il legame fra il segno di $f'$ e l'andamento di $f$, che si usa in ogni studio di funzione.
 
->* **Prima conseguenza.** Se $f'(x) = 0$ per ogni $x$ di un **intervallo** $I$, allora $f$ è costante in $I$. Di conseguenza, due funzioni che hanno la stessa derivata su $I$ differiscono per una costante.
+>* **Derivata nulla.** Se $f'(x) = 0$ in ogni punto di un **intervallo** $I$, allora $f$ è costante in $I$. Quindi due funzioni con la stessa derivata su $I$ differiscono per una costante.
 
-La dimostrazione è una riga: presi due punti $x_1 < x_2$ di $I$, Lagrange dà $f(x_2) - f(x_1) = f'(c)(x_2 - x_1) = 0$, quindi i due valori coincidono. È la proprietà su cui si fonda il calcolo delle primitive: tutte le primitive di una stessa funzione differiscono per una costante additiva.
+Il perché sta in una riga: presi due punti $x_1 < x_2$ di $I$, Lagrange dà $f(x_2) - f(x_1) = f'(c)(x_2 - x_1) = 0$, quindi i due valori sono uguali. Su questa proprietà poggeranno gli integrali: tutte le primitive di una funzione differiscono per una costante.
 
->* **Criterio di monotonia.** Sia $f$ derivabile in un intervallo $I$: se $f'(x) > 0$ per ogni $x$ interno a $I$, allora $f$ è strettamente **crescente** in $I$; se $f'(x) < 0$, è strettamente **decrescente**.
+>* **Criterio di monotonia.** Sia $f$ derivabile in un intervallo $I$. Se $f'(x) > 0$ in ogni punto interno di $I$, $f$ è strettamente **crescente** in $I$; se $f'(x) < 0$, è strettamente **decrescente**.
 
-Anche qui basta Lagrange: $f(x_2) - f(x_1) = f'(c)(x_2 - x_1)$ e, poiché $x_2 - x_1 > 0$, il segno della differenza è quello di $f'$.
+Il motivo è lo stesso: $f(x_2) - f(x_1) = f'(c)(x_2 - x_1)$, e siccome $x_2 - x_1 > 0$, la differenza ha il segno di $f'(c)$.
 
-Esempio: $f(x) = x^3 - 3x$ ha $f'(x) = 3x^2 - 3 = 3(x - 1)(x + 1)$, positiva per $x < -1$ e per $x > 1$. Quindi $f$ cresce in $(-\infty; -1]$, decresce in $[-1; 1]$, cresce in $[1; +\infty)$.
+Esempio: $f(x) = x^3 - 3x$.
 
->! La parola «intervallo» non è un dettaglio. La funzione $f(x) = \dfrac{1}{x}$ ha $f'(x) = -\dfrac{1}{x^2} < 0$ in tutto il suo dominio, eppure $f(-1) = -1$ è minore di $f(1) = 1$: non è decrescente sul dominio, lo è **su ciascuno dei due rami**. Il dominio $\mathbb{R} - \{0\}$ non è un intervallo.
+~ f'(x) = 3x^2 - 3 :: derivo
+~ f'(x) = \evid{3(x - 1)(x + 1)} :: scompongo, per studiarne il segno
+~ f'(x) > 0 \iff \evidb{x < -1 \ \lor \ x > 1} :: una parabola verso l'alto è positiva fuori dagli zeri
 
->! Il viceversa del criterio è più debole di quanto si creda: se $f$ è crescente e derivabile si può concludere solo $f'(x) \ge 0$. La funzione $y = x^3$ è strettamente crescente, ma $f'(0) = 0$.` },
+Quindi $f$ cresce in $(-\infty; -1]$, decresce in $[-1; 1]$ e cresce di nuovo in $[1; +\infty)$.
 
-    { id: 'hopital', titolo: 'Il teorema di de l\'Hôpital', testo: R`Le forme indeterminate $\dfrac{0}{0}$ e $\dfrac{\infty}{\infty}$ si possono spesso sciogliere derivando separatamente numeratore e denominatore.
+>! «Intervallo» non è un dettaglio. $f(x) = \frac{1}{x}$ ha $f'(x) = -\frac{1}{x^2} < 0$ in tutto il dominio, eppure $f(-1) = -1$ è minore di $f(1) = 1$. È decrescente **su ciascuno dei due rami**, non sul dominio intero, che non è un intervallo.
 
->* **Teorema di de l'Hôpital.** Siano $f$ e $g$ derivabili in un intorno di $x_0$ (escluso al più $x_0$), con $g'(x) \ne 0$. Se $\lim_{x \to x_0} f(x)$ e $\lim_{x \to x_0} g(x)$ sono entrambi $0$, oppure entrambi infiniti, e se esiste $\lim_{x \to x_0} \dfrac{f'(x)}{g'(x)} = L$ (finito o infinito), allora anche $$\lim_{x \to x_0} \frac{f(x)}{g(x)} = L.$$
+?? $f$ è derivabile e strettamente crescente su $\mathbb{R}$. Che cosa si può dire di $f'$?
+[x] $f'(x) \ge 0$ per ogni $x$
+[ ] $f'(x) > 0$ per ogni $x$
+[ ] niente
+=> Il criterio si rovescia solo a metà: da «crescente» si ricava $f' \ge 0$, non $f' > 0$. $y = x^3$ è strettamente crescente, ma $f'(0) = 0$. Che $f'$ non sia mai negativa invece è sicuro: dove fosse negativa, la funzione scenderebbe.` },
 
-Il teorema vale anche per $x \to \pm\infty$ e per i limiti destro e sinistro, e si può applicare più volte di seguito se la forma indeterminata si ripresenta.
+    { id: 'hopital', titolo: 'Il teorema di de l\'Hôpital', testo: R`Nello studio di funzione si incontrano di continuo limiti nella forma $\frac{0}{0}$ o $\frac{\infty}{\infty}$. Il teorema di de l'Hôpital dice che spesso si sciolgono derivando **separatamente** il numeratore e il denominatore.
 
-Esempio (forma $\frac{0}{0}$): $$\lim_{x \to 0} \frac{1 - \cos x}{x^2} = \lim_{x \to 0} \frac{\sin x}{2x} = \lim_{x \to 0} \frac{\cos x}{2} = \frac{1}{2}.$$
+>* **Teorema di de l'Hôpital.** Siano $f$ e $g$ derivabili vicino a $x_0$ (escluso al più $x_0$), con $g'(x) \ne 0$. Se $f(x)$ e $g(x)$ tendono tutte e due a $0$, oppure tutte e due all'infinito, e se esiste $$\lim_{x \to x_0} \frac{f'(x)}{g'(x)} = L$$ (finito o infinito), allora anche $\lim_{x \to x_0} \frac{f(x)}{g(x)} = L$.
 
-Esempio (forma $\frac{\infty}{\infty}$): $\lim_{x \to +\infty} \dfrac{\ln x}{x} = \lim_{x \to +\infty} \dfrac{1/x}{1} = 0$. Il logaritmo cresce più lentamente di $x$.
+Vale anche per $x \to \pm\infty$ e per i limiti destro e sinistro, e si può applicare più volte di seguito se la forma indeterminata si ripresenta.
 
-Le forme $0 \cdot \infty$ si trasformano in un quoziente: $\lim_{x \to 0^+} x \ln x = \lim_{x \to 0^+} \dfrac{\ln x}{1/x} = \lim_{x \to 0^+} \dfrac{1/x}{-1/x^2} = \lim_{x \to 0^+} (-x) = 0$.
+~ \lim_{x \to 0} \frac{1 - \cos x}{x^2} :: sostituendo $0$ viene $\frac{0}{0}$: il teorema si può usare
+~ = \lim_{x \to 0} \frac{\evid{\sin x}}{\evid{2x}} :: derivo sopra, $(1 - \cos x)' = \sin x$, e sotto, $(x^2)' = 2x$
+~ = \lim_{x \to 0} \frac{\evid{\cos x}}{\evid{2}} :: è ancora $\frac{0}{0}$: derivo di nuovo
+~ = \evidb{\frac{1}{2}} :: ora basta sostituire: $\cos 0 = 1$
 
->! **Non** si deriva il quoziente. Si calcolano $f'$ e $g'$ separatamente e si fa il rapporto: $\dfrac{f'}{g'}$, non $\left(\dfrac{f}{g}\right)'$. È l'errore più frequente.
+Con la forma $\frac{\infty}{\infty}$: $\lim_{x \to +\infty} \frac{\ln x}{x} = \lim_{x \to +\infty} \frac{1/x}{1} = 0$. Il logaritmo cresce più lentamente di $x$.
 
->! Prima di applicarlo bisogna **verificare la forma indeterminata**. Per $\lim_{x \to 0} \dfrac{x + 1}{x + 2}$ la regola darebbe $\dfrac{1}{1} = 1$, mentre il limite vale $\dfrac{1}{2}$: non c'era nessuna indeterminazione da sciogliere.
+La forma $0 \cdot \infty$ va prima trasformata in un quoziente.
 
->! Se $\dfrac{f'}{g'}$ **non** ha limite, non si può concludere che non l'abbia $\dfrac{f}{g}$: il teorema è a senso unico. Per $\lim_{x \to +\infty} \dfrac{x + \sin x}{x}$ il rapporto delle derivate è $1 + \cos x$, che non ha limite, ma il limite di partenza vale $1$ (basta dividere per $x$).`  },
-    { id: 'estremi', titolo: 'Massimi, minimi e teorema di Fermat', testo: R`Prima di cercare i massimi e i minimi conviene distinguerli con precisione.
+~ \lim_{x \to 0^+} x \ln x :: forma $0 \cdot (-\infty)$: così il teorema non si applica
+~ = \lim_{x \to 0^+} \frac{\ln x}{\evid{1/x}} :: moltiplicare per $x$ è come dividere per $\frac{1}{x}$: ora è $\frac{-\infty}{+\infty}$
+~ = \lim_{x \to 0^+} \frac{\evid{1/x}}{\evid{-1/x^2}} :: derivo sopra e sotto
+~ = \lim_{x \to 0^+} (\evid{-x}) = \evidb{0} :: semplifico: $\frac{1}{x} \cdot (-x^2) = -x$
 
->* Un punto $x_0$ del dominio è di **massimo relativo** se esiste un intorno di $x_0$ in cui $f(x) \le f(x_0)$; è di **massimo assoluto** se $f(x) \le f(x_0)$ per **ogni** $x$ del dominio. Definizioni analoghe, con il verso opposto, per i minimi. Il valore $f(x_0)$ si chiama massimo (o minimo) della funzione; $x_0$ è il **punto** di massimo.
+>! Si derivano numeratore e denominatore **separatamente**: $\frac{f'}{g'}$, mai $\left(\frac{f}{g}\right)'$ con la regola del quoziente.
 
-Un massimo relativo è una vetta rispetto alle sole cime vicine; un massimo assoluto è la vetta più alta di tutta la catena. Ogni massimo assoluto è anche relativo, ma non viceversa.
+?? Uno studente calcola $\lim_{x \to 0} \dfrac{x + 1}{x + 2}$ con de l'Hôpital e ottiene $1$. Dove sbaglia?
+[x] la forma non è indeterminata: basta sostituire, e il limite vale $\frac{1}{2}$
+[ ] ha derivato male: le derivate danno $\frac{1}{2}$
+[ ] non sbaglia: il limite vale $1$
+=> Sostituendo $x = 0$ viene $\frac{1}{2}$, un numero: non c'è nessuna indeterminazione da sciogliere, e il teorema non si può usare. Applicato lo stesso, dà $\frac{1}{1} = 1$, che è sbagliato. Le derivate le ha fatte bene: il suo errore è venuto prima, quando non ha controllato la forma.
 
->* **Teorema di Fermat.** Se $x_0$ è un punto di massimo o di minimo relativo, è **interno** al dominio e $f$ è **derivabile** in $x_0$, allora $f'(x_0) = 0$.
+>! Se $\frac{f'}{g'}$ **non** ha limite, su $\frac{f}{g}$ non si può concludere niente. Per $\lim_{x \to +\infty} \frac{x + \sin x}{x}$ il rapporto delle derivate è $1 + \cos x$, che oscilla, ma il limite di partenza vale $1$ (basta dividere per $x$).`  },
+    { id: 'estremi', titolo: 'Massimi, minimi e teorema di Fermat', testo: R`Prima di cercare massimi e minimi conviene dire bene che cosa sono.
 
-I punti in cui la derivata si annulla si chiamano **punti stazionari**. Fermat dice quindi: gli estremi relativi interni, dove la funzione è derivabile, vanno cercati fra i punti stazionari. La dimostrazione osserva che il rapporto incrementale a sinistra di un massimo è $\ge 0$ e a destra è $\le 0$: se la derivata esiste, i due limiti coincidono e valgono zero.
+>* $x_0$ è un punto di **massimo relativo** se c'è un intorno di $x_0$ in cui $f(x) \le f(x_0)$; è di **massimo assoluto** se $f(x) \le f(x_0)$ per **ogni** $x$ del dominio. Per i minimi vale lo stesso con $\ge$. Il numero $f(x_0)$ è il massimo (o il minimo), $x_0$ è il **punto** di massimo.
 
->! Il teorema non si inverte: $f'(x_0) = 0$ è condizione **necessaria** ma non sufficiente. La funzione $y = x^3$ ha $f'(0) = 0$, ma $0$ non è né massimo né minimo: è un flesso a tangente orizzontale.
+Un massimo relativo è una cima più alta di quelle vicine; il massimo assoluto è la cima più alta di tutta la catena. Ogni massimo assoluto è anche relativo, non il contrario.
 
-I candidati a estremo sono di tre specie, e le ultime due sfuggono a Fermat:
+>* **Teorema di Fermat.** Se $x_0$ è un punto di massimo o di minimo relativo, **interno** al dominio, e $f$ è **derivabile** in $x_0$, allora $f'(x_0) = 0$.
+
+I punti con $f'(x_0) = 0$ si chiamano **punti stazionari**: lì la tangente è orizzontale. L'idea della dimostrazione: appena prima di un massimo il rapporto incrementale è $\ge 0$ (la funzione sale verso la cima), appena dopo è $\le 0$. Se la derivata esiste, i due limiti sono uguali, e l'unico numero che è insieme $\ge 0$ e $\le 0$ è lo zero.
+
+>! Fermat non si rovescia: $f'(x_0) = 0$ è una condizione **necessaria**, non sufficiente. $y = x^3$ ha $f'(0) = 0$, ma in $0$ non c'è né massimo né minimo: c'è un flesso a tangente orizzontale.
+
+I candidati a estremo sono di tre tipi, e gli ultimi due sfuggono a Fermat:
 
 1. i punti stazionari ($f'(x_0) = 0$);
-2. i punti in cui $f$ non è derivabile ($y = |x|$ ha un minimo in $0$, dove la derivata non esiste);
-3. gli estremi del dominio (in $[a; b]$ i punti $a$ e $b$ vanno esaminati a parte).
+2. i punti in cui $f$ non è derivabile ($|x|$ ha un minimo in $0$, dove la derivata non esiste);
+3. gli estremi del dominio (in $[a; b]$ i punti $a$ e $b$ vanno controllati a parte).
 
-> **Teorema di Weierstrass:** una funzione continua su un intervallo chiuso e limitato $[a; b]$ ammette sempre massimo e minimo assoluti. È la garanzia che, nei problemi ben posti, la ricerca non è a vuoto.` },
+?? $f(x) = x^2$ su $[1; 3]$. Dov'è il massimo assoluto?
+[x] in $x = 3$, un estremo dell'intervallo
+[ ] non c'è, perché $f'$ in $[1; 3]$ non si annulla mai
+[ ] in $x = 0$, dove $f' = 0$
+=> In $[1; 3]$ la derivata $2x$ è sempre positiva: la funzione cresce, e il valore più alto è all'ultimo punto, $f(3) = 9$. Fermat riguarda solo i punti interni, quindi un massimo all'estremo può avere $f' \ne 0$. E $x = 0$ non sta nemmeno nell'intervallo.
 
-    { id: 'ricerca-estremi', titolo: 'Trovare massimi e minimi', testo: R`Il metodo standard usa il **segno della derivata prima**: si risolve la disequazione $f'(x) > 0$, si costruisce la tabella dei segni e si legge dove la funzione cresce e dove decresce.
+> **Teorema di Weierstrass:** una funzione continua su un intervallo chiuso e limitato $[a; b]$ ha sempre massimo e minimo assoluti. Nei problemi di questo tipo, quello che si cerca c'è.` },
 
->* Se $f'$ passa da **positiva a negativa** attraversando $x_0$, allora $x_0$ è un punto di **massimo** relativo; se passa da **negativa a positiva**, è un punto di **minimo**; se non cambia segno, $x_0$ non è né l'uno né l'altro.
+    { id: 'ricerca-estremi', titolo: 'Trovare massimi e minimi', testo: R`Il metodo di base usa il **segno della derivata prima**: si studia dove $f'(x) > 0$, si fa la tabella dei segni e si legge dove la funzione sale e dove scende.
 
-Esempio: $f(x) = x^3 - 3x$. Si ha $f'(x) = 3x^2 - 3$, che si annulla in $x = -1$ e $x = 1$ ed è positiva all'esterno di questo intervallo. Allora la funzione cresce fino a $-1$, decresce fra $-1$ e $1$, torna a crescere dopo: in $x = -1$ c'è un massimo relativo, $f(-1) = 2$, e in $x = 1$ un minimo relativo, $f(1) = -2$.
+>* Se attraversando $x_0$ la derivata passa da **positiva a negativa**, $x_0$ è un punto di **massimo** relativo; se passa da **negativa a positiva**, di **minimo**; se non cambia segno, non è né l'uno né l'altro.
 
-Nel grafico qui sotto puoi trascinare il punto $P$ lungo la curva: la retta tangente lo segue e accanto compare il valore di $f'(p)$. Fermati sulle due gobbe e osserva che la pendenza si azzera esattamente lì.
+Esempio: $f(x) = x^3 - 3x$.
+
+~ f'(x) = 3x^2 - 3 = 3(x - 1)(x + 1) :: derivo e scompongo
+~ f' > 0 \text{ se } x < -1 \text{ o } x > 1 :: parabola verso l'alto: positiva fuori dagli zeri, negativa fra $-1$ e $1$
+~ x = -1: \ \evid{+ \to -} \ \Rightarrow \ f(-1) = \evidb{2} :: prima sale, poi scende: **massimo**, e $f(-1) = -1 + 3 = 2$
+~ x = 1: \ \evid{- \to +} \ \Rightarrow \ f(1) = \evidb{-2} :: prima scende, poi sale: **minimo**, e $f(1) = 1 - 3 = -2$
+
+Nel grafico trascina $P$ lungo la curva: la tangente lo segue e in alto leggi $f'(p)$. Fermati sulle due gobbe: la pendenza lì vale zero.
 
 [[grafico:cubica]]
 
-C'è anche una scorciatoia che evita la tabella dei segni.
+C'è una scorciatoia che evita la tabella dei segni.
 
->* **Test della derivata seconda.** Se $f'(x_0) = 0$ e $f''(x_0) < 0$, allora $x_0$ è un massimo relativo; se $f''(x_0) > 0$, è un minimo relativo. Se $f''(x_0) = 0$ il test **non decide**.
+>* **Test della derivata seconda.** Se $f'(x_0) = 0$ e $f''(x_0) < 0$, $x_0$ è un massimo relativo; se $f''(x_0) > 0$, è un minimo relativo. Se $f''(x_0) = 0$ il test **non decide**.
 
-Sulla stessa funzione: $f''(x) = 6x$, quindi $f''(-1) = -6 < 0$ (massimo) e $f''(1) = 6 > 0$ (minimo), in accordo con quanto trovato prima. L'idea è che una gobba verso l'alto è concava verso il basso, e viceversa.
+Sulla stessa funzione $f''(x) = 6x$, quindi $f''(-1) = -6 < 0$ (massimo) e $f''(1) = 6 > 0$ (minimo), come prima. Il motivo: in cima a una gobba la curva è piegata verso il basso, in fondo a una conca è piegata verso l'alto.
 
->! Quando $f''(x_0) = 0$ non si può concludere nulla: $y = x^4$ ha un minimo in $0$, $y = x^3$ ha un flesso, e per entrambe $f''(0) = 0$. In quel caso si torna al segno di $f'$.
+?? Di una funzione si sa che $f'(2) = 0$ e $f''(2) = 5$. Che cosa c'è in $x = 2$?
+[x] un minimo relativo
+[ ] un massimo relativo, perché $f''$ è positiva
+[ ] un flesso
+=> $f''(2) > 0$ vuol dire che lì la curva è piegata verso l'alto, come il fondo di una conca: con la tangente orizzontale è un minimo. L'errore tipico è associare «positivo» a «massimo», ma qui il segno parla della curvatura, non dell'altezza.
 
->! Il test della derivata seconda non dice niente sui punti in cui $f$ non è derivabile: lì la tabella dei segni di $f'$ resta l'unico strumento.` },
+>! Se $f''(x_0) = 0$ non si conclude niente: $y = x^4$ ha un minimo in $0$, $y = x^3$ un flesso, e per tutte e due $f''(0) = 0$. Allora si torna al segno di $f'$. Lo stesso nei punti in cui $f$ non è derivabile: lì il test non si può nemmeno usare.` },
 
-    { id: 'concavita-flessi', titolo: 'Concavità e flessi', testo: R`La derivata seconda è la derivata di $f'$: dice come **cambia la pendenza**, cioè come si piega il grafico.
+    { id: 'concavita-flessi', titolo: 'Concavità e flessi', testo: R`La derivata seconda è la derivata di $f'$: dice come **cambia la pendenza**, cioè da che parte si piega il grafico.
 
->* Se $f''(x) > 0$ in un intervallo, la funzione volge la **concavità verso l'alto** (il grafico sta sopra le sue tangenti); se $f''(x) < 0$, volge la **concavità verso il basso**. Un punto in cui la concavità cambia verso si chiama **punto di flesso**.
+>* Se $f''(x) > 0$ in un intervallo, lì la funzione ha la **concavità verso l'alto** (il grafico sta sopra le sue tangenti, come una tazza); se $f''(x) < 0$, ha la **concavità verso il basso**. Un punto in cui la concavità cambia verso si chiama **punto di flesso**.
 
-Se $f''$ esiste nel punto, la condizione $f''(x_0) = 0$ è **necessaria** perché $x_0$ sia di flesso, ma non sufficiente: bisogna sempre controllare che $f''$ cambi effettivamente segno. Per $y = x^4$ si ha $f''(0) = 0$, eppure $f'' = 12x^2$ resta positiva: in $0$ non c'è flesso, c'è un minimo.
+Se $f''$ esiste nel punto, $f''(x_0) = 0$ è una condizione **necessaria** per il flesso, ma non basta: bisogna controllare che $f''$ cambi davvero segno. Per $y = x^4$ si ha $f''(0) = 0$, eppure $f''(x) = 12x^2$ resta positiva: in $0$ c'è un minimo, non un flesso.
 
-I flessi si classificano in base alla tangente nel punto:
+I flessi si distinguono dalla tangente nel punto.
 
-- **a tangente orizzontale**: $f'(x_0) = 0$, come $y = x^3$ nell'origine;
-- **a tangente obliqua**: $f'(x_0) \ne 0$, come $y = x^3 - 3x$ nell'origine, dove $f'(0) = -3$;
-- **a tangente verticale**: $f$ non è derivabile in $x_0$ e $|f'(x)| \to +\infty$, come $y = \sqrt[3]{x}$ nell'origine. Se invece i due limiti della derivata sono infiniti di segno opposto si ha una **cuspide**, non un flesso.
+| flesso | tangente | esempio nell'origine |
+|---|---|---|
+| a tangente orizzontale | $f'(x_0) = 0$ | $y = x^3$ |
+| a tangente obliqua | $f'(x_0) \ne 0$ | $y = x^3 - 3x$ |
+| a tangente verticale | $f$ non derivabile, $\lvert f'(x) \rvert \to +\infty$ | $y = \sqrt[3]{x}$ |
 
-Esempio: per $f(x) = x^3 - 3x$ si ha $f''(x) = 6x$, negativa per $x < 0$ e positiva per $x > 0$: concavità verso il basso, poi verso l'alto, e in $(0; 0)$ un flesso a tangente obliqua di pendenza $-3$.
+Se invece i due limiti della derivata sono infiniti ma di segno opposto, non è un flesso: è una **cuspide**.
 
-### Leggere il grafico di $f'$
+~ f(x) = x^3 - 3x :: la funzione di sempre
+~ f'(x) = 3x^2 - 3, \quad f''(x) = \evid{6x} :: derivo due volte
+~ f'' < 0 \text{ se } x < 0, \quad f'' > 0 \text{ se } x > 0 :: prima concavità verso il basso, poi verso l'alto
+~ \text{flesso in } \evidb{(0; 0)}, \quad f'(0) = -3 :: la concavità cambia; la tangente ha pendenza $-3$: flesso a tangente obliqua
 
-Il grafico seguente sovrappone $f$, $f'$ e $f''$. Vale la pena imparare a passare dall'uno all'altro:
+### Leggere insieme $f$, $f'$ e $f''$
+
+Nel grafico ci sono $f$, $f'$ e $f''$, tagliate da una linea verticale nello stesso punto. Trascina $P$ e confronta:
 
 - dove $f'$ sta **sopra** l'asse $x$, $f$ sale; dove sta sotto, $f$ scende;
 - gli **zeri** di $f'$ sono le ascisse dei punti stazionari di $f$;
-- dove $f'$ **cresce** (cioè dove $f'' > 0$) la concavità di $f$ è verso l'alto; il minimo di $f'$ cade nel flesso di $f$.
+- dove $f''$ è positiva, $f'$ cresce e $f$ ha la concavità verso l'alto; lo zero di $f''$ è il flesso di $f$.
 
 [[grafico:derivate]]
 
->! Non si confonde il grafico di $f$ con quello di $f'$. Un massimo di $f$ corrisponde a uno **zero** di $f'$ con cambio di segno da $+$ a $-$, non a un massimo di $f'$.` },
+>! Non si confonde il grafico di $f$ con quello di $f'$. A un massimo di $f$ corrisponde uno **zero** di $f'$, dove $f'$ passa da $+$ a $-$, non un massimo di $f'$.` },
 
-    { id: 'ottimizzazione', titolo: 'Problemi di ottimizzazione', testo: R`Molti problemi concreti chiedono di rendere massima o minima una grandezza. Lo schema è sempre lo stesso.
+    { id: 'ottimizzazione', titolo: 'Problemi di ottimizzazione', testo: R`Molti problemi chiedono la misura migliore: l'area più grande, il costo più basso, il percorso più corto. Lo schema è sempre lo stesso.
 
->* 1) Si sceglie la variabile indipendente e le si dà un nome. 2) Si esprime la grandezza da ottimizzare come **funzione di quella sola variabile**, usando i vincoli del problema. 3) Si determina il **dominio del problema**, che di solito è più stretto del dominio della formula. 4) Si studia il segno di $f'$ e si conclude, controllando anche gli estremi del dominio.
+1. Si sceglie la variabile e le si dà un nome.
+2. Si scrive la grandezza da ottimizzare come funzione di **quella sola variabile**, usando i dati del problema.
+3. Si trova il **dominio del problema**, spesso più stretto di quello della formula.
+4. Si studia il segno della derivata e si conclude, senza dimenticare gli estremi del dominio.
 
-Esempio. Fra tutti i rettangoli di perimetro $20$ cm, qual è quello di area massima? Detta $x$ la base, l'altezza vale $10 - x$ e l'area è $$A(x) = x(10 - x) = 10x - x^2, \qquad 0 < x < 10.$$ Da $A'(x) = 10 - 2x = 0$ si ottiene $x = 5$; poiché $A'$ è positiva prima e negativa dopo, in $x = 5$ c'è il massimo. L'altezza vale anch'essa $5$: fra tutti i rettangoli isoperimetrici il più esteso è il **quadrato**, con area $25\ \text{cm}^2$.
+>* La parte difficile di solito non è derivare: è scrivere la grandezza con **una sola** variabile e capire quali valori può prendere.
 
-Nel grafico il cursore muove la base $b$ e il punto sale e scende lungo la parabola dell'area: il valore più alto si raggiunge al centro.
+Esempio: fra tutti i rettangoli di perimetro $20$ cm, qual è quello di area massima?
+
+~ A(x) = x(10 - x) :: base $x$; il semiperimetro è $10$, quindi l'altezza è $10 - x$
+~ 0 < x < 10 :: dominio del problema: base e altezza devono essere positive
+~ A'(x) = 10 - 2x :: derivo $A(x) = 10x - x^2$
+~ A'(x) > 0 \iff x < 5 :: l'area cresce finché la base arriva a $5$, poi cala
+~ x = \evidb{5}, \quad A(5) = \evidb{25}\ \text{cm}^2 :: massimo: base $5$ e altezza $10 - 5 = 5$
+
+Fra tutti i rettangoli con lo stesso perimetro, il più grande è il **quadrato**.
+
+Nel grafico trascina $P$ lungo la curva dell'area: in alto leggi base, altezza e area del rettangolo.
 
 [[grafico:ottimizzazione]]
 
->! Il dominio del problema non coincide con quello della formula: $A(x) = 10x - x^2$ è definita su tutto $\mathbb{R}$, ma una base negativa o maggiore del semiperimetro non ha senso geometrico.
+>! Il dominio del problema non è quello della formula: $A(x) = 10x - x^2$ è definita su tutto $\mathbb{R}$, ma una base negativa, o più lunga del semiperimetro, non ha senso.
 
->! Se l'intervallo è **aperto**, il massimo può non esistere; se è **chiuso e limitato**, il teorema di Weierstrass lo garantisce, ma va cercato anche negli estremi, dove la derivata non è tenuta ad annullarsi.
+>! Se l'intervallo è **aperto** il massimo può non esserci. Se è **chiuso e limitato** il teorema di Weierstrass lo garantisce, ma va cercato anche agli estremi, dove la derivata non deve per forza annullarsi.
 
-> Quando la funzione da ottimizzare contiene una radice quadrata (per esempio una distanza), spesso conviene massimizzare o minimizzare il suo **quadrato**: i punti di estremo sono gli stessi, perché la radice è crescente, e i calcoli si semplificano.` },
+> Se la grandezza da ottimizzare contiene una radice quadrata (per esempio una distanza), conviene lavorare sul suo **quadrato**: la radice è crescente, quindi i punti di massimo e di minimo sono gli stessi, e i conti diventano più semplici.` },
 
-    { id: 'schema-completo', titolo: 'Lo schema completo dello studio', testo: R`Mettendo tutto in fila si ottiene la procedura che porta al grafico.
+    { id: 'schema-completo', titolo: 'Lo schema completo dello studio', testo: R`Mettendo in fila tutto si ottiene la procedura che porta al grafico.
 
->* 1) **Dominio** (condizioni di esistenza). 2) **Simmetrie** (pari, dispari), intersezioni con gli assi e **segno** di $f$. 3) **Limiti** agli estremi del dominio e **asintoti** (verticali, orizzontali, obliqui). 4) **Derivata prima**: punti stazionari, crescenza, massimi e minimi. 5) **Derivata seconda**: concavità e flessi. 6) Si disegna il **grafico** raccogliendo tutte le informazioni.
+>* 1) **Dominio**. 2) **Simmetrie** (pari, dispari), intersezioni con gli assi e **segno** di $f$. 3) **Limiti** agli estremi del dominio e **asintoti**. 4) **Derivata prima**: dove cresce, massimi e minimi. 5) **Derivata seconda**: concavità e flessi. 6) Il **grafico**, che raccoglie tutto.
 
-Sulla cubica $f(x) = x^3 - 3x$ i passi sono già stati fatti: dominio $\mathbb{R}$, funzione dispari, zeri in $0$ e $\pm\sqrt{3}$, limiti $\mp\infty$ e $\pm\infty$ senza asintoti, massimo $(-1; 2)$, minimo $(1; -2)$, flesso $(0; 0)$.
+Per la cubica $f(x) = x^3 - 3x$ i passi sono già stati fatti nelle sezioni precedenti: dominio $\mathbb{R}$, funzione dispari, zeri in $0$ e $\pm\sqrt{3}$, limite $-\infty$ a sinistra e $+\infty$ a destra senza asintoti, massimo $(-1; 2)$, minimo $(1; -2)$, flesso $(0; 0)$.
 
-### Un esempio con gli asintoti: $f(x) = \dfrac{x^2 - 1}{x}$
+### Un esempio completo: $f(x) = \dfrac{x^2}{x - 1}$
 
-1. **Dominio**: $x \ne 0$, cioè $\mathbb{R} - \{0\}$.
-2. $f(-x) = \dfrac{x^2 - 1}{-x} = -f(x)$: la funzione è **dispari**, il grafico è simmetrico rispetto all'origine. Si annulla in $x = \pm 1$ ed è positiva per $-1 < x < 0$ e per $x > 1$.
-3. $\lim_{x \to 0^-} f(x) = +\infty$ e $\lim_{x \to 0^+} f(x) = -\infty$: asintoto verticale $x = 0$. Inoltre $m = \lim_{x \to \infty} \dfrac{f(x)}{x} = 1$ e $q = \lim_{x \to \infty} [f(x) - x] = \lim_{x \to \infty} \left(-\dfrac{1}{x}\right) = 0$: **asintoto obliquo** $y = x$.
-4. Conviene riscrivere $f(x) = x - \dfrac{1}{x}$, da cui $f'(x) = 1 + \dfrac{1}{x^2} > 0$ sempre: la funzione è crescente su ciascuno dei due rami e non ha né massimi né minimi.
-5. $f''(x) = -\dfrac{2}{x^3}$: positiva per $x < 0$ (concavità verso l'alto) e negativa per $x > 0$ (concavità verso il basso). Non ci sono flessi, perché in $x = 0$ la funzione non è definita.
+**1. Dominio e simmetrie.**
+
+~ x - 1 \ne 0 \ \Rightarrow \ D = \mathbb{R} \setminus \{1\} :: il denominatore non può annullarsi
+~ f(-x) = \frac{x^2}{-x - 1} :: cambio $x$ con $-x$
+~ f(-x) \ne f(x), \quad f(-x) \ne -f(x) :: né pari né dispari (del resto il dominio non è simmetrico)
+
+**2. Intersezioni con gli assi e segno.**
+
+~ f(x) = 0 \iff x^2 = 0 \iff x = 0 :: il grafico passa per l'origine, e solo lì tocca gli assi
+~ x^2 \ge 0 :: il numeratore è un quadrato: il segno di $f$ è quello del denominatore $x - 1$
+~ f < 0 \text{ se } x < 1,\ x \ne 0 :: sotto l'asse a sinistra di $1$ (tranne in $0$, dove vale $0$)
+~ \evidb{f > 0 \text{ se } x > 1} :: sopra l'asse a destra di $1$
+
+**3. Limiti e asintoti.**
+
+~ \lim_{x \to 1^-} \frac{x^2}{x - 1} = \frac{1}{0^-} = \evid{-\infty} :: numeratore $1$, denominatore negativo vicino a zero
+~ \lim_{x \to 1^+} \frac{x^2}{x - 1} = \frac{1}{0^+} = \evid{+\infty} :: quindi $x = 1$ è asintoto verticale
+~ \lim_{x \to \pm\infty} \frac{x^2}{x - 1} = \pm\infty :: grado maggiore sopra: niente asintoto orizzontale
+~ m = \lim_{x \to \infty} \frac{x^2}{x(x - 1)} = \evid{1} :: il grado sopra supera di uno quello sotto: si cerca l'obliquo
+~ q = \lim_{x \to \infty} \left(\frac{x^2}{x - 1} \evid{- x}\right) :: ora tolgo $mx = x$
+~ q = \lim_{x \to \infty} \frac{\evid{x}}{x - 1} = \evid{1} :: denominatore comune: $x^2 - x(x - 1) = x$
+~ y = \evidb{x + 1} :: asintoto obliquo, a destra e a sinistra
+
+**4. Derivata prima, massimi e minimi.**
+
+~ f'(x) = \frac{2x(x - 1) - x^2}{(x - 1)^2} :: regola del quoziente
+~ f'(x) = \frac{\evid{x(x - 2)}}{(x - 1)^2} :: sviluppo, $2x^2 - 2x - x^2 = x^2 - 2x$, e raccolgo $x$
+~ f'(x) = 0 \iff x = 0 \ \lor \ x = 2 :: il denominatore è un quadrato, sempre positivo: il segno lo decide $x(x - 2)$
+~ \text{massimo } (0; 0), \quad \text{minimo } \evidb{(2; 4)} :: $f'$ è positiva per $x < 0$ e per $x > 2$, negativa fra $0$ e $2$; $f(2) = \frac{4}{1} = 4$
+
+?? Il massimo relativo vale $0$ e il minimo relativo vale $4$. Com'è possibile che il massimo stia più in basso del minimo?
+=> «Relativo» vuol dire più alto (o più basso) dei punti **vicini**, non di tutti. Il massimo $(0; 0)$ sta sul ramo di sinistra, il minimo $(2; 4)$ su quello di destra, e in mezzo c'è l'asintoto $x = 1$: i due rami non si confrontano. Nessuno dei due è assoluto, perché la funzione va a $+\infty$ e a $-\infty$.
+
+**5. Derivata seconda, concavità e flessi.**
+
+~ f(x) = x + 1 + \frac{1}{x - 1} :: con la divisione fra polinomi la derivata seconda viene più in fretta
+~ f'(x) = 1 - \frac{1}{(x - 1)^2} :: la derivata di $(x - 1)^{-1}$ è $-(x - 1)^{-2}$
+~ f''(x) = \evid{\frac{2}{(x - 1)^3}} :: derivo ancora: $-(x - 1)^{-2}$ diventa $2(x - 1)^{-3}$
+~ f'' < 0 \text{ se } x < 1, \quad f'' > 0 \text{ se } x > 1 :: verso il basso a sinistra, verso l'alto a destra; nessun flesso, perché in $1$ la funzione non c'è
+
+**6. Il grafico.** Trascina $P$ su tutti e due i rami: dove $f'(p)$ vale zero trovi il massimo e il minimo. Guarda anche da che parte dell'asintoto obliquo sta la curva, a sinistra e a destra.
 
 [[grafico:razionale]]
 
->! Scrivere «crescente in $(-\infty; 0) \cup (0; +\infty)$» è scorretto: l'unione non è un intervallo, e la monotonia si perde nel salto. Si dice: crescente in ciascuno dei due intervalli.` }
+>! Qui non si scrive «decrescente in $(0; 1) \cup (1; 2)$»: l'unione non è un intervallo, e la funzione in $1$ salta da $-\infty$ a $+\infty$. Si dice: decrescente in $(0; 1)$ e in $(1; 2)$, separatamente.` }
   ],
 
   grafici: {
-    rolle: {
-      tipo: 'piano', x: [-0.4, 3.6], y: [-0.5, 1.5], passo: [1, 0.5],
-      funzioni: [{ f: 'sin(x)', etichetta: 'y = sin x', colore: 1, dominio: [0, 3.1416] }],
-      punti: [
-        { x: 0, y: 0, etichetta: 'a = 0', posizione: 'basso', colore: 2 },
-        { x: 3.1416, y: 0, etichetta: 'b = π', posizione: 'basso', colore: 2 },
-        { x: 1.5708, y: 1, etichetta: 'c', posizione: 'alto', colore: 4 }
-      ],
-      elementi: [{ tipo: 'tangente', f: 'sin(x)', x0: 1.5708, colore: 4 }],
-      didascalia: "Rolle: f(0) = f(π) = 0, quindi da qualche parte la tangente è orizzontale. Qui succede in c = π/2."
-    },
     lagrange: {
-      tipo: 'piano', x: [-0.6, 3.6], y: [-1.5, 10], passo: [1, 2],
-      funzioni: [{ f: 'x^2', etichetta: 'y = x²', colore: 1, dominio: [0, 3] }],
+      tipo: 'piano', x: [-2.6, 2.6], y: [-4.5, 4.5],
+      parametri: [
+        { nome: 'a', min: -2.2, max: -0.1, passo: 0.1, valore: -0.5, nascosto: true },
+        { nome: 'b', min: 0.1, max: 2.2, passo: 0.1, valore: 2.2, nascosto: true }
+      ],
+      funzioni: [
+        { f: 'x^3 - 3x', colore: 1 },
+        { f: 'sqrt((a^2+a*b+b^2)/3)^3 - 3*sqrt((a^2+a*b+b^2)/3) + (a^2+a*b+b^2-3)*(x - sqrt((a^2+a*b+b^2)/3)) + 0*sqrt(b - sqrt((a^2+a*b+b^2)/3) - 0.000000001)', colore: 4, tratteggio: true },
+        { f: '-sqrt((a^2+a*b+b^2)/3)^3 + 3*sqrt((a^2+a*b+b^2)/3) + (a^2+a*b+b^2-3)*(x + sqrt((a^2+a*b+b^2)/3)) + 0*sqrt(-sqrt((a^2+a*b+b^2)/3) - a - 0.000000001)', colore: 4, tratteggio: true }
+      ],
       elementi: [
-        { tipo: 'segmento', da: [0, 0], a: [3, 9], etichetta: 'corda AB', tratteggio: true, colore: 2 },
-        { tipo: 'tangente', f: 'x^2', x0: 1.5, colore: 4 }
+        { tipo: 'segmento', da: ['a', 'a^3 - 3a'], a: ['b', 'b^3 - 3b'], colore: 2 },
+        { tipo: 'punto', p: ['sqrt((a^2+a*b+b^2)/3) + 0*sqrt(b - sqrt((a^2+a*b+b^2)/3) - 0.000000001)', 'sqrt((a^2+a*b+b^2)/3)^3 - 3*sqrt((a^2+a*b+b^2)/3)'], etichetta: 'c', posizione: 'basso', colore: 4 },
+        { tipo: 'punto', p: ['-sqrt((a^2+a*b+b^2)/3) + 0*sqrt(-sqrt((a^2+a*b+b^2)/3) - a - 0.000000001)', '-sqrt((a^2+a*b+b^2)/3)^3 + 3*sqrt((a^2+a*b+b^2)/3)'], etichetta: 'c', posizione: 'alto', colore: 4 },
+        { tipo: 'punto', p: ['a', 'a^3 - 3a'], trascina: true, etichetta: 'A', posizione: 'sinistra', colore: 2 },
+        { tipo: 'punto', p: ['b', 'b^3 - 3b'], trascina: true, etichetta: 'B', posizione: 'destra', colore: 2 },
+        { tipo: 'testo', p: [-2.5, 4.1], testo: 'corda: m = {{a^2 + a*b + b^2 - 3}}', ancora: 'start' },
+        { tipo: 'testo', p: [-2.5, 3.4], testo: 'a = {{a}}   b = {{b}}', ancora: 'start' }
       ],
-      punti: [
-        { x: 0, y: 0, etichetta: 'A', posizione: 'sinistra', colore: 2 },
-        { x: 3, y: 9, etichetta: 'B', posizione: 'sinistra', colore: 2 },
-        { x: 1.5, y: 2.25, etichetta: 'c = 1,5', posizione: 'basso', colore: 4 }
-      ],
-      didascalia: "Lagrange su y = x² in [0; 3]: la corda ha pendenza 3 e la tangente in c = 1,5 le è parallela."
+      didascalia: 'Trascina A e B lungo la curva. Le rette viola sono le tangenti nei punti c: restano sempre parallele alla corda arancio. Porta A verso sinistra e compare un secondo punto c. Poi metti a = −2 e b = 1: A e B sono alla stessa altezza, la corda è orizzontale ed è il caso di Rolle.'
     },
     cubica: {
       tipo: 'piano', x: [-2.6, 2.6], y: [-4.5, 4.5],
@@ -220,7 +332,7 @@ Sulla cubica $f(x) = x^3 - 3x$ i passi sono già stati fatti: dominio $\mathbb{R
         { x: 0, y: 0, etichetta: 'F(0; 0)', posizione: 'destra', colore: 3 }
       ],
       elementi: [
-        { tipo: 'tangente', f: 'x^3-3x', x0: 'p', colore: 4 },
+        { tipo: 'tangente', f: 'x^3-3x', x0: 'p', colore: 4, etichetta: false },
         { tipo: 'punto', p: ['p', 'p^3-3p'], trascina: true, etichetta: 'P', posizione: 'alto-destra', colore: 4 },
         { tipo: 'testo', p: [-2.4, 4], testo: "f'(p) = {{3*p^2 - 3}}", ancora: 'start' }
       ],
@@ -229,40 +341,45 @@ Sulla cubica $f(x) = x^3 - 3x$ i passi sono già stati fatti: dominio $\mathbb{R
     },
     derivate: {
       tipo: 'piano', x: [-2.4, 2.4], y: [-6.5, 6.5], passo: [1, 2],
+      parametri: [{ nome: 'p', min: -2.3, max: 2.3, passo: 0.05, valore: -1.6, nascosto: true }],
       funzioni: [
         { f: 'x^3 - 3x', etichetta: 'f', colore: 1 },
         { f: '3x^2 - 3', etichetta: "f'", colore: 2 },
         { f: '6x', etichetta: 'f″', colore: 3 }
       ],
-      punti: [
-        { x: -1, y: 0, etichetta: '−1', posizione: 'basso-sinistra', colore: 2 },
-        { x: 1, y: 0, etichetta: '1', posizione: 'basso-destra', colore: 2 }
+      elementi: [
+        { tipo: 'verticale', x: 'p', tratteggio: true, colore: 4 },
+        { tipo: 'punto', p: ['p', '3p^2 - 3'], colore: 2 },
+        { tipo: 'punto', p: ['p', '6p'], colore: 3 },
+        { tipo: 'punto', p: ['p', 'p^3 - 3p'], trascina: true, etichetta: 'P', posizione: 'sinistra', colore: 1 },
+        { tipo: 'testo', p: [0.2, -4.8], testo: "f'(x) = {{3p^2 - 3}}", ancora: 'start' },
+        { tipo: 'testo', p: [0.2, -6], testo: "f″(x) = {{6p}}", ancora: 'start' }
       ],
-      didascalia: "f, f' e f'' insieme: dove f' è sopra l'asse x la funzione sale; gli zeri di f' sono i punti stazionari; f'' cambia segno nel flesso."
+      didascalia: "Trascina P lungo la curva blu (f). Fermati in x = −1 e in x = 1: f' vale zero e f ha la gobba. Fermati in x = 0: si annulla f″, e la curva blu cambia il verso in cui si piega."
     },
     razionale: {
-      tipo: 'piano', x: [-5, 5], y: [-6, 6],
-      funzioni: [{ f: '(x^2 - 1)/x', etichetta: 'y = (x² − 1)/x', colore: 1 }],
+      tipo: 'piano', x: [-5, 6], y: [-9, 12], passo: [1, 2],
+      parametri: [{ nome: 'p', min: -4.9, max: 5.9, passo: 2 / 51, valore: -2, nascosto: true }],
+      funzioni: [{ f: 'x^2/(x - 1)', etichetta: 'y = x²/(x − 1)', colore: 1 }],
       elementi: [
-        { tipo: 'retta', m: 1, q: 0, etichetta: 'y = x', tratteggio: true, colore: 3 },
-        { tipo: 'verticale', x: 0, asintoto: true, etichetta: 'x = 0', colore: 2 }
+        { tipo: 'retta', m: 1, q: 1, etichetta: 'y = x + 1', tratteggio: true, colore: 3 },
+        { tipo: 'verticale', x: 1, asintoto: true, colore: 3 },
+        { tipo: 'tangente', f: 'x^2/(x - 1)', x0: 'p', colore: 2, etichetta: false },
+        { tipo: 'punto', p: ['p', 'p^2/(p - 1)'], trascina: true, etichetta: 'P', posizione: 'basso-destra', colore: 2 },
+        { tipo: 'testo', p: [-4.8, 11], testo: "x = {{p}}     f'(x) = {{p*(p - 2)/(p - 1)^2}}", ancora: 'start' }
       ],
-      punti: [
-        { x: -1, y: 0, etichetta: '−1', posizione: 'alto-sinistra', colore: 4 },
-        { x: 1, y: 0, etichetta: '1', posizione: 'basso-destra', colore: 4 }
-      ],
-      didascalia: 'La funzione ha l\'asintoto verticale x = 0 e l\'asintoto obliquo y = x, a cui si accosta da sopra per x < 0 e da sotto per x > 0.'
+      didascalia: "Trascina P su tutti e due i rami. Dove f' vale zero la tangente arancio è orizzontale: lì ci sono il massimo e il minimo. Guarda anche se la curva sta sopra o sotto l'asintoto obliquo, a sinistra e a destra."
     },
     ottimizzazione: {
       tipo: 'piano', x: [-1, 11], y: [-4, 30], passo: [1, 5],
       funzioni: [{ f: 'x*(10 - x)', etichetta: 'A(b) = b(10 − b)', colore: 1, dominio: [0, 10] }],
       elementi: [
         { tipo: 'segmento', da: ['b', 0], a: ['b', 'b*(10-b)'], tratteggio: true, colore: 2 },
-        { tipo: 'punto', p: ['b', 'b*(10-b)'], etichetta: 'P', posizione: 'alto-destra', colore: 2 },
-        { tipo: 'testo', p: [-0.6, 28], testo: 'base b = {{b}}    altezza = {{10 - b}}    area = {{b*(10-b)}}', ancora: 'start' }
+        { tipo: 'punto', p: ['b', 'b*(10-b)'], trascina: true, etichetta: 'P', posizione: 'alto-destra', colore: 2 },
+        { tipo: 'testo', p: [0.3, 28], testo: 'base = {{b}}    altezza = {{10 - b}}    area = {{b*(10-b)}}', ancora: 'start' }
       ],
-      parametri: [{ nome: 'b', min: 1, max: 9, passo: 0.5, valore: 3, etichetta: 'b' }],
-      didascalia: "Rettangoli di perimetro 20: muovendo la base b l'area descrive una parabola, massima per b = 5 (il quadrato)."
+      parametri: [{ nome: 'b', min: 0.5, max: 9.5, passo: 0.1, valore: 2, nascosto: true }],
+      didascalia: "Rettangoli di perimetro 20. Trascina P: la base cambia, l'altezza si adegua e l'area sale e scende. Per quale base l'area smette di crescere?"
     }
   },
 
@@ -309,7 +426,7 @@ Sulla cubica $f(x) = x^3 - 3x$ i passi sono già stati fatti: dominio $\mathbb{R
       R`Area: $A(x) = x(40 - 2x) = 40x - 2x^2$. Dominio del problema: $0 < x < 20$, perché entrambe le dimensioni devono essere positive.`,
       R`$A'(x) = 40 - 4x$, che si annulla per $x = 10$ ed è positiva prima, negativa dopo: in $x = 10$ c'è il massimo.`,
       R`Dimensioni: $10\ \text{m}$ e $40 - 20 = 20\ \text{m}$; area $A(10) = 200\ \text{m}^2$.`,
-      R`Osservazione: il lato parallelo al muro è il doppio degli altri due, non un quadrato. Il vincolo «tre lati» cambia la risposta.`
+      R`Osservazione: l'orto migliore non è un quadrato, perché il lato parallelo al muro è il doppio degli altri due. Il vincolo «tre lati» cambia la risposta.`
     ], risultato: R`$10\ \text{m} \times 20\ \text{m}$, area massima $200\ \text{m}^2$` }
   ],
   formulario: [
@@ -375,7 +492,7 @@ Sulla cubica $f(x) = x^3 - 3x$ i passi sono già stati fatti: dominio $\mathbb{R
 
     { id: 'es-09', difficolta: 2, testo: R`Il teorema di Rolle è applicabile a $f(x) = |x - 2|$ nell'intervallo $[1; 3]$? Rispondi sì o no.`, suggerimenti: [R`Controlla una per una le tre ipotesi.`, R`I valori agli estremi coincidono, ma che cosa succede in $x = 2$?`], risposta: { tipo: 'testo', accettate: ['no', 'no.', 'non e applicabile', 'non è applicabile', 'no, non e derivabile in 2', 'no, non è derivabile in 2'] }, soluzione: [R`$f$ è continua in $[1; 3]$ e $f(1) = f(3) = 1$: le prime e le terze ipotesi valgono.`, R`Ma in $x = 2$ c'è un punto angoloso: la derivata sinistra vale $-1$, la destra $+1$, quindi $f$ non è derivabile in un punto interno.`, R`Il teorema non è applicabile. Infatti $f'(x)$ vale $\pm 1$ e non si annulla mai: la tesi è falsa.`] },
 
-    { id: 'es-10', difficolta: 3, testo: R`Determina $a$ e $b$ in modo che $f(x) = x^3 + ax^2 + bx$ abbia un massimo relativo in $x = -1$ e un flesso in $x = 1$. Scrivi i due valori.`, suggerimenti: [R`Traduci le due richieste in condizioni su $f'$ e $f''$.`, R`Massimo in $-1$ dà $f'(-1) = 0$; flesso in $1$ dà $f''(1) = 0$.`, R`$f'(x) = 3x^2 + 2ax + b$ e $f''(x) = 6x + 2a$: parti dalla seconda condizione, che contiene solo $a$.`], risposta: { tipo: 'numeri', valori: [-3, -9] }, soluzione: [R`$f'(x) = 3x^2 + 2ax + b$, $f''(x) = 6x + 2a$.`, R`Flesso in $x = 1$: $f''(1) = 6 + 2a = 0 \Rightarrow a = -3$.`, R`Massimo in $x = -1$: $f'(-1) = 3 - 2a + b = 0$, cioè $3 + 6 + b = 0 \Rightarrow b = -9$.`, R`Verifica: $f'(x) = 3x^2 - 6x - 9 = 3(x + 1)(x - 3)$, quindi $f'(-1) = 0$, e $f''(-1) = -12 < 0$: in $-1$ c'è davvero un massimo. In $x = 1$ la derivata seconda cambia segno: è un flesso.`] },
+    { id: 'es-10', difficolta: 3, testo: R`Determina $a$ e $b$ in modo che $f(x) = x^3 + ax^2 + bx$ abbia un massimo relativo in $x = -1$ e un flesso in $x = 1$. Scrivi i due valori, prima $a$ e poi $b$.`, suggerimenti: [R`Traduci le due richieste in condizioni su $f'$ e $f''$.`, R`Massimo in $-1$ dà $f'(-1) = 0$; flesso in $1$ dà $f''(1) = 0$.`, R`$f'(x) = 3x^2 + 2ax + b$ e $f''(x) = 6x + 2a$: parti dalla seconda condizione, che contiene solo $a$.`], risposta: { tipo: 'numeri', valori: [-3, -9], ordinati: true }, soluzione: [R`$f'(x) = 3x^2 + 2ax + b$, $f''(x) = 6x + 2a$.`, R`Flesso in $x = 1$: $f''(1) = 6 + 2a = 0 \Rightarrow a = -3$.`, R`Massimo in $x = -1$: $f'(-1) = 3 - 2a + b = 0$, cioè $3 + 6 + b = 0 \Rightarrow b = -9$.`, R`Verifica: $f'(x) = 3x^2 - 6x - 9 = 3(x + 1)(x - 3)$, quindi $f'(-1) = 0$, e $f''(-1) = -12 < 0$: in $-1$ c'è davvero un massimo. In $x = 1$ la derivata seconda cambia segno: è un flesso.`] },
 
     { id: 'es-11', difficolta: 3, testo: R`Un rettangolo ha la base sul diametro di una semicirconferenza di raggio $5$ e i due vertici opposti sulla semicirconferenza. Determina l'area massima.`, suggerimenti: [R`Detta $x$ la semibase, l'altezza si ricava dal teorema di Pitagora.`, R`$A(x) = 2x\sqrt{25 - x^2}$ con $0 < x < 5$. Conviene massimizzare $A^2$, perché la radice è crescente.`], risposta: { tipo: 'numero', valore: 25, tolleranza: 0.01 }, soluzione: [R`Con centro nell'origine e semibase $x$, l'altezza vale $\sqrt{25 - x^2}$, quindi $A(x) = 2x\sqrt{25 - x^2}$, con $0 < x < 5$.`, R`Si massimizza $A^2 = 4x^2(25 - x^2) = 100x^2 - 4x^4$; la derivata è $200x - 16x^3 = 8x(25 - 2x^2)$.`, R`Si annulla per $x^2 = \dfrac{25}{2}$, cioè $x = \dfrac{5}{\sqrt{2}}$, con derivata positiva prima e negativa dopo: è il massimo.`, R`Allora $\sqrt{25 - x^2} = \dfrac{5}{\sqrt{2}}$ e $A = 2 \cdot \dfrac{5}{\sqrt{2}} \cdot \dfrac{5}{\sqrt{2}} = 25$.`] },
 
@@ -388,7 +505,7 @@ Sulla cubica $f(x) = x^3 - 3x$ i passi sono già stati fatti: dominio $\mathbb{R
     { id: 'q-03', domanda: R`Il teorema di Lagrange garantisce l'esistenza di un punto interno in cui…`, opzioni: [R`la tangente è parallela alla corda che unisce gli estremi del grafico`, R`la tangente è orizzontale`, R`la funzione assume la media fra $f(a)$ e $f(b)$`, R`la derivata seconda si annulla`], corretta: 0, spiegazione: R`La tesi è $f'(c) = \dfrac{f(b) - f(a)}{b - a}$: la pendenza della tangente uguaglia quella della corda. La tangente orizzontale si ha solo nel caso particolare di Rolle; sulla derivata seconda il teorema non dice nulla.` },
     { id: 'q-04', domanda: R`Il teorema di Rolle è il caso particolare del teorema di Lagrange in cui…`, opzioni: [R`$f$ è costante`, R`$f(a) = f(b)$`, R`$a = b$`, R`$f'(a) = f'(b)$`], corretta: 1, spiegazione: R`Se $f(a) = f(b)$ il rapporto $\dfrac{f(b) - f(a)}{b - a}$ vale zero e la tesi di Lagrange diventa $f'(c) = 0$. Con $a = b$ non ci sarebbe nessun intervallo, e la costanza di $f$ è una condizione ben più forte.` },
     { id: 'q-05', domanda: R`Se $f'(x) = 0$ per ogni $x$ di un intervallo $I$, allora in $I$…`, opzioni: [R`$f(x) = 0$`, R`$f$ è crescente`, R`$f$ ha un flesso`, R`$f$ è costante`], corretta: 3, spiegazione: R`Per Lagrange $f(x_2) - f(x_1) = f'(c)(x_2 - x_1) = 0$: la funzione assume sempre lo stesso valore. Attenzione: costante non vuol dire nulla, il valore costante può essere qualunque.` },
-    { id: 'q-06', domanda: R`Se $f$ è derivabile e strettamente crescente in un intervallo $I$, si può concludere che…`, opzioni: [R`$f'(x) > 0$ per ogni $x \in I$`, R`$f'(x) \ge 0$ per ogni $x \in I$`, R`$f'(x) \ne 0$ per ogni $x \in I$`, R`$f''(x) > 0$ per ogni $x \in I$`], corretta: 1, spiegazione: R`La derivata può annullarsi in qualche punto isolato senza che la crescenza si interrompa: $y = x^3$ è strettamente crescente ma $f'(0) = 0$. Il criterio funziona in un verso solo con la disuguaglianza stretta.` },
+    { id: 'q-06', domanda: R`Se $f$ è derivabile e strettamente crescente in un intervallo $I$, si può concludere che…`, opzioni: [R`$f'(x) > 0$ per ogni $x \in I$`, R`$f'(x) \ge 0$ per ogni $x \in I$`, R`$f'(x) \ne 0$ per ogni $x \in I$`, R`$f''(x) > 0$ per ogni $x \in I$`], corretta: 1, spiegazione: R`La derivata può annullarsi in qualche punto isolato senza che la crescenza si interrompa: $y = x^3$ è strettamente crescente ma $f'(0) = 0$. Il criterio di monotonia non si rovescia con la disuguaglianza stretta: da «strettamente crescente» si ricava solo $f' \ge 0$.` },
     { id: 'q-07', domanda: R`Prima di applicare il teorema di de l'Hôpital bisogna…`, opzioni: [R`verificare che il limite si presenti nella forma $\frac{0}{0}$ o $\frac{\infty}{\infty}$`, R`calcolare la derivata del quoziente $\frac{f}{g}$`, R`verificare che $f$ e $g$ siano continue in $x_0$`, R`conoscere già il valore del limite`], corretta: 0, spiegazione: R`Il teorema vale solo per quelle due forme indeterminate: applicato a $\lim_{x \to 0} \frac{x+1}{x+2}$ darebbe $1$ invece di $\frac{1}{2}$. Non si deriva il quoziente, e la continuità in $x_0$ non serve (anzi, $x_0$ può essere escluso).` },
     { id: 'q-08', domanda: R`Se $\lim \dfrac{f'(x)}{g'(x)}$ non esiste, il limite di $\dfrac{f(x)}{g(x)}$…`, opzioni: [R`non esiste`, R`vale $0$`, R`può esistere lo stesso: il teorema non dice nulla`, R`è certamente infinito`], corretta: 2, spiegazione: R`Il teorema funziona in un verso solo. Per $\lim_{x \to +\infty} \frac{x + \sin x}{x}$ il rapporto delle derivate è $1 + \cos x$, che non ha limite, ma il limite di partenza vale $1$.` },
     { id: 'q-09', domanda: R`Il teorema di Fermat afferma che, in un punto di estremo relativo interno in cui $f$ è derivabile…`, opzioni: [R`$f''(x_0) < 0$`, R`$f(x_0) = 0$`, R`$f'(x_0) \ne 0$`, R`$f'(x_0) = 0$`], corretta: 3, spiegazione: R`La tangente in un estremo relativo interno è orizzontale. Il segno di $f''$ distingue poi massimi e minimi, ma non fa parte del teorema di Fermat, e il valore $f(x_0)$ non c'entra.` },

@@ -180,7 +180,9 @@
   function iniziaTrascinamento(svg) {
     if (svg.__dragInit) return; svg.__dragInit = true;
     const coord = ev => { const c = svg.__ctx; const pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY; const q = pt.matrixTransform(svg.getScreenCTM().inverse()); return [c.xmin + (q.x - c.m.l) / c.pw * (c.xmax - c.xmin), c.ymax - (q.y - c.m.t) / c.ph * (c.ymax - c.ymin)]; };
-    svg.addEventListener('pointermove', ev => { const d = svg.__drag; if (!d) return; ev.preventDefault(); const [x, y] = coord(ev); const c = svg.__ctx; if (d.px) c.vars[d.px] = c.limita(d.px, x, 'x'); if (d.py) c.vars[d.py] = c.limita(d.py, y, 'y'); c.aggiorna(); });
+    svg.addEventListener('pointermove', ev => { const d = svg.__drag; if (!d) return; ev.preventDefault(); const [x, y] = coord(ev); const c = svg.__ctx;
+      if (d.giro) { const g = d.giro, cx = num(g.centro[0], c.vars), cy = num(g.centro[1], c.vars); let a = Math.atan2(y - cy, x - cx); if (g.gradi) { a = a * 180 / Math.PI; if (a < 0) a += 360; } else if (a < 0) a += 2 * Math.PI; c.vars[g.parametro] = c.limita(g.parametro, a, 'giro'); c.aggiorna(); return; }
+      if (d.px) c.vars[d.px] = c.limita(d.px, x, 'x'); if (d.py) c.vars[d.py] = c.limita(d.py, y, 'y'); c.aggiorna(); });
     const fine = () => { svg.__drag = null; };
     svg.addEventListener('pointerup', fine); svg.addEventListener('pointercancel', fine);
   }
@@ -188,7 +190,7 @@
   function renderPiano(spec, vars, svgEl, aggiorna) {
     const W = 600;
     const maniglie = [];
-    const modello = s => String(s).replace(/\{\{([^}]+)\}\}/g, (_, e) => { try { return fmt(num(e.trim(), vars)); } catch (x) { return '?'; } });
+    const modello = s => String(s).replace(/\{\{([^}]+)\}\}/g, (_, e) => { try { const v = num(e.trim(), vars); return isFinite(v) ? fmt(v) : 'non esiste'; } catch (x) { return '?'; } });
     const xr = spec.x || [-5, 5], yr = spec.y || [-5, 5];
     let xmin = num(xr[0], vars), xmax = num(xr[1], vars), ymin = num(yr[0], vars), ymax = num(yr[1], vars);
     /* figure geometriche: stessa scala sui due assi, altrimenti i cerchi diventano ellissi */
@@ -289,7 +291,8 @@
 
     /* elementi geometrici */
     const P = p => [sx(num(p[0], vars)), sy(num(p[1], vars))];
-    const etich = (x, y, testo, cls, anchor) => el('text', { x, y, class: 'cg-etichetta ' + (cls || ''), 'text-anchor': anchor || 'middle' }, testo);
+    /* ogni etichetta può contenere {{espressione}}: il valore si aggiorna quando si muove qualcosa */
+    const etich = (x, y, testo, cls, anchor) => el('text', { x, y, class: 'cg-etichetta ' + (cls || ''), 'text-anchor': anchor || 'middle' }, typeof testo === 'string' && testo.includes('{{') ? modello(testo) : testo);
     const spostamento = { alto: [0, -10], basso: [0, 16], destra: [10, 4], sinistra: [-10, 4], 'alto-destra': [8, -8], 'alto-sinistra': [-8, -8], 'basso-destra': [8, 14], 'basso-sinistra': [-8, 14] };
     const anchorDi = pos => /destra/.test(pos || '') ? 'start' : /sinistra/.test(pos || '') ? 'end' : 'middle';
 
@@ -378,8 +381,14 @@
           const rx = r / (xmax - xmin) * pw, ry = r / (ymax - ymin) * ph;
           let d = a2 - a1; while (d <= -Math.PI) d += 2 * Math.PI; while (d > Math.PI) d -= 2 * Math.PI;
           const N = 24, pts = [];
-          for (let i = 0; i <= N; i++) { const t = a1 + d * i / N; pts.push([sx(v[0]) + rx * Math.cos(t), sy(v[1]) - ry * Math.sin(t)]); }
-          gDati.appendChild(el('path', { d: 'M' + sx(v[0]) + ',' + sy(v[1]) + 'L' + pts.map(p => p.join(',')).join('L') + 'Z', fill: col, 'fill-opacity': .25, stroke: col, 'stroke-width': 1.5 }));
+          if (Math.abs(Math.abs(d) - Math.PI / 2) < 0.009 && e.retto !== false) {
+            /* angolo retto: il quadratino dei libri, non l'arco */
+            const V = [sx(v[0]), sy(v[1])], k = 0.75, p1 = [V[0] + k * rx * Math.cos(a1), V[1] - k * ry * Math.sin(a1)], p2 = [V[0] + k * rx * Math.cos(a1 + d), V[1] - k * ry * Math.sin(a1 + d)];
+            gDati.appendChild(el('path', { d: 'M' + V.join(',') + 'L' + p1.join(',') + 'L' + (p1[0] + p2[0] - V[0]) + ',' + (p1[1] + p2[1] - V[1]) + 'L' + p2.join(',') + 'Z', fill: col, 'fill-opacity': .2, stroke: col, 'stroke-width': 1.5 }));
+          } else {
+            for (let i = 0; i <= N; i++) { const t = a1 + d * i / N; pts.push([sx(v[0]) + rx * Math.cos(t), sy(v[1]) - ry * Math.sin(t)]); }
+            gDati.appendChild(el('path', { d: 'M' + sx(v[0]) + ',' + sy(v[1]) + 'L' + pts.map(p => p.join(',')).join('L') + 'Z', fill: col, 'fill-opacity': .25, stroke: col, 'stroke-width': 1.5 }));
+          }
           if (e.etichetta) { const t = a1 + d / 2; gSopra.appendChild(etich(sx(v[0]) + rx * 1.6 * Math.cos(t), sy(v[1]) - ry * 1.6 * Math.sin(t) + 4, e.etichetta)); }
           break;
         }
@@ -396,7 +405,7 @@
           if (e.trascina) {
             const nome = i => (typeof e.p[i] === 'string' && /^[A-Za-z_]\w*$/.test(e.p[i].trim())) ? e.p[i].trim() : null;
             const h = el('circle', { cx: p[0], cy: p[1], r: 18, fill: 'transparent', class: 'cg-maniglia' });
-            h.addEventListener('pointerdown', ev => { svg.__drag = { px: nome(0), py: nome(1) }; try { svg.setPointerCapture(ev.pointerId); } catch (x) { /* niente */ } ev.preventDefault(); });
+            h.addEventListener('pointerdown', ev => { svg.__drag = e.giro ? { giro: e.giro } : { px: nome(0), py: nome(1) }; try { svg.setPointerCapture(ev.pointerId); } catch (x) { /* niente */ } ev.preventDefault(); });
             maniglie.push(h);
           }
           break;
@@ -465,7 +474,7 @@
       const g = el('g', { class: 'cg-maniglie' }); maniglie.forEach(x => g.appendChild(x)); svg.appendChild(g);
       svg.__ctx = { xmin, xmax, ymin, ymax, m, pw, ph, vars, aggiorna: aggiorna || (() => {}), limita: (nome, v, asse) => {
         const p = (spec.parametri || []).find(q => q.nome === nome);
-        let lo = asse === 'x' ? xmin : ymin, hi = asse === 'x' ? xmax : ymax;
+        let lo = asse === 'x' ? xmin : asse === 'giro' ? -Infinity : ymin, hi = asse === 'x' ? xmax : asse === 'giro' ? Infinity : ymax;
         if (p) { if (p.min != null) lo = num(p.min); if (p.max != null) hi = num(p.max); if (p.passo) v = Math.round(v / p.passo) * p.passo; }
         return Math.max(lo, Math.min(hi, Math.round(v * 1e6) / 1e6));
       } };
@@ -478,7 +487,10 @@
      4. RETTA REALE (intervalli, per le disequazioni)
      ============================================================ */
   function renderRettaReale(spec, vars, svgEl) {
-    const W = 600, H = 60 + 22 * Math.max(1, (spec.intervalli || []).length);
+    /* riga: più intervalli sulla stessa riga (per esempio le due parti della soluzione di una disequazione) */
+    const righe = (spec.intervalli || []).map((iv, i) => iv.riga != null ? iv.riga : i);
+    const nRighe = righe.length ? Math.max(...righe) + 1 : 1;
+    const W = 600, H = 60 + 30 * Math.max(1, nRighe);
     const xr = spec.x || [-5, 5]; const xmin = num(xr[0], vars), xmax = num(xr[1], vars);
     const m = { l: 24, r: 24 }; const pw = W - m.l - m.r;
     const sx = x => m.l + (x - xmin) / (xmax - xmin) * pw;
@@ -496,7 +508,7 @@
       const col = colore(iv.colore || (i + 1));
       const a = num(iv.da, vars), b = num(iv.a, vars);
       const xa = isFinite(a) ? sx(a) : m.l, xb = isFinite(b) ? sx(b) : m.l + pw;
-      const y = yAsse - 14 - i * 22;
+      const y = yAsse - 14 - righe[i] * 30;
       svg.appendChild(el('line', { x1: xa, x2: xb, y1: y, y2: y, stroke: col, 'stroke-width': 6, 'stroke-linecap': 'butt', opacity: .85 }));
       if (isFinite(a)) svg.appendChild(el('circle', { cx: xa, cy: y, r: 5.5, fill: iv.chiusoDa ? col : 'var(--g-sfondo)', stroke: col, 'stroke-width': 2.5 }));
       if (isFinite(b)) svg.appendChild(el('circle', { cx: xb, cy: y, r: 5.5, fill: iv.chiusoA ? col : 'var(--g-sfondo)', stroke: col, 'stroke-width': 2.5 }));
@@ -561,7 +573,7 @@
   /* ============================================================
      6. CIRCONFERENZA GONIOMETRICA (interattiva)
      ============================================================ */
-  function renderCirconferenza(spec, vars, svgEl) {
+  function renderCirconferenza(spec, vars, svgEl, aggiorna) {
     const W = 600, H = 400; const cx = 210, cy = 200, R = 150;
     const gradi = vars.angolo != null ? vars.angolo : (spec.angolo != null ? spec.angolo : 60);
     const t = gradi * Math.PI / 180;
@@ -593,11 +605,29 @@
       const L = 420; svg.appendChild(el('line', { x1: cx - L * Math.cos(t) * 0.35, y1: cy + L * Math.sin(t) * 0.35, x2: cx + L * Math.cos(t), y2: cy - L * Math.sin(t), class: 'cg-griglia', 'stroke-dasharray': '4 3' }));
     }
     svg.appendChild(el('line', { x1: cx, y1: cy, x2: px, y2: py, stroke: 'var(--g-testo)', 'stroke-width': 2 }));
-    svg.appendChild(el('circle', { cx: px, cy: py, r: 6, fill: 'var(--s4)', stroke: 'var(--g-sfondo)', 'stroke-width': 2 }));
+    svg.appendChild(el('circle', { cx: px, cy: py, r: 8, fill: 'var(--s4)', stroke: 'var(--g-sfondo)', 'stroke-width': 2, class: 'cg-punto-trascinabile' }));
     svg.appendChild(el('text', { x: px + 10 * Math.cos(t) + 4, y: py - 10 * Math.sin(t) - 6, class: 'cg-etichetta' }, 'P'));
+    /* P si trascina lungo la circonferenza: l'angolo segue il dito (a passi di 1°) */
+    if (aggiorna && 'angolo' in vars) {
+      const h = el('circle', { cx: px, cy: py, r: 22, fill: 'transparent', class: 'cg-maniglia' });
+      h.addEventListener('pointerdown', ev => { svg.__giroP = true; try { svg.setPointerCapture(ev.pointerId); } catch (x) { /* niente */ } ev.preventDefault(); });
+      svg.appendChild(h);
+      if (!svg.__giroInit) {
+        svg.__giroInit = true;
+        svg.addEventListener('pointermove', ev => {
+          if (!svg.__giroP) return; ev.preventDefault();
+          const pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY; const q = pt.matrixTransform(svg.getScreenCTM().inverse());
+          let g = Math.round(Math.atan2(cy - q.y, q.x - cx) * 180 / Math.PI); if (g < 0) g += 360;
+          vars.angolo = g; svg.__aggiorna();
+        });
+        const fine = () => { svg.__giroP = false; };
+        svg.addEventListener('pointerup', fine); svg.addEventListener('pointercancel', fine);
+      }
+      svg.__aggiorna = aggiorna;
+    }
     /* pannello valori */
     const gV = el('g', { transform: 'translate(400,60)', class: 'cg-valori' });
-    const righe = [['α', gradi + '°  (' + fmt(t, 3) + ' rad)', 'var(--s4)']];
+    const righe = [['α', gradi + '°', 'var(--s4)'], ['α', fmt(t, 3) + ' rad', 'var(--s4)']];
     if (mostra.includes('sin')) righe.push(['sin α', fmt(Math.sin(t), 3), 'var(--s1)']);
     if (mostra.includes('cos')) righe.push(['cos α', fmt(Math.cos(t), 3), 'var(--s2)']);
     if (mostra.includes('tan')) righe.push(['tan α', Math.abs(Math.cos(t)) < 1e-6 ? 'non esiste' : fmt(Math.tan(t), 3), 'var(--s3)']);
@@ -663,7 +693,8 @@
     }
     if (!RENDER[spec.tipo] && spec.tipo !== 'svg') errori.push('tipo sconosciuto: ' + spec.tipo);
     const nomiParamDich = new Set((spec.parametri || []).map(p => p.nome));
-    (spec.elementi || []).forEach((e, i) => { if (e.tipo === 'punto' && e.trascina) [0, 1].forEach(k => { const v = e.p && e.p[k]; if (typeof v === 'string' && /^[A-Za-z_]\w*$/.test(v.trim()) && !nomiParamDich.has(v.trim())) errori.push('elementi[' + i + '](punto trascinabile): il parametro "' + v + '" va dichiarato in parametri (con valore iniziale, min e max)'); }); });
+    (spec.elementi || []).forEach((e, i) => { if (e.tipo === 'punto' && e.giro) { if (!e.giro.parametro || !nomiParamDich.has(e.giro.parametro)) errori.push('elementi[' + i + '](punto con giro): giro.parametro va dichiarato in parametri'); if (!Array.isArray(e.giro.centro) || e.giro.centro.length !== 2) errori.push('elementi[' + i + '](punto con giro): giro.centro deve essere [x, y]'); } });
+    (spec.elementi || []).forEach((e, i) => { if (e.tipo === 'punto' && e.trascina && !e.giro) [0, 1].forEach(k => { const v = e.p && e.p[k]; if (typeof v === 'string' && /^[A-Za-z_]\w*$/.test(v.trim()) && !nomiParamDich.has(v.trim())) errori.push('elementi[' + i + '](punto trascinabile): il parametro "' + v + '" va dichiarato in parametri (con valore iniziale, min e max)'); }); });
     const nomiParam = new Set((spec.parametri || []).map(p => p.nome));
     const consentite = new Set(['x', ...nomiParam]);
     if (spec.tipo === 'circonferenza-goniometrica') consentite.add('angolo');

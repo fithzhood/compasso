@@ -15,7 +15,9 @@ const INDICE = global.window.COMPASSO_INDICE;
 const ANIMAZIONI = require(path.join(radice, 'compasso-animazioni.js')).nomi();
 
 const CONTA = { sezioni: [5, 9], esempi: [4, 6], formulario: [6, 14], flashcards: [16, 26], esercizi: [8, 12], quiz: [12, 18], suggerimenti: [6, 10], aneddoti: [3, 5] };
-const VIETATI = [/\\\(/, /\\\[/, /\\begin\{align/, /\\begin\{equation/, /\\textbf/, /\\newcommand/];
+const KOPZ = { strict: 'ignore', macros: { '\\evid': '\\htmlClass{evid}{#1}', '\\evidb': '\\htmlClass{evid evid2}{#1}' }, trust: c => c.command === '\\htmlClass' };
+const KT = (t, d) => katex.renderToString(t, Object.assign({ throwOnError: true, displayMode: !!d }, KOPZ, { macros: Object.assign({}, KOPZ.macros) }));
+const VIETATI = [/\\\(/, /\\\[/, /\\begin\{align\*?\}/, /\\begin\{equation/, /\\textbf/, /\\newcommand/];
 
 function verificaFile(file) {
   const errori = [], avvisi = [];
@@ -53,7 +55,7 @@ function verificaFile(file) {
     if (!s.testo) E(`${dove}: manca testo`); else { T(s.testo, dove + '.testo'); const parole = s.testo.split(/\s+/).length; if (parole < 90) A(`${dove} (${s.id}): solo ${parole} parole`); }
   });
   (arg.esempi || []).forEach((e, i) => { const d = `esempi[${i}]`; if (!e.titolo) E(d + ': manca titolo'); T(e.problema, d + '.problema'); if (!Array.isArray(e.passi) || !e.passi.length) E(d + ': passi deve essere un array non vuoto'); else e.passi.forEach((p, k) => T(p, `${d}.passi[${k}]`)); T(e.risultato, d + '.risultato'); });
-  (arg.formulario || []).forEach((f, i) => { const d = `formulario[${i}]`; if (!f.nome) E(d + ': manca nome'); if (!f.formula) E(d + ': manca formula'); else { if (/\$/.test(f.formula)) E(d + ': la formula va scritta senza $'); try { katex.renderToString(f.formula, { throwOnError: true, displayMode: true, strict: 'ignore' }); } catch (err) { E(d + '.formula: ' + err.message.replace('KaTeX parse error: ', '')); } } T(f.nota, d + '.nota'); });
+  (arg.formulario || []).forEach((f, i) => { const d = `formulario[${i}]`; if (!f.nome) E(d + ': manca nome'); if (!f.formula) E(d + ': manca formula'); else { if (/\$/.test(f.formula)) E(d + ': la formula va scritta senza $'); try { KT(f.formula, true); } catch (err) { E(d + '.formula: ' + err.message.replace('KaTeX parse error: ', '')); } } T(f.nota, d + '.nota'); });
   const idFc = new Set();
   (arg.flashcards || []).forEach((c, i) => { const d = `flashcards[${i}]`; if (!c.id) E(d + ': manca id'); else if (idFc.has(c.id)) E(d + `: id "${c.id}" duplicato`); else idFc.add(c.id); if (!c.sezione) A(d + ': manca sezione'); else if (!idSez.has(c.sezione)) E(d + `: sezione "${c.sezione}" inesistente`); if (c.tipo && !['definizione', 'formula', 'procedura', 'concetto'].includes(c.tipo)) E(d + ': tipo non valido'); T(c.fronte, d + '.fronte'); T(c.retro, d + '.retro'); if (!c.fronte || !c.retro) E(d + ': servono fronte e retro'); });
   const idEs = new Set();
@@ -89,6 +91,24 @@ function verificaFile(file) {
   (arg.suggerimenti || []).forEach((s, i) => { const d = `suggerimenti[${i}]`; if (!['errore', 'trucco', 'metodo'].includes(s.tipo)) E(d + ': tipo deve essere errore|trucco|metodo'); T(s.testo, d + '.testo'); if (!s.testo) E(d + ': manca testo'); });
   (arg.aneddoti || []).forEach((a, i) => { const d = `aneddoti[${i}]`; ['matematico', 'anni', 'titolo', 'testo'].forEach(k => { if (!a[k]) E(`${d}: manca ${k}`); }); T(a.testo, d + '.testo'); T(a.legame, d + '.legame'); if (a.testo && a.testo.split(/\s+/).length < 50) A(`${d} (${a.matematico}): racconto molto corto`); });
 
+  /* ---- blocchi «Prova tu» ---- */
+  testi.forEach(([s, dove]) => {
+    const righe = s.split('\n'); let i = 0;
+    while (i < righe.length) {
+      const r = righe[i].trim();
+      if (/^\?\?\s+/.test(r)) {
+        let giuste = 0, opz = 0, spiega = false; i++;
+        while (i < righe.length && righe[i].trim()) { const q = righe[i].trim(); if (/^\[[xX]\]\s+/.test(q)) { giuste++; opz++; } else if (/^\[ \]\s+/.test(q)) opz++; else if (/^=>/.test(q)) spiega = true; i++; }
+        if (!spiega) E(`${dove}: blocco ?? senza riga "=> spiegazione/risposta"`);
+        if (opz && giuste !== 1) E(`${dove}: blocco ?? con ${giuste} opzioni giuste (ne serve esattamente una)`);
+        if (opz === 1) E(`${dove}: blocco ?? con una sola opzione`);
+        continue;
+      }
+      i++;
+    }
+  });
+  if (arg.inBreve != null) { if (!Array.isArray(arg.inBreve) || arg.inBreve.length < 3 || arg.inBreve.length > 6) E('inBreve: deve essere un array di 3–6 stringhe'); else arg.inBreve.forEach((t, i) => T(t, `inBreve[${i}]`)); }
+
   /* ---- grafici ---- */
   const grafici = arg.grafici || {};
   const usati = new Set();
@@ -108,8 +128,10 @@ function verificaFile(file) {
     VIETATI.forEach(re => { if (re.test(s)) E(`${dove}: contiene ${re.source} (vietato, vedi SCHEMA.md §1)`); });
     if (/[`]|\$\{/.test(s)) E(`${dove}: contiene backtick o \${`);
     /* display */
-    let resto = s.replace(/\$\$([\s\S]+?)\$\$/g, (tutto, tex) => { try { katex.renderToString(tex, { throwOnError: true, displayMode: true, strict: 'ignore' }); } catch (err) { E(`${dove}: $$…$$ → ${err.message.replace('KaTeX parse error: ', '')}`); } return ' '; });
-    resto = resto.replace(/\$([^$\n]+?)\$/g, (tutto, tex) => { try { katex.renderToString(tex, { throwOnError: true, strict: 'ignore' }); } catch (err) { E(`${dove}: $${tex}$ → ${err.message.replace('KaTeX parse error: ', '')}`); } return ' '; });
+    /* derivazioni: righe "~ LATEX :: commento" */
+    let s2 = s.replace(/^[ 	]*~[ 	]+(.+?)(?:[ 	]+::[ 	]+(.*))?[ 	]*$/gm, (tutto, tex, c) => { if (/\$/.test(tex)) E(`${dove}: nella riga ~ la formula va scritta senza $ ("${tex.slice(0, 40)}")`); else { try { KT(tex, true); } catch (err) { E(`${dove}: ~ ${tex.slice(0, 40)} → ${err.message.replace('KaTeX parse error: ', '')}`); } } return c || ' '; });
+    let resto = s2.replace(/\$\$([\s\S]+?)\$\$/g, (tutto, tex) => { try { KT(tex, true); } catch (err) { E(`${dove}: $$…$$ → ${err.message.replace('KaTeX parse error: ', '')}`); } return ' '; });
+    resto = resto.replace(/\$([^$\n]+?)\$/g, (tutto, tex) => { try { KT(tex, false); } catch (err) { E(`${dove}: $${tex}$ → ${err.message.replace('KaTeX parse error: ', '')}`); } return ' '; });
     if ((resto.match(/\$/g) || []).length) E(`${dove}: numero dispari di $ (matematica non chiusa, o $ su più righe)`);
     if (/\\(frac|sqrt|cdot|le|ge|ne|pm|infty|Delta|alpha|beta|pi|sin|cos|tan|log|ln|lim|int|sum|text|mathbb)\b/.test(resto)) E(`${dove}: comando LaTeX fuori da $…$`);
     if (/[²³⁰¹⁴⁵⁶⁷⁸⁹]/.test(resto) && !/grafico/.test(dove)) A(`${dove}: apice Unicode fuori dalla matematica (usa $x^2$)`);

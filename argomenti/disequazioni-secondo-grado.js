@@ -4,81 +4,125 @@ COMPASSO.registra({
   id: 'disequazioni-secondo-grado',
   titolo: 'Disequazioni di secondo grado',
 
-  introduzione: R`Una disequazione di secondo grado, ridotta a forma normale, confronta con zero un trinomio: $ax^2 + bx + c > 0$ (o con $<,\ \le,\ \ge$), con $a \ne 0$. A differenza di un'equazione, che di solito ha un numero finito di soluzioni, una disequazione ne ha quasi sempre infinite: un intervallo, un'unione di intervalli, oppure tutto $\mathbb{R}$ o l'insieme vuoto.
+  introduzione: R`Un sasso lanciato verso l'alto si trova, dopo $t$ secondi, all'altezza $h=20t-5t^2$ metri. Per quanto tempo sta sopra i $15$ metri? La domanda diventa $20t-5t^2>15$, e la risposta non è un numero solo: è un intervallo di tempo, da $t=1$ a $t=3$ secondi.
 
-Il modo più diretto per risolverle è guardare la parabola $y = ax^2 + bx + c$: chiedersi dove il trinomio è positivo o negativo equivale a chiedersi dove quella parabola sta sopra o sotto l'asse delle $x$. Le disequazioni di secondo grado servono ogni volta che una grandezza — un'area, un ricavo, l'altezza di un oggetto lanciato — deve superare o non superare una soglia: un lancio resta sopra una certa altezza solo in un intervallo di tempo, un'azienda ha un utile positivo solo producendo più di una certa quantità e meno di un'altra.
+Questa è una **disequazione di secondo grado**. Portata in forma normale confronta con zero un trinomio: $ax^2+bx+c>0$ (oppure con $<$, $\le$, $\ge$), con $a\ne 0$. Le sue soluzioni sono quasi sempre infinite: un intervallo, due intervalli, tutti i numeri reali, oppure nessuno.
 
-Per seguire bene serve saper risolvere le equazioni di secondo grado (discriminante, formula risolutiva, scomposizione del trinomio) e le disequazioni di primo grado, compreso l'effetto di moltiplicare per un numero negativo.`,
+Il metodo si basa su un'idea sola: il trinomio $ax^2+bx+c$ è la $y$ di una parabola. Chiedersi dove il trinomio è positivo vuol dire chiedersi dove la parabola sta **sopra** l'asse $x$; dove è negativo, dove sta **sotto**. Serve saper risolvere le equazioni di secondo grado e le disequazioni di primo grado, compreso che cosa succede al verso quando si moltiplica per un numero negativo.`,
+
+  inBreve: [
+    R`Si porta tutto a sinistra, $ax^2+bx+c$ confrontato con $0$, e si cercano le soluzioni dell'equazione associata $ax^2+bx+c=0$.`,
+    R`Il trinomio è la $y$ della parabola: è positivo dove la parabola sta sopra l'asse $x$, negativo dove sta sotto.`,
+    R`Con $\Delta>0$ il trinomio ha il segno di $a$ **fuori** dalle due soluzioni e il segno opposto **fra** le due soluzioni. Se $a<0$, conviene prima moltiplicare per $-1$ e cambiare il verso.`,
+    R`Con $\Delta\le 0$ il trinomio ha sempre il segno di $a$ (salvo annullarsi in un punto se $\Delta=0$): la disequazione è sempre vera, mai vera, vera tranne in un punto, oppure vera in un punto solo.`,
+    R`Nei sistemi si prende la parte **comune** delle soluzioni; nelle fratte i valori che annullano il denominatore si escludono sempre.`,
+    R`Non si divide mai per un'espressione che contiene la $x$: si porta tutto a un membro e si studia il segno dei fattori.`
+  ],
 
   sezioni: [
-    { id: 'segno-trinomio', titolo: 'Il segno del trinomio sulla parabola', testo: R`Una disequazione di secondo grado, in forma normale, è un confronto fra il trinomio $ax^2+bx+c$ (con $a \ne 0$) e zero. Risolverla significa stabilire per quali $x$ il trinomio ha quel segno — la stessa domanda che ci si pone leggendo la parabola $y=ax^2+bx+c$: dove sta sopra l'asse $x$ (segno $+$) e dove sta sotto (segno $-$).
+    { id: 'segno-trinomio', titolo: 'Il segno del trinomio sulla parabola', testo: R`Per quali $x$ il trinomio $x^2-2x-3$ è positivo? Pensalo come la $y$ della parabola $y=x^2-2x-3$. Dove la parabola sta sopra l'asse $x$, la $y$ è positiva; dove sta sotto, è negativa; dove incontra l'asse, vale zero. Quindi bastano due informazioni: **dove** la parabola incontra l'asse $x$ e **verso dove** è rivolta.
 
-Il comportamento dipende da due soli ingredienti: il segno di $a$ (che decide se la parabola è rivolta verso l'alto o verso il basso) e il segno del discriminante $\Delta=b^2-4ac$ (che decide se, e dove, la parabola incontra l'asse $x$). Combinandoli si ottengono sei casi, ma la regola che li riassume è una sola:
+~ x^2-2x-3>0 :: la disequazione è già in forma normale, con $a=1$
+~ x_1=-1,\quad x_2=3 :: risolvo l'equazione associata $x^2-2x-3=0$: due numeri con somma $2$ e prodotto $-3$
+~ a=1>0 :: la parabola è rivolta verso l'alto: sotto l'asse fra $-1$ e $3$, sopra fuori
+~ \evidb{x<-1\ \lor\ x>3} :: la disequazione chiede $>0$, cioè i tratti sopra l'asse
 
->* Se $\Delta>0$ (due radici $x_1<x_2$), il trinomio ha il segno di $a$ per $x$ **esterno** alle radici e il segno opposto per $x$ **interno**. Se $\Delta=0$ (radice doppia), il trinomio ha sempre il segno di $a$, tranne che nella radice, dove vale $0$. Se $\Delta<0$ (nessuna radice), il trinomio ha il segno di $a$ per **ogni** $x$ reale, senza eccezioni.
+Ora prova tu con il grafico: trascina il vertice della parabola sopra e sotto l'asse, e cambia il segno di $a$ con il cursore.
 
-Per esempio $y=x^2-2x-3$ ha $a=1>0$ e $\Delta=4+12=16>0$, con radici $x_1=-1$ e $x_2=3$: il trinomio è positivo per $x<-1$ o $x>3$ (fuori dalle radici) e negativo per $-1<x<3$ (fra le radici), come mostra il grafico.
+[[grafico:segno]]
 
-[[grafico:segnoParabola]]
+Hai visto che tutto dipende da due cose: il segno di $a$, che dice se la parabola è rivolta verso l'alto o verso il basso, e il segno di $\Delta=b^2-4ac$, che dice se la parabola taglia l'asse $x$, lo tocca o non lo incontra. Con $x_1<x_2$ le soluzioni dell'equazione associata:
 
-Cambiando il segno di $a$ tutto si ribalta: la parabola si capovolge, e con essa il segno letto fuori e dentro le radici. Prova a muovere il cursore nel grafico seguente.
+| $\Delta$ | $a>0$ | $a<0$ |
+|---|---|---|
+| positivo | $+$ fuori da $x_1$ e $x_2$, $-$ fra | $-$ fuori, $+$ fra |
+| zero | $+$ sempre, $0$ nel vertice | $-$ sempre, $0$ nel vertice |
+| negativo | $+$ sempre | $-$ sempre |
 
-[[grafico:concavitaA]]
+>* Il trinomio ha il **segno di $a$** dappertutto, tranne che fra le due soluzioni (se ci sono), dove ha il segno opposto.
 
->! Il segno del trinomio **non dipende solo dalle radici**: due trinomi con le stesse radici ma $a$ di segno opposto (per esempio $(x+1)(x-3)$ e $-(x+1)(x-3)$) hanno segno opposto in ogni punto. Guardare solo dove si annulla il trinomio, senza controllare il segno di $a$, è l'errore più comune di tutto l'argomento.` },
+?? Il trinomio $-x^2+4$ si annulla in $-2$ e in $2$. Dove è positivo?
+[x] per $-2<x<2$
+[ ] per $x<-2$ oppure $x>2$
+[ ] per nessun valore di $x$
+=> Qui $a=-1$: la parabola è rivolta verso il basso, quindi sta sopra l'asse proprio fra gli zeri. Controllo con $x=0$: $-0+4=4>0$. Rispondere "fuori dagli zeri" vuol dire applicare la regola del caso $a>0$ senza guardare il segno di $a$, che è l'errore più comune di tutto l'argomento.
 
-    { id: 'schema-esterni-interni', titolo: 'Lo schema: valori esterni, valori interni', testo: R`Quando $a>0$ e $\Delta>0$ — il caso più frequente — conviene ricordare uno schema pratico invece di rifare il ragionamento ogni volta. Dette $x_1<x_2$ le radici di $ax^2+bx+c=0$:
+Nella scheda **Laboratorio** di questo argomento c'è *Marea*: pieghi una barra a forma di parabola e alzi il livello del mare.` },
 
->* **Schema pratico (con $a>0$):** $ax^2+bx+c>0$ ha soluzione $x<x_1 \ \lor\ x>x_2$ (**valori esterni**); $ax^2+bx+c<0$ ha soluzione $x_1<x<x_2$ (**valori interni**). Con $\ge$ o $\le$ si includono anche gli estremi.
+    { id: 'schema-esterni-interni', titolo: 'Lo schema: valori esterni, valori interni', testo: R`Il caso che capita più spesso è $a>0$ con $\Delta>0$: parabola rivolta verso l'alto che taglia l'asse in due punti. Qui conviene ricordare uno schema, invece di rifare il disegno ogni volta.
 
-Il nome viene dalla posizione delle soluzioni rispetto alle due radici sulla retta reale: "fuori" dall'intervallo fra $x_1$ e $x_2$, oppure "dentro". Per $x^2-2x-3>0$ (radici $-1$ e $3$): valori esterni.
+>* **Schema, con $a>0$ e $\Delta>0$** (e $x_1<x_2$ le soluzioni dell'equazione associata): $ax^2+bx+c>0$ è vera per $x<x_1\ \lor\ x>x_2$, i **valori esterni**; $ax^2+bx+c<0$ è vera per $x_1<x<x_2$, i **valori interni**. Con $\ge$ o $\le$ gli estremi $x_1$ e $x_2$ sono compresi.
 
-[[grafico:rettaEsterni]]
+"Esterni" e "interni" si riferiscono all'intervallo fra le due soluzioni: le soluzioni della disequazione stanno fuori da quell'intervallo oppure dentro. Per $x^2-2x-3>0$ (soluzioni associate $-1$ e $3$) i valori sono esterni, $x<-1\ \lor\ x>3$; per $x^2-2x-3<0$ sono interni, $-1<x<3$.
 
-Per $x^2-2x-3<0$: valori interni.
+Se $a<0$ lo schema non si applica così com'è. Si moltiplica prima tutta la disequazione per $-1$, **cambiando il verso** come nel primo grado, e ci si riporta ad $a>0$.
 
-[[grafico:rettaInterni]]
+~ -x^2+2x+3>0 :: qui $a=-1$: lo schema non vale ancora
+~ \evid{x^2-2x-3}\ \evid{<}\ 0 :: moltiplico per $-1$: cambiano tutti i segni **e** il verso
+~ x_1=-1,\quad x_2=3 :: soluzioni dell'equazione associata
+~ \evidb{-1<x<3} :: ora $a>0$ e il verso è $<$: valori interni
 
-Se $a<0$, lo schema **non si applica direttamente**: prima si moltiplica tutta la disequazione per $-1$, ricordando di **cambiare il verso** (come per le disequazioni di primo grado), così da ricondursi a un $a$ positivo. Per esempio $-x^2+2x+3>0$ diventa, moltiplicando per $-1$, $x^2-2x-3<0$, cioè valori interni: $-1<x<3$.
+?? Uno studente risolve $-x^2+2x+3>0$ così: soluzioni associate $-1$ e $3$, verso $>$, quindi valori esterni. Dove sbaglia?
+[x] ha applicato lo schema con $a$ negativo
+[ ] ha sbagliato le soluzioni associate
+[ ] niente, il risultato è giusto
+=> Le soluzioni $-1$ e $3$ sono giuste, ma lo schema "esterni con $>$" vale solo per $a>0$. Qui la parabola è rivolta verso il basso e sta sopra l'asse fra $-1$ e $3$: la risposta è $-1<x<3$. Prova con $x=0$: $3>0$, vero, e $0$ è un valore interno.
 
-Il grafico seguente lascia trascinare le due radici: osserva come la zona sopra l'asse resti sempre quella esterna all'intervallo fra le radici, qualunque coppia si scelga.
+>! Le soluzioni si scrivono sempre con $x_1<x_2$, il più piccolo a sinistra. $3<x<-1$ non ha senso: nessun numero è insieme maggiore di $3$ e minore di $-1$.` },
 
-[[grafico:radiciSegno]]
+    { id: 'delta-non-positivo', titolo: 'Quando Δ non è positivo: sempre vere, mai vere, un punto escluso', testo: R`Se $\Delta\le 0$ la parabola non taglia l'asse $x$ in due punti, e lo schema esterni/interni non ha senso: non c'è un intervallo fra due soluzioni. Si ragiona sul segno di $a$ e su che cosa chiede il verso.
 
->! "Esterno" e "interno" si riferiscono **sempre** all'intervallo fra le due radici nell'ordine giusto, $x_1<x_2$: scrivere $x_2<x<x_1$ non ha senso, perché nessun numero è insieme maggiore del più grande e minore del più piccolo.` },
+**Con $\Delta=0$** il trinomio è un quadrato perfetto, a meno del fattore $a$. Per esempio $x^2-6x+9=(x-3)^2$: un quadrato non è mai negativo, e vale zero solo in $x=3$. I quattro versi danno quattro risposte diverse.
 
-    { id: 'delta-non-positivo', titolo: 'Quando Δ non è positivo: sempre vere, mai vere, un punto escluso', testo: R`Se $\Delta \le 0$ la parabola non taglia l'asse $x$ in due punti distinti, e lo schema esterno/interno non si può applicare: non ci sono due radici fra cui stare "dentro" o "fuori". Bisogna ragionare caso per caso, guardando solo il segno di $a$.
+| disequazione | soluzioni |
+|---|---|
+| $(x-3)^2\ge 0$ | tutti i numeri reali |
+| $(x-3)^2>0$ | tutti tranne $x=3$ |
+| $(x-3)^2\le 0$ | solo $x=3$ |
+| $(x-3)^2<0$ | nessuna: $S=\varnothing$ |
 
-**$\Delta=0$.** Il trinomio è un quadrato perfetto (a meno del fattore $a$): per esempio $x^2-6x+9=(x-3)^2$. Poiché un quadrato non è mai negativo:
+?? Quali sono le soluzioni di $x^2-6x+9>0$?
+[x] tutti i numeri reali tranne $3$
+[ ] tutti i numeri reali
+[ ] nessuna
+=> $x^2-6x+9=(x-3)^2$ è positivo dappertutto tranne in $x=3$, dove vale $0$, e $0>0$ è falso. Rispondere "tutti i reali" vuol dire dimenticare quel punto; rispondere "nessuna" vuol dire pensare che con $\Delta=0$ non ci siano soluzioni, come per un'equazione con $\Delta<0$.
 
-- $(x-3)^2 \ge 0$: vera per **ogni** $x$ reale ($\mathbb{R}$);
-- $(x-3)^2 > 0$: vera per ogni $x$ **tranne** $x=3$, dove vale esattamente $0$ (un punto escluso);
-- $(x-3)^2 \le 0$: vera solo per $x=3$ (l'unico punto in cui il quadrato vale $0$);
-- $(x-3)^2 < 0$: mai vera, $\varnothing$ (un quadrato non è mai negativo).
+**Con $\Delta<0$** il trinomio non si annulla mai e ha sempre il segno di $a$. Completare il quadrato fa vedere perché.
 
-[[grafico:rettaEscluso]]
+~ x^2+2x+5 :: $\Delta=4-20=-16<0$
+~ \evid{x^2+2x+1}+4 :: spezzo $5$ in $1+4$ per formare un quadrato
+~ \evid{(x+1)^2}+4 :: un quadrato, che è sempre $\ge 0$, più $4$
+~ \ge\evidb{4} :: quindi il trinomio vale sempre almeno $4$: è sempre positivo
 
-**$\Delta<0$.** Il trinomio non si annulla mai e ha sempre il segno di $a$. Per $x^2+2x+5$ (che si scrive $(x+1)^2+4$, sempre $\ge 4$): $x^2+2x+5>0$ è vera per ogni $x$ reale, mentre $x^2+2x+5<0$ non è mai vera. Con $a<0$ i ruoli si scambiano: il trinomio sarebbe sempre negativo, mai positivo.
+Così $x^2+2x+5>0$ è vera per ogni $x$ reale, e $x^2+2x+5<0$ non è vera mai. Con $a<0$ succede il contrario: il trinomio è sempre negativo.
 
->* Con $\Delta \le 0$ la disequazione non ha mai come soluzione un intervallo "fra due radici" o "fuori da due radici": è sempre vera, mai vera, oppure vera con un solo punto escluso (o vera in un solo punto, con $\Delta=0$ e verso $\le$ o $\ge$).
+>* Con $\Delta\le 0$ non ci sono due soluzioni distinte che fanno da estremi, quindi niente valori esterni o interni: la disequazione è sempre vera, mai vera, vera tranne un punto, oppure vera in un punto solo.
 
->! Non confondere "mai vera" con "impossibile da calcolare": è una risposta corretta e completa, da scrivere come $S=\varnothing$, non lasciata in bianco.` },
+>! "Nessuna soluzione" è una risposta completa: si scrive $S=\varnothing$, non si lascia in bianco.` },
 
-    { id: 'sistemi', titolo: 'Sistemi di disequazioni di secondo grado', testo: R`Un **sistema di disequazioni** chiede che più disequazioni siano vere **contemporaneamente**. Il metodo non cambia rispetto al primo grado: si risolve ciascuna disequazione per conto proprio, poi si disegnano tutte le soluzioni sulla stessa retta reale e si prende la parte comune, l'**intersezione**.
+    { id: 'sistemi', titolo: 'Sistemi di disequazioni di secondo grado', testo: R`Un **sistema di disequazioni** chiede che più disequazioni siano vere **nello stesso momento**. Si procede come nel primo grado: si risolve ogni disequazione per conto suo, poi si disegnano le soluzioni una sopra l'altra sulla stessa retta e si prende la parte comune, cioè l'**intersezione**.
 
-Consideriamo il sistema $$\begin{cases} x^2-4x+3 \le 0 \\ x^2-1>0 \end{cases}$$
+$$\begin{cases} x^2-4x+3\le 0 \\ x^2-1>0 \end{cases}$$
 
-Prima disequazione: $(x-1)(x-3)\le 0$, valori interni con gli estremi inclusi, $1 \le x \le 3$. Seconda disequazione: $(x-1)(x+1)>0$, valori esterni, $x<-1 \ \lor\ x>1$. Sovrapponendo i due intervalli sulla retta reale, la parte in comune è $1<x\le 3$: il punto $x=1$ appartiene alla prima soluzione ma non alla seconda (che lo richiede strettamente maggiore di $1$), quindi resta escluso.
+- Prima disequazione: $(x-1)(x-3)\le 0$, valori interni con gli estremi, $1\le x\le 3$.
+- Seconda disequazione: $(x-1)(x+1)>0$, valori esterni, $x<-1\ \lor\ x>1$.
+
+Nel disegno le due righe in alto sono le soluzioni delle singole disequazioni; quella in basso è la parte che hanno in comune.
 
 [[grafico:rettaSistema]]
 
->* La soluzione di un sistema è l'**intersezione**, non l'unione: un valore deve soddisfare **tutte** le disequazioni insieme. Conviene sempre disegnare le soluzioni singole sulla stessa retta, allineate, prima di leggere l'intersezione.
+La soluzione del sistema è $1<x\le 3$. Il punto $x=1$ va bene per la prima disequazione ma non per la seconda, che vuole $x$ strettamente maggiore di $1$: quindi resta fuori.
 
-Se le soluzioni delle singole disequazioni non si sovrappongono affatto, il sistema è impossibile, $S=\varnothing$: succede spesso quando una disequazione chiede valori esterni a un intervallo e un'altra valori interni a un intervallo disgiunto dal primo.
+>* La soluzione di un sistema è l'**intersezione** delle soluzioni: un valore deve rendere vere **tutte** le disequazioni insieme.
 
->! Attenzione ai casi limite: se un estremo è incluso in una disequazione ma escluso nell'altra (come $x=1$ sopra), nel risultato finale **resta escluso**. Basta che una sola condizione lo escluda perché non sia soluzione del sistema.` },
+?? Nel sistema sopra, perché $x=-2$ non è soluzione, anche se rende vera $x^2-1>0$?
+=> Perché non rende vera la prima disequazione: $(-2)^2-4\cdot(-2)+3=4+8+3=15$, che non è $\le 0$. In un sistema non basta soddisfarne una: prendere tutti i valori che vanno bene per almeno una disequazione vuol dire fare l'unione, che è l'errore da evitare.
 
-    { id: 'fratte-e-prodotto', titolo: 'Disequazioni fratte e disequazioni prodotto', testo: R`Una **disequazione prodotto** confronta con $0$ un prodotto di due o più fattori, per esempio la stessa $x^2-2x-3>0$ scritta come $(x-3)(x+1)>0$: un modo alternativo di risolverla, utile soprattutto quando i fattori non sono tutti di secondo grado. Si segnano sulla retta gli zeri di ciascun fattore e si costruisce la **tabella dei segni**: una riga per fattore, il segno in ogni intervallo, poi si moltiplicano i segni colonna per colonna.
+Se le soluzioni delle singole disequazioni non hanno nessuna parte in comune, il sistema è impossibile: $S=\varnothing$.
+
+>! Un estremo compreso in una disequazione ma escluso nell'altra, come $x=1$ qui, nel risultato **resta escluso**: basta una sola condizione che non lo accetta.` },
+
+    { id: 'fratte-e-prodotto', titolo: 'Disequazioni fratte e disequazioni prodotto', testo: R`Una **disequazione prodotto** confronta con $0$ un prodotto di fattori, per esempio $(x-3)(x+1)>0$, che è la solita $x^2-2x-3>0$ scomposta. Invece della parabola si può usare la **tabella dei segni**: si trova dove si annulla ogni fattore, si studia il segno di ogni fattore in ciascun intervallo, e si moltiplicano i segni. È il metodo che funziona anche quando i fattori sono più di due.
 
 | intervallo | $x-3$ | $x+1$ | prodotto |
 |---|---|---|---|
@@ -86,123 +130,129 @@ Se le soluzioni delle singole disequazioni non si sovrappongono affatto, il sist
 | $-1<x<3$ | $-$ | $+$ | $-$ |
 | $x>3$ | $+$ | $+$ | $+$ |
 
-Stesso risultato di prima: positivo fuori dalle radici. Una **disequazione fratta** ha l'incognita anche a denominatore, per esempio $\dfrac{x-1}{x^2-4}\ge 0$. Il denominatore si scompone, $x^2-4=(x-2)(x+2)$, e si tratta come fattori in più nella tabella, con una regola in aggiunta: i loro zeri sono sempre **condizioni di esistenza** ed escludono quei valori dal risultato, qualunque sia il verso della disequazione.
+Il prodotto è positivo per $x<-1$ e per $x>3$: lo stesso risultato della parabola.
 
-| intervallo | $x-1$ | $x-2$ | $x+2$ | frazione |
-|---|---|---|---|---|
-| $x<-2$ | $-$ | $-$ | $-$ | $-$ |
-| $-2<x<1$ | $-$ | $-$ | $+$ | $+$ |
-| $1<x<2$ | $+$ | $-$ | $+$ | $-$ |
-| $x>2$ | $+$ | $+$ | $+$ | $+$ |
+Una **disequazione fratta** ha la $x$ anche al denominatore, per esempio $\dfrac{x-1}{x^2-4}\ge 0$. Il segno di una frazione si trova come quello di un prodotto: numeratore e denominatore diventano due colonne della tabella. Il denominatore $x^2-4$ è un polinomio di secondo grado con zeri $-2$ e $2$ e $a>0$: positivo fuori, negativo fra. C'è però una regola in aggiunta: i valori che annullano il denominatore sono esclusi dalle **condizioni di esistenza** (c.e.), qualunque sia il verso.
 
-La frazione è $\ge 0$ per $-2<x\le 1$ (il numeratore può annullarsi) oppure $x>2$; $x=-2$ e $x=2$ restano esclusi perché annullano il denominatore.
+| intervallo | $x-1$ | $x^2-4$ | frazione |
+|---|---|---|---|
+| $x<-2$ | $-$ | $+$ | $-$ |
+| $-2<x<1$ | $-$ | $-$ | $+$ |
+| $1<x<2$ | $+$ | $-$ | $-$ |
+| $x>2$ | $+$ | $+$ | $+$ |
 
->* Nella tabella dei segni, il segno del prodotto (o della frazione) in ogni intervallo si ottiene moltiplicando i segni dei singoli fattori: un numero pari di segni negativi dà $+$, uno dispari dà $-$.
+La frazione è $\ge 0$ per $-2<x\le 1$ oppure per $x>2$. Il valore $x=1$ è compreso, perché lì il numeratore vale $0$ e la frazione vale $0$; invece $x=-2$ e $x=2$ restano esclusi, perché lì la frazione non esiste.
 
->! Il denominatore nullo si esclude **sempre**, anche quando il simbolo è $\ge$ o $\le$: in quel punto la frazione non esiste, non vale $0$.` },
+>* In ogni intervallo il segno del prodotto, o della frazione, si ottiene moltiplicando i segni dei fattori: un numero pari di segni meno dà $+$, un numero dispari dà $-$.
 
-    { id: 'errore-dividere', titolo: 'L\'errore di dividere per un fattore con la x', testo: R`Una disequazione come $(x-1)(x+3) > 2(x-1)$ sembra invitare a dividere per $(x-1)$, per "semplificare". **Non si può fare**: il segno di $(x-1)$ dipende da $x$, e dividere una disuguaglianza per una quantità di segno sconosciuto può capovolgere il verso senza che ce ne accorgiamo — oltre al fatto che per $x=1$ si dividerebbe per $0$.
+?? Nella soluzione di $\dfrac{x+1}{x-2}\ge 0$, quali estremi sono compresi?
+[x] $x=-1$ sì, $x=2$ no
+[ ] tutti e due, perché il verso è $\ge$
+[ ] nessuno dei due
+=> In $x=-1$ il numeratore vale zero, la frazione vale $0$ e $0\ge 0$ è vero: $-1$ è compreso. In $x=2$ il denominatore vale zero e la frazione non esiste: $2$ è escluso anche se il verso è $\ge$. La soluzione è $x\le -1\ \lor\ x>2$.
 
-Il metodo corretto è sempre lo stesso: si porta tutto a un membro, si scompone, e si legge il segno con la tabella. Qui:
+>! Il valore che annulla il denominatore si esclude **sempre**, anche con $\ge$ o $\le$: in quel punto la frazione non vale $0$, semplicemente non esiste.` },
 
-$$(x-1)(x+3) - 2(x-1) > 0 \quad\Rightarrow\quad (x-1)\left[(x+3)-2\right] > 0 \quad\Rightarrow\quad (x-1)(x+1) > 0.$$
+    { id: 'errore-dividere', titolo: 'L\'errore di dividere per un fattore con la x', testo: R`In $(x-1)(x+3)>2(x-1)$ viene voglia di dividere tutto per $(x-1)$ e "semplificare". **Non si può.** Quando si divide una disequazione per un numero negativo il verso si capovolge; ma $(x-1)$ è positivo per alcuni $x$ e negativo per altri, quindi non sai se capovolgerlo o no. E per $x=1$ staresti dividendo per zero.
 
-Valori esterni alle radici $-1$ e $1$: $x<-1 \ \lor\ x>1$.
+Il metodo giusto è sempre lo stesso: tutto a un membro, poi si scompone.
 
-Confrontiamo con la scorciatoia sbagliata: dividendo (come se $(x-1)$ fosse sempre positivo) si otterrebbe $x+3>2$, cioè $x>-1$, che include per esempio $x=-0,5$. Sostituendo $x=-0,5$ nella disequazione di partenza: primo membro $(-1,5)(2,5)=-3,75$, secondo membro $2\cdot(-1,5)=-3$; è vero che $-3,75>-3$? No. Il valore $x=-0,5$ **non** è soluzione, eppure la scorciatoia lo includeva: la divisione ha nascosto un pezzo di verifica che solo il confronto con $0$ recupera.
+~ (x-1)(x+3)>2(x-1) :: la $x$ compare in tutti e due i membri
+~ (x-1)(x+3)\evid{-2(x-1)}>0 :: porto tutto a sinistra
+~ \evid{(x-1)}\left[(x+3)-2\right]>0 :: raccolgo il fattore comune $(x-1)$
+~ (x-1)(x+1)>0 :: semplifico la parentesi quadra
+~ \evidb{x<-1\ \lor\ x>1} :: parabola verso l'alto con zeri $-1$ e $1$, verso $>$: valori esterni
 
->* Non si divide mai una disequazione per un'espressione che contiene l'incognita: si porta tutto a un membro, si scompone, e si studia il segno con la tabella. È la stessa regola, applicata più spesso, delle disequazioni fratte.
+Con la scorciatoia sbagliata, dividendo per $(x-1)$, si otterrebbe $x+3>2$, cioè $x>-1$. Ma questo intervallo contiene valori che non sono soluzioni.
 
->! Questo errore è insidioso perché a volte "sembra funzionare" (dà comunque una parte della soluzione corretta): il problema è che non c'è modo di saperlo senza rifare il conto nel modo giusto.` },
+?? Prendi $x=0$, che sta in $x>-1$. Rende vera $(x-1)(x+3)>2(x-1)$?
+=> No. A sinistra $(0-1)(0+3)=-3$, a destra $2\cdot(0-1)=-2$, e $-3>-2$ è falso. Per $x<1$ il fattore $(x-1)$ è negativo: dividendo avresti dovuto capovolgere il verso, e la scorciatoia non l'ha fatto.
 
-    { id: 'grado-superiore', titolo: 'Disequazioni di grado superiore scomponibili', testo: R`Una disequazione di grado superiore al secondo, se il polinomio si lascia scomporre in fattori di primo e secondo grado, si risolve con la stessa tabella dei segni: si trovano gli zeri di ogni fattore, si segnano sulla retta reale in ordine, e si moltiplicano i segni in ciascun intervallo.
+>* Non si divide mai una disequazione per un'espressione che contiene la $x$. Si porta tutto a un membro, si scompone e si studia il segno.
 
-L'unica novità riguarda **come si alternano** i segni. Se tutte le radici sono semplici (nessuna ripetuta) e il coefficiente del termine di grado massimo è positivo, il polinomio è positivo per $x$ grande (a destra dell'ultima radice), e il segno **si alterna** a ogni radice, andando da destra verso sinistra.
+>! A volte la scorciatoia dà una parte della soluzione giusta, e sembra funzionare. Il guaio è che non c'è modo di saperlo senza rifare il conto nel modo corretto.` },
 
-Esempio: $x^4-5x^2+4<0$. Si scompone come differenza di quadrati due volte: $x^4-5x^2+4=(x^2-1)(x^2-4)=(x-1)(x+1)(x-2)(x+2)$. Le quattro radici, in ordine, sono $-2,-1,1,2$. Partendo da destra (positivo) e alternando: positivo per $x>2$, negativo per $1<x<2$, positivo per $-1<x<1$, negativo per $-2<x<-1$, positivo per $x<-2$. La disequazione chiede il segno negativo:
+    { id: 'grado-superiore', titolo: 'Disequazioni di grado superiore scomponibili', testo: R`Una disequazione di grado più alto, come $x^4-5x^2+4<0$, si risolve se il polinomio si scompone in fattori di primo e di secondo grado. Poi si usa la stessa tabella dei segni.
 
-$$-2<x<-1 \quad\lor\quad 1<x<2.$$
+~ x^4-5x^2+4<0 :: è un trinomio in $x^2$: cerco due numeri con somma $-5$ e prodotto $4$
+~ \evid{(x^2-1)(x^2-4)}<0 :: sono $-1$ e $-4$
+~ \evid{(x-1)(x+1)(x-2)(x+2)}<0 :: ogni fattore è una differenza di quadrati
+~ -2,\ -1,\ 1,\ 2 :: gli zeri, messi in ordine sulla retta
 
->* Con radici tutte semplici e coefficiente direttore positivo, il segno del polinomio si alterna a ogni radice: basta segnare un $+$ nell'ultimo intervallo a destra e alternare andando verso sinistra, senza rifare il calcolo in ogni intervallo.
+Con quattro fattori la tabella è lunga, ma c'è una scorciatoia. A destra di tutti gli zeri ogni fattore è positivo, quindi il prodotto è $+$. Attraversando uno zero cambia segno un solo fattore, e con lui il prodotto. Quindi, da destra verso sinistra, i segni si alternano:
 
->! Questa scorciatoia **vale solo se le radici sono semplici**. Se una radice è doppia (compare due volte, come in $(x-1)^2(x+2)$), il segno **non cambia** attraversandola: il fattore al quadrato è sempre $\ge 0$ e non inverte il prodotto.` },
+| intervallo | segno |
+|---|---|
+| $x>2$ | $+$ (si parte da qui) |
+| $1<x<2$ | $-$ |
+| $-1<x<1$ | $+$ |
+| $-2<x<-1$ | $-$ |
+| $x<-2$ | $+$ |
 
-    { id: 'problemi', titolo: 'Problemi con le disequazioni di secondo grado', testo: R`Molti problemi chiedono per quali valori una grandezza (un'area, un ricavo, un'altezza) supera, o non supera, una soglia data: è lo schema tipico che porta a una disequazione di secondo grado. Il procedimento è sempre lo stesso: si sceglie l'incognita, si traduce la condizione, si risolve la disequazione, e infine — passaggio che qui non si può saltare — si **interseca** la soluzione con i vincoli che il problema impone sull'incognita (lunghezze positive, quantità intere, e così via): è, di fatto, un sistema.
+La disequazione chiede il segno $-$: $-2<x<-1\ \lor\ 1<x<2$.
 
-Un rettangolo ha il perimetro fissato a $20\ \text{cm}$: un lato misura $x$, l'altro $10-x$. Per quali $x$ l'area supera $21\ \text{cm}^2$?
+>* Se gli zeri sono tutti semplici (nessuno ripetuto) e il coefficiente della potenza più alta è positivo, il segno è $+$ a destra dell'ultimo zero e poi si alterna a ogni zero, andando verso sinistra.
 
-$$x(10-x) > 21 \quad\Rightarrow\quad -x^2+10x-21>0 \quad\Rightarrow\quad x^2-10x+21<0 \quad\Rightarrow\quad (x-3)(x-7)<0.$$
+?? Che segno ha $(x-1)^2(x+2)$ per $0<x<1$ e per $x>1$?
+[x] positivo in tutti e due gli intervalli
+[ ] negativo per $0<x<1$, positivo per $x>1$
+[ ] positivo per $0<x<1$, negativo per $x>1$
+=> $(x-1)^2$ è un quadrato: non è mai negativo e attraversando $x=1$ non cambia segno. $(x+2)$ è positivo per tutti gli $x>-2$. Quindi il prodotto è positivo in tutti e due gli intervalli. Alternare il segno anche in $x=1$ è l'errore: la regola vale solo per gli zeri semplici.
 
-Valori interni: $3<x<7$. Bisogna però intersecare con il vincolo geometrico $0<x<10$ (entrambi i lati devono essere positivi): poiché $(3,7)$ è già contenuto in $(0,10)$, la risposta resta $3\ \text{cm}<x<7\ \text{cm}$.
+>! La scorciatoia dell'alternanza vale **solo se gli zeri sono semplici**. Uno zero doppio, come $x=1$ in $(x-1)^2(x+2)$, non fa cambiare segno.` },
 
->* In un problema, la disequazione risolta va sempre confrontata con il **dominio della situazione reale**: un lato negativo, un tempo negativo o un numero di oggetti non intero sono soluzioni algebriche ma non hanno senso nel problema, e vanno scartate.
+    { id: 'problemi', titolo: 'Problemi con le disequazioni di secondo grado', testo: R`Molti problemi chiedono quando una grandezza (un'area, un guadagno, un'altezza) supera una soglia, o resta sotto. Lo schema: si sceglie l'incognita, si traduce la condizione in una disequazione, la si risolve e poi si **interseca** la soluzione con i vincoli del problema (lunghezze positive, tempi positivi, numeri interi). In pratica è un sistema.
 
->! Non basta risolvere la disequazione: bisogna anche **rispondere alla domanda**. Se si chiede "quali lati", la risposta è l'intervallo per $x$ (e di conseguenza per $10-x$); se si chiede "qual è l'area massima possibile", serve un ragionamento in più — il vertice della parabola dell'area, che qui cade proprio a $x=5$, il quadrato.` }
+Un rettangolo ha perimetro $20\ \text{cm}$: se un lato misura $x$, l'altro misura $10-x$. Per quali $x$ l'area supera $21\ \text{cm}^2$?
+
+~ x(10-x)>21 :: l'area è il prodotto dei lati
+~ -x^2+10x-21>0 :: sviluppo e porto tutto a sinistra
+~ x^2-10x+21\ \evid{<}\ 0 :: moltiplico per $-1$ e cambio il verso, per avere $a>0$
+~ (x-3)(x-7)<0 :: scompongo: somma $10$, prodotto $21$
+~ \evidb{3<x<7} :: valori interni; il vincolo del problema, $0<x<10$ (lati positivi), non toglie niente perché l'intervallo ci sta già dentro
+
+Il lato deve essere compreso fra $3$ e $7\ \text{cm}$ (esclusi).
+
+>* In un problema la soluzione della disequazione va sempre confrontata con i vincoli della situazione reale: un lato negativo o un tempo negativo risolvono la disequazione, ma non il problema.
+
+?? Il sasso dell'introduzione ha altezza $h=20t-5t^2$. In quale intervallo di tempo sta sopra i $15$ metri?
+[x] $1<t<3$
+[ ] $t<1\ \lor\ t>3$
+[ ] $0<t<4$
+=> $20t-5t^2>15$ diventa $5t^2-20t+15<0$ (verso cambiato moltiplicando per $-1$), cioè $t^2-4t+3<0$: valori interni fra $1$ e $3$. I valori esterni sono l'errore di chi dimentica di cambiare il verso. $0<t<4$ è il tempo in cui il sasso sta sopra il suolo, cioè $h>0$.
+
+>! Bisogna anche **rispondere alla domanda**. Se il problema chiede l'area massima, la disequazione non basta: serve il vertice della parabola dell'area, che qui è in $x=5$, cioè il quadrato.` }
   ],
 
   grafici: {
-    segnoParabola: {
-      tipo: 'piano', x: [-4, 6], y: [-5, 13],
-      funzioni: [{ f: 'x^2 - 2x - 3', etichetta: 'y = x² − 2x − 3', colore: 1 }],
-      punti: [
-        { x: -1, y: 0, etichetta: '−1', posizione: 'basso' },
-        { x: 3, y: 0, etichetta: '3', posizione: 'basso' }
-      ],
-      elementi: [
-        { tipo: 'area', f: 'x^2 - 2x - 3', da: -3, a: -1, etichetta: 'y > 0' },
-        { tipo: 'area', f: 'x^2 - 2x - 3', da: 3, a: 5 }
-      ],
-      didascalia: 'Le zone colorate sono i tratti in cui x² − 2x − 3 è positivo: fuori dall\'intervallo fra le radici −1 e 3, cioè i valori esterni.'
-    },
-    concavitaA: {
-      tipo: 'piano', x: [-5, 5], y: [-8, 8],
-      funzioni: [{ f: 'a x^2 - 2 x - 3', etichetta: 'y = a·x² − 2x − 3', colore: 1 }],
-      parametri: [{ nome: 'a', min: -2, max: 2, passo: 0.1, valore: 1, etichetta: 'a' }],
-      didascalia: 'Cambia a: per a>0 la parabola è rivolta verso l\'alto, per a<0 verso il basso, e con essa si scambia il segno letto fuori e dentro le radici.'
-    },
-    radiciSegno: {
-      tipo: 'piano', x: [-5, 5], y: [-7, 7],
+    segno: {
+      tipo: 'piano', x: [-5, 5], y: [-6, 6],
       parametri: [
-        { nome: 'x1', min: -4, max: 4, passo: 0.5, valore: -1, nascosto: true },
-        { nome: 'x2', min: -4, max: 4, passo: 0.5, valore: 3, nascosto: true }
+        { nome: 'a', min: -1.75, max: 1.75, passo: 0.5, valore: 0.75, etichetta: 'a' },
+        { nome: 'h', min: -4, max: 4, passo: 0.5, valore: 1, nascosto: true },
+        { nome: 'k', min: -5, max: 5, passo: 0.5, valore: -4, nascosto: true }
       ],
-      funzioni: [{ f: '(x - x1)(x - x2)', etichetta: 'y = (x − x₁)(x − x₂)', colore: 1 }],
+      funzioni: [{ f: 'a(x - h)^2 + k', colore: 1 }],
       elementi: [
-        { tipo: 'punto', p: ['x1', 0], trascina: true, etichetta: 'x₁ = {{x1}}', posizione: 'basso', colore: 2 },
-        { tipo: 'punto', p: ['x2', 0], trascina: true, etichetta: 'x₂ = {{x2}}', posizione: 'basso', colore: 2 },
-        { tipo: 'testo', p: [-4.7, 6.2], testo: 'y > 0 fuori dalle radici, y < 0 fra le radici', ancora: 'start' }
+        { tipo: 'area', f: 'max(a(x - h)^2 + k, 0)', da: -5, a: 5, colore: 3 },
+        { tipo: 'area', f: 'min(a(x - h)^2 + k, 0)', da: -5, a: 5, colore: 2 },
+        { tipo: 'punto', p: ['h - sqrt(-k/a)', 0], colore: 4 },
+        { tipo: 'punto', p: ['h + sqrt(-k/a)', 0], colore: 4 },
+        { tipo: 'punto', p: ['h', 'k'], trascina: true, etichetta: 'V', posizione: 'destra', colore: 1 },
+        { tipo: 'testo', p: [-4.8, 5.3], testo: 'y = {{a}}x² + ({{-2a h}})x + ({{a h^2 + k}})', ancora: 'start' },
+        { tipo: 'testo', p: [-4.8, 4.4], testo: 'Δ = {{-4a k}}', ancora: 'start' }
       ],
-      didascalia: 'Trascina x₁ e x₂: la parte sopra l\'asse resta sempre quella esterna all\'intervallo fra le radici.'
-    },
-    rettaEsterni: {
-      tipo: 'retta-reale', x: [-6, 6],
-      intervalli: [
-        { da: '-inf', a: -1, chiusoA: false, colore: 1 },
-        { da: 3, a: 'inf', chiusoDa: false, colore: 1 }
-      ],
-      punti: [{ x: -1, etichetta: '−1', escluso: true }, { x: 3, etichetta: '3', escluso: true }],
-      didascalia: 'Soluzione di x² − 2x − 3 > 0: valori esterni, x < −1 oppure x > 3.'
-    },
-    rettaInterni: {
-      tipo: 'retta-reale', x: [-6, 6],
-      intervalli: [{ da: -1, a: 3, chiusoDa: false, chiusoA: false, colore: 2 }],
-      punti: [{ x: -1, etichetta: '−1', escluso: true }, { x: 3, etichetta: '3', escluso: true }],
-      didascalia: 'Soluzione di x² − 2x − 3 < 0: valori interni, −1 < x < 3.'
-    },
-    rettaEscluso: {
-      tipo: 'retta-reale', x: [-1, 7],
-      intervalli: [
-        { da: '-inf', a: 3, chiusoA: false, colore: 1 },
-        { da: 3, a: 'inf', chiusoDa: false, colore: 1 }
-      ],
-      punti: [{ x: 3, etichetta: '3', escluso: true }],
-      didascalia: '(x − 3)² > 0 è vera per ogni x reale tranne x = 3: un solo punto escluso.'
+      didascalia: 'Verde: trinomio positivo. Arancione: trinomio negativo. Trascina il vertice V sopra e sotto l\'asse x, poi porta a sotto lo zero. Quando ci sono due zeri, in quale zona il trinomio ha lo stesso segno di a?'
     },
     rettaSistema: {
-      tipo: 'retta-reale', x: [-2, 5],
-      intervalli: [{ da: 1, a: 3, chiusoDa: false, chiusoA: true, colore: 3 }],
-      punti: [{ x: 1, etichetta: '1', escluso: true }, { x: 3, etichetta: '3' }],
-      didascalia: 'Soluzione del sistema {x²−4x+3≤0; x²−1>0}: intersezione delle due condizioni, 1 < x ≤ 3.'
+      tipo: 'retta-reale', x: [-3, 5], passo: 1,
+      intervalli: [
+        { da: 1, a: 3, chiusoDa: false, chiusoA: true, colore: 3, etichetta: 'sistema', riga: 0 },
+        { da: '-inf', a: -1, chiusoA: false, colore: 2, etichetta: '2ª', riga: 1 },
+        { da: 1, a: 'inf', chiusoDa: false, colore: 2, riga: 1 },
+        { da: 1, a: 3, chiusoDa: true, chiusoA: true, colore: 1, etichetta: '1ª', riga: 2 }
+      ],
+      didascalia: 'In alto, in blu, le soluzioni della 1ª disequazione; in arancione quelle della 2ª; in basso, in verde, la parte comune, cioè le soluzioni del sistema. Guarda il punto 1: pieno nella 1ª, vuoto nella 2ª, e quindi vuoto nel sistema.'
     }
   },
 
@@ -211,7 +261,7 @@ Valori interni: $3<x<7$. Bisogna però intersecare con il vincolo geometrico $0<
       R`Calcolo il discriminante per capire quante radici ci sono: $\Delta = 25-24=1>0$, due radici distinte.`,
       R`Le radici sono $x_{1,2}=\dfrac{5\pm1}{2}$: $x_1=2$, $x_2=3$.`,
       R`Il coefficiente $a=1$ è positivo e $\Delta>0$: valori esterni. La disequazione chiede $>0$, quindi $x<2 \ \lor\ x>3$.`,
-      R`Verifica con $x=0$ (esterno): $6>0$ ✓. Con $x=2,5$ (interno): $6,25-12,5+6=-0,25$, negativo, coerente con l'esclusione.`
+      R`Verifica con un valore esterno, $x=0$: $6>0$ ✓. Con un valore interno, $x=2{,}5$: $6{,}25-12{,}5+6=-0{,}25$, negativo, quindi giustamente escluso.`
     ], risultato: R`$x<2 \ \lor\ x>3$` },
 
     { titolo: 'Disequazione con Δ=0: un punto escluso', problema: R`Risolvi $2x^2-4x+2>0$.`, passi: [
@@ -236,7 +286,7 @@ Valori interni: $3<x<7$. Bisogna però intersecare con il vincolo geometrico $0<
     { titolo: 'Un sistema di disequazioni', problema: R`Risolvi il sistema $\begin{cases} x^2-x-6<0 \\ 2x+1\ge0 \end{cases}$.`, passi: [
       R`Prima disequazione: $x^2-x-6=(x-3)(x+2)$, radici $-2$ e $3$; con $a>0$ e verso $<0$, valori interni: $-2<x<3$.`,
       R`Seconda disequazione: $2x+1\ge0 \Rightarrow x\ge-\dfrac12$.`,
-      R`Intersezione: unisco $-2<x<3$ con $x\ge-\dfrac12$. La parte comune è $-\dfrac12\le x<3$.`
+      R`Intersezione: disegno $-2<x<3$ e $x\ge-\dfrac12$ sulla stessa retta e prendo la parte comune, $-\dfrac12\le x<3$.`
     ], risultato: R`$-\dfrac12 \le x < 3$` },
 
     { titolo: 'Disequazione di grado superiore', problema: R`Risolvi $x^3-x^2-4x+4>0$.`, passi: [
@@ -256,7 +306,7 @@ Valori interni: $3<x<7$. Bisogna però intersecare con il vincolo geometrico $0<
     { nome: 'Schema dei valori interni', formula: R`ax^2+bx+c<0 \ \ (a>0,\ \Delta>0) \quad\Leftrightarrow\quad x_1<x<x_2`, nota: R`Con $\ge$ o $\le$ si includono anche gli estremi.` },
     { nome: 'Radici della disequazione', formula: R`x_{1,2} = \frac{-b \pm \sqrt{\Delta}}{2a}`, nota: R`Le stesse radici dell'equazione associata $ax^2+bx+c=0$: individuano i confini degli intervalli.` },
     { nome: 'Soluzione di un sistema', formula: R`S = S_1 \cap S_2 \cap \ldots`, nota: R`L'intersezione, non l'unione, delle soluzioni delle singole disequazioni.` },
-    { nome: 'Condizione di esistenza (fratte)', formula: R`D(x) \ne 0`, nota: R`Nelle disequazioni fratte il denominatore non si moltiplica mai: il suo zero è sempre escluso dalla soluzione.` },
+    { nome: 'Condizione di esistenza (fratte)', formula: R`D(x) \ne 0`, nota: R`Nelle disequazioni fratte non si eliminano i denominatori moltiplicando i due membri, perché il loro segno non è noto; i valori che annullano il denominatore sono sempre esclusi dalla soluzione.` },
     { nome: 'Regola del segno di un prodotto', formula: R`\text{segno}(f \cdot g) = \text{segno}(f)\cdot \text{segno}(g)`, nota: R`Un numero pari di fattori negativi dà un prodotto positivo, uno dispari negativo.` }
   ],
 
@@ -325,16 +375,16 @@ Valori interni: $3<x<7$. Bisogna però intersecare con il vincolo geometrico $0<
     { tipo: 'errore', testo: R`Il denominatore nullo va sempre escluso in una disequazione fratta, anche con $\ge$ o $\le$.` },
     { tipo: 'metodo', testo: R`Nella tabella dei segni scrivi una riga per ciascun fattore, segna gli zeri in ordine crescente, e moltiplica i segni colonna per colonna.` },
     { tipo: 'errore', testo: R`Non dividere mai per un'espressione che contiene la $x$: porta tutto a un membro e scomponi, anche se sembra più lungo.` },
-    { tipo: 'trucco', testo: R`Ricorda lo schema: fuori dalle radici il segno di $a$, dentro il segno opposto — ma solo se $\Delta>0$.` },
+    { tipo: 'trucco', testo: R`Ricorda lo schema: fuori dalle radici il segno di $a$, dentro il segno opposto. Vale solo se $\Delta>0$.` },
     { tipo: 'metodo', testo: R`In un sistema, disegna le soluzioni delle singole disequazioni sulla stessa retta, una sopra l'altra: l'intersezione si vede a colpo d'occhio.` },
     { tipo: 'trucco', testo: R`In un polinomio scomposto con radici tutte semplici, il segno si alterna a ogni radice: basta segnare $+$ nell'ultimo intervallo a destra.` }
   ],
 
   aneddoti: [
-    { matematico: 'Apollonio di Perga', anni: '262–190 a.C. circa', titolo: 'Il nome "parabola" viene dal confronto delle aree', testo: R`Apollonio di Perga, soprannominato «il Grande Geometra», raccolse in otto libri, le *Coniche*, tutto ciò che si sapeva sulle curve ottenute tagliando un cono con un piano. Fu lui a fissare i nomi che usiamo ancora oggi — ellisse, parabola, iperbole — presi in prestito dal linguaggio con cui i greci confrontavano le aree: "applicare" un'area a un segmento voleva dire costruire su quel segmento un rettangolo di quell'area. Se il rettangolo coincide esattamente con l'area assegnata si ha una *parabolé*, un'applicazione "esatta"; se la supera, un'*iperbolé*, un eccesso; se resta più piccola, un'*elleipsis*, un difetto. Apollonio dimostrò le proprietà di queste curve con i soli metodi della geometria greca, senza equazioni: quelle sarebbero arrivate solo con Descartes, quasi millenovecento anni dopo.`, legame: R`Il trinomio $ax^2+bx+c$ è proprio la parabola di Apollonio scritta in coordinate: il suo nome ricorda un confronto di aree, lo stesso tipo di confronto — maggiore o minore di zero — che si fa in ogni disequazione di secondo grado.` },
-    { matematico: 'René Descartes', anni: '1596–1650', titolo: 'La regola che conta le soluzioni senza calcolarle', testo: R`Nel 1637, in appendice al *Discorso sul metodo*, Descartes pubblicò *La Géométrie*, dove propose una regola sorprendente: scritta un'equazione polinomiale con i termini ordinati per grado decrescente, il numero delle sue soluzioni positive non supera il numero di volte in cui il segno dei coefficienti cambia passando da un termine al successivo, e la differenza fra i due è sempre un numero pari. Bastava contare i cambi di segno, senza risolvere nulla, per sapere quante soluzioni positive aspettarsi (e, sostituendo $x$ con $-x$, quante negative). Descartes non ne diede una dimostrazione rigorosa — arrivò solo più tardi, con altri autori — ma la regola funziona ancora oggi esattamente come lui l'aveva enunciata, e porta il suo nome: «regola dei segni di Descartes».`, legame: R`È la stessa idea che sta dietro la tabella dei segni: il segno di un polinomio, anche di grado alto, si legge contando come cambia da un fattore all'altro, senza rifare ogni volta tutto il calcolo.` },
-    { matematico: 'Augustin-Louis Cauchy', anni: '1789–1857', titolo: 'La disuguaglianza dimostrata a salti', testo: R`Cauchy fu uno dei matematici più prolifici di sempre, con centinaia di lavori pubblicati; si racconta, forse esagerando, che il suo necrologio scherzasse sul fatto che avrebbe continuato a scrivere anche da morto. Nel suo *Cours d'Analyse* del 1821 dimostrò che la media aritmetica di $n$ numeri positivi non è mai minore della loro media geometrica, con uguaglianza solo se i numeri coincidono tutti. La dimostrazione procede in modo insolito, "avanti e indietro": prima per $n$ potenza di $2$, raddoppiando ogni volta il numero di termini, poi all'indietro, mostrando che se la disuguaglianza vale per $n$ termini vale anche per $n-1$. Con la stessa energia con cui scriveva articoli, gli viene anche attribuita, secondo diversi resoconti storici, una certa disattenzione nel maneggiare i manoscritti altrui, compresi lavori importanti di Abel e, più tardi, di Galois.`, legame: R`Fra tutti i rettangoli con lo stesso perimetro, l'area è massima quando i due lati sono uguali, cioè per il quadrato: è esattamente il caso di uguaglianza della disuguaglianza di Cauchy fra media aritmetica e geometrica.` },
-    { matematico: 'Évariste Galois', anni: '1811–1832', titolo: 'La notte prima del duello', testo: R`Prima di compiere vent'anni, Galois capì perché non esiste una formula generale — con solo somme, prodotti e radici — per risolvere le equazioni di quinto grado o superiore, e per quali equazioni particolari una formula esiste comunque: la risposta dipende dalla struttura di un oggetto che oggi si chiama "gruppo". I suoi lavori furono respinti o smarriti dall'Accademia delle Scienze di Parigi (uno dei manoscritti, secondo la ricostruzione più diffusa, andò perso proprio nelle mani di Cauchy), e Galois morì a vent'anni in un duello le cui vere cause restano incerte. La notte prima, convinto di morire, scrisse in fretta a un amico l'ultima versione delle sue idee, scarabocchiando a margine "non ho tempo": ci vollero altri quattordici anni perché Liouville ne riconoscesse il valore e le pubblicasse.`, legame: R`È anche per questo che, oltre il secondo grado, ci si limita qui a disequazioni **scomponibili**: non esiste un metodo generale come la formula risolutiva, e la scomposizione in fattori resta lo strumento che funziona davvero.` }
+    { matematico: 'Apollonio di Perga', anni: '262–190 a.C. circa', titolo: 'Il nome "parabola" viene dal confronto delle aree', testo: R`Apollonio di Perga, soprannominato «il Grande Geometra», raccolse in otto libri, le *Coniche*, tutto ciò che si sapeva sulle curve ottenute tagliando un cono con un piano. Fu lui a fissare i nomi che usiamo ancora oggi (ellisse, parabola, iperbole), presi in prestito dal linguaggio con cui i greci confrontavano le aree: "applicare" un'area a un segmento voleva dire costruire su quel segmento un rettangolo di quell'area. Se il rettangolo coincide esattamente con l'area assegnata si ha una *parabolé*, un'applicazione "esatta"; se la supera, un'*iperbolé*, un eccesso; se resta più piccola, un'*elleipsis*, un difetto. Apollonio dimostrò le proprietà di queste curve con i soli metodi della geometria greca, senza equazioni: quelle sarebbero arrivate solo con Descartes, quasi millenovecento anni dopo.`, legame: R`Il trinomio $ax^2+bx+c$ è proprio la parabola di Apollonio scritta in coordinate: il suo nome ricorda un confronto di aree, e ogni disequazione di secondo grado è ancora un confronto: il trinomio è maggiore o minore di zero?` },
+    { matematico: 'René Descartes', anni: '1596–1650', titolo: 'La regola che conta le soluzioni senza calcolarle', testo: R`Nel 1637, in appendice al *Discorso sul metodo*, Descartes pubblicò *La Géométrie*, dove propose una regola sorprendente: scritta un'equazione polinomiale con i termini ordinati per grado decrescente, il numero delle sue soluzioni positive non supera il numero di volte in cui il segno dei coefficienti cambia passando da un termine al successivo, e la differenza fra i due è sempre un numero pari. Bastava contare i cambi di segno, senza risolvere nulla, per sapere quante soluzioni positive aspettarsi (e, sostituendo $x$ con $-x$, quante negative). Descartes non ne diede una dimostrazione rigorosa (arrivò più tardi, con altri autori), ma la regola funziona ancora oggi esattamente come lui l'aveva enunciata, e porta il suo nome: «regola dei segni di Descartes».`, legame: R`È la stessa idea che sta dietro la tabella dei segni: il segno di un polinomio, anche di grado alto, si legge contando come cambia da un fattore all'altro, senza rifare ogni volta tutto il calcolo.` },
+    { matematico: 'Augustin-Louis Cauchy', anni: '1789–1857', titolo: 'La disuguaglianza dimostrata a salti', testo: R`Cauchy fu uno dei matematici più prolifici di sempre, con centinaia di lavori pubblicati. Nel suo *Cours d'Analyse* del 1821 dimostrò che la media aritmetica di $n$ numeri positivi non è mai minore della loro media geometrica, con uguaglianza solo se i numeri coincidono tutti. La dimostrazione procede in modo insolito, "avanti e indietro": prima per $n$ potenza di $2$, raddoppiando ogni volta il numero di termini, poi all'indietro, mostrando che se la disuguaglianza vale per $n$ termini vale anche per $n-1$. Con i lavori degli altri fu meno attento che con i propri: la memoria che il giovane Abel presentò a Parigi nel 1826, affidata a lui per un giudizio, rimase dimenticata per anni e fu pubblicata solo dopo la morte del suo autore.`, legame: R`Fra tutti i rettangoli con lo stesso perimetro, l'area è massima quando i due lati sono uguali, cioè per il quadrato: è esattamente il caso di uguaglianza della disuguaglianza di Cauchy fra media aritmetica e geometrica.` },
+    { matematico: 'Évariste Galois', anni: '1811–1832', titolo: 'La notte prima del duello', testo: R`Prima di compiere vent'anni, Galois capì perché non esiste una formula generale, fatta solo di somme, prodotti e radici, per risolvere le equazioni di quinto grado o superiore, e per quali equazioni particolari una formula esiste comunque: la risposta dipende dalla struttura di un oggetto che oggi si chiama "gruppo". I suoi lavori furono respinti o smarriti dall'Accademia delle Scienze di Parigi (uno dei manoscritti andò perso quando morì Fourier, che avrebbe dovuto esaminarlo), e Galois morì a vent'anni in un duello le cui vere cause restano incerte. La notte prima, convinto di morire, scrisse in fretta a un amico l'ultima versione delle sue idee, scarabocchiando a margine "non ho tempo": ci vollero altri quattordici anni perché Liouville ne riconoscesse il valore e le pubblicasse.`, legame: R`Oltre il secondo grado qui si trattano solo disequazioni **scomponibili**: per il terzo e il quarto grado le formule esistono ma sono troppo complicate da usare, e dal quinto in su, come dimostrò Galois, in generale non esistono. La scomposizione in fattori resta lo strumento che funziona davvero.` }
   ]
 });
 })();
