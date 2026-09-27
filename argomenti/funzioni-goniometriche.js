@@ -1,75 +1,107 @@
 (function () {
 const R = String.raw;
+/* risposte degli esercizi di base */
+const rad = v => ({ tipo: 'numero', valore: v, tolleranza: 0.005, segnaposto: 'con π, es. 2π/5' });
+const gradi = v => ({ tipo: 'numero', valore: v, tolleranza: 0.01, segnaposto: 'in gradi, es. 40', simboli: ['°'] });
+const esatto = v => ({ tipo: 'numero', valore: v, tolleranza: 0.005, segnaposto: 'es. √5/3 oppure 1/4' });
+const quadrante = (nome, n, romano) => {
+  const accettate = [];
+  [nome, n, n + '°', n + 'º', romano].forEach(q => { ['', 'il ', 'nel '].forEach(p => ['', ' quadrante'].forEach(s => accettate.push(p + q + s))); accettate.push('quadrante ' + q, 'q' + n); });
+  return { tipo: 'testo', accettate, segnaposto: 'primo, secondo, terzo o quarto', simboli: [] };
+};
+const negativo = { tipo: 'testo', accettate: ['negativo', 'negativa', 'è negativo', 'meno', '-', '<0', 'neg'], segnaposto: 'positivo o negativo', simboli: [] };
+const positivo = { tipo: 'testo', accettate: ['positivo', 'positiva', 'è positivo', 'più', 'piu', '+', '>0', 'pos'], segnaposto: 'positivo o negativo', simboli: [] };
 COMPASSO.registra({
   id: 'funzioni-goniometriche',
   titolo: 'Funzioni goniometriche',
 
-  introduzione: R`Sali su una ruota panoramica. Mentre gira, la tua altezza sale, scende e risale, sempre allo stesso modo. Se sai di quanto è ruotata la ruota, sai a che altezza sei. La funzione che dall'angolo di rotazione dà l'altezza è il **seno**; quella che dà lo spostamento a destra o a sinistra del centro è il **coseno**.
+  introduzione: R`Sali su una ruota panoramica. Mentre gira, la tua altezza sale, scende e risale sempre allo stesso modo. Se sai di quanto è girata la ruota, sai a che altezza sei.
 
-Nei triangoli rettangoli seno e coseno erano rapporti fra lati, e l'angolo era per forza acuto. Qui diventano funzioni definite per **qualunque** angolo: ottuso, più grande di un giro, negativo. Per farlo servono un'unità di misura nuova per gli angoli, il radiante, e un disegno di riferimento, la circonferenza goniometrica.
+La funzione che dall'angolo ti dà l'altezza si chiama **seno**. Quella che ti dà lo spostamento a destra o a sinistra si chiama **coseno**.
 
-Queste funzioni descrivono tutto ciò che oscilla o gira: la corrente alternata delle prese di casa, il suono di una nota, un pendolo, le ore di luce nell'arco dell'anno. Per seguire serve sapere che cos'è una funzione (dominio, grafico), il teorema di Pitagora e le proprietà principali della circonferenza.`,
+Nel triangolo rettangolo l'angolo era sempre acuto. Qui invece può essere un angolo qualunque: ottuso, negativo, più grande di un giro. Per questo servono due strumenti nuovi, il radiante e la circonferenza goniometrica.
+
+Queste funzioni descrivono le cose che oscillano o girano, come un pendolo o la corrente delle prese di casa. Prima di cominciare ripassa il teorema di Pitagora e che cos'è una funzione.`,
 
   inBreve: [
-    R`Un angolo in radianti è l'arco diviso il raggio: $180^\circ = \pi$. Da gradi a radianti si moltiplica per $\dfrac{\pi}{180}$.`,
-    R`Sulla circonferenza goniometrica il punto associato ad $\alpha$ è $P = (\cos\alpha,\ \sin\alpha)$: il coseno è l'ascissa, il seno l'ordinata. Tutti e due restano fra $-1$ e $1$.`,
-    R`Il segno di seno, coseno e tangente dipende dal quadrante: guardalo prima di fare i conti.`,
-    R`$\sin^2\alpha + \cos^2\alpha = 1$: da una funzione ricavi l'altra a meno del segno, e il segno lo decide il quadrante.`,
-    R`Seno e coseno si ripetono ogni $2\pi$, la tangente ogni $\pi$. La tangente non esiste dove il coseno vale zero.`
+    R`Da gradi a radianti moltiplichi per $\dfrac{\pi}{180}$. Per esempio $180^\circ = \pi$ e $90^\circ = \dfrac{\pi}{2}$.`,
+    R`Sulla circonferenza goniometrica il punto dell'angolo $\alpha$ è $P = (\cos\alpha,\ \sin\alpha)$. Il coseno è l'ascissa, il seno è l'ordinata.`,
+    R`Seno e coseno stanno sempre fra $-1$ e $1$.`,
+    R`Il segno di seno, coseno e tangente dipende dal quadrante. Guardalo prima di fare i conti.`,
+    R`$\sin^2\alpha + \cos^2\alpha = 1$: dal seno ricavi il coseno, e il segno lo decide il quadrante.`,
+    R`Seno e coseno si ripetono ogni $2\pi$, la tangente ogni $\pi$.`
   ],
 
   sezioni: [
-    { id: 'gradi-radianti', titolo: 'Gradi e radianti', testo: R`Perché un'altra unità per gli angoli, se ci sono già i gradi? Il grado è una convenzione: si è deciso di dividere il giro in $360$ parti. Il **radiante** invece nasce dalla circonferenza stessa, e con lui molte formule che verranno diventano più semplici.
+    { id: 'gradi-radianti', titolo: 'Gradi e radianti', testo: R`Il **radiante** è un'unità per gli angoli che nasce dalla circonferenza stessa. Con i radianti molte formule diventano più semplici.
 
->* **Radiante:** l'angolo al centro che, su una circonferenza qualsiasi, stacca un arco lungo quanto il raggio. La misura in radianti di un angolo è il rapporto $\dfrac{\text{arco}}{\text{raggio}}$: un numero puro, senza unità.
+>* **Radiante:** l'angolo al centro che stacca un arco lungo quanto il raggio. La misura in radianti di un angolo è $\dfrac{\text{arco}}{\text{raggio}}$.
 
-L'intera circonferenza è lunga $2\pi r$, cioè $2\pi$ raggi: l'angolo giro misura $2\pi$ radianti. Da qui le corrispondenze da ricordare: $360^\circ = 2\pi$, $180^\circ = \pi$, $90^\circ = \dfrac{\pi}{2}$. Un radiante è circa $57^\circ$.
+La circonferenza è lunga $2\pi r$, cioè $2\pi$ raggi. Quindi il giro completo misura $2\pi$ radianti, e un radiante è circa $57^\circ$.
 
-Per convertire basta una proporzione: la misura in gradi sta a $180$ come la misura in radianti sta a $\pi$.
+| gradi | radianti |
+|---|---|
+| $360^\circ$ | $2\pi$ |
+| $180^\circ$ | $\pi$ |
+| $90^\circ$ | $\frac{\pi}{2}$ |
+| $60^\circ$ | $\frac{\pi}{3}$ |
+| $45^\circ$ | $\frac{\pi}{4}$ |
+| $30^\circ$ | $\frac{\pi}{6}$ |
+
+Per convertire usi una proporzione: i gradi stanno a $180$ come i radianti stanno a $\pi$.
 
 ~ \alpha^\circ : 180 = \alpha_{\text{rad}} : \pi :: la proporzione fra le due misure
 ~ \alpha_{\text{rad}} = \alpha^\circ \cdot \evid{\dfrac{\pi}{180}} :: isolo la misura in radianti
 ~ \alpha_{\text{rad}} = 135 \cdot \dfrac{\pi}{180} = \evid{\dfrac{135}{180}}\,\pi :: per esempio con $135^\circ$
 ~ \alpha_{\text{rad}} = \evidb{\dfrac{3}{4}\pi} :: semplifico: $135$ e $180$ si dividono tutti e due per $45$
 
-Al contrario, da radianti a gradi si moltiplica per $\dfrac{180}{\pi}$: $\dfrac{5\pi}{6} \cdot \dfrac{180}{\pi} = 150^\circ$.
+Per tornare da radianti a gradi moltiplichi per $\dfrac{180}{\pi}$. Per esempio $\dfrac{5\pi}{6} \cdot \dfrac{180}{\pi} = 150^\circ$.
 
 ?? Quanto misura in radianti un angolo di $60^\circ$?
 [x] $\dfrac{\pi}{3}$
 [ ] $\dfrac{\pi}{6}$
 [ ] $60\pi$
-=> $60 \cdot \frac{\pi}{180} = \frac{\pi}{3}$: sessanta gradi sono un terzo dell'angolo piatto. $\frac{\pi}{6}$ è $30^\circ$. Scrivere $60\pi$ vuol dire aver moltiplicato per $\pi$ dimenticando di dividere per $180$.
+=> $60 \cdot \frac{\pi}{180} = \frac{\pi}{3}$. $\frac{\pi}{6}$ è $30^\circ$. $60\pi$ viene fuori se moltiplichi per $\pi$ e dimentichi di dividere per $180$.
 
-Con i radianti la **lunghezza di un arco** è semplicissima: se l'angolo al centro misura $\theta$ radianti, l'arco è lungo $l = r\,\theta$. È la definizione di radiante letta al contrario. In gradi servirebbe anche il fattore $\dfrac{\pi}{180}$.
+Con i radianti la **lunghezza di un arco** è semplice: $l = r\,\theta$, con $\theta$ in radianti.
 
->! Gli angoli in radianti si lasciano come frazioni di $\pi$: $\dfrac{\pi}{6}$, non $0{,}524$. Il decimale non è sbagliato, ma nasconde di che angolo si tratta e complica i conti successivi.` },
+>! Lascia gli angoli in radianti come frazioni di $\pi$: scrivi $\dfrac{\pi}{6}$, non $0{,}524$. Il decimale nasconde di che angolo si tratta.` },
 
-    { id: 'angoli-orientati', titolo: 'Angoli orientati e circonferenza goniometrica', testo: R`Un angolo di $390^\circ$ ha senso? In un triangolo no. Ma una ruota, dopo un giro completo, può continuare a girare, e può girare anche all'indietro. Per descrivere le rotazioni l'angolo diventa **orientato**: ha un lato di partenza, un lato di arrivo e un verso.
+    { id: 'angoli-orientati', titolo: 'Angoli orientati e circonferenza goniometrica', testo: R`Una ruota può fare più di un giro, e può anche girare all'indietro. Per descrivere le rotazioni usi gli angoli **orientati**, cioè angoli con un verso.
 
->* Il verso **antiorario** (contrario alle lancette dell'orologio) è positivo, quello orario è negativo. $-90^\circ$ è un quarto di giro in senso orario.
+>* Il verso **antiorario** (contrario alle lancette dell'orologio) è positivo. Il verso orario è negativo: $-90^\circ$ è un quarto di giro in senso orario.
 
-La **circonferenza goniometrica** è una circonferenza di raggio $1$ con il centro nell'origine degli assi. Tutti gli angoli partono dal semiasse positivo delle $x$: ruoti di $\alpha$ (in verso antiorario se $\alpha > 0$, orario se $\alpha < 0$) e arrivi a un punto $P$ della circonferenza, il **punto associato** ad $\alpha$.
+La **circonferenza goniometrica** ha raggio $1$ e il centro nell'origine degli assi. Ogni angolo parte dal semiasse positivo delle $x$. Ruoti di $\alpha$ e arrivi a un punto $P$ della circonferenza: è il **punto associato** ad $\alpha$.
 
 [[grafico:puntoMobile]]
 
-Se fai un giro in più torni sullo stesso punto: $30^\circ$, $390^\circ$ e $-330^\circ$ hanno lo stesso punto associato, perché differiscono di un numero intero di giri. Si dicono angoli **congruenti**. In radianti: $\alpha$ e $\alpha + 2k\pi$, con $k$ intero, finiscono nello stesso punto.
+Se fai un giro in più, torni sullo stesso punto. Per esempio $30^\circ$, $390^\circ$ e $-330^\circ$ hanno lo stesso punto associato. Questi angoli si dicono **congruenti**: differiscono di un numero intero di giri. In radianti sono $\alpha$ e $\alpha + 2k\pi$, con $k$ intero.
 
 ?? Quale di questi angoli ha lo stesso punto associato di $60^\circ$?
 [ ] $-60^\circ$
 [x] $-300^\circ$
 [ ] $240^\circ$
-=> $-300^\circ + 360^\circ = 60^\circ$: differiscono di un giro. $-60^\circ$ è lo stesso angolo percorso in verso orario, e porta al punto simmetrico rispetto all'asse $x$. $240^\circ = 60^\circ + 180^\circ$ porta al punto diametralmente opposto.
+=> $-300^\circ + 360^\circ = 60^\circ$: i due angoli differiscono di un giro. $-60^\circ$ porta al punto simmetrico rispetto all'asse $x$. $240^\circ$ porta al punto opposto.
 
-I quattro **quadranti** si numerano in verso antiorario a partire da quello in alto a destra: il primo va da $0$ a $\frac{\pi}{2}$, il secondo da $\frac{\pi}{2}$ a $\pi$, il terzo da $\pi$ a $\frac{3\pi}{2}$, il quarto da $\frac{3\pi}{2}$ a $2\pi$.
+I quattro **quadranti** si contano in verso antiorario, partendo da quello in alto a destra.
 
->! Un angolo orientato non deve stare per forza fra $0^\circ$ e $360^\circ$: $780^\circ$ è un angolo legittimo. Per sapere dove cade togli giri interi: $780^\circ - 2 \cdot 360^\circ = 60^\circ$, primo quadrante.` },
+| quadrante | gradi | radianti |
+|---|---|---|
+| primo | da $0^\circ$ a $90^\circ$ | da $0$ a $\frac{\pi}{2}$ |
+| secondo | da $90^\circ$ a $180^\circ$ | da $\frac{\pi}{2}$ a $\pi$ |
+| terzo | da $180^\circ$ a $270^\circ$ | da $\pi$ a $\frac{3\pi}{2}$ |
+| quarto | da $270^\circ$ a $360^\circ$ | da $\frac{3\pi}{2}$ a $2\pi$ |
 
-    { id: 'seno-coseno', titolo: 'Seno e coseno', testo: R`Nel triangolo rettangolo il seno era cateto opposto diviso ipotenusa. Sulla circonferenza goniometrica, con $\alpha$ acuto, l'ipotenusa è il raggio $OP$, che vale $1$: il cateto opposto è l'altezza di $P$, cioè la sua ordinata, e il cateto adiacente è la sua ascissa. Questa lettura funziona anche quando l'angolo non è acuto, e diventa la definizione.
+>! Un angolo può essere più grande di $360^\circ$ o negativo. Per sapere dove cade, togli o aggiungi giri interi. Per esempio $780^\circ - 2 \cdot 360^\circ = 60^\circ$, nel primo quadrante. E $-120^\circ + 360^\circ = 240^\circ$, nel terzo.` },
 
->* Se $P$ è il punto della circonferenza goniometrica associato ad $\alpha$: $$\cos\alpha = \text{ascissa di } P$$ $$\sin\alpha = \text{ordinata di } P$$ cioè $P = (\cos\alpha,\ \sin\alpha)$. Il coseno viene prima, come la $x$ nella coppia $(x,\ y)$.
+    { id: 'seno-coseno', titolo: 'Seno e coseno', testo: R`Con un angolo acuto, il raggio $OP$ è l'ipotenusa di un triangolo rettangolo e vale $1$. Il seno è il cateto opposto, cioè l'ordinata di $P$. Il coseno è il cateto adiacente, cioè l'ascissa di $P$.
 
-Due conseguenze si leggono subito dal disegno.
-- $P$ sta su una circonferenza di raggio $1$, quindi le sue coordinate non escono da $[-1,\ 1]$: $-1 \le \sin\alpha \le 1$ e $-1 \le \cos\alpha \le 1$ per ogni $\alpha$.
+Questa lettura funziona per ogni angolo, e diventa la definizione.
+
+>* Se $P$ è il punto associato ad $\alpha$: $$\cos\alpha = \text{ascissa di } P$$ $$\sin\alpha = \text{ordinata di } P$$ Quindi $P = (\cos\alpha,\ \sin\alpha)$. Il coseno viene prima, come la $x$.
+
+Due cose si vedono subito dal disegno.
+- $P$ sta su una circonferenza di raggio $1$. Quindi seno e coseno stanno sempre fra $-1$ e $1$.
 - Il segno dipende dal quadrante in cui cade $P$.
 
 [[grafico:circonferenzaGoniometrica]]
@@ -81,35 +113,40 @@ Due conseguenze si leggono subito dal disegno.
 | terzo | $-$ | $-$ |
 | quarto | $-$ | $+$ |
 
-Esempio: $120^\circ$ cade nel secondo quadrante, quindi ci si aspetta $\sin 120^\circ > 0$ e $\cos 120^\circ < 0$. Infatti $\sin 120^\circ = \dfrac{\sqrt3}{2}$ e $\cos 120^\circ = -\dfrac12$.
+Esempio: $120^\circ$ cade nel secondo quadrante. Quindi il seno è positivo e il coseno è negativo. Infatti $\sin 120^\circ = \dfrac{\sqrt3}{2}$ e $\cos 120^\circ = -\dfrac12$.
 
 ?? Che segni hanno seno e coseno di $200^\circ$?
 [ ] seno positivo, coseno negativo
 [x] tutti e due negativi
 [ ] seno negativo, coseno positivo
-=> $200^\circ$ sta fra $180^\circ$ e $270^\circ$, nel terzo quadrante: $P$ è in basso a sinistra, con ascissa e ordinata negative. Seno positivo e coseno negativo è il secondo quadrante; seno negativo e coseno positivo è il quarto.
+=> $200^\circ$ sta fra $180^\circ$ e $270^\circ$, nel terzo quadrante. Lì $P$ è in basso a sinistra, e ha tutte e due le coordinate negative. Seno positivo e coseno negativo è il secondo quadrante.
 
->! Non scambiare seno e coseno: il coseno è l'ascissa (orizzontale), il seno l'ordinata (verticale).` },
+>! Non scambiare seno e coseno. Il coseno è l'ascissa (orizzontale), il seno è l'ordinata (verticale).` },
 
-    { id: 'tangente-cotangente', titolo: 'Tangente e cotangente', testo: R`Nel triangolo rettangolo la tangente era cateto opposto diviso cateto adiacente. Sulla circonferenza goniometrica i due cateti diventano $\sin\alpha$ e $\cos\alpha$, e la definizione è:
+    { id: 'tangente-cotangente', titolo: 'Tangente e cotangente', testo: R`Nel triangolo rettangolo la tangente era cateto opposto diviso cateto adiacente. Qui i due cateti sono $\sin\alpha$ e $\cos\alpha$.
 
->* **Tangente:** $$\tan\alpha = \frac{\sin\alpha}{\cos\alpha}$$ definita solo se $\cos\alpha \ne 0$.
+>* **Tangente:** $$\tan\alpha = \frac{\sin\alpha}{\cos\alpha}$$ Esiste solo se $\cos\alpha \ne 0$.
 
-Il coseno vale zero a $90^\circ$ e a $270^\circ$ (in radianti, $\frac{\pi}{2} + k\pi$): lì la tangente non esiste. Il segno viene da quelli di seno e coseno: positiva nel primo e nel terzo quadrante, dove hanno lo stesso segno, negativa nel secondo e nel quarto.
+Il coseno vale zero a $90^\circ$ e a $270^\circ$, quindi lì la tangente non esiste.
 
-La tangente si può anche **vedere**, ed è da qui che viene il nome. Traccia la retta verticale che tocca la circonferenza nel punto $(1,\ 0)$ e prolunga il raggio $OP$ fino a incontrarla in un punto $T$. L'ordinata di $T$ è $\tan\alpha$: nel grafico della sezione precedente è il segmento verde-acqua. Il motivo è la similitudine: il triangolo con vertici $O$, $(\cos\alpha,\ 0)$, $P$ e quello con vertici $O$, $(1,\ 0)$, $T$ hanno gli stessi angoli, quindi l'ordinata di $T$ sta a $1$ come $\sin\alpha$ sta a $\cos\alpha$.
+La tangente è positiva dove seno e coseno hanno lo stesso segno, cioè nel primo e nel terzo quadrante. È negativa nel secondo e nel quarto.
 
-Quando $\alpha$ si avvicina a $90^\circ$ il raggio diventa quasi verticale e incontra la retta sempre più in alto: la tangente cresce senza limite. A $90^\circ$ esatti il raggio è parallelo alla retta e non la incontra.
+La tangente si può anche **vedere** sul disegno.
+1. Traccia la retta verticale che tocca la circonferenza in $(1,\ 0)$.
+2. Prolunga il raggio $OP$ fino al punto $T$ dove incontra quella retta.
+3. L'ordinata di $T$ è $\tan\alpha$.
+
+Nel grafico della sezione precedente è il segmento verde-acqua. Vicino a $90^\circ$ il raggio diventa quasi verticale, e $T$ sale senza limite. A $90^\circ$ il raggio non incontra più la retta.
 
 ?? Quanto vale $\tan 135^\circ$?
 [x] $-1$
 [ ] $1$
 [ ] non esiste
-=> $\sin 135^\circ = \frac{\sqrt2}{2}$ e $\cos 135^\circ = -\frac{\sqrt2}{2}$, quindi il rapporto è $-1$. Il valore assoluto è quello di $45^\circ$, ma nel secondo quadrante seno e coseno hanno segni opposti. La tangente non esiste solo dove il coseno è zero, e a $135^\circ$ non lo è.
+=> Seno e coseno di $135^\circ$ sono $\frac{\sqrt2}{2}$ e $-\frac{\sqrt2}{2}$, quindi il rapporto è $-1$. Il valore $1$ ha il segno sbagliato, perché nel secondo quadrante la tangente è negativa.
 
 ### Cotangente, secante, cosecante
 
-Le altre tre funzioni sono reciproci:
+Le altre tre funzioni sono i reciproci di tangente, coseno e seno:
 
 | funzione | definizione | esiste se |
 |---|---|---|
@@ -117,13 +154,15 @@ Le altre tre funzioni sono reciproci:
 | secante | $\sec\alpha = \dfrac{1}{\cos\alpha}$ | $\cos\alpha \ne 0$ |
 | cosecante | $\csc\alpha = \dfrac{1}{\sin\alpha}$ | $\sin\alpha \ne 0$ |
 
-La cotangente ha una costruzione gemella della tangente, sulla retta orizzontale che tocca la circonferenza nel punto $(0,\ 1)$. Esempio: a $45^\circ$ seno e coseno valgono $\frac{\sqrt2}{2}$, quindi $\tan 45^\circ = \cot 45^\circ = 1$ e $\sec 45^\circ = \frac{2}{\sqrt2} = \sqrt2$.
+La cotangente si legge come la tangente, sulla retta orizzontale che tocca la circonferenza in $(0,\ 1)$.
 
->! La scrittura $\cot\alpha = \dfrac{1}{\tan\alpha}$ vale solo dove la tangente esiste e non è zero. A $90^\circ$ la tangente non c'è, eppure $\cot 90^\circ = \dfrac{\cos 90^\circ}{\sin 90^\circ} = 0$. Nel dubbio usa la definizione con coseno e seno.` },
+Esempio: a $45^\circ$ seno e coseno valgono $\frac{\sqrt2}{2}$. Quindi $\tan 45^\circ = \cot 45^\circ = 1$ e $\sec 45^\circ = \frac{2}{\sqrt2} = \sqrt2$.
 
-    { id: 'angoli-notevoli', titolo: 'Gli angoli notevoli', testo: R`Per alcuni angoli seno e coseno si calcolano esattamente, con qualche radice quadrata. Sono gli **angoli notevoli**: $30^\circ$, $45^\circ$, $60^\circ$ e gli angoli sugli assi. Tornano in quasi tutti gli esercizi, e vanno saputi; ma prima vediamo da dove vengono, così se li dimentichi li puoi ricostruire.
+>! $\cot\alpha = \dfrac{1}{\tan\alpha}$ vale solo dove la tangente esiste e non è zero. Per esempio $\tan 90^\circ$ non esiste, ma $\cot 90^\circ = \dfrac{\cos 90^\circ}{\sin 90^\circ} = 0$.` },
 
-Per $45^\circ$ basta un'osservazione: il punto $P$ sta sulla bisettrice del primo quadrante, quindi ha ascissa e ordinata uguali. Chiamale $x$:
+    { id: 'angoli-notevoli', titolo: 'Gli angoli notevoli', testo: R`Per alcuni angoli seno e coseno hanno un valore esatto, con una radice. Sono gli **angoli notevoli**: $30^\circ$, $45^\circ$, $60^\circ$ e gli angoli sugli assi. Se li dimentichi, puoi ricostruirli così.
+
+**Angolo di $45^\circ$.** Il punto $P$ sta sulla bisettrice del primo quadrante. Quindi ascissa e ordinata sono uguali: chiamale $x$.
 
 ~ x^2 + x^2 = 1 :: $P$ sta sulla circonferenza di raggio $1$ (Pitagora)
 ~ \evid{2x^2} = 1 :: sommo i due termini uguali
@@ -132,7 +171,13 @@ Per $45^\circ$ basta un'osservazione: il punto $P$ sta sulla bisettrice del prim
 
 Quindi $\sin 45^\circ = \cos 45^\circ = \dfrac{\sqrt2}{2}$.
 
-Per $30^\circ$ e $60^\circ$ si usa un triangolo equilatero di lato $1$, tagliato a metà dalla sua altezza. Vengono due triangoli rettangoli con angoli di $30^\circ$ e $60^\circ$, ipotenusa $1$, cateto corto $\dfrac12$ (metà lato) e cateto lungo $\dfrac{\sqrt3}{2}$ (l'altezza, per Pitagora). Il cateto corto sta di fronte all'angolo di $30^\circ$: $\sin 30^\circ = \dfrac12$ e $\cos 30^\circ = \dfrac{\sqrt3}{2}$. Per $60^\circ$ i due cateti si scambiano i ruoli.
+**Angoli di $30^\circ$ e $60^\circ$.** Prendi un triangolo equilatero di lato $1$ e taglialo a metà con l'altezza $h$. Ottieni un triangolo rettangolo con angoli di $30^\circ$ e $60^\circ$ e ipotenusa $1$. Il cateto corto è metà lato, cioè $\dfrac12$. Il cateto lungo è $h$:
+
+~ h^2 + \left(\dfrac12\right)^2 = 1^2 :: Pitagora nel mezzo triangolo
+~ h^2 = 1 - \evid{\dfrac14} = \dfrac34 :: isolo $h^2$
+~ h = \evidb{\dfrac{\sqrt3}{2}} :: prendo la radice positiva: è una lunghezza
+
+Il cateto corto sta di fronte all'angolo di $30^\circ$. Quindi $\sin 30^\circ = \dfrac12$ e $\cos 30^\circ = \dfrac{\sqrt3}{2}$. Per $60^\circ$ i due valori si scambiano.
 
 | $\alpha$ | $0^\circ$ | $30^\circ$ | $45^\circ$ | $60^\circ$ | $90^\circ$ |
 |---|---|---|---|---|---|
@@ -141,30 +186,30 @@ Per $30^\circ$ e $60^\circ$ si usa un triangolo equilatero di lato $1$, tagliato
 | $\cos\alpha$ | $1$ | $\sqrt3/2$ | $\sqrt2/2$ | $1/2$ | $0$ |
 | $\tan\alpha$ | $0$ | $\sqrt3/3$ | $1$ | $\sqrt3$ | non definita |
 
-La riga del coseno è quella del seno letta al contrario, e la tangente si ottiene dividendo la riga del seno per quella del coseno: $\tan 60^\circ = \dfrac{\sqrt3/2}{1/2} = \sqrt3$.
+La riga del coseno è quella del seno letta al contrario. La tangente è seno diviso coseno: $\tan 60^\circ = \dfrac{\sqrt3/2}{1/2} = \sqrt3$.
 
 ?? Quanto vale $\cos 60^\circ$?
 [x] $\dfrac12$
 [ ] $\dfrac{\sqrt3}{2}$
 [ ] $\dfrac{\sqrt2}{2}$
-=> Nel mezzo triangolo equilatero l'angolo di $60^\circ$ tocca il cateto corto, $\frac12$: è il suo cateto adiacente. $\frac{\sqrt3}{2}$ è $\sin 60^\circ$ (o $\cos 30^\circ$): scambiare $30^\circ$ con $60^\circ$ è l'errore più comune con questa tabella. $\frac{\sqrt2}{2}$ appartiene a $45^\circ$.
+=> L'angolo di $60^\circ$ tocca il cateto corto, $\frac12$: è il suo cateto adiacente. $\frac{\sqrt3}{2}$ è $\sin 60^\circ$: scambiare $30^\circ$ con $60^\circ$ è l'errore più comune. $\frac{\sqrt2}{2}$ è il valore di $45^\circ$.
 
-Gli angoli **sugli assi** hanno valori immediati, perché il punto associato sta su uno degli assi:
+Gli angoli **sugli assi** hanno valori immediati, perché $P$ sta su un asse:
 
 | $\alpha$ | $0^\circ$ | $90^\circ$ | $180^\circ$ | $270^\circ$ | $360^\circ$ |
 |---|---|---|---|---|---|
 | $\sin\alpha$ | $0$ | $1$ | $0$ | $-1$ | $0$ |
 | $\cos\alpha$ | $1$ | $0$ | $-1$ | $0$ | $1$ |
 
-I valori di angoli come $120^\circ$, $150^\circ$, $210^\circ$ non si imparano uno per uno: si ricavano da questi con gli **angoli associati**, due sezioni più avanti.
+Gli altri angoli, come $120^\circ$ o $210^\circ$, si ricavano da questi con gli **angoli associati**.
 
->! $\tan 90^\circ$ non vale «infinito»: semplicemente non esiste, perché $\cos 90^\circ = 0$ e non si divide per zero.` },
+>! $\tan 90^\circ$ non vale «infinito». Non esiste, perché $\cos 90^\circ = 0$ e non si divide per zero.` },
 
-    { id: 'relazioni-fondamentali', titolo: 'Le relazioni fondamentali', testo: R`Se conosci il seno di un angolo, conosci anche il coseno? Quasi: ti manca solo il segno. Seno e coseno sono le coordinate di un punto che sta sulla circonferenza di raggio $1$, e questo li lega.
+    { id: 'relazioni-fondamentali', titolo: 'Le relazioni fondamentali', testo: R`Se conosci il seno di un angolo, conosci anche il coseno? Quasi: ti manca solo il segno.
 
->* **Relazione fondamentale:** $$\sin^2\alpha + \cos^2\alpha = 1 \qquad \text{per ogni } \alpha$$ Si scrive $\sin^2\alpha$ per dire $(\sin\alpha)^2$.
+>* **Relazione fondamentale:** $$\sin^2\alpha + \cos^2\alpha = 1 \qquad \text{per ogni } \alpha$$ $\sin^2\alpha$ vuol dire $(\sin\alpha)^2$.
 
-È il teorema di Pitagora: il triangolo che ha per vertici $O$, $P$ e la proiezione di $P$ sull'asse $x$ ha cateti lunghi $|\cos\alpha|$ e $|\sin\alpha|$ e ipotenusa $1$.
+È il teorema di Pitagora. Guarda il triangolo con vertici $O$, $P$ e la proiezione di $P$ sull'asse $x$. L'ipotenusa è il raggio, che vale $1$. I cateti sono lunghi $|\cos\alpha|$ e $|\sin\alpha|$.
 
 Esempio: $\sin\alpha = \dfrac35$, con $\alpha$ nel secondo quadrante. Quanto vale $\cos\alpha$?
 
@@ -177,19 +222,19 @@ Esempio: $\sin\alpha = \dfrac35$, con $\alpha$ nel secondo quadrante. Quanto val
 [ ] $\dfrac{12}{13}$
 [x] $-\dfrac{12}{13}$
 [ ] $\dfrac{8}{13}$
-=> $\sin^2\alpha = 1 - \frac{25}{169} = \frac{144}{169}$, quindi $\sin\alpha = \pm\frac{12}{13}$, e nel quarto quadrante il seno è negativo. $\frac{12}{13}$ ha il valore giusto e il segno sbagliato: succede quando si prende la radice senza guardare il quadrante. $\frac{8}{13}$ viene da $1 - \frac{5}{13}$, cioè dal dimenticare i quadrati.
+=> $\sin^2\alpha = 1 - \frac{25}{169} = \frac{144}{169}$, quindi $\sin\alpha = \pm\frac{12}{13}$. Nel quarto quadrante il seno è negativo. $\frac{12}{13}$ ha il segno sbagliato: succede se non guardi il quadrante. $\frac{8}{13}$ viene da $1 - \frac{5}{13}$, cioè dal dimenticare i quadrati.
 
-Una seconda relazione lega tangente e coseno, e serve quando conosci la tangente:
+Quando conosci la tangente serve una seconda relazione. Si ricava dalla prima:
 
 ~ \sin^2\alpha + \cos^2\alpha = 1 :: la relazione fondamentale
 ~ \dfrac{\sin^2\alpha}{\evid{\cos^2\alpha}} + \dfrac{\cos^2\alpha}{\evid{\cos^2\alpha}} = \dfrac{1}{\evid{\cos^2\alpha}} :: divido tutto per $\cos^2\alpha$, che deve essere diverso da zero
 ~ \evidb{\tan^2\alpha + 1} = \dfrac{1}{\cos^2\alpha} :: il primo rapporto è la tangente al quadrato, il secondo vale $1$
 
->! Da $\sin^2\alpha = \frac{9}{25}$ non segue $\sin\alpha = \frac35$: può essere anche $-\frac35$. Il segno lo decide il quadrante, e se il testo non lo dà le risposte sono due.` },
+>! Da $\sin^2\alpha = \frac{9}{25}$ segue $\sin\alpha = \pm\frac35$, con due segni. Il segno lo decide il quadrante. Se il testo non dice il quadrante, le risposte sono due.` },
 
-    { id: 'angoli-associati', titolo: 'Gli angoli associati', testo: R`Quanto vale $\cos 150^\circ$? Non è nella tabella degli angoli notevoli, ma non serve una tabella nuova. Il punto associato a $150^\circ$ è il simmetrico, rispetto all'asse $y$, del punto associato a $30^\circ$: stessa altezza, ascissa di segno opposto. Quindi $\cos 150^\circ = -\cos 30^\circ = -\dfrac{\sqrt3}{2}$.
+    { id: 'angoli-associati', titolo: 'Gli angoli associati', testo: R`Quanto vale $\cos 150^\circ$? Il punto di $150^\circ$ è il simmetrico del punto di $30^\circ$ rispetto all'asse $y$. Ha la stessa altezza, e l'ascissa con il segno cambiato. Quindi $\cos 150^\circ = -\cos 30^\circ = -\dfrac{\sqrt3}{2}$.
 
-Gli **angoli associati** ad $\alpha$ sono quelli il cui punto è il simmetrico del punto di $\alpha$ rispetto a un asse, all'origine o alla bisettrice del primo quadrante. L'animazione mostra le simmetrie una alla volta.
+Gli **angoli associati** ad $\alpha$ hanno il punto simmetrico a quello di $\alpha$. L'animazione mostra le simmetrie una alla volta.
 
 [[animazione:angoli-associati]]
 
@@ -200,9 +245,15 @@ Gli **angoli associati** ad $\alpha$ sono quelli il cui punto è il simmetrico d
 | $180^\circ + \alpha$ | origine | $-\sin\alpha$ | $-\cos\alpha$ |
 | $90^\circ - \alpha$ (complementare) | bisettrice | $\cos\alpha$ | $\sin\alpha$ |
 
-Invece di imparare la tabella a memoria puoi usare una regola in due passi.
+Per un angolo preciso, come $210^\circ$, fai così.
+1. Trova il quadrante: $210^\circ$ è nel terzo.
+2. Trova quanto dista da $180^\circ$ o da $360^\circ$: $210^\circ = 180^\circ + 30^\circ$, quindi $30^\circ$.
+3. Prendi il valore di $30^\circ$ dalla tabella.
+4. Metti il segno del quadrante: $\sin 210^\circ = -\sin 30^\circ = -\dfrac12$.
 
->* **Regola pratica.** 1) Se all'angolo aggiungi o togli $180^\circ$ o $360^\circ$, o cambi solo il segno, la funzione resta la stessa; se aggiungi o togli $90^\circ$ o $270^\circ$, seno e coseno si scambiano. 2) Il segno è quello che la funzione **di partenza** ha nel quadrante dove cade l'angolo nuovo, facendo finta che $\alpha$ sia acuto.
+Con una lettera, come in $\cos(90^\circ + \alpha)$, usa questa regola.
+
+>* **Regola pratica.** 1) Con $180^\circ$ o $360^\circ$, o con il solo cambio di segno, la funzione resta la stessa. Con $90^\circ$ o $270^\circ$ seno e coseno si scambiano. 2) Il segno è quello della funzione **di partenza** nel quadrante dove cade l'angolo nuovo. Per trovarlo, pensa $\alpha$ acuto.
 
 ~ \cos(90^\circ + \alpha) :: esempio: lo voglio scrivere con le funzioni di $\alpha$
 ~ \cos(90^\circ + \alpha) = \evid{\pm\sin\alpha} :: c'è $90^\circ$: il coseno diventa seno
@@ -213,19 +264,24 @@ Invece di imparare la tabella a memoria puoi usare una regola in due passi.
 [x] $-\sin\alpha$
 [ ] $\sin\alpha$
 [ ] $-\cos\alpha$
-=> Con $180^\circ$ la funzione resta il seno. $180^\circ + \alpha$ cade nel terzo quadrante, dove il seno è negativo: $-\sin\alpha$. Scegliere $-\cos\alpha$ vuol dire aver scambiato le funzioni, cosa che succede solo con $90^\circ$ e $270^\circ$.
+=> Con $180^\circ$ la funzione resta il seno. $180^\circ + \alpha$ cade nel terzo quadrante, dove il seno è negativo: $-\sin\alpha$. Con $-\cos\alpha$ hai scambiato le funzioni, ma lo scambio c'è solo con $90^\circ$ e $270^\circ$.
 
->! Il segno si decide con la funzione **di partenza**, non con quella che scrivi dopo lo scambio. In $\cos(90^\circ+\alpha)$ conta il segno del coseno nel secondo quadrante (negativo), anche se il risultato si scrive con il seno.
+Pensi $\alpha$ acuto solo per trovare il segno. Le uguaglianze che ottieni valgono per ogni $\alpha$.` },
 
-La regola si ragiona pensando $\alpha$ acuto, ma le uguaglianze che dà valgono per ogni $\alpha$.` },
+    { id: 'grafici-periodicita', titolo: 'I grafici delle funzioni goniometriche', testo: R`Che forma ha il grafico di $y = \sin x$? Segui l'altezza del punto che gira.
+- parte da $0$;
+- dopo un quarto di giro vale $1$;
+- a mezzo giro vale $0$;
+- a tre quarti vale $-1$;
+- dopo un giro torna a $0$, e ricomincia.
 
-    { id: 'grafici-periodicita', titolo: 'I grafici delle funzioni goniometriche', testo: R`Che forma ha il grafico di $y = \sin x$? Pensa al punto che gira sulla circonferenza: la sua altezza parte da $0$, arriva a $1$ dopo un quarto di giro, torna a $0$ a mezzo giro, scende a $-1$ a tre quarti e torna a $0$ a giro completo. Poi ricomincia uguale. L'animazione riporta quell'altezza su un asse orizzontale: l'onda che si disegna è la **sinusoide**.
+L'animazione riporta quell'altezza su un asse orizzontale. L'onda che si disegna è la **sinusoide**.
 
 [[animazione:circonferenza-sinusoide]]
 
-Sull'asse $x$ del grafico ci sono i radianti: un giro è lungo $2\pi \approx 6{,}28$.
+Sull'asse $x$ ci sono i radianti: un giro è lungo $2\pi \approx 6{,}28$.
 
->* **Periodicità:** dopo un giro si torna allo stesso punto, quindi $\sin(x + 2\pi) = \sin x$ e $\cos(x + 2\pi) = \cos x$ per ogni $x$. Seno e coseno sono funzioni **periodiche** di **periodo** $2\pi$: il grafico si ripete uguale ogni $2\pi$.
+>* **Periodo:** dopo un giro torni allo stesso punto. Quindi $\sin(x + 2\pi) = \sin x$ e $\cos(x + 2\pi) = \cos x$. Il grafico si ripete uguale ogni $2\pi$: seno e coseno hanno **periodo** $2\pi$.
 
 | | dominio | valori | periodo | zeri |
 |---|---|---|---|---|
@@ -241,17 +297,17 @@ Il grafico del coseno è la stessa onda del seno, spostata di lato. Di quanto? S
 [x] $\cos x = \sin\left(x + \dfrac{\pi}{2}\right)$
 [ ] $\cos x = \sin x + \dfrac{\pi}{2}$
 [ ] $\cos x = \sin(x - \pi)$
-=> Spostare la sinusoide a sinistra di $\frac{\pi}{2}$ vuol dire mettere $x + \frac{\pi}{2}$ **dentro** il seno. Sommare $\frac{\pi}{2}$ fuori, come in $\sin x + \frac{\pi}{2}$, alza la curva invece di spostarla di lato. $\sin(x - \pi)$ è $-\sin x$: l'onda rovesciata.
+=> Per spostare la sinusoide a sinistra di $\frac{\pi}{2}$ scrivi $x + \frac{\pi}{2}$ **dentro** il seno. Se sommi $\frac{\pi}{2}$ fuori, come in $\sin x + \frac{\pi}{2}$, alzi la curva. $\sin(x - \pi)$ è $-\sin x$, l'onda rovesciata.
 
-La **tangente** è diversa: non è limitata, e ogni volta che il coseno vale zero ha un **asintoto verticale**, una retta verticale a cui il grafico si avvicina senza toccarla. Fra un asintoto e il successivo la curva sale sempre, da $-\infty$ a $+\infty$, e poi si ripete: il periodo della tangente è $\pi$, metà di quello di seno e coseno.
+La **tangente** è diversa. Dove il coseno vale zero ha un **asintoto verticale**: una retta a cui il grafico si avvicina senza toccarla. Fra due asintoti la curva sale sempre, e il disegno si ripete ogni $\pi$.
 
 [[grafico:tangentePiano]]
 
->! Il periodo della tangente è $\pi$, non $2\pi$. Il motivo si vede sulla circonferenza: $P$ e il punto diametralmente opposto stanno sulla stessa retta per l'origine, quindi incontrano la retta della tangente nello stesso punto.` },
+>! Il periodo della tangente è $\pi$, non $2\pi$. Il punto $P$ e il suo opposto stanno sulla stessa retta per l'origine, quindi danno la stessa tangente.` },
 
-    { id: 'inverse-sinusoidi', titolo: 'Funzioni inverse e sinusoidi generali', testo: R`Se $\sin x = \dfrac12$, quanto vale $x$? Le risposte sono infinite: $\dfrac{\pi}{6}$, $\dfrac{5\pi}{6}$, e tutti gli angoli che si ottengono da questi aggiungendo giri. Una funzione inversa però deve dare **un** risultato solo. Per questo si sceglie un intervallo in cui il seno prende ogni valore una volta sola, e si cerca l'angolo lì dentro.
+    { id: 'inverse-sinusoidi', titolo: 'Funzioni inverse e sinusoidi generali', testo: R`Se $\sin x = \dfrac12$, quanto vale $x$? Le risposte sono infinite: $\dfrac{\pi}{6}$, $\dfrac{5\pi}{6}$ e tutti gli angoli che ottieni aggiungendo giri. Una funzione inversa invece deve dare **un** risultato solo. Per questo cerchi l'angolo in un intervallo fissato.
 
->* **Funzioni inverse.** $\arcsin x$ è l'angolo fra $-\frac{\pi}{2}$ e $\frac{\pi}{2}$ che ha seno $x$. $\arccos x$ è l'angolo fra $0$ e $\pi$ che ha coseno $x$. $\arctan x$ è l'angolo fra $-\frac{\pi}{2}$ e $\frac{\pi}{2}$ (estremi esclusi) che ha tangente $x$.
+>* **Funzioni inverse.** $\arcsin x$ è l'angolo fra $-\frac{\pi}{2}$ e $\frac{\pi}{2}$ che ha seno $x$. $\arccos x$ è l'angolo fra $0$ e $\pi$ che ha coseno $x$. $\arctan x$ è l'angolo fra $-\frac{\pi}{2}$ e $\frac{\pi}{2}$, estremi esclusi, che ha tangente $x$.
 
 | funzione | dominio | valori |
 |---|---|---|
@@ -259,27 +315,29 @@ La **tangente** è diversa: non è limitata, e ogni volta che il coseno vale zer
 | $\arccos x$ | $[-1,\ 1]$ | $[0,\ \pi]$ |
 | $\arctan x$ | $\mathbb{R}$ | $\left(-\frac{\pi}{2},\ \frac{\pi}{2}\right)$ |
 
-Così $\arcsin\dfrac12 = \dfrac{\pi}{6}$ e non $\dfrac{5\pi}{6}$, che è fuori dall'intervallo. Il dominio di $\arcsin$ e $\arccos$ è $[-1,\ 1]$ perché seno e coseno non escono da lì: $\arcsin 2$ non esiste.
+Per esempio $\arcsin\dfrac12 = \dfrac{\pi}{6}$. Non vale $\dfrac{5\pi}{6}$, perché è fuori dall'intervallo. E $\arcsin 2$ non esiste, perché il seno non supera mai $1$.
 
 ?? Quanto vale $\arccos\left(-\dfrac12\right)$?
 [ ] $-\dfrac{\pi}{3}$
 [x] $\dfrac{2\pi}{3}$
 [ ] $\dfrac{4\pi}{3}$
-=> L'arcocoseno dà un angolo fra $0$ e $\pi$, e lì l'angolo con coseno $-\frac12$ è $\frac{2\pi}{3}$ ($120^\circ$). $-\frac{\pi}{3}$ è la risposta di chi ragiona come con l'arcoseno, mettendo il segno meno sull'angolo: ma $\cos\left(-\frac{\pi}{3}\right) = +\frac12$. Anche $\frac{4\pi}{3}$ ha coseno $-\frac12$, però è fuori dall'intervallo.
+=> L'arcocoseno dà un angolo fra $0$ e $\pi$. Lì l'angolo con coseno $-\frac12$ è $\frac{2\pi}{3}$, cioè $120^\circ$. $-\frac{\pi}{3}$ è sbagliato: $\cos\left(-\frac{\pi}{3}\right) = +\frac12$. Anche $\frac{4\pi}{3}$ ha coseno $-\frac12$, però è fuori dall'intervallo.
 
 ### Sinusoidi generali
 
-Le onde vere non sono tutte alte $1$ e lunghe $2\pi$. Una sinusoide generale ha equazione $$y = A\sin(\omega x + \varphi)$$ e i tre numeri cambiano il grafico così:
+Una sinusoide generale ha equazione $$y = A\sin(\omega x + \varphi)$$ Ogni numero cambia il grafico in un modo:
 
 | numero | nome | effetto sul grafico |
 |---|---|---|
-| $A$ | ampiezza | l'onda va da $-A$ ad $A$ |
+| $A$ | ampiezza | l'onda va da $-\lvert A\rvert$ a $\lvert A\rvert$ |
 | $\omega$ | pulsazione | il periodo diventa $T = \dfrac{2\pi}{\omega}$ |
 | $\varphi$ | fase | sposta l'onda di lato |
 
+L'ampiezza è sempre positiva: con $y = -3\sin x$ è $3$. Il segno meno rovescia l'onda.
+
 [[grafico:sinusoideGenerale]]
 
-Per sapere di quanto la fase sposta l'onda conviene raccogliere $\omega$ dentro la parentesi. Con $y = 3\sin\left(2x - \dfrac{\pi}{2}\right)$:
+Per trovare lo spostamento, raccogli $\omega$ dentro la parentesi. Esempio: $y = 3\sin\left(2x - \dfrac{\pi}{2}\right)$.
 
 ~ y = 3\sin\left(2x - \dfrac{\pi}{2}\right) :: ampiezza $3$, pulsazione $2$
 ~ y = 3\sin\left(\evid{2}\left(x - \dfrac{\pi}{4}\right)\right) :: raccolgo il $2$: $\frac{\pi}{2}$ diviso $2$ fa $\frac{\pi}{4}$
@@ -290,11 +348,11 @@ Per sapere di quanto la fase sposta l'onda conviene raccogliere $\omega$ dentro 
 [x] $\dfrac{2\pi}{3}$
 [ ] $\dfrac{2\pi}{5}$
 [ ] $6\pi$
-=> Il periodo dipende solo dalla pulsazione: $T = \frac{2\pi}{3}$. Il $5$ è l'ampiezza e cambia l'altezza delle creste, non la loro distanza. $6\pi$ viene dal moltiplicare $2\pi$ per $3$ invece di dividere: con $\omega$ più grande le creste si avvicinano, quindi il periodo si accorcia.
+=> Il periodo dipende solo dalla pulsazione: $T = \frac{2\pi}{3}$. Il $5$ è l'ampiezza: cambia l'altezza delle creste, non la loro distanza. $6\pi$ viene dal moltiplicare per $3$ invece di dividere.
 
-Nella scheda **Laboratorio** c'è *Sintonizza l'onda*: muovi la cresta e quella successiva finché la tua onda non copre quella grigia.
+Nella scheda **Laboratorio** c'è *Sintonizza l'onda*: muovi le creste finché la tua onda non copre quella grigia.
 
->! Lo spostamento non è $\varphi$ ma $-\dfrac{\varphi}{\omega}$. In $y = \sin\left(2x - \frac{\pi}{2}\right)$ l'onda si sposta di $\frac{\pi}{4}$, non di $\frac{\pi}{2}$: la fase va divisa per la pulsazione.` }
+>! Lo spostamento è $-\dfrac{\varphi}{\omega}$: la fase va divisa per la pulsazione. In $y = \sin\left(2x - \frac{\pi}{2}\right)$ l'onda si sposta di $\frac{\pi}{4}$, e non di $\frac{\pi}{2}$.` }
   ],
 
   grafici: {
@@ -443,6 +501,26 @@ Nella scheda **Laboratorio** c'è *Sintonizza l'onda*: muovi la cresta e quella 
   ],
 
   esercizi: [
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Converti $60^\circ$ in radianti. Scrivi il risultato con π, per esempio «π/4».`, suggerimenti: [R`Moltiplica per $\dfrac{\pi}{180}$ e semplifica.`], risposta: rad(Math.PI / 3), soluzione: [R`$60 \cdot \dfrac{\pi}{180} = \dfrac{60}{180}\,\pi$.`, R`Divido sopra e sotto per $60$: $\dfrac{\pi}{3}$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Converti $\dfrac{\pi}{6}$ in gradi.`, suggerimenti: [R`Moltiplica per $\dfrac{180}{\pi}$: il $\pi$ si semplifica.`], risposta: gradi(30), soluzione: [R`$\dfrac{\pi}{6} \cdot \dfrac{180}{\pi} = \dfrac{180}{6}$.`, R`$\dfrac{180}{6} = 30$, quindi $30^\circ$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Quanto vale $\cos 60^\circ$?`, suggerimenti: [R`Pensa al triangolo equilatero tagliato a metà: l'angolo di $60^\circ$ tocca il cateto corto.`], risposta: esatto(0.5), soluzione: [R`Nel mezzo triangolo equilatero il cateto adiacente a $60^\circ$ è metà lato, cioè $\dfrac12$.`, R`Quindi $\cos 60^\circ = \dfrac12$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Quanto vale $\sin 45^\circ$? Scrivi la forma esatta (per esempio «√5/2») oppure il decimale con due cifre.`, suggerimenti: [R`A $45^\circ$ seno e coseno sono uguali.`], risposta: esatto(Math.SQRT2 / 2), soluzione: [R`A $45^\circ$ il punto sta sulla bisettrice: seno e coseno sono uguali, chiamali $x$.`, R`Da $x^2 + x^2 = 1$ viene $x = \dfrac{\sqrt2}{2} \approx 0{,}71$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Quanto vale $\sin 270^\circ$?`, suggerimenti: [R`Dove sta il punto associato a $270^\circ$? Il seno è la sua ordinata.`], risposta: esatto(-1), soluzione: [R`$270^\circ$ sono tre quarti di giro: il punto è $(0,\ -1)$, in basso sulla circonferenza.`, R`Il seno è l'ordinata: $\sin 270^\circ = -1$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Converti $135^\circ$ in radianti. Scrivi il risultato con π.`, suggerimenti: [R`Moltiplica per $\dfrac{\pi}{180}$. $135$ e $180$ si dividono tutti e due per $45$.`], risposta: rad(3 * Math.PI / 4), soluzione: [R`$135 \cdot \dfrac{\pi}{180} = \dfrac{135}{180}\,\pi$.`, R`Divido sopra e sotto per $45$: $\dfrac{3}{4}\pi$, cioè $\dfrac{3\pi}{4}$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Converti $\dfrac{5\pi}{3}$ in gradi.`, suggerimenti: [R`Moltiplica per $\dfrac{180}{\pi}$.`], risposta: gradi(300), soluzione: [R`$\dfrac{5\pi}{3} \cdot \dfrac{180}{\pi} = \dfrac{5 \cdot 180}{3}$.`, R`$\dfrac{900}{3} = 300$, quindi $300^\circ$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Quanto vale $\tan 60^\circ$?`, suggerimenti: [R`$\tan 60^\circ = \dfrac{\sin 60^\circ}{\cos 60^\circ}$.`], risposta: esatto(Math.sqrt(3)), soluzione: [R`$\sin 60^\circ = \dfrac{\sqrt3}{2}$ e $\cos 60^\circ = \dfrac12$.`, R`$\tan 60^\circ = \dfrac{\sqrt3}{2} : \dfrac12 = \sqrt3 \approx 1{,}73$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`In quale quadrante cade l'angolo di $200^\circ$?`, suggerimenti: [R`Confronta $200^\circ$ con $90^\circ$, $180^\circ$ e $270^\circ$.`], risposta: quadrante('terzo', '3', 'iii'), soluzione: [R`$200^\circ$ sta fra $180^\circ$ e $270^\circ$.`, R`Quindi cade nel terzo quadrante.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`$\sin 250^\circ$ è positivo o negativo?`, suggerimenti: [R`Trova prima il quadrante di $250^\circ$.`, R`Il seno è l'ordinata: è negativo sotto l'asse $x$.`], risposta: negativo, soluzione: [R`$250^\circ$ sta fra $180^\circ$ e $270^\circ$: terzo quadrante.`, R`Nel terzo quadrante il punto sta sotto l'asse $x$, quindi il seno è negativo.`] },
+    { id: 'b-11', livello: 'base', difficolta: 1, testo: R`In quale quadrante cade l'angolo di $480^\circ$?`, suggerimenti: [R`Togli un giro, cioè $360^\circ$.`], risposta: quadrante('secondo', '2', 'ii'), soluzione: [R`$480^\circ - 360^\circ = 120^\circ$: il punto associato è lo stesso.`, R`$120^\circ$ sta fra $90^\circ$ e $180^\circ$: secondo quadrante.`] },
+    { id: 'b-12', livello: 'base', difficolta: 1, testo: R`$\cos 300^\circ$ è positivo o negativo?`, suggerimenti: [R`Trova il quadrante di $300^\circ$. Il coseno è l'ascissa.`], risposta: positivo, soluzione: [R`$300^\circ$ sta fra $270^\circ$ e $360^\circ$: quarto quadrante.`, R`Nel quarto quadrante il punto sta a destra dell'asse $y$, quindi il coseno è positivo.`] },
+    { id: 'b-13', livello: 'base', difficolta: 1, testo: R`Qual è il periodo di $y = \sin(2x)$? Scrivi il risultato con π.`, suggerimenti: [R`Il periodo è $T = \dfrac{2\pi}{\omega}$. Qui $\omega = 2$.`], risposta: rad(Math.PI), soluzione: [R`La pulsazione è $\omega = 2$.`, R`$T = \dfrac{2\pi}{2} = \pi$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Qual è l'ampiezza di $y = -3\sin(2x)$?`, suggerimenti: [R`L'ampiezza è il numero davanti al seno, preso senza segno.`], risposta: { tipo: 'numero', valore: 3, tolleranza: 0.01, segnaposto: 'solo il numero' }, soluzione: [R`Il numero davanti al seno è $A = -3$.`, R`L'ampiezza è $|A| = 3$. Il segno meno rovescia l'onda, ma non la rende più bassa.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Qual è il periodo di $y = 4\cos(3x)$? Scrivi il risultato con π.`, suggerimenti: [R`Il $4$ è l'ampiezza: per il periodo conta solo $\omega$.`], risposta: rad(2 * Math.PI / 3), soluzione: [R`L'ampiezza $4$ non cambia il periodo. La pulsazione è $\omega = 3$.`, R`$T = \dfrac{2\pi}{3}$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Quanto vale $\sin 150^\circ$?`, suggerimenti: [R`$150^\circ = 180^\circ - 30^\circ$.`, R`Nel secondo quadrante il seno è positivo.`], risposta: esatto(0.5), soluzione: [R`$150^\circ$ è nel secondo quadrante, dove il seno è positivo.`, R`$150^\circ = 180^\circ - 30^\circ$: l'angolo di riferimento è $30^\circ$.`, R`$\sin 150^\circ = \sin 30^\circ = \dfrac12$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Quanto vale $\cos 225^\circ$?`, suggerimenti: [R`$225^\circ = 180^\circ + 45^\circ$.`, R`Nel terzo quadrante il coseno è negativo.`], risposta: esatto(-Math.SQRT2 / 2), soluzione: [R`$225^\circ$ è nel terzo quadrante, dove il coseno è negativo.`, R`$225^\circ = 180^\circ + 45^\circ$: l'angolo di riferimento è $45^\circ$.`, R`$\cos 225^\circ = -\cos 45^\circ = -\dfrac{\sqrt2}{2} \approx -0{,}71$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Quanto vale $\sin 300^\circ$?`, suggerimenti: [R`$300^\circ = 360^\circ - 60^\circ$.`, R`Nel quarto quadrante il seno è negativo.`], risposta: esatto(-Math.sqrt(3) / 2), soluzione: [R`$300^\circ$ è nel quarto quadrante, dove il seno è negativo.`, R`$300^\circ = 360^\circ - 60^\circ$: l'angolo di riferimento è $60^\circ$.`, R`$\sin 300^\circ = -\sin 60^\circ = -\dfrac{\sqrt3}{2} \approx -0{,}87$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Quanto vale $\tan 240^\circ$?`, suggerimenti: [R`$240^\circ = 180^\circ + 60^\circ$.`, R`Nel terzo quadrante seno e coseno sono tutti e due negativi: che segno ha il loro rapporto?`], risposta: esatto(Math.sqrt(3)), soluzione: [R`$240^\circ$ è nel terzo quadrante: seno e coseno sono negativi, quindi la tangente è positiva.`, R`$240^\circ = 180^\circ + 60^\circ$: l'angolo di riferimento è $60^\circ$.`, R`$\tan 240^\circ = \tan 60^\circ = \sqrt3 \approx 1{,}73$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Quanto vale $\cos(-120^\circ)$?`, suggerimenti: [R`Aggiungi un giro: $-120^\circ + 360^\circ$.`, R`Poi trova il quadrante e l'angolo di riferimento.`], risposta: esatto(-0.5), soluzione: [R`$-120^\circ + 360^\circ = 240^\circ$: il punto associato è lo stesso.`, R`$240^\circ$ è nel terzo quadrante, dove il coseno è negativo. L'angolo di riferimento è $60^\circ$.`, R`$\cos(-120^\circ) = -\cos 60^\circ = -\dfrac12$.`] },
     { id: 'es-01', difficolta: 1, testo: R`Converti l'angolo di $135^\circ$ in radianti. (Nella casella puoi scrivere il risultato con π (per esempio «π/3») oppure in decimali.)`, suggerimenti: [R`Usa la formula di conversione gradi → radianti.`, R`$135^\circ = 135 \cdot \dfrac{\pi}{180}$: semplifica la frazione prima di moltiplicare per $\pi$.`], risposta: { tipo: 'numero', valore: 2.356, tolleranza: 0.01 }, soluzione: [R`$\alpha_{\text{rad}} = 135 \cdot \dfrac{\pi}{180} = \dfrac{135}{180}\pi = \dfrac{3\pi}{4}$.`, R`In decimale, $\dfrac{3\pi}{4} \approx 2{,}356$.`] },
     { id: 'es-02', difficolta: 1, testo: R`Converti $\dfrac{5\pi}{6}$ radianti in gradi.`, suggerimenti: [R`Usa la formula di conversione radianti → gradi.`, R`Il fattore $\pi$ si semplifica con quello al numeratore.`], risposta: { tipo: 'numero', valore: 150, tolleranza: 0.01 }, soluzione: [R`$\alpha_{\text{gradi}} = \dfrac{5\pi}{6} \cdot \dfrac{180}{\pi} = \dfrac{5 \cdot 180}{6} = 150^\circ$.`] },
     { id: 'es-03', difficolta: 1, testo: R`Una circonferenza ha raggio $10$ cm. Quanto misura l'arco corrispondente a un angolo al centro di $45^\circ$? (Due cifre decimali, in cm.)`, suggerimenti: [R`Prima converti l'angolo in radianti: la formula $l = r\theta$ vuole $\theta$ in radianti.`, R`$45^\circ = \dfrac{\pi}{4}$ rad.`], risposta: { tipo: 'numero', valore: 7.854, tolleranza: 0.01 }, soluzione: [R`$45^\circ = \dfrac{\pi}{4} \approx 0{,}785$ rad.`, R`$l = r\theta = 10 \cdot \dfrac{\pi}{4} = 2{,}5\pi \approx 7{,}854$ cm.`] },
@@ -450,7 +528,7 @@ Nella scheda **Laboratorio** c'è *Sintonizza l'onda*: muovi la cresta e quella 
     { id: 'es-05', difficolta: 1, testo: R`Calcola $\cos 210^\circ$.`, suggerimenti: [R`$210^\circ = 180^\circ + 30^\circ$.`, R`Nel terzo quadrante il coseno è negativo.`], risposta: { tipo: 'numero', valore: -0.866, tolleranza: 0.01 }, soluzione: [R`$210^\circ$ è nel terzo quadrante: $\cos 210^\circ = \cos(180^\circ + 30^\circ) = -\cos 30^\circ$.`, R`$-\cos 30^\circ = -\dfrac{\sqrt3}{2} \approx -0{,}866$.`] },
     { id: 'es-06', difficolta: 2, testo: R`Sapendo che $\sin\alpha = \dfrac35$ e che $\alpha$ è un angolo del primo quadrante, trova $\cos\alpha$.`, suggerimenti: [R`Usa la relazione fondamentale $\sin^2\alpha + \cos^2\alpha = 1$.`, R`Nel primo quadrante il coseno è positivo.`], risposta: { tipo: 'numero', valore: 0.8, tolleranza: 0.01 }, soluzione: [R`$\cos^2\alpha = 1 - \dfrac9{25} = \dfrac{16}{25}$.`, R`$\cos\alpha = +\sqrt{\dfrac{16}{25}} = \dfrac45 = 0{,}8$ (positivo, primo quadrante).`] },
     { id: 'es-07', difficolta: 2, testo: R`Sapendo che $\tan\alpha = -1$ e che $\alpha$ è un angolo del secondo quadrante (fra $90^\circ$ e $180^\circ$), trova $\alpha$ in gradi.`, suggerimenti: [R`Il valore assoluto di $\tan\alpha$ corrisponde a un angolo notevole.`, R`$\tan 45^\circ = 1$: cerca il supplementare di $45^\circ$.`], risposta: { tipo: 'numero', valore: 135, tolleranza: 0.5 }, soluzione: [R`$|\tan\alpha| = 1$ corrisponde all'angolo notevole $45^\circ$.`, R`Nel secondo quadrante la tangente è negativa, e l'angolo cercato è il supplementare di $45^\circ$: $\alpha = 180^\circ - 45^\circ = 135^\circ$.`] },
-    { id: 'es-08', difficolta: 2, testo: R`In quale quadrante si trova un angolo $\alpha$ per cui $\sin\alpha < 0$ e $\tan\alpha > 0$?`, suggerimenti: [R`Elenca i quadranti dove il seno è negativo.`, R`Fra questi, in quale la tangente (cioè seno e coseno con lo stesso segno) è positiva?`], risposta: { tipo: 'testo', accettate: ['terzo quadrante', 'terzo', 'iii quadrante', '3 quadrante', 'q3', 'quadrante iii'] }, soluzione: [R`$\sin\alpha < 0$ nel terzo e nel quarto quadrante.`, R`$\tan\alpha > 0$ quando seno e coseno hanno lo stesso segno: succede nel primo e nel terzo quadrante.`, R`L'unico quadrante comune alle due condizioni è il terzo.`] },
+    { id: 'es-08', difficolta: 2, testo: R`In quale quadrante si trova un angolo $\alpha$ per cui $\sin\alpha < 0$ e $\tan\alpha > 0$?`, suggerimenti: [R`Elenca i quadranti dove il seno è negativo.`, R`Fra questi, in quale la tangente (cioè seno e coseno con lo stesso segno) è positiva?`], risposta: quadrante('terzo', '3', 'iii'), soluzione: [R`$\sin\alpha < 0$ nel terzo e nel quarto quadrante.`, R`$\tan\alpha > 0$ quando seno e coseno hanno lo stesso segno: succede nel primo e nel terzo quadrante.`, R`L'unico quadrante comune alle due condizioni è il terzo.`] },
     { id: 'es-09', difficolta: 2, testo: R`Usa gli angoli associati per calcolare $\sin(180^\circ + 30^\circ)$.`, suggerimenti: [R`Sommare $180^\circ$ non cambia la funzione (resta seno).`, R`L'angolo $180^\circ + 30^\circ$ cade nel terzo quadrante: che segno ha lì il seno?`], risposta: { tipo: 'numero', valore: -0.5, tolleranza: 0.01 }, soluzione: [R`$180^\circ + 30^\circ$ è nel terzo quadrante, dove il seno è negativo.`, R`$\sin(180^\circ + 30^\circ) = -\sin 30^\circ = -\dfrac12$.`] },
     { id: 'es-10', difficolta: 2, testo: R`Qual è il periodo della funzione $y = \sin(3x)$? (Nella casella puoi scrivere il risultato con π (per esempio «π/3») oppure in decimali.)`, suggerimenti: [R`Il periodo di $\sin(\omega x)$ è $\dfrac{2\pi}{\omega}$.`, R`Qui $\omega = 3$.`], risposta: { tipo: 'numero', valore: 2.094, tolleranza: 0.01 }, soluzione: [R`$T = \dfrac{2\pi}{\omega} = \dfrac{2\pi}{3} \approx 2{,}094$.`] },
     { id: 'es-11', difficolta: 3, testo: R`Sapendo che $\cos\alpha = -\dfrac{12}{13}$ e che $\alpha$ è un angolo del terzo quadrante, trova $\sin\alpha$ (in forma decimale, tre cifre).`, suggerimenti: [R`Relazione fondamentale: $\sin^2\alpha = 1 - \cos^2\alpha$.`, R`Nel terzo quadrante anche il seno è negativo.`], risposta: { tipo: 'numero', valore: -0.385, tolleranza: 0.01 }, soluzione: [R`$\sin^2\alpha = 1 - \dfrac{144}{169} = \dfrac{25}{169}$.`, R`$\sin\alpha = \pm\dfrac{5}{13}$; nel terzo quadrante è negativo: $\sin\alpha = -\dfrac{5}{13} \approx -0{,}385$.`] },

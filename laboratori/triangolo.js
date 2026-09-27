@@ -3,8 +3,10 @@
    si aggiornano mentre trascini. Niente calamite: ogni livello si chiude con «Conferma». */
 (function () {
   const STILE = `
-    .lab-triangolo .lab-scena { max-width: 640px; margin: 0 auto; background: var(--sup2); border-radius: 12px; overflow: hidden; touch-action: none; }
+    /* --- scena: la griglia riempie lo spazio, il viewBox si sceglie misurando (vedi adatta) --- */
+    .lab-triangolo .lab-scena { background: var(--sup2); overflow: hidden; touch-action: none; }
     .lab-triangolo .griglia { stroke: var(--bordo); stroke-width: 1; opacity: .85; }
+    .lab-triangolo .griglia-fuori { stroke: var(--bordo); stroke-width: 1; opacity: .35; }
     .lab-triangolo .campo-bordo { fill: none; stroke: var(--bordo2); stroke-width: 1.5; opacity: .8; }
     .lab-triangolo .dentro { fill: var(--accento); opacity: .10; }
     .lab-triangolo .lato { fill: none; stroke: var(--testo); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
@@ -23,38 +25,60 @@
     .lab-triangolo .maniglia .corpo { fill: var(--accento); stroke: var(--sup); stroke-width: 2.5; }
     .lab-triangolo .maniglia.bloccata .corpo { fill: var(--testo2); }
     .lab-triangolo .maniglia .nome { font: 700 15px var(--font); fill: var(--testo); paint-order: stroke; stroke: var(--sup); stroke-width: 4; stroke-linejoin: round; }
-    .lab-triangolo .obiettivo { text-align: center; padding: 4px 12px 10px; font-size: .95rem; color: var(--testo2); line-height: 1.6; }
+    .lab-triangolo .notevole { fill: none; stroke-width: 2.2; stroke-linecap: round; }
+    .lab-triangolo .notevole.oltre { stroke-dasharray: 5 5; opacity: .6; }
+    .lab-triangolo .cerchio-n { fill: none; stroke-width: 1.6; stroke-dasharray: 3 5; opacity: .7; }
+    .lab-triangolo .punto-n { stroke: var(--sup2); stroke-width: 2; }
+    .lab-triangolo .nome-n { font: 700 15px var(--font); paint-order: stroke; stroke: var(--sup2); stroke-width: 4; stroke-linejoin: round; }
+    /* --- pannello --- */
+    .lab-triangolo .obiettivo { text-align: center; font-size: clamp(.9rem, 2.1cqmin, 1.05rem); color: var(--testo2); line-height: 1.5; }
     .lab-triangolo .obiettivo em { font-style: normal; font-weight: 700; color: var(--testo); }
     .lab-triangolo .obiettivo .katex { font-size: 1em; }
-    .lab-triangolo .pannello { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; padding: 10px 12px 0; }
-    .lab-triangolo .chip { background: var(--sup2); border: 1px solid var(--bordo); border-radius: 999px; padding: 4px 12px; font-size: .85rem; color: var(--testo2); }
+    .lab-triangolo .misure { display: flex; gap: 4px 6px; flex-wrap: wrap; justify-content: center; align-items: center; }
+    .lab-triangolo .chip { background: var(--sup2); border: 1px solid var(--bordo); border-radius: 999px; padding: 2px 10px; font-size: .82rem; color: var(--testo2); white-space: nowrap; }
     .lab-triangolo .chip b { color: var(--testo); font-variant-numeric: tabular-nums; }
-    .lab-triangolo .forma { text-align: center; padding: 8px 12px 0; font-size: 1rem; font-weight: 600; color: var(--testo); }
-    .lab-triangolo .forma .nota { display: block; font-size: .8rem; font-weight: 400; color: var(--testo2); }
-    .lab-triangolo .formule { text-align: center; padding: 8px 12px 0; font-size: 1.05rem; overflow-x: auto; }
-    .lab-triangolo .formule .riga { padding: 3px 0; }
-    .lab-triangolo .formule .nota { font-size: .82rem; color: var(--testo2); }
+    .lab-triangolo .forma { font-size: .95rem; font-weight: 600; color: var(--testo); white-space: nowrap; padding: 0 4px; }
+    .lab-triangolo .misure > span { display: contents; }
+    .lab-triangolo .nota { flex-basis: 100%; text-align: center; font-size: .8rem; font-weight: 400; color: var(--testo2); line-height: 1.35; white-space: normal; }
+    /* le formule vanno a capo fra un pezzo e l'altro, mai dentro un pezzo */
+    .lab-triangolo .formule { text-align: center; font-size: clamp(1.02rem, 2.3cqmin, 1.15rem); }
+    .lab-triangolo .formule .riga { display: flex; flex-wrap: wrap; justify-content: center; column-gap: .3em; padding: 1px 0; }
+    .lab-triangolo .formule .riga > span { white-space: nowrap; }
+    .lab-triangolo .formule .nota { font-size: .8rem; }
+    .lab-triangolo .lab-messaggio { padding: 0 4px; min-height: 1.5em; font-size: clamp(.9rem, 2.1cqmin, 1.05rem); text-align: center; line-height: 1.45; }
+    .lab-triangolo .lab-messaggio .katex { font-size: 1.05em; }
+    .lab-triangolo.in-libero .lab-messaggio { color: var(--testo2); font-size: clamp(.86rem, 2cqmin, 1rem); }
+    .lab-triangolo .lab-barra { padding: 0; border: 0; gap: 8px; justify-content: center; }
+    .lab-triangolo .lab-barra .btn { min-height: clamp(40px, 6cqh, 50px); }
+    @container lab (max-width: 420px) { .lab-triangolo .lab-barra { gap: 6px; } .lab-triangolo .lab-barra .btn { padding-left: 11px; padding-right: 11px; } }
     .lab-triangolo .campo-eti { display: inline-flex; align-items: center; gap: 6px; font-size: .9rem; color: var(--testo2); }
     .lab-triangolo .campo-num { width: 5em; min-height: 40px; padding: 4px 8px; border: 1px solid var(--bordo2); border-radius: 8px; background: var(--sup); color: var(--testo); font: 600 1rem var(--font); text-align: center; }
+    .lab-triangolo .lab-parametri { max-width: 520px; }
+    .lab-triangolo .lab-param .linea { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: .92rem; }
+    .lab-triangolo .lab-param .linea i { display: inline-block; width: 18px; height: 5px; border-radius: 3px; opacity: .45; }
+    .lab-triangolo .lab-param .linea[aria-pressed="true"] { background: var(--accento-tenue); border-color: var(--accento); box-shadow: inset 0 0 0 1px var(--accento); color: var(--testo); font-weight: 650; }
+    .lab-triangolo .lab-param .linea[aria-pressed="true"] i { opacity: 1; }
     .lab-triangolo .vinto { animation: lab-tri-pop .5s cubic-bezier(.34,1.56,.64,1); display: inline-block; }
     @keyframes lab-tri-pop { from { transform: scale(.7); opacity: 0 } to { transform: none; opacity: 1 } }
-    .lab-triangolo .lab-barra .btn[disabled] { opacity: .35; cursor: default; }
-    @media (max-width: 600px) {
-      .lab-triangolo .formule { font-size: .92rem; }
-      .lab-triangolo .chip { font-size: .8rem; padding: 3px 10px; }
-      .lab-triangolo .obiettivo { font-size: .9rem; }
-    }
+    .lab-triangolo .btn[disabled] { opacity: .35; cursor: default; }
   `;
 
   const NS = 'http://www.w3.org/2000/svg';
   const el = (n, a, t) => { const e = document.createElementNS(NS, n); for (const k in a || {}) e.setAttribute(k, a[k]); if (t != null) e.textContent = t; return e; };
   const svuota = g => { while (g.firstChild) g.removeChild(g.firstChild); };
 
-  const W = 500, H = 420, FX = 12, FY = 10;
+  const FX = 12, FY = 10;          /* il campo: i vertici stanno sui punti interi da (0; 0) a (12; 10) */
   const NOMI = ['A', 'B', 'C'], LETT = ['a', 'b', 'c'];
   const COL = ['var(--s1)', 'var(--s2)', 'var(--s3)'];
   const VERDE = 'var(--s3)', ARANCIO = 'var(--s2)', NEUTRO = 'var(--s4)';
   const GRD = Math.PI / 180;
+  /* modalità libera: le quattro famiglie di linee notevoli e il punto dove si incontrano */
+  const LINEE = [
+    { id: 'altezze', nome: 'Altezze', punto: 'H', colore: 'var(--no)', titolo: 'Le tre altezze e l\'ortocentro H' },
+    { id: 'mediane', nome: 'Mediane', punto: 'G', colore: 'var(--s4)', titolo: 'Le tre mediane e il baricentro G' },
+    { id: 'bisettrici', nome: 'Bisettrici', punto: 'I', colore: '#c08a12', titolo: 'Le tre bisettrici, l\'incentro I e il cerchio inscritto' },
+    { id: 'assi', nome: 'Assi', punto: 'O', colore: 'var(--testo2)', titolo: 'I tre assi dei lati, il circocentro O e il cerchio circoscritto' }
+  ];
 
   /* ---------- numeri all'italiana ---------- */
   function num(v) {
@@ -224,33 +248,46 @@
       if (!document.getElementById('stile-lab-triangolo')) { const s = document.createElement('style'); s.id = 'stile-lab-triangolo'; s.textContent = STILE; document.head.appendChild(s); }
       radice.classList.add('lab-triangolo');
       radice.innerHTML = `
-        <div class="obiettivo"></div>
-        <div class="lab-scena"></div>
-        <div class="pannello"></div>
-        <div class="forma"></div>
-        <div class="formule"></div>
-        <div class="lab-messaggio"></div>
-        <div class="lab-barra">
-          <button type="button" class="btn primario m-conferma">Conferma</button>
-          <label class="campo-eti"><span class="campo-nome">ipotenusa =</span><input type="text" class="campo-num" inputmode="decimal" autocomplete="off" spellcheck="false"></label>
-          <button type="button" class="btn m-nonsipuo">Non si può</button>
-          <button type="button" class="btn piccolo m-ricomincia">Ricomincia</button>
-          <button type="button" class="btn piccolo m-aiuto">?</button>
-          <span class="lab-livello"></span>
+        <div class="lab-layout">
+          <div class="lab-scena">
+            <div class="lab-aiuto" hidden data-scorre><p></p><button type="button" class="btn piccolo m-chiudi">Ho capito</button></div>
+          </div>
+          <div class="lab-lato">
+            <div class="lab-livelli" role="group" aria-label="Livelli"><button type="button" class="btn piccolo lab-libero" aria-pressed="false" title="Modalità libera: nessun obiettivo, i vertici dove vuoi">Libero</button></div>
+            <div class="obiettivo"></div>
+            <div class="lab-parametri" hidden>
+              ${LINEE.map(l => `<div class="lab-param"><button type="button" class="btn piccolo linea" data-l="${l.id}" aria-pressed="false" title="${l.titolo}"><i style="background:${l.colore}"></i>${l.nome}</button></div>`).join('')}
+            </div>
+            <div class="misure"><span class="chips"></span><span class="forma"></span></div>
+            <div class="formule"></div>
+            <div class="lab-messaggio" aria-live="polite"></div>
+            <div class="lab-barra">
+              <button type="button" class="btn primario m-conferma">Conferma</button>
+              <label class="campo-eti"><span class="campo-nome">ipotenusa =</span><input type="text" class="campo-num" inputmode="decimal" autocomplete="off" spellcheck="false"></label>
+              <button type="button" class="btn m-nonsipuo">Non si può</button>
+              <button type="button" class="btn piccolo m-ricomincia">Ricomincia</button>
+              <button type="button" class="btn piccolo m-casuale" hidden>Casuale</button>
+              <button type="button" class="btn piccolo m-aiuto" aria-label="Come si gioca">?</button>
+            </div>
+          </div>
         </div>`;
 
-      const scena = radice.querySelector('.lab-scena');
-      const obEl = radice.querySelector('.obiettivo'), panEl = radice.querySelector('.pannello');
-      const formaEl = radice.querySelector('.forma'), formuleEl = radice.querySelector('.formule');
-      const msg = radice.querySelector('.lab-messaggio'), livEl = radice.querySelector('.lab-livello');
-      const btnConf = radice.querySelector('.m-conferma'), btnNo = radice.querySelector('.m-nonsipuo');
-      const btnRic = radice.querySelector('.m-ricomincia'), btnAiuto = radice.querySelector('.m-aiuto');
-      const etiCampo = radice.querySelector('.campo-eti'), campo = radice.querySelector('.campo-num'), campoNome = radice.querySelector('.campo-nome');
+      const q = s => radice.querySelector(s);
+      const scena = q('.lab-scena'), aiutoEl = q('.lab-aiuto');
+      const obEl = q('.obiettivo'), panEl = q(".misure .chips");
+      const formaEl = q(".misure .forma"), formuleEl = q('.formule');
+      const msg = q('.lab-messaggio'), livelliEl = q('.lab-livelli'), parametriEl = q('.lab-parametri');
+      const btnConf = q('.m-conferma'), btnNo = q('.m-nonsipuo');
+      const btnRic = q('.m-ricomincia'), btnAiuto = q('.m-aiuto'), btnCasuale = q('.m-casuale'), btnLibero = q('.lab-libero');
+      const etiCampo = q('.campo-eti'), campo = q('.campo-num'), campoNome = q('.campo-nome');
       const mostra = (nodo, v) => { nodo.style.display = v ? '' : 'none'; };
 
-      /* ---------- scena ---------- */
-      const svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': 'Un triangolo con i vertici da trascinare su una griglia' });
-      scena.appendChild(svg);
+      /* ---------- scena ----------
+         Il viewBox ha la forma dello spazio (lo sceglie adatta): la griglia del campo sta al centro,
+         e intorno si vede ancora la quadrettatura, più tenue, così non restano buchi. */
+      let W = 500, H = 420;
+      const svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, preserveAspectRatio: 'xMidYMid meet', role: 'img', 'aria-label': 'Un triangolo con i vertici da trascinare su una griglia' });
+      scena.insertBefore(svg, aiutoEl);
       const gGriglia = el('g'), gExtra = el('g'), gQuad = el('g'), gFig = el('g'), gAng = el('g'), gEti = el('g'), gMan = el('g');
       [gGriglia, gExtra, gQuad, gFig, gAng, gEti, gMan].forEach(g => svg.appendChild(g));
 
@@ -259,8 +296,9 @@
       function camera(extra) {
         let x0 = 0, x1 = FX, y0 = 0, y1 = FY;
         (extra || []).forEach(p => { x0 = Math.min(x0, p.x); x1 = Math.max(x1, p.x); y0 = Math.min(y0, p.y); y1 = Math.max(y1, p.y); });
-        x0 = Math.floor(x0) - .7; x1 = Math.ceil(x1) + .7; y0 = Math.floor(y0) - .7; y1 = Math.ceil(y1) + .7;
-        U = Math.min((W - 20) / (x1 - x0), (H - 20) / (y1 - y0));
+        x0 = Math.floor(x0); x1 = Math.ceil(x1); y0 = Math.floor(y0); y1 = Math.ceil(y1);
+        const bordo = 38;   /* posto per i nomi dei vertici e le misure, anche quando un vertice sta sul bordo del campo */
+        U = Math.min((W - 2 * bordo) / (x1 - x0), (H - 2 * bordo) / (y1 - y0));
         OX = W / 2 - (x0 + x1) / 2 * U;
         OY = H / 2 + (y0 + y1) / 2 * U;
       }
@@ -269,9 +307,44 @@
       const gr = c => ({ x: (c.x - OX) / U, y: (OY - c.y) / U });          /* schermo → griglia */
       const norma = v => { const m = Math.hypot(v.x, v.y) || 1; return { x: v.x / m, y: v.y / m }; };
       const meno = (P, Q) => ({ x: P.x - Q.x, y: P.y - Q.y });
+      /* le linee lunghe (assi, parallela, cerchi grandi) si tagliano sul bordo del viewBox:
+         niente disegno che esce dalla scena (Liang-Barsky) */
+      function ritaglia(P, Q) {
+        let t0 = 0, t1 = 1;
+        const dx = Q.x - P.x, dy = Q.y - P.y;
+        const lati = [[-dx, P.x], [dx, W - P.x], [-dy, P.y], [dy, H - P.y]];
+        for (const [pp, qq] of lati) {
+          if (pp === 0) { if (qq < 0) return null; continue; }
+          const r = qq / pp;
+          if (pp < 0) { if (r > t1) return null; if (r > t0) t0 = r; } else { if (r < t0) return null; if (r < t1) t1 = r; }
+        }
+        return [{ x: P.x + dx * t0, y: P.y + dy * t0 }, { x: P.x + dx * t1, y: P.y + dy * t1 }];
+      }
+      function segmento(g, P, Q, attr) {
+        const c = ritaglia(P, Q); if (!c) return;
+        g.appendChild(el('line', Object.assign({ x1: c[0].x, y1: c[0].y, x2: c[1].x, y2: c[1].y }, attr)));
+      }
+      function cerchio(g, C, r, attr) {   /* un cerchio fatto di corde, ognuna ritagliata */
+        let d = '', ultimo = null;
+        for (let i = 0; i < 144; i++) {
+          const a1 = i / 144 * 2 * Math.PI, a2 = (i + 1) / 144 * 2 * Math.PI;
+          const c = ritaglia({ x: C.x + r * Math.cos(a1), y: C.y + r * Math.sin(a1) }, { x: C.x + r * Math.cos(a2), y: C.y + r * Math.sin(a2) });
+          if (!c) { ultimo = null; continue; }
+          if (!ultimo || Math.abs(ultimo.x - c[0].x) > .01 || Math.abs(ultimo.y - c[0].y) > .01) d += 'M' + c[0].x.toFixed(1) + ' ' + c[0].y.toFixed(1);
+          d += 'L' + c[1].x.toFixed(1) + ' ' + c[1].y.toFixed(1);
+          ultimo = c[1];
+        }
+        if (d) g.appendChild(el('path', Object.assign({ d }, attr)));
+      }
 
       function disegnaGriglia() {
         svuota(gGriglia);
+        /* fuori dal campo: la stessa quadrettatura, tenue, fino ai bordi del viewBox */
+        const f = el('g', { class: 'griglia-fuori' });
+        const i0 = Math.ceil(-OX / U), i1 = Math.floor((W - OX) / U), j0 = Math.ceil((OY - H) / U), j1 = Math.floor(OY / U);
+        for (let i = i0; i <= i1; i++) f.appendChild(el('line', { x1: PX(i), y1: 0, x2: PX(i), y2: H }));
+        for (let j = j0; j <= j1; j++) f.appendChild(el('line', { x1: 0, y1: PY(j), x2: W, y2: PY(j) }));
+        gGriglia.appendChild(f);
         const g = el('g', { class: 'griglia' });
         for (let i = 0; i <= FX; i++) g.appendChild(el('line', { x1: PX(i), y1: PY(0), x2: PX(i), y2: PY(FY) }));
         for (let j = 0; j <= FY; j++) g.appendChild(el('line', { x1: PX(0), y1: PY(j), x2: PX(FX), y2: PY(j) }));
@@ -342,6 +415,8 @@
       let visti = new Set(), conta = 0, dopTarget = 0, areaTarget = 0;
       let angSx = 62, angDx = 118;                       /* livello impossibile: le due astine */
       const PSX = { x: 3, y: 3 }, PDX = { x: 9, y: 3 };
+      let libero = false, salvato = null, accese = new Set(), ultima = null;   /* modalità libera */
+      const LIBERO = { tipo: 'libero', testo: 'Trascina *A*, *B* e *C* dove vuoi e accendi le linee.' };
 
       const completati = ctx.stato().livelli;
       livello = completati.length ? Math.max(...completati) + 1 : 0;
@@ -364,7 +439,8 @@
       function disegnaTriangolo() {
         const g = geo(V);
         const quadri = (L.quadrati && g.retto >= 0) ? quadratiDi(g) : null;   /* i quadrati servono solo se c'è l'angolo retto */
-        camera(quadri ? quadri.reduce((acc, q) => acc.concat(q.pts), []) : null);
+        /* durante un trascinamento la camera resta ferma: la griglia non deve scappare da sotto il dito */
+        if (trascino < 0) camera(quadri ? quadri.reduce((acc, q) => acc.concat(q.pts), []) : null);
         [gExtra, gQuad, gFig, gAng, gEti].forEach(svuota);
         disegnaGriglia();
         const S = V.map(sp);
@@ -388,6 +464,7 @@
           etichettaLato(S[i], S[j], S[k], (L.quadrati ? LETT[k] + ' = ' : '') + num(g.lati[k]));
         }
         disegnaExtra(g, S);
+        if (libero) disegnaNotevoli(g);
 
         S.forEach((s, k) => {
           const u = norma(meno(S[(k + 1) % 3], s)), w = norma(meno(S[(k + 2) % 3], s));
@@ -416,7 +493,7 @@
         const d = norma(meno(sp(B), sp(A))), lungo = W + H;
         const P1 = { x: S[2].x - d.x * lungo, y: S[2].y - d.y * lungo };
         const P2 = { x: S[2].x + d.x * lungo, y: S[2].y + d.y * lungo };
-        gExtra.appendChild(el('line', { class: 'tratteggio', stroke: 'var(--accento)', 'stroke-width': 2.5, opacity: .9, x1: P1.x, y1: P1.y, x2: P2.x, y2: P2.y }));
+        segmento(gExtra, P1, P2, { class: 'tratteggio', stroke: 'var(--accento)', 'stroke-width': 2.5, opacity: .9 });
         if (L.tipo === 'somma') {
           const R1 = { x: S[2].x - d.x * 70, y: S[2].y - d.y * 70 }, R2 = { x: S[2].x + d.x * 70, y: S[2].y + d.y * 70 };
           arcoAngolo(S[2], R1, S[0], COL[0], g.gradi[0], false);
@@ -446,11 +523,91 @@
         man[1].g.setAttribute('transform', 'translate(' + Qs.x + ',' + Qs.y + ')');
         panEl.innerHTML = '<span class="chip">lati <b>2, 3, 6</b></span><span class="chip">distanza fra le punte <b>' + num(buco) + '</b></span>';
         formaEl.innerHTML = buco < 1.05 ? 'Più vicine di così non ci arrivano.' : 'Le due punte non si toccano.';
-        formuleEl.innerHTML = '<div class="riga">' + ctx.tex('2 + 3 = 5 < 6') + '</div>' +
+        formuleEl.innerHTML = riga(['2 + 3 = 5', '< 6']) +
           '<div class="riga nota">le due astine, tutte distese, non arrivano dall\'altra parte</div>';
       }
 
-      function ridisegna() { if (L.tipo === 'impossibile') disegnaAstine(); else disegnaTriangolo(); aggiornaTesta(); }
+      function ridisegna() { if (L.tipo === 'impossibile') disegnaAstine(); else disegnaTriangolo(); }
+
+      /* ---------- modalità libera: altezze, mediane, bisettrici, assi e i loro punti d'incontro ---------- */
+      function notevoli(g) {
+        const [A, B, C] = V, [a, b, c] = g.lati;
+        const piu = (P, Q, k) => ({ x: P.x + (Q.x - P.x) * k, y: P.y + (Q.y - P.y) * k });
+        const dd = 2 * (A.x * (B.y - C.y) + B.x * (C.y - A.y) + C.x * (A.y - B.y));
+        const q2 = P => P.x * P.x + P.y * P.y;
+        const O = { x: (q2(A) * (B.y - C.y) + q2(B) * (C.y - A.y) + q2(C) * (A.y - B.y)) / dd,
+                    y: (q2(A) * (C.x - B.x) + q2(B) * (A.x - C.x) + q2(C) * (B.x - A.x)) / dd };
+        const Hc = { x: A.x + B.x + C.x - 2 * O.x, y: A.y + B.y + C.y - 2 * O.y };   /* retta di Eulero: OH = OA + OB + OC */
+        const G = { x: (A.x + B.x + C.x) / 3, y: (A.y + B.y + C.y) / 3 };
+        const I = { x: (a * A.x + b * B.x + c * C.x) / (a + b + c), y: (a * A.y + b * B.y + c * C.y) / (a + b + c) };
+        const lati = [0, 1, 2].map(k => {
+          const i = (k + 1) % 3, j = (k + 2) % 3, P = V[i], Q = V[j];
+          const t = ((V[k].x - P.x) * (Q.x - P.x) + (V[k].y - P.y) * (Q.y - P.y)) / d2(P, Q);
+          return { k, i, j, t, piede: piu(P, Q, t), medio: piu(P, Q, .5), bis: piu(P, Q, g.lati[j] / (g.lati[i] + g.lati[j])) };
+        });
+        return { O, R: Math.sqrt(d2(O, A)), H: Hc, G, I, r: 2 * g.area / g.perimetro, lati };
+      }
+      function disegnaNotevoli(g) {
+        const n = notevoli(g), S = V.map(sp);
+        const linea = (P, Q, col, oltre) => segmento(gExtra, P, Q, { class: 'notevole' + (oltre ? ' oltre' : ''), stroke: col });
+        const punto = (P, nome, col, dx, dy) => {
+          const s = sp(P);
+          if (s.x < 24 || s.x > W - 24 || s.y < 24 || s.y > H - 24) return;   /* fuori dalla scena: si vedono solo le linee che ci vanno */
+          gEti.appendChild(el('circle', { class: 'punto-n', cx: s.x, cy: s.y, r: 5.5, fill: col }));
+          gEti.appendChild(el('text', { class: 'nome-n', fill: col, x: s.x + dx, y: s.y + dy, 'text-anchor': 'middle' }, nome));
+        };
+        const col = id => LINEE.find(l => l.id === id).colore;
+        if (accese.has('assi')) {
+          const c = col('assi'), Os = sp(n.O);
+          cerchio(gExtra, Os, n.R * U, { class: 'cerchio-n', stroke: c });
+          n.lati.forEach(l => {
+            const M = sp(l.medio), d = norma({ x: -(S[l.j].y - S[l.i].y), y: S[l.j].x - S[l.i].x }), L2 = W + H;
+            linea({ x: M.x - d.x * L2, y: M.y - d.y * L2 }, { x: M.x + d.x * L2, y: M.y + d.y * L2 }, c, false);
+          });
+        }
+        if (accese.has('bisettrici')) {
+          const c = col('bisettrici'), Is = sp(n.I);
+          cerchio(gExtra, Is, n.r * U, { class: 'cerchio-n', stroke: c });
+          n.lati.forEach(l => linea(S[l.k], sp(l.bis), c, false));
+        }
+        if (accese.has('mediane')) n.lati.forEach(l => linea(S[l.k], sp(l.medio), col('mediane'), false));
+        if (accese.has('altezze')) {
+          const c = col('altezze');
+          n.lati.forEach(l => {
+            const F = sp(l.piede), Vk = S[l.k];
+            linea(Vk, F, c, false);
+            if (l.t < 0 || l.t > 1) linea(S[l.t < 0 ? l.i : l.j], F, c, true);       /* il piede cade sul prolungamento del lato */
+            const Hs = sp(n.H), u = { x: F.x - Vk.x, y: F.y - Vk.y }, lu = u.x * u.x + u.y * u.y;
+            const s = lu ? ((Hs.x - Vk.x) * u.x + (Hs.y - Vk.y) * u.y) / lu : 0;
+            if (s < -0.01) linea(Vk, Hs, c, true); else if (s > 1.01) linea(F, Hs, c, true);   /* l'ortocentro è fuori */
+            if (lu > 1 && F.x > 12 && F.x < W - 12 && F.y > 12 && F.y < H - 12) {                                                             /* il quadratino dell'angolo retto nel piede */
+              const e = norma({ x: Vk.x - F.x, y: Vk.y - F.y }), Ms = sp(l.medio);
+              let w = norma({ x: S[l.j].x - S[l.i].x, y: S[l.j].y - S[l.i].y });
+              if ((Ms.x - F.x) * w.x + (Ms.y - F.y) * w.y < 0) w = { x: -w.x, y: -w.y };
+              const z = 8;
+              gExtra.appendChild(el('path', { class: 'notevole', stroke: c, 'stroke-width': 1.6, d: 'M' + (F.x + e.x * z) + ' ' + (F.y + e.y * z) + ' l' + (w.x * z) + ' ' + (w.y * z) + ' l' + (-e.x * z) + ' ' + (-e.y * z) }));
+            }
+          });
+        }
+        if (accese.has('assi')) punto(n.O, 'O', col('assi'), -14, 20);
+        if (accese.has('bisettrici')) punto(n.I, 'I', col('bisettrici'), -14, -9);
+        if (accese.has('mediane')) punto(n.G, 'G', col('mediane'), 14, 20);
+        if (accese.has('altezze')) punto(n.H, 'H', col('altezze'), 14, -9);
+      }
+      /* osservazioni neutre, sulla famiglia di linee toccata per ultima */
+      function osserva() {
+        if (!libero) return;
+        const g = geo(V), f = g.forma;
+        const ang = f.ang, iso = f.lat !== 'scaleno';
+        let t = '';
+        if (!accese.size) t = 'Accendi una famiglia di linee: le tre linee si incontrano sempre in un punto.';
+        else if (accese.size >= 2 && iso) t = 'Triangolo isoscele: i punti accesi stanno tutti sull\'asse di simmetria.';
+        else if (ultima === 'altezze') t = ang === 'rettangolo' ? 'Triangolo rettangolo: l\'ortocentro H è proprio il vertice dell\'angolo retto.' : ang === 'ottusangolo' ? 'Triangolo ottusangolo: l\'ortocentro H cade fuori.' : 'Triangolo acutangolo: l\'ortocentro H sta dentro.';
+        else if (ultima === 'assi') t = ang === 'rettangolo' ? 'Triangolo rettangolo: il circocentro O sta a metà dell\'ipotenusa.' : ang === 'ottusangolo' ? 'Triangolo ottusangolo: il circocentro O cade fuori, oltre il lato più lungo.' : 'Il circocentro O ha la stessa distanza da A, B e C.';
+        else if (ultima === 'mediane') t = 'Il baricentro G sta sempre dentro, a due terzi di ogni mediana partendo dal vertice.';
+        else if (ultima === 'bisettrici') t = 'L\'incentro I sta sempre dentro: ha la stessa distanza dai tre lati.';
+        msg.textContent = t; msg.className = 'lab-messaggio';
+      }
 
       /* ---------- pannellino, classificazione, formule ---------- */
       function aggiornaPannello(g) {
@@ -464,27 +621,28 @@
         formaEl.innerHTML = f;
       }
 
+      /* una formula a pezzi: va a capo fra un pezzo e l'altro se il pannello è stretto */
+      const riga = pezzi => '<div class="riga">' + pezzi.map(p => '<span>' + ctx.tex(p) + '</span>').join('') + '</div>';
       function aggiornaFormule(g) {
         const a = g.gradi;
-        let h = '<div class="riga">' + ctx.tex('\\hat A + \\hat B + \\hat C = ' + a[0] + '^\\circ + ' + a[1] + '^\\circ + ' + a[2] + '^\\circ = 180^\\circ') + '</div>';
+        let h = riga(['\\hat A + \\hat B + \\hat C', '= ' + a[0] + '^\\circ + ' + a[1] + '^\\circ + ' + a[2] + '^\\circ', '= 180^\\circ']);
         if (L.quadrati) {
           let i = g.retto;
           if (i < 0) i = g.s2.indexOf(Math.max(g.s2[0], g.s2[1], g.s2[2]));
           const altri = [0, 1, 2].filter(k => k !== i), j = altri[0], k = altri[1];
           const somma = g.s2[j] + g.s2[k], grande = g.s2[i];
           if (g.retto >= 0) {
-            h += '<div class="riga">' + ctx.tex(LETT[j] + '^2 + ' + LETT[k] + '^2 = ' + g.s2[j] + ' + ' + g.s2[k] + ' = ' + somma + ' = ' + LETT[i] + '^2') + '</div>';
+            h += riga([LETT[j] + '^2 + ' + LETT[k] + '^2', '= ' + g.s2[j] + ' + ' + g.s2[k], '= ' + somma, '= ' + LETT[i] + '^2']);
             const iv = g.s2.map(intero);
-            if (iv.every(v => v !== null)) h += '<div class="riga">' + ctx.tex(iv[j] + '^2 + ' + iv[k] + '^2 = ' + iv[i] + '^2') + '</div>';
+            if (iv.every(v => v !== null)) h += riga([iv[j] + '^2 + ' + iv[k] + '^2', '= ' + iv[i] + '^2']);
           } else {
-            h += '<div class="riga">' + ctx.tex(g.s2[j] + ' + ' + g.s2[k] + (somma > grande ? ' > ' : ' < ') + grande) + '</div>' +
+            h += riga([g.s2[j] + ' + ' + g.s2[k], (somma > grande ? '> ' : '< ') + grande]) +
                  '<div class="riga nota">senza angolo retto i due quadrati piccoli ' + (somma > grande ? 'traboccano' : 'non bastano') + ': Pitagora vale solo per i triangoli rettangoli</div>';
           }
         }
         formuleEl.innerHTML = h;
       }
 
-      function aggiornaTesta() { livEl.textContent = 'Livello ' + (livello + 1) + ' di ' + LIVELLI.length; }
 
       /* ---------- mosse ---------- */
       function valido() {
@@ -523,7 +681,7 @@
       function vinci(g) {
         finito = true; rivela = true;
         btnConf.disabled = true; btnNo.disabled = true;
-        ctx.completato(livello);
+        ctx.completato(livello); aggiornaLivelli();
         const titolo = L.tipo === 'impossibile' ? 'Hai ragione: non si può.'
           : L.tipo === 'somma' ? 'Cinque triangoli, sempre 180°.'
           : L.tipo === 'stessaArea' ? 'Tre posizioni, stessa area: ' + num(g.area) + '.'
@@ -537,6 +695,7 @@
 
       /* ---------- livelli ---------- */
       function avviaLivello(n) {
+        libero = false; salvato = null; mostraLibero(); aiutoEl.hidden = true;
         livello = n; L = LIVELLI[n];
         finito = false; rivela = false; trascino = -1; conta = 0; visti = new Set();
         btnConf.disabled = false; btnNo.disabled = false;
@@ -551,25 +710,87 @@
         obEl.innerHTML = conMate(L.testo);
         msg.textContent = ''; msg.className = 'lab-messaggio';
         btnRic.textContent = 'Ricomincia';
-        mostra(etiCampo, !!L.campo); mostra(btnNo, L.tipo === 'impossibile');
         if (L.campo) { campoNome.textContent = L.campo; campo.value = ''; }
+        preparaPulsanti(); preparaManiglie();
+        ridisegna(); aggiornaLivelli();
+      }
+      function preparaPulsanti() {
+        mostra(btnConf, !libero); btnRic.hidden = libero; btnCasuale.hidden = !libero;
+        mostra(etiCampo, !libero && !!L.campo); mostra(btnNo, !libero && L.tipo === 'impossibile');
+        btnConf.disabled = finito; btnNo.disabled = finito;
+      }
+      function preparaManiglie() {
         man.forEach((m, k) => {
           m.g.style.display = (L.tipo === 'impossibile' && k === 2) ? 'none' : '';
           m.t.textContent = L.tipo === 'impossibile' ? '' : NOMI[k];
           m.g.classList.toggle('bloccata', !!(L.blocca && L.blocca.indexOf(k) >= 0));
           m.g.classList.remove('presa');
         });
-        ridisegna();
+      }
+      function aggiornaLivelli() {
+        const fatti = ctx.stato().livelli, sblocco = fatti.length ? Math.max(...fatti) + 1 : 0;
+        [...livelliEl.querySelectorAll('.lab-pallino')].forEach((p, k) => {
+          p.classList.toggle('fatto', fatti.includes(k));
+          p.classList.toggle('attivo', !libero && k === livello);
+          p.disabled = k > sblocco && k !== livello;
+          p.setAttribute('aria-current', !libero && k === livello ? 'step' : 'false');
+        });
+        btnLibero.setAttribute('aria-pressed', libero);
       }
 
-      /* ---------- il dito ---------- */
-      const coordSvg = ev => { const r = svg.getBoundingClientRect(); return { x: (ev.clientX - r.left) / r.width * W, y: (ev.clientY - r.top) / r.height * H }; };
-      svg.addEventListener('pointerdown', ev => {
+      /* ---------- entrare e uscire dalla modalità libera ---------- */
+      const AIUTO_LIBERO = 'In modalità libera non c\'è niente da indovinare: trascina A, B e C dove vuoi. I quattro pulsanti accendono le linee notevoli, e ogni terna si incontra in un punto. Le altezze partono da un vertice e scendono perpendicolari al lato opposto: si incontrano nell\'ortocentro H. Le mediane uniscono un vertice al punto medio del lato opposto: si incontrano nel baricentro G. Le bisettrici tagliano a metà gli angoli: si incontrano nell\'incentro I, centro del cerchio che tocca i tre lati. Gli assi sono le perpendicolari ai lati nel loro punto medio: si incontrano nel circocentro O, centro del cerchio che passa per A, B e C. «Casuale» propone un triangolo a caso.';
+      function mostraLibero() {
+        parametriEl.hidden = !libero;
+        radice.classList.toggle('in-libero', libero);
+        preparaPulsanti();
+      }
+      function entraLibero() {
+        salvato = { livello, V: V.map(p => ({ x: p.x, y: p.y })), finito, rivela, conta, visti: new Set(visti), angSx, angDx, dopTarget, areaTarget,
+          campo: campo.value, ob: obEl.innerHTML, msg: msg.innerHTML, cls: msg.className, ric: btnRic.textContent };
+        const daAstine = L.tipo === 'impossibile' || V.length !== 3;
+        libero = true; L = LIBERO; finito = false; rivela = false; trascino = -1;
+        if (daAstine) V = [{ x: 2, y: 2 }, { x: 9, y: 3 }, { x: 5, y: 8 }];
+        aiutoEl.hidden = true; mostraLibero(); preparaManiglie();
+        obEl.innerHTML = conMate(L.testo);
+        ridisegna(); osserva(); aggiornaLivelli();
+      }
+      function esciLibero() {   /* si torna al livello com'era */
+        const z = salvato; libero = false; salvato = null;
+        livello = z.livello; L = LIVELLI[livello]; V = z.V; finito = z.finito; rivela = z.rivela; conta = z.conta; visti = z.visti;
+        angSx = z.angSx; angDx = z.angDx; dopTarget = z.dopTarget; areaTarget = z.areaTarget; trascino = -1;
+        aiutoEl.hidden = true; mostraLibero(); preparaManiglie();
+        campo.value = z.campo; obEl.innerHTML = z.ob; btnRic.textContent = z.ric;
+        ridisegna(); aggiornaLivelli();
+        msg.innerHTML = z.msg; msg.className = z.cls;
+      }
+      function casuale() {
+        const r = n => Math.floor(Math.random() * (n + 1));
+        for (let tent = 0; tent < 300; tent++) {
+          const P = [0, 1, 2].map(() => ({ x: r(FX), y: r(FY) })), g = geo(P);
+          if (g.area < 8 || Math.min(...g.lati) < 3) continue;
+          if (P.every((p, k) => p.x === V[k].x && p.y === V[k].y)) continue;
+          V = P; ridisegna(); osserva(); return;
+        }
+      }
+
+      /* ---------- il dito ----------
+         dal dito alle coordinate del viewBox con la matrice dello schermo (mai col rettangolo dell'svg:
+         con preserveAspectRatio e il viewBox che cambia forma sbaglierebbe) */
+      function coordSvg(ev) {
+        const m = svg.getScreenCTM();
+        if (!m) return { x: -9999, y: -9999 };
+        const p = new DOMPoint(ev.clientX, ev.clientY).matrixTransform(m.inverse());
+        return { x: p.x, y: p.y };
+      }
+      /* il raggio di presa: 50 unità, ma mai meno di 34 px veri sullo schermo */
+      function raggioPresa() { const m = svg.getScreenCTM(); return m ? Math.max(50, 34 / (m.a || 1)) : 50; }
+      function giu(ev) {
         if (finito) return;
-        const c = coordSvg(ev);
+        const c = coordSvg(ev), rp = raggioPresa();
         if (L.tipo === 'impossibile') {
           const dP = dist(c, sp(puntaSx())), dQ = dist(c, sp(puntaDx()));
-          if (Math.min(dP, dQ) > 50) return;
+          if (Math.min(dP, dQ) > rp) return;
           trascino = dP <= dQ ? 0 : 1;
         } else {
           let scelto = -1, mind = 1e9;
@@ -578,15 +799,16 @@
             const d = dist(c, sp(p));
             if (d < mind) { mind = d; scelto = k; }
           });
-          if (scelto < 0 || mind > 50) return;
+          if (scelto < 0 || mind > rp) return;
           trascino = scelto;
         }
         man[trascino].g.classList.add('presa');
         try { svg.setPointerCapture(ev.pointerId); } catch (e) { /* niente */ }
         ev.preventDefault();
-      });
-      svg.addEventListener('pointermove', ev => {
+      }
+      function muovi(ev) {
         if (trascino < 0) return;
+        ev.preventDefault();
         const G = gr(coordSvg(ev));
         if (L.tipo === 'impossibile') {
           const perno = trascino === 0 ? PSX : PDX;
@@ -601,22 +823,69 @@
         const vx = p.x, vy = p.y;
         p.x = nx; p.y = ny;
         if (!valido()) { p.x = vx; p.y = vy; return; }
-        pulisciMsg(); contatori(); ridisegna(); vittoriaAutomatica();
-      });
-      const molla = () => { if (trascino < 0) return; man[trascino].g.classList.remove('presa'); trascino = -1; };
-      svg.addEventListener('pointerup', molla);
-      svg.addEventListener('pointercancel', molla);
-      svg.addEventListener('pointerleave', molla);
+        pulisciMsg(); contatori(); ridisegna(); vittoriaAutomatica(); osserva();
+      }
+      function molla() {
+        if (trascino < 0) return;
+        man[trascino].g.classList.remove('presa'); trascino = -1;
+        ridisegna(); adatta();   /* se lo spazio è cambiato durante il trascinamento, il viewBox si aggiorna adesso */
+      }
+      svg.addEventListener('pointerdown', giu);
+      window.addEventListener('pointermove', muovi);
+      window.addEventListener('pointerup', molla);
+      window.addEventListener('pointercancel', molla);
 
       btnConf.addEventListener('click', conferma);
       campo.addEventListener('keydown', ev => { if (ev.key === 'Enter') { ev.preventDefault(); conferma(); } });
       btnNo.addEventListener('click', () => { if (!finito && L.tipo === 'impossibile') vinci(null); });
       btnRic.addEventListener('click', () => avviaLivello(finito ? (livello + 1) % LIVELLI.length : livello));
-      btnAiuto.addEventListener('click', () => ctx.zenone(L.aiuto, { tipo: 'suggerimento', espressione: 'pensa', durata: 14000 }));
+      btnAiuto.addEventListener('click', () => {
+        if (!aiutoEl.hidden) { aiutoEl.hidden = true; return; }
+        aiutoEl.querySelector('p').textContent = libero ? AIUTO_LIBERO : L.aiuto;
+        aiutoEl.hidden = false;
+      });
+      aiutoEl.querySelector('.m-chiudi').addEventListener('click', () => { aiutoEl.hidden = true; });
+      btnLibero.addEventListener('click', () => { if (trascino >= 0) return; if (libero) esciLibero(); else entraLibero(); });
+      btnCasuale.addEventListener('click', casuale);
+      parametriEl.addEventListener('click', ev => {
+        const b = ev.target.closest('button[data-l]'); if (!b || !libero) return;
+        const id = b.dataset.l;
+        if (accese.has(id)) { accese.delete(id); ultima = [...accese].pop() || null; } else { accese.add(id); ultima = id; }
+        b.setAttribute('aria-pressed', accese.has(id));
+        ridisegna(); osserva();
+      });
+      LIVELLI.forEach((_, k) => {
+        const p = document.createElement('button'); p.type = 'button'; p.className = 'lab-pallino';
+        p.setAttribute('aria-label', 'Livello ' + (k + 1)); p.innerHTML = '<span>' + (k + 1) + '</span>';
+        p.addEventListener('click', () => { if (trascino < 0) avviaLivello(k); });
+        livelliEl.insertBefore(p, btnLibero);
+      });
+
+      /* ---------- la forma dello spazio decide il viewBox ----------
+         Circa 1,4 px per unità (mai meno di 420 unità di larghezza, così sul telefono il testo resta
+         leggibile); l'altezza segue la forma della scena. Durante un trascinamento non si tocca. */
+      function adatta() {
+        if (trascino >= 0) return;
+        const r = svg.getBoundingClientRect();
+        if (r.width < 10 || r.height < 10) return;
+        const nW = Math.round(Math.max(420, Math.min(1400, r.width / 1.4)));
+        const nH = Math.round(nW * r.height / r.width);
+        if (nW === W && nH === H) return;
+        W = nW; H = nH;
+        svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+        ridisegna();
+      }
 
       avviaLivello(livello);
+      adatta();
+      const ro = new ResizeObserver(adatta); ro.observe(radice); ro.observe(svg);
 
-      return function smonta() { trascino = -1; };
+      return function smonta() {
+        trascino = -1; ro.disconnect();
+        window.removeEventListener('pointermove', muovi);
+        window.removeEventListener('pointerup', molla);
+        window.removeEventListener('pointercancel', molla);
+      };
     }
   });
 })();

@@ -1,37 +1,59 @@
 (function () {
 const R = String.raw;
+/* allenamento. Una primitiva si scrive in tanti modi giusti, quindi prim() genera quelli ragionevoli
+   (stessa idea di der() in derivate.js): i termini in qualunque ordine, 2x oppure 2*x, sin(x) oppure
+   sinx, con o senza F(x) = davanti, con o senza + c in fondo. Le forme in «altre» seguono le stesse
+   regole. Tutte sono state controllate valutandole in punti a caso contro la primitiva giusta, e le
+   primitive sbagliate tipiche (dimenticare di dividere, derivare invece di integrare, segno del
+   coseno) sono rifiutate. Gli integrali definiti si controllano come numeri: la casella capisce
+   e - 1, (e - 1)/2, π/2 - 1, 32/3. Non capisce ln, quindi nessun risultato di base contiene un logaritmo. */
+const SIMB = ['^', '/', '(', ')', 'π', '√', '−', '+'];
+const permuta = a => a.length <= 1 ? [a] : a.flatMap((t, i) => permuta(a.slice(0, i).concat(a.slice(i + 1))).map(r => [t].concat(r)));
+const somma = t => t.map((s, i) => (i && s[0] !== '-' ? '+' : '') + s).join('');
+function prim(termini, altre) {
+  const perX = s => s.replace(/(\d)(?=x)/g, '$1*');
+  const forme = permuta(termini).map(somma).concat(altre || [])
+    .flatMap(s => [s, perX(s)])
+    .flatMap(s => [s, s.replace(/(sin|cos)\(x\)/g, '$1x')])
+    .flatMap(s => [s, s.replace(/sin/g, 'sen')]);             /* sen x, come si scrive a scuola */
+  const acc = forme.flatMap(s => [s, s + '+c', 'F(x)=' + s, 'F(x)=' + s + '+c']);
+  return { tipo: 'testo', accettate: Array.from(new Set(acc)), segnaposto: 'es. x^3 + 2x + c', simboli: SIMB };
+}
+const val = v => ({ tipo: 'numero', valore: v, tolleranza: 0.005, segnaposto: 'es. 5/2 oppure e − 2', simboli: SIMB });
 COMPASSO.registra({
   id: 'integrali',
   titolo: 'Integrali',
 
-  introduzione: R`Un'auto viaggia e il tachimetro segna la velocità istante per istante. Quanta strada ha fatto in un'ora? Se la velocità fosse sempre $60$ km/h la risposta sarebbe $60$ km, cioè l'area di un rettangolo alto $60$ e largo $1$. Ma la velocità cambia, e allora la strada percorsa è l'area sotto la curva della velocità: una figura con un lato storto, che con le formule della geometria non si misura.
+  introduzione: R`Un'auto va sempre a $60$ km/h per un'ora: fa $60$ km. È l'area di un rettangolo alto $60$ e largo $1$. Ma se la velocità cambia, la strada è l'area sotto la curva della velocità. Quella figura ha un lato storto, e la geometria non basta.
 
-L'**integrale** è lo strumento che misura queste aree, e più in generale tutto quello che si accumula: l'acqua entrata in una vasca, il lavoro di una forza che cambia lungo il percorso, il volume di un solido. Il fatto sorprendente, che scoprirai a metà argomento, è che per calcolare un'area basta fare una derivata al contrario: trovare una funzione che, derivata, dia quella di partenza.
+L'**integrale** misura queste aree. Più in generale misura tutto quello che si accumula, come l'acqua in una vasca o il volume di un solido.
 
-Per questo l'argomento ha due metà. Nella prima si impara a fare la derivata al contrario (primitive, integrale indefinito e le tecniche per trovarlo). Nella seconda si torna alle aree (integrale definito, teorema fondamentale, aree e volumi). Serve saper derivare con sicurezza: ogni integrale si controlla derivando il risultato.`,
+L'argomento ha due metà. Nella prima impari a fare la derivata al contrario: le primitive. Nella seconda torni alle aree, e scopri che per calcolarle bastano proprio le primitive.
+
+Ti serve saper derivare bene: ogni integrale si controlla derivando il risultato.`,
 
   inBreve: [
-    R`Una **primitiva** di $f$ è una funzione che, derivata, dà $f$. Le primitive sono infinite e differiscono per una costante: per questo si scrive $\int f(x)\,dx = F(x) + c$.`,
-    R`L'integrale rispetta somme e costanti, ma **non** prodotti e quozienti: per quelli servono la sostituzione, l'integrazione per parti o la scomposizione in fratti semplici.`,
-    R`L'integrale definito $\int_a^b f(x)\,dx$ è un **numero**: l'area sotto la curva fra $a$ e $b$, contata con il meno dove la curva sta sotto l'asse $x$.`,
-    R`Si calcola con una primitiva qualunque: $\int_a^b f(x)\,dx = G(b) - G(a)$. È il teorema fondamentale che lega aree e derivate.`,
-    R`Se il testo chiede un'**area**, prima si studia il segno della funzione; per l'area fra due curve si integra (curva sopra) meno (curva sotto).`
+    R`Una **primitiva** di $f$ è una funzione che, derivata, dà $f$. Le primitive differiscono per una costante, quindi si scrive $\int f(x)\,dx = F(x) + c$.`,
+    R`L'integrale si spezza sulle somme e porta fuori le costanti. Con i prodotti no: lì servono la sostituzione o l'integrazione per parti.`,
+    R`L'integrale definito $\int_a^b f(x)\,dx$ è un **numero**: l'area sotto la curva fra $a$ e $b$, con il meno dove la curva sta sotto l'asse $x$.`,
+    R`Si calcola con una primitiva qualunque: $\int_a^b f(x)\,dx = G(b) - G(a)$.`,
+    R`Se il testo chiede un'**area**, studia prima il segno della funzione. Per l'area fra due curve integri (curva sopra) meno (curva sotto).`
   ],
 
   sezioni: [
-    { id: 'primitive', titolo: 'Primitive e integrale indefinito', testo: R`Quale funzione ha per derivata $3x^2$? Ci si arriva ricordando le regole di derivazione: $x^3$, perché $D(x^3) = 3x^2$. Cercare una funzione conoscendo la sua derivata è il problema da cui parte tutto l'argomento.
+    { id: 'primitive', titolo: 'Primitive e integrale indefinito', testo: R`Quale funzione ha per derivata $3x^2$? La risposta è $x^3$, perché $D(x^3) = 3x^2$.
 
->* Una funzione $F$ è una **primitiva** di $f$ in un intervallo $I$ se $F'(x) = f(x)$ per ogni $x$ di $I$.
+>* $F$ è una **primitiva** di $f$ in un intervallo se $F'(x) = f(x)$ in ogni punto dell'intervallo.
 
-$x^3$ però non è l'unica risposta. Vanno bene anche $x^3 + 5$ e $x^3 - \sqrt{2}$: la derivata di una costante è zero, quindi aggiungere un numero non cambia la derivata.
+Vanno bene anche $x^3 + 5$ e $x^3 - 2$. La derivata di una costante è zero, quindi aggiungere un numero non cambia la derivata.
 
-Vale anche il contrario (è una conseguenza del teorema di Lagrange): **in un intervallo**, due primitive della stessa funzione differiscono solo per una costante. Trovata una primitiva, le hai trovate tutte: basta aggiungere un numero qualsiasi.
+In un **intervallo** vale anche il contrario: due primitive della stessa funzione differiscono solo per una costante. Quindi, trovata una primitiva, le hai trovate tutte.
 
->* L'**integrale indefinito** di $f$ è l'insieme di tutte le sue primitive: $$\int f(x)\,dx = F(x) + c,$$ dove $F$ è una primitiva, cioè $F'(x) = f(x)$. $f$ si chiama **funzione integranda**, il numero $c$ **costante di integrazione**.
+>* L'**integrale indefinito** di $f$ è l'insieme di tutte le sue primitive: $$\int f(x)\,dx = F(x) + c.$$ $f$ si chiama **funzione integranda**, il numero $c$ **costante di integrazione**.
 
-Il $dx$ dice rispetto a quale variabile si integra. Sembra un dettaglio, ma nella sostituzione diventerà una parte del calcolo.
+Il $dx$ dice rispetto a quale variabile integri.
 
-Dalle regole di derivazione della somma e del prodotto per una costante segue la **linearità**: l'integrale di una somma è la somma degli integrali, e le costanti moltiplicative escono dal segno di integrale.
+La **linearità**: l'integrale di una somma è la somma degli integrali, e le costanti escono dal segno di integrale.
 
 $$\int \big[\alpha f + \beta g\big]\,dx = \alpha \int f\,dx + \beta \int g\,dx$$
 
@@ -43,12 +65,14 @@ $$\int \big[\alpha f + \beta g\big]\,dx = \alpha \int f\,dx + \beta \int g\,dx$$
 ?? Quanto vale $\int x \cdot x\,dx$?
 [x] $\dfrac{x^3}{3} + c$
 [ ] $\dfrac{x^2}{2}\cdot\dfrac{x^2}{2} + c$
-[ ] $\dfrac{x^4}{4} + c$
-=> Prima si fa il prodotto, $x \cdot x = x^2$, poi si integra: $\frac{x^3}{3} + c$. Chi scrive $\frac{x^2}{2}\cdot\frac{x^2}{2}$ integra i due fattori separatamente e li moltiplica; ma quel prodotto vale $\frac{x^4}{4}$, e derivando $\frac{x^4}{4}$ si ottiene $x^3$, non $x^2$: l'integrale di un prodotto non è il prodotto degli integrali.
+[ ] $x \cdot \dfrac{x^2}{2} + c$
+=> Prima fai il prodotto, $x \cdot x = x^2$, poi integri: $\frac{x^3}{3} + c$. Chi integra i due fattori e li moltiplica ottiene $\frac{x^4}{4}$, che derivato dà $x^3$. Chi porta fuori una $x$ come se fosse una costante ottiene $\frac{x^3}{2}$, che derivato dà $\frac{3}{2}x^2$. La $x$ non è una costante.
 
->! Due errori da evitare. Il primo è dimenticare $+c$: senza, hai scritto *una* primitiva, non l'integrale indefinito. Il secondo è inventare una regola del prodotto: $\int f\,g\,dx$ **non** è $\int f\,dx \cdot \int g\,dx$. La linearità vale per somme e costanti, non per prodotti e quozienti.` },
+>! Non dimenticare $+c$: senza, hai scritto *una* primitiva sola.
 
-    { id: 'immediati', titolo: 'Integrali immediati e quasi immediati', testo: R`Ogni derivata che conosci, letta da destra a sinistra, dà un integrale: se $D(\sin x) = \cos x$, allora $\int \cos x\,dx = \sin x + c$. Gli integrali che si ottengono così si chiamano **immediati**, e questa tabella va saputa a memoria.
+>! $\int f\,g\,dx$ **non** è $\int f\,dx \cdot \int g\,dx$. La linearità vale per somme e costanti, non per prodotti.` },
+
+    { id: 'immediati', titolo: 'Integrali immediati e quasi immediati', testo: R`Ogni derivata, letta al contrario, dà un integrale. Da $D(\sin x) = \cos x$ ricavi $\int \cos x\,dx = \sin x + c$. Questi integrali si chiamano **immediati**. La tabella va saputa a memoria.
 
 | $f(x)$ | $\int f(x)\,dx$ |
 |---|---|
@@ -62,7 +86,7 @@ $$\int \big[\alpha f + \beta g\big]\,dx = \alpha \int f\,dx + \beta \int g\,dx$$
 | $\dfrac{1}{\sqrt{1-x^2}}$ | $\arcsin x + c$ |
 | $\dfrac{1}{1+x^2}$ | $\arctan x + c$ |
 
-La prima riga vale anche per radici e frazioni, se prima le scrivi come potenze:
+La prima riga vale anche per radici e frazioni. Prima le scrivi come potenze:
 
 ~ \int \sqrt{x}\,dx :: la radice non è nella tabella, ma è una potenza
 ~ \int \evid{x^{\frac12}}\,dx :: $\sqrt{x} = x^{\frac12}$
@@ -71,11 +95,11 @@ La prima riga vale anche per radici e frazioni, se prima le scrivi come potenze:
 
 Allo stesso modo $\int \dfrac{1}{x^2}\,dx = \int x^{-2}\,dx = \dfrac{x^{-1}}{-1} + c = -\dfrac{1}{x} + c$.
 
->! $\int \dfrac{1}{x}\,dx$ non si fa con la regola della potenza: con $\alpha = -1$ si dividerebbe per zero. Il risultato è $\ln \lvert x \rvert + c$, con il valore assoluto perché $\frac1x$ esiste anche per $x$ negativi.
+>! $\int \dfrac{1}{x}\,dx$ non segue la regola della potenza: con $\alpha = -1$ divideresti per zero. Il risultato è $\ln \lvert x \rvert + c$. Il valore assoluto serve perché $\frac1x$ esiste anche per $x$ negativi.
 
 ### Quasi immediati
 
-Che cosa succede se al posto di $x$ c'è una funzione più complicata? La regola della catena, letta al contrario, dice che le formule della tabella restano valide con $f(x)$ al posto di $x$, **purché accanto ci sia anche la derivata $f'(x)$**.
+Se al posto di $x$ c'è una funzione $f(x)$, le formule della tabella valgono ancora. Serve però che accanto ci sia **anche la derivata** $f'(x)$. È la regola della catena letta al contrario.
 
 $$\int [f(x)]^\alpha f'(x)\,dx = \frac{[f(x)]^{\alpha+1}}{\alpha+1} + c$$
 
@@ -85,26 +109,31 @@ $$\int e^{f(x)} f'(x)\,dx = e^{f(x)} + c$$
 
 $$\int f'(x)\cos f(x)\,dx = \sin f(x) + c$$
 
-Spesso la derivata c'è quasi: manca solo un numero, che si aggiusta moltiplicando e dividendo.
+A volte alla derivata manca solo un numero. Lo aggiusti moltiplicando e dividendo.
 
 ~ \int \frac{x}{x^2+3}\,dx :: la derivata del denominatore è $2x$, al numeratore c'è solo $x$
 ~ \evid{\frac{1}{2}}\int \frac{\evid{2}x}{x^2+3}\,dx :: moltiplico dentro per $2$ e divido fuori per $2$: il valore non cambia
 ~ \frac{1}{2}\evidb{\ln(x^2+3)} + c :: ora al numeratore c'è la derivata del denominatore: è $\int \frac{f'}{f}$
 
-Il valore assoluto non serve, perché $x^2+3$ è sempre positivo. Con lo stesso trucco $\int x(x^2+1)^4\,dx = \dfrac{1}{2}\cdot\dfrac{(x^2+1)^5}{5} + c = \dfrac{(x^2+1)^5}{10} + c$.
+Il valore assoluto non serve: $x^2+3$ è sempre positivo.
 
 ?? Quanto vale $\int \sin(2x)\,dx$?
 [x] $-\dfrac{1}{2}\cos(2x) + c$
 [ ] $-\cos(2x) + c$
 [ ] $-2\cos(2x) + c$
 [ ] $\dfrac{1}{2}\cos(2x) + c$
-=> La derivata interna di $2x$ è $2$: si scrive $\frac12\int 2\sin(2x)\,dx = -\frac12\cos(2x) + c$. Chi risponde $-\cos(2x)$ dimentica la derivata interna; controlla derivando: $D(-\cos 2x) = 2\sin 2x$, il doppio del dovuto.
+=> La derivata di $2x$ è $2$. Quindi scrivi $\frac12\int 2\sin(2x)\,dx = -\frac12\cos(2x) + c$. Chi risponde $-\cos(2x)$ dimentica quel $2$: derivando ottiene $2\sin 2x$, il doppio.
 
->! Si possono aggiustare solo le **costanti**. Moltiplicare e dividere per $x$ non è lecito, perché la $x$ non esce dal segno di integrale: $\int e^{x^2}dx$ **non** è $\dfrac{1}{2x}e^{x^2}$.` },
+>! Puoi aggiustare solo le **costanti**. La $x$ non esce dal segno di integrale: $\int e^{x^2}dx$ **non** è $\dfrac{1}{2x}e^{x^2}$.` },
 
-    { id: 'sostituzione', titolo: 'Integrazione per sostituzione', testo: R`Quando l'integranda è complicata ma dentro si riconosce un pezzo che si ripete, conviene dare un nome nuovo a quel pezzo: si **cambia variabile**, e l'integrale diventa uno della tabella.
+    { id: 'sostituzione', titolo: 'Integrazione per sostituzione', testo: R`A volte dentro l'integranda c'è un pezzo scomodo. Gli dai un nome nuovo, $t$: **cambi variabile**, e l'integrale diventa uno della tabella.
 
->* **Sostituzione.** Si pone $t = g(x)$ e si calcola $dt = g'(x)\,dx$. Poi si riscrive **tutto** l'integrale in $t$, $dx$ compreso, si integra, e alla fine si torna a $x$ rimettendo $g(x)$ al posto di $t$.
+1. Poni $t = g(x)$ e calcola $dt = g'(x)\,dx$.
+2. Riscrivi tutto l'integrale in $t$, $dx$ compreso.
+3. Integra.
+4. Torna a $x$: rimetti $g(x)$ al posto di $t$.
+
+>* Nella **sostituzione** $t = g(x)$ si trasforma tutto, anche il $dx$: $dt = g'(x)\,dx$.
 
 ~ \int x\sqrt{x^2+1}\,dx :: il pezzo che dà fastidio è $x^2+1$ sotto radice
 ~ t = x^2+1 \quad\Rightarrow\quad \evid{dt = 2x\,dx} :: gli do un nome e derivo: anche il $dx$ va trasformato
@@ -112,35 +141,35 @@ Il valore assoluto non serve, perché $x^2+3$ è sempre positivo. Con lo stesso 
 ~ \frac{1}{2}\cdot\evid{\frac{2}{3}t\sqrt{t}} + c :: ora è un integrale immediato: $\int t^{\frac12}dt = \frac23 t^{\frac32}$
 ~ \evidb{\frac{1}{3}(x^2+1)\sqrt{x^2+1} + c} :: si torna a $x$ rimettendo $x^2+1$ al posto di $t$
 
-Un altro caso: in $\int \dfrac{1}{x \ln x}\,dx$ si pone $t = \ln x$, così $dt = \dfrac{dx}{x}$ e l'integrale diventa $\int \dfrac{dt}{t} = \ln \lvert t \rvert + c = \ln \lvert \ln x \rvert + c$.
+Un altro caso: in $\int \dfrac{1}{x \ln x}\,dx$ poni $t = \ln x$. Allora $dt = \dfrac{dx}{x}$ e ottieni $\int \dfrac{dt}{t} = \ln \lvert \ln x \rvert + c$.
 
 ?? Con la sostituzione $t = x^2$, in che cosa si trasforma $\int x\,e^{x^2}\,dx$?
 [x] $\dfrac{1}{2}\int e^{t}\,dt$
 [ ] $\int e^{t}\,dx$
 [ ] $\int x\,e^{t}\,dt$
 [ ] $2\int e^{t}\,dt$
-=> Da $t = x^2$ si ha $dt = 2x\,dx$, quindi $x\,dx = \frac{dt}{2}$: la $x$ davanti e il $dx$ spariscono insieme. La risposta con $dx$ è l'errore più frequente: si cambia l'integranda e si dimentica il differenziale, lasciando un integrale che mescola due variabili.
+=> Da $t = x^2$ viene $dt = 2x\,dx$, quindi $x\,dx = \frac{dt}{2}$. La $x$ davanti e il $dx$ spariscono insieme. Lasciare il $dx$ è l'errore più frequente: l'integrale mescola due variabili.
 
-La sostituzione può anche andare al contrario: si pone $x = \varphi(t)$, con $dx = \varphi'(t)\,dt$. Serve per togliere una radice. In $\int \sqrt{1-x^2}\,dx$ si pone $x = \sin t$: allora $\sqrt{1-x^2} = \cos t$ e $dx = \cos t\,dt$.
+> Si può anche porre $x = \varphi(t)$, con $dx = \varphi'(t)\,dt$. Serve per togliere una radice: in $\int \sqrt{1-x^2}\,dx$ poni $x = \sin t$.
 
 ### Negli integrali definiti
 
-Se l'integrale ha gli estremi, conviene **cambiare anche quelli**: se $t = g(x)$, al posto di $a$ e $b$ si mettono $g(a)$ e $g(b)$. Così non serve tornare alla variabile $x$.
+Se ci sono gli estremi, **cambia anche quelli**. Con $t = g(x)$, al posto di $a$ e $b$ metti $g(a)$ e $g(b)$. Così non torni alla variabile $x$.
 
 ~ \int_0^1 x\,e^{x^2}\,dx :: pongo $t = x^2$, quindi $x\,dx = \frac{dt}{2}$
 ~ \frac{1}{2}\int_{\evid{0}}^{\evid{1}} e^t\,dt :: nuovi estremi: per $x = 0$ si ha $t = 0^2 = 0$, per $x = 1$ si ha $t = 1^2 = 1$
 ~ \frac{1}{2}\evid{\big[e^t\big]_0^1} :: la primitiva di $e^t$ è $e^t$
 ~ \evidb{\frac{e-1}{2}} :: $e^1 - e^0 = e - 1$; qui non si torna a $x$, gli estremi erano già quelli di $t$
 
->! Il $dx$ va sempre trasformato: dimenticarlo è l'errore più frequente. E se hai cambiato gli estremi, non tornare a $x$: i nuovi estremi valgono per $t$.` },
+>! Se hai cambiato gli estremi, non tornare a $x$: i nuovi estremi valgono per $t$.` },
 
-    { id: 'per-parti', titolo: 'Integrazione per parti', testo: R`Come si integra $x\,e^x$? Non è quasi immediato (accanto a $e^x$ non c'è la derivata dell'esponente) e l'integrale di un prodotto non è il prodotto degli integrali.
+    { id: 'per-parti', titolo: 'Integrazione per parti', testo: R`Come si integra $x\,e^x$? Non è quasi immediato, e l'integrale di un prodotto non è il prodotto degli integrali.
 
-Serve un metodo apposta per i **prodotti** di funzioni di tipo diverso, e nasce dalla regola di derivazione del prodotto: $D[f(x)g(x)] = f'(x)g(x) + f(x)g'(x)$. Integrando i due membri e isolando un pezzo si ottiene
+Serve un metodo per i **prodotti**. Nasce dalla derivata del prodotto: $D[f g] = f' g + f g'$. Integri i due membri e isoli un pezzo.
 
->* **Formula di integrazione per parti:** $$\int f\,g'\,dx = f\,g - \int f'\,g\,dx$$ dove $f$ e $g$ sono funzioni di $x$. Dei due fattori, uno si deriva ($f$, il **fattore finito**) e l'altro si integra ($g'$, il **fattore differenziale**).
+>* **Formula di integrazione per parti:** $$\int f\,g'\,dx = f\,g - \int f'\,g\,dx$$ Un fattore si deriva: è $f$, il **fattore finito**. L'altro si integra: è $g'$, il **fattore differenziale**.
 
-La formula non dà subito il risultato: cambia l'integrale in un altro. Conviene solo se il nuovo è più facile, e questo dipende da quale fattore scegli come $f$.
+La formula cambia l'integrale in un altro. Conviene se il nuovo è più facile. Dipende da quale fattore scegli come $f$.
 
 | fattore finito $f$ (si deriva) | fattore differenziale $g'$ (si integra) |
 |---|---|
@@ -155,26 +184,25 @@ La formula non dà subito il risultato: cambia l'integrale in un altro. Conviene
 [x] $f = x$ da derivare, $g' = \cos x$ da integrare
 [ ] $f = \cos x$ da derivare, $g' = x$ da integrare
 [ ] è indifferente, il risultato è lo stesso
-=> Derivando $x$ si ottiene $1$ e resta $\int \sin x\,dx$, immediato. Con la scelta opposta la $x$ si integra in $\frac{x^2}{2}$ e il nuovo integrale, $\int \frac{x^2}{2}\sin x\,dx$, ha il grado più alto di quello di partenza: il risultato finale sarebbe lo stesso, ma non ci arrivi più.
+=> Derivando $x$ ottieni $1$, e resta $\int \sin x\,dx$, immediato. Con la scelta opposta resta $\int \frac{x^2}{2}\sin x\,dx$: il grado sale, e l'integrale è più difficile di prima.
 
-A volte il prodotto non si vede, ma c'è. $\ln x$ non si sa integrare direttamente, però si sa derivare: si scrive $\ln x = \ln x \cdot 1$.
+A volte il prodotto non si vede. $\ln x$ non sai integrarlo, ma sai derivarlo. Allora scrivi $\ln x = \ln x \cdot 1$.
 
 ~ \int \ln x\,dx = \int \ln x \cdot \evid{1}\,dx :: il fattore $1$ c'è sempre, basta scriverlo
 ~ \evid{f' = \frac{1}{x}}, \quad \evid{g = x} :: scelgo $f = \ln x$ da derivare e $g' = 1$ da integrare
 ~ x\ln x - \int \evid{x\cdot\frac{1}{x}}\,dx :: formula per parti
 ~ x\ln x - \int \evid{1}\,dx = \evidb{x\ln x - x + c} :: la $x$ si semplifica e resta un integrale immediato
 
-Può anche succedere che, applicando la formula due volte, ricompaia l'integrale di partenza. Con $I = \int e^x \sin x\,dx$ si arriva a $I = e^x(\sin x - \cos x) - I$: si porta $I$ a sinistra come in un'equazione, $2I = e^x(\sin x - \cos x)$, e quindi $I = \dfrac{e^x(\sin x - \cos x)}{2} + c$.
+> A volte, dopo due passaggi per parti, ricompare l'integrale di partenza. Con $I = \int e^x \sin x\,dx$ arrivi a $I = e^x(\sin x - \cos x) - I$. Porti $I$ a sinistra come in un'equazione: $I = \dfrac{e^x(\sin x - \cos x)}{2} + c$.
 
-Per un integrale definito la formula è la stessa, con gli estremi su tutti e due i pezzi: $\int_a^b f g'\,dx = \big[f g\big]_a^b - \int_a^b f' g\,dx$.
+Nell'integrale definito metti gli estremi su tutti e due i pezzi: $\int_a^b f g'\,dx = \big[f g\big]_a^b - \int_a^b f' g\,dx$.
 
->! Scelta sbagliata, integrale peggiore. In $\int x e^x dx$, se prendi $f = e^x$ e $g' = x$ ottieni $\frac{x^2}{2}e^x - \int \frac{x^2}{2}e^x dx$: il grado del polinomio è salito, sei andato indietro. Quando succede, torna all'inizio e scambia i ruoli.` },
+>! Se il nuovo integrale è peggiore, hai scelto male. Torna all'inizio e scambia i ruoli dei due fattori.` },
 
-    { id: 'razionali-fratte', titolo: 'Funzioni razionali fratte', testo: R`Una **funzione razionale fratta** è un rapporto di due polinomi, $\dfrac{N(x)}{D(x)}$. Per integrarla si segue sempre lo stesso ordine.
+    { id: 'razionali-fratte', titolo: 'Funzioni razionali fratte', testo: R`Una **funzione razionale fratta** è un rapporto di due polinomi, $\dfrac{N(x)}{D(x)}$. Per integrarla segui sempre lo stesso ordine.
 
-**Primo passo: confrontare i gradi.** Se il grado del numeratore è maggiore o uguale a quello del denominatore, si esegue la divisione fra polinomi: si ottiene un polinomio (che si integra subito) più una frazione con il numeratore di grado più basso.
-
-**Secondo passo: guardare il denominatore.** Il metodo dipende dal suo grado e, se è di secondo grado, dal suo $\Delta$.
+1. **Confronta i gradi.** Se il numeratore ha grado maggiore o uguale, esegui la divisione. Ottieni un polinomio più una frazione con il numeratore di grado più basso.
+2. **Guarda il denominatore.** Il metodo dipende dal suo grado e dal suo $\Delta$.
 
 | denominatore | metodo | risultato |
 |---|---|---|
@@ -190,7 +218,7 @@ $$\int \left(2 + \frac{7}{x-3}\right)dx = 2x + 7\ln \lvert x-3 \rvert + c.$$
 
 ### Secondo grado con $\Delta > 0$
 
-Il denominatore si scompone in $a(x-x_1)(x-x_2)$ e la frazione si spezza in due frazioni più semplici, i **fratti semplici**, ognuna con un fattore al denominatore.
+Il denominatore si scompone in $a(x-x_1)(x-x_2)$. Allora spezzi la frazione in due **fratti semplici**, ognuno con un fattore al denominatore.
 
 ~ \int \frac{x+3}{x^2-x-2}\,dx :: il numeratore ha grado minore: niente divisione
 ~ \frac{x+3}{\evid{(x-2)(x+1)}} = \frac{A}{x-2} + \frac{B}{x+1} :: scompongo il denominatore (radici $2$ e $-1$) e cerco due fratti semplici
@@ -201,50 +229,56 @@ Il denominatore si scompone in $a(x-x_1)(x-x_2)$ e la frazione si spezza in due 
 
 ### Secondo grado con $\Delta = 0$
 
-C'è una radice doppia: $D(x) = a(x-x_1)^2$. Si riscrive il numeratore in funzione di $x - x_1$. Esempio: $\int \dfrac{x+1}{(x-2)^2}\,dx$; poiché $x+1 = (x-2)+3$,
+C'è una radice doppia: $D(x) = a(x-x_1)^2$. Riscrivi il numeratore con $x - x_1$. Esempio: $\int \dfrac{x+1}{(x-2)^2}\,dx$. Poiché $x+1 = (x-2)+3$,
 $$\begin{aligned} &\int \left(\frac{1}{x-2} + \frac{3}{(x-2)^2}\right)dx \\ &= \ln \lvert x-2 \rvert - \frac{3}{x-2} + c \end{aligned}$$
 
 Il secondo pezzo è la regola della potenza con $\alpha = -2$: $\int 3(x-2)^{-2}\,dx = -3(x-2)^{-1}$.
 
 ### Secondo grado con $\Delta < 0$
 
-Il denominatore non si scompone. Si completa il quadrato per arrivare alla forma $\int \dfrac{du}{u^2+k^2} = \dfrac{1}{k}\arctan\dfrac{u}{k} + c$.
+Il denominatore non si scompone. Completi il quadrato e arrivi a $\int \dfrac{du}{u^2+k^2} = \dfrac{1}{k}\arctan\dfrac{u}{k} + c$.
 
 ~ \int \frac{dx}{x^2+2x+5} :: $\Delta = 4 - 20 < 0$: non si scompone
 ~ \int \frac{dx}{\evid{(x+1)^2 + 4}} :: completo il quadrato: $x^2+2x+1$ è $(x+1)^2$, e restano $4$
 ~ \int \frac{du}{u^2 + \evid{2^2}} :: con $u = x+1$ (e $du = dx$) è la forma dell'arcotangente con $k = 2$
 ~ \evidb{\frac{1}{2}\arctan\frac{x+1}{2} + c} :: $\frac{1}{k}\arctan\frac{u}{k}$, poi torno a $x$
 
-Se al numeratore c'è anche un termine in $x$, lo si separa: la parte che è multipla di $D'(x)$ dà un logaritmo, il resto dà l'arcotangente.
+Se al numeratore c'è anche un termine in $x$, separi due pezzi. La parte multipla di $D'(x)$ dà un logaritmo, il resto l'arcotangente.
 
 ?? Il denominatore di $\dfrac{3}{x^2+4x+8}$ ha $\Delta = 16 - 32 < 0$. Che cosa compare nell'integrale?
 [x] un'arcotangente
 [ ] due logaritmi, dopo aver scomposto in fratti semplici
 [ ] un logaritmo e una frazione
-=> Con $\Delta < 0$ il denominatore non ha radici reali, quindi non si scompone e i fratti semplici non esistono. Si completa il quadrato, $(x+2)^2 + 4$, e si arriva a $\frac{3}{2}\arctan\frac{x+2}{2} + c$.
+=> Con $\Delta < 0$ il denominatore non ha radici, quindi non si scompone. Completi il quadrato, $(x+2)^2 + 4$, e arrivi a $\frac{3}{2}\arctan\frac{x+2}{2} + c$.
 
->! Con $\Delta < 0$ il denominatore non si annulla mai e ha sempre lo stesso segno: nel logaritmo che eventualmente compare il valore assoluto **non serve**, e soprattutto non si può scomporre in fratti semplici.` },
+>! Con $\Delta < 0$ il denominatore non si annulla mai. Non si scompone in fratti semplici, e nel logaritmo il valore assoluto **non serve**.` },
 
-    { id: 'definito', titolo: 'L\'integrale definito e le somme di Riemann', testo: R`Si torna alle aree. La regione compresa fra il grafico di $f$, l'asse $x$ e le rette verticali $x=a$ e $x=b$ ha un lato curvo: quanto vale la sua area?
+    { id: 'definito', titolo: 'L\'integrale definito e le somme di Riemann', testo: R`Torniamo alle aree. La regione fra il grafico di $f$, l'asse $x$ e le rette $x=a$ e $x=b$ ha un lato curvo. Quanto vale la sua area?
 
-L'idea è riempirla di rettangoli, di cui l'area si sa calcolare. Si divide $[a;b]$ in $n$ parti uguali, larghe $\Delta x = \dfrac{b-a}{n}$. Su ogni parte si costruisce un rettangolo che sta tutto *sotto* la curva e uno che la contiene. Sommando le aree dei primi si ottiene la **somma inferiore** $s_n$, sommando quelle dei secondi la **somma superiore** $S_n$, e l'area cercata sta in mezzo: $s_n \le \text{area} \le S_n$.
+L'idea è riempirla di rettangoli.
 
-Guarda che cosa succede quando i rettangoli diventano più numerosi e più stretti.
+1. Dividi $[a;b]$ in $n$ parti uguali, larghe $\Delta x = \dfrac{b-a}{n}$.
+2. Su ogni parte disegna un rettangolo *sotto* la curva e uno che la contiene.
+3. Somma le aree dei primi: è la **somma inferiore** $s_n$. Somma quelle dei secondi: è la **somma superiore** $S_n$.
+
+L'area sta in mezzo: $s_n \le \text{area} \le S_n$. Guarda che cosa succede quando i rettangoli diventano più stretti.
 
 [[animazione:riemann]]
 
->* Se $s_n$ e $S_n$, al crescere di $n$, tendono allo stesso numero, $f$ si dice **integrabile** in $[a;b]$ e quel numero è l'**integrale definito**: $$\int_a^b f(x)\,dx = \lim_{n \to \infty} \sum_{i=1}^{n} f(x_i)\,\Delta x.$$ La scrittura ricorda la costruzione: $\int$ è una S allungata (somma), $f(x)\,dx$ è l'area di un rettangolo alto $f(x)$ e largo $dx$.
+>* Se $s_n$ e $S_n$ tendono allo stesso numero, $f$ è **integrabile** in $[a;b]$. Quel numero è l'**integrale definito**: $$\int_a^b f(x)\,dx = \lim_{n \to \infty} \sum_{i=1}^{n} f(x_i)\,\Delta x.$$
 
-Ogni funzione continua in un intervallo chiuso e limitato è integrabile; lo sono anche le funzioni limitate con un numero finito di punti di discontinuità.
+Il simbolo $\int$ è una S allungata: sta per «somma». $f(x)\,dx$ è l'area di un rettangolo alto $f(x)$ e largo $dx$.
+
+Ogni funzione continua in un intervallo chiuso e limitato è integrabile. Lo sono anche le funzioni limitate con un numero finito di discontinuità.
 
 ?? Che differenza c'è fra $\int x^2\,dx$ e $\int_0^3 x^2\,dx$?
 [x] il primo è una famiglia di funzioni, $\frac{x^3}{3} + c$; il secondo è un numero, $9$
 [ ] nessuna: sono due modi di scrivere la stessa cosa
 [ ] il primo è un numero, il secondo una funzione
 [ ] tutti e due sono funzioni, ma il secondo non ha la $c$
-=> L'integrale **indefinito** (senza estremi) è l'insieme delle primitive. L'integrale **definito** (con gli estremi) è un'area, cioè un numero: $\frac{3^3}{3} = 9$. Non porta la costante $c$ e non contiene la $x$.
+=> L'integrale **indefinito**, senza estremi, è l'insieme delle primitive. L'integrale **definito**, con gli estremi, è un numero: $\frac{3^3}{3} = 9$. Non ha la $c$ e non contiene la $x$.
 
-Dalla definizione seguono le proprietà, tutte ragionevoli se si pensa alle aree:
+Le proprietà si capiscono pensando alle aree:
 
 1. $\int_a^a f(x)\,dx = 0$;
 2. $\int_b^a f(x)\,dx = -\int_a^b f(x)\,dx$ (scambiare gli estremi cambia il segno);
@@ -252,36 +286,36 @@ Dalla definizione seguono le proprietà, tutte ragionevoli se si pensa alle aree
 4. additività: $\int_a^b f\,dx = \int_a^c f\,dx + \int_c^b f\,dx$, per ogni $c$;
 5. se $f(x) \le g(x)$ in $[a;b]$, allora $\int_a^b f\,dx \le \int_a^b g\,dx$.
 
->! La variabile di integrazione è **muta**: $\int_a^b f(x)\,dx$ e $\int_a^b f(t)\,dt$ sono lo stesso numero, come $\sum_{i=1}^{3} i$ e $\sum_{k=1}^{3} k$. Se nel risultato di un integrale definito compare la $x$, c'è un errore.` },
+>! Se nel risultato di un integrale definito compare la $x$, c'è un errore. La variabile di integrazione è **muta**: $\int_a^b f(x)\,dx$ e $\int_a^b f(t)\,dt$ sono lo stesso numero.` },
 
-    { id: 'teorema-fondamentale', titolo: 'Funzione integrale e teorema fondamentale', testo: R`Calcolare un integrale definito con i rettangoli e i limiti sarebbe lunghissimo. C'è una strada molto più corta, e passa per le primitive della prima metà dell'argomento.
+    { id: 'teorema-fondamentale', titolo: 'Funzione integrale e teorema fondamentale', testo: R`Calcolare un integrale con i rettangoli sarebbe lunghissimo. C'è una strada corta, e passa per le primitive.
 
-Si fissa l'estremo sinistro $a$ e si lascia muovere quello destro: a ogni $x$ si associa l'area accumulata da $a$ fino a $x$. Si ottiene una funzione di $x$.
+Fissa l'estremo sinistro $a$ e lascia muovere quello destro. A ogni $x$ associ l'area accumulata da $a$ fino a $x$.
 
->* **Funzione integrale:** $$F(x) = \int_a^x f(t)\,dt.$$ La variabile dentro l'integrale si chiama $t$ perché la lettera $x$ è già occupata dall'estremo.
+>* **Funzione integrale:** $$F(x) = \int_a^x f(t)\,dt.$$ Dentro l'integrale la variabile si chiama $t$, perché la $x$ è già l'estremo.
 
-Nell'animazione guarda quanto cresce l'area a ogni passo: dove la curva è alta cresce in fretta, dove è bassa cresce piano.
+Nell'animazione guarda quanto cresce l'area a ogni passo. Dove la curva è alta cresce in fretta, dove è bassa cresce piano.
 
 [[animazione:integrale-accumulo]]
 
-È il cuore di tutto l'argomento: la velocità con cui cresce l'area è l'altezza della curva. In simboli, la derivata della funzione integrale è la funzione di partenza.
+La velocità con cui cresce l'area è l'altezza della curva. In simboli: la derivata della funzione integrale è la funzione di partenza.
 
 >* **Teorema fondamentale del calcolo integrale (Torricelli–Barrow).** Se $f$ è continua in $[a;b]$, la funzione integrale $F$ è derivabile e $$F'(x) = f(x) \quad \text{per ogni } x \in [a;b].$$
 
-Il perché si vede nel disegno. Passando da $x$ a $x+h$ l'area cresce di una striscia sottile, alta circa $f(x)$ e larga $h$: quindi $F(x+h)-F(x) \approx f(x)\cdot h$, cioè $\dfrac{F(x+h)-F(x)}{h} \approx f(x)$. Facendo tendere $h$ a zero si ottiene l'uguaglianza. Ne segue anche che **ogni funzione continua ha primitive**: una è proprio la sua funzione integrale.
+Il perché: da $x$ a $x+h$ l'area cresce di una striscia alta circa $f(x)$ e larga $h$. Quindi $\dfrac{F(x+h)-F(x)}{h} \approx f(x)$. Con $h \to 0$ diventa un'uguaglianza.
 
-Da qui arriva la formula che si usa nei calcoli. Se $G$ è una primitiva qualunque di $f$:
+Ne segue che **ogni funzione continua ha primitive**: una è la sua funzione integrale. Da qui arriva la formula dei calcoli.
 
->* **Formula fondamentale (Leibniz–Newton):** $$\int_a^b f(x)\,dx = G(b) - G(a).$$ Per calcolare l'area basta una primitiva, calcolata nei due estremi.
+>* **Formula fondamentale (Leibniz–Newton).** Se $G$ è una primitiva qualunque di $f$: $$\int_a^b f(x)\,dx = G(b) - G(a).$$
 
-La differenza $G(b) - G(a)$ si scrive anche $\big[G(x)\big]_a^b$. La costante non serve: se usi $G(x)+c$, nella differenza $c$ si semplifica.
+$G(b) - G(a)$ si scrive anche $\big[G(x)\big]_a^b$. La costante $c$ non serve, perché nella differenza si semplifica.
 
 ~ \int_1^2 3x^2\,dx :: l'area sotto $y = 3x^2$ fra $1$ e $2$
 ~ \big[\evid{x^3}\big]_1^2 :: una primitiva di $3x^2$ è $x^3$ (la $c$ non serve)
 ~ \evid{2^3} - \evid{1^3} :: si calcola la primitiva nell'estremo superiore, meno quella nell'estremo inferiore
 ~ 8 - 1 = \evidb{7} :: un numero, senza $x$ e senza $c$
 
-Nel grafico trascina gli estremi $a$ e $b$ lungo l'asse $x$. Il numero in alto è $G(b) - G(a)$ con $G(x) = \frac{x^3}{3}$: confrontalo con la regione colorata. Poi prova a portare $a$ a destra di $b$.
+Nel grafico trascina gli estremi $a$ e $b$. In alto leggi $G(b) - G(a)$, con $G(x) = \frac{x^3}{3}$. Poi porta $a$ a destra di $b$.
 
 [[grafico:estremi]]
 
@@ -289,37 +323,31 @@ Nel grafico trascina gli estremi $a$ e $b$ lungo l'asse $x$. Il numero in alto �
 [x] $-7$
 [ ] $7$
 [ ] $0$
-=> $\big[x^3\big]_2^1 = 1 - 8 = -7$. Scambiare gli estremi cambia il segno: è la proprietà $\int_b^a f\,dx = -\int_a^b f\,dx$. Chi risponde $7$ fa sempre "grande meno piccolo"; la formula invece è sempre "estremo di sopra meno estremo di sotto".
+=> $\big[x^3\big]_2^1 = 1 - 8 = -7$. Scambiare gli estremi cambia il segno. Chi risponde $7$ fa «grande meno piccolo». La formula è sempre «estremo di sopra meno estremo di sotto».
 
 > Se l'estremo superiore è a sua volta una funzione, si usa la regola della catena: $D\!\left[\int_a^{g(x)} f(t)\,dt\right] = f(g(x))\cdot g'(x)$.` },
 
-    { id: 'aree', titolo: 'Aree con il segno e valore medio', testo: R`Nella somma dei rettangoli ogni rettangolo conta $f(x_i)\cdot\Delta x$. Se la curva sta sotto l'asse $x$, $f(x_i)$ è negativo e il rettangolo conta con il meno. Per questo l'integrale definito è un'area **con il segno**: positiva dove la curva sta sopra l'asse, negativa dove sta sotto.
+    { id: 'aree', titolo: 'Aree con il segno e valore medio', testo: R`Ogni rettangolo conta $f(x_i)\cdot\Delta x$. Dove la curva sta sotto l'asse $x$, $f(x_i)$ è negativo, e il rettangolo conta con il meno. Quindi l'integrale definito è un'area **con il segno**.
 
-Trascina l'estremo $b$ lungo l'asse e guarda i due numeri. Finché la sinusoide sta sopra l'asse crescono insieme; oltre $\pi$ l'integrale comincia a scendere, mentre l'area continua a salire.
+Trascina l'estremo $b$ e guarda i due numeri. Finché la sinusoide sta sopra l'asse crescono insieme. Oltre $\pi$ l'integrale scende, mentre l'area continua a salire.
 
 [[grafico:segno-seno]]
 
-Con $b = 2\pi$ le due gobbe hanno la stessa area, $2$, ma segno opposto:
+Con $b = 2\pi$ le due gobbe hanno area $2$, ma segno opposto: $$\int_0^{2\pi} \sin x\,dx = \big[-\cos x\big]_0^{2\pi} = -1 + 1 = 0.$$
 
-$$\int_0^{2\pi} \sin x\,dx = \big[-\cos x\big]_0^{2\pi} = 0,$$
-
-perché $-\cos 2\pi - (-\cos 0) = -1 + 1$.
-
->* Per l'**area** di una regione si spezza l'intervallo nei tratti in cui $f$ ha segno costante, si calcola l'integrale su ognuno e si sommano i **valori assoluti**. Per la sinusoide su $[0;2\pi]$: $A = \lvert 2 \rvert + \lvert -2 \rvert = 4$.
+>* Per l'**area**, spezza l'intervallo dove $f$ cambia segno. Integra su ogni tratto e somma i **valori assoluti**. Per la sinusoide su $[0;2\pi]$: $A = \lvert 2 \rvert + \lvert -2 \rvert = 4$.
 
 ?? Quanto vale l'area della regione fra $y = x$, l'asse $x$ e le rette $x = -2$ e $x = 2$?
 [x] $4$
 [ ] $0$
 [ ] $2$
-=> Sono due triangoli di area $2$ ciascuno, uno sotto e uno sopra l'asse: l'area è $2 + 2 = 4$. L'integrale $\int_{-2}^{2} x\,dx$ vale invece $0$, perché i due triangoli si cancellano: chi risponde $0$ ha calcolato l'integrale, non l'area.
+=> Sono due triangoli di area $2$, uno sotto e uno sopra l'asse: l'area è $4$. L'integrale $\int_{-2}^{2} x\,dx$ invece vale $0$, perché i triangoli si cancellano. Chi risponde $0$ ha calcolato l'integrale, non l'area.
 
 ### Area fra due curve
 
-Se in $[a;b]$ il grafico di $f$ sta sopra quello di $g$, l'area della regione compresa fra i due grafici è la differenza fra l'area sotto $f$ e l'area sotto $g$:
-
 >* **Area fra due curve**, con $f$ sopra e $g$ sotto: $$A = \int_a^b \big[f(x) - g(x)\big]\,dx$$
 
-Gli estremi $a$ e $b$ sono di solito le ascisse dei punti in cui le curve si incontrano. La formula vale anche se le curve stanno sotto l'asse $x$: conta solo quale delle due sta sopra l'altra.
+Gli estremi $a$ e $b$ sono le ascisse dei punti dove le curve si incontrano. La formula vale anche sotto l'asse $x$: conta solo quale curva sta sopra.
 
 ~ x^2 = x + 2 :: area fra la retta $y = x+2$ e la parabola $y = x^2$: prima cerco dove si incontrano
 ~ x = -1 \ \vee\ x = 2 :: risolvo $x^2 - x - 2 = 0$; per $x = 0$ la retta vale $2$ e la parabola $0$, quindi nel mezzo sta sopra la retta
@@ -330,41 +358,43 @@ Gli estremi $a$ e $b$ sono di solito le ascisse dei punti in cui le curve si inc
 
 ### Valore medio
 
-Un'auto percorre $150$ km in $2$ ore, a velocità variabile. La velocità media è $75$ km/h: la velocità costante che in $2$ ore farebbe fare la stessa strada. Per una funzione qualsiasi l'idea è la stessa.
+Un'auto fa $150$ km in $2$ ore. La velocità media è $75$ km/h: a quella velocità costante farebbe la stessa strada.
 
->* **Teorema della media.** Se $f$ è continua in $[a;b]$, esiste almeno un punto $c$ in $[a;b]$ tale che $$f(c) = \frac{1}{b-a}\int_a^b f(x)\,dx.$$ Il numero $f(c)$ si chiama **valor medio** di $f$: è l'altezza del rettangolo di base $b-a$ che ha la stessa area della regione sotto la curva.
+>* **Teorema della media.** Se $f$ è continua in $[a;b]$, esiste un punto $c$ in $[a;b]$ tale che $$f(c) = \frac{1}{b-a}\int_a^b f(x)\,dx.$$ $f(c)$ è il **valor medio**: l'altezza del rettangolo di base $b-a$ con la stessa area.
 
-Per esempio il valor medio di $x^2$ in $[0;3]$ è $\dfrac{1}{3}\int_0^3 x^2\,dx = \dfrac{1}{3}\cdot 9 = 3$, e si raggiunge per $c = \sqrt{3}$.
+Esempio: il valor medio di $x^2$ in $[0;3]$ è $\dfrac{1}{3}\int_0^3 x^2\,dx = \dfrac{1}{3}\cdot 9 = 3$. Lo raggiunge in $c = \sqrt{3}$.
 
->! Chiedere "l'area" e chiedere "l'integrale" non è la stessa cosa quando la funzione cambia segno. Se il testo dice *area*, studia prima il segno.` },
+>! Se la funzione cambia segno, area e integrale sono diversi. Se il testo dice *area*, studia prima il segno.` },
 
     { id: 'volumi-impropri', titolo: 'Volumi di rotazione e integrali impropri', testo: R`### Solidi di rotazione
 
-Prendi la regione sotto il grafico di $f$, fra $a$ e $b$, e falla ruotare di un giro completo attorno all'asse $x$, come un pezzo di legno al tornio: ottieni un solido. Se lo tagli con un piano perpendicolare all'asse, nel punto $x$, la sezione è un cerchio di raggio $f(x)$, quindi di area $\pi [f(x)]^2$. Il solido è fatto di tanti dischi sottilissimi di questo tipo, e sommarli è un integrale.
+Fai ruotare la regione sotto il grafico di $f$ attorno all'asse $x$, come un pezzo di legno al tornio. Ottieni un solido.
 
->* **Volume del solido di rotazione attorno all'asse $x$:** $$V = \pi \int_a^b [f(x)]^2\,dx.$$ Il quadrato viene dall'area del cerchio: $\pi r^2$ con $r = f(x)$.
+Taglialo nel punto $x$: la sezione è un cerchio di raggio $f(x)$. La sua area è $\pi [f(x)]^2$. Il solido è fatto di tanti dischi sottili, e sommarli è un integrale.
+
+>* **Volume del solido di rotazione attorno all'asse $x$:** $$V = \pi \int_a^b [f(x)]^2\,dx.$$
 
 ~ V = \pi\int_0^4 \big(\sqrt{x}\big)^2\,dx :: la regione sotto $y = \sqrt{x}$, per $x$ fra $0$ e $4$, ruota attorno all'asse $x$
 ~ V = \pi\int_0^4 \evid{x}\,dx :: il quadrato fa sparire la radice
 ~ V = \pi\left[\evid{\frac{x^2}{2}}\right]_0^4 :: primitiva di $x$
 ~ V = \pi\left(\evid{8 - 0}\right) = \evidb{8\pi} :: $\frac{16}{2} = 8$
 
-La formula si può collaudare su un solido noto. Il segmento $y = \dfrac{r}{h}x$, per $x$ fra $0$ e $h$, ruotando genera un cono di raggio $r$ e altezza $h$, e infatti $V = \pi\int_0^h \dfrac{r^2}{h^2}x^2\, dx = \pi\dfrac{r^2}{h^2}\cdot\dfrac{h^3}{3} = \dfrac{1}{3}\pi r^2 h$, la formula del cono.
+> Prova la formula su un cono. Il segmento $y = \dfrac{r}{h}x$, per $x$ fra $0$ e $h$, ruotando dà un cono. E infatti $V = \pi\int_0^h \dfrac{r^2}{h^2}x^2\, dx = \dfrac{1}{3}\pi r^2 h$.
 
 ?? La regione sotto $y = x$, per $x$ fra $0$ e $3$, ruota attorno all'asse $x$. Quale integrale dà il volume?
 [x] $\pi\int_0^3 x^2\,dx$
 [ ] $\pi\int_0^3 x\,dx$
 [ ] $\int_0^3 \pi x\,dx$
 [ ] $2\pi\int_0^3 x\,dx$
-=> Ogni sezione è un cerchio di raggio $x$, quindi di area $\pi x^2$: il volume è $\pi\int_0^3 x^2\,dx = 9\pi$, quello di un cono di raggio $3$ e altezza $3$. Senza il quadrato si usa il raggio al posto dell'area del cerchio; $2\pi\int_0^3 x\,dx$ somma le circonferenze, che sono linee, non i cerchi.
+=> Ogni sezione è un cerchio di raggio $x$, di area $\pi x^2$. Il volume è $\pi\int_0^3 x^2\,dx = 9\pi$. Senza il quadrato usi il raggio al posto dell'area del cerchio.
 
 ### Integrali impropri
 
-L'integrale definito è stato costruito su un intervallo limitato e per una funzione limitata. Che cosa succede se l'intervallo arriva all'infinito, o se la funzione ha un asintoto verticale? Si calcola l'integrale su un intervallo normale e poi si fa un limite.
+E se l'intervallo arriva all'infinito, o la funzione ha un asintoto verticale? Calcoli l'integrale su un intervallo normale, poi fai un limite.
 
 >* **Intervallo illimitato:** $$\int_a^{+\infty} f(x)\,dx = \lim_{b \to +\infty}\int_a^{b} f(x)\,dx.$$ Se il limite è un numero finito l'integrale **converge**, altrimenti **diverge**.
 
-Trascina l'estremo $b$ verso destra e guarda il numero dell'area. Poi confrontalo con quello di $\frac{1}{x}$, la curva tratteggiata.
+Trascina l'estremo $b$ verso destra e guarda l'area. Poi confrontala con quella sotto $\frac{1}{x}$, la curva tratteggiata.
 
 [[grafico:improprio]]
 
@@ -373,11 +403,11 @@ Trascina l'estremo $b$ verso destra e guarda il numero dell'area. Poi confrontal
 ~ \lim_{b \to +\infty}\left(\evid{-\frac{1}{b} + 1}\right) :: si calcola negli estremi $b$ e $1$, come sempre
 ~ \evidb{1} :: $\frac1b$ tende a zero: l'integrale converge
 
-Una regione infinitamente lunga, ma di area finita. Con $\frac{1}{x}$, che scende più piano, il risultato si ribalta: $\int_1^{b}\dfrac{dx}{x} = \ln b$, che tende a $+\infty$, e l'integrale diverge.
+La regione è infinitamente lunga, ma ha area finita. Con $\frac{1}{x}$ invece $\int_1^{b}\dfrac{dx}{x} = \ln b$, che tende a $+\infty$: l'integrale diverge.
 
-**Funzione illimitata:** se $f$ ha un asintoto verticale in un estremo, ci si avvicina a quell'estremo con un limite. Per esempio $\int_0^1 \dfrac{dx}{\sqrt{x}} = \lim_{\varepsilon \to 0^+}\big[2\sqrt{x}\big]_\varepsilon^1 = \lim_{\varepsilon \to 0^+}\big(2 - 2\sqrt{\varepsilon}\big) = 2$: anche qui area finita.
+**Funzione illimitata.** Se $f$ ha un asintoto verticale in un estremo, ti avvicini a quell'estremo con un limite: $\int_0^1 \dfrac{dx}{\sqrt{x}} = \lim_{\varepsilon \to 0^+}\big[2\sqrt{x}\big]_\varepsilon^1 = \lim_{\varepsilon \to 0^+}\big(2 - 2\sqrt{\varepsilon}\big) = 2$.
 
->! Non scrivere $\big[-\frac{1}{x}\big]_1^{+\infty}$ sostituendo $+\infty$ come se fosse un numero. Si calcola l'integrale con l'estremo $b$ finito e **poi** si fa il limite.` },
+>! Non sostituire $+\infty$ come se fosse un numero. Calcola l'integrale con l'estremo $b$ e **poi** fai il limite.` },
 
   ],
 
@@ -529,15 +559,36 @@ Una regione infinitamente lunga, ma di area finita. Con $\frac{1}{x}$, che scend
   ],
 
   esercizi: [
-    { id: 'es-01', difficolta: 1, testo: R`Calcola $\displaystyle\int (3x^2 - 4x + 1)\,dx$.`, suggerimenti: [R`Spezza con la linearità e integra un termine alla volta.`, R`Ogni potenza aumenta di uno l'esponente e si divide per il nuovo esponente.`], risposta: { tipo: 'testo', accettate: ['x^3-2x^2+x+c', 'x³-2x²+x+c', 'x^3 - 2x^2 + x + c', 'x^3-2x^2+x'] }, soluzione: [R`$\int 3x^2 dx = 3\cdot\dfrac{x^3}{3} = x^3$.`, R`$\int -4x\,dx = -4\cdot\dfrac{x^2}{2} = -2x^2$, e $\int 1\,dx = x$.`, R`Risultato: $x^3 - 2x^2 + x + c$. Verifica derivando: $3x^2 - 4x + 1$. ✓`] },
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Calcola $\int 4x^3\,dx$. Scrivi gli esponenti con ^, per esempio x^2. Il $+\,c$ puoi anche ometterlo.`, suggerimenti: [R`Regola della potenza: $\int x^n\,dx = \dfrac{x^{n+1}}{n+1} + c$.`], risposta: prim(['x^4']), soluzione: [R`L'esponente sale di uno: $x^3$ diventa $\dfrac{x^4}{4}$.`, R`Moltiplica per $4$: $4 \cdot \dfrac{x^4}{4} = x^4$. Risultato: $x^4 + c$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Calcola $\int (2x + 3)\,dx$.`, suggerimenti: [R`Integra un termine alla volta.`], risposta: prim(['x^2', '3x']), soluzione: [R`$\int 2x\,dx = 2 \cdot \dfrac{x^2}{2} = x^2$.`, R`$\int 3\,dx = 3x$.`, R`Risultato: $x^2 + 3x + c$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Calcola $\int \cos x\,dx$.`, suggerimenti: [R`Quale funzione ha per derivata $\cos x$?`], risposta: prim(['sin(x)']), soluzione: [R`$D(\sin x) = \cos x$.`, R`Quindi $\int \cos x\,dx = \sin x + c$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Calcola $\displaystyle\int_0^2 3x^2\,dx$.`, suggerimenti: [R`Una primitiva di $3x^2$ è $x^3$. Calcolala in $2$ e in $0$.`], risposta: val(8), soluzione: [R`Primitiva: $x^3$.`, R`$\big[x^3\big]_0^2 = 2^3 - 0^3 = 8$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Calcola $\displaystyle\int_1^4 2x\,dx$.`, suggerimenti: [R`Una primitiva di $2x$ è $x^2$.`], risposta: val(15), soluzione: [R`Primitiva: $x^2$.`, R`$\big[x^2\big]_1^4 = 16 - 1 = 15$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Calcola $\int (6x^2 - 2x)\,dx$.`, suggerimenti: [R`Integra un termine alla volta: l'esponente sale di uno e dividi per il nuovo esponente.`], risposta: prim(['2x^3', '-x^2']), soluzione: [R`$\int 6x^2\,dx = 6 \cdot \dfrac{x^3}{3} = 2x^3$.`, R`$\int 2x\,dx = x^2$.`, R`Risultato: $2x^3 - x^2 + c$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Calcola $\int (e^x + 2x)\,dx$.`, suggerimenti: [R`La derivata di $e^x$ è ancora $e^x$.`], risposta: prim(['e^x', 'x^2']), soluzione: [R`$\int e^x\,dx = e^x$.`, R`$\int 2x\,dx = x^2$.`, R`Risultato: $e^x + x^2 + c$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Calcola $\int \dfrac{1}{x^2}\,dx$.`, suggerimenti: [R`Scrivi $\dfrac{1}{x^2} = x^{-2}$ e usa la regola della potenza.`], risposta: prim(['-1/x'], ['-x^-1', '-x^(-1)', '-(1/x)', '-1/(x)']), soluzione: [R`$\dfrac{1}{x^2} = x^{-2}$.`, R`L'esponente sale di uno: $\dfrac{x^{-1}}{-1} = -x^{-1}$.`, R`Risultato: $-\dfrac{1}{x} + c$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Calcola $\displaystyle\int_0^1 (x^2 + 2x)\,dx$. Puoi scrivere una frazione, per esempio 5/3.`, suggerimenti: [R`Una primitiva è $\dfrac{x^3}{3} + x^2$.`], risposta: val(4 / 3), soluzione: [R`Primitiva: $\dfrac{x^3}{3} + x^2$.`, R`In $1$ vale $\dfrac{1}{3} + 1 = \dfrac{4}{3}$. In $0$ vale $0$.`, R`Risultato: $\dfrac{4}{3}$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Calcola $\displaystyle\int_0^3 (2x - 1)\,dx$.`, suggerimenti: [R`Una primitiva è $x^2 - x$.`], risposta: val(6), soluzione: [R`Primitiva: $x^2 - x$.`, R`$\big[x^2 - x\big]_0^3 = (9 - 3) - 0 = 6$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 2, testo: R`Calcola $\displaystyle\int_0^{\pi} \sin x\,dx$.`, suggerimenti: [R`Una primitiva di $\sin x$ è $-\cos x$: attento al segno.`, R`$\cos \pi = -1$ e $\cos 0 = 1$.`], risposta: val(2), soluzione: [R`Primitiva: $-\cos x$.`, R`$\big[-\cos x\big]_0^{\pi} = -\cos \pi - (-\cos 0)$.`, R`$= 1 + 1 = 2$.`] },
+    { id: 'b-12', livello: 'base', difficolta: 2, testo: R`Calcola $\displaystyle\int_0^1 e^x\,dx$. Puoi scrivere e per il numero di Nepero.`, suggerimenti: [R`Una primitiva di $e^x$ è $e^x$. Ricorda che $e^0 = 1$.`], risposta: val(Math.E - 1), soluzione: [R`$\big[e^x\big]_0^1 = e^1 - e^0$.`, R`$= e - 1$, circa $1{,}72$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Calcola l'area della regione sotto $y = x^2$, sopra l'asse $x$, fra $x = 0$ e $x = 3$.`, suggerimenti: [R`In $[0; 3]$ la curva sta sopra l'asse: l'area è l'integrale.`], risposta: val(9), soluzione: [R`$x^2 \ge 0$, quindi l'area è $\displaystyle\int_0^3 x^2\,dx$.`, R`Primitiva: $\dfrac{x^3}{3}$.`, R`$\dfrac{27}{3} - 0 = 9$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Calcola l'area della regione fra la parabola $y = 4 - x^2$ e l'asse $x$.`, suggerimenti: [R`Trova dove la parabola taglia l'asse $x$: sono gli estremi.`, R`Fra $-2$ e $2$ la parabola sta sopra l'asse.`], risposta: val(32 / 3), soluzione: [R`$4 - x^2 = 0$ per $x = -2$ e $x = 2$. In mezzo la curva sta sopra l'asse.`, R`Primitiva: $4x - \dfrac{x^3}{3}$.`, R`In $2$ vale $8 - \dfrac{8}{3} = \dfrac{16}{3}$. In $-2$ vale $-\dfrac{16}{3}$.`, R`Area: $\dfrac{16}{3} + \dfrac{16}{3} = \dfrac{32}{3}$.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Calcola l'area della regione fra la parabola $y = x^2 - 2x$ e l'asse $x$.`, suggerimenti: [R`La parabola taglia l'asse in $0$ e in $2$. In mezzo sta sotto l'asse.`, R`L'integrale viene negativo: l'area è il suo valore assoluto.`], risposta: val(4 / 3), soluzione: [R`$x^2 - 2x = 0$ per $x = 0$ e $x = 2$. In mezzo la curva sta sotto l'asse.`, R`$\displaystyle\int_0^2 (x^2 - 2x)\,dx = \left[\dfrac{x^3}{3} - x^2\right]_0^2 = \dfrac{8}{3} - 4 = -\dfrac{4}{3}$.`, R`L'area è il valore assoluto: $\dfrac{4}{3}$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Calcola l'area della regione fra la retta $y = x$ e l'asse $x$, per $x$ fra $-1$ e $3$.`, suggerimenti: [R`La retta cambia segno in $x = 0$: spezza l'integrale lì.`, R`Il pezzo sotto l'asse va preso con il segno cambiato.`], risposta: val(5), soluzione: [R`$\displaystyle\int_{-1}^{0} x\,dx = \left[\dfrac{x^2}{2}\right]_{-1}^{0} = -\dfrac{1}{2}$: sotto l'asse, area $\dfrac{1}{2}$.`, R`$\displaystyle\int_0^3 x\,dx = \dfrac{9}{2}$.`, R`Area: $\dfrac{1}{2} + \dfrac{9}{2} = 5$. L'integrale da $-1$ a $3$ invece vale $4$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Calcola $\displaystyle\int_0^1 2x\,(x^2 + 1)^2\,dx$ con la sostituzione $t = x^2 + 1$.`, suggerimenti: [R`$dt = 2x\,dx$: è proprio il pezzo che c'è accanto.`, R`Cambia anche gli estremi: per $x = 0$ e $x = 1$ quanto vale $t$?`], risposta: val(7 / 3), soluzione: [R`$t = x^2 + 1$, $dt = 2x\,dx$. Estremi: da $t = 1$ a $t = 2$.`, R`L'integrale diventa $\displaystyle\int_1^2 t^2\,dt$.`, R`$\left[\dfrac{t^3}{3}\right]_1^2 = \dfrac{8}{3} - \dfrac{1}{3} = \dfrac{7}{3}$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Calcola $\displaystyle\int_0^1 x\,e^{x^2}\,dx$ con la sostituzione $t = x^2$.`, suggerimenti: [R`$dt = 2x\,dx$, quindi $x\,dx = \dfrac{dt}{2}$.`, R`Gli estremi diventano $t = 0$ e $t = 1$.`], risposta: val((Math.E - 1) / 2), soluzione: [R`$t = x^2$, $x\,dx = \dfrac{dt}{2}$. Estremi: da $t = 0$ a $t = 1$.`, R`L'integrale diventa $\dfrac{1}{2}\displaystyle\int_0^1 e^t\,dt$.`, R`$\dfrac{1}{2}\big[e^t\big]_0^1 = \dfrac{e - 1}{2}$, circa $0{,}86$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Calcola $\displaystyle\int_0^1 x\,e^x\,dx$ per parti.`, suggerimenti: [R`Deriva $x$ e integra $e^x$.`, R`Una primitiva è $x\,e^x - e^x$.`], risposta: val(1), soluzione: [R`$f = x$, $g' = e^x$: allora $f' = 1$ e $g = e^x$.`, R`$\int x\,e^x\,dx = x\,e^x - \int e^x\,dx = x\,e^x - e^x$.`, R`$\big[x\,e^x - e^x\big]_0^1 = (e - e) - (0 - 1) = 1$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Calcola $\displaystyle\int_0^{\pi/2} x\cos x\,dx$ per parti.`, suggerimenti: [R`Deriva $x$ e integra $\cos x$.`, R`Una primitiva è $x\sin x + \cos x$.`], risposta: val(Math.PI / 2 - 1), soluzione: [R`$f = x$, $g' = \cos x$: allora $f' = 1$ e $g = \sin x$.`, R`$\int x\cos x\,dx = x\sin x - \int \sin x\,dx = x\sin x + \cos x$.`, R`In $\dfrac{\pi}{2}$ vale $\dfrac{\pi}{2} + 0$. In $0$ vale $0 + 1$.`, R`Risultato: $\dfrac{\pi}{2} - 1$, circa $0{,}57$.`] },
 
-    { id: 'es-02', difficolta: 1, testo: R`Calcola $\displaystyle\int \frac{2}{x^3}\,dx$.`, suggerimenti: [R`Riscrivi la frazione come potenza con esponente negativo.`, R`$\dfrac{2}{x^3} = 2x^{-3}$: ora è la regola della potenza con $\alpha = -3$.`], risposta: { tipo: 'testo', accettate: ['-1/x^2+c', '-1/x²+c', '-x^-2+c', '-1/x^2 + c', '-(1/x^2)+c'] }, soluzione: [R`$\dfrac{2}{x^3} = 2x^{-3}$.`, R`$\int 2x^{-3}dx = 2\cdot\dfrac{x^{-2}}{-2} = -x^{-2} = -\dfrac{1}{x^2}$.`, R`Verifica: $D\!\left(-x^{-2}\right) = 2x^{-3} = \dfrac{2}{x^3}$. ✓`] },
+    { id: 'es-01', difficolta: 1, testo: R`Calcola $\displaystyle\int (3x^2 - 4x + 1)\,dx$.`, suggerimenti: [R`Spezza con la linearità e integra un termine alla volta.`, R`Ogni potenza aumenta di uno l'esponente e si divide per il nuovo esponente.`], risposta: prim(['x^3', '-2x^2', 'x']), soluzione: [R`$\int 3x^2 dx = 3\cdot\dfrac{x^3}{3} = x^3$.`, R`$\int -4x\,dx = -4\cdot\dfrac{x^2}{2} = -2x^2$, e $\int 1\,dx = x$.`, R`Risultato: $x^3 - 2x^2 + x + c$. Verifica derivando: $3x^2 - 4x + 1$. ✓`] },
+
+    { id: 'es-02', difficolta: 1, testo: R`Calcola $\displaystyle\int \frac{2}{x^3}\,dx$.`, suggerimenti: [R`Riscrivi la frazione come potenza con esponente negativo.`, R`$\dfrac{2}{x^3} = 2x^{-3}$: ora è la regola della potenza con $\alpha = -3$.`], risposta: prim(['-1/x^2'], ['-x^-2', '-x^(-2)', '-(1/x^2)']), soluzione: [R`$\dfrac{2}{x^3} = 2x^{-3}$.`, R`$\int 2x^{-3}dx = 2\cdot\dfrac{x^{-2}}{-2} = -x^{-2} = -\dfrac{1}{x^2}$.`, R`Verifica: $D\!\left(-x^{-2}\right) = 2x^{-3} = \dfrac{2}{x^3}$. ✓`] },
 
     { id: 'es-03', difficolta: 1, testo: R`Calcola $\displaystyle\int_0^1 (x^2 + 1)\,dx$.`, suggerimenti: [R`Trova una primitiva e usa la formula fondamentale.`, R`Una primitiva è $\dfrac{x^3}{3} + x$.`], risposta: { tipo: 'numero', valore: 1.3333, tolleranza: 0.01 }, soluzione: [R`Primitiva: $G(x) = \dfrac{x^3}{3} + x$.`, R`$G(1) - G(0) = \left(\dfrac{1}{3} + 1\right) - 0 = \dfrac{4}{3}$.`] },
 
     { id: 'es-04', difficolta: 1, testo: R`Calcola $\displaystyle\int_0^{\pi/2} \cos x\,dx$.`, suggerimenti: [R`La primitiva del coseno è il seno.`, R`Ricorda che $\sin\dfrac{\pi}{2} = 1$ e $\sin 0 = 0$.`], risposta: { tipo: 'numero', valore: 1, tolleranza: 0.01 }, soluzione: [R`$\big[\sin x\big]_0^{\pi/2} = \sin\dfrac{\pi}{2} - \sin 0 = 1 - 0 = 1$.`, R`Il risultato è positivo perché in $\left[0;\dfrac{\pi}{2}\right]$ il coseno è positivo: è l'area sotto la curva.`] },
 
-    { id: 'es-05', difficolta: 2, testo: R`Calcola $\displaystyle\int \frac{x}{x^2+4}\,dx$.`, suggerimenti: [R`Guarda la derivata del denominatore.`, R`$D(x^2+4) = 2x$: al numeratore c'è $x$, manca solo il fattore $2$.`], risposta: { tipo: 'testo', accettate: ['1/2ln(x^2+4)+c', '(1/2)ln(x^2+4)+c', 'ln(x^2+4)/2+c', '1/2*ln(x^2+4)+c', '0.5ln(x^2+4)+c'] }, soluzione: [R`Si moltiplica e si divide per $2$: $\dfrac{1}{2}\displaystyle\int \dfrac{2x}{x^2+4}\,dx$.`, R`Ora è della forma $\dfrac{f'}{f}$, quindi si ottiene $\dfrac{1}{2}\ln(x^2+4) + c$.`, R`Il valore assoluto non serve: $x^2+4$ è sempre positivo.`] },
+    { id: 'es-05', difficolta: 2, testo: R`Calcola $\displaystyle\int \frac{x}{x^2+4}\,dx$.`, suggerimenti: [R`Guarda la derivata del denominatore.`, R`$D(x^2+4) = 2x$: al numeratore c'è $x$, manca solo il fattore $2$.`], risposta: prim(['1/2ln(x^2+4)'], ['(1/2)ln(x^2+4)', 'ln(x^2+4)/2', '1/2*ln(x^2+4)', '0.5ln(x^2+4)', '1/2ln|x^2+4|', 'ln|x^2+4|/2', 'ln(√(x^2+4))']), soluzione: [R`Si moltiplica e si divide per $2$: $\dfrac{1}{2}\displaystyle\int \dfrac{2x}{x^2+4}\,dx$.`, R`Ora è della forma $\dfrac{f'}{f}$, quindi si ottiene $\dfrac{1}{2}\ln(x^2+4) + c$.`, R`Il valore assoluto non serve: $x^2+4$ è sempre positivo.`] },
 
     { id: 'es-06', difficolta: 2, testo: R`Calcola $\displaystyle\int_0^{\pi} x\sin x\,dx$.`, suggerimenti: [R`Prodotto fra un polinomio e una funzione goniometrica: integrazione per parti.`, R`Prendi $f(x) = x$ come fattore finito e $g'(x) = \sin x$ come differenziale, così $g(x) = -\cos x$.`], risposta: { tipo: 'numero', valore: 3.1416, tolleranza: 0.01 }, soluzione: [R`Per parti: $\int_0^\pi x\sin x\,dx = \big[-x\cos x\big]_0^{\pi} + \int_0^{\pi}\cos x\,dx$.`, R`Primo pezzo: $-\pi\cos\pi + 0 = -\pi(-1) = \pi$.`, R`Secondo pezzo: $\big[\sin x\big]_0^\pi = 0$.`, R`Totale: $\pi \approx 3{,}14$.`] },
 

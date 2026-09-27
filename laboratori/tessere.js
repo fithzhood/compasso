@@ -7,11 +7,15 @@
    «pieno, senza buchi né sovrapposizioni» non dipende da arrotondamenti.
    Aggancio: una tessera lasciata a meno di mezzo quadretto dal bordo di una vicina ci si accosta;
    altrimenti si ferma sui quadretti del tavolo. Nessuna calamita verso la soluzione.
+   Schermata singola (SCHEMA-LAB.md): tavolo e vassoio stanno sempre nella scena; il vassoio va
+   sopra o a destra, secondo dove le tessere vengono più grandi, e il tavolo si allarga nello
+   spazio che avanza. Modalità libera: quante tessere x², x e 1 le sceglie lo studente.
    Contratto: SCHEMA-LAB.md — modelli: laboratori/bilancia.js, laboratori/canestro.js */
 (function () {
   const STILE = `
-    .lab-tessere .lab-scena { background: linear-gradient(180deg, var(--sup2), var(--sup)); padding: 10px 8px 6px; }
-    .lab-tessere .lab-scena svg { max-width: 1000px; max-height: 82vh; margin: 0 auto; overflow: visible; }
+    .lab-tessere [hidden] { display: none !important; }
+    .lab-tessere .lab-scena { background: linear-gradient(180deg, var(--sup2), var(--sup)); overflow: hidden; touch-action: none; }
+    .lab-tessere .lab-scena > svg { overflow: visible; }
     .lab-tessere .tavolo { fill: var(--sup); stroke: var(--bordo2); stroke-width: 1.5; filter: url(#lab-tessere-ombra); }
     .lab-tessere .quadretto { stroke: var(--bordo); stroke-width: 1; }
     .lab-tessere .pozzo { fill: var(--sup3); stroke: var(--bordo); stroke-width: 1.2; transition: fill .2s, stroke .2s; }
@@ -46,29 +50,41 @@
     .lab-tessere .quota.vinta line { stroke: var(--ok); }
     .lab-tessere .quota.vinta rect { stroke: var(--ok); stroke-width: 2; fill: var(--ok-tenue); }
     .lab-tessere .quota.vinta text { fill: var(--ok); }
-    .lab-tessere .obiettivo { padding: 10px 14px 0; font-size: .95rem; }
-    .lab-tessere .obiettivo p { margin: 0; }
-    .lab-tessere .formule { display: grid; gap: 2px; padding: 8px 14px 2px; }
-    .lab-tessere .f-riga { display: flex; align-items: center; gap: 4px 8px; flex-wrap: wrap; min-height: 1.95em; }
-    .lab-tessere .f-et { font-size: .68rem; letter-spacing: .04em; text-transform: uppercase; color: var(--testo2); min-width: 9.4em; }
+    /* --- pannello --- */
+    .lab-tessere .obiettivo { text-align: center; font-size: clamp(.9rem, 2.1cqmin, 1.05rem); color: var(--testo2); line-height: 1.5; }
+    .lab-tessere .obiettivo p { margin: 0; font-size: inherit; }
+    .lab-tessere .obiettivo .katex { font-size: 1.25em; }   /* gli esponenti di KaTeX sono al 70%: così restano sopra i 12 px */
+    .lab-tessere .obiettivo strong { color: var(--testo); }
+    .lab-tessere .obiettivo .c-breve { display: none; }
+    @container lab (max-aspect-ratio: 5 / 4) and (max-width: 599px) { .lab-tessere .obiettivo .c-breve { display: block; } .lab-tessere .obiettivo .c-breve + .c-lungo { display: none; } }
+    .lab-tessere .formule { display: grid; gap: 1px; justify-content: center; }
+    .lab-tessere .f-riga { display: flex; align-items: center; gap: 2px 8px; flex-wrap: wrap; min-height: 1.95em; }
+    .lab-tessere .f-et { font-size: .75rem; letter-spacing: .04em; text-transform: uppercase; color: var(--testo2); min-width: 9.6em; }
     .lab-tessere .f-tex { font-size: 1.08rem; }
     .lab-tessere .f-obj { font-size: 1.2rem; }
     .lab-tessere .f-vuoto { font-size: .85rem; color: var(--testo3); }
+    /* sul telefono le etichette si accorciano, così formula e cartellino stanno su una riga */
+    @container lab (max-width: 520px) { .lab-tessere .f-et .lunga { display: none; } .lab-tessere .f-et { min-width: 7.8em; } }
     .lab-tessere .chip { display: inline-flex; align-items: center; gap: 4px; font-size: .8rem; padding: 1px 10px; border-radius: 999px; background: var(--sup2); border: 1px solid var(--bordo); color: var(--testo2); }
     .lab-tessere .chip.ok { background: var(--accento-tenue); color: var(--accento-testo); border-color: transparent; }
     .lab-tessere .chip.vinta { background: var(--ok-tenue); color: var(--ok); border-color: transparent; }
     .lab-tessere .chip.no { background: var(--no-tenue); color: var(--no); border-color: transparent; }
     .lab-tessere .chip .katex { font-size: 1.05em; }
+    .lab-tessere .lab-messaggio { padding: 0 4px; min-height: 1.5em; font-size: clamp(.9rem, 2.1cqmin, 1.05rem); text-align: center; line-height: 1.45; }
+    .lab-tessere.in-libero .lab-messaggio:empty { display: none; }
     .lab-tessere .vinto { display: inline-block; animation: lab-tessere-pop .45s cubic-bezier(.34,1.56,.64,1); }
     @keyframes lab-tessere-pop { from { transform: scale(.75); opacity: 0 } to { transform: none; opacity: 1 } }
-    .lab-tessere .aiuto { margin: 0 12px 10px; padding: 12px 14px; border-radius: 14px; background: var(--nota-tenue); border: 1px solid var(--bordo); font-size: .92rem; line-height: 1.55; animation: lab-tessere-apri .3s var(--morbido, ease-out); }
-    .lab-tessere .aiuto p { margin: 0 0 .55em; } .lab-tessere .aiuto p:last-child { margin: 0; }
-    @keyframes lab-tessere-apri { from { opacity: 0; transform: translateY(-6px) } to { opacity: 1; transform: none } }
+    .lab-tessere .lab-aiuto .consegna { color: var(--testo2); }
+    .lab-tessere .lab-barra { padding: 0; border: 0; gap: 6px 8px; justify-content: center; flex-wrap: wrap; }
+    .lab-tessere .lab-barra .btn { min-height: 40px; }
     .lab-tessere .lab-barra .btn[disabled] { opacity: .38; cursor: default; }
     .lab-tessere .b-ruota svg { width: 18px; height: 18px; }
     .lab-tessere .b-aiuto { min-width: 42px; }
     .lab-tessere .b-aiuto[aria-expanded="true"] { background: var(--accento-tenue); border-color: var(--accento); color: var(--accento-testo); }
+    .lab-tessere .lab-parametri { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 14px; }
+    .lab-tessere .lab-param .nome { font-weight: 600; min-width: 1.3em; }
   `;
+
 
   /* ---------------- misure ---------------- */
   const X = 2.6;          /* lato x, in quadretti: non intero di proposito */
@@ -78,13 +94,27 @@
   const VICINO = 0.6;     /* quanto deve essere vicina, nell'altra direzione, perché conti come vicina */
   const PAD = 0.2;        /* margine di presa intorno alle tessere (il dito è grosso) */
 
-  /* il tavolo sta sempre in (0; 0); il vassoio sopra (telefono: è la prima cosa che si vede) o a destra (schermo largo) */
-  const DISPOSIZIONI = {
-    stretta: { W: 9, H: 9, vb: [-0.25, -4.25, 9.5, 13.5],
-      pozzi: { q: [0, -4, 3.1, 3.7], b: [3.3, -4, 3.5, 3.7], u: [7, -4, 2, 3.7] } },
-    larga: { W: 13, H: 9, vb: [-0.3, -0.3, 19.1, 9.6],
-      pozzi: { q: [13.5, 0, 5, 3.7], b: [13.5, 3.9, 3.3, 5.1], u: [17, 3.9, 1.5, 5.1] } }
-  };
+  /* il tavolo sta sempre in (0; 0); il vassoio sopra (spazio verticale) o a destra (spazio largo).
+     Si sceglie la disposizione in cui il quadretto viene più grande (al più U_MAX pixel), poi il
+     tavolo si allarga fino a riempire la scena: 9 × 7 quadretti al minimo, abbastanza per ogni
+     soluzione con le misure scritte intorno. */
+  const U_MAX = 72;
+  function disposizione(w, h) {
+    const uSopra = Math.min(w / 9.5, h / 11.5, U_MAX), uDestra = Math.min(w / 13.4, h / 10.6, U_MAX);
+    const sopra = uSopra > uDestra + 0.5 || (Math.abs(uSopra - uDestra) <= 0.5 && w / h < 1.2);
+    if (sopra) {
+      const u = uSopra;
+      const W = Math.max(9, Math.min(16, Math.floor(w / u - 0.5 + 1e-6))), H = Math.max(7, Math.min(12, Math.floor(h / u - 4.5 + 1e-6)));
+      const o = (W - 9) / 2;
+      return { chiave: 's' + W + 'x' + H, W, H, vb: [-0.25, -4.25, W + 0.5, H + 4.5],
+        pozzi: { q: [o, -4, 3.1, 3.7], b: [o + 3.3, -4, 3.5, 3.7], u: [o + 7, -4, 2, 3.7] } };
+    }
+    const u = uDestra;
+    const W = Math.max(9, Math.min(18, Math.floor(w / u - 4.4 + 1e-6))), H = Math.max(10, Math.min(13, Math.floor(h / u - 0.6 + 1e-6)));
+    const x = W + 0.4;
+    return { chiave: 'd' + W + 'x' + H, W, H, vb: [-0.3, -0.3, W + 4.4, H + 0.6],
+      pozzi: { q: [x, 0, 3.4, 3.7], b: [x, 3.9, 3.4, 3.7], u: [x, 7.8, 3.4, 2.2] } };
+  }
 
   /* ---------------- coppie esatte [i, j] = i + j·x ---------------- */
   const V = p => p[0] + p[1] * X;
@@ -159,6 +189,17 @@
     '**Quando è giusto.** Le tessere devono formare un rettangolo pieno: niente vuoti (a righe) e niente sovrapposizioni (in rosso). Allora l\'area delle tessere, cioè il polinomio, è uguale a base per altezza, e i due lati misurati sono i fattori.'
   ].join('\n\n');
 
+  /* consegne brevi per il telefono in verticale: quella intera si legge nel «?». null = già corta */
+  const BREVI = [
+    'Un rettangolo pieno con **tutte** le tessere di $2x + 6$.',
+    'Rettangolo pieno con tutte le tessere di $x^2 + 3x + 2$.',
+    null,
+    null,
+    null,
+    'Aggiungi a $x^2 + 6x$ i quadratini che vuoi, per formare un **quadrato** pieno.'
+  ];
+  const MAX_LIBERO = { q: 4, b: 12, u: 20 };
+
   const NS = 'http://www.w3.org/2000/svg';
   const el = (n, a, testo) => { const e = document.createElementNS(NS, n); for (const k in a || {}) e.setAttribute(k, a[k]); if (testo != null) e.textContent = testo; return e; };
   const imposta = (e, a) => { for (const k in a) e.setAttribute(k, typeof a[k] === 'number' ? +a[k].toFixed(2) : a[k]); };
@@ -170,31 +211,41 @@
       if (!document.getElementById('stile-lab-tessere')) { const s = document.createElement('style'); s.id = 'stile-lab-tessere'; s.textContent = STILE; document.head.appendChild(s); }
       radice.classList.add('lab-tessere');
       radice.innerHTML = `
-        <div class="lab-scena"></div>
-        <div class="obiettivo"></div>
-        <div class="formule">
-          <div class="f-riga"><span class="f-et">da scomporre</span><span class="f-tex f-obj"></span></div>
-          <div class="f-riga"><span class="f-et">base × altezza</span><span class="f-tex f-cor"></span></div>
-          <div class="f-riga"><span class="f-et">area delle tessere</span><span class="f-tex f-tav"></span><span class="f-chip"></span></div>
-        </div>
-        <div class="lab-messaggio"></div>
-        <div class="aiuto" hidden></div>
-        <div class="lab-barra">
-          <button type="button" class="btn b-ruota" title="Gira la bacchetta scelta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/></svg>Ruota</button>
-          <button type="button" class="btn piccolo b-ric">Ricomincia</button>
-          <button type="button" class="btn piccolo b-aiuto" aria-expanded="false" title="Come si gioca">?</button>
-          <span class="lab-livello"></span>
+        <div class="lab-layout">
+          <div class="lab-scena">
+            <div class="lab-aiuto" hidden data-scorre><div class="consegna" hidden></div><div class="testo-aiuto"></div><button type="button" class="btn piccolo m-chiudi">Ho capito</button></div>
+          </div>
+          <div class="lab-lato">
+            <div class="lab-livelli" role="group" aria-label="Livelli"><button type="button" class="btn piccolo lab-libero" aria-pressed="false" title="Modalità libera: scegli tu quante tessere avere">Libero</button></div>
+            <div class="obiettivo"></div>
+            <div class="lab-parametri" hidden>
+              ${[['q', 'x²', 'quadrati grandi'], ['b', 'x', 'bacchette'], ['u', '1', 'quadratini']].map(([k, n, a]) => `<div class="lab-param" data-p="${k}"><span class="nome">${n}</span><button type="button" class="btn piccolo" data-d="-1" aria-label="un ${a.slice(0, -1)}o in meno">−</button><output></output><button type="button" class="btn piccolo" data-d="1" aria-label="un ${a.slice(0, -1)}o in più">+</button></div>`).join('')}
+            </div>
+            <div class="formule">
+              <div class="f-riga"><span class="f-et">da scomporre</span><span class="f-tex f-obj"></span></div>
+              <div class="f-riga"><span class="f-et">base × altezza</span><span class="f-tex f-cor"></span></div>
+              <div class="f-riga"><span class="f-et"><span class="lunga">area delle </span>tessere</span><span class="f-tex f-tav"></span><span class="f-chip"></span></div>
+            </div>
+            <div class="lab-messaggio" aria-live="polite"></div>
+            <div class="lab-barra">
+              <button type="button" class="btn b-ruota" title="Gira la bacchetta scelta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/></svg>Ruota</button>
+              <button type="button" class="btn piccolo b-ric">Ricomincia</button>
+              <button type="button" class="btn piccolo b-casuale" hidden>Casuale</button>
+              <button type="button" class="btn piccolo b-aiuto" aria-expanded="false" aria-label="Come si gioca" title="Come si gioca">?</button>
+            </div>
+          </div>
         </div>`;
 
       const $ = s => radice.querySelector(s);
       const scena = $('.lab-scena'), objEl = $('.obiettivo'), fObj = $('.f-obj'), fCor = $('.f-cor'), fTav = $('.f-tav'), fChip = $('.f-chip');
-      const msg = $('.lab-messaggio'), aiutoEl = $('.aiuto'), livEl = $('.lab-livello');
-      const bRuota = $('.b-ruota'), bRic = $('.b-ric'), bAiuto = $('.b-aiuto');
-      aiutoEl.innerHTML = ctx.md(AIUTO);
+      const msg = $('.lab-messaggio'), aiutoEl = $('.lab-aiuto');
+      const bRuota = $('.b-ruota'), bRic = $('.b-ric'), bAiuto = $('.b-aiuto'), bCasuale = $('.b-casuale');
+      const livelliEl = $('.lab-livelli'), bLibero = $('.lab-libero'), parametriEl = $('.lab-parametri');
+      aiutoEl.querySelector('.testo-aiuto').innerHTML = ctx.md(AIUTO);
 
       /* ---------------- scena SVG, a strati ---------------- */
-      const svg = el('svg', { role: 'img', 'aria-label': 'Tavolo a quadretti con le tessere algebriche e il vassoio' });
-      scena.appendChild(svg);
+      const svg = el('svg', { role: 'img', preserveAspectRatio: 'xMidYMid meet', 'aria-label': 'Tavolo a quadretti con le tessere algebriche e il vassoio' });
+      scena.insertBefore(svg, aiutoEl);
       const defs = el('defs'); svg.appendChild(defs);
       defs.innerHTML =
         '<filter id="lab-tessere-ombra" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="1.6" stdDeviation="1.5" flood-color="#000" flood-opacity=".2"/></filter>' +
@@ -209,6 +260,8 @@
       let livello = 0, vassoio = null, tavolo = [], presa = null, scelta = null, vinto = false;
       let girate = false;           /* le bacchette nel vassoio sono in piedi? */
       let raf = 0, festa = null, avvisi = {}, ultimo = null;
+      let libero = false, salvato = null, kit = { q: 1, b: 3, u: 2 };   /* modalità libera: le tessere scelte dallo studente */
+      const liv = () => libero ? kit : LIVELLI[livello];
       const animati = new Set();
       const pozziEl = {};
       const completati = ctx.stato().livelli;
@@ -366,7 +419,7 @@
         quota(false, xq, Y0, Y1, ty, th, cls, inPiedi);
       }
       function testoObiettivo(es) {
-        const L = LIVELLI[livello];
+        const L = liv();
         if (L.u === Infinity) return 'x^2 + ' + L.b + 'x + \\boxed{' + (es && es.conta.u ? es.conta.u : '\\,?\\,') + '}';
         return poli([L.q, L.b, L.u]);
       }
@@ -600,6 +653,7 @@
       function valuta() {
         const es = esito(null);
         aggiorna(es);
+        if (libero) { osserva(es); aggiornaParametri(); return; }
         if (vinto) return;
         const L = LIVELLI[livello], infinito = L.u === Infinity;
         const tutte = vassoio.q === 0 && vassoio.b === 0 && (infinito || vassoio.u === 0);
@@ -643,7 +697,7 @@
         msg.innerHTML = '<span class="vinto">' + (pari(es.w, es.h) ? 'Quadrato' : 'Rettangolo') + ' pieno: i lati misurano ' +
           ctx.tex(lin(es.w)) + ' e ' + ctx.tex(lin(es.h)) + '.</span>';
         msg.className = 'lab-messaggio ok';
-        ctx.completato(livello);
+        ctx.completato(livello); aggiornaLivelli();
         ctx.zenone(L.bravo, { espressione: 'orgoglioso', durata: 8000 });
         bRic.textContent = livello < LIVELLI.length - 1 ? 'Prossimo livello ▶' : 'Ricomincia dal primo';
         bRic.classList.add('primario');
@@ -652,28 +706,134 @@
       }
 
       /* ---------------- livelli ---------------- */
-      function avviaLivello(n) {
-        livello = n;
-        const L = LIVELLI[n];
+      function pulisciTavolo() {
         presa = null; festa = null; animati.clear();
         [gTessere, gMano, gFesta, gFant].forEach(vuota);
         tavolo = []; scelta = null; vinto = false; avvisi = {}; girate = false;
-        vassoio = { q: L.q, b: L.b, u: L.u };
-        objEl.innerHTML = ctx.md(L.testo);
-        bRic.textContent = 'Ricomincia'; bRic.classList.remove('primario');
-        livEl.textContent = 'Livello ' + (n + 1) + ' di ' + LIVELLI.length;
-        evidenziaPozzo(null); disegnaPile(); valuta(); aggiornaPulsanti();
       }
+      function avviaLivello(n) {
+        libero = false; salvato = null; mostraLibero(); chiudiAiuto();
+        livello = n;
+        const L = LIVELLI[n];
+        pulisciTavolo();
+        vassoio = { q: L.q, b: L.b, u: L.u };
+        mostraObiettivo();
+        bRic.textContent = 'Ricomincia'; bRic.classList.remove('primario');
+        evidenziaPozzo(null); disegnaPile(); valuta(); aggiornaPulsanti(); aggiornaLivelli();
+      }
+      function mostraObiettivo() {
+        const L = LIVELLI[livello], breve = BREVI[livello];
+        objEl.innerHTML = (breve ? '<div class="c-breve">' + ctx.md(breve) + '</div>' : '') + '<div class="c-lungo">' + ctx.md(L.testo) + '</div>';
+      }
+      function aggiornaLivelli() {
+        const fatti = ctx.stato().livelli, sblocco = fatti.length ? Math.max(...fatti) + 1 : 0;
+        [...livelliEl.querySelectorAll('.lab-pallino')].forEach((p, i) => {
+          p.classList.toggle('fatto', fatti.includes(i));
+          p.classList.toggle('attivo', !libero && i === livello);
+          p.disabled = i > sblocco && i !== livello;
+          p.setAttribute('aria-current', !libero && i === livello ? 'step' : 'false');
+        });
+        bLibero.setAttribute('aria-pressed', libero);
+      }
+
+      /* ---------------- modalità libera: le tessere le sceglie lo studente, nessun giudizio ---------------- */
+      const AIUTO_LIBERO = '**Modalità libera.** Con − e + scegli quante tessere x², x e 1 ci sono (si tolgono solo quelle ancora nel vassoio). Prova a comporre un rettangolo pieno: se ci riesci, i due lati sono i fattori del polinomio. Con certe tessere il rettangolo non si chiude mai: anche questo dice qualcosa. *Casuale* propone tessere con cui un rettangolo esiste.';
+      function osserva(es) {   /* osservazioni neutre, mai valutazioni */
+        msg.className = 'lab-messaggio'; msg.textContent = '';
+        if (!es.n || !es.pieno) return;
+        const tutte = vassoio.q === 0 && vassoio.b === 0 && vassoio.u === 0;
+        const f = fattori(es.w, es.h);
+        msg.innerHTML = (tutte ? 'Tutte le tessere in un rettangolo: ' : 'Le tessere sul tavolo fanno un rettangolo: ') + ctx.tex(poli(es.poliT) + ' = ' + f) + '.';
+      }
+      function aggiornaParametri() {
+        parametriEl.querySelectorAll('.lab-param').forEach(box => {
+          const k = box.dataset.p, [meno, piu] = box.querySelectorAll('button');
+          box.querySelector('output').textContent = String(kit[k]);
+          meno.disabled = !(vassoio[k] > 0); piu.disabled = kit[k] >= MAX_LIBERO[k];
+        });
+      }
+      function mostraLibero() {
+        parametriEl.hidden = !libero; bCasuale.hidden = !libero; objEl.hidden = libero;
+        radice.classList.toggle('in-libero', libero);
+      }
+      function entraLibero() {
+        if (presa) return;
+        salvato = { livello, vassoio: Object.assign({}, vassoio), girate, vinto, avvisi,
+          pezzi: tavolo.map(t => ({ tipo: t.tipo, rot: t.rot, pos: t.pos })), msg: msg.innerHTML, cls: msg.className, ric: bRic.textContent, ricPrim: bRic.classList.contains('primario') };
+        const L = LIVELLI[livello];
+        kit = { q: L.q, b: L.b, u: L.u === Infinity ? 9 : L.u };
+        libero = true; mostraLibero(); chiudiAiuto();
+        pulisciTavolo();
+        vassoio = Object.assign({}, kit);
+        bRic.classList.remove('primario');
+        evidenziaPozzo(null); disegnaPile(); valuta(); aggiornaPulsanti(); aggiornaParametri(); aggiornaLivelli();
+      }
+      function esciLibero() {   /* si torna al livello com'era, tessere comprese */
+        if (presa) return;
+        const z = salvato; libero = false; salvato = null; mostraLibero(); chiudiAiuto();
+        livello = z.livello;
+        pulisciTavolo();
+        vassoio = z.vassoio; girate = z.girate; avvisi = z.avvisi;
+        z.pezzi.forEach(p => {
+          const t = nuova(p.tipo, p.rot, 0, 0); t.pos = p.pos;
+          const d = doveLogico(t);
+          if (d.x + d.w > D.W + EPS || d.y + d.h > D.H + EPS) { if (vassoio[t.tipo] !== Infinity) vassoio[t.tipo]++; t.g.remove(); return; }
+          Object.assign(t, { dx: d.x, dy: d.y, dw: d.w, dh: d.h }); disegna(t); tavolo.push(t);
+        });
+        mostraObiettivo();
+        vinto = z.vinto;
+        bRic.textContent = z.ric; bRic.classList.toggle('primario', z.ricPrim);
+        evidenziaPozzo(null); disegnaPile(); valuta(); aggiornaPulsanti(); aggiornaLivelli();
+        msg.innerHTML = z.msg; msg.className = z.cls;
+      }
+      function cambiaKit(k, d) {
+        if (d < 0 && !(vassoio[k] > 0)) return;
+        if (d > 0 && kit[k] >= MAX_LIBERO[k]) return;
+        kit[k] += d; vassoio[k] += d;
+        disegnaPile(); valuta(); aggiornaParametri();
+      }
+      function casuale() {
+        if (presa) return;
+        /* (a x + b)(c x + d) con i conti che stanno nei limiti, e non una striscia alta 1 */
+        let k = null;
+        for (let giri = 0; giri < 200 && !k; giri++) {
+          const a = 1 + Math.floor(Math.random() * 2), c = Math.random() < 0.75 ? 1 : 2;
+          const b = Math.floor(Math.random() * 5), d = 1 + Math.floor(Math.random() * 4);
+          const q = a * c, bb = a * d + b * c, u = b * d;
+          if (q > MAX_LIBERO.q || bb > MAX_LIBERO.b || u > MAX_LIBERO.u || bb < 2) continue;
+          if (q === kit.q && bb === kit.b && u === kit.u) continue;
+          k = { q, b: bb, u };
+        }
+        if (!k) return;
+        tavolo.slice().forEach(t => rientra(t, true));
+        kit = k; vassoio = Object.assign({}, k);
+        scegli(null); disegnaPile(); valuta(); aggiornaParametri();
+      }
+      bLibero.addEventListener('click', () => { if (libero) esciLibero(); else entraLibero(); });
+      bCasuale.addEventListener('click', casuale);
+      parametriEl.addEventListener('click', ev => {
+        const b = ev.target.closest('button[data-d]'); if (!b || !libero || presa) return;
+        cambiaKit(b.closest('.lab-param').dataset.p, +b.dataset.d);
+      });
+      LIVELLI.forEach((_, i) => {
+        const p = document.createElement('button'); p.type = 'button'; p.className = 'lab-pallino';
+        p.setAttribute('aria-label', 'Livello ' + (i + 1)); p.innerHTML = '<span>' + (i + 1) + '</span>';
+        p.addEventListener('click', () => { if (!presa) avviaLivello(i); });
+        livelliEl.insertBefore(p, bLibero);
+      });
       function ricomincia() {
         tavolo.slice().forEach(t => rientra(t, true));
         scegli(null); avvisi = {};
         valuta();
+        if (libero) aggiornaParametri();
       }
 
       /* ---------------- telefono o schermo largo ---------------- */
       function disponi() {
-        const nuova = radice.clientWidth >= 600 ? DISPOSIZIONI.larga : DISPOSIZIONI.stretta;
-        if (nuova === D) return;
+        const r = scena.getBoundingClientRect();
+        if (r.width < 10 || r.height < 10) { if (!D) D = disposizione(384, 400); else return; }
+        const nuova = r.width < 10 ? D : disposizione(r.width, r.height);
+        if (D && nuova.chiave === D.chiave && svg.getAttribute('viewBox')) return;
         D = nuova;
         costruisciFondo();
         if (!vassoio) return;
@@ -699,12 +859,19 @@
       window.addEventListener('pointercancel', molla);
       bRuota.addEventListener('click', () => { if (scelta) ruota(scelta); });
       bRic.addEventListener('click', () => { if (vinto) avviaLivello((livello + 1) % LIVELLI.length); else ricomincia(); });
+      function chiudiAiuto() { aiutoEl.hidden = true; bAiuto.setAttribute('aria-expanded', 'false'); }
       bAiuto.addEventListener('click', () => {
-        aiutoEl.hidden = !aiutoEl.hidden;
-        bAiuto.setAttribute('aria-expanded', String(!aiutoEl.hidden));
+        if (!aiutoEl.hidden) { chiudiAiuto(); return; }
+        /* se nel pannello c'è la consegna breve, quella intera si legge qui */
+        const breve = objEl.querySelector('.c-breve'), consegna = aiutoEl.querySelector('.consegna');
+        consegna.hidden = libero || !breve || getComputedStyle(breve).display === 'none';
+        if (!consegna.hidden) consegna.innerHTML = ctx.md(LIVELLI[livello].testo);
+        aiutoEl.querySelector('.testo-aiuto').innerHTML = ctx.md(libero ? AIUTO_LIBERO + '\n\n' + AIUTO : AIUTO);
+        aiutoEl.hidden = false; bAiuto.setAttribute('aria-expanded', 'true');
       });
+      aiutoEl.querySelector('.m-chiudi').addEventListener('click', chiudiAiuto);
       const ro = typeof ResizeObserver === 'function' ? new ResizeObserver(() => disponi()) : null;
-      if (ro) ro.observe(radice);
+      if (ro) { ro.observe(radice); ro.observe(scena); }
 
       disponi();
       avviaLivello(livello);

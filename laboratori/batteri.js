@@ -5,27 +5,44 @@
 (function () {
   const STILE = `
     .lab-batteri { -webkit-user-select: none; user-select: none; }
-    .lab-batteri input { -webkit-user-select: text; user-select: text; }
-    .lab-batteri .lab-scena { background: linear-gradient(180deg, var(--sup2), var(--sup)); padding: 4px 0 2px; }
-    .lab-batteri .lab-scena svg { max-width: 760px; margin: 0 auto; }
-    .lab-batteri .formule { max-width: 760px; margin: 0 auto; padding: 9px 14px 0; display: flex; flex-direction: column; gap: 2px; }
-    .lab-batteri .f-riga { font-size: 1.1rem; }
-    .lab-batteri .f-riga.min { font-size: .95rem; color: var(--testo2); }
-    .lab-batteri .domanda { max-width: 760px; margin: 0 auto; padding: 10px 14px 0; }
-    .lab-batteri .dom-testo { font-size: .95rem; font-weight: 600; line-height: 1.5; }
+    .lab-batteri input[type=text] { -webkit-user-select: text; user-select: text; }
+    /* --- scena: provetta, orologio, lettura e grafico sono quattro blocchi che adatta() dispone --- */
+    .lab-batteri .lab-scena { background: linear-gradient(180deg, var(--sup2), var(--sup)); overflow: hidden; touch-action: manipulation; }
+    /* --- pannello --- */
+    .lab-batteri .formule { display: flex; flex-direction: column; gap: 1px; text-align: center; }
+    .lab-batteri .f-riga { display: flex; flex-wrap: wrap; justify-content: center; column-gap: 1.3em; font-size: clamp(1rem, 2.3cqmin, 1.15rem); }
+    .lab-batteri .f-riga > span { white-space: nowrap; }
+    .lab-batteri .f-riga.min { font-size: clamp(.86rem, 2cqmin, .98rem); color: var(--testo2); }
+    .lab-batteri .f-riga .katex { font-size: 1.1em; }
+    .lab-batteri .domanda { padding: 8px 10px; border-radius: 12px; background: var(--accento-tenue); border: 1px solid color-mix(in srgb, var(--accento) 35%, transparent); }
+    .lab-batteri .domanda[hidden] { display: none; }
+    .lab-batteri .dom-testo { font-size: clamp(.9rem, 2.1cqmin, 1.02rem); font-weight: 600; line-height: 1.45; }
     .lab-batteri .dom-testo b { color: var(--accento-testo); }
-    .lab-batteri .dom-riga { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
-    .lab-batteri .dom-campo { width: 6.6em; min-height: 40px; padding: 8px 11px; border-radius: 10px; border: 1px solid var(--bordo2); background: var(--sup); font-weight: 700; font-variant-numeric: tabular-nums; }
+    .lab-batteri .dom-riga { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 6px; }
+    .lab-batteri .dom-campo { width: 6.6em; min-height: 40px; padding: 8px 11px; border-radius: 10px; border: 1px solid var(--bordo2); background: var(--sup); color: var(--testo); font: 700 1rem var(--font); font-variant-numeric: tabular-nums; }
     .lab-batteri .dom-campo:disabled { opacity: .5; }
+    .lab-batteri .dom-riga[hidden] { display: none; }
     .lab-batteri .dom-unita { font-size: .86rem; color: var(--testo2); }
-    .lab-batteri .lab-barra { max-width: 760px; margin: 0 auto; }
-    .lab-batteri .lab-barra .btn[disabled] { opacity: .38; cursor: default; }
-    .lab-batteri .cursore { display: inline-flex; align-items: center; gap: 8px; font-size: .82rem; color: var(--testo2); }
-    .lab-batteri .cursore input[type=range] { width: 148px; accent-color: var(--accento); min-height: 34px; }
-    .lab-batteri .cursore .val { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--testo); min-width: 5.4em; }
+    .lab-batteri .lab-messaggio { padding: 0 4px; min-height: 1.5em; font-size: clamp(.9rem, 2.1cqmin, 1.05rem); text-align: center; line-height: 1.45; }
+    .lab-batteri .lab-messaggio .katex { font-size: 1.05em; }
+    .lab-batteri .lab-messaggio:empty { display: none; }   /* sul telefono ogni riga conta */
+    .lab-batteri.in-libero .lab-messaggio { color: var(--testo2); font-size: clamp(.86rem, 2cqmin, 1rem); }
+    .lab-batteri .lab-barra { padding: 0; border: 0; gap: 6px 8px; justify-content: center; }
+    .lab-batteri .lab-barra .btn { min-height: clamp(40px, 6cqh, 48px); }
+    @container lab (max-width: 420px) { .lab-batteri .lab-barra .btn { padding-left: 11px; padding-right: 11px; } }
+    .lab-batteri .btn[disabled] { opacity: .38; cursor: default; }
+    .lab-batteri .cursore { flex: 1 1 calc(100% - 64px); display: flex; align-items: center; gap: 10px; font-size: .86rem; color: var(--testo2); }
+    .lab-batteri .cursore input[type=range] { flex: 1; min-width: 120px; accent-color: var(--accento); min-height: 36px; }
+    .lab-batteri .cursore .val { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--testo); min-width: 6.2em; text-align: right; }
     .lab-batteri .cursore.spento { opacity: .38; }
+    .lab-batteri .lab-parametri { grid-template-columns: repeat(3, 1fr); max-width: 560px; }
+    @container lab (max-width: 420px) { .lab-batteri .lab-parametri { grid-template-columns: 1fr 1fr; } }
+    @container lab (min-aspect-ratio: 5 / 4) { .lab-batteri .lab-parametri { grid-template-columns: 1fr 1fr; } }
+    .lab-batteri .lab-param .nome { min-width: 0; }
+    .lab-batteri .lab-param output { min-width: 2.8em; }
     .lab-batteri .vinto { display: inline-block; animation: lab-batteri-pop .45s cubic-bezier(.34,1.56,.64,1); }
     @keyframes lab-batteri-pop { from { transform: scale(.75); opacity: 0 } to { transform: none; opacity: 1 } }
+    /* --- disegno (le dimensioni dei testi le regola adatta() con le variabili, così restano leggibili) --- */
     .lab-batteri .vetro-fondo { fill: var(--sup2); }
     .lab-batteri .vetro { fill: none; stroke: var(--bordo2); stroke-width: 2.6; stroke-linejoin: round; }
     .lab-batteri .tappo { fill: var(--sup2); stroke: var(--bordo2); stroke-width: 2.2; }
@@ -37,20 +54,20 @@
     .lab-batteri .pelo { stroke: var(--s3); stroke-width: 2; opacity: .8; }
     .lab-batteri .pelo.morte { stroke: var(--s2); }
     .lab-batteri .tacca-l { stroke: var(--testo3); stroke-width: 1.4; stroke-dasharray: 4 3; }
-    .lab-batteri .tacca-t { font: 600 13px var(--font); fill: var(--testo2); }
+    .lab-batteri .tacca-t { font: 600 var(--fs-tacca, 13px) var(--font); fill: var(--testo2); }
     .lab-batteri .quadrante { fill: var(--sup); stroke: var(--bordo2); stroke-width: 2; }
     .lab-batteri .tacchetta { stroke: var(--testo3); stroke-width: 1.3; stroke-linecap: round; }
     .lab-batteri .tacchetta.grossa { stroke: var(--testo2); stroke-width: 2.6; }
     .lab-batteri .lancetta { stroke: var(--accento); stroke-width: 3.4; stroke-linecap: round; }
     .lab-batteri .perno { fill: var(--accento); }
     .lab-batteri .settore { fill: var(--accento); opacity: .15; }
-    .lab-batteri .num-or { font: 600 12px var(--font); fill: var(--testo3); }
+    .lab-batteri .num-or { font: 600 var(--fs-or, 12px) var(--font); fill: var(--testo3); }
     .lab-batteri .let-n { font: 700 34px var(--font); fill: var(--testo); }
-    .lab-batteri .let-et { font: 400 14px var(--font); fill: var(--testo3); }
-    .lab-batteri .let-t { font: 600 18px var(--font); fill: var(--accento-testo); }
+    .lab-batteri .let-et { font: 400 var(--fs-let, 14px) var(--font); fill: var(--testo3); }
+    .lab-batteri .let-t { font: 600 var(--fs-lett, 18px) var(--font); fill: var(--accento-testo); }
     .lab-batteri .g-griglia { stroke: var(--g-griglia); stroke-width: 1; }
     .lab-batteri .g-asse { stroke: var(--g-asse); stroke-width: 1.6; stroke-linecap: round; }
-    .lab-batteri .g-et { font: 400 15px var(--font); fill: var(--testo3); }
+    .lab-batteri .g-et { font: 400 var(--fs-g, 15px) var(--font); fill: var(--testo3); }
     .lab-batteri .g-et.forte { fill: var(--accento-testo); font-weight: 700; }
     .lab-batteri .g-curva { fill: none; stroke: var(--s3); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
     .lab-batteri .g-curva.morte { stroke: var(--s2); }
@@ -61,7 +78,7 @@
     .lab-batteri .g-marker.morte { fill: var(--s2); }
     .lab-batteri .g-ignoto { fill: none; stroke: var(--testo3); stroke-width: 2; stroke-dasharray: 4 4; }
     .lab-batteri .g-punto { fill: var(--accento); stroke: var(--sup); stroke-width: 2.2; }
-    .lab-batteri .g-val { font: 700 16px var(--font); fill: var(--accento-testo); }
+    .lab-batteri .g-val { font: 700 var(--fs-gv, 16px) var(--font); fill: var(--accento-testo); }
   `;
 
   const NS = 'http://www.w3.org/2000/svg';
@@ -205,50 +222,66 @@
       if (!document.getElementById('stile-lab-batteri')) { const s = document.createElement('style'); s.id = 'stile-lab-batteri'; s.textContent = STILE; document.head.appendChild(s); }
       radice.classList.add('lab-batteri');
       radice.innerHTML = `
-        <div class="lab-scena"></div>
-        <div class="formule"></div>
-        <div class="domanda">
-          <div class="dom-testo"></div>
-          <div class="dom-riga">
-            <input type="text" class="dom-campo" inputmode="numeric" autocomplete="off" spellcheck="false" aria-label="La tua risposta">
-            <span class="dom-unita"></span>
-            <button type="button" class="btn primario b-verifica">Verifica</button>
+        <div class="lab-layout">
+          <div class="lab-scena">
+            <div class="lab-aiuto" hidden data-scorre><p></p><button type="button" class="btn piccolo m-chiudi">Ho capito</button></div>
           </div>
-        </div>
-        <div class="lab-messaggio"></div>
-        <div class="lab-barra">
-          <span class="cursore"><input type="range" class="s-t" min="0" max="12" step="1" value="0" aria-label="Il tempo"><span class="val">min 0 / 12</span></span>
-          <button type="button" class="btn b-passo">▶ un passo</button>
-          <button type="button" class="btn b-play">⏵ avvia</button>
-          <button type="button" class="btn piccolo b-avanti">Ricomincia</button>
-          <button type="button" class="btn piccolo b-aiuto">?</button>
-          <span class="lab-livello"></span>
+          <div class="lab-lato">
+            <div class="lab-livelli" role="group" aria-label="Livelli"><button type="button" class="btn piccolo lab-libero" aria-pressed="false" title="Modalità libera: nessuna domanda, scegli tu partenza, fattore e tempo">Libero</button></div>
+            <div class="lab-parametri" hidden>
+              <div class="lab-param" data-p="N0"><span class="nome">${ctx.tex('N_0')}</span><button type="button" class="btn piccolo" data-d="-1" aria-label="meno batteri alla partenza">−</button><output></output><button type="button" class="btn piccolo" data-d="1" aria-label="più batteri alla partenza">+</button></div>
+              <div class="lab-param" data-p="b"><span class="nome">${ctx.tex('b')}</span><button type="button" class="btn piccolo" data-d="-1" aria-label="fattore più piccolo">−</button><output></output><button type="button" class="btn piccolo" data-d="1" aria-label="fattore più grande">+</button></div>
+              <div class="lab-param" data-p="tMax"><span class="nome">passi</span><button type="button" class="btn piccolo" data-d="-1" aria-label="meno passi">−</button><output></output><button type="button" class="btn piccolo" data-d="1" aria-label="più passi">+</button></div>
+            </div>
+            <div class="domanda">
+              <div class="dom-testo"></div>
+              <div class="dom-riga">
+                <input type="text" class="dom-campo" inputmode="numeric" autocomplete="off" spellcheck="false" aria-label="La tua risposta">
+                <span class="dom-unita"></span>
+                <button type="button" class="btn primario b-verifica">Verifica</button>
+              </div>
+            </div>
+            <div class="formule"></div>
+            <div class="lab-messaggio" aria-live="polite"></div>
+            <div class="lab-barra">
+              <span class="cursore"><input type="range" class="s-t" min="0" max="12" step="1" value="0" aria-label="Il tempo"><span class="val">min 0 / 12</span></span>
+              <button type="button" class="btn piccolo b-aiuto" aria-label="Come si gioca">?</button>
+              <button type="button" class="btn b-passo">▶ un passo</button>
+              <button type="button" class="btn b-play">⏵ avvia</button>
+              <button type="button" class="btn piccolo b-avanti">Ricomincia</button>
+              <button type="button" class="btn piccolo b-casuale" hidden>Casuale</button>
+            </div>
+          </div>
         </div>`;
 
       const q = s => radice.querySelector(s);
       const scena = q('.lab-scena'), formule = q('.formule'), domTesto = q('.dom-testo'), campo = q('.dom-campo');
-      const unitaEl = q('.dom-unita'), msg = q('.lab-messaggio'), livEl = q('.lab-livello');
+      const unitaEl = q('.dom-unita'), msg = q('.lab-messaggio'), domanda = q('.domanda'), aiutoEl = q('.lab-aiuto');
+      const livelliEl = q('.lab-livelli'), parametriEl = q('.lab-parametri'), bLibero = q('.lab-libero');
       const cursoreEl = q('.cursore'), slider = q('.s-t'), cursVal = q('.cursore .val');
-      const bt = { verifica: q('.b-verifica'), passo: q('.b-passo'), play: q('.b-play'), avanti: q('.b-avanti'), aiuto: q('.b-aiuto') };
+      const bt = { verifica: q('.b-verifica'), passo: q('.b-passo'), play: q('.b-play'), avanti: q('.b-avanti'), aiuto: q('.b-aiuto'), casuale: q('.b-casuale') };
 
       /* ---------- scheletro della scena (si costruisce una volta sola) ---------- */
-      const svg = el('svg', { viewBox: '0 0 600 340', role: 'img', 'aria-label': 'La provetta, l\'orologio e il grafico della popolazione' });
-      scena.appendChild(svg);
+      const svg = el('svg', { viewBox: '0 0 600 340', preserveAspectRatio: 'xMidYMid meet', role: 'img', 'aria-label': 'La provetta, l\'orologio e il grafico della popolazione' });
+      scena.insertBefore(svg, aiutoEl);
       const defs = el('defs'); svg.appendChild(defs);
       const cpTubo = el('clipPath', { id: 'lab-batteri-tubo' }); cpTubo.appendChild(el('path', { d: percorsoTubo() })); defs.appendChild(cpTubo);
       const rBanda = el('rect', { x: TB.x - 8, y: TB.yVuoto, width: TB.w + 16, height: 2 });
       const cpBanda = el('clipPath', { id: 'lab-batteri-banda' }); cpBanda.appendChild(rBanda); defs.appendChild(cpBanda);
 
-      svg.appendChild(el('path', { d: percorsoTubo(), class: 'vetro-fondo' }));
-      const gTubo = el('g', { 'clip-path': 'url(#lab-batteri-tubo)' }); svg.appendChild(gTubo);
+      /* quattro blocchi (provetta, orologio, lettura, grafico): le coordinate interne restano quelle
+         di sempre, adatta() li sposta e li scala con un transform secondo la forma della scena */
+      const gP = el('g'); svg.appendChild(gP);
+      gP.appendChild(el('path', { d: percorsoTubo(), class: 'vetro-fondo' }));
+      const gTubo = el('g', { 'clip-path': 'url(#lab-batteri-tubo)' }); gP.appendChild(gTubo);
       const colonia = el('g', { class: 'colonia', 'clip-path': 'url(#lab-batteri-banda)' }); gTubo.appendChild(colonia);
       const brodo = el('rect', { x: TB.x - 8, y: TB.yVuoto, width: TB.w + 16, height: 2, opacity: .16 }); colonia.appendChild(brodo);
       const gPunti = el('g'); colonia.appendChild(gPunti);
       const pelo = el('line', { class: 'pelo', x1: TB.x + 2, y1: TB.yVuoto, x2: TB.x + TB.w - 2, y2: TB.yVuoto, opacity: 0 }); gTubo.appendChild(pelo);
-      svg.appendChild(el('path', { d: percorsoTubo(), class: 'vetro' }));
-      svg.appendChild(el('rect', { x: TB.x - 7, y: TB.top - 11, width: TB.w + 14, height: 15, rx: 6, class: 'tappo' }));
-      svg.appendChild(el('rect', { x: TB.x + 9, y: TB.top + 24, width: 6, height: 140, rx: 3, class: 'riflesso' }));
-      const gTacche = el('g'); svg.appendChild(gTacche);
+      gP.appendChild(el('path', { d: percorsoTubo(), class: 'vetro' }));
+      gP.appendChild(el('rect', { x: TB.x - 7, y: TB.top - 11, width: TB.w + 14, height: 15, rx: 6, class: 'tappo' }));
+      gP.appendChild(el('rect', { x: TB.x + 9, y: TB.top + 24, width: 6, height: 140, rx: 3, class: 'riflesso' }));
+      const gTacche = el('g'); gP.appendChild(gTacche);
 
       /* orologio */
       const gOr = el('g'); svg.appendChild(gOr);
@@ -276,22 +309,25 @@
       const tEt = el('text', { x: OR.cx, y: 231, 'text-anchor': 'middle', class: 'let-et' }, 'batterio');
       const tT = el('text', { x: OR.cx, y: 262, 'text-anchor': 'middle', class: 'let-t' }, 'minuto 0');
       const tPerc = el('text', { x: OR.cx, y: 286, 'text-anchor': 'middle', class: 'let-et' }, '');
-      [tN, tEt, tT, tPerc].forEach(n => svg.appendChild(n));
+      const gL = el('g'); svg.appendChild(gL);
+      [tN, tEt, tT, tPerc].forEach(n => gL.appendChild(n));
 
       /* grafico */
-      const gAssi = el('g'); svg.appendChild(gAssi);
-      const gRif = el('g'); svg.appendChild(gRif);
-      const linGrigia = el('polyline', { class: 'g-lin', points: '' }); svg.appendChild(linGrigia);
-      const etLin = el('text', { class: 'g-et', 'text-anchor': 'end' }, ''); svg.appendChild(etLin);
-      const guida = el('line', { class: 'g-guida', x1: 0, y1: 0, x2: 0, y2: 0 }); svg.appendChild(guida);
-      const curva = el('path', { class: 'g-curva', d: '' }); svg.appendChild(curva);
-      const gMark = el('g'); svg.appendChild(gMark);
-      const gIgnoto = el('g'); svg.appendChild(gIgnoto);
-      const punto = el('circle', { class: 'g-punto', r: 5.5, cx: GR.x0, cy: GR.y0 }); svg.appendChild(punto);
-      const etPunto = el('text', { class: 'g-val', 'text-anchor': 'middle', x: GR.x0, y: GR.y0 }, ''); svg.appendChild(etPunto);
+      const gG = el('g'); svg.appendChild(gG);
+      const gAssi = el('g'); gG.appendChild(gAssi);
+      const gRif = el('g'); gG.appendChild(gRif);
+      const linGrigia = el('polyline', { class: 'g-lin', points: '' }); gG.appendChild(linGrigia);
+      const etLin = el('text', { class: 'g-et', 'text-anchor': 'end' }, ''); gG.appendChild(etLin);
+      const guida = el('line', { class: 'g-guida', x1: 0, y1: 0, x2: 0, y2: 0 }); gG.appendChild(guida);
+      const curva = el('path', { class: 'g-curva', d: '' }); gG.appendChild(curva);
+      const gMark = el('g'); gG.appendChild(gMark);
+      const gIgnoto = el('g'); gG.appendChild(gIgnoto);
+      const punto = el('circle', { class: 'g-punto', r: 5.5, cx: GR.x0, cy: GR.y0 }); gG.appendChild(punto);
+      const etPunto = el('text', { class: 'g-val', 'text-anchor': 'middle', x: GR.x0, y: GR.y0 }, ''); gG.appendChild(etPunto);
 
       /* ---------- stato ---------- */
       let livello = 0, cfg = null, t = 0, tvis = 0, raf = null, tPlay = null, tSalto = null, fase = 'domanda';
+      let libero = false, salvato = null;   /* modalità libera, e il livello da cui ci si è entrati */
       const iVar = LIVELLI.map(() => 0);
       const completati = ctx.stato().livelli;
       livello = completati.length ? Math.min(LIVELLI.length - 1, Math.max.apply(null, completati) + 1) : 0;
@@ -431,7 +467,10 @@
           punto.setAttribute('cx', px.toFixed(1)); punto.setAttribute('cy', py.toFixed(1));
           guida.setAttribute('x1', px.toFixed(1)); guida.setAttribute('y1', py.toFixed(1));
           guida.setAttribute('x2', px.toFixed(1)); guida.setAttribute('y2', GR.y0);
-          etPunto.setAttribute('x', clamp(px, GR.x0 + 16, GR.x1 - 2).toFixed(1));
+          /* vicino al bordo destro il numero si allinea a destra, così non esce dal disegno */
+          const aDestra = px > GR.x1 - 40;
+          etPunto.setAttribute('text-anchor', aDestra ? 'end' : 'middle');
+          etPunto.setAttribute('x', (aDestra ? px + 6 : clamp(px, GR.x0 + 16, GR.x1 - 2)).toFixed(1));
           etPunto.setAttribute('y', clamp(py - 13, GR.y1 - 2, GR.y0 - 10).toFixed(1));
           etPunto.textContent = fmtN(nOra);
           for (let i = 0; i < mark.length; i++) {
@@ -456,13 +495,14 @@
       /* ---------- formule ---------- */
       function aggiornaFormule() {
         const noto = cfg.bNoto, righe = [];
-        const bTex = cfg.decad ? '\\left(\\tfrac{1}{2}\\right)' : String(cfg.b);
-        righe.push([false, 'N(t) = ' + texN(cfg.N0) + ' \\cdot ' + (noto ? bTex : 'b') + '^{\\,t}']);
-        if (noto) righe.push([false, 'N(' + t + ') = ' + texN(cfg.N0) + ' \\cdot ' + bTex + '^{' + t + '} = ' + texN(pot(cfg.N0, cfg.b, t))]);
-        else righe.push([false, texN(cfg.N0) + ' \\cdot b^{' + cfg.t + '} = ' + texN(pot(cfg.N0, cfg.b, cfg.t)) + ' \\qquad b = \\;?']);
-        if (cfg.lin) righe.push([true, 'L(t) = ' + cfg.lin.q + ' + ' + cfg.lin.m + '\\,t \\qquad L(' + t + ') = ' + texN(cfg.lin.q + cfg.lin.m * t)]);
-        righe.push([true, '\\text{capienza della provetta: } ' + texN(cfg.cap) + (cfg.soglia != null ? ' \\qquad \\text{soglia: } ' + texN(cfg.soglia) : '')]);
-        formule.innerHTML = righe.map(r => '<div class="f-riga' + (r[0] ? ' min' : '') + '">' + ctx.tex(r[1]) + '</div>').join('');
+        const bTex = cfg.b === 0.5 ? '\\left(\\tfrac{1}{2}\\right)' : String(cfg.b).replace('.', '{,}');
+        const prima = 'N(t) = ' + texN(cfg.N0) + ' \\cdot ' + (noto ? bTex : 'b') + '^{\\,t}';
+        if (noto) righe.push([false, [prima, 'N(' + t + ') = ' + texN(cfg.N0) + ' \\cdot ' + bTex + '^{' + t + '} = ' + texN(pot(cfg.N0, cfg.b, t))]]);
+        else righe.push([false, [prima, texN(cfg.N0) + ' \\cdot b^{' + cfg.t + '} = ' + texN(pot(cfg.N0, cfg.b, cfg.t)), 'b = \\;?']]);
+        righe.push([true, (cfg.lin ? ['L(t) = ' + cfg.lin.q + ' + ' + cfg.lin.m + '\\,t', 'L(' + t + ') = ' + texN(cfg.lin.q + cfg.lin.m * t)] : [])
+          .concat(['\\text{capienza della provetta: } ' + texN(cfg.cap)], cfg.soglia != null ? ['\\text{soglia: } ' + texN(cfg.soglia)] : [])]);
+        /* ogni riga va a capo fra un pezzo e l'altro, mai dentro un pezzo */
+        formule.innerHTML = righe.map(r => '<div class="f-riga' + (r[0] ? ' min' : '') + '">' + r[1].map(x => '<span>' + ctx.tex(x) + '</span>').join('') + '</div>').join('');
       }
 
       /* ---------- comandi ---------- */
@@ -488,15 +528,16 @@
         bt.play.disabled = bloccato;
         bt.verifica.disabled = !bloccato;
         campo.disabled = !bloccato;
+        q('.dom-riga').hidden = !bloccato;
         bt.avanti.textContent = fase === 'esplora'
           ? (livello < LIVELLI.length - 1 ? 'Prossimo livello ▶' : 'Ricomincia dal primo')
           : (fase === 'sbagliato' ? 'Riprova ↺' : 'Ricomincia');
         bt.avanti.classList.toggle('primario', fase !== 'domanda');
-        livEl.textContent = 'Livello ' + (livello + 1) + ' di ' + LIVELLI.length;
       }
 
       function avviaLivello(n) {
         fermaPlay(); clearTimeout(tSalto);
+        libero = false; salvato = null; mostraLibero(); aiutoEl.hidden = true;
         livello = n;
         const L = LIVELLI[n], v = L.varianti[iVar[n] % L.varianti.length];
         cfg = {};
@@ -512,7 +553,7 @@
         campo.value = ''; campo.placeholder = SEGNAPOSTO[L.campo] || '';
         unitaEl.textContent = ETICHETTA[L.campo] || '';
         msg.textContent = ''; msg.className = 'lab-messaggio';
-        setT(0); disegna();
+        setT(0); disegna(); aggiornaLivelli();
       }
 
       function testoRisposta() {
@@ -533,7 +574,7 @@
           fase = 'esplora';
           msg.innerHTML = '<span class="vinto">Giusto: ' + ctx.tex(testoRisposta()) + '</span>';
           msg.className = 'lab-messaggio ok';
-          ctx.completato(livello);
+          ctx.completato(livello); aggiornaLivelli();
           ctx.zenone(L.giusto(cfg), { espressione: 'orgoglioso', durata: 9000 });
           tSalto = setTimeout(() => setT(cfg.tSoluzione), 450);
         } else {
@@ -555,11 +596,159 @@
         else if (fase === 'sbagliato') { iVar[livello]++; avviaLivello(livello); }
         else avviaLivello(livello);
       });
-      bt.aiuto.addEventListener('click', () => ctx.zenone(AIUTO, { tipo: 'suggerimento', espressione: 'pensa', durata: 14000 }));
+      bt.aiuto.addEventListener('click', () => {
+        if (!aiutoEl.hidden) { aiutoEl.hidden = true; return; }
+        aiutoEl.querySelector('p').textContent = libero ? AIUTO_LIBERO : AIUTO;
+        aiutoEl.hidden = false;
+      });
+      aiutoEl.querySelector('.m-chiudi').addEventListener('click', () => { aiutoEl.hidden = true; });
+
+      /* ---------- modalità libera: partenza, fattore e passi li sceglie lo studente ---------- */
+      const N0S = [1, 2, 3, 5, 10, 20, 50, 100, 500, 1000];
+      const BS = [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4, 10];
+      const NMAX = 1e6, T_MAX = 20;
+      const lib = { iN: 0, iB: 5, tMax: 8 };
+      const fmtB = b => String(b).replace('.', ',');
+      const AIUTO_LIBERO = 'In modalità libera non ci sono domande. Con − e + scegli quanti batteri partono (N₀), per quanto si moltiplica la popolazione a ogni passo (b) e quanti passi guardare. Con b più grande di 1 la colonia cresce, con b uguale a 1 resta ferma, con b fra 0 e 1 si riduce senza arrivare mai a zero. Muovi il tempo col cursore o con «avvia»: la formula e il grafico seguono. «Casuale» propone una colonia a caso.';
+      function passiPossibili() {   /* quanti passi si possono guardare senza superare il milione */
+        const N0 = N0S[lib.iN], b = BS[lib.iB];
+        if (b <= 1) return T_MAX;
+        return Math.max(2, Math.min(T_MAX, Math.floor(Math.log(NMAX / N0) / Math.log(b) + 1e-9)));
+      }
+      function cfgLibero() {
+        const N0 = N0S[lib.iN], b = BS[lib.iB], tMax = lib.tMax;
+        return { N0, b, tMax, cap: Math.max(N0, pot(N0, b, tMax)), unita: 'passo', campo: null, decad: b < 1, bNoto: true, libero: true };
+      }
+      function descriviLibero() {   /* osservazione neutra, mai una valutazione */
+        const b = BS[lib.iB];
+        if (b > 1) return 'Con b = ' + fmtB(b) + ' ogni passo moltiplica la popolazione per ' + fmtB(b) + ': la curva sale sempre più ripida.';
+        if (b === 1) return 'Con b = 1 la popolazione non cambia: moltiplicare per 1 lascia tutto com\'è.';
+        return 'Con b = ' + fmtB(b) + ' a ogni passo ne resta solo una parte: la curva scende sempre più piano e non tocca mai lo zero.';
+      }
+      function nuovoLibero() {
+        fermaPlay();
+        lib.tMax = Math.min(lib.tMax, passiPossibili());
+        cfg = cfgLibero(); fase = 'libero';
+        slider.max = String(cfg.tMax);
+        preparaScena();
+        t = Math.min(t, cfg.tMax); tvis = t;
+        setT(t); disegna(); aggiornaParametri();
+        msg.textContent = descriviLibero(); msg.className = 'lab-messaggio';
+      }
+      function aggiornaParametri() {
+        const limiti = { N0: [lib.iN, N0S.length - 1], b: [lib.iB, BS.length - 1], tMax: [lib.tMax, passiPossibili()] };
+        parametriEl.querySelectorAll('.lab-param').forEach(box => {
+          const p = box.dataset.p, [b1, b2] = box.querySelectorAll('button');
+          box.querySelector('output').textContent = p === 'N0' ? String(N0S[lib.iN]) : p === 'b' ? fmtB(BS[lib.iB]) : String(lib.tMax);
+          b1.disabled = p === 'tMax' ? lib.tMax <= 2 : limiti[p][0] <= 0;
+          b2.disabled = limiti[p][0] >= limiti[p][1];
+        });
+      }
+      function mostraLibero() {
+        parametriEl.hidden = !libero; domanda.hidden = libero;
+        bt.avanti.hidden = libero; bt.casuale.hidden = !libero;
+        radice.classList.toggle('in-libero', libero);
+      }
+      function entraLibero() {
+        fermaPlay(); clearTimeout(tSalto);
+        salvato = { livello, cfg, t, fase, campo: campo.value, msg: msg.innerHTML, cls: msg.className };
+        libero = true; aiutoEl.hidden = true; mostraLibero();
+        t = 0; tvis = 0;
+        nuovoLibero(); aggiornaLivelli();
+      }
+      function esciLibero() {   /* si torna al livello com'era */
+        fermaPlay();
+        const z = salvato; libero = false; salvato = null; aiutoEl.hidden = true;
+        livello = z.livello; cfg = z.cfg; fase = z.fase; mostraLibero();
+        slider.max = String(cfg.tMax);
+        preparaScena();
+        campo.value = z.campo; t = z.t; tvis = t;
+        setT(t); disegna(); aggiornaLivelli();
+        msg.innerHTML = z.msg; msg.className = z.cls;
+      }
+      function casuale() {
+        const r = n => Math.floor(Math.random() * n);
+        const prima = lib.iN + ',' + lib.iB;
+        for (let g = 0; g < 30; g++) {
+          lib.iN = r(N0S.length); lib.iB = r(BS.length);
+          if (BS[lib.iB] !== 1 && lib.iN + ',' + lib.iB !== prima) break;
+        }
+        lib.tMax = 3 + r(Math.max(1, passiPossibili() - 2));
+        t = 0; tvis = 0; nuovoLibero();
+      }
+      function aggiornaLivelli() {
+        const fatti = ctx.stato().livelli, sblocco = fatti.length ? Math.max(...fatti) + 1 : 0;
+        [...livelliEl.querySelectorAll('.lab-pallino')].forEach((p, k) => {
+          p.classList.toggle('fatto', fatti.includes(k));
+          p.classList.toggle('attivo', !libero && k === livello);
+          p.disabled = k > sblocco && k !== livello;
+          p.setAttribute('aria-current', !libero && k === livello ? 'step' : 'false');
+        });
+        bLibero.setAttribute('aria-pressed', libero);
+      }
+      bLibero.addEventListener('click', () => { if (libero) esciLibero(); else entraLibero(); });
+      bt.casuale.addEventListener('click', casuale);
+      parametriEl.addEventListener('click', ev => {
+        const b = ev.target.closest('button[data-d]'); if (!b || !libero) return;
+        const d = +b.dataset.d, p = b.closest('.lab-param').dataset.p;
+        if (p === 'N0') lib.iN = clamp(lib.iN + d, 0, N0S.length - 1);
+        else if (p === 'b') lib.iB = clamp(lib.iB + d, 0, BS.length - 1);
+        else lib.tMax = clamp(lib.tMax + d, 2, passiPossibili());
+        nuovoLibero();
+      });
+      LIVELLI.forEach((_, k) => {
+        const p = document.createElement('button'); p.type = 'button'; p.className = 'lab-pallino';
+        p.setAttribute('aria-label', 'Livello ' + (k + 1)); p.innerHTML = '<span>' + (k + 1) + '</span>';
+        p.addEventListener('click', () => avviaLivello(k));
+        livelliEl.insertBefore(p, bLibero);
+      });
+
+      /* ---------- la forma dello spazio decide dove stanno i quattro blocchi ----------
+         Provetta a sinistra, alta quanto la scena; in cima a destra orologio e lettura; sotto il
+         grafico. Solo se la scena è molto larga i blocchi stanno tutti in fila, come in origine.
+         I testi del disegno si regolano perché sullo schermo restino fra 12,5 px e 1,3 volte la misura base. */
+      const BL = { P: { x: 16, y: 16, w: 156, h: 298 }, O: { x: 118, y: 40, w: 116, h: 116 }, L: { x: 96, y: 170, w: 160, h: 126 }, G: { x: 238, y: 10, w: 358, h: 320 } };
+      function fit(g, b, r, maxS) {
+        const s = Math.min(r.w / b.w, r.h / b.h, maxS);
+        const tx = r.x + (r.w - b.w * s) / 2 - b.x * s, ty = r.y + (r.h - b.h * s) / 2 - b.y * s;
+        g.setAttribute('transform', 'translate(' + tx.toFixed(1) + ' ' + ty.toFixed(1) + ') scale(' + s.toFixed(4) + ')');
+        return s;
+      }
+      let misura = '';
+      function adatta() {
+        const r = svg.getBoundingClientRect();
+        if (r.width < 10 || r.height < 10) return;
+        const W = Math.round(Math.max(440, Math.min(1400, r.width / 1.25))), H = Math.max(300, Math.round(W * r.height / r.width));
+        if (misura === W + 'x' + H) return;
+        misura = W + 'x' + H;
+        svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+        let sP, sO, sL, sG;
+        if (H <= W * 0.6) {
+          const pw = W * 0.22, ow = W * 0.21;
+          sP = fit(gP, BL.P, { x: 0, y: 0, w: pw, h: H }, 2.2);
+          sO = fit(gOr, BL.O, { x: pw, y: 0, w: ow, h: H * 0.45 }, 2);
+          sL = fit(gL, BL.L, { x: pw, y: H * 0.45, w: ow, h: H * 0.55 }, 2);
+          sG = fit(gG, BL.G, { x: pw + ow, y: 0, w: W - pw - ow, h: H }, 2.2);
+        } else {
+          const pw = Math.min(W * 0.3, H * BL.P.w / BL.P.h), T = Math.min(H * 0.32, W * 0.3);
+          sP = fit(gP, BL.P, { x: 0, y: 0, w: pw, h: H }, 2.2);
+          sO = fit(gOr, BL.O, { x: pw, y: 0, w: T, h: T }, 2);
+          sL = fit(gL, BL.L, { x: pw + T, y: 0, w: W - pw - T, h: T }, 1.8);
+          sG = fit(gG, BL.G, { x: pw, y: T, w: W - pw, h: H - T }, 2.2);
+        }
+        const k0 = Math.min(r.width / W, r.height / H);
+        const fs = (base, s, min) => { const px = Math.max(min || 12.5, Math.min(base * 1.3, base * s * k0)); return (px / (s * k0)).toFixed(2) + 'px'; };
+        svg.style.setProperty('--fs-g', fs(15, sG)); svg.style.setProperty('--fs-gv', fs(16, sG));
+        svg.style.setProperty('--fs-tacca', fs(13, sP)); svg.style.setProperty('--fs-or', fs(12, sO, 9));
+        svg.style.setProperty('--fs-let', fs(14, sL)); svg.style.setProperty('--fs-lett', fs(18, sL));
+      }
 
       avviaLivello(livello);
+      adatta();
+      const ro = new ResizeObserver(adatta); ro.observe(radice); ro.observe(svg);
 
       return function smonta() {
+        ro.disconnect();
         if (raf != null) cancelAnimationFrame(raf);
         clearInterval(tPlay); clearTimeout(tSalto);
       };

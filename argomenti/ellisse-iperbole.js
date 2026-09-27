@@ -1,30 +1,48 @@
 (function () {
 const R = String.raw;
+/* allenamento: coppie (x; y) in ordine, numeri, ed equazioni canoniche di ellisse e iperbole */
+const cop = (x, y) => ({ tipo: 'numeri', valori: [x, y], ordinati: true, segnaposto: 'es. 6; 0' });
+const num = v => ({ tipo: 'numero', valore: v, tolleranza: 0.01, segnaposto: 'es. 1/2' });
+/* x²/A ± y²/B = 1 (A, B interi positivi; segno '+' ellisse, '-' iperbole con i fuochi sull'asse x), nelle forme
+   ragionevoli: i due termini scambiati, i denominatori scritti come quadrati, e la forma intera B·x² ± A·y² = A·B.
+   La casella toglie gli spazi e legge ² come ^2. */
+function conica(A, B, segno) {
+  const acc = [], rq = n => { const r = Math.round(Math.sqrt(n)); return r * r === n ? r : null; };
+  const den = [[String(A), String(B)]];
+  if (rq(A) && rq(B)) den.push([rq(A) + '^2', rq(B) + '^2']);
+  den.forEach(([p, q]) => {
+    acc.push('x^2/' + p + segno + 'y^2/' + q + '=1');
+    acc.push(segno === '+' ? 'y^2/' + q + '+x^2/' + p + '=1' : '-y^2/' + q + '+x^2/' + p + '=1');
+  });
+  const mcd = (p, q) => q ? mcd(q, p % q) : p, g = mcd(A, B);
+  [1, g].forEach(k => acc.push(B / k + 'x^2' + segno + A / k + 'y^2=' + A * B / k));
+  return { tipo: 'testo', accettate: Array.from(new Set(acc)), segnaposto: segno === '+' ? 'es. x²/16 + y²/9 = 1' : 'es. x²/25 − y²/4 = 1', simboli: ['x²', 'y²', '/', '+', '−', '='] };
+}
 COMPASSO.registra({
   id: 'ellisse-iperbole',
   titolo: 'Ellisse e iperbole',
 
-  introduzione: R`La circonferenza ha un centro solo. Ellisse e iperbole ne hanno due, che si chiamano **fuochi**, e sono definite dalle distanze di ogni loro punto da quei due punti fissi. Con l'ellisse si sommano le due distanze, con l'iperbole si sottraggono: da questa piccola differenza vengono due curve molto diverse.
+  introduzione: R`La circonferenza ha un centro solo. Ellisse e iperbole hanno due punti fissi, i **fuochi**. Ogni punto della curva si descrive con le sue distanze dai due fuochi. Nell'ellisse le due distanze si sommano, nell'iperbole si sottraggono.
 
-L'ellisse è la forma delle orbite dei pianeti, con il Sole in uno dei fuochi. L'iperbole è la traiettoria di una sonda che passa vicino a un pianeta e se ne va senza tornare. E ne hai già vista una senza saperlo: il grafico di $y=\frac{k}{x}$, la proporzionalità inversa, è un'iperbole.
+L'ellisse è la forma delle orbite dei pianeti, con il Sole in un fuoco. E un'iperbole l'hai già vista: è il grafico di $y=\frac{k}{x}$, la proporzionalità inversa.
 
-Il percorso è sempre lo stesso: dalla definizione con le distanze si ricava l'equazione, e dall'equazione si leggono i numeri che descrivono la curva (semiassi, fuochi, eccentricità, asintoti). Ti servono la distanza fra due punti, l'equazione della circonferenza e il metodo del $\Delta$ per le intersezioni con una retta.`,
+Ti servono la distanza fra due punti, la circonferenza e il $\Delta$.`,
 
   inBreve: [
-    R`Ellisse: la **somma** delle distanze di ogni punto dai due fuochi è costante, $PF_1+PF_2=2a$. Iperbole: è costante la **differenza**, $|PF_1-PF_2|=2a$.`,
-    R`L'ellisse $\frac{x^2}{a^2}+\frac{y^2}{b^2}=1$ ha i fuochi sull'asse del denominatore più grande; con $a>b$ si ha $c^2=a^2-b^2$.`,
-    R`L'iperbole $\frac{x^2}{a^2}-\frac{y^2}{b^2}=1$ ha $c^2=a^2+b^2$ (una somma) e gli asintoti $y=\pm\frac ba x$.`,
-    R`L'eccentricità è $c$ diviso il semiasse su cui stanno i fuochi: nell'ellisse è fra $0$ (circonferenza) e $1$, nell'iperbole è maggiore di $1$.`,
-    R`Una retta e una conica: sostituisci e guarda il $\Delta$. La tangente in un punto della curva si trova con lo sdoppiamento.`,
-    R`La funzione $y=\frac{ax+b}{cx+d}$ è un'iperbole equilatera traslata, con asintoti $x=-\frac dc$ e $y=\frac ac$.`
+    R`Nell'ellisse è costante la **somma** delle distanze dai due fuochi: $PF_1+PF_2=2a$. Nell'iperbole è costante la **differenza**: $|PF_1-PF_2|=2a$.`,
+    R`L'ellisse $\frac{x^2}{a^2}+\frac{y^2}{b^2}=1$ ha i fuochi sull'asse del denominatore più grande. Con $a>b$ vale $c^2=a^2-b^2$.`,
+    R`L'iperbole $\frac{x^2}{a^2}-\frac{y^2}{b^2}=1$ ha $c^2=a^2+b^2$, una somma. I suoi asintoti sono $y=\pm\frac ba x$.`,
+    R`L'eccentricità è $c$ diviso il semiasse dei fuochi. Nell'ellisse sta fra $0$ e $1$, nell'iperbole è maggiore di $1$.`,
+    R`Per una retta e una conica, sostituisci e guarda il $\Delta$. La tangente in un punto della curva si trova con lo sdoppiamento.`,
+    R`La funzione $y=\frac{ax+b}{cx+d}$ è un'iperbole equilatera spostata, con asintoti $x=-\frac dc$ e $y=\frac ac$.`
   ],
 
   sezioni: [
-    { id: 'coniche', titolo: 'Le coniche: sezioni di un cono', testo: R`Prendi un cono gelato (senza gelato) e taglialo con un coltello. La forma del taglio dipende da come inclini la lama.
+    { id: 'coniche', titolo: 'Le coniche: sezioni di un cono', testo: R`Prendi un cono gelato vuoto e taglialo con un coltello. La forma del taglio dipende da come inclini la lama.
 
->* Le **coniche** sono le curve che si ottengono tagliando un cono con un piano. Il tipo di curva dipende solo dall'inclinazione del piano rispetto all'asse del cono.
+>* Le **coniche** sono le curve che ottieni tagliando un cono con un piano. Il tipo di curva dipende dall'inclinazione del piano.
 
-Per l'iperbole serve un cono «doppio», cioè due coni uniti per la punta, uno sopra e uno sotto. Ognuna delle due metà si chiama **falda**.
+Per l'iperbole serve un cono doppio: due coni uniti per la punta. Ognuna delle due metà si chiama **falda**.
 
 | come tagli | che curva ottieni |
 |---|---|
@@ -33,39 +51,37 @@ Per l'iperbole serve un cono «doppio», cioè due coni uniti per la punta, uno 
 | parallelo a un lato del cono | parabola |
 | più inclinato ancora, tanto da tagliare tutte e due le falde | iperbole (due pezzi, i **rami**) |
 
-La circonferenza, quindi, è un'ellisse particolare: quella del taglio perfettamente dritto.
+Quindi la circonferenza è un'ellisse particolare: quella del taglio dritto.
 
-Il geometra greco Apollonio di Perga studiò queste curve più di duemila anni fa, solo con la geometria. Le equazioni che trovi in questa pagina sono arrivate molto dopo, con Cartesio e il piano cartesiano. La parabola l'hai già studiata a parte; qui ci occupiamo di ellisse e iperbole.
+La parabola l'hai già studiata a parte. Qui studi ellisse e iperbole.
 
-> Da qui in avanti le curve non si definiscono più con il cono, ma con le distanze da due punti fissi. È una definizione equivalente e molto più comoda per scrivere le equazioni.` },
+> Da qui in avanti le curve si definiscono con le distanze da due punti fissi. È una definizione equivalente, e con questa le equazioni si scrivono meglio.` },
 
-    { id: 'ellisse-definizione', titolo: "L'ellisse come luogo geometrico", testo: R`Pianta due picchetti nel prato, lega ai picchetti i capi di uno spago più lungo della loro distanza, tendi lo spago con un bastoncino e fai il giro. Il solco che tracci è un'ellisse. È il metodo dei giardinieri per disegnare le aiuole ovali.
-
-Perché funziona? In ogni momento lo spago va da un picchetto al bastoncino e dal bastoncino all'altro picchetto, e la sua lunghezza non cambia. Quindi la somma delle due distanze resta sempre la stessa.
+    { id: 'ellisse-definizione', titolo: "L'ellisse come luogo geometrico", testo: R`Pianta due picchetti nel prato e legaci i capi di uno spago. Tendi lo spago con un bastoncino e fai il giro: il solco è un'ellisse. La lunghezza dello spago non cambia, quindi la somma delle distanze dai due picchetti resta la stessa.
 
 [[animazione:ellisse-giardiniere]]
 
->* Dati due punti $F_1$ e $F_2$, i **fuochi**, l'**ellisse** è l'insieme dei punti $P$ per cui la somma delle distanze dai fuochi è costante: $$PF_1+PF_2=2a$$ con $2a>F_1F_2$. Il punto medio di $F_1F_2$ è il **centro** dell'ellisse.
+>* I due punti fissi $F_1$ e $F_2$ sono i **fuochi**. L'**ellisse** è l'insieme dei punti $P$ con la stessa somma delle distanze dai fuochi: $$PF_1+PF_2=2a$$ con $2a>F_1F_2$. Il punto medio di $F_1F_2$ è il **centro**.
 
-La costante si chiama $2a$ (e non $a$) perché così, con i fuochi sull'asse $x$, $a$ risulta la metà della larghezza dell'ellisse: lo vedi nella prossima sezione.
+La costante si chiama $2a$ perché così $a$ è metà della larghezza dell'ellisse.
 
-Esempio: fuochi $F_1(-4;0)$ e $F_2(4;0)$, spago lungo $2a=10$. Il punto $P(0;3)$ sta sull'ellisse? $PF_1=\sqrt{4^2+3^2}=5$ e anche $PF_2=5$: la somma è $10$, quindi sì.
+Esempio: fuochi $F_1(-4;0)$ e $F_2(4;0)$, spago lungo $2a=10$. Il punto $P(0;3)$ sta sull'ellisse? $PF_1=\sqrt{4^2+3^2}=5$ e anche $PF_2=5$. La somma è $10$, quindi sì.
 
-Se avvicini i picchetti fino a farli coincidere, lo spago diventa un raggio che gira attorno a un punto solo: ottieni una **circonferenza** di raggio $a$.
+Se i due picchetti coincidono, lo spago gira attorno a un punto solo. Ottieni una **circonferenza** di raggio $a$.
 
 ?? Due fuochi distano $8$ e lo spago è lungo $6$. Che cosa si disegna?
 [ ] un'ellisse molto schiacciata
 [ ] una circonferenza di raggio $3$
-[x] niente: lo spago non arriva da un fuoco all'altro
-=> Qualunque punto $P$ ha $PF_1+PF_2\ge F_1F_2=8$ (è la disuguaglianza triangolare), quindi la somma non può valere $6$. Per questo nella definizione si chiede $2a>F_1F_2$. Se $2a=F_1F_2$ lo spago resta teso lungo il segmento $F_1F_2$ e si ottiene solo quel segmento.
+[x] niente: lo spago è troppo corto
+=> Niente. Per ogni punto $P$ vale $PF_1+PF_2\ge F_1F_2=8$, quindi la somma non può valere $6$. Per questo la definizione chiede $2a>F_1F_2$.
 
->! $2a$ è la lunghezza dello spago, non la distanza fra i fuochi. Sono due numeri diversi, e il primo deve essere sempre più grande del secondo.
+>! $2a$ è la lunghezza dello spago, non la distanza fra i fuochi.
 
-Nel laboratorio «Il giardiniere» puoi disegnare l'aiuola con le tue mani, spostando i picchetti.` },
+Nel laboratorio «Il giardiniere» disegni l'aiuola spostando i picchetti.` },
 
-    { id: 'ellisse-equazione', titolo: 'Equazione canonica, vertici e semiassi', testo: R`Metti i fuochi sull'asse $x$, simmetrici rispetto all'origine: $F_1(-c;0)$ e $F_2(c;0)$. Il numero $c$, metà della distanza fra i fuochi, si chiama **semidistanza focale**. Per un punto $P(x;y)$ le due distanze sono $PF_1=\sqrt{(x+c)^2+y^2}$ e $PF_2=\sqrt{(x-c)^2+y^2}$.
+    { id: 'ellisse-equazione', titolo: 'Equazione canonica, vertici e semiassi', testo: R`Metti i fuochi in $F_1(-c;0)$ e $F_2(c;0)$. Il numero $c$ si chiama **semidistanza focale**. Per un punto $P(x;y)$ le distanze sono $PF_1=\sqrt{(x+c)^2+y^2}$ e $PF_2=\sqrt{(x-c)^2+y^2}$.
 
-Per arrivare all'equazione bisogna liberarsi delle radici. Il conto è lungo, ma ogni passo è semplice:
+Per arrivare all'equazione togli le radici, un passo alla volta:
 
 ~ PF_1=2a-PF_2 :: dalla definizione $PF_1+PF_2=2a$ isolo una radice
 ~ PF_1^2=4a^2-4a\,PF_2+\evid{PF_2^2} :: elevo al quadrato
@@ -78,13 +94,13 @@ Per arrivare all'equazione bisogna liberarsi delle radici. Il conto è lungo, ma
 
 >* **Equazione canonica dell'ellisse:** $$\frac{x^2}{a^2}+\frac{y^2}{b^2}=1$$ I numeri $a$ e $b$ si chiamano **semiassi**. Con i fuochi sull'asse $x$ vale $c^2=a^2-b^2$.
 
-Metti $y=0$ e trovi $x=\pm a$; metti $x=0$ e trovi $y=\pm b$. I punti dove l'ellisse taglia gli assi si chiamano **vertici**: $A(-a;0)$, $A'(a;0)$, $B(0;-b)$, $B'(0;b)$. L'ellisse è larga $2a$ e alta $2b$.
+Con $y=0$ trovi $x=\pm a$, con $x=0$ trovi $y=\pm b$. I punti dove l'ellisse taglia gli assi sono i **vertici**: $A(-a;0)$, $A'(a;0)$, $B(0;-b)$, $B'(0;b)$. L'ellisse è larga $2a$ e alta $2b$.
 
-Da dove viene $b^2=a^2-c^2$? Guarda il vertice $B'$: sta alla stessa distanza dai due fuochi, e la somma è $2a$, quindi ognuna delle due distanze vale $a$. Il triangolo $OF_2B'$ è rettangolo in $O$, con cateti $b$ e $c$ e ipotenusa $a$. Trascina il fuoco $F_2$ e guarda il triangolo: l'ipotenusa resta sempre $a=5$.
+Da dove viene $b^2=a^2-c^2$? Il vertice $B'$ dista $a$ da ogni fuoco, perché le due distanze sono uguali e sommano $2a$. Quindi il triangolo $OF_2B'$ ha cateti $b$ e $c$ e ipotenusa $a$. Trascina il fuoco $F_2$: l'ipotenusa resta sempre $a=5$.
 
 [[grafico:fuochi]]
 
-Se il denominatore più grande sta sotto $y^2$ ($b>a$), l'ellisse è più alta che larga e i fuochi stanno sull'asse $y$:
+Se il denominatore più grande sta sotto $y^2$, cioè $b>a$, i fuochi stanno sull'asse $y$:
 
 | | $a>b$ | $a<b$ |
 |---|---|---|
@@ -92,18 +108,18 @@ Se il denominatore più grande sta sotto $y^2$ ($b>a$), l'ellisse è più alta c
 | semidistanza focale | $c^2=a^2-b^2$ | $c^2=b^2-a^2$ |
 | asse maggiore | $2a$, orizzontale | $2b$, verticale |
 
-Esempio: $\frac{x^2}{25}+\frac{y^2}{9}=1$ ha $a=5$ e $b=3$. Il denominatore più grande è sotto $x^2$, quindi i fuochi sono sull'asse $x$: $c^2=25-9=16$, $c=4$, fuochi $(\pm4;0)$.
+Esempio: in $\frac{x^2}{25}+\frac{y^2}{9}=1$ il denominatore più grande è sotto $x^2$. Quindi i fuochi sono sull'asse $x$, con $c^2=25-9=16$: fuochi $(\pm4;0)$.
 
 ?? Dove sono i fuochi dell'ellisse $\frac{x^2}{9}+\frac{y^2}{25}=1$?
 [x] in $(0;\pm4)$
 [ ] in $(\pm4;0)$
 [ ] in $(0;\pm\sqrt{34})$
 [ ] in $(\pm\sqrt{34};0)$
-=> Il denominatore più grande, $25$, sta sotto $y^2$: l'ellisse è più alta che larga e i fuochi stanno sull'asse $y$. Poi $c^2=25-9=16$, $c=4$. Chi scrive $\sqrt{34}$ ha sommato i quadrati, come si fa per l'iperbole.
+=> In $(0;\pm4)$. Il denominatore più grande sta sotto $y^2$, quindi i fuochi sono sull'asse $y$, e $c^2=25-9=16$. Con $\sqrt{34}$ hai sommato, come per l'iperbole.
 
->! I fuochi stanno sull'asse del denominatore **più grande**, non su quello che compare per primo. E nell'ellisse, fra il termine con $x^2$ e quello con $y^2$, c'è sempre il $+$: con un meno è un'iperbole.` },
+>! I fuochi stanno sull'asse del denominatore **più grande**, non del primo che leggi. E nell'ellisse fra $x^2$ e $y^2$ c'è il $+$: con il meno è un'iperbole.` },
 
-    { id: 'eccentricita', titolo: "L'eccentricità", testo: R`Con lo spago della stessa lunghezza, più allontani i picchetti, più l'aiuola viene lunga e stretta. L'**eccentricità** è il numero che misura questo schiacciamento.
+    { id: 'eccentricita', titolo: "L'eccentricità", testo: R`Con lo stesso spago, più allontani i picchetti e più l'aiuola viene lunga e stretta. L'**eccentricità** misura questo schiacciamento.
 
 >* **Eccentricità dell'ellisse:** $e$ è la semidistanza focale divisa per il semiasse su cui stanno i fuochi. Con $a>b$: $$e=\frac ca$$ Con $b>a$: $e=\frac cb$. Vale sempre $0\le e<1$.
 
@@ -113,22 +129,22 @@ Esempio: $\frac{x^2}{25}+\frac{y^2}{9}=1$ ha $a=5$ e $b=3$. Il denominatore più
 | vicino a $0$ | quasi rotonda |
 | vicino a $1$ | molto allungata, con i fuochi vicini ai vertici |
 
-Perché mai $1$ o più? Perché i fuochi stanno dentro l'ellisse, quindi $c$ è sempre più piccolo del semiasse maggiore. È un rapporto fra due lunghezze: un'ellisse e la sua copia ingrandita hanno la stessa eccentricità, perché hanno la stessa forma.
+Perché mai $1$ o più? I fuochi stanno dentro l'ellisse, quindi $c$ è più piccolo del semiasse maggiore.
 
-Esempi: $\frac{x^2}{25}+\frac{y^2}{9}=1$ ha $c=4$ ed $e=\frac45=0{,}8$, piuttosto schiacciata. $\frac{x^2}{25}+\frac{y^2}{24}=1$ ha $c=1$ ed $e=0{,}2$, quasi rotonda. L'orbita della Terra ha $e\approx0{,}017$: a occhio non la distingueresti da una circonferenza. Nel grafico della sezione sull'equazione canonica, trascinando il fuoco vedi $e$ passare da $0$ a quasi $1$.
+Esempi: $\frac{x^2}{25}+\frac{y^2}{9}=1$ ha $c=4$ ed $e=\frac45=0{,}8$, piuttosto schiacciata. $\frac{x^2}{25}+\frac{y^2}{24}=1$ ha $c=1$ ed $e=0{,}2$, quasi rotonda. L'orbita della Terra ha $e\approx0{,}017$: sembra una circonferenza.
 
 ?? Quanto vale l'eccentricità dell'ellisse $\frac{x^2}{9}+\frac{y^2}{25}=1$?
 [x] $\frac45$
 [ ] $\frac43$
 [ ] $\frac35$
 [ ] $\frac54$
-=> I fuochi sono sull'asse $y$ ($25>9$), con $c^2=25-9=16$, $c=4$. Si divide per il semiasse dei fuochi, $b=5$: $e=\frac45$. Chi divide per $a=3$ trova $\frac43$, che è maggiore di $1$: per un'ellisse è impossibile, e questo basta ad accorgersi dell'errore.
+=> I fuochi sono sull'asse $y$, perché $25>9$. Poi $c^2=25-9=16$, $c=4$. Dividi per il semiasse dei fuochi, $b=5$: $e=\frac45$. Con $\frac43$ hai diviso per $a=3$, ma un'ellisse non ha mai $e>1$.
 
->! $e$ si calcola dividendo per il semiasse **maggiore**, cioè quello su cui stanno i fuochi, non per quello che compare per primo nell'equazione.` },
+>! $e$ si calcola dividendo per il semiasse **maggiore**, quello su cui stanno i fuochi.` },
 
-    { id: 'ellisse-retta', titolo: 'Ellisse e retta: intersezioni e tangenti', testo: R`Una retta e un'ellisse possono avere due punti in comune (la retta è **secante**), uno solo (**tangente**) o nessuno (**esterna**). Come per la circonferenza e la parabola, si mette a sistema e si guarda il $\Delta$.
+    { id: 'ellisse-retta', titolo: 'Ellisse e retta: intersezioni e tangenti', testo: R`Una retta e un'ellisse possono avere due punti in comune, uno o nessuno. La retta è **secante**, **tangente** o **esterna**.
 
->* Sostituendo l'equazione della retta in quella dell'ellisse si ottiene un'equazione di secondo grado. $\Delta>0$: secante. $\Delta=0$: tangente. $\Delta<0$: esterna.
+>* Sostituisci la retta nell'ellisse e guarda il $\Delta$. $\Delta>0$: secante. $\Delta=0$: tangente. $\Delta<0$: esterna.
 
 Esempio: per quali $q$ la retta $y=x+q$ è tangente all'ellisse $\frac{x^2}{3}+y^2=1$?
 
@@ -138,96 +154,96 @@ Esempio: per quali $q$ la retta $y=x+q$ è tangente all'ellisse $\frac{x^2}{3}+y
 ~ \frac{\Delta}{4}=9q^2-4(3q^2-3)=\evid{-3q^2+12} :: uso il $\Delta$ ridotto, perché il coefficiente di $x$ è pari
 ~ -3q^2+12=0\ \Rightarrow\ q=\evidb{\pm2} :: tangente quando $\Delta=0$
 
-Le tangenti sono due rette parallele, $y=x+2$ e $y=x-2$, una sopra e una sotto l'ellisse. Per $-2<q<2$ la retta è secante, per $|q|>2$ è esterna.
+Le tangenti sono due rette parallele, $y=x+2$ e $y=x-2$. Per $-2<q<2$ la retta è secante, per $|q|>2$ è esterna.
 
-Per l'ellisse in forma canonica e una retta $y=mx+q$ il conto porta sempre allo stesso risultato, che conviene ricordare:
+Con una retta $y=mx+q$ il conto porta sempre allo stesso risultato:
 
 >* **Condizione di tangenza:** $$q^2=a^2m^2+b^2$$ Nell'esempio: $a^2=3$, $b^2=1$, $m=1$, quindi $q^2=4$.
 
-Se invece conosci già un punto $P_0(x_0;y_0)$ dell'ellisse e vuoi la tangente proprio lì, usa la **formula di sdoppiamento**, come per la circonferenza: sostituisci $x^2$ con $x_0x$ e $y^2$ con $y_0y$.
+Se conosci un punto $P_0(x_0;y_0)$ dell'ellisse, la tangente lì si trova con la **formula di sdoppiamento**. Sostituisci $x^2$ con $x_0x$ e $y^2$ con $y_0y$.
 
 >* **Sdoppiamento:** la tangente all'ellisse $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1$ nel suo punto $P_0(x_0;y_0)$ ha equazione $$\frac{x\,x_0}{a^2}+\frac{y\,y_0}{b^2}=1$$
 
-Per esempio, la tangente all'ellisse $\frac{x^2}{25}+\frac{y^2}{9}=1$ nel vertice $P_0(5;0)$ è $\frac{5x}{25}+0=1$, cioè $x=5$: la retta verticale che tocca l'ellisse nel punto più a destra.
+Esempio: la tangente a $\frac{x^2}{25}+\frac{y^2}{9}=1$ nel vertice $P_0(5;0)$ è $\frac{5x}{25}+0=1$, cioè $x=5$.
 
-?? Uno studente applica lo sdoppiamento all'ellisse $\frac{x^2}{4}+y^2=1$ nel punto $(2;1)$ e ottiene $\frac x2+y=1$. Che cos'è quella retta?
-[x] non è la tangente in $(2;1)$, perché $(2;1)$ non sta sull'ellisse
-[ ] la tangente all'ellisse nel punto $(2;1)$
+?? Uno studente applica lo sdoppiamento a $\frac{x^2}{4}+y^2=1$ nel punto $(2;1)$ e ottiene $\frac x2+y=1$. Che cos'è quella retta?
+[x] niente di utile: $(2;1)$ non sta sull'ellisse
+[ ] la tangente nel punto $(2;1)$
 [ ] la tangente nel vertice $(2;0)$
-=> Sostituendo, $\frac44+1=2\ne1$: il punto è fuori dall'ellisse, e lo sdoppiamento si può usare solo per un punto della curva. La retta ottenuta non passa nemmeno per $(2;1)$, perché $1+1=2\ne1$. La tangente nel vertice $(2;0)$ è invece $x=2$.
+=> Niente di utile. Sostituendo viene $\frac44+1=2\ne1$, quindi il punto è fuori dall'ellisse. E lo sdoppiamento vale solo per un punto della curva.
 
->! Lo sdoppiamento funziona solo se $P_0$ **sta già** sull'ellisse. Prima di usarlo, sostituisci le coordinate e controlla che l'equazione sia verificata.` },
+>! Lo sdoppiamento funziona solo se $P_0$ **sta** sull'ellisse. Prima sostituisci le coordinate e controlla.` },
 
-    { id: 'iperbole-definizione', titolo: "L'iperbole: definizione ed equazione", testo: R`Nell'ellisse era costante la somma delle distanze dai fuochi. Che cosa succede se invece chiedi che sia costante la **differenza**?
+    { id: 'iperbole-definizione', titolo: "L'iperbole: definizione ed equazione", testo: R`Nell'ellisse era costante la somma delle distanze dai fuochi. Nell'iperbole è costante la **differenza**.
 
->* Dati due fuochi $F_1$ e $F_2$, l'**iperbole** è l'insieme dei punti $P$ per cui è costante il valore assoluto della differenza delle distanze dai fuochi: $$|PF_1-PF_2|=2a$$ con $2a<F_1F_2$.
+>* L'**iperbole** è l'insieme dei punti $P$ con la stessa differenza delle distanze dai fuochi $F_1$ e $F_2$. La differenza si prende in valore assoluto: $$|PF_1-PF_2|=2a$$ con $2a<F_1F_2$.
 
-Il valore assoluto serve perché i punti sono di due tipi: quelli più vicini a $F_2$ (per loro $PF_1-PF_2=2a$) e quelli più vicini a $F_1$ (per loro $PF_2-PF_1=2a$). Ognuno dei due gruppi forma un pezzo di curva, e l'iperbole è fatta di due **rami** separati.
+Il valore assoluto serve perché i punti formano due gruppi, uno vicino a $F_1$ e uno vicino a $F_2$. Ogni gruppo è un pezzo di curva, detto **ramo**.
 
-Con i fuochi in $(\pm c;0)$ e gli stessi passaggi dell'ellisse si arriva quasi alla stessa equazione. L'unica differenza è che ora $c>a$, quindi il numero positivo da chiamare $b^2$ è $c^2-a^2$.
+Con i fuochi in $(\pm c;0)$ i passaggi sono quelli dell'ellisse. Ma ora $c>a$, quindi chiami $b^2$ il numero $c^2-a^2$.
 
 >* **Equazione canonica dell'iperbole** (fuochi sull'asse $x$): $$\frac{x^2}{a^2}-\frac{y^2}{b^2}=1\qquad c^2=a^2+b^2$$ Vertici $A(-a;0)$ e $A'(a;0)$. Asintoti $$y=\pm\frac ba x$$
 
-Gli **asintoti** sono le due rette a cui i rami si avvicinano sempre di più, senza mai toccarle, man mano che si allontanano dal centro. C'è un modo rapido per disegnarli: costruisci il rettangolo con i lati $2a$ (in orizzontale) e $2b$ (in verticale) centrato nell'origine. Gli asintoti sono le sue diagonali. E metà diagonale è lunga $\sqrt{a^2+b^2}=c$: la distanza dei fuochi dal centro.
+Gli **asintoti** sono due rette a cui i rami si avvicinano senza toccarle. Sono le diagonali del rettangolo largo $2a$ e alto $2b$, centrato nell'origine. Metà diagonale è lunga $\sqrt{a^2+b^2}=c$.
 
-Trascina il vertice $K(a;b)$ del rettangolo: gli asintoti lo seguono, e la circonferenza tratteggiata di raggio $OK$ taglia l'asse $x$ proprio nei fuochi.
+Trascina $K(a;b)$: la circonferenza di raggio $OK$ passa per i fuochi.
 
 [[grafico:iperbole]]
 
 Esempio: $\frac{x^2}{4}-\frac{y^2}{9}=1$ ha $a=2$, $b=3$. Allora $c^2=4+9=13$, fuochi $(\pm\sqrt{13};0)$, e asintoti $y=\pm\frac32x$.
 
-L'**eccentricità** è ancora $e=\frac ca$, ma qui $c>a$, quindi $e>1$. Nell'esempio $e=\frac{\sqrt{13}}{2}\approx1{,}8$. Più $e$ è grande, più i rami sono aperti.
+L'**eccentricità** è ancora $e=\frac ca$. Qui $c>a$, quindi $e>1$: nell'esempio $e=\frac{\sqrt{13}}{2}\approx1{,}8$.
 
-Se a destra c'è $-1$, cioè $\frac{x^2}{a^2}-\frac{y^2}{b^2}=-1$, i rami si aprono verso l'alto e verso il basso: fuochi e vertici stanno sull'asse $y$, i vertici sono $(0;\pm b)$ e l'eccentricità è $e=\frac cb$. Gli asintoti restano $y=\pm\frac bax$, perché dipendono solo dal rettangolo.
+Con $-1$ a destra, cioè $\frac{x^2}{a^2}-\frac{y^2}{b^2}=-1$, i rami si aprono in alto e in basso. Fuochi e vertici stanno sull'asse $y$: i vertici sono $(0;\pm b)$ ed $e=\frac cb$. Gli asintoti restano $y=\pm\frac bax$.
 
 ?? Quali sono i fuochi dell'iperbole $\frac{x^2}{16}-\frac{y^2}{9}=1$?
 [x] $(\pm5;0)$
 [ ] $(\pm\sqrt7;0)$
 [ ] $(0;\pm5)$
 [ ] $(\pm4;0)$
-=> Nell'iperbole $c^2=a^2+b^2=16+9=25$, quindi $c=5$; stanno sull'asse $x$ perché il termine positivo è quello in $x^2$. $\sqrt7$ viene usando la formula dell'ellisse; $(\pm4;0)$ sono i vertici, non i fuochi.
+=> $c^2=a^2+b^2=16+9=25$, quindi $c=5$, sull'asse $x$. $\sqrt7$ viene dalla formula dell'ellisse, $(\pm4;0)$ sono i vertici.
 
->! Ellisse $c^2=a^2-b^2$, iperbole $c^2=a^2+b^2$. Le due formule si assomigliano ed è facile scambiarle: ricordati che nell'iperbole i fuochi stanno **fuori** dai vertici, quindi $c$ deve essere il più grande.` },
+>! Ellisse $c^2=a^2-b^2$, iperbole $c^2=a^2+b^2$. Nell'iperbole i fuochi stanno **fuori** dai vertici, quindi $c$ è il più grande.` },
 
-    { id: 'iperbole-equilatera', titolo: 'Iperbole equilatera e riferita agli asintoti', testo: R`Quando $a=b$ il rettangolo che serve a disegnare gli asintoti diventa un quadrato, e le sue diagonali sono perpendicolari: gli asintoti sono $y=x$ e $y=-x$.
+    { id: 'iperbole-equilatera', titolo: 'Iperbole equilatera e riferita agli asintoti', testo: R`Quando $a=b$ il rettangolo degli asintoti è un quadrato. Le sue diagonali sono perpendicolari: gli asintoti sono $y=x$ e $y=-x$.
 
 >* **Iperbole equilatera:** $a=b$, equazione $x^2-y^2=a^2$, asintoti $y=\pm x$ perpendicolari fra loro. L'eccentricità è sempre $\sqrt2$, perché $c^2=a^2+a^2=2a^2$.
 
-Gli asintoti perpendicolari si possono usare come assi cartesiani: basta ruotare il foglio di $45°$. In quel riferimento l'equazione diventa molto più semplice.
+Se ruoti il foglio di $45°$, gli asintoti diventano gli assi cartesiani. L'equazione allora si semplifica.
 
 >* **Iperbole equilatera riferita agli asintoti:** $$xy=k\qquad k\ne0$$ cioè $y=\frac kx$. Con $k>0$ i rami stanno nel primo e nel terzo quadrante, con $k<0$ nel secondo e nel quarto.
 
-È la forma che conosci già dalla **proporzionalità inversa**: se un rettangolo deve avere area $12$, base $x$ e altezza $y$ devono soddisfare $xy=12$. Allungando la base l'altezza cala, e il punto $(x;y)$ scorre lungo un'iperbole. Lo stesso vale per pressione e volume di un gas a temperatura costante.
+È la **proporzionalità inversa**: un rettangolo di area $12$ ha base $x$ e altezza $y$ con $xy=12$.
 
-Nel grafico trascina $P$: il rettangolo colorato ha un vertice nell'origine e quello opposto in $P$, e l'iperbole disegnata è quella di tutti i punti che danno un rettangolo con la stessa area. Porta $P$ nel secondo quadrante e guarda il segno di $k$.
+Trascina $P$: la curva passa per tutti i punti che danno un rettangolo della stessa area. Nel secondo quadrante guarda il segno di $k$.
 
 [[grafico:equilatera]]
 
-Esempio: $xy=12$ passa per $(3;4)$ e anche per $(-2;-6)$, perché $(-2)\cdot(-6)=12$. Non passa per $(2;-6)$: lì il prodotto è $-12$.
+Esempio: $xy=12$ passa per $(3;4)$ e per $(-2;-6)$, ma non per $(2;-6)$.
 
 ?? L'iperbole $xy=-6$ passa per il punto $(-2;y)$. Quanto vale $y$?
 [x] $3$
 [ ] $-3$
 [ ] $12$
 [ ] $4$
-=> Da $(-2)\cdot y=-6$ si ricava $y=3$. Con $k<0$ i rami stanno nel secondo e nel quarto quadrante, e $(-2;3)$ è proprio nel secondo. $-3$ è l'errore di chi divide senza badare al segno di $-2$.
+=> Da $(-2)\cdot y=-6$ ricavi $y=3$. Con $k<0$ i rami stanno nel secondo e nel quarto quadrante, e $(-2;3)$ è nel secondo. Con $-3$ hai perso il segno di $-2$.
 
->! $xy=k$ è un'iperbole equilatera come $x^2-y^2=a^2$, solo guardata da un riferimento ruotato di $45°$: per questo anche $xy=k$ ha eccentricità $\sqrt2$.` },
+>! $xy=k$ è un'iperbole equilatera come $x^2-y^2=a^2$, vista da assi ruotati di $45°$. Per questo anche $xy=k$ ha eccentricità $\sqrt2$.` },
 
-    { id: 'omografica', titolo: 'La funzione omografica', testo: R`Che grafico ha $y=\frac{2x+1}{x-1}$? Sembra una funzione nuova, ma con un piccolo trucco diventa un'iperbole che conosci.
+    { id: 'omografica', titolo: 'La funzione omografica', testo: R`Che grafico ha $y=\frac{2x+1}{x-1}$? Con un piccolo trucco diventa un'iperbole che conosci.
 
 ~ y=\frac{2x+1}{x-1} :: la funzione; condizione di esistenza $x\ne1$
 ~ y=\frac{2(x-1)+\evid{3}}{x-1} :: scrivo il numeratore come $2(x-1)$ più quello che manca: $2x-2+3=2x+1$
 ~ y=\evid{2}+\frac{3}{x-1} :: spezzo la frazione in due
 ~ \evidb{(y-2)(x-1)=3} :: porto il $2$ a sinistra e moltiplico per $x-1$
 
-L'ultima riga è $XY=3$ con $X=x-1$ e $Y=y-2$: l'iperbole equilatera $xy=3$, spostata di $1$ a destra e di $2$ in alto. I suoi asintoti, che erano gli assi, diventano le rette $x=1$ e $y=2$.
+L'ultima riga è l'iperbole $xy=3$ spostata di $1$ a destra e di $2$ in alto. Gli asintoti diventano $x=1$ e $y=2$.
 
->* Una **funzione omografica** è $$y=\frac{ax+b}{cx+d}\qquad c\ne0,\ \ ad-bc\ne0$$ Il suo grafico è un'iperbole equilatera traslata, con asintoti $x=-\frac dc$ (dove si annulla il denominatore) e $y=\frac ac$ (il rapporto dei coefficienti di $x$). Il **centro** è $\left(-\frac dc;\frac ac\right)$, dove gli asintoti si incrociano.
+>* Una **funzione omografica** è $$y=\frac{ax+b}{cx+d}\qquad c\ne0,\ \ ad-bc\ne0$$ Il grafico è un'iperbole equilatera traslata. L'asintoto verticale è $x=-\frac dc$, dove si annulla il denominatore. L'asintoto orizzontale è $y=\frac ac$. Il **centro** $\left(-\frac dc;\frac ac\right)$ è dove si incrociano.
 
-Le due condizioni hanno un motivo. Con $c=0$ al denominatore non c'è la $x$ e il grafico è una retta. Con $ad-bc=0$ il numeratore è un multiplo del denominatore, la frazione si semplifica e resta una costante: una retta orizzontale con un buco nel punto escluso.
+Con $c=0$ al denominatore non c'è la $x$, e il grafico è una retta. Con $ad-bc=0$ la frazione si semplifica e resta una costante: una retta orizzontale con un buco.
 
-Muovi i cursori e guarda gli asintoti. Poi prova a rendere $ad-bc$ uguale a zero (per esempio $a=2$, $b=4$, $c=1$, $d=2$): l'iperbole si appiattisce su una retta.
+Muovi i cursori e guarda gli asintoti. Poi prova $a=2$, $b=4$, $c=1$, $d=2$: con $ad-bc=0$ l'iperbole diventa una retta.
 
 [[grafico:omografica]]
 
@@ -236,13 +252,17 @@ Muovi i cursori e guarda gli asintoti. Poi prova a rendere $ad-bc$ uguale a zero
 [ ] $y=4$
 [ ] $y=-\frac16$
 [ ] $y=-3$
-=> È il rapporto fra i coefficienti di $x$: $\frac42=2$. Per $x$ molto grande i termini $-1$ e $+6$ contano sempre meno e $y$ si avvicina a $\frac{4x}{2x}=2$. $y=4$ dimentica di dividere per $c$; $-\frac16$ è il rapporto dei termini noti; il $-3$ viene dal denominatore e dà l'asintoto verticale $x=-3$.
+=> È il rapporto dei coefficienti di $x$: $\frac42=2$. Per $x$ molto grande $y$ si avvicina a $\frac{4x}{2x}=2$. Con $4$ non hai diviso per $c$, e $-3$ dà l'asintoto verticale.
 
->! Il punto $x=-\frac dc$ va escluso dal dominio: è una condizione di esistenza e va scritta, come in ogni frazione.` },
+>! Il punto $x=-\frac dc$ va escluso dal dominio, come in ogni frazione.` },
 
-    { id: 'determinare-equazione', titolo: "Determinare l'equazione dai dati", testo: R`Negli esercizi l'equazione quasi mai è data: hai un fuoco, un vertice, un punto per cui passa la curva, l'eccentricità, e devi ricostruire $a$ e $b$. Le incognite sono due, quindi servono due informazioni.
+    { id: 'determinare-equazione', titolo: "Determinare l'equazione dai dati", testo: R`Negli esercizi hai un fuoco, un vertice, un punto della curva o l'eccentricità. Da questi dati ricostruisci $a$ e $b$. Le incognite sono due, quindi servono due dati.
 
->* Tre mosse: decidi **che forma** ha l'equazione (ellisse o iperbole, fuochi sull'asse $x$ o sull'asse $y$); traduci ogni dato in un'equazione in $a$, $b$, $c$; risolvi, usando la relazione fra $a$, $b$, $c$ della curva.
+Si fa in tre mosse.
+
+1. Decidi **che forma** ha l'equazione: ellisse o iperbole, fuochi sull'asse $x$ o sull'asse $y$.
+2. Traduci ogni dato in un'equazione in $a$, $b$, $c$.
+3. Risolvi, usando la relazione fra $a$, $b$, $c$ della curva.
 
 | dato | che cosa ti dice |
 |---|---|
@@ -260,15 +280,15 @@ Esempio: l'ellisse con i fuochi sull'asse $x$, eccentricità $\frac35$, che pass
 ~ \frac{16}{25}a^2=16\ \Rightarrow\ a^2=\evidb{25} :: risolvo
 ~ \frac{x^2}{25}+\frac{y^2}{16}=1 :: controllo: $c=3$, $e=\frac35$
 
-Esempio con l'iperbole: vertice in $A(4;0)$ e asintoti $y=\pm\frac32x$. Il vertice dà $a=4$; dagli asintoti $\frac ba=\frac32$, quindi $b=6$. L'equazione è $\frac{x^2}{16}-\frac{y^2}{36}=1$.
+Esempio con l'iperbole: vertice in $A(4;0)$ e asintoti $y=\pm\frac32x$. Il vertice dà $a=4$. Dagli asintoti $\frac ba=\frac32$, quindi $b=6$. L'equazione è $\frac{x^2}{16}-\frac{y^2}{36}=1$.
 
 ?? Un'ellisse ha un fuoco in $F(3;0)$ e passa per $P(0;5)$. Qual è la sua equazione?
 [x] $\frac{x^2}{34}+\frac{y^2}{25}=1$
 [ ] $\frac{x^2}{16}+\frac{y^2}{25}=1$
 [ ] $\frac{x^2}{9}+\frac{y^2}{25}=1$
-=> Il fuoco sull'asse $x$ dice che $c=3$ e che $a>b$; $P(0;5)$ è il vertice $B'$, quindi $b=5$. Da $c^2=a^2-b^2$ viene $a^2=9+25=34$. Chi scrive $a^2=25-9=16$ usa la formula come se i fuochi fossero sull'asse $y$, ma allora non potrebbero stare in $(3;0)$.
+=> Il fuoco sull'asse $x$ dice che $c=3$ e che $a>b$. $P(0;5)$ è il vertice $B'$, quindi $b=5$. Da $c^2=a^2-b^2$ viene $a^2=9+25=34$. Con $a^2=25-9=16$ metti i fuochi sull'asse $y$, ma il fuoco è in $(3;0)$.
 
->! Prima dei conti chiediti su quale asse stanno i fuochi. Lo dicono i dati: un fuoco o un vertice sull'asse $x$ ha ordinata $0$, sull'asse $y$ ha ascissa $0$.` }
+>! Prima dei conti chiediti su quale asse stanno i fuochi. Un punto sull'asse $x$ ha ordinata $0$, uno sull'asse $y$ ha ascissa $0$.` }
   ],
 
   grafici: {
@@ -432,13 +452,34 @@ Esempio con l'iperbole: vertice in $A(4;0)$ e asintoti $y=\pm\frac32x$. Il verti
   ],
 
   esercizi: [
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Trova i semiassi dell'ellisse $\dfrac{x^2}{25}+\dfrac{y^2}{9}=1$. Scrivi *a; b*.`, suggerimenti: [R`Sotto $x^2$ c'è $a^2$, sotto $y^2$ c'è $b^2$.`], risposta: cop(5, 3), soluzione: [R`$a^2=25$, quindi $a=5$.`, R`$b^2=9$, quindi $b=3$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Trova il vertice di ascissa positiva dell'ellisse $\dfrac{x^2}{16}+\dfrac{y^2}{4}=1$. Scrivi *x; y*.`, suggerimenti: [R`I vertici sull'asse $x$ sono $(\pm a;0)$.`], risposta: cop(4, 0), soluzione: [R`$a^2=16$, quindi $a=4$.`, R`Il vertice è $A'(4;0)$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Trova il vertice di ordinata positiva dell'ellisse $\dfrac{x^2}{4}+\dfrac{y^2}{9}=1$. Scrivi *x; y*.`, suggerimenti: [R`I vertici sull'asse $y$ sono $(0;\pm b)$.`], risposta: cop(0, 3), soluzione: [R`$b^2=9$, quindi $b=3$.`, R`Il vertice è $B'(0;3)$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Trova il vertice di ascissa positiva dell'iperbole $\dfrac{x^2}{9}-\dfrac{y^2}{4}=1$. Scrivi *x; y*.`, suggerimenti: [R`I vertici di questa iperbole sono $(\pm a;0)$.`], risposta: cop(3, 0), soluzione: [R`$a^2=9$, quindi $a=3$.`, R`Il vertice è $A'(3;0)$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Trova i semiassi dell'iperbole $\dfrac{x^2}{16}-\dfrac{y^2}{9}=1$. Scrivi *a; b*.`, suggerimenti: [R`Sotto $x^2$ c'è $a^2$, sotto $y^2$ c'è $b^2$.`], risposta: cop(4, 3), soluzione: [R`$a^2=16$, quindi $a=4$.`, R`$b^2=9$, quindi $b=3$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Trova il fuoco di ascissa positiva dell'ellisse $\dfrac{x^2}{25}+\dfrac{y^2}{16}=1$. Scrivi *x; y*.`, suggerimenti: [R`Il denominatore più grande è sotto $x^2$: i fuochi sono sull'asse $x$.`, R`Usa $c^2=a^2-b^2$.`], risposta: cop(3, 0), soluzione: [R`$a^2=25$ e $b^2=16$: i fuochi sono sull'asse $x$.`, R`$c^2=25-16=9$, quindi $c=3$.`, R`Il fuoco è $(3;0)$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Trova il fuoco di ascissa positiva dell'ellisse $\dfrac{x^2}{100}+\dfrac{y^2}{36}=1$. Scrivi *x; y*.`, suggerimenti: [R`Nell'ellisse $c^2=a^2-b^2$.`], risposta: cop(8, 0), soluzione: [R`$a^2=100$ e $b^2=36$: i fuochi sono sull'asse $x$.`, R`$c^2=100-36=64$, quindi $c=8$.`, R`Il fuoco è $(8;0)$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Trova il fuoco di ordinata positiva dell'ellisse $\dfrac{x^2}{16}+\dfrac{y^2}{25}=1$. Scrivi *x; y*.`, suggerimenti: [R`Il denominatore più grande è sotto $y^2$: i fuochi sono sull'asse $y$.`, R`Qui $c^2=b^2-a^2$.`], risposta: cop(0, 3), soluzione: [R`$25>16$: i fuochi sono sull'asse $y$.`, R`$c^2=25-16=9$, quindi $c=3$.`, R`Il fuoco è $(0;3)$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Trova il fuoco di ascissa positiva dell'iperbole $\dfrac{x^2}{9}-\dfrac{y^2}{16}=1$. Scrivi *x; y*.`, suggerimenti: [R`Nell'iperbole $c^2=a^2+b^2$: una somma.`], risposta: cop(5, 0), soluzione: [R`$a^2=9$ e $b^2=16$.`, R`$c^2=9+16=25$, quindi $c=5$.`, R`Il fuoco è $(5;0)$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Trova il fuoco di ascissa positiva dell'iperbole $\dfrac{x^2}{5}-\dfrac{y^2}{4}=1$. Scrivi *x; y*.`, suggerimenti: [R`Nell'iperbole $c^2=a^2+b^2$. Qui non serve calcolare $a$.`], risposta: cop(3, 0), soluzione: [R`$a^2=5$ e $b^2=4$.`, R`$c^2=5+4=9$, quindi $c=3$.`, R`Il fuoco è $(3;0)$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Calcola l'eccentricità dell'ellisse $\dfrac{x^2}{25}+\dfrac{y^2}{16}=1$.`, suggerimenti: [R`Trova prima $c$ con $c^2=a^2-b^2$.`, R`Poi $e=\dfrac ca$.`], risposta: num(3 / 5), soluzione: [R`$a=5$ e $c^2=25-16=9$, quindi $c=3$.`, R`$e=\dfrac ca=\dfrac35$.`] },
+    { id: 'b-12', livello: 'base', difficolta: 1, testo: R`Calcola l'eccentricità dell'ellisse $\dfrac{x^2}{36}+\dfrac{y^2}{100}=1$.`, suggerimenti: [R`I fuochi sono sull'asse $y$: dividi per $b$.`], risposta: num(4 / 5), soluzione: [R`I fuochi sono sull'asse $y$, perché $100>36$.`, R`$c^2=100-36=64$, quindi $c=8$.`, R`$e=\dfrac cb=\dfrac{8}{10}=\dfrac45$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 1, testo: R`Calcola l'eccentricità dell'iperbole $\dfrac{x^2}{9}-\dfrac{y^2}{16}=1$. Scrivila come frazione.`, suggerimenti: [R`Nell'iperbole $c^2=a^2+b^2$, poi $e=\dfrac ca$.`], risposta: num(5 / 3), soluzione: [R`$c^2=9+16=25$, quindi $c=5$.`, R`$a=3$, quindi $e=\dfrac53$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Trova il fuoco di ordinata positiva dell'iperbole $\dfrac{x^2}{16}-\dfrac{y^2}{9}=-1$. Scrivi *x; y*.`, suggerimenti: [R`Con $-1$ a destra i fuochi stanno sull'asse $y$.`, R`$c^2=a^2+b^2$ vale anche qui.`], risposta: cop(0, 5), soluzione: [R`A destra c'è $-1$: fuochi sull'asse $y$.`, R`$c^2=16+9=25$, quindi $c=5$.`, R`Il fuoco è $(0;5)$.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Scrivi l'equazione dell'ellisse con i fuochi sull'asse $x$ e semiassi $a=5$ e $b=2$.`, suggerimenti: [R`Metti $a^2$ e $b^2$ in $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1$.`], risposta: conica(25, 4, '+'), soluzione: [R`$a^2=25$ e $b^2=4$.`, R`$\dfrac{x^2}{25}+\dfrac{y^2}{4}=1$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Scrivi l'equazione dell'iperbole con i fuochi sull'asse $x$ e semiassi $a=2$ e $b=3$.`, suggerimenti: [R`L'iperbole ha il meno: $\dfrac{x^2}{a^2}-\dfrac{y^2}{b^2}=1$.`], risposta: conica(4, 9, '-'), soluzione: [R`$a^2=4$ e $b^2=9$.`, R`$\dfrac{x^2}{4}-\dfrac{y^2}{9}=1$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Un'ellisse ha i fuochi in $(\pm4;0)$ e un vertice in $(5;0)$. Scrivi la sua equazione.`, suggerimenti: [R`Il vertice dà $a=5$, il fuoco dà $c=4$.`, R`Trova $b^2$ con $b^2=a^2-c^2$.`], risposta: conica(25, 9, '+'), soluzione: [R`$a=5$ e $c=4$.`, R`$b^2=25-16=9$.`, R`$\dfrac{x^2}{25}+\dfrac{y^2}{9}=1$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Un'ellisse ha i fuochi in $(0;\pm4)$ e un vertice in $(0;5)$. Scrivi la sua equazione.`, suggerimenti: [R`I fuochi sono sull'asse $y$: il vertice dà $b=5$.`, R`Qui $a^2=b^2-c^2$.`], risposta: conica(9, 25, '+'), soluzione: [R`$b=5$ e $c=4$, fuochi sull'asse $y$.`, R`$a^2=25-16=9$.`, R`$\dfrac{x^2}{9}+\dfrac{y^2}{25}=1$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Un'iperbole ha i fuochi in $(\pm5;0)$ e i vertici in $(\pm4;0)$. Scrivi la sua equazione.`, suggerimenti: [R`$a=4$ e $c=5$.`, R`Nell'iperbole $b^2=c^2-a^2$.`], risposta: conica(16, 9, '-'), soluzione: [R`$a=4$ e $c=5$.`, R`$b^2=25-16=9$.`, R`$\dfrac{x^2}{16}-\dfrac{y^2}{9}=1$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Un'ellisse ha i fuochi sull'asse $x$, un vertice in $(5;0)$ ed eccentricità $\dfrac35$. Scrivi la sua equazione.`, suggerimenti: [R`Da $e=\dfrac ca$ con $a=5$ trovi $c$.`, R`Poi $b^2=a^2-c^2$.`], risposta: conica(25, 16, '+'), soluzione: [R`$a=5$ e $\dfrac c5=\dfrac35$, quindi $c=3$.`, R`$b^2=25-9=16$.`, R`$\dfrac{x^2}{25}+\dfrac{y^2}{16}=1$.`] },
+
     { id: 'es-01', difficolta: 1, testo: R`Data l'ellisse $\dfrac{x^2}{25}+\dfrac{y^2}{9}=1$, trova le coordinate del fuoco di ascissa positiva (x; y).`, suggerimenti: [R`I fuochi sono sull'asse del denominatore maggiore.`, R`Calcola $c$ con $c^2=a^2-b^2$.`], risposta: { tipo: 'numeri', valori: [4, 0], ordinati: true }, soluzione: [R`$a^2=25$, $b^2=9$, quindi $a=5$, $b=3$: poiché $a>b$ i fuochi sono sull'asse $x$.`, R`$c^2=25-9=16$, $c=4$: il fuoco di ascissa positiva è $F'(4;0)$.`] },
     { id: 'es-02', difficolta: 1, testo: R`Per la stessa ellisse $\dfrac{x^2}{25}+\dfrac{y^2}{9}=1$, calcola l'eccentricità.`, suggerimenti: [R`$e=c/a$: hai già trovato $a$ e $c$ nell'esercizio precedente.`, R`$a=5$, $c=4$.`], risposta: { tipo: 'numero', valore: 0.8, tolleranza: 0.01 }, soluzione: [R`$a=5$ e $c=4$ (vedi sopra).`, R`$e=c/a=4/5=0{,}8$.`] },
     { id: 'es-03', difficolta: 1, testo: R`Data l'ellisse $\dfrac{x^2}{9}+\dfrac{y^2}{25}=1$, trova le coordinate del fuoco di ordinata positiva (x; y).`, suggerimenti: [R`Qui il denominatore maggiore è sotto $y^2$: i fuochi sono sull'asse $y$.`, R`$a^2=9$ (sotto $x^2$), $b^2=25$ (sotto $y^2$): con i fuochi sull'asse $y$ si usa $c^2=b^2-a^2$.`], risposta: { tipo: 'numeri', valori: [0, 4], ordinati: true }, soluzione: [R`$a^2=9$ e $b^2=25$. Sotto $y^2$ c'è il numero maggiore: i fuochi sono sull'asse $y$.`, R`$c^2=b^2-a^2=25-9=16$, $c=4$: il fuoco di ordinata positiva è $F'(0;4)$.`] },
-    { id: 'es-04', difficolta: 2, testo: R`Scrivi l'equazione dell'ellisse con centro nell'origine, semiasse maggiore $6$ sull'asse $x$ e semiasse minore $4$.`, suggerimenti: [R`L'equazione canonica è $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1$.`, R`Qui $a=6$ (sull'asse $x$) e $b=4$.`], risposta: { tipo: 'testo', accettate: ['x^2/36+y^2/16=1', 'x²/36+y²/16=1'] }, soluzione: [R`Semiasse maggiore $a=6$ sull'asse $x$, semiasse minore $b=4$.`, R`Equazione: $\dfrac{x^2}{36}+\dfrac{y^2}{16}=1$.`] },
+    { id: 'es-04', difficolta: 2, testo: R`Scrivi l'equazione dell'ellisse con centro nell'origine, semiasse maggiore $6$ sull'asse $x$ e semiasse minore $4$.`, suggerimenti: [R`L'equazione canonica è $\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1$.`, R`Qui $a=6$ (sull'asse $x$) e $b=4$.`], risposta: { tipo: 'testo', accettate: ['x^2/36+y^2/16=1', 'y^2/16+x^2/36=1', 'x^2/6^2+y^2/4^2=1', '4x^2+9y^2=144', '16x^2+36y^2=576'] }, soluzione: [R`Semiasse maggiore $a=6$ sull'asse $x$, semiasse minore $b=4$.`, R`Equazione: $\dfrac{x^2}{36}+\dfrac{y^2}{16}=1$.`] },
     { id: 'es-05', difficolta: 2, testo: R`Data l'iperbole $\dfrac{x^2}{16}-\dfrac{y^2}{9}=1$, trova le coordinate del fuoco di ascissa positiva (x; y).`, suggerimenti: [R`Per l'iperbole $c^2=a^2+b^2$ (una somma, non una differenza).`, R`$a=4$, $b=3$.`], risposta: { tipo: 'numeri', valori: [5, 0], ordinati: true }, soluzione: [R`$a^2=16$, $b^2=9$: $a=4$, $b=3$.`, R`$c^2=16+9=25$, $c=5$: il fuoco di ascissa positiva è $F'(5;0)$.`] },
     { id: 'es-06', difficolta: 2, testo: R`Per la stessa iperbole $\dfrac{x^2}{16}-\dfrac{y^2}{9}=1$, calcola l'eccentricità.`, suggerimenti: [R`$e=c/a$.`, R`$a=4$, $c=5$ (li hai trovati sopra).`], risposta: { tipo: 'numero', valore: 1.25, tolleranza: 0.01 }, soluzione: [R`$a=4$, $c=5$.`, R`$e=c/a=5/4=1{,}25$.`] },
-    { id: 'es-07', difficolta: 2, testo: R`Scrivi l'equazione dell'asintoto dell'iperbole $\dfrac{x^2}{16}-\dfrac{y^2}{9}=1$ con coefficiente angolare positivo.`, suggerimenti: [R`Gli asintoti sono $y=\pm\dfrac{b}{a}x$.`, R`$a=4$, $b=3$: quello richiesto ha $m=b/a>0$.`], risposta: { tipo: 'testo', accettate: ['y=3/4x', 'y=(3/4)x', 'y=0.75x', 'y=3x/4'] }, soluzione: [R`$a=4$, $b=3$: gli asintoti sono $y=\pm\dfrac34x$.`, R`Quello con coefficiente angolare positivo è $y=\dfrac34x$.`] },
+    { id: 'es-07', difficolta: 2, testo: R`Scrivi l'equazione dell'asintoto dell'iperbole $\dfrac{x^2}{16}-\dfrac{y^2}{9}=1$ con coefficiente angolare positivo.`, suggerimenti: [R`Gli asintoti sono $y=\pm\dfrac{b}{a}x$.`, R`$a=4$, $b=3$: quello richiesto ha $m=b/a>0$.`], risposta: { tipo: 'testo', accettate: ['y=3/4x', 'y=(3/4)x', 'y=0.75x', 'y=3x/4', '3x-4y=0', '4y=3x'] }, soluzione: [R`$a=4$, $b=3$: gli asintoti sono $y=\pm\dfrac34x$.`, R`Quello con coefficiente angolare positivo è $y=\dfrac34x$.`] },
     { id: 'es-08', difficolta: 2, testo: R`L'iperbole equilatera $xy=k$, riferita ai propri asintoti, passa per il punto $(4;3)$. Trova $k$.`, suggerimenti: [R`Sostituisci le coordinate del punto nell'equazione.`, R`$k=x\cdot y$ calcolato in quel punto.`], risposta: { tipo: 'numero', valore: 12, tolleranza: 0.01 }, soluzione: [R`Il punto $(4;3)$ soddisfa $xy=k$: $k=4\cdot3=12$.`] },
     { id: 'es-09', difficolta: 3, testo: R`Data la funzione omografica $y=\dfrac{3x-1}{x+2}$, trova le coordinate del centro di simmetria (x; y).`, suggerimenti: [R`Confrontala con $y=\dfrac{ax+b}{cx+d}$ per riconoscere $a,b,c,d$.`, R`Il centro è $\left(-\dfrac{d}{c};\dfrac{a}{c}\right)$.`], risposta: { tipo: 'numeri', valori: [-2, 3], ordinati: true }, soluzione: [R`$a=3$, $b=-1$, $c=1$, $d=2$.`, R`Centro: $x=-d/c=-2$, $y=a/c=3$: $(-2;3)$.`] },
     { id: 'es-10', difficolta: 3, testo: R`Determina i coefficienti angolari delle rette tangenti condotte dal punto $P(0;2)$ all'ellisse $\dfrac{x^2}{3}+y^2=1$.`, suggerimenti: [R`Le rette per $P$ hanno equazione $y=mx+2$: usa la condizione di tangenza $q^2=a^2m^2+b^2$.`, R`$a^2=3$, $b^2=1$, $q=2$.`], risposta: { tipo: 'numeri', valori: [1, -1] }, soluzione: [R`Retta per $P$: $y=mx+2$, quindi $q=2$; $a^2=3$, $b^2=1$.`, R`$q^2=a^2m^2+b^2 \Rightarrow 4=3m^2+1 \Rightarrow m^2=1$.`, R`$m=1$ oppure $m=-1$.`] },
@@ -468,7 +509,7 @@ Esempio con l'iperbole: vertice in $A(4;0)$ e asintoti $y=\pm\frac32x$. Il verti
     { tipo: 'metodo', testo: R`Prima di scrivere qualunque formula, chiediti se hai un'ellisse (somma delle distanze, segno $+$) o un'iperbole (differenza, segno $-$): le formule di $c^2$ sono opposte.` },
     { tipo: 'errore', testo: R`Nell'ellisse $c^2=a^2-b^2$, nell'iperbole $c^2=a^2+b^2$: è la trappola più comune di questo argomento, perché le due formule si assomigliano.` },
     { tipo: 'trucco', testo: R`I fuochi stanno sempre sull'asse del denominatore **maggiore** (ellisse) o sull'asse della variabile che ha il segno **positivo** (iperbole): guarda i numeri prima di disegnare.` },
-    { tipo: 'errore', testo: R`L'eccentricità si calcola dividendo per il semiasse maggiore, non per quello che compare per primo nell'equazione.` },
+    { tipo: 'errore', testo: R`Nell'ellisse l'eccentricità si calcola dividendo per il semiasse maggiore, quello dei fuochi, non per quello che compare per primo. Nell'iperbole dividi per il semiasse dei vertici: $a$ se a destra c'è $1$, anche quando $b>a$.` },
     { tipo: 'metodo', testo: R`Per determinare l'equazione da un fuoco e un punto (o un vertice), scrivi tutto in funzione di $a$, $b$, $c$ e usa $c^2=a^2\mp b^2$ solo alla fine.` },
     { tipo: 'trucco', testo: R`Nella funzione omografica, il denominatore uguagliato a zero dà subito l'asintoto verticale, senza bisogno di ricordare la formula $-d/c$.` },
     { tipo: 'errore', testo: R`Lo sdoppiamento per la tangente funziona solo se il punto è già sulla curva: verificalo sempre prima di applicarlo.` },

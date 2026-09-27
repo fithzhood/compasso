@@ -1,31 +1,43 @@
 (function () {
 const R = String.raw;
+/* allenamento: vertice (x; y) in ordine, ascisse delle intersezioni con l'asse x (ordine libero, o «nessuna»),
+   equazione dell'asse, concavità a parole */
+const cop = (x, y) => ({ tipo: 'numeri', valori: [x, y], ordinati: true, segnaposto: 'es. 2; -1' });
+const SEGNA_Z = 'es. -1; 3 o nessuna';
+const zeri = (...v) => ({ tipo: 'numeri', valori: v, segnaposto: SEGNA_Z });
+const nessuna = { tipo: 'testo', accettate: ['nessuna', 'nessuno', 'nessun punto', 'nessuna soluzione', 'non la taglia', 'impossibile', '∅', 'ø', '{}', 'insieme vuoto'], segnaposto: SEGNA_Z };
+const doppia = v => ({ tipo: 'testo', accettate: [v, v + ';' + v, v + ',' + v, v + ' doppia', v + ' (doppia)', 'x1=x2=' + v, 'x₁=x₂=' + v], segnaposto: SEGNA_Z });
+/* l'asse è una retta: la casella vuole «x = 3» intero (con una risposta x = k non toglie «x=»), come mostra il segnaposto */
+const asse = v => ({ tipo: 'testo', accettate: ['x=' + v], segnaposto: 'es. x = 1', simboli: ['x', '=', '−', '/'] });
+const PAROLE = { segnaposto: "verso l'alto o verso il basso", simboli: [] };
+/* anche con l'apostrofo tipografico ’ che mettono alcune tastiere del telefono: la casella toglie solo quello dritto */
+const apostrofi = r => { r.accettate = r.accettate.concat(r.accettate.filter(a => a.includes("'")).map(a => a.replace(/'/g, '’'))); return r; };
+const ALTO = apostrofi(Object.assign({ tipo: 'testo', accettate: ["verso l'alto", 'alto', 'in alto', 'verso alto', 'su', 'verso su', "all'insù", "all'in su", "rivolta verso l'alto", "concavità verso l'alto", "concava verso l'alto", '↑'] }, PAROLE));
+const BASSO = apostrofi(Object.assign({ tipo: 'testo', accettate: ['verso il basso', 'basso', 'in basso', 'verso basso', 'giù', 'verso giù', "all'ingiù", "all'in giù", 'rivolta verso il basso', 'concavità verso il basso', 'concava verso il basso', '↓'] }, PAROLE));
 COMPASSO.registra({
   id: 'parabola',
   titolo: 'La parabola',
 
-  introduzione: R`Un pallone calciato in aria, il getto di una fontana, un sasso lanciato: tutti disegnano la stessa curva, che sale, rallenta, si ferma in un punto più alto e ridiscende in modo simmetrico. È la **parabola**. La stessa forma hanno le antenne satellitari e gli specchi dei fari, per una proprietà di un suo punto speciale, il **fuoco**.
+  introduzione: R`Calcia un pallone in aria: sale, rallenta, si ferma nel punto più alto e ridiscende allo stesso modo. La curva che disegna è una **parabola**. La stessa forma hanno le antenne satellitari e gli specchi dei fari.
 
-Nel piano cartesiano la parabola con asse verticale ha equazione $y = ax^2 + bx + c$, con $a \ne 0$. La conosci già: è il grafico che compare nelle equazioni e disequazioni di secondo grado. Qui si impara a leggerla: dove sta il vertice, verso dove è rivolta, quando una retta la taglia o la tocca, e come si trova l'equazione a partire da alcuni dati.
+Nel piano cartesiano la parabola con asse verticale ha equazione $y = ax^2 + bx + c$, con $a \ne 0$. Qui impari a leggerla: dove sta il vertice, verso dove è rivolta, dove taglia gli assi e una retta. Poi impari a trovarne l'equazione.
 
-Servono le equazioni di secondo grado (discriminante e formula risolutiva) e il piano cartesiano: distanza fra due punti, equazione della retta, sistemi.`,
+Servono le equazioni di secondo grado e il piano cartesiano.`,
 
   inBreve: [
-    R`La parabola è l'insieme dei punti che hanno la stessa distanza da un punto, il fuoco, e da una retta, la direttrice. Il vertice sta a metà strada fra i due.`,
-    R`In $y = ax^2 + bx + c$ il segno di $a$ dice se la parabola è rivolta verso l'alto o verso il basso, la grandezza di $a$ quanto è stretta, e $c$ è il punto dove taglia l'asse $y$.`,
-    R`Il vertice ha ascissa $x_V = -\dfrac{b}{2a}$; l'ordinata si trova sostituendo $x_V$ nell'equazione.`,
-    R`Per sapere se una retta taglia, tocca o manca la parabola si mettono a sistema le due equazioni e si guarda il $\Delta$ dell'equazione di secondo grado che si ottiene: positivo, nullo, negativo.`,
-    R`Per scrivere l'equazione servono tre condizioni. Se si conosce il vertice conviene partire da $y = a(x - x_V)^2 + y_V$.`
+    R`I punti della parabola hanno la stessa distanza da un punto, il fuoco, e da una retta, la direttrice. Il vertice sta a metà strada fra i due.`,
+    R`In $y = ax^2 + bx + c$ il segno di $a$ dice se la parabola è rivolta verso l'alto o verso il basso. La grandezza di $a$ dice quanto è stretta. La parabola taglia l'asse $y$ in $(0; c)$.`,
+    R`Il vertice ha ascissa $x_V = -\dfrac{b}{2a}$. Per l'ordinata metti $x_V$ nell'equazione.`,
+    R`Per sapere se una retta taglia, tocca o manca la parabola, metti a sistema le due equazioni. Poi guarda il $\Delta$ dell'equazione che ottieni: positivo, nullo o negativo.`,
+    R`Per scrivere l'equazione servono tre condizioni. Se conosci il vertice, parti da $y = a(x - x_V)^2 + y_V$.`
   ],
 
   sezioni: [
-    { id: 'definizione-luogo', titolo: 'La parabola come luogo geometrico', testo: R`Prendi un punto $F$ e una retta $d$ che non passa per $F$. Quali punti del piano sono lontani da $F$ esattamente quanto sono lontani da $d$? Il punto a metà strada fra $F$ e $d$ è uno di questi. Se $F$ sta sopra $d$, spostandosi di lato se ne trovano altri, sempre più in alto, e insieme formano una curva: la parabola.
+    { id: 'definizione-luogo', titolo: 'La parabola come luogo geometrico', testo: R`Prendi un punto $F$ e una retta $d$ che non passa per $F$. Cerca i punti che distano da $F$ quanto distano da $d$. Il punto a metà strada fra $F$ e $d$ è uno di questi. Spostandoti di lato ne trovi altri, e insieme formano la parabola.
 
->* **Definizione.** La parabola di **fuoco** $F$ e **direttrice** $d$ è l'insieme dei punti $P$ tali che $$PF = PH$$ dove $H$ è il piede della perpendicolare da $P$ a $d$. In parole: ogni punto della parabola ha la stessa distanza dal fuoco e dalla direttrice.
+>* **Definizione.** La parabola di **fuoco** $F$ e **direttrice** $d$ è l'insieme dei punti $P$ con $$PF = PH$$ dove $H$ è il piede della perpendicolare da $P$ a $d$. Ogni punto della parabola ha la stessa distanza dal fuoco e dalla direttrice.
 
-La retta perpendicolare a $d$ che passa per $F$ è l'**asse** della parabola: la curva è simmetrica rispetto a essa. Sull'asse, a metà strada fra fuoco e direttrice, c'è il **vertice** $V$, il punto della parabola più vicino a entrambi.
-
-L'animazione costruisce la curva punto per punto: per ogni $H$ sulla direttrice cerca il punto sopra $H$ che dista da $F$ quanto da $H$.
+La retta per $F$ perpendicolare a $d$ è l'**asse** della parabola, e la curva è simmetrica rispetto all'asse. Sull'asse, a metà strada fra fuoco e direttrice, c'è il **vertice** $V$.
 
 [[animazione:parabola-luogo]]
 
@@ -33,13 +45,13 @@ L'animazione costruisce la curva punto per punto: per ogni $H$ sulla direttrice 
 [x] $(4; 2)$
 [ ] $(2; 2)$
 [ ] $(0; 2)$
-=> $(4; 2)$ dista $4$ da $F$ (stessa altezza, quattro passi di lato) e $4$ dalla direttrice (da $y = 2$ a $y = -2$). $(2; 2)$ dista $2$ da $F$ ma $4$ dalla direttrice. $(0; 2)$ è il fuoco stesso: dista $0$ da sé e $4$ dalla direttrice. Il fuoco sta dentro la parabola, non sopra.
+=> $(4; 2)$ dista $4$ da $F$ e $4$ dalla direttrice. $(2; 2)$ dista $2$ da $F$ ma $4$ dalla direttrice. $(0; 2)$ è il fuoco stesso: il fuoco sta dentro la parabola, non sopra.
 
->! La distanza di un punto da una retta si misura sempre in **perpendicolare**: è il segmento più corto fra il punto e la retta.` },
+>! La distanza di un punto da una retta si misura sempre in **perpendicolare**.` },
 
-    { id: 'equazione-canonica', titolo: 'Dalla definizione all\'equazione: il caso y = ax²', testo: R`Dalla definizione si ricava l'equazione. Conviene mettere il vertice nell'origine e l'asse sull'asse $y$: allora il fuoco è $F(0; p)$ e la direttrice è $y = -p$, dove $p$ è la distanza fra vertice e fuoco (negativa se il fuoco sta sotto).
+    { id: 'equazione-canonica', titolo: 'Dalla definizione all\'equazione: il caso y = ax²', testo: R`Dalla definizione ricavi l'equazione. Metti il vertice nell'origine e l'asse sull'asse $y$. Allora il fuoco è $F(0; p)$ e la direttrice è $y = -p$. Il numero $p$ è la distanza fra vertice e fuoco, negativa se il fuoco sta sotto.
 
-Un punto $P(x; y)$ sta sulla parabola quando la sua distanza da $F$ è uguale alla distanza dalla direttrice, che per una retta orizzontale è la differenza delle ordinate, $|y + p|$.
+Un punto $P(x; y)$ sta sulla parabola quando $PF$ è uguale alla distanza dalla direttrice, cioè a $|y + p|$.
 
 ~ \sqrt{x^2 + (y - p)^2} = |y + p| :: a sinistra la distanza da $F$ (formula della distanza fra due punti), a destra quella da $y = -p$
 ~ x^2 + \evid{y^2 - 2py + p^2} = \evid{y^2 + 2py + p^2} :: elevo al quadrato: sono due numeri non negativi, quindi non nascono soluzioni estranee
@@ -48,29 +60,32 @@ Un punto $P(x; y)$ sta sulla parabola quando la sua distanza da $F$ è uguale al
 
 >* **Forma canonica.** Con vertice nell'origine, fuoco $F(0; p)$ e direttrice $y = -p$: $$y = \dfrac{x^2}{4p}$$ cioè $y = ax^2$ con $a = \dfrac{1}{4p}$. Più il fuoco è vicino al vertice, più $a$ è grande e la parabola stretta.
 
-Nel grafico il fuoco si può spostare: guarda come cambia la curva, e controlla con il punto $P$ che le due distanze restano uguali.
-
 [[grafico:luogoParabola]]
 
 ?? In quale punto sta il fuoco della parabola $y = \dfrac{x^2}{8}$?
 [x] $(0; 2)$
 [ ] $(0; 8)$
 [ ] $\left(0; \dfrac{1}{2}\right)$
-=> Confrontando con $y = \dfrac{x^2}{4p}$: $4p = 8$, quindi $p = 2$ e il fuoco è $(0; 2)$. $8$ è il denominatore intero, non la distanza del fuoco: va diviso per $4$. $\dfrac{1}{2}$ viene da $p = 4a$ invece di $p = \dfrac{1}{4a}$.
+=> Confronta con $y = \dfrac{x^2}{4p}$: $4p = 8$, quindi $p = 2$ e il fuoco è $(0; 2)$. Il denominatore $8$ va diviso per $4$. $\dfrac{1}{2}$ viene da $p = 4a$ invece di $p = \dfrac{1}{4a}$.
 
-Se il vertice non sta nell'origine, la curva si trasla, e sviluppando i conti si arriva alla forma generale $y = ax^2 + bx + c$, con $a \ne 0$. È la parabola con asse parallelo all'asse $y$.
+Se il vertice non sta nell'origine, la curva si sposta. Sviluppando i conti arrivi alla forma generale $y = ax^2 + bx + c$, con $a \ne 0$.
 
->! Con $a = 0$ il termine $x^2$ sparisce e resta $y = bx + c$: una retta, non una parabola. Per questo si chiede sempre $a \ne 0$.` },
+>! Con $a = 0$ sparisce il termine $x^2$ e resta $y = bx + c$, che è una retta. Per questo serve $a \ne 0$.` },
 
-    { id: 'significato-a-b-c', titolo: 'Il significato di a, b e c', testo: R`Che cosa succede alla parabola $y = ax^2 + bx + c$ se cambi un coefficiente alla volta? Prova prima con il grafico, poi leggi.
+    { id: 'significato-a-b-c', titolo: 'Il significato di a, b e c', testo: R`Nel grafico cambia un coefficiente alla volta e guarda la parabola $y = ax^2 + bx + c$.
 
 [[grafico:coefficienti]]
 
-**Il coefficiente $a$** decide verso dove è rivolta la parabola, cioè la **concavità**. Se $a > 0$ è rivolta verso l'alto e il vertice è il punto più basso (un minimo); se $a < 0$ è rivolta verso il basso e il vertice è il punto più alto (un massimo). La grandezza di $a$ decide l'**apertura**: in $x = 1$ le parabole $y = 3x^2$, $y = x^2$ e $y = 0{,}3x^2$ valgono $3$, $1$ e $0{,}3$. Più $a$ è lontano da zero, più la parabola sale in fretta ed è stretta.
+**Il coefficiente $a$** decide la **concavità**, cioè verso dove è rivolta la parabola.
 
-**Il coefficiente $c$** è l'ordinata del punto in cui la parabola taglia l'asse $y$: con $x = 0$ resta $y = c$. Ogni parabola $y = ax^2 + bx + c$ passa per $(0; c)$.
+- $a > 0$: verso l'alto. Il vertice è il punto più basso, un **minimo**.
+- $a < 0$: verso il basso. Il vertice è il punto più alto, un **massimo**.
 
-**Il coefficiente $b$** sposta il vertice di lato. Cambiando solo $b$ la parabola non cambia forma e continua a passare per $(0; c)$, mentre il vertice scivola via, di lato e in su o in giù. Dove finisce dipende da $a$ e $b$ insieme: l'ascissa del vertice è $-\dfrac{b}{2a}$.
+La grandezza di $a$ decide l'**apertura**. In $x = 1$ le parabole $y = 3x^2$, $y = x^2$ e $y = 0{,}3x^2$ valgono $3$, $1$ e $0{,}3$. Più $a$ è lontano da zero, più la parabola è stretta.
+
+**Il coefficiente $c$** dice dove la parabola taglia l'asse $y$. Con $x = 0$ resta $y = c$, quindi la parabola passa per $(0; c)$.
+
+**Il coefficiente $b$** sposta il vertice di lato e in su o in giù. La forma resta la stessa, e la curva passa sempre per $(0; c)$.
 
 >* $a$: verso dove è rivolta e quanto è stretta. $c$: dove taglia l'asse $y$. $b$ insieme ad $a$: dove sta il vertice.
 
@@ -78,13 +93,13 @@ Se il vertice non sta nell'origine, la curva si trasla, e sviluppando i conti si
 [x] $(0; -5)$
 [ ] $(-5; 0)$
 [ ] $(0; 2)$
-=> Sull'asse $y$ si ha $x = 0$, e sostituendo resta $y = -5$. $(-5; 0)$ ha le coordinate scambiate: sarebbe un punto dell'asse $x$. $2$ è il coefficiente $a$, che dice quanto è stretta la parabola, non dove taglia l'asse.` },
+=> Sull'asse $y$ si ha $x = 0$, e resta $y = -5$. $(-5; 0)$ ha le coordinate scambiate: è un punto dell'asse $x$. $2$ è il coefficiente $a$, che dice quanto è stretta la parabola.` },
 
-    { id: 'vertice-asse-fuoco-direttrice', titolo: 'Vertice, asse, fuoco e direttrice', testo: R`La parabola è simmetrica rispetto al suo asse, e il vertice sta sull'asse. I due punti in cui la parabola taglia l'asse $x$ (quando ci sono) sono quindi alla stessa distanza dall'asse, e l'ascissa del vertice è la loro media: $\dfrac{x_1 + x_2}{2} = -\dfrac{b}{2a}$, perché la somma delle soluzioni di $ax^2 + bx + c = 0$ è $-\dfrac{b}{a}$. La formula vale sempre, anche quando la parabola non taglia l'asse $x$.
+    { id: 'vertice-asse-fuoco-direttrice', titolo: 'Vertice, asse, fuoco e direttrice', testo: R`La parabola è simmetrica rispetto al suo asse. Se taglia l'asse $x$ in due punti, il vertice sta a metà fra loro. La somma delle soluzioni di $ax^2 + bx + c = 0$ è $-\dfrac{b}{a}$, quindi la loro media è $-\dfrac{b}{2a}$. Questa formula vale anche quando la parabola non taglia l'asse $x$.
 
->* **Vertice e asse.** $$x_V = -\frac{b}{2a} \qquad y_V = -\frac{\Delta}{4a}$$ con $\Delta = b^2 - 4ac$. L'asse è la retta verticale $x = -\dfrac{b}{2a}$. Invece di ricordare $y_V$ si può sempre sostituire $x_V$ nell'equazione.
+>* **Vertice e asse.** $$x_V = -\frac{b}{2a} \qquad y_V = -\frac{\Delta}{4a}$$ con $\Delta = b^2 - 4ac$. L'asse è la retta verticale $x = -\dfrac{b}{2a}$. Per trovare $y_V$ puoi anche mettere $x_V$ nell'equazione.
 
-Fuoco e direttrice stanno sull'asse, da parti opposte rispetto al vertice e alla stessa distanza $\left|\dfrac{1}{4a}\right|$ da esso, come nella forma canonica. Il fuoco sta dalla parte verso cui la parabola si apre.
+Fuoco e direttrice stanno da parti opposte rispetto al vertice, alla distanza $\left|\dfrac{1}{4a}\right|$.
 
 >* **Fuoco e direttrice.** $$F\left(-\frac{b}{2a};\ \frac{1 - \Delta}{4a}\right)$$ $$d:\ y = -\frac{1 + \Delta}{4a}$$
 
@@ -98,15 +113,15 @@ Fuoco e direttrice stanno sull'asse, da parti opposte rispetto al vertice e alla
 [x] $(-3; -8)$
 [ ] $(3; 28)$
 [ ] $(-6; 1)$
-=> $x_V = -\dfrac{6}{2} = -3$ e $y_V = 9 - 18 + 1 = -8$. $(3; 28)$ viene dimenticando il meno davanti a $\dfrac{b}{2a}$; $(-6; 1)$ viene dimenticando il $2$ al denominatore. Un controllo veloce: $a > 0$, quindi il vertice è il punto più basso, e $-8$ è davvero più basso di $c = 1$.
+=> $x_V = -\dfrac{6}{2} = -3$ e $y_V = 9 - 18 + 1 = -8$. $(3; 28)$ viene dimenticando il meno davanti a $\dfrac{b}{2a}$. $(-6; 1)$ viene dimenticando il $2$ al denominatore.
 
->! Fuoco e direttrice si scambiano facilmente. Il fuoco sta **dentro** la parabola, dalla parte verso cui si apre; la direttrice sta fuori, dalla parte opposta.` },
+>! Il fuoco sta **dentro** la parabola, dalla parte verso cui si apre. La direttrice sta fuori, dalla parte opposta.` },
 
-    { id: 'asse-parallelo-x', titolo: 'La parabola con asse parallelo all\'asse x', testo: R`Se nell'equazione si scambiano $x$ e $y$ si ottiene $x = ay^2 + by + c$, con $a \ne 0$. È la stessa parabola girata di un quarto di giro: l'**asse è orizzontale**, parallelo all'asse $x$. Se $a > 0$ si apre verso destra, se $a < 0$ verso sinistra.
+    { id: 'asse-parallelo-x', titolo: 'La parabola con asse parallelo all\'asse x', testo: R`Scambia $x$ e $y$ nell'equazione: ottieni $x = ay^2 + by + c$, con $a \ne 0$. È la stessa parabola girata di un quarto di giro, con l'**asse orizzontale**. Se $a > 0$ si apre verso destra, se $a < 0$ verso sinistra.
 
-Questa curva non è il grafico di una funzione $y = f(x)$: una retta verticale può tagliarla in due punti, cioè a una stessa $x$ corrispondono due valori di $y$.
+Questa curva non è il grafico di una funzione $y = f(x)$. Una retta verticale può tagliarla in due punti, quindi a una $x$ corrispondono due $y$.
 
-Le formule sono quelle di prima, con i ruoli di $x$ e $y$ scambiati:
+Le formule sono quelle di prima, con $x$ e $y$ scambiati:
 
 | | asse verticale, $y = ax^2 + bx + c$ | asse orizzontale, $x = ay^2 + by + c$ |
 |---|---|---|
@@ -124,20 +139,18 @@ Le formule sono quelle di prima, con i ruoli di $x$ e $y$ scambiati:
 [x] verso sinistra
 [ ] verso il basso
 [ ] verso destra
-=> La variabile al quadrato è $y$, quindi l'asse è orizzontale e la parabola si apre a destra o a sinistra, non in alto o in basso. Il coefficiente di $y^2$ è $-1 < 0$: verso sinistra. Infatti $x$ vale al massimo $4$, per $y = 0$.
+=> La variabile al quadrato è $y$, quindi l'asse è orizzontale: la parabola si apre a destra o a sinistra. Il coefficiente di $y^2$ è $-1 < 0$, quindi verso sinistra. Infatti $x$ vale al massimo $4$, per $y = 0$.
 
->! Prima di usare le formule guarda **quale** variabile è al quadrato. In $x = ay^2 + by + c$ il numero $-\dfrac{b}{2a}$ è l'ordinata del vertice, non l'ascissa.` },
+>! Prima di usare le formule guarda **quale** variabile è al quadrato. In $x = ay^2 + by + c$ il numero $-\dfrac{b}{2a}$ è l'ordinata del vertice.` },
 
     { id: 'intersezioni-assi-rette', titolo: 'Intersezioni con gli assi e con una retta', testo: R`Dove la parabola $y = ax^2 + bx + c$ incontra gli assi?
 
-- **Asse $y$**: si mette $x = 0$ e resta $y = c$. Il punto è sempre uno solo, $(0; c)$.
-- **Asse $x$**: si mette $y = 0$ e si risolve $ax^2 + bx + c = 0$. Con $\Delta > 0$ ci sono due punti, con $\Delta = 0$ uno solo (la parabola tocca l'asse nel vertice), con $\Delta < 0$ nessuno.
+- **Asse $y$**: metti $x = 0$ e resta $y = c$. Il punto è sempre uno solo, $(0; c)$.
+- **Asse $x$**: metti $y = 0$ e risolvi $ax^2 + bx + c = 0$. Con $\Delta > 0$ trovi due punti, con $\Delta = 0$ uno solo, il vertice, e con $\Delta < 0$ nessuno.
 
-Con una retta qualsiasi $y = mx + q$ si fa lo stesso: i punti comuni sono le soluzioni del sistema. Sostituendo la $y$ della retta nell'equazione della parabola si ottiene un'equazione di secondo grado in $x$, e il suo discriminante dice quanti punti ci sono.
+Con una retta $y = mx + q$ fai lo stesso: metti a sistema le due equazioni e sostituisci la $y$. Ottieni un'equazione di secondo grado in $x$, e il suo $\Delta$ dice quanti punti ci sono.
 
->* **Retta e parabola.** Discriminante dell'equazione risolvente **positivo**: la retta è **secante** (due punti). **Nullo**: è **tangente** (un punto, contato due volte). **Negativo**: è **esterna** (nessun punto).
-
-Abbassa la retta con il cursore e guarda i punti $A$ e $B$: si avvicinano, si fondono in un punto solo e poi spariscono. Per quale valore di $q$ si fondono?
+>* **Retta e parabola.** Se $\Delta > 0$ la retta è **secante** e ha due punti in comune con la parabola. Se $\Delta = 0$ è **tangente**, con un punto solo. Se $\Delta < 0$ è **esterna**.
 
 [[grafico:rettaParabola]]
 
@@ -148,13 +161,11 @@ Abbassa la retta con il cursore e guarda i punti $A$ e $B$: si avvicinano, si fo
 ~ \evidb{q = -6} :: $6 + q = 0$: la retta è tangente; per $q > -6$ è secante, per $q < -6$ esterna
 
 ?? La retta $y = 5$ e la parabola $y = x^2 + 5$: secante, tangente o esterna?
-=> Tangente. Sostituendo viene $x^2 + 5 = 5$, cioè $x^2 = 0$: una sola soluzione, $x = 0$, contata due volte. La retta orizzontale tocca la parabola nel vertice $(0; 5)$.
+=> Tangente. Sostituendo viene $x^2 + 5 = 5$, cioè $x^2 = 0$: una sola soluzione, $x = 0$. La retta tocca la parabola nel vertice $(0; 5)$.
 
->! Il discriminante che conta è quello dell'equazione ottenuta **dopo** aver sostituito la retta, non il $\Delta$ della parabola da sola, che riguarda solo l'asse $x$.` },
+>! Il $\Delta$ che conta è quello dell'equazione **dopo** la sostituzione. Il $\Delta$ della parabola da sola riguarda solo l'asse $x$.` },
 
-    { id: 'tangenti-da-un-punto', titolo: 'Le rette tangenti condotte da un punto', testo: R`Da un punto $P$ fuori dalla parabola, quante rette tangenti si possono tracciare? Non conosci la loro pendenza, ma sai che passano per $P$. Allora le scrivi tutte insieme con il **fascio di rette** per $P(x_0; y_0)$, $y - y_0 = m(x - x_0)$, e cerchi i valori di $m$ che danno una retta tangente. (La retta verticale per $P$ non serve: taglia sempre una parabola con asse verticale.)
-
-Il metodo è quello della sezione precedente, ma l'incognita da trovare alla fine è $m$.
+    { id: 'tangenti-da-un-punto', titolo: 'Le rette tangenti condotte da un punto', testo: R`Da un punto $P$ fuori dalla parabola partono delle rette tangenti. Non conosci la loro pendenza, ma sai che passano per $P(x_0; y_0)$. Allora scrivile tutte insieme con il **fascio di rette** $y - y_0 = m(x - x_0)$. Poi cerca i valori di $m$ che danno una tangente.
 
 ~ y = x^2,\quad P(1; -3) :: cerco le tangenti alla parabola che passano per $P$
 ~ y = m(x - 1) - 3 :: fascio di rette per $P$: $m$ per ora è sconosciuto
@@ -165,20 +176,20 @@ Il metodo è quello della sezione precedente, ma l'incognita da trovare alla fin
 
 I punti di tangenza sono $(3; 9)$ e $(-1; 1)$: con $\Delta = 0$ la soluzione doppia è $x = \dfrac{m}{2}$.
 
->* Il numero di valori di $m$ dice quante tangenti passano per $P$: **due** se $P$ sta fuori dalla parabola, **una** se $P$ sta sulla parabola, **nessuna** se $P$ sta dentro, dalla parte del fuoco. Da $(0; 1)$, che sta dentro $y = x^2$, si arriva a $m^2 + 4 = 0$: impossibile.
+>* Quante tangenti passano per $P$? **Due** se $P$ sta fuori dalla parabola. **Una** se sta sulla parabola. **Nessuna** se sta dentro, dalla parte del fuoco.
 
 ?? Quante rette tangenti a $y = x^2$ passano per $P(2; 4)$?
 [x] una
 [ ] due
 [ ] nessuna
-=> $P$ sta sulla parabola, perché $2^2 = 4$. L'equazione per $m$ diventa $m^2 - 8m + 16 = 0$, cioè $(m - 4)^2 = 0$: un solo valore, $m = 4$. Da un punto della curva parte una sola tangente, quella che la tocca lì.
+=> $P$ sta sulla parabola, perché $2^2 = 4$. L'equazione per $m$ diventa $m^2 - 8m + 16 = 0$, cioè $(m - 4)^2 = 0$: un solo valore, $m = 4$.
 
->! Nella sezione precedente la pendenza era già data e si cercava $q$. Qui si conosce il punto e si cerca la pendenza $m$: l'incognita del discriminante è $m$, non $x$.` },
+>! Nella sezione precedente la pendenza era data e cercavi $q$. Qui conosci il punto e cerchi $m$: l'incognita del discriminante è $m$, non $x$.` },
 
-    { id: 'determinare-equazione', titolo: 'Determinare l\'equazione di una parabola', testo: R`Nell'equazione $y = ax^2 + bx + c$ ci sono tre numeri da trovare, quindi servono **tre condizioni**: ogni informazione sulla parabola diventa un'equazione in $a$, $b$, $c$. I casi tipici sono tre.
+    { id: 'determinare-equazione', titolo: 'Determinare l\'equazione di una parabola', testo: R`In $y = ax^2 + bx + c$ ci sono tre numeri da trovare, quindi servono **tre condizioni**. Ogni informazione sulla parabola diventa un'equazione in $a$, $b$, $c$.
 
 ### Tre punti
-Ogni punto della parabola, sostituito nell'equazione, dà un'equazione. Con tre punti si ottiene un sistema in $a$, $b$, $c$. Se un punto ha ascissa $0$, dà subito $c$.
+Metti ogni punto nell'equazione: ottieni un sistema in $a$, $b$, $c$. Un punto con ascissa $0$ dà subito $c$.
 
 ~ A(0; 1),\ B(1; 2),\ C(-1; 4) :: tre punti con ascisse diverse
 ~ \evid{c = 1} :: da $A$: con $x = 0$ resta solo $c$
@@ -188,7 +199,7 @@ Ogni punto della parabola, sostituito nell'equazione, dà un'equazione. Con tre 
 ~ y = \evidb{2x^2 - x + 1} :: controllo con $C$: $2 + 1 + 1 = 4$
 
 ### Vertice e un punto
-Conviene partire da una forma che ha già il vertice dentro, $y = a(x - x_V)^2 + y_V$, e usare il punto per trovare $a$.
+Parti dalla forma $y = a(x - x_V)^2 + y_V$, che contiene già il vertice. Poi usa il punto per trovare $a$.
 
 ~ V(-1; 4),\quad P(1; 0) :: vertice e un punto della parabola
 ~ y = a(x \evid{+ 1})^2 + 4 :: $x - x_V = x - (-1) = x + 1$
@@ -200,28 +211,28 @@ Conviene partire da una forma che ha già il vertice dentro, $y = a(x - x_V)^2 +
 [x] $y = a(x - 1)^2 + 3$
 [ ] $y = a(x + 1)^2 + 3$
 [ ] $y = a(x - 1)^2 - 3$
-=> Nella forma $y = a(x - x_V)^2 + y_V$ l'ascissa del vertice compare **con il segno cambiato** dentro la parentesi, l'ordinata con il suo segno fuori. Con $x = 1$ la parentesi si annulla e resta $y = 3$: il vertice è proprio $(1; 3)$. In $y = a(x + 1)^2 + 3$ la parentesi si annulla per $x = -1$; in $y = a(x - 1)^2 - 3$ il vertice sarebbe $(1; -3)$.
+=> Nella forma $y = a(x - x_V)^2 + y_V$ l'ascissa del vertice va dentro la parentesi **con il segno cambiato**. L'ordinata va fuori con il suo segno. Con $x = 1$ la parentesi si annulla e resta $y = 3$. In $y = a(x + 1)^2 + 3$ il vertice sarebbe $(-1; 3)$, in $y = a(x - 1)^2 - 3$ sarebbe $(1; -3)$.
 
 ### Fuoco e direttrice
-Il vertice sta a metà strada fra fuoco e direttrice. Con $F(2; 3)$ e direttrice $y = 1$ il vertice è $(2; 2)$, la distanza vertice-fuoco è $p = 1$ e $a = \dfrac{1}{4p} = \dfrac{1}{4}$. Quindi $y = \dfrac{1}{4}(x - 2)^2 + 2 = \dfrac{x^2}{4} - x + 3$.
+Il vertice sta a metà strada fra fuoco e direttrice. Con $F(2; 3)$ e direttrice $y = 1$ il vertice è $(2; 2)$. La distanza vertice-fuoco è $p = 1$, quindi $a = \dfrac{1}{4p} = \dfrac{1}{4}$. L'equazione è $y = \dfrac{1}{4}(x - 2)^2 + 2 = \dfrac{x^2}{4} - x + 3$.
 
-Nella scheda **Laboratorio** c'è *Il canestro*: trascini il vertice e regoli $a$ finché la parabola non passa dalla mano del giocatore e dall'anello.
+Nella scheda **Laboratorio** c'è *Il canestro*: trascina il vertice e regola $a$ finché la parabola entra nell'anello.
 
->! Tre punti allineati non stanno su nessuna parabola: il sistema dà $a = 0$, cioè una retta. E due punti con la stessa ascissa non possono stare su una parabola con asse verticale.` },
+>! Tre punti allineati non stanno su nessuna parabola: il sistema dà $a = 0$. Due punti con la stessa ascissa non stanno su una parabola con asse verticale.` },
 
-    { id: 'segmento-parabolico-problemi', titolo: 'Il segmento parabolico e i problemi', testo: R`Una retta che taglia la parabola in due punti stacca un pezzo di piano, chiuso fra l'arco di parabola e il segmento che unisce i due punti (la **corda**). Si chiama **segmento parabolico**. Archimede scoprì, più di duemila anni fa, che la sua area è sempre i due terzi di un rettangolo: quello che ha per base la corda e per altezza la distanza massima fra corda e arco.
+    { id: 'segmento-parabolico-problemi', titolo: 'Il segmento parabolico e i problemi', testo: R`Una retta taglia la parabola in due punti. Il segmento fra questi due punti si chiama **corda**. La parte di piano chiusa fra la corda e l'arco di parabola è il **segmento parabolico**. Archimede scoprì che la sua area è sempre due terzi di un rettangolo.
 
->* **Formula di Archimede.** $$A = \frac{2}{3}\, b \cdot h$$ $b$ è la lunghezza della corda, $h$ la distanza massima fra la corda e l'arco.
+>* **Formula di Archimede.** $$A = \frac{2}{3}\, b \cdot h$$ Il rettangolo ha per base $b$ la corda e per altezza $h$ la distanza massima fra la corda e l'arco.
 
-Se la corda è orizzontale, $h$ è semplicemente l'altezza del vertice sopra (o sotto) la corda. Per $y = 4 - x^2$ tagliata dall'asse $x$ la corda va da $x = -2$ a $x = 2$, quindi $b = 4$; il vertice è $(0; 4)$, quindi $h = 4$. L'area è $\dfrac{2}{3} \cdot 4 \cdot 4 = \dfrac{32}{3}$.
+Se la corda è orizzontale, $h$ è la distanza del vertice dalla corda. Prendi $y = 4 - x^2$ tagliata dall'asse $x$. La corda va da $x = -2$ a $x = 2$, quindi $b = 4$. Il vertice è $(0; 4)$, quindi $h = 4$. L'area è $\dfrac{2}{3} \cdot 4 \cdot 4 = \dfrac{32}{3}$.
 
 ?? Un arco parabolico è largo $6$ m alla base e alto $3$ m. Quanto misura l'area sotto l'arco?
 [x] $12\ \text{m}^2$
 [ ] $9\ \text{m}^2$
 [ ] $18\ \text{m}^2$
-=> $A = \dfrac{2}{3} \cdot 6 \cdot 3 = 12$. $18$ è il rettangolo intero, che contiene anche i due angoli vuoti sopra l'arco. $9$ è il triangolo con la stessa base e la stessa altezza, che sta tutto dentro l'arco e quindi è più piccolo.
+=> $A = \dfrac{2}{3} \cdot 6 \cdot 3 = 12$. $18$ è il rettangolo intero, con anche i due angoli vuoti sopra l'arco. $9$ è il triangolo con la stessa base e la stessa altezza, che sta dentro l'arco.
 
-Molti problemi si risolvono scegliendo un riferimento comodo e traducendo i dati in condizioni sulla parabola.
+Nei problemi scegli un riferimento comodo e traduci i dati in condizioni sulla parabola.
 
 ~ \text{gittata } 8 \text{ m, altezza massima } 5 \text{ m} :: un proiettile lanciato da terra: il punto di partenza è l'origine
 ~ y = a\,x(x - 8) :: la traiettoria tocca terra in $x = 0$ e $x = 8$: sono gli zeri della parabola
@@ -230,7 +241,7 @@ Molti problemi si risolvono scegliendo un riferimento comodo e traducendo i dati
 ~ a = \evid{-\tfrac{5}{16}} :: negativo, come deve essere: la parabola è rivolta verso il basso
 ~ y = \evidb{-\tfrac{5}{16}x^2 + \tfrac{5}{2}x} :: sviluppo il prodotto
 
->! Alla fine di un problema controlla che il risultato abbia senso: un'altezza negativa, o un $a$ positivo per un oggetto lanciato in aria, vogliono dire che c'è un errore nei conti o nel riferimento scelto.` }
+>! Alla fine controlla che il risultato abbia senso. Un'altezza negativa, o un $a$ positivo per un oggetto lanciato in aria, segnalano un errore.` }
   ],
 
   grafici: {
@@ -368,13 +379,34 @@ Molti problemi si risolvono scegliendo un riferimento comodo e traducendo i dati
   ],
 
   esercizi: [
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Verso dove è rivolta la parabola $y = 2x^2 - 3x + 1$? Scrivi *verso l'alto* o *verso il basso*.`, suggerimenti: [R`Guarda solo il segno di $a$, il numero davanti a $x^2$.`], risposta: ALTO, soluzione: [R`$a = 2$, che è positivo.`, R`Con $a > 0$ la parabola è rivolta verso l'alto.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`In quale punto $y = x^2 + 3x - 2$ taglia l'asse $y$? Scrivi *x; y*.`, suggerimenti: [R`Sull'asse $y$ si ha $x = 0$.`], risposta: cop(0, -2), soluzione: [R`Metto $x = 0$: resta solo il termine noto, $y = -2$.`, R`Il punto è $(0; -2)$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Verso dove è rivolta la parabola $y = -x^2 + 4$? Scrivi *verso l'alto* o *verso il basso*.`, suggerimenti: [R`Il numero davanti a $x^2$ è $-1$.`], risposta: BASSO, soluzione: [R`$a = -1$, che è negativo.`, R`Con $a < 0$ la parabola è rivolta verso il basso.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Trova il vertice di $y = x^2 - 4$. Scrivi *x; y*.`, suggerimenti: [R`Qui $b = 0$, quindi $x_V = 0$.`, R`Metti $x = 0$ nell'equazione.`], risposta: cop(0, -4), soluzione: [R`$b = 0$, quindi $x_V = -\dfrac{0}{2} = 0$.`, R`$y_V = 0 - 4 = -4$. Il vertice è $V(0; -4)$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Scrivi l'equazione dell'asse di $y = x^2 - 6x + 5$.`, suggerimenti: [R`L'asse è la retta verticale $x = -\dfrac{b}{2a}$.`], risposta: asse(3), soluzione: [R`$a = 1$, $b = -6$.`, R`$x = -\dfrac{-6}{2 \cdot 1} = 3$. L'asse è $x = 3$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Il vertice di $y = -2x^2 + 4x + 1$ è un massimo o un minimo?`, suggerimenti: [R`Guarda il segno di $a$: verso dove è rivolta la parabola?`], risposta: { tipo: 'testo', accettate: ['massimo', 'max', 'un massimo', 'è un massimo', 'punto di massimo'], segnaposto: 'massimo o minimo', simboli: [] }, soluzione: [R`$a = -2 < 0$: la parabola è rivolta verso il basso.`, R`Il vertice è il punto più alto, quindi è un massimo.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Scrivi l'equazione dell'asse di $y = 2x^2 + 8x - 1$.`, suggerimenti: [R`Usa $x = -\dfrac{b}{2a}$ con $a = 2$ e $b = 8$.`], risposta: asse(-2), soluzione: [R`$x = -\dfrac{8}{2 \cdot 2} = -\dfrac{8}{4}$.`, R`L'asse è $x = -2$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`In quali punti $y = x^2 - 9$ taglia l'asse $x$? Scrivi le ascisse separate da ; oppure *nessuna*.`, suggerimenti: [R`Sull'asse $x$ si ha $y = 0$: risolvi $x^2 - 9 = 0$.`], risposta: zeri(-3, 3), soluzione: [R`Metto $y = 0$: $x^2 = 9$.`, R`$x = -3$ oppure $x = 3$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`In quali punti $y = x^2 - 5x$ taglia l'asse $x$? Scrivi le ascisse separate da ; oppure *nessuna*.`, suggerimenti: [R`Metti $y = 0$ e raccogli la $x$.`], risposta: zeri(0, 5), soluzione: [R`Metto $y = 0$: $x^2 - 5x = 0$, cioè $x(x - 5) = 0$.`, R`$x = 0$ oppure $x = 5$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Trova il vertice di $y = x^2 - 2x + 3$. Scrivi *x; y*.`, suggerimenti: [R`Prima $x_V = -\dfrac{b}{2a}$.`, R`Poi metti $x_V$ nell'equazione.`], risposta: cop(1, 2), soluzione: [R`$x_V = -\dfrac{-2}{2} = 1$.`, R`$y_V = 1 - 2 + 3 = 2$. Il vertice è $V(1; 2)$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 2, testo: R`Trova il vertice di $y = -x^2 + 4x$. Scrivi *x; y*.`, suggerimenti: [R`Qui $a = -1$: attento al segno al denominatore.`, R`Poi metti $x_V$ nell'equazione.`], risposta: cop(2, 4), soluzione: [R`$x_V = -\dfrac{4}{2 \cdot (-1)} = -\dfrac{4}{-2} = 2$.`, R`$y_V = -4 + 8 = 4$. Il vertice è $V(2; 4)$.`] },
+    { id: 'b-12', livello: 'base', difficolta: 2, testo: R`In quali punti $y = x^2 - 4x + 3$ taglia l'asse $x$? Scrivi le ascisse separate da ; oppure *nessuna*.`, suggerimenti: [R`Risolvi $x^2 - 4x + 3 = 0$.`, R`Cerca due numeri con somma $4$ e prodotto $3$.`], risposta: zeri(1, 3), soluzione: [R`Metto $y = 0$: $x^2 - 4x + 3 = 0$.`, R`$\Delta = 16 - 12 = 4$, quindi $x = \dfrac{4 \pm 2}{2}$.`, R`$x = 1$ oppure $x = 3$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Trova il vertice di $y = x^2 + 6x + 5$. Scrivi *x; y*.`, suggerimenti: [R`$x_V = -\dfrac{b}{2a}$ con $b = 6$.`, R`Poi metti $x_V$ nell'equazione.`], risposta: cop(-3, -4), soluzione: [R`$x_V = -\dfrac{6}{2} = -3$.`, R`$y_V = 9 - 18 + 5 = -4$. Il vertice è $V(-3; -4)$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`In quali punti $y = x^2 + 2x + 5$ taglia l'asse $x$? Scrivi le ascisse separate da ; oppure *nessuna*.`, suggerimenti: [R`Calcola il $\Delta$ di $x^2 + 2x + 5 = 0$.`], risposta: nessuna, soluzione: [R`Metto $y = 0$: $x^2 + 2x + 5 = 0$.`, R`$\Delta = 4 - 20 = -16 < 0$: l'equazione non ha soluzioni.`, R`La parabola non taglia l'asse $x$.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`In quali punti $y = x^2 - 6x + 9$ taglia l'asse $x$? Scrivi le ascisse separate da ; oppure *nessuna*.`, suggerimenti: [R`Calcola il $\Delta$: che cosa succede?`, R`$x^2 - 6x + 9$ è un quadrato.`], risposta: doppia('3'), soluzione: [R`$\Delta = 36 - 36 = 0$: c'è una sola soluzione.`, R`$x^2 - 6x + 9 = (x - 3)^2 = 0$, quindi $x = 3$.`, R`La parabola tocca l'asse $x$ nel vertice $(3; 0)$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Trova il vertice di $y = 2x^2 - 4x + 5$. Scrivi *x; y*.`, suggerimenti: [R`$x_V = -\dfrac{b}{2a}$ con $a = 2$ e $b = -4$.`, R`Poi metti $x_V$ nell'equazione.`], risposta: cop(1, 3), soluzione: [R`$x_V = -\dfrac{-4}{2 \cdot 2} = \dfrac{4}{4} = 1$.`, R`$y_V = 2 - 4 + 5 = 3$. Il vertice è $V(1; 3)$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`In quali punti $y = -x^2 + x + 6$ taglia l'asse $x$? Scrivi le ascisse separate da ; oppure *nessuna*.`, suggerimenti: [R`Metti $y = 0$ e cambia tutti i segni: $x^2 - x - 6 = 0$.`, R`Cerca due numeri con somma $1$ e prodotto $-6$.`], risposta: zeri(-2, 3), soluzione: [R`Metto $y = 0$ e cambio segno: $x^2 - x - 6 = 0$.`, R`$\Delta = 1 + 24 = 25$, quindi $x = \dfrac{1 \pm 5}{2}$.`, R`$x = -2$ oppure $x = 3$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Trova il vertice di $y = -x^2 - 2x + 3$. Scrivi *x; y*.`, suggerimenti: [R`$a = -1$ e $b = -2$: attento ai due segni meno.`, R`Poi metti $x_V$ nell'equazione.`], risposta: cop(-1, 4), soluzione: [R`$x_V = -\dfrac{-2}{2 \cdot (-1)} = -\dfrac{-2}{-2} = -1$.`, R`$y_V = -(-1)^2 - 2 \cdot (-1) + 3 = -1 + 2 + 3 = 4$.`, R`Il vertice è $V(-1; 4)$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`In quali punti $y = 2x^2 - 2x - 4$ taglia l'asse $x$? Scrivi le ascisse separate da ; oppure *nessuna*.`, suggerimenti: [R`Metti $y = 0$ e dividi tutto per $2$.`, R`Poi risolvi $x^2 - x - 2 = 0$.`], risposta: zeri(-1, 2), soluzione: [R`Metto $y = 0$ e divido per $2$: $x^2 - x - 2 = 0$.`, R`$\Delta = 1 + 8 = 9$, quindi $x = \dfrac{1 \pm 3}{2}$.`, R`$x = -1$ oppure $x = 2$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Trova il vertice di $y = 3x^2 + 6x - 2$. Scrivi *x; y*.`, suggerimenti: [R`$x_V = -\dfrac{b}{2a}$ con $a = 3$ e $b = 6$.`, R`Poi metti $x_V$ nell'equazione.`], risposta: cop(-1, -5), soluzione: [R`$x_V = -\dfrac{6}{2 \cdot 3} = -1$.`, R`$y_V = 3 \cdot (-1)^2 + 6 \cdot (-1) - 2 = 3 - 6 - 2 = -5$.`, R`Il vertice è $V(-1; -5)$.`] },
+
     { id: 'es-01', difficolta: 1, testo: R`Trova le coordinate del vertice della parabola $y=2x^2-8x+3$ (scrivi la risposta come x; y).`, suggerimenti: [R`Calcola prima $x_V=-\dfrac{b}{2a}$.`, R`Poi sostituisci $x_V$ nell'equazione, oppure usa $y_V=c-\dfrac{b^2}{4a}$.`], risposta: { tipo: 'numeri', ordinati: true, valori: [2, -5] }, soluzione: [R`$a=2$, $b=-8$, $c=3$.`, R`$x_V=-\dfrac{-8}{4}=2$.`, R`$y_V=3-\dfrac{64}{8}=3-8=-5$. Vertice $V(2; -5)$.`] },
     { id: 'es-02', difficolta: 1, testo: R`Trova il vertice della parabola $y=-x^2+6x-5$ e stabilisci se è un massimo o un minimo (scrivi la risposta come x; y).`, suggerimenti: [R`Il segno di $a$ ti dice subito se il vertice è un massimo o un minimo.`, R`$x_V=-\dfrac{b}{2a}$ con $a=-1$, $b=6$.`], risposta: { tipo: 'numeri', ordinati: true, valori: [3, 4] }, soluzione: [R`$a=-1<0$: la concavità è verso il basso, quindi il vertice è un massimo.`, R`$x_V=-\dfrac{6}{-2}=3$.`, R`$y_V=-5-\dfrac{36}{-4}=-5+9=4$. Vertice $V(3; 4)$.`] },
     { id: 'es-03', difficolta: 1, testo: R`Trova le ascisse dei punti in cui la parabola $y=x^2-x-6$ interseca l'asse $x$.`, suggerimenti: [R`Poni $y=0$ e risolvi l'equazione di secondo grado.`, R`Cerca due numeri con somma $1$ e prodotto $-6$.`], risposta: { tipo: 'numeri', valori: [3, -2] }, soluzione: [R`$x^2-x-6=0$: $\Delta=1+24=25$.`, R`$x_{1,2}=\dfrac{1\pm5}{2}$: $x_1=3$, $x_2=-2$.`] },
     { id: 'es-04', difficolta: 1, testo: R`Determina le coordinate del fuoco della parabola $y=\dfrac{x^2}{12}$ (scrivi la risposta come x; y).`, suggerimenti: [R`È già nella forma canonica $y=\dfrac{x^2}{4p}$: confronta i denominatori.`, R`Il fuoco della forma canonica è $(0; p)$.`], risposta: { tipo: 'numeri', ordinati: true, valori: [0, 3] }, soluzione: [R`$4p=12$, quindi $p=3$.`, R`Fuoco $F(0; 3)$, direttrice $y=-3$.`] },
     { id: 'es-05', difficolta: 2, testo: R`Per quali valori di $q$ la retta $y=2x+q$ è tangente alla parabola $y=x^2-4x+3$?`, suggerimenti: [R`Sostituisci la retta nell'equazione della parabola e imponi discriminante nullo.`, R`Dovresti arrivare a $\dfrac{\Delta}{4}=6+q$.`], risposta: { tipo: 'numero', valore: -6 }, soluzione: [R`$x^2-4x+3=2x+q \Rightarrow x^2-6x+(3-q)=0$.`, R`$\dfrac{\Delta}{4}=9-(3-q)=6+q$. Ponendo $6+q=0$ si trova $q=-6$.`] },
-    { id: 'es-06', difficolta: 2, testo: R`Scrivi l'equazione della parabola con vertice $V(1; -4)$ e passante per il punto $P(3; 0)$.`, suggerimenti: [R`Parti da $y=a(x-1)^2-4$.`, R`Sostituisci le coordinate di $P$ per trovare $a$.`], risposta: { tipo: 'testo', accettate: ['y=x^2-2x-3', 'y=x²-2x-3', 'y = x^2 - 2x - 3', 'y = x² − 2x − 3'] }, soluzione: [R`$y=a(x-1)^2-4$. Sostituendo $P(3; 0)$: $0=a(3-1)^2-4=4a-4$, quindi $a=1$.`, R`$y=(x-1)^2-4=x^2-2x+1-4=x^2-2x-3$.`] },
-    { id: 'es-07', difficolta: 2, testo: R`Scrivi l'equazione della parabola con asse orizzontale, di vertice $(2; 1)$ e passante per il punto $(6; 3)$.`, suggerimenti: [R`Parti da $x=a(y-1)^2+2$.`, R`Sostituisci il punto per trovare $a$.`], risposta: { tipo: 'testo', accettate: ['x=y^2-2y+3', 'x=y²-2y+3', 'x = y^2 - 2y + 3', 'x = y² − 2y + 3'] }, soluzione: [R`$x=a(y-1)^2+2$. Sostituendo $(6; 3)$: $6=a(3-1)^2+2=4a+2$, quindi $a=1$.`, R`$x=(y-1)^2+2=y^2-2y+1+2=y^2-2y+3$.`] },
+    { id: 'es-06', difficolta: 2, testo: R`Scrivi l'equazione della parabola con vertice $V(1; -4)$ e passante per il punto $P(3; 0)$.`, suggerimenti: [R`Parti da $y=a(x-1)^2-4$.`, R`Sostituisci le coordinate di $P$ per trovare $a$.`], risposta: { tipo: 'testo', accettate: ['y=x^2-2x-3', 'y=x²-2x-3', 'y = x^2 - 2x - 3', 'y = x² − 2x − 3', 'y=(x-1)^2-4', 'y=-3-2x+x^2'] }, soluzione: [R`$y=a(x-1)^2-4$. Sostituendo $P(3; 0)$: $0=a(3-1)^2-4=4a-4$, quindi $a=1$.`, R`$y=(x-1)^2-4=x^2-2x+1-4=x^2-2x-3$.`] },
+    { id: 'es-07', difficolta: 2, testo: R`Scrivi l'equazione della parabola con asse orizzontale, di vertice $(2; 1)$ e passante per il punto $(6; 3)$.`, suggerimenti: [R`Parti da $x=a(y-1)^2+2$.`, R`Sostituisci il punto per trovare $a$.`], risposta: { tipo: 'testo', accettate: ['x=y^2-2y+3', 'x=y²-2y+3', 'x = y^2 - 2y + 3', 'x = y² − 2y + 3', 'x=(y-1)^2+2', 'x=3-2y+y^2'] }, soluzione: [R`$x=a(y-1)^2+2$. Sostituendo $(6; 3)$: $6=a(3-1)^2+2=4a+2$, quindi $a=1$.`, R`$x=(y-1)^2+2=y^2-2y+1+2=y^2-2y+3$.`] },
     { id: 'es-08', difficolta: 2, testo: R`Per quale valore di $k$ la parabola $y=x^2-2x+k$ è tangente all'asse $x$?`, suggerimenti: [R`Tangente all'asse $x$ significa $\Delta=0$.`, R`$\dfrac{\Delta}{4}=1-k$.`], risposta: { tipo: 'numero', valore: 1 }, soluzione: [R`$\dfrac{\Delta}{4}=(-1)^2-k=1-k$.`, R`$1-k=0 \Rightarrow k=1$.`] },
     { id: 'es-09', difficolta: 2, testo: R`Un tunnel stradale ha sezione a forma di arco parabolico: alla base è largo $6\ \text{m}$ e al centro è alto $4{,}5\ \text{m}$. Usando la formula di Archimede, calcola l'area della sezione del tunnel (in metri quadrati).`, suggerimenti: [R`Identifica base $b$ e altezza $h$ del segmento parabolico.`, R`Applica $A=\dfrac23\,b\cdot h$.`], risposta: { tipo: 'numero', valore: 18, tolleranza: 0.1 }, soluzione: [R`$b=6\ \text{m}$, $h=4{,}5\ \text{m}$.`, R`$A=\dfrac23\cdot 6\cdot 4{,}5=\dfrac23\cdot 27=18\ \text{m}^2$.`] },
     { id: 'es-10', difficolta: 3, testo: R`Determina i coefficienti angolari delle rette tangenti alla parabola $y=x^2$ condotte dal punto $P(0; -1)$.`, suggerimenti: [R`Scrivi il fascio di rette per $P$: $y=mx-1$.`, R`Sostituisci nella parabola e imponi discriminante nullo nell'incognita $m$.`], risposta: { tipo: 'numeri', valori: [2, -2] }, soluzione: [R`$x^2=mx-1 \Rightarrow x^2-mx+1=0$.`, R`$\Delta=m^2-4$. Ponendo $\Delta=0$: $m^2=4$, cioè $m=2$ oppure $m=-2$.`, R`Le tangenti sono $y=2x-1$ (punto di tangenza $(1; 1)$) e $y=-2x-1$ (punto di tangenza $(-1; 1)$).`] },

@@ -1,121 +1,141 @@
 (function () {
 const R = String.raw;
+/* allenamento: stessa casella e stessi tasti per tutti, così la casella non suggerisce se il
+   risultato è un numero o un infinito. I numeri si controllano come numero (anche 2/3, 0,67),
+   gli infiniti come testo con tutte le scritture ragionevoli. */
+const SEGNA = 'un numero, +∞ o −∞';
+const SIMBOLI = ['∞', '+', '−', '/', '√', '(', ')'];
+const lim = v => ({ tipo: 'numero', valore: v, tolleranza: 0.005, segnaposto: SEGNA, simboli: SIMBOLI });
+const PIU_INF = { tipo: 'testo', accettate: ['+inf', '+∞', '+infinito', 'più infinito', 'piu infinito', 'inf', '∞', 'infinito', 'l=+∞', 'l=+inf', '+oo', 'oo'], segnaposto: SEGNA, simboli: SIMBOLI };
+const MENO_INF = { tipo: 'testo', accettate: ['-inf', '-∞', '-infinito', 'meno infinito', 'l=-∞', 'l=-inf', '-oo'], segnaposto: SEGNA, simboli: SIMBOLI };
 COMPASSO.registra({
   id: 'limiti',
   titolo: 'Limiti',
 
-  introduzione: R`Quanto vale $\dfrac{x^2 - 1}{x - 1}$ per $x = 1$? Non si può dire: sostituendo esce $\frac{0}{0}$. Però puoi provare con numeri vicini a $1$: con $x = 0{,}9$ esce $1{,}9$, con $x = 0{,}99$ esce $1{,}99$, con $x = 0{,}999$ esce $1{,}999$. Più $x$ si avvicina a $1$, più il risultato si avvicina a $2$. Si dice che **il limite** per $x$ che tende a $1$ vale $2$.
+  introduzione: R`Quanto vale $\dfrac{x^2 - 1}{x - 1}$ per $x = 1$? Sostituendo esce $\frac{0}{0}$, che non vuol dire niente. Allora prova con numeri vicini a $1$. Con $x = 0{,}9$ esce $1{,}9$, con $x = 0{,}99$ esce $1{,}99$, con $x = 0{,}999$ esce $1{,}999$.
 
-Il limite è lo strumento che descrive che cosa fa una funzione **vicino** a un punto, anche dove nel punto non si può calcolare, oppure quando $x$ diventa grandissima. Su questa idea poggia tutto il resto dell'analisi: la velocità in un istante, la pendenza della tangente a una curva (le derivate), l'area sotto una curva (gli integrali).
+Più $x$ si avvicina a $1$, più il risultato si avvicina a $2$. Si dice che **il limite** per $x$ che tende a $1$ vale $2$.
 
-Serve conoscere bene le funzioni (dominio, grafico, le funzioni elementari), le potenze, gli esponenziali e i logaritmi, e seno e coseno, che compaiono nei limiti notevoli.`,
+Il limite descrive che cosa fa una funzione **vicino** a un punto. Serve anche dove nel punto non puoi calcolarla, e quando $x$ diventa grandissima. Da qui partono le derivate e gli integrali.
+
+Ti servono le funzioni elementari: potenze, esponenziali, logaritmi, seno e coseno.`,
 
   inBreve: [
-    R`$\lim\limits_{x \to x_0} f(x) = L$ vuol dire che $f(x)$ si avvicina quanto vuoi a $L$ quando $x$ si avvicina a $x_0$, senza mai essere uguale a $x_0$. Il valore $f(x_0)$ non conta, e può anche non esistere.`,
-    R`Il limite in $x_0$ esiste solo se il limite da destra e quello da sinistra esistono e sono uguali.`,
-    R`Per calcolare un limite si comincia sempre sostituendo: se non esce una forma indeterminata, il risultato è già quello.`,
-    R`Le forme indeterminate ($\frac00$, $\frac{\infty}{\infty}$, $\infty - \infty$, $0 \cdot \infty$, $1^\infty$, $0^0$, $\infty^0$) non hanno un risultato fisso: si riscrive l'espressione raccogliendo, scomponendo o razionalizzando, finché l'indeterminazione sparisce.`,
-    R`Limiti notevoli: $\dfrac{\sin x}{x} \to 1$, $\dfrac{1 - \cos x}{x^2} \to \dfrac12$, $\dfrac{e^x - 1}{x} \to 1$, $\dfrac{\ln(1+x)}{x} \to 1$ per $x \to 0$, e $\left(1 + \frac1x\right)^x \to e$ per $x \to \infty$. Valgono se ciò che sta dentro tende proprio a $0$.`,
-    R`Per $x \to +\infty$ vale la gerarchia: ogni logaritmo cresce più lentamente di ogni potenza, e ogni potenza più lentamente di ogni esponenziale con base maggiore di $1$.`
+    R`$\lim\limits_{x \to x_0} f(x) = L$ vuol dire: quando $x$ si avvicina a $x_0$, $f(x)$ si avvicina quanto vuoi a $L$. Il valore $f(x_0)$ non conta, e può anche non esistere.`,
+    R`Il limite in $x_0$ esiste solo se il limite destro e il sinistro esistono e sono uguali.`,
+    R`Per calcolare un limite comincia sempre sostituendo. Se non esce una forma indeterminata, hai già il risultato.`,
+    R`Le forme indeterminate ($\frac00$, $\frac{\infty}{\infty}$, $\infty - \infty$, $0 \cdot \infty$, $1^\infty$, $0^0$, $\infty^0$) non hanno un risultato fisso. Riscrivi l'espressione: raccogli, scomponi o razionalizza.`,
+    R`Con due polinomi, per $x \to \infty$ decidono i gradi. Stesso grado: il rapporto dei coefficienti più alti. Grado più alto sotto: $0$. Grado più alto sopra: $\infty$.`,
+    R`Limiti notevoli per $x \to 0$: $\dfrac{\sin x}{x} \to 1$, $\dfrac{1 - \cos x}{x^2} \to \dfrac12$, $\dfrac{e^x - 1}{x} \to 1$, $\dfrac{\ln(1+x)}{x} \to 1$. Per $x \to \infty$, invece, $\left(1 + \frac1x\right)^x \to e$.`
   ],
 
   sezioni: [
-    { id: 'intorni-accumulazione', titolo: 'Intorni e punti di accumulazione', testo: R`Per parlare di limiti bisogna dire con precisione che cosa vuol dire «vicino a $x_0$». Si usa un intervallo centrato in $x_0$, largo quanto si vuole.
+    { id: 'intorni-accumulazione', titolo: 'Intorni e punti di accumulazione', testo: R`Per parlare di limiti devi dire con precisione che cosa vuol dire «vicino a $x_0$».
 
->* Un **intorno di $x_0$** è un intervallo aperto $(x_0 - \delta,\ x_0 + \delta)$ con $\delta > 0$: contiene i punti che distano da $x_0$ meno di $\delta$. Un intorno di $+\infty$ è un intervallo $(M, +\infty)$; un intorno di $-\infty$ è $(-\infty, M)$; un intorno di $\infty$ senza segno è l'insieme dei punti con $|x| > M$.
+>* Un **intorno di $x_0$** è un intervallo aperto $(x_0 - \delta,\ x_0 + \delta)$, con $\delta > 0$. Contiene i punti che distano da $x_0$ meno di $\delta$.
 
-$\delta$ non ha un valore fisso: si può scegliere piccolo quanto si vuole, e più è piccolo più l'intorno si stringe su $x_0$. Per l'infinito vale il contrario: più $M$ è grande, più l'intorno è «vicino» a $+\infty$.
+Puoi scegliere $\delta$ piccolo quanto vuoi. Più è piccolo, più l'intorno si stringe su $x_0$.
 
-Un'ultima parola, che basta conoscere: $x_0$ è un **punto di accumulazione** di un insieme $A$ se in ogni intorno di $x_0$, per quanto piccolo, c'è almeno un punto di $A$ diverso da $x_0$. Ha senso cercare il limite per $x \to x_0$ solo se $x_0$ è di accumulazione per il dominio di $f$: servono punti del dominio vicinissimi a $x_0$ per potercisi avvicinare.
+Anche l'infinito ha i suoi intorni, con $M$ grande quanto vuoi:
+- un intorno di $+\infty$ è un intervallo $(M, +\infty)$;
+- un intorno di $-\infty$ è un intervallo $(-\infty, -M)$;
+- un intorno di $\infty$ senza segno è fatto dei punti con $|x| > M$.
 
->! $x_0$ può essere di accumulazione per $A$ senza appartenere ad $A$. Lo $0$ è di accumulazione per $A = \left\{1, \frac12, \frac13, \frac14, \dots\right\}$: in ogni intorno di $0$ cadono infiniti numeri $\frac1n$, anche se $0$ non è nell'insieme.` },
+>* **Punto di accumulazione** di un insieme $A$: un $x_0$ tale che ogni suo intorno contiene punti di $A$ diversi da $x_0$.
 
-    { id: 'idea-intuitiva', titolo: "L'idea intuitiva di limite", testo: R`Riprendi la funzione dell'introduzione, $f(x) = \dfrac{x^2 - 1}{x - 1}$, che in $x = 1$ non è definita. Trascina $x$ verso $1$, prima da sinistra e poi da destra, e guarda il valore di $f(x)$ sull'asse $y$. Poi prova a mettere $x$ esattamente su $1$.
+Il limite per $x \to x_0$ ha senso solo se $x_0$ è di accumulazione per il dominio. Altrimenti non hai punti con cui avvicinarti.
+
+>! $x_0$ può essere di accumulazione per $A$ anche se non sta in $A$. Per esempio $0$ lo è per $A = \left\{1, \frac12, \frac13, \frac14, \dots\right\}$.` },
+
+    { id: 'idea-intuitiva', titolo: "L'idea intuitiva di limite", testo: R`Riprendi $f(x) = \dfrac{x^2 - 1}{x - 1}$, che in $x = 1$ non è definita. Trascina $x$ verso $1$, prima da sinistra e poi da destra, e guarda $f(x)$ sull'asse $y$. Poi prova a mettere $x$ proprio su $1$.
 
 [[grafico:avvicinati]]
 
-Da tutte e due le parti i valori si stringono attorno a $2$. Su $x = 1$ invece il punto sparisce: lì la funzione non c'è, sul grafico resta un buco. Il limite descrive proprio questo: dove **va** la funzione mentre ti avvicini, non dove si trova nel punto.
+Da tutte e due le parti i valori si stringono attorno a $2$. Su $x = 1$ il punto sparisce e resta un buco. Il limite dice dove **va** la funzione mentre ti avvicini.
 
->* $\lim\limits_{x \to x_0} f(x) = L$ vuol dire: prendendo $x$ abbastanza vicino a $x_0$ (ma diverso da $x_0$), $f(x)$ diventa vicino a $L$ quanto si vuole. Il valore $f(x_0)$ non conta: può non esistere, o essere diverso da $L$.
+>* $\lim\limits_{x \to x_0} f(x) = L$ vuol dire: se prendi $x$ abbastanza vicino a $x_0$, e diverso da $x_0$, $f(x)$ è vicino a $L$ quanto vuoi. Il valore $f(x_0)$ non conta: può non esistere, o essere diverso da $L$.
 
-Nel laboratorio «Il microscopio» puoi ingrandire la zona attorno al punto e leggere la tabella dei valori da sinistra e da destra, anche per funzioni in cui le due parti non vanno d'accordo o i valori scappano all'infinito.
+Nel laboratorio «Il microscopio» puoi ingrandire la zona attorno al punto.
 
->! Calcolare $f(x_0)$ e chiamarlo «il limite» funziona solo quando la funzione è continua in $x_0$, come i polinomi (si vedrà nel prossimo argomento). In generale il limite si occupa dei valori **intorno** a $x_0$.
+>! Calcolare $f(x_0)$ dà il limite solo se la funzione è continua in $x_0$, come un polinomio. In generale il limite guarda i valori **intorno** a $x_0$.
 
 ?? Una funzione vale $f(x) = x + 1$ per ogni $x \ne 3$, e in $x = 3$ vale $f(3) = 10$. Quanto vale $\lim\limits_{x \to 3} f(x)$?
 [x] $4$
 [ ] $10$
 [ ] non esiste, perché la funzione ha un salto in $3$
-=> Vicino a $3$, ma non in $3$, la funzione vale $x + 1$, che si avvicina a $4$ da entrambe le parti: il limite è $4$. Il valore $10$ è quello nel punto, e il limite non lo guarda. Non c'è un salto fra sinistra e destra: c'è solo un punto spostato.` },
+=> Il limite è $4$. Vicino a $3$ la funzione vale $x + 1$, che si avvicina a $4$ da tutte e due le parti. Il $10$ è il valore nel punto, e il limite non lo guarda. Non c'è nessun salto: c'è solo un punto spostato.` },
 
-    { id: 'definizione-limite-finito', titolo: 'La definizione di limite finito (ε-δ)', testo: R`«Vicino quanto si vuole» a parole è chiaro, ma per dimostrare qualcosa serve una formulazione con i numeri. La si può leggere come una sfida a due.
+    { id: 'definizione-limite-finito', titolo: 'La definizione di limite finito (ε-δ)', testo: R`Per dimostrare un limite, «vicino quanto vuoi» va detto con i numeri. Pensa a una sfida fra due giocatori.
 
-Il primo giocatore sceglie una **tolleranza** $\varepsilon$ (epsilon), piccola quanto vuole: «voglio che $f(x)$ disti da $L$ meno di $\varepsilon$». Il secondo deve rispondere con un $\delta$ (delta): «va bene, basta prendere $x$ a distanza minore di $\delta$ da $x_0$». Se il secondo riesce a rispondere **a ogni** $\varepsilon$, anche piccolissimo, il limite vale $L$.
+1. Il primo sceglie una **tolleranza** $\varepsilon$ (epsilon), piccola quanto vuole. Chiede che $f(x)$ disti da $L$ meno di $\varepsilon$.
+2. Il secondo risponde con un $\delta$ (delta). Promette che basta prendere $x$ a distanza minore di $\delta$ da $x_0$.
 
-Gioca tu la parte del secondo. Qui $f(x) = 2x + 1$, $x_0 = 1$ e $L = 3$. Fissa $\varepsilon$ con il cursore, poi trascina $\delta$ e trova il più grande che funziona: tutta la curva sopra la striscia verticale deve stare dentro la striscia orizzontale.
+Se il secondo sa rispondere a **ogni** $\varepsilon$, il limite vale $L$.
+
+Gioca tu la parte del secondo, con $f(x) = 2x + 1$, $x_0 = 1$ e $L = 3$. Fissa $\varepsilon$ con il cursore. Poi trascina $\delta$ e cerca il più grande che funziona: il tratto di retta evidenziato deve restare dentro la fascia orizzontale.
 
 [[grafico:epsilon-delta]]
 
-Se $x$ dista da $1$ meno di $\delta$, $f(x) = 2x + 1$ dista da $3$ meno di $2\delta$, perché la retta sale di $2$ per ogni passo di $1$. Quindi funziona ogni $\delta$ fino a $\frac{\varepsilon}{2}$: a ogni $\varepsilon$ il secondo giocatore sa rispondere, e il limite vale proprio $3$.
+La retta sale di $2$ per ogni passo di $1$. Quindi, se $x$ dista da $1$ meno di $\delta$, $f(x)$ dista da $3$ meno di $2\delta$. Funziona ogni $\delta$ fino a $\frac{\varepsilon}{2}$, e il limite vale $3$.
 
->* **Limite finito per $x \to x_0$:** $\lim\limits_{x \to x_0} f(x) = L$ se $\ \forall\, \varepsilon > 0\ \ \exists\, \delta > 0$ tale che $\ 0 < |x - x_0| < \delta \ \Rightarrow \ |f(x) - L| < \varepsilon$. Per ogni tolleranza $\varepsilon$ esiste un $\delta$ tale che, se $x$ è vicino a $x_0$ meno di $\delta$ (ma diverso da $x_0$), allora $f(x)$ è vicino a $L$ meno di $\varepsilon$.
+>* **Limite finito per $x \to x_0$:** $\lim\limits_{x \to x_0} f(x) = L$ se $\ \forall\, \varepsilon > 0\ \ \exists\, \delta > 0$ tale che $\ 0 < |x - x_0| < \delta \ \Rightarrow \ |f(x) - L| < \varepsilon$.
 
-Il pezzo $0 < |x - x_0|$ serve a escludere $x = x_0$: il valore nel punto non conta.
+Il pezzo $0 < |x - x_0|$ esclude $x = x_0$, perché il valore nel punto non conta.
 
->! $\delta$ dipende da $\varepsilon$: non esiste «il $\delta$ del limite» valido per tutte le tolleranze. Nel grafico, quando stringi $\varepsilon$, devi stringere anche $\delta$.` },
+>! $\delta$ dipende da $\varepsilon$. Se stringi $\varepsilon$, devi stringere anche $\delta$.` },
 
-    { id: 'limiti-infiniti', titolo: "Limiti infiniti e limiti all'infinito", testo: R`Non sempre ci si avvicina a un numero. Con $f(x) = \dfrac1x$, trascina $x$ verso $0$ da destra e da sinistra, poi portala lontano, verso i bordi del grafico.
+    { id: 'limiti-infiniti', titolo: "Limiti infiniti e limiti all'infinito", testo: R`Non sempre ci si avvicina a un numero. Con $f(x) = \dfrac1x$ trascina $x$ verso $0$, da destra e da sinistra. Poi portala verso i bordi del grafico.
 
 [[grafico:iperbole]]
 
-Vicino a $0$, da destra, $f(x)$ diventa enorme e positiva: $\frac{1}{0{,}01} = 100$, $\frac{1}{0{,}001} = 1000$. Da sinistra diventa enorme e negativa. Lontano da $0$, invece, $f(x)$ si avvicina a $0$. Sono i due casi nuovi: il limite può essere **infinito**, e ci si può avvicinare **all'infinito**.
+Vicino a $0$, da destra, $f(x)$ diventa enorme e positiva: $\frac{1}{0{,}01} = 100$. Da sinistra diventa enorme e negativa. Lontano da $0$, invece, $f(x)$ si avvicina a $0$.
 
->* $\lim\limits_{x \to x_0} f(x) = +\infty$ vuol dire: $f(x)$ supera qualunque numero $M$, pur di prendere $x$ abbastanza vicino a $x_0$. In simboli: $\forall M > 0\ \exists\, \delta > 0 : 0 < |x - x_0| < \delta \Rightarrow f(x) > M$ (per $-\infty$ si chiede $f(x) < -M$).
+>* $\lim\limits_{x \to x_0} f(x) = +\infty$ vuol dire: $f(x)$ supera qualunque numero $M$, se prendi $x$ abbastanza vicino a $x_0$. In simboli: $\forall M > 0\ \exists\, \delta > 0 : 0 < |x - x_0| < \delta \Rightarrow f(x) > M$. Per $-\infty$ si chiede $f(x) < -M$.
 
->* $\lim\limits_{x \to \infty} f(x) = L$ vuol dire: $f(x)$ è vicino a $L$ quanto si vuole, pur di prendere $|x|$ abbastanza grande. In simboli: $\forall \varepsilon > 0\ \exists\, N > 0 : |x| > N \Rightarrow |f(x) - L| < \varepsilon$. Se anche il risultato è infinito, si chiede $f(x) > M$ per $|x| > N$.
+>* $\lim\limits_{x \to \infty} f(x) = L$ vuol dire: $f(x)$ è vicino a $L$ quanto vuoi, se prendi $|x|$ abbastanza grande. In simboli: $\forall \varepsilon > 0\ \exists\, N > 0 : |x| > N \Rightarrow |f(x) - L| < \varepsilon$.
 
-Per $\frac1x$ quindi: per $x \to 0^+$ il limite è $+\infty$, per $x \to 0^-$ è $-\infty$, per $x \to \pm\infty$ è $0$. Le rette $x = 0$ e $y = 0$, a cui la curva si avvicina senza toccarle, sono i suoi **asintoti**.
+Per $\frac1x$ il limite è $+\infty$ da destra di $0$ e $-\infty$ da sinistra. Per $x \to \pm\infty$ è $0$. La curva si avvicina alle rette $x = 0$ e $y = 0$ senza toccarle: sono i suoi **asintoti**.
 
->! «$x \to \infty$» senza segno vuol dire che $|x|$ diventa grandissimo, con $x$ positivo **oppure** negativo. $x \to +\infty$ considera solo i positivi.` },
+>! «$x \to \infty$» senza segno vuol dire che $|x|$ diventa grandissimo, con $x$ positivo **oppure** negativo. $x \to +\infty$ guarda solo i positivi.` },
 
-    { id: 'limite-destro-sinistro', titolo: 'Limite destro e limite sinistro', testo: R`Con $\frac1x$ hai visto che arrivando a $0$ da destra e da sinistra succedono cose diverse. Per tenerne conto si guarda un lato alla volta.
+    { id: 'limite-destro-sinistro', titolo: 'Limite destro e limite sinistro', testo: R`Con $\frac1x$ hai visto che a destra e a sinistra di $0$ succedono cose diverse. Allora conviene guardare un lato alla volta.
 
->* **Limite destro** $\lim\limits_{x \to x_0^+} f(x)$: ci si avvicina a $x_0$ solo con $x > x_0$. **Limite sinistro** $\lim\limits_{x \to x_0^-} f(x)$: solo con $x < x_0$. Il limite $\lim\limits_{x \to x_0} f(x)$ **esiste se e solo se** destro e sinistro esistono e **sono uguali**; il loro valore comune è il limite.
+>* **Limite destro** $\lim\limits_{x \to x_0^+} f(x)$: ti avvicini a $x_0$ solo con $x > x_0$. **Limite sinistro** $\lim\limits_{x \to x_0^-} f(x)$: solo con $x < x_0$. Il limite in $x_0$ **esiste se e solo se** destro e sinistro esistono e **sono uguali**.
 
-Per $\frac1x$ in $0$: destro $+\infty$, sinistro $-\infty$. Sono diversi, quindi $\lim\limits_{x \to 0} \frac1x$ **non esiste**.
+Per $\frac1x$ in $0$ il destro è $+\infty$ e il sinistro $-\infty$. Il segno lo decide il denominatore: a destra di $0$ è positivo, a sinistra negativo.
 
-Può succedere anche con due valori finiti. $f(x) = \dfrac{|x|}{x}$ vale $1$ per $x > 0$ e $-1$ per $x < 0$: il limite destro in $0$ è $1$, il sinistro è $-1$, e il limite non esiste.
+>! Non scrivere $\lim\limits_{x \to 0} \frac1x = \infty$. Destro e sinistro sono diversi, quindi il limite **non esiste**.
 
->! Scrivere $\lim\limits_{x \to 0} \frac1x = \infty$ è sbagliato: da una parte si va a $+\infty$, dall'altra a $-\infty$, e il limite non esiste.
+Succede anche con due valori finiti. $f(x) = \dfrac{|x|}{x}$ vale $1$ per $x > 0$ e $-1$ per $x < 0$, quindi il limite in $0$ non esiste.
 
 ?? Quanto vale $\lim\limits_{x \to 2} \dfrac{1}{(x-2)^2}$?
 [x] $+\infty$
 [ ] non esiste, perché destro e sinistro sono diversi
 [ ] $0$
-=> Il denominatore $(x-2)^2$ è un quadrato: vicino a $2$ è piccolissimo ma sempre **positivo**, da tutte e due le parti. Quindi destro e sinistro valgono entrambi $+\infty$, e il limite esiste ed è $+\infty$. Con $\frac{1}{x-2}$, senza il quadrato, i due lati sarebbero invece diversi.` },
+=> Il denominatore $(x-2)^2$ è un quadrato. Vicino a $2$ è piccolissimo ma sempre **positivo**, da tutte e due le parti. Quindi destro e sinistro valgono $+\infty$, e il limite è $+\infty$. Con $\frac{1}{x-2}$, senza il quadrato, i due lati sarebbero diversi.` },
 
-    { id: 'teoremi-limiti', titolo: 'I teoremi sui limiti', testo: R`Tre teoremi valgono per tutti i limiti (con $x_0$ finito o infinito). Si usano di continuo, spesso senza nominarli.
+    { id: 'teoremi-limiti', titolo: 'I teoremi sui limiti', testo: R`Tre teoremi valgono per tutti i limiti, con $x_0$ finito o infinito.
 
 >* **Unicità del limite:** se il limite esiste, è uno solo.
 
-Il motivo: se $f(x)$ si avvicinasse sia a $L_1$ sia a un altro numero $L_2$, da un certo punto in poi dovrebbe stare vicinissima a tutti e due insieme. Ma due numeri diversi hanno una distanza fra loro, e non si può stare a meno di metà di quella distanza da entrambi.
+Infatti $f(x)$ non può stare vicinissima a due numeri diversi nello stesso momento.
 
->* **Permanenza del segno:** se $\lim\limits_{x \to x_0} f(x) = L$ con $L \ne 0$, allora in un intorno di $x_0$ (escluso al più $x_0$) $f(x)$ ha lo **stesso segno** di $L$.
+>* **Permanenza del segno:** se $\lim\limits_{x \to x_0} f(x) = L$ con $L \ne 0$, vicino a $x_0$ la funzione ha lo **stesso segno** di $L$. Il punto $x_0$ può fare eccezione.
 
-Se i valori si avvicinano a $3$, abbastanza vicino a $x_0$ stanno fra $2$ e $4$, quindi sono positivi. Una funzione non può restare negativa fino all'ultimo e diventare positiva solo nel limite.
+Se i valori si avvicinano a $3$, vicino a $x_0$ stanno fra $2$ e $4$: sono positivi.
 
 >* **Teorema del confronto** (dei due carabinieri): se $g(x) \le f(x) \le h(x)$ vicino a $x_0$ e $\lim g = \lim h = L$, allora anche $\lim f = L$.
 
-Due carabinieri scortano una persona, uno per lato: se tutti e due arrivano nello stesso posto, ci arriva anche la persona in mezzo. Serve per i limiti che non si calcolano direttamente, come $\frac{\sin x}{x}$ più avanti.
+Due carabinieri scortano una persona, uno per lato. Se tutti e due arrivano nello stesso posto, ci arriva anche la persona in mezzo. Il teorema ti servirà per $\frac{\sin x}{x}$.
 
 ?? $f(x) = x^2$ si avvicina a $0$ per $x \to 0$. La permanenza del segno dice che vicino a $0$ la funzione ha il segno del limite?
-=> No: il teorema chiede $L \ne 0$, e qui $L = 0$, che non ha segno. Infatti una funzione che tende a $0$ può essere sempre positiva ($x^2$), sempre negativa ($-x^2$), oppure cambiare segno (come $x$).` },
+=> No: il teorema chiede $L \ne 0$, e qui $L = 0$. Una funzione che tende a $0$ può essere sempre positiva, come $x^2$. Può essere sempre negativa, come $-x^2$. Oppure può cambiare segno, come $x$.` },
 
-    { id: 'operazioni-forme-indeterminate', titolo: 'Operazioni sui limiti e forme indeterminate', testo: R`Se due funzioni hanno limiti finiti, i limiti si combinano come ci si aspetta.
+    { id: 'operazioni-forme-indeterminate', titolo: 'Operazioni sui limiti e forme indeterminate', testo: R`Se due funzioni hanno limiti finiti, i limiti si combinano nel modo più naturale.
 
 >* Se $\lim f = L_1$ e $\lim g = L_2$ sono finiti, allora $\lim (f \pm g) = L_1 \pm L_2$, $\ \lim (f \cdot g) = L_1 \cdot L_2$ e, se $L_2 \ne 0$, $\ \lim \dfrac{f}{g} = \dfrac{L_1}{L_2}$.
 
-Molti casi con l'infinito funzionano allo stesso modo, e si capiscono pensando a numeri grandissimi o piccolissimi:
+Con l'infinito, molti casi si capiscono pensando a numeri enormi o minuscoli:
 
 | operazione | risultato | perché |
 |---|---|---|
@@ -124,19 +144,24 @@ Molti casi con l'infinito funzionano allo stesso modo, e si capiscono pensando a
 | $\dfrac{\text{numero}}{\infty}$ | $0$ | $\frac{5}{1\,000\,000}$ è quasi zero |
 | $\dfrac{\text{numero} \ne 0}{0}$ | $\infty$ | $\frac{5}{0{,}0001} = 50\,000$; il segno dipende da come tende a $0$ il denominatore |
 
-Altre combinazioni invece non hanno un risultato fisso: dipende da quali funzioni ci sono dentro. Si chiamano **forme indeterminate**.
+Altre combinazioni non hanno un risultato fisso, perché dipende dalle funzioni. Si chiamano **forme indeterminate**.
 
->* Le sette **forme indeterminate** sono $\infty - \infty$, $\ 0 \cdot \infty$, $\ \dfrac{\infty}{\infty}$, $\ \dfrac00$, $\ 1^{\infty}$, $\ 0^0$, $\ \infty^0$. Quando sostituendo ne esce una, il calcolo non è finito: bisogna riscrivere l'espressione.
+>* Le sette **forme indeterminate** sono $\infty - \infty$, $\ 0 \cdot \infty$, $\ \dfrac{\infty}{\infty}$, $\ \dfrac00$, $\ 1^{\infty}$, $\ 0^0$, $\ \infty^0$. Se sostituendo ne esce una, devi riscrivere l'espressione.
 
-Guarda tre limiti che danno tutti $\frac00$: $\lim\limits_{x \to 0} \frac{2x}{x} = 2$, $\lim\limits_{x \to 0} \frac{x^2}{x} = 0$, $\lim\limits_{x \to 0^+} \frac{x}{x^2} = +\infty$. Stessa forma, tre risultati diversi: conta **come** numeratore e denominatore vanno a zero, non solo il fatto che ci vanno.
+Guarda tre limiti che danno tutti $\frac00$:
+- $\lim\limits_{x \to 0} \frac{2x}{x} = 2$;
+- $\lim\limits_{x \to 0} \frac{x^2}{x} = 0$;
+- $\lim\limits_{x \to 0^+} \frac{x}{x^2} = +\infty$.
+
+Stessa forma, tre risultati diversi. Conta **come** numeratore e denominatore vanno a zero.
 
 ?? Quanto vale $\lim\limits_{x \to +\infty} \left(x^2 - x\right)$?
 [x] $+\infty$
 [ ] $0$, perché $\infty - \infty = 0$
 [ ] non si può calcolare, è una forma indeterminata
-=> È una forma $\infty - \infty$, ma questo vuol dire solo che serve un passaggio in più. Raccogliendo, $x^2 - x = x(x - 1)$, prodotto di due fattori che vanno a $+\infty$: il risultato è $+\infty$. Per $x = 1000$ vale $999\,000$, altro che zero. «Indeterminata» non vuol dire «impossibile da calcolare».` },
+=> Fa $+\infty$. La forma $\infty - \infty$ chiede solo un passaggio in più. Raccogli: $x^2 - x = x(x - 1)$, e i due fattori vanno a $+\infty$. Con $x = 1000$ vale $999\,000$, altro che zero.` },
 
-    { id: 'calcolo-forme-indeterminate', titolo: 'Come si risolvono le forme indeterminate', testo: R`Davanti a una forma indeterminata si riscrive l'espressione in un'altra, **uguale per $x \ne x_0$**, in cui l'indeterminazione sparisce. Tre tecniche coprono quasi tutti i casi del liceo, e la forma che esce sostituendo dice quale usare.
+    { id: 'calcolo-forme-indeterminate', titolo: 'Come si risolvono le forme indeterminate', testo: R`Davanti a una forma indeterminata riscrivi l'espressione. La nuova deve essere **uguale per $x \ne x_0$**, e senza indeterminazione. La forma che esce sostituendo ti dice quale tecnica usare.
 
 | forma e tipo di funzione | tecnica |
 |---|---|
@@ -151,6 +176,22 @@ Guarda tre limiti che danno tutti $\frac00$: $\lim\limits_{x \to 0} \frac{2x}{x}
 ~ = \lim \dfrac{2 - \evid{\frac1x}}{3 + \evid{\frac{5}{x^2}}} :: semplifico $x^2$
 ~ = \evidb{\dfrac23} :: $\frac1x$ e $\frac{5}{x^2}$ vanno a $0$: restano i coefficienti dei termini più alti
 
+Con due polinomi, per $x \to \infty$, basta guardare i **gradi**, cioè gli esponenti più alti sopra e sotto:
+
+| gradi | limite |
+|---|---|
+| sopra uguale a sotto | il rapporto dei coefficienti dei termini più alti |
+| sopra minore di sotto | $0$ |
+| sopra maggiore di sotto | $+\infty$ o $-\infty$: il segno lo dà il rapporto dei termini più alti |
+
+Un polinomio da solo, per $x \to \pm\infty$, va come il suo termine più alto. Per esempio $x^3 - 5x^2$ va come $x^3$.
+
+?? Quanto vale $\lim\limits_{x \to +\infty} \dfrac{2x + 1}{x^2 - 3}$?
+[x] $0$
+[ ] $2$
+[ ] $+\infty$
+=> Sotto il grado è $2$, sopra è $1$. Vince il denominatore, quindi il limite è $0$. Il $2$ è il rapporto dei coefficienti di $x$, ma vale solo con gradi uguali. $+\infty$ sarebbe giusto se il grado più alto fosse sopra.
+
 ### Scomporre e semplificare
 
 ~ \lim_{x \to 1} \dfrac{x^2 - 1}{x - 1} :: sostituendo esce $\frac00$
@@ -158,10 +199,10 @@ Guarda tre limiti che danno tutti $\frac00$: $\lim\limits_{x \to 0} \frac{2x}{x}
 ~ = \lim_{x \to 1} (x + 1) :: semplifico: si può, perché nel limite $x \ne 1$
 ~ = \evidb{2} :: ora sostituire funziona
 
-È la funzione del grafico all'inizio: fuori da $x = 1$ coincide con la retta $y = x + 1$, e in $x = 1$ ha il buco all'altezza $2$.
+È la funzione del grafico all'inizio. Fuori da $x = 1$ coincide con la retta $y = x + 1$, e in $x = 1$ ha un buco all'altezza $2$.
 
 ?? Nel calcolo qui sopra si semplifica $(x-1)$, che in $x = 1$ vale zero. Perché è lecito?
-=> Perché il limite guarda solo gli $x$ **diversi** da $1$, e per quegli $x$ il fattore $x - 1$ non è zero. Le due espressioni $\frac{x^2-1}{x-1}$ e $x + 1$ sono uguali ovunque tranne in $x = 1$, e quindi hanno lo stesso limite. La funzione di partenza, in $1$, continua a non esistere.
+=> Il limite guarda solo gli $x$ **diversi** da $1$, e per quegli $x$ il fattore $x - 1$ non è zero. Quindi $\frac{x^2-1}{x-1}$ e $x + 1$ sono uguali vicino a $1$, e hanno lo stesso limite.
 
 ### Razionalizzare
 
@@ -171,19 +212,24 @@ Guarda tre limiti che danno tutti $\frac00$: $\lim\limits_{x \to 0} \frac{2x}{x}
 ~ = \lim \dfrac{x}{x\left(\sqrt{1 + \frac1x} + 1\right)} :: sotto raccolgo $x$ (dalla radice esce come $x$, perché $x > 0$)
 ~ = \evidb{\dfrac12} :: semplifico $x$; $\frac1x \to 0$ e resta $\frac{1}{1 + 1}$
 
->! Non si sostituisce $\infty$ come se fosse un numero: $\sqrt{\infty} - \infty$ non vuol dire niente. Prima si trasforma l'espressione, poi si passa al limite.` },
+>! Non sostituire $\infty$ come se fosse un numero: $\sqrt{\infty} - \infty$ non vuol dire niente. Prima trasforma l'espressione, poi passa al limite.` },
 
-    { id: 'limiti-notevoli', titolo: 'I limiti notevoli', testo: R`$\dfrac{\sin x}{x}$ per $x \to 0$ dà $\frac00$, ma qui non c'è niente da scomporre o razionalizzare. Limiti come questo si dimostrano una volta per tutte e poi si usano come formule: sono i **limiti notevoli**.
+    { id: 'limiti-notevoli', titolo: 'I limiti notevoli', testo: R`$\dfrac{\sin x}{x}$ per $x \to 0$ dà $\frac00$, ma qui non c'è niente da scomporre. Limiti come questo si dimostrano una volta, e poi si usano come formule. Sono i **limiti notevoli**.
 
 >* **Limiti notevoli:** per $x \to 0$ si ha $\dfrac{\sin x}{x} \to 1$, $\ \dfrac{1 - \cos x}{x^2} \to \dfrac12$, $\ \dfrac{e^x - 1}{x} \to 1$, $\ \dfrac{\ln(1 + x)}{x} \to 1$. Per $x \to \infty$ si ha $\left(1 + \dfrac1x\right)^x \to e$.
 
 ### Perché $\frac{\sin x}{x} \to 1$
 
-Sulla circonferenza goniometrica (raggio $1$) prendi un angolo $x$, in radianti, fra $0$ e $\frac{\pi}{2}$. Ci sono tre figure una dentro l'altra: il triangolo $OAB$, di area $\frac12 \sin x$; lo spicchio di cerchio, di area $\frac12 x$; il triangolo $OAT$, di area $\frac12 \tan x$. Trascina $B$ verso $A$ e guarda il rapporto.
+Sulla circonferenza goniometrica prendi un angolo $x$ in radianti, fra $0$ e $\frac{\pi}{2}$. Ci sono tre figure, una dentro l'altra:
+- il triangolo $OAB$, di area $\frac12 \sin x$;
+- lo spicchio di cerchio, di area $\frac12 x$;
+- il triangolo $OAT$, di area $\frac12 \tan x$.
+
+Trascina $B$ verso $A$ e guarda il rapporto.
 
 [[grafico:seno-cerchio]]
 
-Mentre l'angolo si chiude, il segmento $\sin x$ e l'arco $x$ diventano quasi uguali, e il rapporto si avvicina a $1$. Con i conti:
+Mentre l'angolo si chiude, $\sin x$ e l'arco $x$ diventano quasi uguali. Con i conti:
 
 ~ \tfrac12 \sin x \le \tfrac12 x \le \tfrac12 \tan x :: le tre aree, una dentro l'altra
 ~ \sin x \le x \le \dfrac{\sin x}{\cos x} :: moltiplico per $2$ e scrivo la tangente come seno fratto coseno
@@ -193,7 +239,7 @@ Mentre l'angolo si chiude, il segmento $\sin x$ e l'arco $x$ diventano quasi ugu
 
 Per $x < 0$ vale lo stesso, perché $\frac{\sin x}{x}$ è pari.
 
-### Gli altri, dal primo e dal numero $e$
+### Gli altri limiti notevoli
 
 Il limite con il coseno si riporta a quello con il seno:
 
@@ -203,7 +249,7 @@ Il limite con il coseno si riporta a quello con il seno:
 ~ = \left(\dfrac{\sin x}{x}\right)^2 \cdot \dfrac{1}{1 + \cos x} :: separo in due fattori
 ~ \to 1^2 \cdot \dfrac12 = \evidb{\dfrac12} :: il primo va a $1$, il secondo a $\frac{1}{1+1}$
 
-Il limite $\left(1 + \frac1x\right)^x \to e$ **definisce** il numero $e$. La base $1 + \frac1x$ va verso $1$ e l'esponente cresce: le due spinte si bilanciano su un valore finito.
+Il limite $\left(1 + \frac1x\right)^x \to e$ **definisce** il numero $e$. La base va verso $1$ e l'esponente cresce. Le due spinte si bilanciano su un valore finito.
 
 | $x$ | $\left(1 + \frac1x\right)^x$ |
 |---|---|
@@ -216,44 +262,49 @@ Il limite $\left(1 + \frac1x\right)^x \to e$ **definisce** il numero $e$. La bas
 
 Gli ultimi due, con $e^x$ e $\ln(1+x)$, si ricavano da questo con un cambio di variabile.
 
->! I limiti notevoli valgono se quello che sta dentro ($\sin(\ldots)$, $e^{\ldots}$, $\ln(1 + \ldots)$) è **lo stesso** che sta sotto e **tende a $0$**. Con $\sin(3x)$ bisogna far comparire $3x$ anche sotto.
+>! Un limite notevole vale se dentro e sotto c'è **la stessa cosa**, e se questa **tende a $0$**. Con $\sin(3x)$ devi far comparire $3x$ anche sotto.
 
 ~ \lim_{x \to 0} \dfrac{\sin(3x)}{x} :: dentro il seno c'è $3x$, sotto solo $x$
 ~ = \lim \dfrac{\sin(3x)}{x} \cdot \evid{\dfrac{3}{3}} :: moltiplico e divido per $3$
 ~ = \lim \evid{3} \cdot \dfrac{\sin(3x)}{\evid{3x}} :: ora sopra e sotto c'è lo stesso $3x$, che tende a $0$
 ~ = 3 \cdot 1 = \evidb{3} :: applico il limite notevole con $t = 3x$
 
+Allo stesso modo, per ogni numero $k \ne 0$ ottieni $\lim\limits_{x \to 0} \dfrac{\sin(kx)}{x} = k$.
+
 ?? Quanto vale $\lim\limits_{x \to 0} \dfrac{\sin(5x)}{2x}$?
 [x] $\dfrac52$
 [ ] $1$
 [ ] $\dfrac25$
-=> Serve $5x$ sotto: $\dfrac{\sin(5x)}{2x} = \dfrac{5}{2} \cdot \dfrac{\sin(5x)}{5x} \to \dfrac52 \cdot 1$. Rispondere $1$ vuol dire applicare il limite notevole senza controllare che sopra e sotto ci sia la stessa cosa. $\frac25$ ha il rapporto capovolto.` },
+=> Serve $5x$ sotto: $\dfrac{\sin(5x)}{2x} = \dfrac{5}{2} \cdot \dfrac{\sin(5x)}{5x} \to \dfrac52 \cdot 1$. Chi risponde $1$ usa il limite notevole senza controllare che sopra e sotto ci sia la stessa cosa. $\frac25$ ha il rapporto capovolto.` },
 
-    { id: 'gerarchia-successioni', titolo: 'Gerarchia degli infiniti e limiti di successioni', testo: R`$x^2$, $2^x$ e $\log_2 x$ vanno tutte a $+\infty$ quando $x \to +\infty$, ma con velocità molto diverse. Allarga la finestra del grafico con il cursore e guarda chi vince.
+    { id: 'gerarchia-successioni', titolo: 'Gerarchia degli infiniti e limiti di successioni', testo: R`$x^2$, $2^x$ e $\log_2 x$ vanno tutte a $+\infty$ per $x \to +\infty$. Però ci vanno a velocità molto diverse. Allarga la finestra con il cursore e guarda chi vince.
 
 [[grafico:infiniti]]
 
-All'inizio $x^2$ e $2^x$ si rincorrono (fra $2$ e $4$ la parabola sta perfino sopra), poi l'esponenziale scappa verso l'alto. Il logaritmo cresce anche lui, ma resta schiacciato in basso. Succede sempre così, qualunque siano le basi e gli esponenti.
+All'inizio $x^2$ e $2^x$ si rincorrono: fra $2$ e $4$ la parabola sta perfino sopra. Poi l'esponenziale scappa verso l'alto. Il logaritmo cresce anche lui, ma resta schiacciato in basso.
 
->* **Gerarchia degli infiniti** (per $x \to +\infty$, con $a > 1$, $b > 0$, $c > 1$): $$\log_a x \ \ll\ x^b \ \ll\ c^x.$$ Il simbolo $\ll$ vuol dire che il rapporto fra il più lento e il più veloce tende a $0$: $\lim\limits_{x \to +\infty} \frac{\log_a x}{x^b} = 0$ e $\lim\limits_{x \to +\infty} \frac{x^b}{c^x} = 0$.
+>* **Gerarchia degli infiniti** per $x \to +\infty$, con $a > 1$, $b > 0$, $c > 1$: $$\log_a x \ \ll\ x^b \ \ll\ c^x.$$ Il simbolo $\ll$ vuol dire che il rapporto fra il più lento e il più veloce tende a $0$.
 
-In un $\frac{\infty}{\infty}$ fra funzioni di tipo diverso, quindi, vince la più veloce. $\lim\limits_{x \to +\infty} \frac{\ln x}{x} = 0$, perché sotto c'è una potenza e sopra solo un logaritmo; $\lim\limits_{x \to +\infty} \frac{e^x}{x^3} = +\infty$, perché sopra c'è l'esponenziale.
+In un $\frac{\infty}{\infty}$ fra funzioni di tipo diverso vince la più veloce. Per esempio $\frac{\ln x}{x} \to 0$, perché sotto c'è una potenza. Invece $\frac{e^x}{x^3} \to +\infty$, perché sopra c'è l'esponenziale.
 
 ?? Quanto vale $\lim\limits_{x \to +\infty} \dfrac{x^{100}}{2^x}$?
 [x] $0$
 [ ] $+\infty$
 [ ] $1$
-=> Una potenza, anche con esponente $100$, cresce più lentamente di qualunque esponenziale con base maggiore di $1$. Per $x$ piccoli $x^{100}$ è molto più grande (con $x = 10$: $10^{100}$ contro $1024$), ma da un certo punto in poi $2^x$ la supera e la distacca sempre di più. Il limite guarda solo quello che succede alla fine.
+=> Fa $0$. Con $x = 10$ vince $x^{100}$, ma da un certo punto $2^x$ la supera e la stacca. Il limite guarda solo quello che succede alla fine.
 
 ### Il limite di una successione
 
-Una successione $a_n$ è una funzione definita sui numeri naturali, e il suo limite si cerca solo per $n \to +\infty$. È **convergente** se il limite è un numero, **divergente** se è $+\infty$ o $-\infty$, **irregolare** se non esiste: $a_n = (-1)^n$ salta fra $-1$ e $1$ senza avvicinarsi a niente.
+Una successione $a_n$ è una funzione definita sui numeri naturali, quindi il suo limite si cerca solo per $n \to +\infty$. La successione è:
+- **convergente** se il limite è un numero;
+- **divergente** se il limite è $+\infty$ o $-\infty$;
+- **irregolare** se il limite non esiste, come per $a_n = (-1)^n$.
 
-Anche le somme di infiniti termini sono limiti di successioni: si sommano i primi $n$ termini e si guarda dove va il risultato per $n \to +\infty$. È così che si risolve il paradosso di Achille e la tartaruga.
+Anche la somma di infiniti termini è un limite: quello della somma dei primi $n$ termini. Così si risolve il paradosso di Achille e la tartaruga.
 
 [[animazione:achille-tartaruga]]
 
->! Per una successione non ha senso il limite per $n \to 3$ o il limite destro: $n$ salta da un intero all'altro e può solo crescere verso $+\infty$.` }
+>! Per una successione non ha senso il limite per $n \to 3$: $n$ salta da un intero all'altro, e può solo crescere.` }
   ],
 
   grafici: {
@@ -378,7 +429,7 @@ Anche le somme di infiniti termini sono limiti di successioni: si sommano i prim
   ],
 
   formulario: [
-    { nome: 'Intorni', formula: R`(x_0-\delta,\ x_0+\delta), \qquad (M,+\infty), \qquad (-\infty,M)`, nota: R`Intorno di $x_0$, di $+\infty$ e di $-\infty$ rispettivamente, con $\delta>0$ e $M$ grande a piacere.` },
+    { nome: 'Intorni', formula: R`(x_0-\delta,\ x_0+\delta), \qquad (M,+\infty), \qquad (-\infty,-M)`, nota: R`Intorno di $x_0$, di $+\infty$ e di $-\infty$ rispettivamente, con $\delta>0$ e $M$ grande a piacere.` },
     { nome: 'Limite finito per x → x₀', formula: R`\forall \varepsilon>0\ \exists\,\delta>0:\ 0<|x-x_0|<\delta \Rightarrow |f(x)-L|<\varepsilon` },
     { nome: 'Limite infinito per x → x₀', formula: R`\forall M>0\ \exists\,\delta>0:\ 0<|x-x_0|<\delta \Rightarrow f(x)>M`, nota: R`Analoga per $-\infty$, con $f(x)<-M$.` },
     { nome: 'Limite per x → ∞', formula: R`\forall \varepsilon>0\ \exists\,N>0:\ |x|>N \Rightarrow |f(x)-L|<\varepsilon`, nota: R`Versione per limite finito; per limite infinito si combina con la definizione precedente.` },
@@ -422,22 +473,42 @@ Anche le somme di infiniti termini sono limiti di successioni: si sommano i prim
   ],
 
   esercizi: [
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Calcola $\lim\limits_{x \to 2} (x^2 + 1)$. In tutti gli esercizi, se il limite è infinito scrivi $+\infty$ o $-\infty$ (va bene anche +inf).`, suggerimenti: [R`È un polinomio: prova a sostituire.`], risposta: lim(5), soluzione: [R`È un polinomio, quindi sostituisco $x = 2$.`, R`$2^2 + 1 = 5$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Calcola $\lim\limits_{x \to +\infty} \dfrac{5}{x^2}$.`, suggerimenti: [R`Un numero fisso diviso per un numero enorme.`], risposta: lim(0), soluzione: [R`Il denominatore $x^2$ va a $+\infty$, il numeratore resta $5$.`, R`Un numero diviso per un infinito va a $0$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Calcola $\lim\limits_{x \to +\infty} (x^3 + 2)$.`, suggerimenti: [R`$x^3$ diventa enorme. Aggiungere $2$ cambia qualcosa?`], risposta: PIU_INF, soluzione: [R`Per $x \to +\infty$, $x^3$ va a $+\infty$.`, R`Aggiungere $2$ a una quantità enorme la lascia enorme: il limite è $+\infty$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Calcola $\lim\limits_{x \to 0} \dfrac{3\sin x}{x}$.`, suggerimenti: [R`Porta fuori il $3$ e usa $\dfrac{\sin x}{x} \to 1$.`], risposta: lim(3), soluzione: [R`Porto fuori il $3$: $\dfrac{3\sin x}{x} = 3 \cdot \dfrac{\sin x}{x}$.`, R`$\dfrac{\sin x}{x} \to 1$, quindi il limite è $3 \cdot 1 = 3$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Calcola $\lim\limits_{x \to -\infty} x^3$.`, suggerimenti: [R`Il cubo di un numero negativo ha segno meno.`], risposta: MENO_INF, soluzione: [R`Per $x$ negativo, $x^3$ è negativo: $(-10)^3 = -1000$.`, R`Più $x$ va verso $-\infty$, più $x^3$ scende: il limite è $-\infty$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Calcola $\lim\limits_{x \to +\infty} \dfrac{4x^2 + 1}{2x^2 - 3}$.`, suggerimenti: [R`Sopra e sotto il grado è lo stesso.`, R`Conta solo il rapporto dei coefficienti di $x^2$.`], risposta: lim(2), soluzione: [R`Sopra e sotto c'è grado $2$: i gradi sono uguali.`, R`Il limite è il rapporto dei coefficienti di $x^2$: $\dfrac42 = 2$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Calcola $\lim\limits_{x \to +\infty} \dfrac{3x + 1}{x^2 + 5}$.`, suggerimenti: [R`Confronta i gradi sopra e sotto.`], risposta: lim(0), soluzione: [R`Sopra il grado è $1$, sotto è $2$.`, R`Il grado più alto è sotto, quindi il limite è $0$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Calcola $\lim\limits_{x \to +\infty} \dfrac{x^2 - 1}{x + 3}$.`, suggerimenti: [R`Confronta i gradi sopra e sotto.`, R`Il grado più alto è sopra. Che segno ha il rapporto $\dfrac{x^2}{x}$?`], risposta: PIU_INF, soluzione: [R`Sopra il grado è $2$, sotto è $1$: il grado più alto è sopra, quindi il limite è infinito.`, R`Il rapporto dei termini più alti è $\dfrac{x^2}{x} = x$, che va a $+\infty$.`, R`Il limite è $+\infty$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Calcola $\lim\limits_{x \to +\infty} (x - x^3)$.`, suggerimenti: [R`È una forma $\infty - \infty$: raccogli il termine di grado più alto.`, R`Il polinomio va come il suo termine più alto, $-x^3$.`], risposta: MENO_INF, soluzione: [R`Sostituendo esce $\infty - \infty$.`, R`Raccolgo $x^3$: $x - x^3 = x^3\left(\dfrac{1}{x^2} - 1\right)$.`, R`$x^3 \to +\infty$ e la parentesi va a $-1$: il limite è $-\infty$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Calcola $\lim\limits_{x \to -\infty} \dfrac{6x^3 - x}{2x^3 + 4}$.`, suggerimenti: [R`Sopra e sotto il grado è lo stesso. Il segno di $x$ qui non cambia niente.`], risposta: lim(3), soluzione: [R`Sopra e sotto c'è grado $3$: i gradi sono uguali.`, R`Il limite è il rapporto dei coefficienti di $x^3$: $\dfrac62 = 3$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 2, testo: R`Calcola $\lim\limits_{x \to 3} \dfrac{x^2 - 9}{x - 3}$.`, suggerimenti: [R`Sostituendo esce $\frac00$: scomponi il numeratore.`, R`$x^2 - 9$ è una differenza di quadrati.`], risposta: lim(6), soluzione: [R`Sostituendo $x = 3$ esce $\frac00$.`, R`Scompongo: $x^2 - 9 = (x - 3)(x + 3)$, e semplifico $(x - 3)$.`, R`Resta $x + 3$, che per $x \to 3$ vale $6$.`] },
+    { id: 'b-12', livello: 'base', difficolta: 2, testo: R`Calcola $\lim\limits_{x \to 0} \dfrac{\sin(4x)}{x}$.`, suggerimenti: [R`Sotto ti serve $4x$: moltiplica e dividi per $4$.`], risposta: lim(4), soluzione: [R`Moltiplico e divido per $4$: $\dfrac{\sin(4x)}{x} = 4 \cdot \dfrac{\sin(4x)}{4x}$.`, R`Con $t = 4x$ si ha $\dfrac{\sin t}{t} \to 1$.`, R`Il limite è $4 \cdot 1 = 4$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Calcola $\lim\limits_{x \to 1} \dfrac{x^2 - x}{x - 1}$.`, suggerimenti: [R`Sostituendo esce $\frac00$. Raccogli $x$ al numeratore.`], risposta: lim(1), soluzione: [R`Sostituendo $x = 1$ esce $\frac00$.`, R`Raccolgo $x$: $x^2 - x = x(x - 1)$, e semplifico $(x - 1)$.`, R`Resta $x$, che per $x \to 1$ vale $1$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Calcola $\lim\limits_{x \to 0} \dfrac{\sin(2x)}{3x}$. Puoi scrivere una frazione, per esempio 5/7.`, suggerimenti: [R`Sotto ti serve $2x$, non $3x$.`, R`Scrivi $\dfrac{\sin(2x)}{3x} = \dfrac23 \cdot \dfrac{\sin(2x)}{2x}$.`], risposta: lim(2 / 3), soluzione: [R`Sotto faccio comparire $2x$: $\dfrac{\sin(2x)}{3x} = \dfrac{2}{3} \cdot \dfrac{\sin(2x)}{2x}$.`, R`$\dfrac{\sin(2x)}{2x} \to 1$.`, R`Il limite è $\dfrac23$.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Calcola $\lim\limits_{x \to 3^-} \dfrac{1}{x - 3}$.`, suggerimenti: [R`$3^-$ vuol dire che $x$ è un po' più piccolo di $3$.`, R`Prova con $x = 2{,}9$: che segno ha $x - 3$?`], risposta: MENO_INF, soluzione: [R`Per $x \to 3^-$, $x$ è poco meno di $3$: per esempio $x = 2{,}9$.`, R`Allora $x - 3$ è negativo e piccolissimo: $2{,}9 - 3 = -0{,}1$.`, R`$1$ diviso un negativo piccolissimo dà un negativo enorme: il limite è $-\infty$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Calcola $\lim\limits_{x \to -1} \dfrac{x^2 - 1}{x + 1}$.`, suggerimenti: [R`Sostituendo esce $\frac00$: scomponi il numeratore.`, R`$x^2 - 1 = (x - 1)(x + 1)$.`], risposta: lim(-2), soluzione: [R`Sostituendo $x = -1$ esce $\frac00$.`, R`Scompongo: $x^2 - 1 = (x - 1)(x + 1)$, e semplifico $(x + 1)$.`, R`Resta $x - 1$, che per $x \to -1$ vale $-2$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Calcola $\lim\limits_{x \to 2} \dfrac{x^2 - 5x + 6}{x - 2}$.`, suggerimenti: [R`$2$ annulla il numeratore, quindi $(x - 2)$ è un suo fattore.`, R`Cerca due numeri con somma $-5$ e prodotto $6$.`], risposta: lim(-1), soluzione: [R`Sostituendo $x = 2$ esce $\frac00$.`, R`Scompongo il trinomio: $x^2 - 5x + 6 = (x - 2)(x - 3)$.`, R`Semplifico $(x - 2)$: resta $x - 3$, che per $x \to 2$ vale $-1$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Calcola $\lim\limits_{x \to 0} \dfrac{x}{\sin(5x)}$. Puoi scrivere una frazione, per esempio 5/7.`, suggerimenti: [R`È il reciproco di $\dfrac{\sin(5x)}{x}$.`, R`Quanto vale $\lim\limits_{x \to 0} \dfrac{\sin(5x)}{x}$?`], risposta: lim(1 / 5), soluzione: [R`La funzione è il reciproco di $\dfrac{\sin(5x)}{x}$.`, R`$\dfrac{\sin(5x)}{x} = 5 \cdot \dfrac{\sin(5x)}{5x} \to 5$.`, R`Il reciproco va a $\dfrac15$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Calcola $\lim\limits_{x \to 2} \dfrac{x^2 - 4}{x^2 - 2x}$.`, suggerimenti: [R`Sostituendo esce $\frac00$: scomponi sopra e sotto.`, R`Sotto raccogli $x$.`], risposta: lim(2), soluzione: [R`Sostituendo $x = 2$ esce $\frac00$.`, R`Scompongo: sopra $(x - 2)(x + 2)$, sotto $x(x - 2)$. Semplifico $(x - 2)$.`, R`Resta $\dfrac{x + 2}{x}$, che per $x \to 2$ vale $\dfrac42 = 2$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Calcola $\lim\limits_{x \to 0} \dfrac{\sin(6x)}{\sin(2x)}$.`, suggerimenti: [R`Dividi sopra e sotto per $x$.`, R`$\dfrac{\sin(6x)}{x} \to 6$ e $\dfrac{\sin(2x)}{x} \to 2$.`], risposta: lim(3), soluzione: [R`Divido sopra e sotto per $x$: $\dfrac{\sin(6x)/x}{\sin(2x)/x}$.`, R`Sopra $\dfrac{\sin(6x)}{x} \to 6$, sotto $\dfrac{\sin(2x)}{x} \to 2$.`, R`Il limite è $\dfrac62 = 3$.`] },
     { id: 'es-01', difficolta: 1, testo: R`Calcola $\lim_{x\to-1}(x^3-2x+5)$.`, suggerimenti: [R`È una funzione polinomiale, quindi continua: puoi sostituire direttamente $x=-1$.`, R`Calcola $(-1)^3$, poi $-2\cdot(-1)$, poi somma anche il $5$.`], risposta: { tipo: 'numero', valore: 6, tolleranza: 0.001 }, soluzione: [R`La funzione è un polinomio, continuo su tutto $\mathbb{R}$: il limite coincide con il valore in $x=-1$.`, R`$(-1)^3-2\cdot(-1)+5=-1+2+5=6$.`] },
     { id: 'es-02', difficolta: 1, testo: R`Calcola $\lim_{x\to+\infty}\dfrac{3x^2-2}{5x^2+x}$.`, suggerimenti: [R`È una forma $\infty/\infty$: raccogli la potenza più alta di $x$ sopra e sotto.`, R`Dopo aver raccolto $x^2$, cosa succede ai termini con $\frac1x$ e $\frac1{x^2}$ quando $x\to+\infty$?`], risposta: { tipo: 'numero', valore: 0.6, tolleranza: 0.001 }, soluzione: [R`È una forma $\infty/\infty$: si raccoglie $x^2$ sia al numeratore sia al denominatore.`, R`$\dfrac{3x^2-2}{5x^2+x} = \dfrac{x^2\left(3-\frac2{x^2}\right)}{x^2\left(5+\frac1x\right)} = \dfrac{3-\frac2{x^2}}{5+\frac1x}$.`, R`Per $x\to+\infty$, $\frac2{x^2}\to0$ e $\frac1x\to0$: il limite è $\dfrac35=0{,}6$.`] },
     { id: 'es-03', difficolta: 2, testo: R`Calcola $\lim_{x\to2}\dfrac{x^2-4}{x-2}$.`, suggerimenti: [R`È una forma $0/0$: scomponi il numeratore come differenza di quadrati.`, R`$x^2-4=(x-2)(x+2)$: semplifica il fattore comune.`], risposta: { tipo: 'numero', valore: 4, tolleranza: 0.001 }, soluzione: [R`Sostituendo $x=2$ si ottiene $\frac00$: serve scomporre.`, R`$x^2-4=(x-2)(x+2)$, quindi $\dfrac{x^2-4}{x-2}=x+2$ per ogni $x\ne2$.`, R`Il limite di $x+2$ per $x\to2$ è $4$.`] },
     { id: 'es-04', difficolta: 2, testo: R`Calcola $\lim_{x\to0}\dfrac{\sin(3x)}{x}$.`, suggerimenti: [R`Riconduciti al limite notevole moltiplicando e dividendo per $3$.`, R`Scrivi $3\cdot\dfrac{\sin(3x)}{3x}$ e ricorda che $\frac{\sin t}{t}\to1$ quando $t\to0$.`], risposta: { tipo: 'numero', valore: 3, tolleranza: 0.001 }, soluzione: [R`Per usare il limite notevole serve lo stesso argomento a denominatore: si moltiplica e divide per $3$.`, R`$\dfrac{\sin(3x)}{x}=3\cdot\dfrac{\sin(3x)}{3x}$.`, R`Ponendo $t=3x$ ($t\to0$ quando $x\to0$), $\dfrac{\sin(3x)}{3x}=\dfrac{\sin t}{t}\to1$, quindi il limite vale $3\cdot1=3$.`] },
     { id: 'es-05', difficolta: 2, testo: R`Calcola $\lim_{x\to+\infty}\left(\sqrt{x^2+x}-x\right)$.`, suggerimenti: [R`È una forma $\infty-\infty$ con una radice: moltiplica e dividi per il coniugato $\sqrt{x^2+x}+x$.`, R`Al numeratore, dopo aver moltiplicato, ti resta solo $x$.`, R`Dividi numeratore e denominatore per $x$ e fai tendere $x\to+\infty$.`], risposta: { tipo: 'numero', valore: 0.5, tolleranza: 0.001 }, soluzione: [R`Si moltiplica e divide per il coniugato $\sqrt{x^2+x}+x$.`, R`$\left(\sqrt{x^2+x}-x\right)\cdot\dfrac{\sqrt{x^2+x}+x}{\sqrt{x^2+x}+x} = \dfrac{x^2+x-x^2}{\sqrt{x^2+x}+x} = \dfrac{x}{\sqrt{x^2+x}+x}$.`, R`Dividendo per $x$ (positivo, perché $x\to+\infty$): $\dfrac{1}{\sqrt{1+\frac1x}+1} \to \dfrac1{1+1}=\dfrac12$.`] },
-    { id: 'es-06', difficolta: 1, testo: R`Calcola $\lim_{x\to1^+}\dfrac{1}{x-1}$.`, suggerimenti: [R`Quando $x\to1^+$, il denominatore $x-1$ è positivo e tende a $0$.`, R`Un numero positivo diviso per qualcosa di positivo che tende a $0$ tende a $+\infty$.`], risposta: { tipo: 'testo', accettate: ['+inf', '+∞', 'infinito', '+infinito', 'più infinito'] }, soluzione: [R`Per $x\to1^+$, $x>1$, quindi $x-1\to0^+$ (positivo e piccolissimo).`, R`$\dfrac1{x-1}$ è il rapporto tra $1$ e un numero positivo che tende a $0$: il quoziente tende a $+\infty$.`] },
+    { id: 'es-06', difficolta: 1, testo: R`Calcola $\lim_{x\to1^+}\dfrac{1}{x-1}$.`, suggerimenti: [R`Quando $x\to1^+$, il denominatore $x-1$ è positivo e tende a $0$.`, R`Un numero positivo diviso per qualcosa di positivo che tende a $0$ tende a $+\infty$.`], risposta: PIU_INF, soluzione: [R`Per $x\to1^+$, $x>1$, quindi $x-1\to0^+$ (positivo e piccolissimo).`, R`$\dfrac1{x-1}$ è il rapporto tra $1$ e un numero positivo che tende a $0$: il quoziente tende a $+\infty$.`] },
     { id: 'es-07', difficolta: 1, testo: R`Calcola $\lim_{x\to0}\dfrac{e^{2x}-1}{x}$.`, suggerimenti: [R`Riconduciti al limite notevole $\frac{e^t-1}{t}\to1$ con $t=2x$.`, R`Scrivi $2\cdot\dfrac{e^{2x}-1}{2x}$.`], risposta: { tipo: 'numero', valore: 2, tolleranza: 0.001 }, soluzione: [R`Si riconduce al limite notevole $\frac{e^t-1}{t}\to1$ ponendo $t=2x$.`, R`$\dfrac{e^{2x}-1}{x} = 2\cdot\dfrac{e^{2x}-1}{2x} \to 2\cdot1=2$.`] },
     { id: 'es-08', difficolta: 2, testo: R`Calcola $\lim_{x\to+\infty}\dfrac{\ln x}{x}$.`, suggerimenti: [R`Confronta la velocità di crescita di $\ln x$ e di $x$.`, R`Nella gerarchia degli infiniti, il logaritmo è sempre il più debole.`], risposta: { tipo: 'numero', valore: 0, tolleranza: 0.001 }, soluzione: [R`Nella gerarchia degli infiniti, per $x\to+\infty$ ogni logaritmo è più debole di ogni potenza positiva di $x$, in particolare di $x=x^1$.`, R`Quindi $\dfrac{\ln x}{x}\to0$.`] },
     { id: 'es-09', difficolta: 3, testo: R`Calcola $\lim_{x\to+\infty}\left(1+\dfrac2x\right)^x$ (nella casella scrivi il valore decimale, con almeno due cifre dopo la virgola).`, suggerimenti: [R`Confronta con il limite notevole $\left(1+\frac1t\right)^t\to e$: qui l'esponente della base è $\frac2x$ invece di $\frac1x$.`, R`Poni $t=\dfrac{x}{2}$ e riscrivi $\left(1+\frac1t\right)^{2t}=\left[\left(1+\frac1t\right)^t\right]^2$.`], risposta: { tipo: 'numero', valore: 7.389056099, tolleranza: 0.01 }, soluzione: [R`Si confronta con il limite notevole $\left(1+\frac1t\right)^t\to e$, ponendo $t=\dfrac{x}{2}$ (così $\frac2x=\frac1t$).`, R`$\left(1+\dfrac2x\right)^x = \left[\left(1+\dfrac1t\right)^t\right]^2$.`, R`Per $x\to+\infty$ anche $t\to+\infty$, quindi $\left(1+\frac1t\right)^t\to e$ e il limite vale $e^2\approx7{,}389$.`] },
-    { id: 'es-10', difficolta: 2, testo: R`Stabilisci se esiste $\lim_{x\to0}\dfrac{|x|}{x}$; se non esiste, scrivilo esplicitamente.`, suggerimenti: [R`Calcola separatamente il limite destro (dove $|x|=x$) e il limite sinistro (dove $|x|=-x$).`, R`Se i due limiti sono diversi, il limite bilatero non esiste.`], risposta: { tipo: 'testo', accettate: ['non esiste', 'nessun limite', 'non esiste il limite'] }, soluzione: [R`Per $x>0$, $|x|=x$, quindi $\dfrac{|x|}{x}=1$: il limite destro in $0$ vale $1$.`, R`Per $x<0$, $|x|=-x$, quindi $\dfrac{|x|}{x}=-1$: il limite sinistro in $0$ vale $-1$.`, R`I due limiti sono diversi, quindi il limite per $x\to0$ **non esiste**.`] },
+    { id: 'es-10', difficolta: 2, testo: R`Stabilisci se esiste $\lim_{x\to0}\dfrac{|x|}{x}$; se non esiste, scrivilo esplicitamente.`, suggerimenti: [R`Calcola separatamente il limite destro (dove $|x|=x$) e il limite sinistro (dove $|x|=-x$).`, R`Se i due limiti sono diversi, il limite bilatero non esiste.`], risposta: { tipo: 'testo', accettate: ['non esiste', 'nessun limite', 'non esiste il limite', 'il limite non esiste', '∄'] }, soluzione: [R`Per $x>0$, $|x|=x$, quindi $\dfrac{|x|}{x}=1$: il limite destro in $0$ vale $1$.`, R`Per $x<0$, $|x|=-x$, quindi $\dfrac{|x|}{x}=-1$: il limite sinistro in $0$ vale $-1$.`, R`I due limiti sono diversi, quindi il limite per $x\to0$ **non esiste**.`] },
     { id: 'es-11', difficolta: 3, testo: R`Calcola $\lim_{n\to+\infty}\dfrac{n^2+1}{2n^2-3}$ (limite di una successione).`, suggerimenti: [R`Vale la stessa gerarchia dei limiti di funzione: raccogli $n^2$ sopra e sotto.`, R`Dopo aver raccolto $n^2$, i termini $\frac1{n^2}$ e $\frac3{n^2}$ tendono a $0$.`], risposta: { tipo: 'numero', valore: 0.5, tolleranza: 0.001 }, soluzione: [R`Come per i limiti di funzione, si raccoglie $n^2$ sopra e sotto: $\dfrac{n^2+1}{2n^2-3} = \dfrac{n^2\left(1+\frac1{n^2}\right)}{n^2\left(2-\frac3{n^2}\right)}$.`, R`Per $n\to+\infty$, $\frac1{n^2}\to0$ e $\frac3{n^2}\to0$: la successione converge a $\dfrac12$.`] }
   ],
 
   quiz: [
     { id: 'q-01', domanda: R`Che cos'è un intorno di $x_0$?`, opzioni: [R`Un intervallo aperto $(x_0-\delta, x_0+\delta)$, con $\delta>0$`, R`Un insieme finito di punti vicino a $x_0$`, R`Un intervallo chiuso che contiene $x_0$ come estremo`, R`L'insieme dei numeri maggiori di $x_0$`], corretta: 0, spiegazione: R`Per definizione l'intorno di $x_0$ è un intervallo aperto centrato in $x_0$: non è chiuso, non è composto da un numero finito di punti, e non è una semiretta.` },
-    { id: 'q-02', domanda: R`Un intorno di $+\infty$ è...`, opzioni: [R`L'insieme dei numeri interi maggiori di $0$`, R`Un intervallo $(M, +\infty)$, con $M$ grande a piacere`, R`Un intervallo $(-\infty, M)$`, R`L'intervallo $(0, +\infty)$ fissato`], corretta: 1, spiegazione: R`L'intorno di $+\infty$ è una semiretta che parte da un $M$ arbitrariamente grande; l'intervallo $(-\infty, M)$ è l'intorno di $-\infty$, e un intervallo fissato non permette di scegliere $M$ a piacere.` },
+    { id: 'q-02', domanda: R`Un intorno di $+\infty$ è...`, opzioni: [R`L'insieme dei numeri interi maggiori di $0$`, R`Un intervallo $(M, +\infty)$, con $M$ grande a piacere`, R`Un intervallo $(-\infty, -M)$`, R`L'intervallo $(0, +\infty)$ fissato`], corretta: 1, spiegazione: R`L'intorno di $+\infty$ è una semiretta che parte da un $M$ arbitrariamente grande; l'intervallo $(-\infty, -M)$ è l'intorno di $-\infty$, e un intervallo fissato non permette di scegliere $M$ a piacere.` },
     { id: 'q-03', domanda: R`$x_0$ è punto di accumulazione di un insieme $A$ se...`, opzioni: [R`$x_0$ appartiene ad $A$`, R`Ogni intorno di $x_0$ contiene almeno un punto di $A$ diverso da $x_0$`, R`$A$ contiene infiniti punti`, R`$x_0$ è il minimo di $A$`], corretta: 1, spiegazione: R`È proprio questa la definizione; $x_0$ non deve necessariamente appartenere ad $A$, come mostra l'esempio $A=\{1/n\}$ con punto di accumulazione $0 \notin A$.` },
     { id: 'q-04', domanda: R`Il limite $\lim_{x\to x_0} f(x)$...`, opzioni: [R`Coincide sempre con $f(x_0)$`, R`Esiste solo se $f$ è definita in $x_0$`, R`Non si può calcolare se $f(x_0)$ non esiste`, R`Dipende dal comportamento di $f$ vicino a $x_0$, non dal valore in $x_0$`], corretta: 3, spiegazione: R`Il limite descrive cosa succede intorno a $x_0$: può esistere anche se $f(x_0)$ non è definito, e può differire da $f(x_0)$ quando questo esiste.` },
     { id: 'q-05', domanda: R`Nella definizione $\forall\varepsilon>0\ \exists\delta>0:0<|x-x_0|<\delta\Rightarrow|f(x)-L|<\varepsilon$, che cosa rappresenta $\varepsilon$?`, opzioni: [R`La tolleranza richiesta sui valori di $f(x)$ rispetto a $L$`, R`La distanza tra $x_0$ e $L$`, R`Il dominio della funzione`, R`Il numero di soluzioni dell'equazione`], corretta: 0, spiegazione: R`$\varepsilon$ è la precisione richiesta sull'asse $y$; $\delta$ è la risposta corrispondente sull'asse $x$, cioè quanto restringere l'intorno di $x_0$.` },

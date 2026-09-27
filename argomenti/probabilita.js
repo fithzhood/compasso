@@ -1,110 +1,113 @@
 (function () {
 const R = String.raw;
+/* risposte dell'allenamento: una probabilità come frazione o decimale, oppure in percentuale */
+const pr = v => ({ tipo: 'numero', valore: v, tolleranza: 0.005, segnaposto: 'es. 3/4 o 0,75', simboli: ['/', '−', '(', ')'] });
+const pc = (n, ...fr) => ({ tipo: 'testo', accettate: [n + '%', String(n), String(n / 100), (n / 100).toFixed(2), ...fr], segnaposto: 'es. 40%', simboli: ['%'] });
 COMPASSO.registra({
   id: 'probabilita',
   titolo: 'Probabilità',
 
-  introduzione: R`Lanci un dado: che cosa esce non lo sai. Però sai che il $6$ esce una volta su sei, e che un numero pari esce una volta su due. La probabilità è il modo di mettere un numero su frasi come queste: un numero fra $0$, per ciò che non può succedere, e $1$, per ciò che succede di sicuro.
+  introduzione: R`Lanci un dado e non sai che cosa esce. Però sai che il $6$ esce una volta su sei. E sai che un numero pari esce una volta su due.
 
-Nasce nel Seicento dai giochi d'azzardo, ma la usa chiunque debba decidere senza sapere come andrà: un'assicurazione quando fissa il prezzo di una polizza, un medico quando legge un esame che a volte sbaglia, il meteo quando annuncia «70% di pioggia».
+La **probabilità** mette un numero su frasi come queste. È un numero fra $0$ e $1$: vale $0$ per ciò che non può succedere, $1$ per ciò che succede di sicuro.
 
-Ti serve il calcolo combinatorio, perché molte probabilità si calcolano contando i casi, e un po' di pazienza: qui l'intuito sbaglia spesso, e conviene fidarsi del conto.`,
+La usa chi deve decidere senza sapere come andrà. Per esempio il meteo, quando annuncia «70% di pioggia», o un medico che legge un esame.
+
+Ti serve il calcolo combinatorio, perché molte volte si tratta di contare i casi. Qui l'intuito sbaglia facilmente, quindi conviene fare il conto.`,
 
   inBreve: [
-    R`Se i casi possibili sono tutti ugualmente probabili, la probabilità di un evento è casi favorevoli diviso casi possibili.`,
+    R`Se i casi sono tutti ugualmente probabili, la probabilità è casi favorevoli diviso casi possibili.`,
     R`Quando leggi «almeno uno», passa al contrario: $P(\text{almeno uno}) = 1 - P(\text{nessuno})$.`,
-    R`«Oppure»: si sommano le probabilità e si toglie quella dei casi comuni. «E»: si moltiplicano, ma la seconda probabilità va calcolata sapendo com'è andata la prima.`,
-    R`$P(A \mid B)$ e $P(B \mid A)$ sono numeri diversi: il teorema di Bayes serve a passare dall'uno all'altro.`,
-    R`Incompatibili non vuol dire indipendenti: se due eventi possibili si escludono, sapere che è accaduto uno ti dice che l'altro non è accaduto, quindi sono dipendenti.`,
-    R`In $n$ prove indipendenti, la probabilità di esattamente $k$ successi è $\binom{n}{k}p^k(1-p)^{n-k}$: il $\binom{n}{k}$ conta in quali prove cadono i successi.`
+    R`«Oppure»: sommi le probabilità e togli quella dei casi comuni. «E»: moltiplichi, ma la seconda probabilità la calcoli sapendo com'è andata la prima.`,
+    R`$P(A \mid B)$ e $P(B \mid A)$ sono numeri diversi. Il teorema di Bayes serve a passare dall'uno all'altro.`,
+    R`Due eventi incompatibili, se sono tutti e due possibili, sono dipendenti: se accade uno, sai che l'altro non è accaduto.`,
+    R`In $n$ prove indipendenti, la probabilità di esattamente $k$ successi è $\binom{n}{k}p^k(1-p)^{n-k}$.`
   ],
 
   sezioni: [
-    { id: 'spazio-campionario', titolo: 'Eventi e spazio campionario', testo: R`Lanciare un dado, estrarre una carta, pescare un numero alla tombola: sono prove di cui conosci tutti i risultati possibili, ma non sai quale uscirà. Si chiamano **esperimenti aleatori** («aleatorio» viene da *alea*, il dado in latino).
+    { id: 'spazio-campionario', titolo: 'Eventi e spazio campionario', testo: R`Lanci un dado. Sai quali numeri possono uscire, ma non sai quale uscirà. Una prova così si chiama **esperimento aleatorio**.
 
->* Lo **spazio campionario** $U$ (detto anche universo; molti libri lo indicano con $\Omega$) è l'insieme di **tutti** i risultati possibili dell'esperimento. Un **evento** è un sottoinsieme di $U$: l'insieme dei risultati che rendono vera una certa frase.
+>* Lo **spazio campionario** $U$ è l'insieme di **tutti** i risultati possibili. Un **evento** è un sottoinsieme di $U$.
 
-Per il lancio di un dado, $U = \{1, 2, 3, 4, 5, 6\}$. L'evento «esce un numero pari» è il sottoinsieme $A = \{2, 4, 6\}$. L'evento «esce il $5$» è $\{5\}$: contiene un solo risultato e si chiama **evento elementare**. Un evento con più risultati si dice **composto**.
+Per un dado, $U = \{1, 2, 3, 4, 5, 6\}$ (alcuni libri scrivono $\Omega$). L'evento «esce un numero pari» è $A = \{2, 4, 6\}$. Un evento con un solo risultato, come $\{5\}$, si dice **elementare**.
 
-Tre eventi hanno un nome proprio:
+Alcuni eventi hanno un nome proprio:
 
-- l'**evento certo** è $U$ stesso: si verifica sempre («esce un numero minore di $7$»);
-- l'**evento impossibile** è l'insieme vuoto $\emptyset$: non si verifica mai («esce $8$»);
-- l'**evento contrario** (o complementare) di $A$, indicato con $\overline{A}$, si verifica esattamente quando $A$ non si verifica. Per $A = \{2, 4, 6\}$ si ha $\overline{A} = \{1, 3, 5\}$.
+- l'**evento certo** è $U$: succede sempre («esce un numero minore di $7$»);
+- l'**evento impossibile** è $\emptyset$: non succede mai («esce $8$»);
+- l'**evento contrario** di $A$ si scrive $\overline{A}$ e succede quando $A$ non succede: qui $\overline{A} = \{1, 3, 5\}$.
 
-Poiché gli eventi sono insiemi, si combinano con le operazioni insiemistiche:
+Gli eventi si combinano come gli insiemi. Prendi $A = \{2, 4, 6\}$ e $B = \{4, 5, 6\}$, cioè «esce più di $3$».
 
-- $A \cup B$ («$A$ **oppure** $B$») si verifica se almeno uno dei due si verifica;
-- $A \cap B$ («$A$ **e** $B$») si verifica se si verificano entrambi.
+- $A \cup B$ si legge «$A$ **oppure** $B$»: qui è $\{2, 4, 5, 6\}$.
+- $A \cap B$ si legge «$A$ **e** $B$»: qui è $\{4, 6\}$.
 
-Con $A = \{2, 4, 6\}$ e $B = \{4, 5, 6\}$ («esce più di $3$») si ottiene $A \cup B = \{2, 4, 5, 6\}$ e $A \cap B = \{4, 6\}$.
-
-Due eventi si dicono **incompatibili** (o disgiunti) se non possono verificarsi insieme, cioè se $A \cap B = \emptyset$: «esce pari» e «esce $3$» sono incompatibili, «esce pari» e «esce più di $3$» no.
+Due eventi sono **incompatibili** se non possono succedere insieme, cioè se $A \cap B = \emptyset$. «Esce pari» ed «esce $3$» sono incompatibili.
 
 ?? Lanci un dado. «Esce un numero pari» ed «esce un multiplo di $3$» sono eventi incompatibili?
 [ ] sì, perché i pari e i multipli di $3$ sono numeri diversi
 [x] no, perché con il $6$ si verificano tutti e due
-=> I pari sono $\{2, 4, 6\}$, i multipli di $3$ sono $\{3, 6\}$: l'intersezione è $\{6\}$, non vuota. Per dire che due eventi sono incompatibili bisogna controllare che **nessun** risultato stia in entrambi.
+=> I pari sono $\{2, 4, 6\}$, i multipli di $3$ sono $\{3, 6\}$. L'intersezione è $\{6\}$, quindi non è vuota. Due eventi sono incompatibili solo se **nessun** risultato sta in entrambi.
 
->! In matematica la «o» è sempre **inclusiva**: $A \cup B$ si verifica anche quando accadono tutti e due. Se serve l'alternativa esclusiva bisogna dirlo, e si scrive con l'unione dei due eventi incompatibili $A \cap \overline{B}$ e $\overline{A} \cap B$.` },
+>! In matematica «oppure» comprende anche il caso in cui succedono tutti e due. «Pari oppure più di $3$» è vero anche quando esce $6$.` },
 
-    { id: 'definizione-classica', titolo: 'La definizione classica', testo: R`Con un dado regolare, quanto è probabile che esca un numero pari? Le facce sono 6, tutte con la stessa possibilità di uscire, e 3 di esse sono pari: la probabilità è $\dfrac{3}{6} = \dfrac{1}{2}$. È la definizione più antica, quella che Laplace fissò nel 1812.
+    { id: 'definizione-classica', titolo: 'La definizione classica', testo: R`Lanci un dado regolare. Quanto è probabile che esca un numero pari? Le facce sono $6$ e hanno tutte la stessa possibilità di uscire. Di queste, $3$ sono pari. Quindi la probabilità è $\dfrac{3}{6} = \dfrac{1}{2}$.
 
->* **Definizione classica.** Se i casi possibili sono in numero **finito** e **ugualmente possibili**, la probabilità di un evento $E$ è $$P(E) = \frac{\text{casi favorevoli a } E}{\text{casi possibili}}$$
+>* **Definizione classica.** Se i casi possibili sono in numero **finito** e ugualmente possibili, $$P(E) = \frac{\text{casi favorevoli}}{\text{casi possibili}}$$
 
-«Casi favorevoli» non vuol dire «casi buoni»: sono i risultati in cui $E$ si verifica.
+I **casi favorevoli** sono i risultati in cui l'evento $E$ succede.
 
-Con due dadi i casi possibili sono le $6 \cdot 6 = 36$ coppie ordinate (risultato del primo dado, risultato del secondo). La somma $7$ esce con $(1,6), (2,5), (3,4), (4,3), (5,2), (6,1)$: sei casi, quindi $P = \dfrac{6}{36} = \dfrac{1}{6}$. Nota che $(1,6)$ e $(6,1)$ sono due casi diversi: i dadi sono due oggetti distinti.
+Con due dadi i casi possibili sono $6 \cdot 6 = 36$ coppie. La somma $7$ esce con $(1,6), (2,5), (3,4), (4,3), (5,2), (6,1)$. Sono sei casi, quindi $P = \dfrac{6}{36} = \dfrac{1}{6}$. $(1,6)$ e $(6,1)$ sono due casi diversi, perché i dadi sono due.
 
-Dalla definizione seguono tre fatti: $0 \le P(E) \le 1$, perché i casi favorevoli sono fra nessuno e tutti; l'evento impossibile ha probabilità $0$; l'evento certo ha probabilità $1$.
-
-Spesso contare i casi è un problema di **calcolo combinatorio**: estraendo $2$ palline da un'urna che ne contiene $10$, i casi possibili sono $\binom{10}{2} = 45$.
+I casi favorevoli vanno da nessuno a tutti, quindi $0 \le P(E) \le 1$. L'evento impossibile ha probabilità $0$, quello certo $1$.
 
 ?? Lanci due monete. Qual è la probabilità di ottenere una testa e una croce?
 [x] $\dfrac{1}{2}$
 [ ] $\dfrac{1}{3}$
 [ ] $\dfrac{1}{4}$
-=> I casi ugualmente possibili sono quattro: $TT$, $TC$, $CT$, $CC$. Una testa e una croce escono in due di questi, $TC$ e $CT$, quindi $\dfrac{2}{4} = \dfrac{1}{2}$. Il $\dfrac{1}{3}$ viene dal contare tre casi, «due teste», «una testa», «nessuna testa», che però **non** hanno la stessa probabilità.
+=> I casi ugualmente possibili sono $TT$, $TC$, $CT$, $CC$. Una testa e una croce escono in due, quindi $\dfrac{2}{4} = \dfrac{1}{2}$. Il $\dfrac{1}{3}$ conta tre casi («due teste», «una testa», «nessuna») che **non** hanno la stessa probabilità.
 
->! La condizione «ugualmente possibili» è quella che si dimentica. Il $\dfrac{1}{3}$ della domanda qui sopra è lo stesso errore che fece d'Alembert, matematico famoso, nel Settecento. Prima di dividere, chiediti se i casi che hai contato hanno davvero tutti la stessa probabilità.
+>! Prima di dividere, controlla che i casi contati abbiano tutti la stessa probabilità.
 
-La definizione classica ha due limiti. Non si usa quando i casi sono infiniti (il punto in cui una freccia colpisce un bersaglio), e non si usa quando i casi non sono equiprobabili: per un dado truccato, o per la probabilità che domani piova, la formula non dice nulla. Servono altre definizioni.` },
+Per questo la definizione classica non funziona con un dado truccato. E non funziona per la pioggia di domani, perché non ci sono casi uguali da contare.` },
 
     { id: 'altre-definizioni', titolo: 'Frequentista, soggettiva, assiomatica', testo: R`### La definizione frequentista
 
-Se l'esperimento si può ripetere tante volte nelle stesse condizioni, si prova e si conta. La **frequenza relativa** di un evento $E$ è la frazione di prove in cui $E$ si è verificato: $$f = \frac{\text{numero delle prove in cui } E \text{ si verifica}}{\text{numero delle prove}}$$
+Hai un dado truccato e vuoi sapere quanto spesso esce il $6$. Allora lo lanci tante volte e conti.
 
->* **Legge empirica del caso.** Su un gran numero di prove ripetute, la frequenza relativa di un evento si avvicina alla sua probabilità, tanto più quanto più le prove sono numerose. Per questo si può prendere $P(E) \approx f$.
+La **frequenza relativa** di un evento è la frazione di prove in cui l'evento è successo: $$f = \frac{\text{prove in cui succede}}{\text{prove fatte}}$$
 
-Buffon lanciò una moneta $4040$ volte e ottenne $2048$ teste ($f \approx 0{,}507$); Pearson arrivò a $24\,000$ lanci con $12\,012$ teste ($f \approx 0{,}5005$). È l'unica strada per un dado truccato, o per la probabilità che un neonato sia maschio: dai registri anagrafici viene circa $0{,}51$.
+>* **Legge empirica del caso.** Con molte prove, la frequenza relativa si avvicina alla probabilità. Più prove fai, più si avvicina.
 
-Nel laboratorio «Il banco e le tre porte» puoi lanciare monete e dadi migliaia di volte e guardare la frequenza che, dopo i primi lanci ballerini, si posa sulla probabilità.
+Buffon lanciò una moneta $4040$ volte e ottenne $2048$ teste. La frequenza è $f \approx 0{,}507$, vicina a $\dfrac{1}{2}$.
+
+Nel laboratorio «Il banco e le tre porte» puoi lanciare monete e dadi migliaia di volte. Guarda la frequenza: all'inizio balla, poi si ferma sulla probabilità.
 
 ?? Una moneta regolare ha dato testa 5 volte di fila. Qual è la probabilità che al sesto lancio esca croce?
 [x] $\dfrac{1}{2}$
 [ ] più di $\dfrac{1}{2}$, perché le croci devono recuperare
 [ ] $\left(\dfrac{1}{2}\right)^6 = \dfrac{1}{64}$
-=> La moneta non ricorda i lanci precedenti: al sesto lancio testa e croce hanno ancora probabilità $\dfrac{1}{2}$ ciascuna. $\dfrac{1}{64}$ è la probabilità, calcolata **prima** di cominciare, di una sequenza precisa di sei lanci (per esempio cinque teste e poi croce); ma cinque teste sono già uscite, e resta da decidere un solo lancio.
+=> La moneta non ricorda i lanci di prima, quindi croce ha ancora probabilità $\dfrac{1}{2}$. $\dfrac{1}{64}$ è la probabilità di sei lanci precisi, calcolata **prima** di cominciare.
 
->! La legge empirica **non** dice che dopo tante teste arriveranno più croci «per compensare». Nessuno compensa niente: è la *proporzione* di teste che si avvicina a $\dfrac{1}{2}$, perché su migliaia di lanci qualche testa in più conta sempre meno. Credere il contrario si chiama *fallacia del giocatore*.
+>! Dopo tante teste non arrivano più croci «per compensare». Credere il contrario si chiama *fallacia del giocatore*.
 
 ### La definizione soggettiva
 
-Per un evento che non si può ripetere («la mia squadra vince domenica») si usa il **grado di fiducia** di una persona: il prezzo che è disposta a pagare per una scommessa che le rende $1$ euro se l'evento si verifica e $0$ se non si verifica. È l'impostazione dell'italiano Bruno de Finetti. La probabilità così è soggettiva ma non arbitraria: le valutazioni devono essere **coerenti**, cioè non devono permettere a chi scommette contro di vincere in ogni caso.
+Certi eventi non si ripetono, come «la mia squadra vince domenica». Allora la probabilità è il **grado di fiducia** di una persona. È il prezzo che pagheresti per vincere $1$ euro se l'evento succede.
 
 ### Gli assiomi
 
-Nel 1933 Kolmogorov scelse un'altra strada: invece di dire che cosa *sia* la probabilità, fissò le tre regole che deve rispettare.
+Kolmogorov fissò tre regole che ogni probabilità deve rispettare. Da queste si ricavano tutte le altre.
 
->* **Assiomi di Kolmogorov:** 1) $P(E) \ge 0$; 2) $P(U) = 1$; 3) se $A$ e $B$ sono incompatibili, $P(A \cup B) = P(A) + P(B)$.
-
-Tutte le altre regole (evento contrario, unione, condizionata) si dimostrano da queste tre. Le definizioni classica, frequentista e soggettiva diventano modi diversi di *assegnare* i numeri, e le regole di calcolo sono le stesse per tutte.` },
+>* **Assiomi di Kolmogorov:** 1) $P(E) \ge 0$; 2) $P(U) = 1$; 3) se $A$ e $B$ sono incompatibili, $P(A \cup B) = P(A) + P(B)$.` },
 
     { id: 'contrario-unione', titolo: 'Evento contrario e unione', testo: R`### L'evento contrario
 
-Lanci tre monete: qual è la probabilità di ottenere almeno una testa? Potresti contare i casi con una, due o tre teste. Ma è molto più corto guardare il contrario: «almeno una testa» fallisce **solo** se escono tre croci.
+Lanci tre monete. Qual è la probabilità di avere almeno una testa? Conviene guardare il contrario: «almeno una testa» è falso **solo** con tre croci.
 
->* **Evento contrario:** $$P(\overline{E}) = 1 - P(E)$$ perché $E$ e $\overline{E}$ si escludono e insieme coprono tutti i casi, quindi $P(E) + P(\overline{E}) = 1$.
+>* **Evento contrario:** $$P(\overline{E}) = 1 - P(E)$$
+
+Un evento e il suo contrario coprono tutti i casi senza sovrapporsi. Quindi $P(E) + P(\overline{E}) = 1$.
 
 ~ P(\text{almeno una } T) :: $T$ sta per testa, $C$ per croce
 ~ = 1 - P(\evid{\text{nessuna } T}) :: il contrario di «almeno una testa» è «nessuna testa»
@@ -116,66 +119,68 @@ Lanci tre monete: qual è la probabilità di ottenere almeno una testa? Potresti
 [ ] esce esattamente un $6$
 [ ] escono tre $6$
 [ ] esce al più un $6$
-=> «Almeno un $6$» è falso solo quando i $6$ sono zero, quindi il contrario è «nessun $6$». «Tre $6$» è un caso *dentro* «almeno un $6$», non il suo contrario; «al più un $6$» comprende anche il caso con un $6$, che sta in tutti e due.
+=> «Almeno un $6$» è falso solo quando i $6$ sono zero, quindi il contrario è «nessun $6$». Le altre risposte hanno casi in comune con «almeno un $6$».
 
 ### Unione di eventi incompatibili
 
-Con un dado, qual è la probabilità che esca $1$ oppure $6$? I due eventi non possono accadere insieme, quindi i casi favorevoli si sommano senza sovrapporsi: $\dfrac{1}{6} + \dfrac{1}{6} = \dfrac{1}{3}$.
+Con un dado, qual è la probabilità che esca $1$ oppure $6$? I due eventi non possono succedere insieme. Quindi sommi: $\dfrac{1}{6} + \dfrac{1}{6} = \dfrac{1}{3}$.
 
->* Se $A \cap B = \emptyset$: $$P(A \cup B) = P(A) + P(B)$$
+>* Se $A$ e $B$ sono incompatibili: $$P(A \cup B) = P(A) + P(B)$$
 
 ### Unione di eventi compatibili
 
-Se invece i due eventi possono accadere insieme, sommando le probabilità i casi comuni si contano **due volte**. Bisogna toglierli una volta.
+Se i due eventi possono succedere insieme, la somma conta **due volte** i casi comuni. Allora li togli una volta.
 
 >* **Probabilità dell'unione:** $$\begin{aligned} P(A \cup B) = {} & P(A) + P(B) \\ & - P(A \cap B) \end{aligned}$$
 
-Da un mazzo di $40$ carte napoletane si estrae una carta. Qual è la probabilità che sia un asso oppure una carta di bastoni? Gli assi sono $4$, le carte di bastoni $10$, e l'asso di bastoni sta in tutti e due i gruppi.
+Estrai una carta da un mazzo di $40$ carte napoletane. Qual è la probabilità che sia un asso oppure una carta di bastoni? Gli assi sono $4$ e le carte di bastoni $10$. L'asso di bastoni sta in tutti e due i gruppi.
 
 ~ P(A) + P(B) - P(A \cap B) :: $A$ = «asso», $B$ = «bastoni»: possono accadere insieme, quindi uso la formula dell'unione
 ~ = \dfrac{4}{40} + \dfrac{10}{40} - \evid{\dfrac{1}{40}} :: l'asso di bastoni è stato contato due volte: lo tolgo una volta
 ~ = \evidb{\dfrac{13}{40}} = 0{,}325 :: controllo: $10$ bastoni più i $3$ assi degli altri semi fanno proprio $13$ carte
 
-La formula per gli eventi incompatibili è il caso in cui $P(A \cap B) = 0$: basta ricordare questa.
-
->! Se sommando probabilità ottieni più di $1$, quasi sempre hai dimenticato di togliere l'intersezione. Una probabilità maggiore di $1$ è sempre un errore di calcolo.`
+>! Una probabilità maggiore di $1$ è sempre un errore. Se sommando ottieni più di $1$, controlla di aver tolto i casi comuni.`
     }
     ,
 
-    { id: 'condizionata', titolo: 'Probabilità condizionata', testo: R`Un amico lancia un dado senza fartelo vedere e ti dice solo: «è uscito un numero pari». Qual è ora la probabilità che sia uscito il $2$? Non è più $\dfrac{1}{6}$: i casi rimasti sono $2$, $4$ e $6$, e il $2$ è uno di tre, quindi $\dfrac{1}{3}$. L'informazione ha ristretto i casi possibili.
+    { id: 'condizionata', titolo: 'Probabilità condizionata', testo: R`Un amico lancia un dado senza fartelo vedere. Ti dice solo: «è uscito un numero pari». Qual è la probabilità che sia uscito il $2$?
 
->* La **probabilità condizionata** di $A$ dato $B$ (con $P(B) \ne 0$) è $$P(A \mid B) = \frac{P(A \cap B)}{P(B)}$$ e si legge «probabilità di $A$ sapendo che si è verificato $B$».
+Adesso i casi possibili sono solo $2$, $4$ e $6$. Il $2$ è uno di tre, quindi la probabilità è $\dfrac{1}{3}$. L'informazione ha ristretto i casi.
 
-La formula dice la stessa cosa del dado: $B$ diventa il nuovo spazio campionario, e fra i suoi casi si contano quelli che stanno anche in $A$. Con $A = \{2\}$ e $B = \{2, 4, 6\}$ si ha $P(A \mid B) = \dfrac{1/6}{1/2} = \dfrac{1}{3}$.
+>* La **probabilità condizionata** di $A$ sapendo $B$ è $$P(A \mid B) = \frac{P(A \cap B)}{P(B)}$$ con $P(B) \ne 0$.
+
+$B$ diventa il nuovo spazio campionario. Con $A = \{2\}$ e $B = \{2, 4, 6\}$ ritrovi il risultato del dado: $P(A \mid B) = \dfrac{1/6}{1/2} = \dfrac{1}{3}$.
 
 ?? Lanci un dado. Sapendo che è uscito il $6$, qual è la probabilità che sia uscito un numero pari?
 [x] $1$
 [ ] $\dfrac{1}{3}$
 [ ] $\dfrac{1}{2}$
-=> Se è uscito il $6$, il numero è pari di sicuro: $P(\text{pari} \mid 6) = 1$. La risposta $\dfrac{1}{3}$ è $P(6 \mid \text{pari})$, la domanda rovesciata; $\dfrac{1}{2}$ è $P(\text{pari})$ senza nessuna informazione. Tre numeri diversi per tre domande diverse.
+=> Se è uscito il $6$, il numero è pari di sicuro: $P(\text{pari} \mid 6) = 1$. $\dfrac{1}{3}$ è $P(6 \mid \text{pari})$, cioè la domanda rovesciata. $\dfrac{1}{2}$ è $P(\text{pari})$ senza informazioni.
 
-Moltiplicando in croce la definizione si ottiene la formula dei problemi a più passi.
+Dalla definizione, moltiplicando per $P(B)$, ricavi la formula per i problemi a più passi.
 
->* **Regola del prodotto:** $$P(A \cap B) = P(B) \cdot P(A \mid B)$$ La probabilità che accadano tutti e due è la probabilità del primo per la probabilità del secondo **sapendo** che il primo è accaduto.
+>* **Regola del prodotto:** $$P(A \cap B) = P(B) \cdot P(A \mid B)$$
 
-Un'urna contiene $5$ palline bianche e $3$ nere, e se ne estraggono due **senza rimetterle dentro**. Qual è la probabilità che siano bianche tutte e due? Chiamo $B_1$ «la prima è bianca» e $B_2$ «la seconda è bianca».
+A parole: probabilità del primo evento, per probabilità del secondo **sapendo** che il primo è successo.
+
+Un'urna ha $5$ palline bianche e $3$ nere. Ne estrai due **senza rimetterle dentro**. Qual è la probabilità che siano tutte e due bianche? Chiamo $B_1$ «la prima è bianca» e $B_2$ «la seconda è bianca».
 
 ~ P(B_1 \cap B_2) = P(B_1) \cdot P(B_2 \mid B_1) :: regola del prodotto: la seconda estrazione dipende da com'è andata la prima
 ~ = \dfrac{5}{8} \cdot P(B_2 \mid B_1) :: all'inizio le bianche sono $5$ su $8$
 ~ = \dfrac{5}{8} \cdot \evid{\dfrac{4}{7}} :: tolta una bianca, restano $7$ palline e le bianche sono $4$
 ~ = \dfrac{20}{56} = \evidb{\dfrac{5}{14}} \approx 0{,}357 :: semplifico dividendo per $4$
 
->! $P(A \mid B)$ e $P(B \mid A)$ sono due numeri diversi, e scambiarli è l'errore più grave di questo capitolo. La probabilità che un malato risulti positivo a un test può essere altissima, e la probabilità che un positivo sia malato bassissima: cambia il gruppo di persone su cui si conta.` },
+>! $P(A \mid B)$ e $P(B \mid A)$ sono numeri diversi: non scambiarli. Un malato risulta quasi sempre positivo al test. Eppure, fra i positivi, i sani possono essere la maggioranza.` },
 
-    { id: 'indipendenza', titolo: 'Eventi indipendenti', testo: R`A volte un'informazione non cambia niente. Sapere che il primo lancio di una moneta ha dato testa non dice nulla sul secondo: la probabilità di testa resta $\dfrac{1}{2}$.
+    { id: 'indipendenza', titolo: 'Eventi indipendenti', testo: R`Lanci una moneta due volte e il primo lancio dà testa. Questo non dice nulla sul secondo lancio: testa ha ancora probabilità $\dfrac{1}{2}$.
 
->* $A$ e $B$ sono **indipendenti** se sapere che $B$ è accaduto non cambia la probabilità di $A$: $P(A \mid B) = P(A)$. Per la regola del prodotto questo equivale a $$P(A \cap B) = P(A) \cdot P(B)$$ Se non è così, sono **dipendenti**.
+>* $A$ e $B$ sono **indipendenti** se sapere che $B$ è successo non cambia la probabilità di $A$. In formula: $$P(A \cap B) = P(A) \cdot P(B)$$
 
-Per controllare se due eventi sono indipendenti si usa la seconda formula: si calcolano i due lati e si confrontano.
+Se non è così, $A$ e $B$ sono **dipendenti**.
 
-L'esempio tipico è l'estrazione **con rimessa** (o reimmissione): si estrae una pallina, la si rimette nell'urna e si estrae di nuovo. Dall'urna con $5$ bianche e $3$ nere, la seconda estrazione trova l'urna com'era, e $P(\text{due bianche}) = \dfrac{5}{8} \cdot \dfrac{5}{8} = \dfrac{25}{64}$. Senza rimessa veniva $\dfrac{5}{8} \cdot \dfrac{4}{7} = \dfrac{5}{14}$: lì le due estrazioni sono dipendenti.
+Un esempio è l'estrazione **con rimessa**: estrai una pallina e la rimetti nell'urna. L'urna ha $5$ bianche e $3$ nere. La seconda estrazione trova l'urna com'era, quindi $P(\text{due bianche}) = \dfrac{5}{8} \cdot \dfrac{5}{8} = \dfrac{25}{64}$. Senza rimessa veniva $\dfrac{5}{14}$, perché le estrazioni erano dipendenti.
 
-Le prove indipendenti ripetute si combinano con l'evento contrario. Lanciando un dado quattro volte, qual è la probabilità di ottenere almeno un $6$?
+Lanci un dado quattro volte: qual è la probabilità di avere almeno un $6$?
 
 ~ P(\text{almeno un } 6) = 1 - P(\text{nessun } 6) :: «almeno uno»: passo al contrario
 ~ = 1 - \evid{\left(\dfrac{5}{6}\right)^4} :: ogni lancio non dà $6$ con probabilità $\dfrac{5}{6}$; i lanci sono indipendenti, quindi moltiplico quattro volte
@@ -184,7 +189,7 @@ Le prove indipendenti ripetute si combinano con l'evento contrario. Lanciando un
 
 >* **Almeno un successo in $n$ prove indipendenti**, ciascuna con probabilità $p$: $$P = 1 - (1-p)^n$$
 
-Nel grafico trascina il punto per cambiare il numero di prove, e guarda quando la curva supera la linea del 50%. Con un evento da «1 caso su 6» bastano 4 prove. Poi porta il cursore a 36, cioè il doppio $6$ lanciando due dadi, e cerca quante prove servono: è la domanda che il cavaliere de Méré fece a Pascal.
+Nel grafico trascina il punto e guarda quando la curva supera il 50%. Con «1 caso su 6» bastano 4 prove. Poi porta il cursore a 36, il doppio $6$ con due dadi: quante prove servono?
 
 [[grafico:almenoUno]]
 
@@ -192,31 +197,36 @@ Nel grafico trascina il punto per cambiare il numero di prove, e guarda quando l
 [x] no: sono incompatibili, quindi dipendenti
 [ ] sì: non hanno risultati in comune
 [ ] sì: $P(A \cap B) = 0$
-=> Se sai che è uscito $2$, allora l'$1$ è diventato impossibile: $P(A \mid B) = 0$, mentre $P(A) = \dfrac{1}{6}$. L'informazione ha cambiato tutto, quindi sono dipendenti. Con la formula: $P(A \cap B) = 0$, ma $P(A) \cdot P(B) = \dfrac{1}{36}$, e i due numeri sono diversi.
+=> Se sai che è uscito $2$, l'$1$ diventa impossibile. L'informazione cambia tutto, quindi sono dipendenti. Con la formula: $P(A \cap B) = 0$, ma $P(A) \cdot P(B) = \dfrac{1}{36}$.
 
->! **Incompatibili** e **indipendenti** non sono sinonimi, anzi. Due eventi incompatibili, entrambi possibili, sono sempre **dipendenti**: se accade uno, l'altro è escluso.` },
+>! Due eventi **incompatibili**, entrambi possibili, sono sempre **dipendenti**: se succede uno, l'altro è escluso.` },
 
-    { id: 'totale-bayes', titolo: 'Probabilità totale e teorema di Bayes', testo: R`Una malattia colpisce l'$1\%$ della popolazione. Un test la riconosce bene: è positivo sul $99\%$ dei malati. Però sbaglia sul $5\%$ dei sani, che risultano positivi anche se stanno bene. Fai il test e sei positivo: quanto è probabile che tu sia malato? Per rispondere servono due teoremi.
+    { id: 'totale-bayes', titolo: 'Probabilità totale e teorema di Bayes', testo: R`Una malattia colpisce l'$1\%$ delle persone. Un test è positivo sul $99\%$ dei malati. Però è positivo anche sul $5\%$ dei sani. Fai il test e sei positivo: quanto è probabile che tu sia malato?
 
 ### Probabilità totale
 
-Un positivo può venire da due strade: dai malati o dai sani. Le strade si disegnano con un **diagramma ad albero**: al primo livello le cause (malato $M$ o sano $S$), al secondo l'esito del test ($T^+$ positivo, $T^-$ negativo). Lungo un ramo le probabilità si moltiplicano (regola del prodotto); i rami che finiscono nello stesso esito si sommano.
+Un positivo può essere malato ($M$) o sano ($S$). Lo mostra un **diagramma ad albero**: prima le cause, $M$ o $S$, poi il test, $T^+$ o $T^-$.
 
-Nel grafico l'albero è disegnato su $10\,000$ persone, così al posto delle probabilità ci sono persone da contare. Muovi i cursori e guarda quanti dei positivi sono davvero malati.
+1. Lungo un ramo, moltiplica le probabilità.
+2. Somma i rami che finiscono nello stesso esito.
+
+Nel grafico l'albero conta $10\,000$ persone. Muovi i cursori e guarda quanti positivi sono davvero malati.
 
 [[grafico:albero]]
 
-In generale le cause $H_1, H_2, \dots, H_n$ devono escludersi a vicenda e coprire tutti i casi (si dice che formano una **partizione**).
+>* **Teorema della probabilità totale:** $$P(E) = \sum_{i=1}^{n} P(H_i) \cdot P(E \mid H_i)$$
 
->* **Teorema della probabilità totale:** $$P(E) = \sum_{i=1}^{n} P(H_i) \cdot P(E \mid H_i)$$ cioè la somma, su tutti i rami che portano a $E$, dei prodotti lungo il ramo.
+Le cause $H_1, \dots, H_n$ devono escludersi fra loro e coprire tutti i casi: si dice che formano una **partizione**.
 
 ### Il teorema di Bayes
 
-Il teorema di Bayes percorre l'albero al contrario: vedi l'effetto (il test positivo) e ti chiedi da quale causa venga.
+Bayes percorre l'albero al contrario. Vedi l'effetto, il test positivo, e cerchi la causa.
 
->* **Teorema di Bayes:** $$P(H_i \mid E) = \frac{P(H_i) \cdot P(E \mid H_i)}{P(E)}$$ Sopra c'è il ramo che ti interessa, sotto tutti i rami che portano a $E$.
+>* **Teorema di Bayes:** $$P(H_i \mid E) = \frac{P(H_i) \cdot P(E \mid H_i)}{P(E)}$$
 
-$P(H_i)$ si chiama probabilità *a priori* (prima di sapere com'è andato il test), $P(H_i \mid E)$ probabilità *a posteriori* (dopo averlo saputo). Per il test il conto è questo.
+Sopra c'è il ramo che ti interessa. Sotto ci sono tutti i rami che portano a $E$. $P(H_i)$ si chiama probabilità **a priori**: è quella che conosci prima del test.
+
+Per il test il conto è questo.
 
 ~ \begin{aligned} P(T^+) &= P(M)\,P(T^+ \mid M) \\ &+ P(S)\,P(T^+ \mid S) \end{aligned} :: probabilità totale: i due rami che finiscono in $T^+$
 ~ = 0{,}01 \cdot 0{,}99 + 0{,}99 \cdot 0{,}05 :: malati per sensibilità del test, sani per errore del test
@@ -224,17 +234,17 @@ $P(H_i)$ si chiama probabilità *a priori* (prima di sapere com'è andato il tes
 ~ P(M \mid T^+) = \dfrac{0{,}0099}{\evid{0{,}0594}} :: Bayes: il ramo «malato e positivo» diviso tutti i positivi
 ~ = \evidb{\dfrac{1}{6}} \approx 16{,}7\% :: su sei positivi, uno solo è malato
 
->! Il risultato sembra assurdo, ma è giusto: su $10\,000$ persone i malati positivi sono $99$, i sani positivi $495$. I sani sono così tanti che il loro $5\%$ di errori supera tutti i malati. Per questo un test di screening positivo si conferma sempre con un secondo esame.
+>! Il risultato sembra assurdo, ma è giusto. Su $10\,000$ persone, i malati positivi sono $99$ e i sani positivi $495$. I sani sono tanti, quindi il loro $5\%$ di errori pesa di più.
 
 ?? Se la malattia colpisse il $10\%$ della popolazione, con lo stesso test, quanto varrebbe $P(M \mid T^+)$?
 [x] circa $69\%$
 [ ] ancora circa $17\%$
 [ ] $99\%$
-=> Su $10\,000$ persone i malati positivi sarebbero $990$ e i sani positivi il $5\%$ di $9000$, cioè $450$: $\dfrac{990}{1440} \approx 0{,}69$. La probabilità a priori conta moltissimo, ed è per questo che il risultato cambia. Il $99\%$ è $P(T^+ \mid M)$: la domanda rovesciata. Puoi controllare con i cursori del grafico.` },
+=> Su $10\,000$ persone i malati positivi sarebbero $990$. I sani positivi sarebbero il $5\%$ di $9000$, cioè $450$. Quindi $\dfrac{990}{1440} \approx 0{,}69$. Il $99\%$ è $P(T^+ \mid M)$, la domanda rovesciata.` },
 
-    { id: 'binomiale', titolo: 'Prove ripetute e distribuzione binomiale', testo: R`Lanci un dado $5$ volte. Qual è la probabilità di fare $6$ esattamente due volte? Ogni lancio è una prova con due soli esiti che ci interessano: $6$ (successo) o non $6$ (insuccesso).
+    { id: 'binomiale', titolo: 'Prove ripetute e distribuzione binomiale', testo: R`Lanci un dado $5$ volte. Qual è la probabilità di fare $6$ esattamente due volte? Ogni lancio ha due esiti che ci interessano: $6$ (successo) o non $6$ (insuccesso).
 
->* Uno **schema di Bernoulli** è una serie di $n$ prove in cui: ogni prova ha due soli esiti, successo e insuccesso; la probabilità di successo $p$ è la stessa in ogni prova; le prove sono indipendenti.
+>* Uno **schema di Bernoulli** è una serie di $n$ prove con tre regole. Ogni prova ha due soli esiti. La probabilità di successo $p$ è sempre la stessa. Le prove sono indipendenti.
 
 Il conto si fa in due tempi: prima la probabilità di **una** sequenza precisa, poi quante sono le sequenze.
 
@@ -249,53 +259,59 @@ Il conto si fa in due tempi: prima la probabilità di **una** sequenza precisa, 
 [x] $\dfrac{3}{8}$
 [ ] $\dfrac{1}{8}$
 [ ] $\dfrac{1}{3}$
-=> Una sequenza precisa, come $TCC$, ha probabilità $\left(\dfrac{1}{2}\right)^3 = \dfrac{1}{8}$; ma la testa può stare in uno qualsiasi dei $3$ lanci ($TCC$, $CTC$, $CCT$), quindi $\binom{3}{1} \cdot \dfrac{1}{8} = \dfrac{3}{8}$. Chi risponde $\dfrac{1}{8}$ ha dimenticato il coefficiente binomiale.
+=> Una sequenza precisa, come $TCC$, ha probabilità $\left(\dfrac{1}{2}\right)^3 = \dfrac{1}{8}$. Ma la testa può stare in uno qualsiasi dei $3$ lanci: $TCC$, $CTC$, $CCT$. Quindi $\binom{3}{1} \cdot \dfrac{1}{8} = \dfrac{3}{8}$.
 
-Se calcoli $P(k)$ per tutti i $k$ da $0$ a $n$ ottieni la **distribuzione binomiale**, e i valori sommano a $1$. Nel grafico, muovi $p$ e guarda dove si sposta la barra più alta: sta sempre vicino a $n \cdot p$, qui $5p$. Con $p = 0{,}5$ le barre sono simmetriche: sono la riga $5$ del triangolo di Tartaglia ($1, 5, 10, 10, 5, 1$) divisa per $2^5 = 32$.
+Calcola $P(k)$ per tutti i $k$ da $0$ a $n$: ottieni la **distribuzione binomiale**. I suoi valori sommano a $1$.
+
+Nel grafico muovi $p$ e guarda la barra più alta. Sta sempre vicino a $n \cdot p$, qui $5p$.
 
 [[grafico:binomiale]]
 
-La macchina di Galton fa lo stesso esperimento con le palline: ogni pallina a ogni chiodo va a destra o a sinistra con probabilità $\dfrac{1}{2}$, e la casella in cui cade conta quante volte è andata a destra.
+La macchina di Galton fa lo stesso esperimento con le palline. A ogni chiodo la pallina va a destra o a sinistra, con probabilità $\dfrac{1}{2}$.
 
 [[animazione:galton]]
 
->! $\binom{n}{k}$ non va dimenticato. Senza, $\left(\frac{1}{6}\right)^2\left(\frac{5}{6}\right)^3$ è la probabilità di **una** sequenza precisa, non quella di due successi in un ordine qualunque.` },
+>! Non dimenticare $\binom{n}{k}$. Senza, calcoli la probabilità di **una** sola sequenza.` },
 
     { id: 'valore-atteso-paradossi', titolo: 'Valore atteso, gioco equo e paradossi', testo: R`### Valore atteso
 
-Alla roulette francese ci sono $37$ numeri. Punti $1$ euro su un numero: se esce ne ricevi $36$, altrimenti niente. Quanto ricevi in media, se giochi moltissime volte? È la domanda a cui risponde il valore atteso.
+Alla roulette francese ci sono $37$ numeri. Punti $1$ euro su un numero. Se esce ricevi $36$ euro, altrimenti niente. Quanto ricevi in media, se giochi moltissime volte?
 
->* Se una grandezza $X$ assume i valori $x_1, \dots, x_n$ con probabilità $p_1, \dots, p_n$, il suo **valore atteso** (o speranza matematica) è $$E(X) = \sum_{i=1}^{n} x_i\, p_i$$ cioè la media dei valori, ognuno pesato con la sua probabilità.
+>* Una grandezza $X$ vale $x_1, \dots, x_n$ con probabilità $p_1, \dots, p_n$. Il suo **valore atteso** è $$E(X) = \sum_{i=1}^{n} x_i\, p_i$$
+
+È la media dei valori, con ogni valore pesato dalla sua probabilità.
 
 ~ E = 36 \cdot \dfrac{1}{37} + 0 \cdot \dfrac{36}{37} :: ricevi $36$ euro in $1$ caso su $37$, niente negli altri $36$
 ~ = \dfrac{36}{37} \approx \evid{0{,}973} :: in media ricevi un po' meno di un euro a giocata
 ~ 0{,}973 - 1 = \evidb{-0{,}027} :: tolgo l'euro della puntata: in media perdi quasi $3$ centesimi a giocata
 
->* Un gioco è **equo** quando il guadagno atteso è zero, cioè quando la posta che paghi è uguale al valore atteso di quello che ricevi.
+>* Un gioco è **equo** quando la posta che paghi è uguale al valore atteso di quello che ricevi.
 
-La roulette non è equa: il banco non ha bisogno di barare, gli basta che il valore atteso sia a suo favore e che si giochi tanto.
+La roulette non è equa. Il banco non ha bisogno di barare: gli basta che si giochi tanto.
 
 ?? Paghi $2$ euro per lanciare un dado: se esce $6$ ricevi $10$ euro, altrimenti niente. Il gioco è equo?
 [x] no: in media perdi circa $33$ centesimi a partita
 [ ] sì, perché $10$ euro sono più della posta
 [ ] no: in media guadagni circa $33$ centesimi a partita
-=> Il valore atteso di quello che ricevi è $10 \cdot \dfrac{1}{6} \approx 1{,}67$ euro, meno dei $2$ che paghi: in media perdi $2 - 1{,}67 \approx 0{,}33$ euro. Confrontare la vincita con la posta non basta: bisogna pesare la vincita con la sua probabilità. Il gioco sarebbe equo con una posta di $1{,}67$ euro.
+=> Il valore atteso di quello che ricevi è $10 \cdot \dfrac{1}{6} \approx 1{,}67$ euro. Paghi $2$ euro, quindi in media perdi $2 - 1{,}67 \approx 0{,}33$ euro. Non basta confrontare vincita e posta: la vincita va pesata con la sua probabilità.
 
 ### Monty Hall
 
-Tre porte chiuse: dietro una c'è un'auto, dietro le altre due una capra. Scegli una porta. Il conduttore, che sa dove sta l'auto, apre una delle altre due e ti mostra una capra, poi ti chiede se vuoi cambiare. Conviene?
+Dietro una di tre porte c'è un'auto, dietro le altre due una capra. Scegli una porta. Il conduttore, che sa dove sta l'auto, apre un'altra porta con una capra. Ti conviene cambiare?
 
-Sì. La porta che hai scelto all'inizio ha probabilità $\dfrac{1}{3}$ di nascondere l'auto, e la mossa del conduttore non la cambia: una capra da mostrarti fra le altre due porte c'è sempre. Le altre due porte, insieme, valgono $\dfrac{2}{3}$; il conduttore ne ha aperta una vuota, e quel $\dfrac{2}{3}$ resta tutto sull'altra. Cambiando vinci due volte su tre. Se non ti convince, gioca un centinaio di volte nel laboratorio «Il banco e le tre porte».
+Sì. La tua porta vince con probabilità $\dfrac{1}{3}$, e il conduttore non la cambia. Le altre due porte insieme valgono $\dfrac{2}{3}$. Una ora è aperta e vuota, quindi il $\dfrac{2}{3}$ passa tutto sull'altra. Puoi provarlo nel laboratorio «Il banco e le tre porte».
 
 ### Il compleanno
 
-In un gruppo di $23$ persone, la probabilità che almeno due compiano gli anni lo stesso giorno supera il $50\%$. Si calcola con il contrario, «tutti i compleanni diversi»: il secondo deve evitare il giorno del primo, il terzo i due giorni già presi, e così via: $\dfrac{365}{365}\cdot\dfrac{364}{365}\cdots\dfrac{343}{365} \approx 0{,}493$. Il contrario vale $1 - 0{,}493 = 0{,}507$.
+Prendi $23$ persone. La probabilità che almeno due compiano gli anni lo stesso giorno supera il $50\%$. Si calcola con il contrario, «compleanni tutti diversi». Il secondo evita il giorno del primo, il terzo evita due giorni, e così via:
+$$\dfrac{365}{365}\cdot\dfrac{364}{365}\cdots\dfrac{343}{365} \approx 0{,}493$$
+Quindi almeno due compleanni uguali: $1 - 0{,}493 = 0{,}507$.
 
-Muovi il cursore per cambiare il numero di persone e guarda dove la curva supera il 50%.
+Muovi il cursore per cambiare il numero di persone. Guarda dove la curva supera il 50%.
 
 [[grafico:compleanno]]
 
->* In tutti e due i paradossi l'intuito sbaglia per lo stesso motivo: guarda una porta sola o una coppia sola di persone, invece di contare tutti i casi. Fra $23$ persone le coppie sono $\binom{23}{2} = 253$.` }
+>* L'intuito guarda una coppia sola di persone. Ma fra $23$ persone le coppie sono $\binom{23}{2} = 253$.` }
   ],
 
   grafici: {
@@ -492,6 +508,46 @@ Muovi il cursore per cambiare il numero di persone e guarda dove la curva supera
   ],
 
   esercizi: [
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Lanci un dado. Qual è la probabilità che esca il $4$?`, suggerimenti: [R`Casi possibili: le $6$ facce. Casi favorevoli: quanti?`], risposta: pr(1 / 6), soluzione: [R`Casi possibili: $6$. Casi favorevoli: $1$, il $4$.`, R`$P = \dfrac{1}{6} \approx 0{,}17$.`] },
+
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Un'urna ha $3$ palline rosse e $7$ blu. Ne estrai una. Qual è la probabilità che sia rossa?`, suggerimenti: [R`Conta prima tutte le palline.`], risposta: pr(0.3), soluzione: [R`Casi possibili: $3 + 7 = 10$ palline.`, R`Casi favorevoli: $3$ rosse.`, R`$P = \dfrac{3}{10} = 0{,}3$.`] },
+
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Da un mazzo di $40$ carte napoletane estrai una carta. Qual è la probabilità che sia un asso?`, suggerimenti: [R`Gli assi sono uno per seme, e i semi sono $4$.`], risposta: pr(0.1), soluzione: [R`Casi possibili: $40$. Casi favorevoli: $4$ assi.`, R`$P = \dfrac{4}{40} = \dfrac{1}{10} = 0{,}1$.`] },
+
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Lanci un dado. Qual è la probabilità che esca un numero maggiore di $4$?`, suggerimenti: [R`Quali numeri del dado sono maggiori di $4$?`], risposta: pr(1 / 3), soluzione: [R`I numeri maggiori di $4$ sono $5$ e $6$: $2$ casi favorevoli.`, R`$P = \dfrac{2}{6} = \dfrac{1}{3} \approx 0{,}33$.`] },
+
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Un'urna ha $2$ palline rosse, $5$ verdi e $3$ gialle. Qual è la probabilità di estrarre una verde?`, suggerimenti: [R`Le palline in tutto sono $2 + 5 + 3$.`], risposta: pr(0.5), soluzione: [R`Casi possibili: $2 + 5 + 3 = 10$.`, R`Casi favorevoli: $5$ verdi.`, R`$P = \dfrac{5}{10} = \dfrac{1}{2} = 0{,}5$.`] },
+
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Un'urna ha $1$ pallina rossa e $3$ verdi. Qual è la probabilità di estrarre la rossa? Scrivila in percentuale.`, suggerimenti: [R`Calcola la frazione, poi moltiplica per $100$.`], risposta: pc(25, '1/4', '25/100'), soluzione: [R`Casi possibili: $1 + 3 = 4$. Casi favorevoli: $1$.`, R`$P = \dfrac{1}{4} = 0{,}25$.`, R`In percentuale: $0{,}25 \cdot 100 = 25\%$.`] },
+
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Lanci un dado. Qual è la probabilità che **non** esca il $6$?`, suggerimenti: [R`Usa l'evento contrario: $P(\overline{E}) = 1 - P(E)$.`], risposta: pr(5 / 6), soluzione: [R`$P(6) = \dfrac{1}{6}$.`, R`$P(\text{non } 6) = 1 - \dfrac{1}{6} = \dfrac{5}{6} \approx 0{,}83$.`] },
+
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`La probabilità di vincere a un gioco è il $15\%$. Qual è la probabilità di non vincere? Scrivila in percentuale.`, suggerimenti: [R`Vincere e non vincere sono eventi contrari: insieme fanno il $100\%$.`], risposta: pc(85, '17/20'), soluzione: [R`«Non vincere» è il contrario di «vincere».`, R`$P = 100\% - 15\% = 85\%$.`] },
+
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Un'urna ha $5$ palline bianche, $3$ nere e $2$ rosse. Qual è la probabilità che la pallina estratta **non** sia nera?`, suggerimenti: [R`Calcola prima la probabilità che sia nera.`], risposta: pr(0.7), soluzione: [R`Le palline sono $5 + 3 + 2 = 10$.`, R`$P(\text{nera}) = \dfrac{3}{10}$.`, R`$P(\text{non nera}) = 1 - \dfrac{3}{10} = \dfrac{7}{10} = 0{,}7$.`] },
+
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Da un mazzo di $40$ carte napoletane estrai una carta. Qual è la probabilità che sia un re oppure un asso?`, suggerimenti: [R`Una carta non può essere re e asso insieme: gli eventi sono incompatibili, quindi sommi.`], risposta: pr(0.2), soluzione: [R`$P(\text{re}) = \dfrac{4}{40}$ e $P(\text{asso}) = \dfrac{4}{40}$.`, R`Sono incompatibili, quindi sommi: $\dfrac{4}{40} + \dfrac{4}{40} = \dfrac{8}{40}$.`, R`$\dfrac{8}{40} = \dfrac{1}{5} = 0{,}2$.`] },
+
+    { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Lanci un dado. Qual è la probabilità che esca un numero pari oppure il $5$?`, suggerimenti: [R`Il $5$ non è pari: gli eventi sono incompatibili.`], risposta: pr(2 / 3), soluzione: [R`$P(\text{pari}) = \dfrac{3}{6}$ e $P(5) = \dfrac{1}{6}$.`, R`Sono incompatibili, quindi sommi: $\dfrac{3}{6} + \dfrac{1}{6} = \dfrac{4}{6}$.`, R`$\dfrac{4}{6} = \dfrac{2}{3} \approx 0{,}67$.`] },
+
+    { id: 'b-12', livello: 'base', difficolta: 1, testo: R`Lanci due monete. Qual è la probabilità di ottenere due teste?`, suggerimenti: [R`I due lanci sono indipendenti: moltiplica le probabilità.`], risposta: pr(0.25), soluzione: [R`Ogni moneta dà testa con probabilità $\dfrac{1}{2}$.`, R`I lanci sono indipendenti: $\dfrac{1}{2} \cdot \dfrac{1}{2} = \dfrac{1}{4} = 0{,}25$.`] },
+
+    { id: 'b-13', livello: 'base', difficolta: 1, testo: R`Lanci un dado e una moneta. Qual è la probabilità di ottenere $6$ e testa?`, suggerimenti: [R`Dado e moneta non si influenzano: moltiplica.`], risposta: pr(1 / 12), soluzione: [R`$P(6) = \dfrac{1}{6}$ e $P(\text{testa}) = \dfrac{1}{2}$.`, R`Sono indipendenti: $\dfrac{1}{6} \cdot \dfrac{1}{2} = \dfrac{1}{12} \approx 0{,}08$.`] },
+
+    { id: 'b-14', livello: 'base', difficolta: 1, testo: R`Lanci due dadi. Qual è la probabilità che escano due $6$?`, suggerimenti: [R`Ogni dado dà $6$ con probabilità $\dfrac{1}{6}$, e i dadi sono indipendenti.`], risposta: pr(1 / 36), soluzione: [R`$P(6) = \dfrac{1}{6}$ per ciascun dado.`, R`Sono indipendenti: $\dfrac{1}{6} \cdot \dfrac{1}{6} = \dfrac{1}{36} \approx 0{,}03$.`] },
+
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Un'urna ha $2$ palline rosse e $3$ blu. Estrai una pallina, la **rimetti dentro** ed estrai di nuovo. Qual è la probabilità di due rosse?`, suggerimenti: [R`Con la rimessa l'urna torna com'era: le estrazioni sono indipendenti.`], risposta: pr(0.16), soluzione: [R`Le palline sono $5$, quindi $P(\text{rossa}) = \dfrac{2}{5}$ a ogni estrazione.`, R`Le estrazioni sono indipendenti: $\dfrac{2}{5} \cdot \dfrac{2}{5} = \dfrac{4}{25}$.`, R`$\dfrac{4}{25} = 0{,}16$.`] },
+
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Lanci due dadi. Qual è la probabilità che la somma sia $4$?`, suggerimenti: [R`Le coppie possibili sono $6 \cdot 6 = 36$.`, R`Elenca le coppie con somma $4$, contando $(1,3)$ e $(3,1)$ come due casi diversi.`], risposta: pr(1 / 12), soluzione: [R`Casi possibili: $6 \cdot 6 = 36$ coppie.`, R`Somma $4$: $(1,3)$, $(2,2)$, $(3,1)$. Sono $3$ casi.`, R`$P = \dfrac{3}{36} = \dfrac{1}{12} \approx 0{,}08$.`] },
+
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Lanci un dado. Ti dicono che è uscito un numero dispari. Qual è la probabilità che sia il $3$?`, suggerimenti: [R`L'informazione restringe i casi: restano solo i dispari.`], risposta: pr(1 / 3), soluzione: [R`I casi possibili ora sono $1$, $3$, $5$.`, R`Il $3$ è uno di questi tre.`, R`$P(3 \mid \text{dispari}) = \dfrac{1}{3} \approx 0{,}33$.`] },
+
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Estrai una carta da un mazzo di $40$ carte napoletane. Sai che è di coppe. Qual è la probabilità che sia un asso?`, suggerimenti: [R`I casi possibili ora sono solo le carte di coppe.`], risposta: pr(0.1), soluzione: [R`Le carte di coppe sono $10$: sono i nuovi casi possibili.`, R`Fra queste c'è un solo asso.`, R`$P(\text{asso} \mid \text{coppe}) = \dfrac{1}{10} = 0{,}1$.`] },
+
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Un'urna ha $3$ palline rosse e $2$ blu. Ne estrai due **senza rimetterle dentro**. Qual è la probabilità che siano tutte e due rosse?`, suggerimenti: [R`Prima estrazione: $3$ rosse su $5$.`, R`Dopo una rossa restano $4$ palline, e le rosse sono $2$.`], risposta: pr(0.3), soluzione: [R`$P(\text{prima rossa}) = \dfrac{3}{5}$.`, R`Tolta una rossa: $P(\text{seconda rossa} \mid \text{prima rossa}) = \dfrac{2}{4}$.`, R`Regola del prodotto: $\dfrac{3}{5} \cdot \dfrac{2}{4} = \dfrac{6}{20} = \dfrac{3}{10} = 0{,}3$.`] },
+
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Lanci un dado due volte. Qual è la probabilità di ottenere almeno un $6$?`, suggerimenti: [R`«Almeno uno»: passa al contrario, «nessun $6$».`, R`Un lancio non dà $6$ con probabilità $\dfrac{5}{6}$.`], risposta: pr(11 / 36), soluzione: [R`Contrario: nessun $6$ nei due lanci.`, R`I lanci sono indipendenti: $P(\text{nessun } 6) = \dfrac{5}{6} \cdot \dfrac{5}{6} = \dfrac{25}{36}$.`, R`$P(\text{almeno un } 6) = 1 - \dfrac{25}{36} = \dfrac{11}{36} \approx 0{,}31$.`] },
+
     { id: 'es-01', difficolta: 1, testo: R`Si lancia un dado regolare. Qual è la probabilità che esca un numero pari? (come frazione o decimale)`, suggerimenti: [R`Elenca lo spazio campionario e conta i casi favorevoli.`], risposta: { tipo: 'numero', valore: 0.5, tolleranza: 0.01 }, soluzione: [R`Casi possibili: $6$, tutti equiprobabili.`, R`Casi favorevoli: $\{2, 4, 6\}$, cioè $3$.`, R`$P = \dfrac{3}{6} = \dfrac{1}{2} = 0{,}5$.`] },
 
     { id: 'es-02', difficolta: 1, testo: R`Un'urna contiene $5$ palline rosse, $4$ verdi e $3$ gialle. Si estrae una pallina: qual è la probabilità che **non** sia gialla? (come frazione o decimale)`, suggerimenti: [R`Conviene passare all'evento contrario.`, R`$P(\text{gialla}) = \dfrac{3}{12}$.`], risposta: { tipo: 'numero', valore: 0.75, tolleranza: 0.01 }, soluzione: [R`Le palline sono in tutto $5 + 4 + 3 = 12$.`, R`$P(\text{gialla}) = \dfrac{3}{12} = \dfrac{1}{4}$.`, R`$P(\text{non gialla}) = 1 - \dfrac{1}{4} = \dfrac{3}{4} = 0{,}75$.`] },
@@ -530,7 +586,7 @@ Muovi il cursore per cambiare il numero di persone e guarda dove la curva supera
     { id: 'q-10', domanda: R`Due eventi incompatibili, entrambi con probabilità non nulla, sono anche indipendenti?`, opzioni: [R`Sì, sempre`, R`No: sono fortemente dipendenti`, R`Solo se hanno la stessa probabilità`, R`Solo se la loro unione è $U$`], corretta: 1, spiegazione: R`Se $A$ e $B$ sono incompatibili, sapere che è accaduto $B$ rende $A$ impossibile: $P(A \mid B) = 0 \ne P(A)$. Quindi sono dipendenti, e in effetti $P(A \cap B) = 0 \ne P(A)P(B)$.` },
     { id: 'q-11', domanda: R`Nel teorema di Bayes, che cosa sta al denominatore?`, opzioni: [R`La probabilità a priori $P(H)$`, R`La probabilità condizionata $P(E \mid H)$`, R`Il numero dei casi possibili`, R`La probabilità totale $P(E)$ dell'evento osservato`], corretta: 3, spiegazione: R`$P(H \mid E) = \dfrac{P(H)P(E \mid H)}{P(E)}$, e $P(E)$ si ottiene sommando i contributi di tutte le cause con il teorema della probabilità totale.` },
     { id: 'q-12', domanda: R`Un test per una malattia rara è positivo. Perché la probabilità di essere davvero malati può restare bassa?`, opzioni: [R`Perché i sani sono molti di più e i loro falsi positivi sono numerosi`, R`Perché il test non è affidabile sui malati`, R`Perché $P(M \mid T^+) = P(T^+ \mid M)$`, R`Perché la probabilità a priori non conta nel calcolo`], corretta: 0, spiegazione: R`Anche una piccola percentuale di errori su una popolazione grande produce più positivi di quanti ne producano i pochi malati. La probabilità a priori (la rarità della malattia) è invece decisiva, e $P(M \mid T^+)$ non è affatto uguale a $P(T^+ \mid M)$.` },
-    { id: 'q-13', domanda: R`La formula di Bernoulli $\binom{n}{k}p^k(1-p)^{n-k}$ si può usare quando…`, opzioni: [R`le prove sono indipendenti e $p$ è costante`, R`le prove sono a due a due incompatibili`, R`i casi possibili sono equiprobabili`, R`$p = \dfrac{1}{2}$`], corretta: 0, spiegazione: R`Serve uno schema di Bernoulli: due soli esiti, probabilità di successo costante, prove indipendenti. Se $p$ cambia da una prova all'altra (per esempio estrazioni senza rimessa) la formula non vale.` },
+    { id: 'q-13', domanda: R`La formula di Bernoulli $\binom{n}{k}p^k(1-p)^{n-k}$ si può usare quando…`, opzioni: [R`le prove sono indipendenti e $p$ è costante`, R`le prove sono a due a due incompatibili`, R`i casi possibili sono equiprobabili`, R`$p = \dfrac{1}{2}$`], corretta: 0, spiegazione: R`Serve uno schema di Bernoulli: due soli esiti, probabilità di successo costante, prove indipendenti. Se le prove non sono indipendenti (per esempio estrazioni senza rimessa, dove la seconda dipende dalla prima) la formula non vale.` },
     { id: 'q-14', domanda: R`In uno schema di Bernoulli con $n = 4$ e $p = 0{,}5$, quale numero di successi è il più probabile?`, opzioni: [R`$k = 0$`, R`$k = 1$`, R`$k = 2$`, R`$k = 4$`], corretta: 2, spiegazione: R`I valori sono $\dfrac{1}{16}, \dfrac{4}{16}, \dfrac{6}{16}, \dfrac{4}{16}, \dfrac{1}{16}$: la distribuzione è simmetrica e il massimo cade al centro, in $k = 2$.` },
     { id: 'q-15', domanda: R`Un gioco d'azzardo si dice equo quando…`, opzioni: [R`la probabilità di vincere è $\dfrac{1}{2}$`, R`il guadagno atteso del giocatore è nullo`, R`la vincita è maggiore della posta`, R`tutti i giocatori hanno la stessa posta`], corretta: 1, spiegazione: R`Equo significa che, giocando molte volte, in media non si guadagna né si perde: la posta è uguale al valore atteso della vincita. Alla roulette il valore atteso è minore della posta, e il gioco non è equo.` },
     { id: 'q-16', domanda: R`Nel problema di Monty Hall, cambiando porta la probabilità di vincere l'auto diventa…`, opzioni: [R`$\dfrac{1}{3}$, come all'inizio`, R`$\dfrac{1}{2}$, perché restano due porte`, R`$\dfrac{2}{3}$`, R`$1$`], corretta: 2, spiegazione: R`La porta scelta all'inizio vale $\dfrac{1}{3}$ e il conduttore, che sa dove sta l'auto, non porta informazione su di essa; il rimanente $\dfrac{2}{3}$ si concentra sull'unica altra porta ancora chiusa. Le due porte finali non sono equiprobabili.` }

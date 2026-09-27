@@ -28,6 +28,10 @@
     const meta = document.querySelector('meta[name=theme-color]'); if (meta) meta.content = scuro ? '#131a1c' : '#f5f2ea';
   }
   applicaTema();
+  /* lettura facilitata: testo più grande e più spaziato, senza corsivi (per chi fa fatica a leggere) */
+  function applicaLettura() { const si = !!stato.impostazioni.letturaFacile; document.documentElement.classList.toggle('lettura-facile', si); const b = document.getElementById('btn-lettura'); if (b) b.setAttribute('aria-pressed', si); }
+  applicaLettura();
+  document.getElementById('btn-lettura').addEventListener('click', () => { stato.impostazioni.letturaFacile = !stato.impostazioni.letturaFacile; salva(); applicaLettura(); if (window.CMASC) CMASC.dici(stato.impostazioni.letturaFacile ? 'Lettura facilitata accesa: testo più grande e più spazio fra le righe. Si spegne con lo stesso pulsante.' : 'Lettura facilitata spenta.', { tipo: 'commento', espressione: 'occhiolino', durata: 3500 }); });
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applicaTema);
   document.getElementById('btn-tema').addEventListener('click', (ev) => {
     const scuro = document.documentElement.dataset.tema === 'scuro';
@@ -203,7 +207,7 @@
       d.classList.toggle('finita', fine);
     };
     d.classList.add('a-passi');
-    avanti.addEventListener('click', () => { if (n >= passi.length) { n = 1; aggiorna(0); } else { n++; aggiorna(n - 1); } });
+    avanti.addEventListener('click', () => { if (n >= passi.length) { n = 1; aggiorna(0); } else { n++; aggiorna(n - 1); CMASC.reagisci(n >= passi.length ? 'giusto' : 'passo'); } });
     tutto.addEventListener('click', () => { n = passi.length; aggiorna(-1); });
     aggiorna(-1);
   }
@@ -219,12 +223,12 @@
         if (p.classList.contains('risolta')) return;
         const ok = !!b.dataset.ok;
         b.classList.add(ok ? 'giusta' : 'sbagliata');
-        if (ok) { p.classList.add('risolta'); ops.forEach(o => { o.disabled = true; }); spiega.classList.add('aperta'); festa(b); }
-        else { b.disabled = true; if (ops.filter(o => o.disabled).length >= ops.length - 1) { ops.forEach(o => { if (o.dataset.ok) o.classList.add('giusta'); o.disabled = true; }); p.classList.add('risolta'); spiega.classList.add('aperta'); } }
+        if (ok) { p.classList.add('risolta'); ops.forEach(o => { o.disabled = true; }); spiega.classList.add('aperta'); festa(b); CMASC.reagisci('giusto'); }
+        else { b.disabled = true; CMASC.reagisci('sbagliato'); if (ops.filter(o => o.disabled).length >= ops.length - 1) { ops.forEach(o => { if (o.dataset.ok) o.classList.add('giusta'); o.disabled = true; }); p.classList.add('risolta'); spiega.classList.add('aperta'); } }
       }));
     } else {
       const btn = p.querySelector('.prova-rivela');
-      btn.addEventListener('click', () => { spiega.classList.add('aperta'); p.classList.add('risolta'); btn.hidden = true; });
+      btn.addEventListener('click', () => { spiega.classList.add('aperta'); p.classList.add('risolta'); btn.hidden = true; CMASC.reagisci('passo'); });
     }
   }
 
@@ -343,12 +347,15 @@
   /* =====================================================================
      ROUTER
      ===================================================================== */
-  let paginaCorrente = null, argCorrente = null;
+  let paginaCorrente = null, argCorrente = null, labCorrente = null;
   function naviga(hash) { location.hash = hash; }
   function route() {
     const parti = location.hash.replace(/^#\/?/, '').split('/').map(decodeURIComponent);
     const p = parti[0] || '';
     CMASC.chiudi(); chiudiLab();
+    const inLab = p === 'argomento' && parti[2] === 'lab' && !!parti[3];
+    document.body.classList.toggle('in-lab', inLab);
+    if (inLab) return paginaLab(parti[1], parti[3]);
     document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('attiva', a.dataset.pagina === (p || 'home')));
     if (p === 'argomento' && parti[1]) return paginaArgomento(parti[1], parti[2] || 'teoria', parti[3]);
     argCorrente = null;
@@ -378,7 +385,7 @@
     return Math.round(v * 100);
   }
   const CONSIGLI = [
-    'Un argomento alla volta. Io sono arrivata dove sono un passo dopo l\'altro, e Achille ancora mi cerca.',
+    'Un argomento alla volta. Anche io faccio un calcolo alla volta, ed è per questo che non sbaglio.',
     'Le flashcard rendono di più in dosi piccole e frequenti: dieci minuti oggi, dieci domani.',
     'Nel quiz sbagliare è utile, a patto di leggere la spiegazione. È lì che si impara.',
     'Prima di aprire un argomento, dai un\'occhiata ai prerequisiti: se traballano, torna indietro un passo.',
@@ -398,7 +405,7 @@
       <div>
         <div class="eroe-sopra">Matematica per il liceo</div>
         <h1>La matematica, <em>un passo alla volta</em></h1>
-        <p>Per ogni argomento c'è la spiegazione, con i calcoli che si aprono un passaggio per volta, poi esempi, esercizi e quiz per metterti alla prova. Nei laboratori i concetti si toccano con le mani. Zenone, la tartaruga, ti dà un consiglio quando serve.</p>
+        <p>Per ogni argomento c'è la spiegazione, con i calcoli che si aprono un passaggio per volta, poi esempi, esercizi e quiz per metterti alla prova. Nei laboratori i concetti si toccano con le mani. Ada, il computer qui in basso, ti dà un consiglio quando serve.</p>
         <div class="eroe-stat">
           ${ultimo ? `<a class="stat riprendi" href="#/argomento/${ultimo.id}">Riprendi: <b>${esc(ultimo.titolo)}</b> →</a>` : ''}
           <span class="stat"><b data-conta="${visitati}">0</b>su ${IND.argomenti.length} argomenti aperti</span>
@@ -453,7 +460,7 @@
     aggiornaBadge();
     if (stato.impostazioni.mascotte && !sessionStorage.getItem('compasso.salutato')) {
       sessionStorage.setItem('compasso.salutato', '1');
-      setTimeout(() => { if (paginaCorrente !== 'home') return; CMASC.dici(daRip ? `Bentornato. Hai ${daRip} ${daRip === 1 ? 'carta' : 'carte'} da ripassare: vuoi cominciare da lì?` : 'Ciao, sono Zenone. Scegli un argomento, oppure toccami quando vuoi un consiglio o una storia.', { tipo: 'commento', espressione: 'felice', azioni: daRip ? [{ testo: 'Vai al ripasso', fn: () => naviga('#/ripasso') }] : [] }); }, 1200);
+      setTimeout(() => { if (paginaCorrente !== 'home') return; CMASC.dici(daRip ? `Bentornato. Hai ${daRip} ${daRip === 1 ? 'carta' : 'carte'} da ripassare: vuoi cominciare da lì?` : 'Ciao, sono Ada. Scegli un argomento, oppure toccami quando vuoi un consiglio o una storia.', { tipo: 'commento', espressione: 'felice', azioni: daRip ? [{ testo: 'Vai al ripasso', fn: () => naviga('#/ripasso') }] : [] }); }, 1200);
     }
   }
 
@@ -525,27 +532,36 @@
       <div class="lab-icona">${esc(l.icona || '🧪')}</div>
       <div><h3>${esc(l.titolo)}</h3><p>${esc(l.sotto)}</p>${conArgomento && va ? `<small class="lab-arg">${esc(va.titolo)}</small>` : ''}</div></a>`);
   }
-  function schedaLab(pannello, arg, v, labId) {
+  function schedaLab(pannello, arg, v) {
     const labs = labsDi(v.id);
-    if (!labId && labs.length === 1) labId = labs[0].id;
-    if (!labId) {
-      pannello.appendChild(h('<p class="intro-scheda">Qui si impara con le mani: ogni laboratorio è un piccolo gioco che nasconde dentro il concetto. Non c\'è niente da leggere prima.</p>'));
-      const g = h('<div class="griglia-lab"></div>'); labs.forEach(l => g.appendChild(tesseraLab(l))); pannello.appendChild(g); return;
-    }
-    const meta = labs.find(l => l.id === labId);
-    if (!meta) { pannello.appendChild(h('<div class="scheda fc-vuoto">Laboratorio sconosciuto.</div>')); return; }
-    const cornice = h(`<section class="lab-cornice">
-      <header class="lab-testa"><div><h2>${esc(meta.icona || '🧪')} ${esc(meta.titolo)}</h2><p>${esc(meta.sotto)}</p></div>
-        <div class="lab-azioni">${labs.length > 1 ? `<a class="btn piccolo" href="#/argomento/${v.id}/lab">Altri laboratori</a>` : ''}<button type="button" class="btn piccolo b-schermo" title="Schermo intero">${ICONE.schermo}</button></div></header>
+    pannello.appendChild(h('<p class="intro-scheda">Qui si impara con le mani: ogni laboratorio è un piccolo gioco che nasconde dentro il concetto. Si apre a tutto schermo, e non c\'è niente da leggere prima.</p>'));
+    const g = h('<div class="griglia-lab griglia-lab-grande"></div>'); labs.forEach(l => g.appendChild(tesseraLab(l))); pannello.appendChild(g);
+  }
+
+  /* ---------- il laboratorio: una schermata sola, senza scorrere ---------- */
+  function paginaLab(argId, labId) {
+    const v = voce(argId), meta = (IND.laboratori || []).find(l => l.id === labId && l.argomento === argId);
+    paginaCorrente = 'lab'; argCorrente = null; labCorrente = meta;
+    svuota();
+    if (!v || !meta) { app.appendChild(h(`<div class="scheda fc-vuoto">Laboratorio sconosciuto. <a href="#/">Torna agli argomenti</a>.</div>`)); return; }
+    document.title = meta.titolo + ' — Compasso';
+    const ar = area(v.area);
+    const schermo = h(`<section class="schermo-lab" style="--colore-area:var(--${ar.colore})">
+      <header class="sl-barra">
+        <a class="sl-indietro icona-btn" href="#/argomento/${esc(argId)}/lab" aria-label="Torna all'argomento" title="Torna all'argomento">${ICONE.destra}</a>
+        <div class="sl-titolo"><span class="sl-ico">${esc(meta.icona || '🧪')}</span><div><b>${esc(meta.titolo)}</b><small>${esc(v.titolo)}</small></div></div>
+        <button type="button" class="icona-btn sl-schermo" aria-label="Schermo intero" title="Schermo intero">${ICONE.schermo}</button>
+      </header>
       <div class="lab-stage" data-lab="${esc(meta.id)}"><div class="fc-vuoto">Carico il laboratorio…</div></div>
     </section>`);
-    pannello.appendChild(cornice);
-    const stage = cornice.querySelector('.lab-stage');
-    cornice.querySelector('.b-schermo').addEventListener('click', () => { if (document.fullscreenElement) document.exitFullscreen(); else cornice.requestFullscreen().catch(() => {}); });
+    app.appendChild(schermo);
+    const stage = schermo.querySelector('.lab-stage');
+    schermo.querySelector('.sl-schermo').addEventListener('click', () => { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {}); });
     const p = progresso(v.id); p.lab = p.lab || {}; const st = p.lab[meta.id] = p.lab[meta.id] || { livelli: [] };
     const ctx = {
       zenone: (testo, opz) => { if (stato.impostazioni.mascotte) CMASC.dici(testo, Object.assign({ tipo: 'commento', espressione: 'felice' }, opz || {})); },
-      completato: (livello) => { if (!st.livelli.includes(livello)) st.livelli.push(livello); salva(); },
+      mascotte: (evento, testo) => CMASC.reagisci(evento, testo),
+      completato: (livello) => { if (!st.livelli.includes(livello)) st.livelli.push(livello); salva(); CMASC.reagisci('livello'); },
       stato: () => st, tema: () => document.documentElement.dataset.tema || 'chiaro', CGRAF: window.CGRAF,
       md: s => md(s), tex: (s, d) => (window.katex ? tex(s, d) : esc(s))
     };
@@ -556,7 +572,7 @@
       smontaLab = typeof sm === 'function' ? sm : null;
       if (meta.intro && stato.impostazioni.mascotte && !sessionStorage.getItem('compasso.lab.' + meta.id)) {
         sessionStorage.setItem('compasso.lab.' + meta.id, '1');
-        setTimeout(() => { if (document.body.contains(stage) && !CMASC.aperta()) CMASC.dici(meta.intro, { tipo: 'suggerimento', espressione: 'pensa' }); }, 1800);
+        setTimeout(() => { if (document.body.contains(stage) && !CMASC.aperta()) CMASC.dici(meta.intro, { tipo: 'suggerimento', espressione: 'pensa', durata: 9000 }); }, 1500);
       }
     }).catch(err => { stage.innerHTML = `<div class="fc-vuoto">Il laboratorio non si è caricato (${esc(err.message)}).</div>`; });
   }
@@ -611,7 +627,7 @@
         conta.textContent = fine ? '' : (n ? n + ' passi su ' + lis.length : lis.length + ' passi');
         card.classList.toggle('completo', fine);
       };
-      avanti.addEventListener('click', () => { n++; mostra(true); });
+      avanti.addEventListener('click', () => { n++; mostra(true); CMASC.reagisci(n >= lis.length ? 'giusto' : 'passo'); });
       tutto.addEventListener('click', () => { n = lis.length; mostra(true); });
       mostra(false);
       montaGrafici(card, arg); pan.appendChild(card);
@@ -703,8 +719,8 @@
     });
     valuta.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
       const { arg, carta: c } = ordine[i];
-      valutaCarta(arg.id, c.id, b.dataset.esito);
-      if (b.dataset.esito === 'si') { serie++; if (serie === 5) CMASC.dici('Cinque di fila. Vado a dirlo ad Achille.', { tipo: 'commento', espressione: 'orgoglioso', durata: 3500 }); } else serie = 0;
+      valutaCarta(arg.id, c.id, b.dataset.esito); CMASC.reagisci({ si: 'giusto', quasi: 'pensa', no: 'ops' }[b.dataset.esito] || 'neutro');
+      if (b.dataset.esito === 'si') { serie++; if (serie === 5) CMASC.dici('Cinque di fila. Me lo salvo in memoria.', { tipo: 'commento', espressione: 'orgoglioso', durata: 3500 }); } else serie = 0;
       if (b.dataset.esito === 'no' && !opz.multi) { /* la carta torna in coda */ ordine.push(ordine[i]); }
       avanti();
     }));
@@ -774,39 +790,86 @@
   /* =====================================================================
      ESERCIZI
      ===================================================================== */
-  function normalizza(s) {
-    return String(s).toLowerCase().replace(/\s+/g, '').replace(/−/g, '-').replace(/×|·/g, '*').replace(/≤/g, '<=').replace(/≥/g, '>=').replace(/≠/g, '!=').replace(/²/g, '^2').replace(/³/g, '^3').replace(/,/g, '.').replace(/\.$/, '').replace(/\*\*/g, '^').replace(/^x=/, '').replace(/[«»"']/g, '');
+  function normalizza(s, tieniX) {
+    const n = String(s).toLowerCase().replace(/\s+/g, '').replace(/−/g, '-').replace(/×|·/g, '*').replace(/≤/g, '<=').replace(/≥/g, '>=').replace(/≠/g, '!=').replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+/g, a => '^' + [...a].map(c => ({ '⁰': 0, '¹': 1, '²': 2, '³': 3, '⁴': 4, '⁵': 5, '⁶': 6, '⁷': 7, '⁸': 8, '⁹': 9, '⁻': '-' })[c]).join('')).replace(/\+-/g, '±').replace(/,/g, '.').replace(/\.$/, '').replace(/\*\*/g, '^').replace(/\*(?=[a-zπ(√])|(?<=[a-zπ)])\*/g, '').replace(/[«»"'’‘“”]/g, '').replace(/ℝ/g, 'r').replace(/∀/g, 'perogni');
+    return tieniX ? n : n.replace(/^x=/, '');
   }
+  const APICI = { '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9', '⁻': '-' };
   function numeroDa(s) {
-    s = String(s).trim().replace(/−/g, '-').replace(/,/g, '.').replace(/\s+/g, '').replace(/pi|Π/gi, 'π').replace(/[*·]/g, '');
+    /* esponenti in apice: 2⁵ → 2^5, e⁻¹ → e^(-1) */
+    s = String(s).replace(/(?<=[\d.πe)])[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+/g, a => '^(' + [...a].map(c => APICI[c]).join('') + ')');
+    s = s.trim().replace(/(\d)\s+su\s+(\d)/gi, '$1/$2').replace(/(\d[²³]?)\s+(?!rad\b|sqrt|ln\b|log|pi\b|e\b|cm|m\b|mq|gradi|rad)[a-zà-ù]+(\s+[a-zà-ù]+)*\s*$/i, '$1').replace(/^[a-zA-Zα-ωΑ-Ω][a-zA-Z0-9₀-₉'’]{0,3}\s*=\s*/, '').replace(/−/g, '-').replace(/,/g, '.').replace(/\s+/g, '').replace(/pi|Π/gi, 'π').replace(/[·×]/g, '*').replace(/\*(?=π)/g, '');
+    /* unità di misura in fondo: «36,87°», «20 cm²», «70 gradi», «1,2 rad» */
+    s = s.replace(/(°|gradi|radianti|rad|[kcdm]?m(²|\^2|³|\^3)?|mq|u)$/i, '');
     /* multipli e frazioni di π: π, -π, 2π, 3π/4, π/2, 0.5π */
     let m = s.match(/^([-+]?)(\d+(?:\.\d+)?)?π(?:\/(\d+(?:\.\d+)?))?$/); if (m) return (m[1] === '-' ? -1 : 1) * (m[2] ? parseFloat(m[2]) : 1) * Math.PI / (m[3] ? parseFloat(m[3]) : 1);
     m = s.match(/^([-+]?\d+(?:\.\d+)?)\/([-+]?\d+(?:\.\d+)?)$/); if (m) return parseFloat(m[1]) / parseFloat(m[2]);
     /* potenze del numero e: e, 2e, e^2, e^-1 */
     m = s.match(/^([-+]?)(\d+(?:\.\d+)?)?e(?:\^\(?([-+]?\d+(?:\.\d+)?)\)?)?$/); if (m) return (m[1] === '-' ? -1 : 1) * (m[2] ? parseFloat(m[2]) : 1) * Math.exp(m[3] ? parseFloat(m[3]) : 1);
+    /* radici con coefficiente e denominatore: √3/2, 2√3, -3√2/4, sqrt(3)/2, rad3, (√3)/2 */
+    { const t = s.replace(/^([-+]?)\((.+)\)(\/[\d.]+)$/, '$1$2$3');
+      const mr = t.match(/^([-+]?)(\d+(?:\.\d+)?)?(?:√|sqrt|rad)\(?(\d+(?:\.\d+)?)\)?(?:\/(\d+(?:\.\d+)?))?$/);
+      if (mr) return (mr[1] === '-' ? -1 : 1) * (mr[2] ? parseFloat(mr[2]) : 1) * Math.sqrt(parseFloat(mr[3])) / (mr[4] ? parseFloat(mr[4]) : 1); }
     m = s.match(/^([-+]?)(?:√|sqrt\(?)(\d+(?:\.\d+)?)\)?$/); if (m) return (m[1] === '-' ? -1 : 1) * Math.sqrt(parseFloat(m[2]));
     if (/^[-+]?\d+(?:\.\d+)?$/.test(s)) return parseFloat(s);
     if (/^[-+]?(inf|∞|infinito)$/.test(s)) return s.startsWith('-') ? -Infinity : Infinity;
+    /* ultima prova: un'espressione numerica qualunque, con il parser dei grafici: 1/√2, (√6+√2)/4, 2^10, 3π/4 + 1 */
+    if (window.CGRAF && /^[\d.+\-*/^()√πe!]*$/.test(s.replace(/sqrt|rad|pi|ln|log10|log2|log/g, ''))) {
+      try {
+        const t = s.replace(/rad/g, 'sqrt').replace(/√\(/g, 'sqrt(').replace(/√([\d.]+)/g, 'sqrt($1)').replace(/π/g, 'pi').replace(/log(?!10|2)/g, 'log10').replace(/(ln|log10|log2|sqrt)([\d.]+)/g, '$1($2)');
+        const v = window.CGRAF.num(t, {}); if (isFinite(v)) return v;
+      } catch (e) { /* non è un'espressione */ }
+    }
     return NaN;
   }
   function numeriDa(s) {
+    /* nomi delle incognite (x1 =, x₂ =, y =) via; «+-4» vale ±4; il segno staccato dal numero si riattacca */
+    s = String(s).replace(/\b[a-z][\d₀-₉]?\s*=\s*/gi, ' ').replace(/\+\s*[-−]/g, '±').replace(/(^|[;,]|\be\b)\s*([-+−])\s+(?=[\dπ√(])/g, '$1$2');
+    /* separate da punto e virgola: ogni pezzo può essere un'espressione (π/6; 5π/6; √2/2) */
+    if (/;/.test(String(s))) { const v = String(s).replace(/^\s*[a-z]\s*=\s*/i, '').split(';').map(x => x.replace(/^\s*[a-z]\d?\s*=\s*/i, '').trim()).filter(Boolean).map(numeroDa); if (v.length && v.every(n => isFinite(n))) return v; }
     s = String(s).replace(/−/g, '-').replace(/,/g, '.');
     s = s.replace(/±\s*(\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)?)/g, '-$1 $1');
     s = s.replace(/pi|Π/gi, 'π').replace(/[*·]/g, '');
     const trovati = s.match(/[-+]?(?:\d+(?:\.\d+)?)?π(?:\/\d+(?:\.\d+)?)?|[-+]?\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)?/g) || [];
     return trovati.map(numeroDa).filter(n => isFinite(n));
   }
-  const vicino = (a, b, tol) => Math.abs(a - b) <= (tol != null ? tol : Math.max(0.01, Math.abs(b) * 1e-3));
+  const vicino = (a, b, tol) => (!isFinite(b) || !isFinite(a)) ? a === b : Math.abs(a - b) <= (tol != null ? tol : Math.max(0.01, Math.abs(b) * 1e-3));
+  /* il testo grigio d'esempio non deve mai essere la risposta: se lo è, se ne cambiano le cifre (3√2 → 4√3) */
+  function segnapostoSicuro(r, ph) {
+    if (!ph || !/\d/.test(ph)) return ph;
+    const tradisce = t => t.replace(/^.*?\b(es\.|esempio:?|per esempio)\s*/i, '').split(/\s+o\s+|\s+oppure\s+/).some(x => { try { return /\d/.test(x) && controllaRisposta(r, x.trim()) === true; } catch (err) { return false; } });
+    if (!tradisce(ph)) return ph;
+    for (let k = 1; k <= 3; k++) { const alt = ph.replace(/\d/g, d => String((+d + k) % 10 || 1)); if (!tradisce(alt)) return alt; }
+    return { numero: 'La tua risposta', numeri: 'Le soluzioni, separate da ;', testo: 'La tua risposta' }[r.tipo] || 'La tua risposta';
+  }
   function controllaRisposta(r, valoreUtente) {
-    if (r.tipo === 'numero') { const n = numeroDa(valoreUtente); return isFinite(n) && vicino(n, r.valore, r.tolleranza); }
-    if (r.tipo === 'numeri') {
-      const dati = numeriDa(valoreUtente); if (dati.length !== r.valori.length) return false;
-      if (r.ordinati) return dati.every((d, i) => vicino(d, r.valori[i], r.tolleranza));
-      const resto = r.valori.slice();
-      for (const d of dati) { const k = resto.findIndex(v => vicino(d, v, r.tolleranza)); if (k < 0) return false; resto.splice(k, 1); }
-      return true;
+    if (r.tipo === 'numero') {
+      if (/%\s*$/.test(String(valoreUtente))) { const p = numeroDa(String(valoreUtente).replace(/%\s*$/, '')); return isFinite(p) && (vicino(p / 100, r.valore, r.tolleranza) || vicino(p, r.valore, r.tolleranza)); }
+      const n = numeroDa(valoreUtente); if (isFinite(n) && vicino(n, r.valore, r.tolleranza)) return true;
+      const mig = String(valoreUtente).trim(); if (/^-?[1-9]\d{0,2}(\.\d{3})+$/.test(mig)) return vicino(+mig.replace(/\./g, ''), r.valore, r.tolleranza);
+      return false;
     }
-    if (r.tipo === 'testo') { const u = normalizza(valoreUtente); return r.accettate.some(a => normalizza(a) === u); }
+    if (r.tipo === 'numeri') {
+      if (r.valori.length === 1 && controllaRisposta({ tipo: 'numero', valore: r.valori[0], tolleranza: r.tolleranza }, String(valoreUtente).replace(/^\s*[a-z][\d₀-₉]?\s*=\s*/i, ''))) return true;
+      /* coppie con il punto delle migliaia («3.000; 1.400») */
+      if (/(^|[;\s])[1-9]\d{0,2}(\.\d{3})+($|[;\s])/.test(valoreUtente) && controllaRisposta(r, String(valoreUtente).replace(/(\d)\.(?=\d{3}(\D|$))/g, '$1'))) return true;
+      const combacia = dati => {
+        if (dati.length !== r.valori.length) return false;
+        if (r.ordinati) return dati.every((d, i) => vicino(d, r.valori[i], r.tolleranza));
+        const resto = r.valori.slice();
+        for (const d of dati) { const k = resto.findIndex(v => vicino(d, v, r.tolleranza)); if (k < 0) return false; resto.splice(k, 1); }
+        return true;
+      };
+      if (combacia(numeriDa(valoreUtente))) return true;
+      /* chi scrive «-5,5» per dire -5 e 5, o «π/2,3π/2»: se i conti non tornano, la virgola si legge come separatore */
+      if (/,/.test(valoreUtente) && !/;/.test(valoreUtente)) return combacia(numeriDa(String(valoreUtente).replace(/,\s*/g, '; ')));
+      return false;
+    }
+    if (r.tipo === 'testo') {
+      /* «x=» davanti si ignora, tranne quando la risposta è proprio una retta x = k (allora «2» da solo non basta) */
+      const tieni = r.accettate.some(a => /^x=/.test(normalizza(a, true)));
+      const u = normalizza(valoreUtente, tieni); return r.accettate.some(a => normalizza(a, tieni) === u);
+    }
     if (r.tipo === 'intervallo') {
       const u = valoreUtente; const da = numeroDa(u.da), a = numeroDa(u.a);
       const rda = r.da === '-inf' ? -Infinity : r.da, ra = r.a === 'inf' ? Infinity : r.a;
@@ -820,19 +883,16 @@
 
   function schedaEsercizi(pan, arg, v) {
     const p = progresso(v.id);
-    let filtro = 0, nascondiFatti = false;
-    pan.appendChild(h('<p class="sotto-pagina">Prova da solo. Se ti blocchi, chiedi un suggerimento a Zenone: te li dà uno alla volta. La soluzione completa è sempre lì sotto, ma aprila per ultima.</p>'));
-    const filtri = h(`<div class="es-filtri"><button class="btn piccolo attivo" data-d="0" type="button">Tutti</button><button class="btn piccolo" data-d="1" type="button">★ facili</button><button class="btn piccolo" data-d="2" type="button">★★ medi</button><button class="btn piccolo" data-d="3" type="button">★★★ difficili</button><span class="spazio" style="flex:1"></span><label class="fatto-spunta" style="display:inline-flex;gap:6px;align-items:center;font-size:.86rem;color:var(--testo2)"><input type="checkbox" class="b-nascondi"> nascondi i fatti</label></div>`);
-    pan.appendChild(filtri);
-    const lista = document.createElement('div'); pan.appendChild(lista);
-    filtri.querySelectorAll('[data-d]').forEach(b => b.addEventListener('click', () => { filtro = +b.dataset.d; filtri.querySelectorAll('[data-d]').forEach(x => x.classList.toggle('attivo', x === b)); applica(); }));
-    filtri.querySelector('.b-nascondi').addEventListener('change', e => { nascondiFatti = e.target.checked; applica(); });
-    function applica() { lista.querySelectorAll('.esercizio').forEach(el => { const d = +el.dataset.d, fatto = el.classList.contains('fatto'); el.hidden = (filtro && d !== filtro) || (nascondiFatti && fatto); }); }
+    const base = arg.esercizi.filter(e => e.livello === 'base');
+    const avanzati = arg.esercizi.filter(e => e.livello !== 'base');
+    const conta = () => { const tab = app.querySelector('.scheda-tab[href$="/esercizi"] .spunta'); if (tab) tab.textContent = p.eserciziFatti.length + '/' + arg.esercizi.length; };
+    function segnaFatto(id, si) { const f = p.eserciziFatti; const k = f.indexOf(id); if (si && k < 0) f.push(id); if (!si && k >= 0) f.splice(k, 1); salva(); conta(); if (allenamento) allenamento.aggiorna(); }
 
-    arg.esercizi.forEach((e, i) => {
+    /* una carta esercizio: testo, suggerimenti, casella di risposta, soluzione */
+    function creaCarta(e, etichetta, alGiusto) {
       const fatto = p.eserciziFatti.includes(e.id);
       const card = h(`<article class="scheda esercizio${fatto ? ' fatto' : ''}" data-d="${e.difficolta}" id="es-${esc(e.id)}">
-        <div class="es-testa"><span class="numero">${i + 1}.</span><span class="stelle">${'★'.repeat(e.difficolta)}${'☆'.repeat(3 - e.difficolta)}</span><label class="fatto-spunta"><input type="checkbox" ${fatto ? 'checked' : ''}> fatto</label></div>
+        <div class="es-testa"><span class="numero">${esc(etichetta)}</span><span class="stelle">${'★'.repeat(e.difficolta)}${'☆'.repeat(3 - e.difficolta)}</span><label class="fatto-spunta"><input type="checkbox" ${fatto ? 'checked' : ''}> fatto</label></div>
         <div class="testo prosa"></div>
         <div class="es-suggerimenti"></div>
         <div class="es-risposta" hidden></div>
@@ -842,20 +902,17 @@
       </article>`);
       card.querySelector('.testo').innerHTML = md(e.testo);
       card.querySelector('.fatto-spunta input').addEventListener('change', ev => { segnaFatto(e.id, ev.target.checked); card.classList.toggle('fatto', ev.target.checked); });
-      /* suggerimenti progressivi */
       let dati = 0; const sugg = card.querySelector('.es-suggerimenti');
       card.querySelector('.b-sugg').addEventListener('click', () => {
         if (dati >= e.suggerimenti.length) { CMASC.dici('Suggerimenti finiti: ora tocca a te. Se proprio non va, guarda la soluzione e poi rifallo da capo.', { tipo: 'commento', espressione: 'pensa', durata: 5000 }); return; }
         const s = e.suggerimenti[dati]; dati++;
         const r = h('<div class="riquadro nota prosa"></div>'); r.innerHTML = md(s); sugg.appendChild(r);
-        CMASC.dici(md(s), { tipo: 'suggerimento', html: true, titolo: 'Suggerimento ' + dati + ' di ' + e.suggerimenti.length, espressione: 'pensa', azioni: dati < e.suggerimenti.length ? [{ testo: 'Un altro', fn: () => card.querySelector('.b-sugg').click() }] : [] });
+        CMASC.espressione('pensa');
         card.querySelector('.b-sugg').textContent = dati < e.suggerimenti.length ? 'Altro suggerimento (' + (e.suggerimenti.length - dati) + ')' : 'Suggerimenti finiti';
       });
-      /* soluzione */
       const sol = card.querySelector('.es-soluzione'); const ol = sol.querySelector('.passi');
       e.soluzione.forEach(s => { const li = document.createElement('li'); li.className = 'prosa'; li.innerHTML = md(s); ol.appendChild(li); });
-      card.querySelector('.b-sol').addEventListener('click', ev => { sol.hidden = !sol.hidden; ev.target.textContent = sol.hidden ? 'Mostra la soluzione' : 'Nascondi la soluzione'; if (!sol.hidden) montaGrafici(sol, arg); });
-      /* risposta controllabile */
+      card.querySelector('.b-sol').addEventListener('click', ev => { sol.hidden = !sol.hidden; ev.target.textContent = sol.hidden ? 'Mostra la soluzione' : 'Nascondi la soluzione'; if (!sol.hidden) { montaGrafici(sol, arg); CMASC.espressione('pensa'); } });
       if (e.risposta) {
         const box = card.querySelector('.es-risposta'); box.hidden = false;
         const esito = card.querySelector('.es-esito');
@@ -864,9 +921,12 @@
           box.innerHTML = `<span class="intervallo"><select class="pa"><option value="(">(</option><option value="[">[</option></select><input class="da" placeholder="−∞ o numero"><span>;</span><input class="a" placeholder="+∞ o numero"><select class="pb"><option value=")">)</option><option value="]">]</option></select></span><button class="btn piccolo primario b-ok" type="button">Controlla</button>`;
           leggi = () => ({ da: box.querySelector('.da').value, a: box.querySelector('.a').value, chiusoDa: box.querySelector('.pa').value === '[', chiusoA: box.querySelector('.pb').value === ']' });
         } else {
-          const ph = { numero: 'La tua risposta (es. 2,5 oppure 5/2)', numeri: 'Le soluzioni (es. -1; 3)', testo: 'La tua risposta' }[e.risposta.tipo];
-          box.innerHTML = `<input type="text" placeholder="${ph}" autocomplete="off"><button class="btn piccolo primario b-ok" type="button">Controlla</button>`;
+          const ph = segnapostoSicuro(e.risposta, e.risposta.segnaposto || { numero: 'La tua risposta (es. 2,5 oppure 5/2)', numeri: 'Le soluzioni (es. -1; 3)', testo: 'La tua risposta' }[e.risposta.tipo]);
+          box.innerHTML = `<input type="text" placeholder="${esc(ph)}" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn piccolo primario b-ok" type="button">Controlla</button><div class="es-simboli" aria-label="Simboli">${(e.risposta.simboli || (e.risposta.tipo === 'testo' && (e.risposta.accettate || []).some(a => /[<>≤≥]/.test(a)) ? ['<', '>', '≤', '≥', '∞', '(', ')', ';', '−'] : ['√', 'π', '^', '/', ';', '(', ')', '−'])).map(c => `<button type="button" class="es-simbolo" data-c="${c === '−' ? '-' : c}">${c}</button>`).join('')}</div>`;
           leggi = () => box.querySelector('input').value;
+          /* i simboli che sulla tastiera del telefono non ci sono: si inseriscono dove sta il cursore */
+          const inpS = box.querySelector('input');
+          box.querySelectorAll('.es-simbolo').forEach(b => b.addEventListener('pointerdown', ev => { ev.preventDefault(); const c = b.dataset.c, a = inpS.selectionStart ?? inpS.value.length, z = inpS.selectionEnd ?? a; inpS.value = inpS.value.slice(0, a) + c + inpS.value.slice(z); inpS.focus(); inpS.setSelectionRange(a + c.length, a + c.length); }));
           box.querySelector('input').addEventListener('keydown', ev => { if (ev.key === 'Enter') box.querySelector('.b-ok').click(); });
         }
         let tentativi = 0;
@@ -875,14 +935,69 @@
           const ok = controllaRisposta(e.risposta, val); tentativi++;
           esito.hidden = false; esito.className = 'es-esito ' + (ok ? 'ok' : 'no');
           esito.textContent = ok ? 'Giusto!' : (tentativi >= 2 ? 'Non ancora. Prova un suggerimento, o guarda la soluzione.' : 'Non è questa. Ricontrolla i calcoli e riprova.');
-          if (ok) { segnaFatto(e.id, true); card.classList.add('fatto'); card.querySelector('.fatto-spunta input').checked = true; CMASC.dici(scegli(['Giusto!', 'Esatto, proprio così.', 'Corretto. Avanti con il prossimo.', 'Sì. Lo sapevo che ce l\'avresti fatta.']), { tipo: 'commento', espressione: 'felice', durata: 2500 }); }
-          else CMASC.espressione('pensa');
+          if (ok) {
+            segnaFatto(e.id, true); card.classList.add('fatto'); card.querySelector('.fatto-spunta input').checked = true;
+            festa(box.querySelector('.b-ok')); CMASC.reagisci('giusto');
+            if (alGiusto) alGiusto();
+          } else CMASC.reagisci(tentativi >= 2 ? 'sbagliato-ancora' : 'sbagliato');
         });
       }
       montaGrafici(card, arg);
-      lista.appendChild(card);
-    });
-    function segnaFatto(id, si) { const f = p.eserciziFatti; const k = f.indexOf(id); if (si && k < 0) f.push(id); if (!si && k >= 0) f.splice(k, 1); salva(); const tab = app.querySelector('.scheda-tab[href$="/esercizi"] .spunta'); if (tab) tab.textContent = f.length + '/' + arg.esercizi.length; }
+      return card;
+    }
+
+    /* ---- allenamento: gli esercizi di base, uno alla volta ---- */
+    let allenamento = null;
+    if (base.length) {
+      const sez = h(`<section class="allenamento">
+        <div class="al-testa"><div><h2>Allenamento</h2><p>${base.length} esercizi di base, solo su questo argomento. Uno alla volta: quando lo hai fatto, passa al prossimo.</p></div><div class="al-conto"><b>0</b>/${base.length}</div></div>
+        <div class="al-barra"><i></i></div>
+        <div class="al-pallini" role="tablist" aria-label="Esercizi di base"></div>
+        <div class="al-carta"></div>
+        <div class="al-nav"><button type="button" class="btn b-prec">${ICONE.destra} Precedente</button><button type="button" class="btn primario b-succ">Prossimo ${ICONE.destra}</button></div>
+      </section>`);
+      pan.appendChild(sez);
+      const pallini = sez.querySelector('.al-pallini'), posto = sez.querySelector('.al-carta');
+      const primoDaFare = () => { const k = base.findIndex(e => !p.eserciziFatti.includes(e.id)); return k < 0 ? 0 : k; };
+      let i = primoDaFare();
+      base.forEach((e, k) => { const b = h(`<button type="button" class="al-pallino" role="tab" aria-label="Esercizio ${k + 1}">${k + 1}</button>`); b.addEventListener('click', () => vai(k)); pallini.appendChild(b); });
+      function vai(k, dir) {
+        i = Math.max(0, Math.min(base.length - 1, k));
+        const nuova = creaCarta(base[i], 'Esercizio ' + (i + 1) + ' di ' + base.length, () => { sez.querySelector('.b-succ').classList.add('pulsa'); });
+        nuova.classList.add(dir === -1 ? 'da-sinistra' : 'da-destra');
+        posto.innerHTML = ''; posto.appendChild(nuova);
+        aggiorna();
+        const inp = nuova.querySelector('.es-risposta input'); if (inp && dir) setTimeout(() => inp.focus({ preventScroll: true }), 350);
+      }
+      function aggiorna() {
+        const fatti = base.filter(e => p.eserciziFatti.includes(e.id)).length;
+        sez.querySelector('.al-conto b').textContent = fatti;
+        sez.querySelector('.al-barra i').style.width = (100 * fatti / base.length) + '%';
+        [...pallini.children].forEach((b, k) => { b.classList.toggle('fatto', p.eserciziFatti.includes(base[k].id)); b.classList.toggle('attivo', k === i); b.setAttribute('aria-selected', k === i); });
+        const att = pallini.children[i]; if (att && att.scrollIntoView) att.scrollIntoView({ block: 'nearest', inline: 'center' });
+        sez.querySelector('.b-prec').disabled = i === 0;
+        const succ = sez.querySelector('.b-succ'); succ.classList.remove('pulsa');
+        succ.innerHTML = i === base.length - 1 ? 'Agli esercizi avanzati ' + ICONE.destra : 'Prossimo ' + ICONE.destra;
+        if (fatti === base.length && !sez.dataset.finito) { sez.dataset.finito = '1'; CMASC.reagisci('traguardo', 'Tutti e ' + base.length + ' gli esercizi di base fatti. Adesso prova quelli avanzati.'); }
+      }
+      sez.querySelector('.b-prec').addEventListener('click', () => vai(i - 1, -1));
+      sez.querySelector('.b-succ').addEventListener('click', () => { if (i === base.length - 1) { const t = pan.querySelector('.avanzati-titolo'); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } else vai(i + 1, 1); });
+      allenamento = { aggiorna };
+      vai(i);
+    }
+
+    /* ---- esercizi avanzati (o tutti, se l'argomento non ha l'allenamento) ---- */
+    if (avanzati.length) {
+      pan.appendChild(h(`<div class="avanzati-titolo"><h2>${base.length ? 'Esercizi avanzati' : 'Esercizi'}</h2><p class="sotto-pagina">${base.length ? 'Qui l\'argomento si mescola con quelli che hai già studiato, e servono più passaggi.' : 'Prova da solo.'} Se ti blocchi, chiedi un suggerimento: arrivano uno alla volta. La soluzione completa aprila per ultima.</p></div>`));
+      let filtro = 0, nascondiFatti = false;
+      const filtri = h(`<div class="es-filtri"><button class="btn piccolo attivo" data-d="0" type="button">Tutti</button><button class="btn piccolo" data-d="1" type="button">★ facili</button><button class="btn piccolo" data-d="2" type="button">★★ medi</button><button class="btn piccolo" data-d="3" type="button">★★★ difficili</button><span class="spazio" style="flex:1"></span><label class="fatto-spunta" style="display:inline-flex;gap:6px;align-items:center;font-size:.86rem;color:var(--testo2)"><input type="checkbox" class="b-nascondi"> nascondi i fatti</label></div>`);
+      pan.appendChild(filtri);
+      const lista = document.createElement('div'); pan.appendChild(lista);
+      filtri.querySelectorAll('[data-d]').forEach(b => b.addEventListener('click', () => { filtro = +b.dataset.d; filtri.querySelectorAll('[data-d]').forEach(x => x.classList.toggle('attivo', x === b)); applica(); }));
+      filtri.querySelector('.b-nascondi').addEventListener('change', e => { nascondiFatti = e.target.checked; applica(); });
+      function applica() { lista.querySelectorAll('.esercizio').forEach(el => { const d = +el.dataset.d, fatto = el.classList.contains('fatto'); el.hidden = (filtro && d !== filtro) || (nascondiFatti && fatto); }); }
+      avanzati.forEach((e, k) => lista.appendChild(creaCarta(e, (k + 1) + '.')));
+    }
   }
 
   /* =====================================================================
@@ -915,11 +1030,10 @@
           cont.querySelectorAll('button').forEach(x => { x.disabled = true; });
           b.classList.add(o.giusta ? 'giusta' : 'sbagliata');
           cont.querySelectorAll('button').forEach((x, j) => { if (d.opz[j].giusta) x.classList.add('giusta'); });
-          if (o.giusta) { punteggio++; festa(b); }
+          if (o.giusta) { punteggio++; festa(b); CMASC.reagisci('giusto'); } else CMASC.reagisci('sbagliato');
           esiti.push({ q: d.q, ok: o.giusta });
           const sp = card.querySelector('.quiz-spiega'); sp.hidden = false; sp.innerHTML = md(d.q.spiegazione);
           card.querySelector('.b-avanti').hidden = false;
-          CMASC.espressione(o.giusta ? 'felice' : 'pensa');
         });
         cont.appendChild(b);
       });
@@ -933,7 +1047,7 @@
       p.quizUltimo = punteggio; salva();
       barra.querySelector('i').style.width = '100%';
       const frazione = punteggio / domande.length;
-      const commento = frazione === 1 ? 'Tutte giuste. Non ho niente da aggiungere, e per una tartaruga è raro.' : frazione >= 0.7 ? 'Bene. Le sbagliate le trovi qui sotto con la spiegazione: rileggile e sono tue.' : frazione >= 0.5 ? 'A metà strada. Torna alla teoria per le sezioni delle domande sbagliate, poi rifai il quiz.' : 'Questa volta è andata così. Ripassa la teoria con calma: il quiz non scappa, e nemmeno io.';
+      const commento = frazione === 1 ? 'Tutte giuste. Non ho niente da aggiungere, e per un computer è raro.' : frazione >= 0.7 ? 'Bene. Le sbagliate le trovi qui sotto con la spiegazione: rileggile e sono tue.' : frazione >= 0.5 ? 'A metà strada. Torna alla teoria per le sezioni delle domande sbagliate, poi rifai il quiz.' : 'Questa volta è andata così. Ripassa la teoria con calma: il quiz non scappa, e nemmeno io.';
       card.innerHTML = `<div class="quiz-risultato"><div class="punteggio">${punteggio} / ${domande.length}</div><div class="commento">${esc(commento)}</div>
         <div class="riga-btn" style="justify-content:center"><button class="btn primario b-rifai" type="button">Rifai il quiz</button><a class="btn" href="#/argomento/${v.id}/teoria">Torna alla teoria</a><a class="btn" href="#/argomento/${v.id}/esercizi">Vai agli esercizi</a></div>
         <div class="quiz-riepilogo"></div></div>`;
@@ -1008,7 +1122,7 @@
   function paginaMatematici(sel) {
     paginaCorrente = 'matematici'; document.title = 'I matematici — Compasso';
     svuota();
-    app.appendChild(h('<div><h1 class="titolo-pagina">Le persone dietro le formule</h1><p class="sotto-pagina">Tutti gli aneddoti che Zenone racconta, raccolti per matematico. Tocca un nome per leggere le storie e vedere in quali argomenti compare.</p></div>'));
+    app.appendChild(h('<div><h1 class="titolo-pagina">Le persone dietro le formule</h1><p class="sotto-pagina">Tutti gli aneddoti che Ada racconta, raccolti per matematico. Tocca un nome per leggere le storie e vedere in quali argomenti compare.</p></div>'));
     const cont = h('<div class="fc-vuoto">Sto raccogliendo le storie da tutti gli argomenti…</div>'); app.appendChild(cont);
     Promise.all(IND.argomenti.map(a => caricaArgomento(a.id).catch(() => null))).then(argomenti => {
       const persone = {};
@@ -1079,13 +1193,15 @@
     const sez = h('<section class="scheda"></section>'); app.appendChild(sez);
     sez.innerHTML = `
       <div class="impostazione"><div class="desc">Tema<small>Chiaro, scuro o come il sistema.</small></div><select class="s-tema" style="padding:8px;border-radius:8px;border:1px solid var(--bordo2);background:var(--sup)"><option value="auto">Automatico</option><option value="chiaro">Chiaro</option><option value="scuro">Scuro</option></select></div>
-      <div class="impostazione"><div class="desc">Zenone, la mascotte<small>Suggerimenti e aneddoti mentre studi. Spenta, resta comunque disponibile nei pulsanti «Suggerimento».</small></div><button class="interruttore s-masc" role="switch" aria-checked="${imp.mascotte}" type="button"></button></div>
+      <div class="impostazione"><div class="desc">Lettura facilitata<small>Testo più grande, più spazio fra righe, lettere e parole, niente corsivo. Si accende anche dal pulsante «Aa» in alto.</small></div><button class="interruttore s-lett" role="switch" aria-checked="${!!imp.letturaFacile}" type="button"></button></div>
+      <div class="impostazione"><div class="desc">Ada, la mascotte<small>Suggerimenti e aneddoti mentre studi. Spenta, resta comunque disponibile nei pulsanti «Suggerimento».</small></div><button class="interruttore s-masc" role="switch" aria-checked="${imp.mascotte}" type="button"></button></div>
       <div class="impostazione"><div class="desc">Mescola le flashcard<small>Se è spento, le carte seguono l'ordine della teoria.</small></div><button class="interruttore s-mesc" role="switch" aria-checked="${imp.mescola}" type="button"></button></div>
       <div class="impostazione"><div class="desc">Esporta i progressi<small>Un file JSON con progressi, carte tue e selezioni.</small></div><button class="btn piccolo s-esp" type="button">Esporta</button></div>
       <div class="impostazione"><div class="desc">Importa i progressi<small>Sostituisce quelli attuali.</small></div><label class="btn piccolo">Scegli il file<input type="file" accept="application/json" class="s-imp" hidden></label></div>
       <div class="impostazione"><div class="desc">Azzera tutto<small>Cancella progressi, carte tue e selezioni. Non si torna indietro.</small></div><button class="btn piccolo s-azz" type="button" style="color:var(--no);border-color:var(--no)">Azzera</button></div>`;
     app.appendChild(h(`<div class="versione">Compasso v${VERSIONE}</div>`));
     const tema = sez.querySelector('.s-tema'); tema.value = imp.tema; tema.addEventListener('change', () => { imp.tema = tema.value; salva(); applicaTema(); });
+    sez.querySelector('.s-lett').addEventListener('click', e => { imp.letturaFacile = !imp.letturaFacile; e.target.setAttribute('aria-checked', imp.letturaFacile); salva(); applicaLettura(); });
     sez.querySelector('.s-masc').addEventListener('click', e => { imp.mascotte = !imp.mascotte; e.target.setAttribute('aria-checked', imp.mascotte); salva(); CMASC.visibile(imp.mascotte); });
     sez.querySelector('.s-mesc').addEventListener('click', e => { imp.mescola = !imp.mescola; e.target.setAttribute('aria-checked', imp.mescola); salva(); });
     sez.querySelector('.s-esp').addEventListener('click', () => {
@@ -1104,26 +1220,28 @@
      ===================================================================== */
   function raccontaAneddoto(arg) {
     const an = scegli(arg.aneddoti);
-    const html = `<p class="chi">${esc(an.matematico)} <small>${esc(an.anni)}</small></p><p><b>${esc(an.titolo)}</b></p>${md(an.testo)}${an.legame ? '<p style="color:var(--testo2);font-size:.88rem">' + md(an.legame).replace(/^<p>|<\/p>$/g, '') + '</p>' : ''}`;
-    CMASC.dici(html, { tipo: 'aneddoto', html: true, espressione: 'felice', azioni: [{ testo: 'Un altro', fn: () => raccontaAneddoto(arg) }, { testo: 'Tutti i matematici', fn: () => naviga('#/matematici/' + chiaveMatematico(an.matematico)) }] });
+    const html = `<p><span class="chi">${esc(an.matematico)}</span> <small class="anni">${esc(an.anni)}</small><br><b>${esc(an.titolo)}</b></p>${md(an.testo)}${an.legame ? '<p style="color:var(--testo2);font-size:.88rem">' + md(an.legame).replace(/^<p>|<\/p>$/g, '') + '</p>' : ''}`;
+    CMASC.dici(html, { tipo: 'aneddoto', html: true, chiesto: true, espressione: 'felice', azioni: [{ testo: 'Un altro', fn: () => raccontaAneddoto(arg) }, { testo: 'Tutti i matematici', fn: () => naviga('#/matematici/' + chiaveMatematico(an.matematico)) }] });
   }
   function menuMascotte() {
     if (CMASC.aperta()) { CMASC.chiudi(); return; }
     const arg = argCorrente && registro[argCorrente];
     if (arg) {
-      CMASC.dici('Sono qui. Vuoi un suggerimento su «' + arg.titolo + '» o una storia di chi l\'ha inventata?', { tipo: 'commento', espressione: 'felice', azioni: [
-        { testo: 'Un suggerimento', fn: () => { const s = scegli(arg.suggerimenti); CMASC.dici(md(s.testo), { tipo: s.tipo === 'errore' ? 'errore' : 'suggerimento', html: true, espressione: 'pensa', azioni: [{ testo: 'Un altro', fn: () => document.querySelector('.zenone-figura').click() }] }); } },
+      CMASC.dici('Vuoi un suggerimento o una storia?', { tipo: 'commento', chiesto: true, espressione: 'felice', azioni: [
+        { testo: 'Un suggerimento', fn: () => { const s = scegli(arg.suggerimenti); CMASC.dici(md(s.testo), { tipo: s.tipo === 'errore' ? 'errore' : 'suggerimento', html: true, chiesto: true, espressione: 'pensa', azioni: [{ testo: 'Un altro', fn: () => document.querySelector('.mascotte-figura').click() }] }); } },
         { testo: 'Un aneddoto', fn: () => raccontaAneddoto(arg) }
       ] });
+    } else if (paginaCorrente === 'lab' && labCorrente) {
+      CMASC.dici(labCorrente.intro || labCorrente.sotto, { tipo: 'suggerimento', titolo: 'Come si gioca', chiesto: true, espressione: 'pensa', azioni: [{ testo: 'Torna all\'argomento', fn: () => naviga('#/argomento/' + labCorrente.argomento + '/teoria') }] });
     } else {
-      CMASC.dici(scegli(CONSIGLI), { tipo: 'suggerimento', espressione: 'pensa', azioni: [
+      CMASC.dici(scegli(CONSIGLI), { tipo: 'suggerimento', chiesto: true, espressione: 'pensa', azioni: [
         { testo: 'Un altro', fn: () => { CMASC.chiudi(); menuMascotte(); } },
         { testo: 'Una storia a caso', fn: () => { const v = scegli(IND.argomenti); caricaArgomento(v.id).then(raccontaAneddoto).catch(() => CMASC.dici('Quella storia non è ancora pronta. Riprova.', { tipo: 'commento', durata: 3000 })); } }
       ] });
     }
   }
   CMASC.monta(document.body);
-  document.querySelector('.zenone-figura').addEventListener('click', menuMascotte);
+  document.querySelector('.mascotte-figura').addEventListener('click', menuMascotte);
   CMASC.visibile(stato.impostazioni.mascotte);
 
   /* avvio */

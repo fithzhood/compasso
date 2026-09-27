@@ -1,73 +1,125 @@
 (function () {
 const R = String.raw;
+/* allenamento. Domini: tutti con la stessa casella e gli stessi simboli, così la casella non dice
+   che forma ha la risposta. dis('>', 1) accetta x>1, 1<x, ]1;+inf[, (1;+∞), x∈(1;+∞) …;
+   tranne(2) accetta x≠2, R-{2}, x<2 o x>2, ]-∞;2[∪]2;+∞[ …; tranne2(-2, 2) per due valori esclusi.
+   (≥, ≤, ≠ diventano >=, <=, != da soli nel confronto.) Pari e dispari: PARI, DISPARI, NESSUNA.
+   Espressioni (composta e inversa): espr(['(x+4)/2', …], prefissi) aggiunge le varianti con * e
+   con «y=» o «f^-1(x)=» davanti; le forme sono state valutate in punti a caso contro la funzione giusta. */
+const SEGNA_D = 'es. x > 7 oppure x ≠ 7';
+const SIMB_D = ['<', '>', '≤', '≥', '≠', '∞', '(', ')', ';', '−'];
+const dominio = f => ({ tipo: 'testo', accettate: f.concat(f.map(a => 'x∈' + a), f.map(a => 'D=' + a)), segnaposto: SEGNA_D, simboli: SIMB_D });
+const INF = ['inf', '∞', 'infinito'], SEP = [';', ','];
+const disF = (op, n) => {
+  const rov = { '>': '<', '<': '>', '>=': '<=', '<=': '>=' }[op], f = ['x' + op + n, n + rov + 'x'];
+  INF.forEach(i => SEP.forEach(s => ['+', ''].forEach(p => {
+    if (op === '>') f.push(']' + n + s + p + i + '[', '(' + n + s + p + i + ')');
+    if (op === '>=') f.push('[' + n + s + p + i + '[', '[' + n + s + p + i + ')');
+    if (op === '<') f.push(']-' + i + s + n + '[', '(-' + i + s + n + ')');
+    if (op === '<=') f.push(']-' + i + s + n + ']', '(-' + i + s + n + ']');
+  })));
+  return f;
+};
+const dis = (op, n) => dominio(disF(op, n));
+const menoF = ks => { const f = []; ['R', 'ℝ'].forEach(r => ['-', '\\', '∖'].forEach(m => SEP.forEach(s => f.push(r + m + '{' + ks.join(s) + '}', r + m + '{' + ks.slice().reverse().join(s) + '}')))); return f; };
+const tranne = k => {
+  const f = ['x≠' + k, k + '≠x', 'x<>' + k, 'x diverso da ' + k].concat(menoF([k]));
+  const sx = ['x<' + k, k + '>x'], dx = ['x>' + k, k + '<x'];
+  ['o', 'oppure', 'v', '∨', 'u', '∪', ',', ';'].forEach(o => sx.forEach(p => dx.forEach(q => f.push(p + o + q, q + o + p))));
+  INF.forEach(i => SEP.forEach(s => ['u', '∪'].forEach(o => [[']', '['], ['(', ')']].forEach(([a, c]) => ['+', ''].forEach(p => f.push(a + '-' + i + s + k + c + o + a + k + s + p + i + c))))));
+  return dominio(f);
+};
+const tranne2 = (a, b) => {
+  const f = ['x≠±' + b, 'x≠' + a + ';' + b, 'x≠' + a + ',' + b, 'x≠' + b + ';' + a, 'x≠' + b + ',' + a].concat(menoF([a, b]));
+  const u = ['x≠' + a, a + '≠x'], v = ['x≠' + b, b + '≠x'];
+  ['e', 'ed', '∧', ',', ';'].forEach(o => u.forEach(p => v.forEach(q => f.push(p + o + q, q + o + p))));
+  INF.forEach(i => SEP.forEach(s => ['u', '∪'].forEach(o => [[']', '['], ['(', ')']].forEach(([p, c]) => f.push(p + '-' + i + s + a + c + o + p + a + s + b + c + o + p + b + s + '+' + i + c, p + '-' + i + s + a + c + o + p + a + s + b + c + o + p + b + s + i + c)))));
+  return dominio(f);
+};
+/* fuori(a, b): x ≤ a oppure x ≥ b (due semirette chiuse) */
+const fuori = (a, b) => {
+  const f = ['|x|>=' + b], sx = ['x<=' + a, a + '>=x'], dx = ['x>=' + b, b + '<=x'];
+  ['o', 'oppure', 'v', '∨', 'u', '∪', ',', ';'].forEach(o => sx.forEach(p => dx.forEach(q => f.push(p + o + q, q + o + p))));
+  INF.forEach(i => SEP.forEach(s => ['u', '∪'].forEach(o => [[']', '['], ['(', ')']].forEach(([A, C]) => ['+', ''].forEach(p => f.push(A + '-' + i + s + a + ']' + o + '[' + b + s + p + i + C))))));
+  return dominio(f);
+};
+const SEGNA_PD = 'pari, dispari o nessuna';
+const pd = f => ({ tipo: 'testo', accettate: f, segnaposto: SEGNA_PD, simboli: [] });
+const PARI = pd(['pari', 'è pari', 'e pari', 'f è pari', 'la funzione è pari', 'funzione pari']);
+const DISPARI = pd(['dispari', 'è dispari', 'e dispari', 'f è dispari', 'la funzione è dispari', 'funzione dispari']);
+const NESSUNA = pd(['nessuna', 'nessuna delle due', 'né pari né dispari', 'ne pari ne dispari', 'nè pari nè dispari', 'non è né pari né dispari', 'non e ne pari ne dispari', 'nessuno', 'nessuna delle 2']);
+const espr = (forme, prefissi) => {
+  const f = [];
+  forme.forEach(a => { const conStella = a.replace(/(\d)(x|\()/g, '$1*$2').replace(/\)(x|\()/g, ')*$1'); [a, conStella].forEach(b => ['', 'y='].concat(prefissi).forEach(p => { if (!f.includes(p + b)) f.push(p + b); })); });
+  return { tipo: 'testo', accettate: f, segnaposto: 'es. 3x+1 oppure (x-2)/5', simboli: ['/', '(', ')', '^', '−'] };
+};
+const INV = ['f^-1(x)=', 'f^(-1)(x)=', 'f-1(x)=', 'f⁻¹(x)='];
 COMPASSO.registra({
   id: 'funzioni-generalita',
   titolo: 'Le funzioni',
 
-  introduzione: R`Un taxi chiede $3$ euro alla partenza più $1{,}20$ euro al chilometro. Quanto costa una corsa di $8$ km? La risposta è una sola: $3 + 1{,}20 \cdot 8 = 12{,}60$ euro. Per ogni distanza c'è un prezzo, e uno soltanto. Questa regola è una **funzione**: prende un numero (i chilometri) e ne restituisce un altro (il prezzo), $f(x) = 3 + 1{,}2\,x$.
+  introduzione: R`Un taxi chiede $3$ euro alla partenza più $1{,}20$ euro al chilometro. Una corsa di $8$ km costa $3 + 1{,}20 \cdot 8 = 12{,}60$ euro. Per ogni distanza c'è un solo prezzo: questa regola è una **funzione**, $f(x) = 3 + 1{,}2\,x$.
 
-Da qui in avanti quasi tutta la matematica del triennio parla di funzioni. Esponenziali, logaritmi, seno e coseno sono *tipi* di funzioni; limiti, derivate e integrali sono *operazioni* che si fanno sulle funzioni. Conviene quindi imparare adesso il vocabolario comune (dominio, immagine, iniettiva, crescente, composta, inversa), che poi si userà sempre.
+Quasi tutta la matematica che viene dopo parla di funzioni. Qui impari le parole che userai sempre: dominio, immagine, iniettiva, crescente, composta, inversa.
 
-Serve saper leggere il piano cartesiano e risolvere equazioni e disequazioni, anche di secondo grado: il dominio di una funzione, per esempio, si trova proprio risolvendo disequazioni.`,
+Ti serve saper risolvere equazioni e disequazioni, perché il dominio si trova così.`,
 
   inBreve: [
-    R`Una funzione associa a **ogni** $x$ del dominio **un solo** valore $f(x)$. Sul grafico: ogni retta verticale lo taglia al massimo una volta.`,
-    R`Il dominio naturale si trova scrivendo una condizione per ogni pezzo delicato (denominatore diverso da zero, radicando di indice pari non negativo, argomento del logaritmo positivo) e prendendo i valori che le rispettano **tutte insieme**.`,
-    R`L'immagine è l'insieme dei valori che escono davvero: si legge proiettando il grafico sull'asse $y$, mentre il dominio si legge sull'asse $x$.`,
-    R`Iniettiva vuol dire che $x$ diversi danno sempre $y$ diversi: ogni retta orizzontale taglia il grafico al massimo una volta. Solo una funzione biunivoca ha l'inversa, e il grafico dell'inversa è il simmetrico rispetto alla retta $y = x$.`,
-    R`Nella composta $(g \circ f)(x) = g(f(x))$ si calcola prima $f$ e poi $g$: scambiando l'ordine si ottiene quasi sempre un'altra funzione.`,
-    R`$y = f(x - h) + k$ è il grafico di $f$ spostato di $h$ verso destra e di $k$ verso l'alto: il meno davanti ad $h$ inganna.`
+    R`Una funzione associa a **ogni** $x$ del dominio **un solo** valore $f(x)$. Sul grafico, ogni retta verticale lo taglia al massimo una volta.`,
+    R`Per il dominio scrivi una condizione per ogni pezzo delicato: denominatore diverso da zero, radicando di indice pari non negativo, argomento del logaritmo positivo. Il dominio sono i valori che le rispettano **tutte insieme**.`,
+    R`L'immagine sono i valori che escono davvero. Il dominio si legge sull'asse $x$, l'immagine sull'asse $y$.`,
+    R`Iniettiva vuol dire che $x$ diversi danno sempre $y$ diversi. Solo una funzione biunivoca ha l'inversa, e il grafico dell'inversa è il simmetrico rispetto alla retta $y = x$.`,
+    R`Nella composta $(g \circ f)(x) = g(f(x))$ si calcola prima $f$ e poi $g$. Scambiando l'ordine, di solito ottieni un'altra funzione.`,
+    R`$y = f(x - h) + k$ è il grafico di $f$ spostato di $h$ verso destra e di $k$ verso l'alto. Attento al meno davanti ad $h$.`
   ],
 
   sezioni: [
-    { id: 'definizione', titolo: 'Che cos\'è una funzione', testo: R`«A ogni persona associa il suo codice fiscale» è una funzione: ciascuno ne ha uno, e uno solo. «A ogni persona associa i suoi fratelli» invece non lo è: c'è chi non ne ha e chi ne ha tre. Quello che conta è che a ogni elemento di partenza corrisponda **esattamente un** risultato.
+    { id: 'definizione', titolo: 'Che cos\'è una funzione', testo: R`«A ogni persona associa il suo codice fiscale» è una funzione, perché ciascuno ne ha uno solo. «A ogni persona associa i suoi fratelli» non lo è: c'è chi non ne ha e chi ne ha tre.
 
->* Una **funzione** $f: A \to B$ è una regola che a **ogni** elemento $x$ dell'insieme $A$ associa **uno e un solo** elemento $f(x)$ dell'insieme $B$. Nessun $x$ resta senza risultato, nessun $x$ ne ha due.
+>* Una **funzione** $f: A \to B$ associa a **ogni** elemento $x$ di $A$ **uno e un solo** elemento $f(x)$ di $B$.
 
-$f(x)$ si legge «$f$ di $x$» ed è il valore che la funzione associa a $x$. Si scrive anche $x \mapsto f(x)$: «$x$ va in $f(x)$».
+$f(x)$ si legge «$f$ di $x$»: è il valore che la funzione associa a $x$.
 
-Intorno a una funzione ci sono tre insiemi, e hanno nomi diversi:
+Intorno a una funzione ci sono tre insiemi. Nella tabella l'esempio è $f(x) = x^2$, da $\mathbb{R}$ a $\mathbb{R}$:
 
-| nome | che cos'è | per $f(x) = x^2$, da $\mathbb{R}$ a $\mathbb{R}$ |
+| nome | che cos'è | per $x^2$ |
 |---|---|---|
-| **dominio** | i valori di $x$ che si possono mettere dentro | $\mathbb{R}$ |
-| **codominio** | l'insieme in cui si cercano i risultati, scelto in partenza | $\mathbb{R}$ |
+| **dominio** | le $x$ che puoi mettere dentro | $\mathbb{R}$ |
+| **codominio** | dove cerchi i risultati | $\mathbb{R}$ |
 | **immagine** | i risultati che escono davvero | $[0, +\infty)$ |
 
-L'immagine sta sempre dentro il codominio, ma può essere più piccola. Nel grafico qui sotto c'è $f(x) = x^2 - 2x$: prova a far uscire un risultato qualunque.
+L'immagine può essere più piccola del codominio. Nel grafico c'è $f(x) = x^2 - 2x$: prova a far uscire un risultato qualunque.
 
 [[grafico:immagine]]
 
-Sotto $-1$ non si scende, perché $x^2 - 2x = (x-1)^2 - 1$ e un quadrato non è mai negativo. L'immagine di questa funzione è $[-1, +\infty)$, anche se il codominio è tutto $\mathbb{R}$.
+Sotto $-1$ non si scende, perché $x^2 - 2x = (x-1)^2 - 1$ e un quadrato non è mai negativo. Quindi l'immagine è $[-1, +\infty)$, anche se il codominio è $\mathbb{R}$.
 
->! Codominio e immagine non sono la stessa cosa. Il codominio lo scegli tu quando scrivi $f: A \to B$; l'immagine la decide la regola, ed è fatta solo dei valori che la funzione raggiunge davvero.
+>! Il codominio lo scegli tu quando scrivi $f: A \to B$. L'immagine invece la decide la regola: sono i valori raggiunti davvero.
 
 ?? Qual è l'immagine di $f(x) = x^2 + 1$, da $\mathbb{R}$ a $\mathbb{R}$?
 [x] $[1, +\infty)$
 [ ] $\mathbb{R}$
 [ ] $[0, +\infty)$
-=> $x^2$ vale almeno $0$, quindi $x^2 + 1$ vale almeno $1$, e ogni numero da $1$ in su si raggiunge. $\mathbb{R}$ è il codominio, non l'immagine: i numeri sotto $1$ non escono mai. $[0, +\infty)$ è l'immagine di $x^2$: manca lo spostamento di $+1$.` },
+=> $x^2$ vale almeno $0$, quindi $x^2 + 1$ vale almeno $1$ e raggiunge ogni numero da $1$ in su. $\mathbb{R}$ è il codominio, non l'immagine. $[0, +\infty)$ è l'immagine di $x^2$: manca il $+1$.` },
 
-    { id: 'grafico-funzione', titolo: 'Funzioni numeriche e il loro grafico', testo: R`Da qui in poi dominio e codominio saranno insiemi di numeri reali: si parla di **funzioni numeriche** (o funzioni reali di variabile reale). Una funzione così si disegna: il suo **grafico** è l'insieme dei punti $(x;\ f(x))$ del piano, uno per ogni $x$ del dominio.
+    { id: 'grafico-funzione', titolo: 'Funzioni numeriche e il loro grafico', testo: R`D'ora in poi dominio e codominio sono fatti di numeri reali: sono **funzioni numeriche**. Il loro **grafico** è l'insieme dei punti $(x;\ f(x))$.
 
-Guardando un disegno, come fai a capire se è il grafico di una funzione? Fissa un'ascissa, per esempio $x = 2$. La funzione dà un solo valore $f(2)$, quindi sulla retta verticale $x = 2$ il grafico può avere un punto solo, oppure nessuno se $2$ non sta nel dominio. Mai due.
+Come capisci da un disegno se è il grafico di una funzione? Fissa $x = 2$. La funzione dà un solo valore $f(2)$, quindi sulla retta $x = 2$ il grafico ha al massimo un punto.
 
 >* **Test della retta verticale:** una curva è il grafico di una funzione se ogni retta verticale la taglia **al massimo in un punto**.
 
-La circonferenza $x^2 + y^2 = 1$ non passa il test: la retta $x = 0{,}5$ la taglia in $(0{,}5;\ 0{,}87)$ e in $(0{,}5;\ -0{,}87)$, cioè a $x = 0{,}5$ corrisponderebbero due valori di $y$. La metà superiore da sola, $y = \sqrt{1 - x^2}$, invece è una funzione.
+La circonferenza $x^2 + y^2 = 1$ non passa il test. La retta $x = 0{,}5$ la taglia in due punti, $(0{,}5;\ 0{,}87)$ e $(0{,}5;\ -0{,}87)$. La sola metà superiore, $y = \sqrt{1 - x^2}$, invece è una funzione.
 
->! Non ogni equazione in $x$ e $y$ definisce una funzione. Prima di scrivere «la funzione $y = \ldots$» controlla che a ogni $x$ corrisponda davvero *un solo* $y$.
+>! Non ogni equazione in $x$ e $y$ è una funzione. Controlla che a ogni $x$ corrisponda *un solo* $y$.
 
 ?? Quale di queste curve è il grafico di una funzione?
 [x] la parabola $y = x^2 - 4$
 [ ] la parabola $x = y^2$
 [ ] la retta $x = 3$
 [ ] la circonferenza $x^2 + y^2 = 4$
-=> Nella $y = x^2 - 4$ ogni $x$ dà un solo $y$. La parabola $x = y^2$ è coricata: per $x = 4$ si ha $y = 2$ e $y = -2$. La retta $x = 3$ è proprio una retta verticale, che contiene infiniti punti con la stessa ascissa. La circonferenza ha due punti su quasi ogni verticale.` },
+=> In $y = x^2 - 4$ ogni $x$ dà un solo $y$. La parabola $x = y^2$ è coricata: per $x = 4$ dà $y = 2$ e $y = -2$. La retta $x = 3$ è proprio verticale. La circonferenza ha due punti su quasi ogni verticale.` },
 
-    { id: 'classificazione', titolo: 'Come si classificano le funzioni', testo: R`Il nome di una funzione dice come compare la $x$ nella sua espressione. Conta saperlo, perché ogni tipo porta con sé le sue condizioni sul dominio.
-
-Le funzioni **algebriche** si costruiscono con le quattro operazioni, le potenze e le radici. Le **trascendenti** no: sono le esponenziali, i logaritmi e le funzioni goniometriche, che si studiano negli argomenti successivi.
+    { id: 'classificazione', titolo: 'Come si classificano le funzioni', testo: R`Il nome di una funzione dice dove compare la $x$, e ogni tipo ha le sue condizioni sul dominio. Le funzioni **algebriche** usano le quattro operazioni, le potenze e le radici. Le altre sono **trascendenti**.
 
 | tipo | come compare la $x$ | esempio |
 |---|---|---|
@@ -76,19 +128,17 @@ Le funzioni **algebriche** si costruiscono con le quattro operazioni, le potenze
 | irrazionale | sotto una radice | $y = \sqrt{2x - 1}$ |
 | trascendente | in un esponente, in un logaritmo, in un seno… | $y = 2^x$, $y = \log x$, $y = \sin x$ |
 
->* **Razionale** vuol dire che la $x$ non sta sotto nessuna radice. Razionale **intera** se la $x$ non compare al denominatore, **fratta** se ci compare.
+>* **Razionale** vuol dire che la $x$ non sta sotto una radice. È **intera** se la $x$ non sta al denominatore, **fratta** se ci sta.
 
->! «Razionale» non riguarda i coefficienti. $y = \sqrt{2}\,x + 1$ è razionale intera anche se $\sqrt{2}$ è irrazionale: sotto la radice c'è il numero $2$, non la $x$.
+>! «Razionale» non riguarda i coefficienti. $y = \sqrt{2}\,x + 1$ è razionale intera, perché sotto la radice c'è il $2$, non la $x$.
 
 ?? Di che tipo è la funzione $y = \dfrac{\sqrt{3}\,x^2}{5}$?
 [x] razionale intera
 [ ] irrazionale
 [ ] razionale fratta
-=> La $x$ non sta sotto la radice (lì c'è solo il $3$) e non sta al denominatore (lì c'è solo il $5$): è il polinomio $\frac{\sqrt 3}{5}x^2$. Una radice o una frazione fanno cambiare tipo solo se contengono la $x$.` },
+=> Sotto la radice c'è solo il $3$, e al denominatore c'è solo il $5$. Quindi è il polinomio $\frac{\sqrt 3}{5}x^2$.` },
 
-    { id: 'dominio-naturale', titolo: 'Il dominio naturale', testo: R`Quanto vale $\dfrac{1}{x-3}$ per $x = 3$? Niente: non si divide per zero. Quando di una funzione ti danno solo l'espressione, il suo dominio è l'insieme dei numeri reali per cui quell'espressione si può calcolare. Si chiama **dominio naturale**, o **campo di esistenza** (c.e.).
-
-Per trovarlo si guardano i pezzi dell'espressione che non accettano qualunque numero:
+    { id: 'dominio-naturale', titolo: 'Il dominio naturale', testo: R`Quanto vale $\dfrac{1}{x-3}$ per $x = 3$? Niente, perché non si divide per zero. Il **dominio naturale**, o **campo di esistenza** (c.e.), sono i numeri per cui l'espressione si può calcolare. Per trovarlo guarda i pezzi che non accettano qualunque numero:
 
 | se l'espressione contiene… | serve che… |
 |---|---|
@@ -97,7 +147,7 @@ Per trovarlo si guardano i pezzi dell'espressione che non accettano qualunque nu
 | una radice di indice dispari, $\sqrt[3]{A(x)}$, … | nessuna condizione |
 | un logaritmo $\log A(x)$ | $A(x) > 0$ |
 
-Se i pezzi delicati sono più di uno, le condizioni devono valere **tutte insieme**: si mettono a sistema.
+Se i pezzi delicati sono più di uno, le condizioni devono valere **tutte insieme**: mettile a sistema.
 
 ~ f(x) = \dfrac{\sqrt{x+1}}{x-4} :: due pezzi delicati: una radice quadrata e un denominatore
 ~ \evid{x+1 \ge 0} :: la radice quadrata vuole il radicando non negativo
@@ -105,21 +155,21 @@ Se i pezzi delicati sono più di uno, le condizioni devono valere **tutte insiem
 ~ x \ge -1 \ \text{ e } \ x \ne 4 :: risolvo le due condizioni e le tengo insieme
 ~ D = \evidb{[-1, 4) \cup (4, +\infty)} :: da $-1$ compreso in su, saltando il $4$
 
->* Il dominio naturale è fatto dai valori di $x$ che rispettano **tutte** le condizioni: è l'intersezione delle soluzioni, mai l'unione.
+>* Il dominio è fatto dai valori che rispettano **tutte** le condizioni: è l'intersezione, mai l'unione.
 
->! Con più pezzi delicati è facile dimenticarne uno. Prima di risolvere, scrivi una riga per ogni condizione.
+>! Con più pezzi delicati è facile dimenticarne uno. Scrivi una riga per ogni condizione.
 
 ?? Qual è il dominio di $f(x) = \dfrac{1}{\sqrt{x-2}}$?
 [x] $x > 2$
 [ ] $x \ge 2$
 [ ] $x \ne 2$
-=> La radice vuole $x - 2 \ge 0$, ma sta anche al denominatore, che non può valere zero: quindi $x - 2 > 0$. Chi risponde $x \ge 2$ ha guardato solo la radice; con $x = 2$ si otterrebbe $\frac{1}{0}$.` },
+=> La radice vuole $x - 2 \ge 0$. Però sta al denominatore, che non può valere zero: quindi $x - 2 > 0$. Con $x = 2$ otterresti $\frac{1}{0}$.` },
 
-    { id: 'zeri-e-segno', titolo: 'Zeri e segno di una funzione', testo: R`Dove il grafico incontra l'asse $x$, l'ordinata vale zero. Le ascisse di quei punti sono gli **zeri** della funzione.
+    { id: 'zeri-e-segno', titolo: 'Zeri e segno di una funzione', testo: R`Gli **zeri** sono le ascisse dei punti in cui il grafico incontra l'asse $x$.
 
->* Uno **zero** di $f$ è un valore $x_0$ **del dominio** per cui $f(x_0) = 0$. Si trovano risolvendo l'equazione $f(x) = 0$. Il **segno** di $f$ dice dove $f(x) > 0$ (grafico sopra l'asse $x$) e dove $f(x) < 0$ (grafico sotto).
+>* Uno **zero** di $f$ è un $x_0$ **del dominio** con $f(x_0) = 0$: si trova risolvendo $f(x) = 0$. Il **segno** di $f$ dice dove $f(x) > 0$, cioè il grafico sta sopra l'asse $x$, e dove $f(x) < 0$.
 
-Per il segno si risolve la disequazione $f(x) > 0$. Se $f$ è un prodotto o un quoziente, si studia il segno di ogni fattore e si mette tutto in una **tabella dei segni**, come per le disequazioni fratte. Per $f(x) = \dfrac{x-1}{x+2}$: il numeratore è positivo per $x > 1$, il denominatore per $x > -2$.
+Per il segno risolvi $f(x) > 0$. Con un prodotto o un quoziente usa la **tabella dei segni**, come nelle disequazioni fratte. Per $f(x) = \dfrac{x-1}{x+2}$ il numeratore è positivo per $x > 1$, il denominatore per $x > -2$.
 
 | | $x < -2$ | $-2 < x < 1$ | $x > 1$ |
 |---|---|---|---|
@@ -127,93 +177,93 @@ Per il segno si risolve la disequazione $f(x) > 0$. Se $f$ è un prodotto o un q
 | $x + 2$ | $-$ | $+$ | $+$ |
 | $f(x)$ | $+$ | $-$ | $+$ |
 
-Quindi $f$ è positiva per $x < -2$ e per $x > 1$, negativa fra $-2$ e $1$. Lo zero è $x = 1$. In $x = -2$ la funzione non esiste: lì il segno non c'è.
+Quindi $f$ è positiva per $x < -2$ e per $x > 1$, negativa fra $-2$ e $1$. Lo zero è $x = 1$, e in $x = -2$ la funzione non esiste.
 
->! «Positiva» e «crescente» sono due cose diverse. Il segno dice se il grafico sta sopra o sotto l'asse $x$; la crescenza dice se sale o scende. Una funzione può essere positiva e scendere, oppure negativa e salire.
+>! «Positiva» non vuol dire «crescente». Il segno dice se il grafico sta sopra o sotto l'asse $x$, la crescenza se sale o scende.
 
 ?? Quali sono gli zeri di $f(x) = \dfrac{x^2 - 4}{x + 2}$?
 [x] solo $x = 2$
 [ ] $x = 2$ e $x = -2$
 [ ] solo $x = -2$
-=> Il numeratore si annulla in $2$ e in $-2$, ma $x = -2$ annulla anche il denominatore, quindi non sta nel dominio: lì la funzione non vale zero, non esiste proprio. Uno zero deve stare nel dominio: resta solo $x = 2$.` },
+=> Il numeratore si annulla in $2$ e in $-2$. Ma $x = -2$ annulla anche il denominatore: lì la funzione non esiste. Uno zero deve stare nel dominio, quindi resta solo $x = 2$.` },
 
-    { id: 'iniettive-suriettive', titolo: 'Funzioni iniettive, suriettive, biunivoche', testo: R`Con $f(x) = x^2$ si ha $f(2) = 4$ e anche $f(-2) = 4$: due ingressi diversi danno lo stesso risultato. Se ti dico solo che è uscito $4$, non puoi sapere da dove si è partiti. Le funzioni in cui questo non succede mai si chiamano iniettive.
+    { id: 'iniettive-suriettive', titolo: 'Funzioni iniettive, suriettive, biunivoche', testo: R`Con $f(x) = x^2$ hai $f(2) = 4$ e anche $f(-2) = 4$. Se sai solo che è uscito $4$, non sai da dove sei partito.
 
->* $f$ è **iniettiva** se valori diversi di $x$ danno sempre valori diversi di $f(x)$: $x_1 \ne x_2 \Rightarrow f(x_1) \ne f(x_2)$. Sul grafico: **ogni retta orizzontale lo taglia al massimo una volta**.
+>* $f$ è **iniettiva** se $x$ diversi danno sempre valori diversi: $x_1 \ne x_2 \Rightarrow f(x_1) \ne f(x_2)$. Sul grafico, **ogni retta orizzontale lo taglia al massimo una volta**.
 
-Nel grafico trascina la retta orizzontale e conta i punti in cui taglia la parabola. Poi usa il cursore per far cominciare il dominio più a destra, e riprova.
+Trascina la retta orizzontale e conta i punti in cui taglia la parabola. Poi sposta con il cursore l'inizio del dominio e riprova.
 
 [[grafico:iniettiva]]
 
-Quando il dominio parte da $0$, ogni retta orizzontale taglia la curva una volta sola: $x^2$ ristretta a $[0, +\infty)$ è iniettiva. Togliere un pezzo di dominio può rendere iniettiva una funzione che non lo era.
+Con il dominio da $0$ in su, ogni retta orizzontale taglia la curva una volta sola: $x^2$ ristretta a $[0, +\infty)$ è iniettiva.
 
-Per dimostrarlo con i calcoli si parte da due ingressi con lo stesso risultato e si guarda se sono per forza uguali. Per $f(x) = 2x + 3$:
+Con i calcoli, parti da due ingressi con lo stesso risultato e guarda se sono per forza uguali. Per $f(x) = 2x + 3$:
 
 ~ f(x_1) = f(x_2) :: supponiamo che due ingressi diano lo stesso risultato
 ~ 2x_1 + 3 = 2x_2 + 3 :: scrivo la regola di $f$ per tutti e due
 ~ \evid{2x_1 = 2x_2} :: tolgo $3$ da entrambi i membri
 ~ \evidb{x_1 = x_2} :: divido per $2$: i due ingressi erano lo stesso numero, quindi $f$ è iniettiva
 
-Con $x^2$ lo stesso conto si ferma a $x_1^2 = x_2^2$, che vale anche per $x_1 = -x_2$: non è iniettiva.
+Con $x^2$ il conto si ferma a $x_1^2 = x_2^2$, che vale anche per $x_1 = -x_2$: non è iniettiva.
 
-L'altra proprietà guarda il codominio. $f: A \to B$ è **suriettiva** se ogni elemento di $B$ viene raggiunto, cioè se l'immagine coincide con tutto il codominio. Dipende da come si sceglie $B$: $x^2$ da $\mathbb{R}$ a $\mathbb{R}$ non è suriettiva (i negativi non escono mai), da $\mathbb{R}$ a $[0, +\infty)$ sì.
+$f: A \to B$ è **suriettiva** se l'immagine è tutto il codominio $B$. Per esempio $x^2$ da $\mathbb{R}$ a $\mathbb{R}$ non è suriettiva, perché i negativi non escono mai. Da $\mathbb{R}$ a $[0, +\infty)$ invece sì.
 
-Una funzione iniettiva **e** suriettiva si dice **biunivoca**: ogni elemento di $B$ viene da uno e un solo elemento di $A$. È la condizione per poterla invertire. $f(x) = 2x + 3$ da $\mathbb{R}$ a $\mathbb{R}$ è biunivoca.
+Una funzione iniettiva **e** suriettiva è **biunivoca**: ogni elemento di $B$ viene da un solo elemento di $A$. Solo così si può invertire.
 
->! Una funzione pari non è iniettiva: $f(-x) = f(x)$ vuol dire che $x$ e $-x$ danno sempre lo stesso risultato (l'unica eccezione è il caso limite di un dominio fatto solo dallo $0$).
+>! Una funzione pari non è iniettiva: per ogni $x \ne 0$, $x$ e $-x$ danno lo stesso risultato.
 
 ?? $f(x) = x^2$, con dominio $[0, +\infty)$ e codominio $\mathbb{R}$, è…
 [x] iniettiva ma non suriettiva
 [ ] biunivoca
 [ ] suriettiva ma non iniettiva
 [ ] né iniettiva né suriettiva
-=> Con il dominio ristretto a $x \ge 0$ ogni risultato viene da un solo $x$: è iniettiva. Ma i numeri negativi del codominio non escono mai, quindi non è suriettiva, e per questo non è biunivoca. Diventerebbe biunivoca scegliendo come codominio $[0, +\infty)$.` },
+=> Con $x \ge 0$ ogni risultato viene da un solo $x$: è iniettiva. Però i negativi del codominio non escono mai, quindi non è suriettiva e nemmeno biunivoca. Con codominio $[0, +\infty)$ sarebbe biunivoca.` },
 
-    { id: 'crescenza-monotonia', titolo: 'Funzioni crescenti, decrescenti, monotone', testo: R`Leggendo il grafico da sinistra a destra, ci sono tratti in cui sale e tratti in cui scende. Crescente e decrescente sono i nomi precisi di queste due cose.
+    { id: 'crescenza-monotonia', titolo: 'Funzioni crescenti, decrescenti, monotone', testo: R`Letto da sinistra a destra, un grafico ha tratti in cui sale e tratti in cui scende.
 
->* $f$ è **crescente** in un intervallo $I$ se, **per ogni** coppia $x_1 < x_2$ di $I$, vale $f(x_1) < f(x_2)$: più grande l'ingresso, più grande il risultato. È **decrescente** se invece $x_1 < x_2 \Rightarrow f(x_1) > f(x_2)$. È **monotona** in $I$ se è crescente in tutto $I$ oppure decrescente in tutto $I$.
+>* $f$ è **crescente** in un intervallo $I$ se, **per ogni** coppia $x_1 < x_2$ di $I$, vale $f(x_1) < f(x_2)$. È **decrescente** se $x_1 < x_2 \Rightarrow f(x_1) > f(x_2)$. È **monotona** in $I$ se è crescente in tutto $I$ oppure decrescente in tutto $I$.
 
-$f(x) = x^3$ è crescente su tutto $\mathbb{R}$. $f(x) = x^2$ invece non è monotona su $\mathbb{R}$: è decrescente su $(-\infty, 0]$ e crescente su $[0, +\infty)$. Cambia comportamento nel vertice.
+$f(x) = x^3$ è crescente su tutto $\mathbb{R}$. $f(x) = x^2$ invece non è monotona su $\mathbb{R}$: scende su $(-\infty, 0]$ e sale su $[0, +\infty)$.
 
-La definizione chiede di confrontare **tutte** le coppie di punti dell'intervallo, non una sola coppia scelta a caso.
+La definizione vale per **ogni** coppia di punti, non per una sola.
 
 ?? Sai che $f(1) = 2$ e $f(3) = 5$. Puoi concludere che $f$ è crescente in $[1, 3]$?
-=> No. Fra $1$ e $3$ la funzione potrebbe scendere e poi risalire: per esempio potrebbe valere $0$ in $x = 2$. Due valori dicono solo come stanno quei due punti, non come si comporta la funzione in mezzo.
+=> No. Fra $1$ e $3$ la funzione potrebbe scendere e poi risalire, per esempio passando per $f(2) = 0$. Due valori non dicono cosa fa la funzione in mezzo.
 
-Se una funzione è crescente (o decrescente) su tutto il dominio, è anche iniettiva: presi due ingressi diversi, uno è più piccolo dell'altro, e quindi anche i risultati sono diversi. Il contrario non vale: esistono funzioni iniettive che non sono monotone, come $f(x) = \dfrac{1}{x}$.
+Una funzione crescente su tutto il dominio è anche iniettiva. Il contrario non vale: $f(x) = \dfrac{1}{x}$ è iniettiva ma non è monotona.
 
->! Non fidarti di un grafico disegnato su una finestra troppo stretta: una funzione che lì sembra crescente può scendere appena fuori dal disegno.` },
+>! Un grafico disegnato in una finestra stretta può ingannare: appena fuori, la funzione può cambiare andamento.` },
 
-    { id: 'parita-periodicita', titolo: 'Funzioni pari e dispari, cenni sulle periodiche', testo: R`Che cosa succede se al posto di $x$ metti $-x$? Con $x^2$ il risultato non cambia: $(-3)^2 = 3^2 = 9$. Con $x^3$ cambia solo il segno: $(-2)^3 = -8$, mentre $2^3 = 8$. Queste due regolarità hanno un nome.
+    { id: 'parita-periodicita', titolo: 'Funzioni pari e dispari, cenni sulle periodiche', testo: R`Che cosa succede se al posto di $x$ metti $-x$? Con $x^2$ il risultato non cambia: $(-3)^2 = 3^2 = 9$. Con $x^3$ cambia solo il segno: $(-2)^3 = -8$ e $2^3 = 8$.
 
->* Se il dominio è simmetrico rispetto a $0$ (con $x$ contiene anche $-x$): $f$ è **pari** se $f(-x) = f(x)$ per ogni $x$, e il suo grafico è simmetrico rispetto all'**asse $y$**; $f$ è **dispari** se $f(-x) = -f(x)$ per ogni $x$, e il suo grafico è simmetrico rispetto all'**origine**.
+>* Il dominio deve essere simmetrico rispetto a $0$. $f$ è **pari** se $f(-x) = f(x)$ per ogni $x$, e il grafico è simmetrico rispetto all'**asse $y$**. $f$ è **dispari** se $f(-x) = -f(x)$ per ogni $x$, e il grafico è simmetrico rispetto all'**origine**.
 
 Trascina uno dei due punti pieni: il gemello in $-a$ si muove con lui.
 
 [[grafico:parita]]
 
-Sulla parabola il gemello sta alla stessa altezza, sulla curva del cubo sta all'altezza opposta. Il segmento che li unisce è orizzontale nel primo caso, e passa per l'origine nel secondo.
+Sulla parabola il gemello sta alla stessa altezza. Sulla curva del cubo sta all'altezza opposta.
 
-Per decidere con i calcoli si scrive $f(-x)$ e lo si confronta con $f(x)$ e con $-f(x)$. Per $f(x) = x^2 + x$:
+Con i calcoli, scrivi $f(-x)$ e confrontalo con $f(x)$ e con $-f(x)$. Per $f(x) = x^2 + x$:
 
 ~ f(-x) = (-x)^2 + (-x) :: metto $-x$ al posto di **ogni** $x$, con le parentesi
 ~ f(-x) = \evid{x^2 - x} :: il quadrato si mangia il segno, il termine di primo grado lo tiene
 ~ x^2 - x \ne x^2 + x :: non è uguale a $f(x)$: la funzione non è pari
 ~ x^2 - x \ne \evid{-x^2 - x} :: non è uguale nemmeno a $-f(x)$: non è dispari
 
->! «Non pari» non vuol dire «dispari». Quasi tutte le funzioni non sono né pari né dispari, come $x^2 + x$ qui sopra.
+>! «Non pari» non vuol dire «dispari». Quasi tutte le funzioni non sono né pari né dispari, come $x^2 + x$.
 
 ?? $f(x) = x^3 + 1$ è pari, dispari o nessuna delle due?
 [x] nessuna delle due
 [ ] dispari
 [ ] pari
-=> $f(-x) = -x^3 + 1$. Non è $f(x) = x^3 + 1$, e non è nemmeno $-f(x) = -x^3 - 1$: il $+1$ non cambia segno. Chi risponde «dispari» guarda solo il cubo. Un controllo veloce: una funzione dispari definita in $0$ vale per forza $0$ in $0$, e qui $f(0) = 1$.
+=> $f(-x) = -x^3 + 1$. Non è $f(x) = x^3 + 1$ e non è $-f(x) = -x^3 - 1$, perché il $+1$ non cambia segno. Chi risponde «dispari» guarda solo il cubo.
 
-Una funzione è **periodica** di periodo $T > 0$ se $f(x + T) = f(x)$ per ogni $x$: il grafico si ripete uguale ogni $T$ unità. Succede con le funzioni goniometriche, che si studiano più avanti.` },
+Una funzione è **periodica** di periodo $T > 0$ se $f(x + T) = f(x)$ per ogni $x$: il grafico si ripete ogni $T$. Succede con le funzioni goniometriche.` },
 
-    { id: 'funzione-composta', titolo: 'La funzione composta', testo: R`Un negozio fa lo sconto di $10$ euro e poi applica l'IVA; un altro applica prima l'IVA e poi fa lo sconto. Il prezzo finale non è lo stesso. Mettere due funzioni una dopo l'altra si chiama **comporle**, e l'ordine conta.
+    { id: 'funzione-composta', titolo: 'La funzione composta', testo: R`Un negozio fa lo sconto di $10$ euro e poi aggiunge l'IVA, un altro fa il contrario: il prezzo finale è diverso. Fare due funzioni una dopo l'altra si chiama **comporle**, e l'ordine conta.
 
->* La **funzione composta** $g \circ f$ si ottiene applicando **prima $f$, poi $g$** al risultato: $$(g \circ f)(x) = g\big(f(x)\big).$$ Si legge «$g$ composto $f$», ma si esegue da destra a sinistra.
+>* La **funzione composta** $g \circ f$ applica **prima $f$, poi $g$**: $$(g \circ f)(x) = g\big(f(x)\big).$$ Si legge «$g$ composto $f$», ma si esegue da destra a sinistra.
 
 Con $f(x) = x - 1$ e $g(x) = \sqrt{x}$:
 
@@ -222,19 +272,19 @@ Con $f(x) = x - 1$ e $g(x) = \sqrt{x}$:
 ~ = \sqrt{\evid{x - 1}} :: $g$ fa la radice di qualunque cosa riceva
 ~ x - 1 \ge 0 \ \Rightarrow \ \evidb{x \ge 1} :: la radice mette la sua condizione: è il dominio della composta
 
-$f$ da sola accetta ogni numero, ma $g$ accetta solo ingressi non negativi, quindi la composta perde tutti gli $x < 1$. In generale il dominio di $g \circ f$ è fatto dagli $x$ del dominio di $f$ per cui $f(x)$ sta nel dominio di $g$.
+$f$ accetta ogni numero, ma $g$ accetta solo numeri non negativi: per questo la composta perde gli $x < 1$.
 
-Nell'altro ordine: $(f \circ g)(x) = f(\sqrt{x}) = \sqrt{x} - 1$, definita per $x \ge 0$. È un'altra funzione, con un altro dominio.
+Nell'altro ordine: $(f \circ g)(x) = f(\sqrt{x}) = \sqrt{x} - 1$, definita per $x \ge 0$. È un'altra funzione.
 
 ?? Con $f(x) = x + 2$ e $g(x) = x^2$, quanto vale $(g \circ f)(1)$?
 [x] $9$
 [ ] $3$
 [ ] $4$
-=> Prima $f$: $f(1) = 3$. Poi $g$ sul risultato: $g(3) = 9$. Il $3$ esce facendo le cose al contrario, $f(g(1)) = f(1) = 3$: è $(f \circ g)(1)$, non $(g \circ f)(1)$.` },
+=> Prima $f$: $f(1) = 3$. Poi $g$: $g(3) = 9$. Il $3$ esce con l'ordine sbagliato: è $f(g(1)) = f(1) = 3$.` },
 
-    { id: 'funzione-inversa', titolo: 'La funzione inversa', testo: R`Se $f$ trasforma i chilometri nel prezzo del taxi, la funzione inversa fa il viaggio al contrario: dal prezzo pagato ricava i chilometri percorsi. Perché si possa tornare indietro senza ambiguità, ogni risultato deve venire da un solo ingresso, e ogni elemento del codominio deve essere raggiunto: $f$ deve essere biunivoca.
+    { id: 'funzione-inversa', titolo: 'La funzione inversa', testo: R`La funzione del taxi trasforma i chilometri nel prezzo. L'**inversa** fa il viaggio al contrario: dal prezzo ricava i chilometri. Per tornare indietro senza dubbi, $f$ deve essere biunivoca.
 
->* Se $f: A \to B$ è **biunivoca**, la **funzione inversa** $f^{-1}: B \to A$ disfa quello che fa $f$: $f^{-1}(f(x)) = x$. Per trovarla si scambiano $x$ e $y$ in $y = f(x)$ e si ricava la nuova $y$. Il grafico di $f^{-1}$ è il simmetrico di quello di $f$ rispetto alla retta $y = x$.
+>* Se $f: A \to B$ è **biunivoca**, la **funzione inversa** $f^{-1}: B \to A$ disfa quello che fa $f$: $f^{-1}(f(x)) = x$. Per trovarla scambia $x$ e $y$ in $y = f(x)$ e ricava $y$. Il grafico di $f^{-1}$ è il simmetrico di quello di $f$ rispetto alla retta $y = x$.
 
 Per $f(x) = 3x - 6$:
 
@@ -243,27 +293,27 @@ Per $f(x) = 3x - 6$:
 ~ x + 6 = 3y :: porto il $-6$ dall'altra parte
 ~ y = \evidb{\dfrac{x + 6}{3}} :: divido per $3$: questa è $f^{-1}(x)$
 
-Controllo: $f\!\left(\dfrac{x+6}{3}\right) = 3 \cdot \dfrac{x+6}{3} - 6 = x$. L'inversa riporta al punto di partenza.
+Controllo: $f\!\left(\dfrac{x+6}{3}\right) = 3 \cdot \dfrac{x+6}{3} - 6 = x$.
 
-Scambiare $x$ e $y$ ha un effetto preciso sul grafico. Trascina $P$ sulla parabola e guarda le coordinate di $Q$.
+Trascina $P$ sulla parabola e guarda le coordinate di $Q$.
 
 [[grafico:inversa]]
 
-$Q$ ha le coordinate di $P$ scambiate, e la retta $y = x$ taglia a metà il segmento $PQ$, ad angolo retto: i due grafici sono uno lo specchio dell'altro. Qui $y = x^2$ è stata ristretta a $x \ge 0$, dove è iniettiva, e la sua inversa è $y = \sqrt{x}$. Su tutto $\mathbb{R}$ non si potrebbe invertire.
+$Q$ ha le coordinate di $P$ scambiate: i due grafici sono simmetrici rispetto alla retta $y = x$. Qui $y = x^2$ è ristretta a $x \ge 0$, dove è iniettiva, e la sua inversa è $y = \sqrt{x}$.
 
->! $f^{-1}(x)$ **non** è $\dfrac{1}{f(x)}$: l'esponente $-1$ qui non indica il reciproco.
+>! $f^{-1}(x)$ **non** è $\dfrac{1}{f(x)}$: qui l'esponente $-1$ non vuol dire reciproco.
 
 ?? Qual è l'inversa di $f(x) = 2x$?
 [x] $f^{-1}(x) = \dfrac{x}{2}$
 [ ] $f^{-1}(x) = \dfrac{1}{2x}$
 [ ] $f^{-1}(x) = -2x$
-=> $f$ raddoppia, quindi l'inversa dimezza: $f^{-1}(f(3)) = f^{-1}(6) = 3$. $\dfrac{1}{2x}$ è il reciproco di $f(x)$: con $x = 6$ darebbe $\frac{1}{12}$, non $3$. $-2x$ è la funzione opposta, non l'inversa.` },
+=> $f$ raddoppia, quindi l'inversa dimezza: $f^{-1}(6) = 3$. $\dfrac{1}{2x}$ è il reciproco di $f(x)$: con $x = 6$ darebbe $\frac{1}{12}$. $-2x$ è la funzione opposta.` },
 
-    { id: 'traslazioni-dilatazioni', titolo: 'Traslazioni e dilatazioni del grafico', testo: R`Se conosci il grafico di $y = f(x)$, puoi disegnare senza calcoli quelli di $f(x) + 3$, $f(x - 2)$, $-f(x)$: sono lo stesso grafico spostato, allungato o ribaltato. Prova prima con la parabola $y = x^2$: trascina il vertice $V$ e muovi il cursore $a$.
+    { id: 'traslazioni-dilatazioni', titolo: 'Traslazioni e dilatazioni del grafico', testo: R`I grafici di $f(x) + 3$, $f(x - 2)$, $-f(x)$ sono il grafico di $f$ spostato o ribaltato: si disegnano senza calcoli. Prova con la parabola $y = x^2$: trascina il vertice $V$ e muovi il cursore $a$.
 
 [[grafico:traslazioni]]
 
-Il vertice, che stava in $(0;\ 0)$, va dove lo porti, e l'equazione diventa $y = a(x - h)^2 + k$. Il cursore $a$ allunga la parabola in verticale (che quindi sembra più stretta) se $a > 1$, la schiaccia se $0 < a < 1$, la ribalta sotto se $a < 0$. Per una funzione qualunque valgono le stesse regole:
+Il vertice va dove lo porti, e l'equazione diventa $y = a(x - h)^2 + k$. Con $a > 1$ la parabola si allunga in verticale, con $0 < a < 1$ si schiaccia, con $a < 0$ si ribalta. Per ogni funzione valgono queste regole:
 
 | scrivi | il grafico di $f$… |
 |---|---|
@@ -273,37 +323,35 @@ Il vertice, che stava in $(0;\ 0)$, va dove lo porti, e l'equazione diventa $y =
 | $-f(x)$ | si ribalta rispetto all'asse $x$ |
 | $f(-x)$ | si ribalta rispetto all'asse $y$ |
 
->* $y = f(x - h) + k$ è il grafico di $f$ spostato di $h$ verso **destra** e di $k$ verso l'**alto**. Il meno davanti ad $h$ inganna: per ritrovare lo spostamento guarda dove si annulla la parentesi, $x - h = 0$, cioè $x = h$.
+>* $y = f(x - h) + k$ è il grafico di $f$ spostato di $h$ verso **destra** e di $k$ verso l'**alto**. Il meno davanti ad $h$ inganna: guarda dove si annulla la parentesi, $x - h = 0$, cioè $x = h$.
 
->! $y = f(x) - 2$ e $y = f(x - 2)$ sono diversi. Il primo cambia il risultato (il grafico scende di $2$), il secondo cambia l'ingresso (il grafico va a destra di $2$).
+>! $y = f(x) - 2$ e $y = f(x - 2)$ sono diversi. Il primo grafico scende di $2$, il secondo va a destra di $2$.
 
 ?? Rispetto a $y = x^2$, il grafico di $y = (x + 3)^2$ è spostato…
 [x] di $3$ verso sinistra
 [ ] di $3$ verso destra
 [ ] di $3$ verso l'alto
-=> $(x + 3)^2 = (x - (-3))^2$: qui $h = -3$, quindi il grafico va a sinistra. Controllo: la parentesi si annulla per $x = -3$, ed è lì che ora sta il vertice. Chi risponde «a destra» si è fidato del $+$.` },
+=> $(x + 3)^2 = (x - (-3))^2$, quindi $h = -3$ e il grafico va a sinistra. Controllo: la parentesi si annulla per $x = -3$, dove ora sta il vertice. Chi risponde «a destra» si è fidato del $+$.` },
 
-    { id: 'valore-assoluto', titolo: 'Il valore assoluto di una funzione', testo: R`Il valore assoluto si può mettere in due posti: attorno a tutta la funzione, $|f(x)|$, oppure attorno alla sola $x$, $f(|x|)$. I grafici che si ottengono sono molto diversi.
+    { id: 'valore-assoluto', titolo: 'Il valore assoluto di una funzione', testo: R`$|f(x)|$ e $f(|x|)$ hanno grafici molto diversi.
 
-**$y = |f(x)|$ agisce sul risultato.** Dove $f(x) \ge 0$ non cambia niente. Dove $f(x) < 0$, il valore assoluto cambia segno al risultato: il pezzo di grafico che stava sotto l'asse $x$ viene ribaltato sopra, come in uno specchio appoggiato sull'asse. Trascina il vertice della parabola tratteggiata e guarda la curva piena.
+**$y = |f(x)|$ agisce sul risultato.** Dove $f(x) \ge 0$ non cambia niente. Dove $f(x) < 0$ il risultato cambia segno: il pezzo sotto l'asse $x$ viene ribaltato sopra. Trascina il vertice della parabola tratteggiata e guarda la curva piena.
 
 [[grafico:valore-assoluto]]
 
-Se la parabola sta tutta sopra l'asse, le due curve coincidono; appena un pezzo scende sotto, la curva piena lo rimanda su.
-
-**$y = f(|x|)$ agisce sull'ingresso.** Per $x \ge 0$ si ha $|x| = x$, e il grafico è quello di $f$. Per $x < 0$ si ha $f(|x|) = f(-x)$: a sinistra dell'asse $y$ si vede lo specchio della parte destra, e quello che $f$ faceva a sinistra sparisce. Trascina di nuovo il vertice, anche a sinistra dell'asse $y$.
+**$y = f(|x|)$ agisce sull'ingresso.** Per $x \ge 0$ vale $|x| = x$, e il grafico è quello di $f$. Per $x < 0$ vale $f(|x|) = f(-x)$: a sinistra dell'asse $y$ vedi lo specchio della parte destra. Trascina di nuovo il vertice, anche a sinistra dell'asse $y$.
 
 [[grafico:f-modulo]]
 
->* $|f(x)|$ ribalta sopra l'asse $x$ le parti negative e lascia il resto com'è. $f(|x|)$ tiene la parte con $x \ge 0$ e la copia allo specchio a sinistra dell'asse $y$: il grafico che ne esce è sempre simmetrico rispetto all'asse $y$.
+>* $|f(x)|$ ribalta sopra l'asse $x$ le parti negative. $f(|x|)$ tiene la parte con $x \ge 0$ e la copia allo specchio a sinistra: il suo grafico è sempre simmetrico rispetto all'asse $y$.
 
 ?? Per $f(x) = x - 2$, quanto valgono $|f(-1)|$ e $f(|-1|)$?
 [x] $3$ e $-1$
 [ ] $3$ e $3$
 [ ] $-3$ e $-1$
-=> $|f(-1)|$: prima la funzione, $f(-1) = -3$, poi il valore assoluto, $3$. $f(|-1|)$: prima il valore assoluto, $|-1| = 1$, poi la funzione, $f(1) = -1$. L'ordine in cui si fanno le operazioni cambia il risultato, e $f(|x|)$ può ancora essere negativa.` },
+=> $|f(-1)|$: prima la funzione, $f(-1) = -3$, poi il valore assoluto, $3$. $f(|-1|)$: prima il valore assoluto, $|-1| = 1$, poi la funzione, $f(1) = -1$. Quindi $f(|x|)$ può ancora essere negativa.` },
 
-    { id: 'lettura-grafico', titolo: 'Leggere un grafico', testo: R`Spesso, in una verifica, di una funzione hai solo il disegno. Anche senza la formula, dal grafico si leggono quasi tutte le informazioni studiate finora.
+    { id: 'lettura-grafico', titolo: 'Leggere un grafico', testo: R`In una verifica, a volte di una funzione hai solo il disegno. Anche senza formula, dal grafico leggi quasi tutto.
 
 | cosa | dove si guarda |
 |---|---|
@@ -313,21 +361,21 @@ Se la parabola sta tutta sopra l'asse, le due curve coincidono; appena un pezzo 
 | **segno** | positiva dove il grafico sta sopra l'asse $x$, negativa dove sta sotto |
 | **crescenza** | dove il grafico sale, leggendolo da sinistra a destra |
 
->* Il dominio si legge sull'asse $x$, l'immagine sull'asse $y$. Zeri e segno si leggono rispetto all'asse $x$, la crescenza seguendo la curva da sinistra a destra.
+>* Il dominio si legge sull'asse $x$, l'immagine sull'asse $y$.
 
-Prova con il grafico di $y = \dfrac{x-1}{x+2}$. Passa il dito sulla curva per leggere le coordinate dei punti, e rispondi alle domande sotto.
+Prova con il grafico di $y = \dfrac{x-1}{x+2}$. Passa il dito sulla curva per leggere le coordinate, poi rispondi alle domande.
 
 [[grafico:dominio-fratta]]
 
 ?? Per quali $x$ la funzione è negativa?
-=> Per $-2 < x < 1$: è il tratto in cui la curva sta sotto l'asse $x$, fra la retta tratteggiata $x = -2$ e il punto in cui la curva attraversa l'asse, $x = 1$. È lo stesso risultato della tabella dei segni nella sezione su zeri e segno.
+=> Per $-2 < x < 1$. In quel tratto la curva sta sotto l'asse $x$, fra la retta tratteggiata $x = -2$ e il punto $x = 1$. È lo stesso risultato della tabella dei segni.
 
 ?? Qual è l'immagine della funzione?
-=> Tutti i numeri reali tranne $1$. Schiacciando il grafico sull'asse $y$, i due rami coprono tutto tranne la quota $y = 1$, a cui si avvicinano senza arrivarci mai: il ramo di destra resta sotto, quello di sinistra resta sopra. Lo conferma il calcolo: $\dfrac{x-1}{x+2} = 1$ porterebbe a $-1 = 2$, impossibile.
+=> Tutti i numeri reali tranne $1$. I due rami coprono tutte le quote tranne $y = 1$, a cui si avvicinano senza arrivarci. Lo conferma il calcolo: $\dfrac{x-1}{x+2} = 1$ porta a $-1 = 2$, impossibile.
 
-Su ciascuno dei due rami, a sinistra e a destra di $x = -2$, la curva sale: la funzione è crescente in $(-\infty, -2)$ e in $(-2, +\infty)$, presi separatamente.
+Su ciascuno dei due rami la curva sale: la funzione è crescente in $(-\infty, -2)$ e in $(-2, +\infty)$, presi separatamente.
 
->! Crescente su ogni ramo non vuol dire crescente su tutto il dominio: $f(-3) = 4$ è più grande di $f(0) = -\frac12$, anche se $-3 < 0$.` }
+>! Crescente su ogni ramo non vuol dire crescente su tutto il dominio. Infatti $-3 < 0$, ma $f(-3) = 4$ è più grande di $f(0) = -\frac12$.` }
   ],
 
   grafici: {
@@ -523,17 +571,37 @@ Su ciascuno dei due rami, a sinistra e a destra di $x = -2$, la curva sale: la f
   ],
 
   esercizi: [
-    { id: 'es-01', difficolta: 1, testo: R`Trova il dominio naturale di $f(x) = \dfrac{2x - 1}{x + 5}$.`, suggerimenti: [R`È una funzione razionale fratta: quale condizione riguarda il denominatore?`, R`Il denominatore si annulla per un solo valore di $x$.`], risposta: { tipo: 'testo', accettate: ['x≠-5', 'x!=-5', 'R-{-5}', 'x diverso da -5'] }, soluzione: [R`Essendo una funzione razionale fratta, il denominatore non può annullarsi: $x + 5 \ne 0$.`, R`Cioè $x \ne -5$.`, R`Il dominio naturale è $\mathbb{R} \setminus \{-5\}$.`] },
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Con $f(x) = 2x + 3$, calcola $f(4)$.`, suggerimenti: [R`Metti $4$ al posto di $x$.`], risposta: { tipo: 'numero', valore: 11, tolleranza: 0.005, segnaposto: 'es. 7 oppure 5/2' }, soluzione: [R`Metto $4$ al posto di $x$: $f(4) = 2 \cdot 4 + 3$.`, R`$8 + 3 = 11$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Con $f(x) = x^2 - 1$, calcola $f(-3)$.`, suggerimenti: [R`Metti $-3$ al posto di $x$, con le parentesi: $(-3)^2$.`], risposta: { tipo: 'numero', valore: 8, tolleranza: 0.005, segnaposto: 'es. 7 oppure 5/2' }, soluzione: [R`Metto $-3$ al posto di $x$: $f(-3) = (-3)^2 - 1$.`, R`$(-3)^2 = 9$, quindi $f(-3) = 9 - 1 = 8$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Con $f(x) = \sqrt{x + 5}$, calcola $f(4)$.`, suggerimenti: [R`Metti $4$ al posto di $x$ e calcola prima quello che sta sotto la radice.`], risposta: { tipo: 'numero', valore: 3, tolleranza: 0.005, segnaposto: 'es. 7 oppure 5/2' }, soluzione: [R`Metto $4$ al posto di $x$: $f(4) = \sqrt{4 + 5} = \sqrt{9}$.`, R`$\sqrt9 = 3$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Trova gli zeri di $f(x) = 2x - 6$.`, suggerimenti: [R`Gli zeri sono le soluzioni di $f(x) = 0$.`], risposta: { tipo: 'numeri', valori: [3], segnaposto: 'es. 2 oppure -1; 3' }, soluzione: [R`Pongo $f(x) = 0$: $2x - 6 = 0$.`, R`$2x = 6$, quindi $x = 3$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Trova il dominio di $f(x) = \dfrac{1}{x - 2}$. Scrivilo come disuguaglianza, per esempio *x > 7* oppure *x ≠ 7*.`, suggerimenti: [R`Il denominatore non può valere zero.`], risposta: tranne(2), soluzione: [R`È una funzione fratta: il denominatore deve essere diverso da zero.`, R`$x - 2 \ne 0$, quindi $x \ne 2$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Trova il dominio di $f(x) = \sqrt{x - 3}$. Per $\ge$ usa il tasto ≥ oppure scrivi *>=*.`, suggerimenti: [R`Sotto una radice quadrata non ci può essere un numero negativo.`], risposta: dis('>=', 3), soluzione: [R`Radice quadrata: il radicando deve essere maggiore o uguale a zero.`, R`$x - 3 \ge 0$, quindi $x \ge 3$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Trova il dominio di $f(x) = \log(x - 1)$.`, suggerimenti: [R`L'argomento del logaritmo deve essere positivo.`], risposta: dis('>', 1), soluzione: [R`Logaritmo: l'argomento deve essere positivo, zero escluso.`, R`$x - 1 > 0$, quindi $x > 1$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Trova gli zeri di $f(x) = x^2 - 4x$. Scrivili separati da punto e virgola.`, suggerimenti: [R`Poni $f(x) = 0$ e raccogli $x$.`], risposta: { tipo: 'numeri', valori: [0, 4], segnaposto: 'es. 2 oppure -1; 3' }, soluzione: [R`Pongo $f(x) = 0$: $x^2 - 4x = 0$.`, R`Raccolgo $x$: $x(x - 4) = 0$.`, R`Un prodotto è zero se lo è un fattore: $x = 0$ oppure $x = 4$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Trova gli zeri di $f(x) = x^2 - 9$.`, suggerimenti: [R`Poni $f(x) = 0$: quali numeri hanno quadrato $9$?`], risposta: { tipo: 'numeri', valori: [-3, 3], segnaposto: 'es. 2 oppure -1; 3' }, soluzione: [R`Pongo $f(x) = 0$: $x^2 = 9$.`, R`Due numeri hanno quadrato $9$: $x = -3$ e $x = 3$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`$f(x) = x^4 + x^2$ è pari o dispari? Scrivi *pari*, *dispari* oppure *nessuna*.`, suggerimenti: [R`Calcola $f(-x)$: metti $-x$ al posto di ogni $x$.`], risposta: PARI, soluzione: [R`$f(-x) = (-x)^4 + (-x)^2 = x^4 + x^2$.`, R`È uguale a $f(x)$: la funzione è pari.`] },
+    { id: 'b-11', livello: 'base', difficolta: 2, testo: R`$f(x) = x^3 + 5x$ è pari o dispari? Scrivi *pari*, *dispari* oppure *nessuna*.`, suggerimenti: [R`Calcola $f(-x)$ e confrontalo con $f(x)$ e con $-f(x)$.`, R`$(-x)^3 = -x^3$: la potenza dispari tiene il segno.`], risposta: DISPARI, soluzione: [R`$f(-x) = (-x)^3 + 5(-x) = -x^3 - 5x$.`, R`$-f(x) = -(x^3 + 5x) = -x^3 - 5x$.`, R`$f(-x) = -f(x)$: la funzione è dispari.`] },
+    { id: 'b-12', livello: 'base', difficolta: 2, testo: R`$f(x) = x^2 + x$ è pari o dispari? Scrivi *pari*, *dispari* oppure *nessuna*.`, suggerimenti: [R`Calcola $f(-x)$ e confrontalo con $f(x)$ e con $-f(x)$.`], risposta: NESSUNA, soluzione: [R`$f(-x) = (-x)^2 + (-x) = x^2 - x$.`, R`Non è $f(x) = x^2 + x$, e non è $-f(x) = -x^2 - x$.`, R`Quindi non è né pari né dispari.`] },
+    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Trova il dominio di $f(x) = \dfrac{x + 1}{x^2 - 4}$. Se escludi due valori, scrivi per esempio *x ≠ 1 e x ≠ 5*.`, suggerimenti: [R`Il denominatore non può valere zero.`, R`Per quali $x$ vale $x^2 = 4$?`], risposta: tranne2(-2, 2), soluzione: [R`Il denominatore deve essere diverso da zero: $x^2 - 4 \ne 0$.`, R`$x^2 = 4$ per $x = -2$ e per $x = 2$.`, R`Quindi $x \ne -2$ e $x \ne 2$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Trova il dominio di $f(x) = \sqrt{6 - 2x}$.`, suggerimenti: [R`Il radicando deve essere maggiore o uguale a zero.`, R`Risolvi $6 - 2x \ge 0$: attento quando dividi per un numero negativo.`], risposta: dis('<=', 3), soluzione: [R`Radice quadrata: $6 - 2x \ge 0$.`, R`Porto $6$ a destra: $-2x \ge -6$.`, R`Divido per $-2$ e cambio il verso: $x \le 3$.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Trova gli zeri di $f(x) = \dfrac{x^2 - 1}{x + 1}$.`, suggerimenti: [R`Prima il dominio: il denominatore non può valere zero.`, R`Poi annulla il numeratore, e tieni solo i valori del dominio.`], risposta: { tipo: 'numeri', valori: [1], segnaposto: 'es. 2 oppure -1; 3' }, soluzione: [R`Dominio: $x + 1 \ne 0$, cioè $x \ne -1$.`, R`Il numeratore si annulla per $x^2 = 1$: $x = -1$ oppure $x = 1$.`, R`$x = -1$ non sta nel dominio: l'unico zero è $x = 1$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Trova il dominio di $f(x) = \log(10 - 2x)$.`, suggerimenti: [R`L'argomento del logaritmo deve essere positivo.`, R`Risolvi $10 - 2x > 0$: attento quando dividi per un numero negativo.`], risposta: dis('<', 5), soluzione: [R`Logaritmo: $10 - 2x > 0$.`, R`Porto $10$ a destra: $-2x > -10$.`, R`Divido per $-2$ e cambio il verso: $x < 5$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Con $f(x) = x + 1$ e $g(x) = x^2$, calcola $(g \circ f)(2)$.`, suggerimenti: [R`Nella composta $g \circ f$ si calcola prima $f$.`, R`$f(2) = 3$. Ora applica $g$ a $3$.`], risposta: { tipo: 'numero', valore: 9, tolleranza: 0.005, segnaposto: 'es. 7 oppure 5/2' }, soluzione: [R`Prima $f$: $f(2) = 2 + 1 = 3$.`, R`Poi $g$ sul risultato: $g(3) = 3^2 = 9$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Con $f(x) = x + 3$ e $g(x) = 2x$, scrivi $(g \circ f)(x)$.`, suggerimenti: [R`$(g \circ f)(x) = g(f(x))$: $g$ raddoppia quello che riceve.`, R`$g$ riceve $x + 3$: raddoppia tutta la parentesi.`], risposta: espr(['2x+6', '6+2x', '2(x+3)', '2(3+x)'], ['(g∘f)(x)=', 'g(f(x))=']), soluzione: [R`Prima $f$: esce $x + 3$.`, R`$g$ raddoppia quello che riceve: $g(x + 3) = 2(x + 3)$.`, R`Svolgo: $(g \circ f)(x) = 2x + 6$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Trova l'inversa di $f(x) = x + 5$. Scrivi solo l'espressione, per esempio *3x+1*.`, suggerimenti: [R`Scambia $x$ e $y$ in $y = x + 5$, poi ricava $y$.`], risposta: espr(['x-5', '-5+x'], INV), soluzione: [R`Scrivo $y = x + 5$ e scambio $x$ e $y$: $x = y + 5$.`, R`Ricavo $y$: $y = x - 5$.`, R`Quindi $f^{-1}(x) = x - 5$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Trova l'inversa di $f(x) = 2x - 4$. Per le frazioni usa la barra, per esempio *(x-2)/5*.`, suggerimenti: [R`Scambia $x$ e $y$ in $y = 2x - 4$.`, R`Da $x = 2y - 4$ porta il $4$ a sinistra, poi dividi per $2$.`], risposta: espr(['(x+4)/2', '(4+x)/2', 'x/2+2', '2+x/2', '1/2x+2', '(1/2)x+2', '0.5x+2', '2+0.5x', 'x/2+4/2'], INV), soluzione: [R`Scrivo $y = 2x - 4$ e scambio $x$ e $y$: $x = 2y - 4$.`, R`Porto il $-4$ a sinistra: $x + 4 = 2y$.`, R`Divido per $2$: $f^{-1}(x) = \dfrac{x + 4}{2}$.`] },
+    { id: 'es-01', difficolta: 1, testo: R`Trova il dominio naturale di $f(x) = \dfrac{2x - 1}{x + 5}$.`, suggerimenti: [R`È una funzione razionale fratta: quale condizione riguarda il denominatore?`, R`Il denominatore si annulla per un solo valore di $x$.`], risposta: tranne(-5), soluzione: [R`Essendo una funzione razionale fratta, il denominatore non può annullarsi: $x + 5 \ne 0$.`, R`Cioè $x \ne -5$.`, R`Il dominio naturale è $\mathbb{R} \setminus \{-5\}$.`] },
     { id: 'es-02', difficolta: 1, testo: R`Trova il dominio naturale di $f(x) = \sqrt{x - 4}$.`, suggerimenti: [R`Il radicando ha indice pari: quale condizione impone?`, R`Deve essere $x - 4 \ge 0$.`], risposta: { tipo: 'intervallo', da: 4, a: 'inf', chiusoDa: true, chiusoA: false }, soluzione: [R`Indice pari: il radicando deve essere non negativo, $x - 4 \ge 0$.`, R`Cioè $x \ge 4$.`, R`Il dominio è $[4, +\infty)$.`] },
     { id: 'es-03', difficolta: 1, testo: R`Trova gli zeri di $f(x) = x^2 - 5x + 6$.`, suggerimenti: [R`Uno zero è un valore di $x$ per cui $f(x) = 0$: risolvi l'equazione di secondo grado associata.`, R`Cerca due numeri con somma $5$ e prodotto $6$.`], risposta: { tipo: 'numeri', valori: [2, 3] }, soluzione: [R`Risolvo $x^2 - 5x + 6 = 0$: cerco due numeri con somma $5$ e prodotto $6$, cioè $2$ e $3$.`, R`Gli zeri sono $x = 2$ e $x = 3$.`] },
     { id: 'es-04', difficolta: 1, testo: R`Date $f(x) = 3x - 2$ e $g(x) = x + 1$, calcola $(f \circ g)(2)$.`, suggerimenti: [R`Calcola prima $g(2)$.`, R`Poi applica $f$ al risultato ottenuto.`], risposta: { tipo: 'numero', valore: 7 }, soluzione: [R`$g(2) = 2 + 1 = 3$.`, R`$(f \circ g)(2) = f(3) = 3 \cdot 3 - 2 = 7$.`] },
-    { id: 'es-05', difficolta: 2, testo: R`Stabilisci se $f(x) = x^3 - x$ è pari, dispari o nessuna delle due.`, suggerimenti: [R`Calcola $f(-x)$ e confrontalo con $f(x)$.`, R`$f(-x) = (-x)^3 - (-x) = -x^3 + x$: raccogli il segno.`], risposta: { tipo: 'testo', accettate: ['dispari', 'è dispari', 'la funzione è dispari'] }, soluzione: [R`$f(-x) = (-x)^3 - (-x) = -x^3 + x = -(x^3 - x) = -f(x)$.`, R`Poiché $f(-x) = -f(x)$ per ogni $x$, la funzione è **dispari**.`] },
+    { id: 'es-05', difficolta: 2, testo: R`Stabilisci se $f(x) = x^3 - x$ è pari, dispari o nessuna delle due.`, suggerimenti: [R`Calcola $f(-x)$ e confrontalo con $f(x)$.`, R`$f(-x) = (-x)^3 - (-x) = -x^3 + x$: raccogli il segno.`], risposta: DISPARI, soluzione: [R`$f(-x) = (-x)^3 - (-x) = -x^3 + x = -(x^3 - x) = -f(x)$.`, R`Poiché $f(-x) = -f(x)$ per ogni $x$, la funzione è **dispari**.`] },
     { id: 'es-06', difficolta: 2, testo: R`Trova il dominio naturale di $f(x) = \sqrt{4 - x^2}$.`, suggerimenti: [R`Indice pari: imponi il radicando non negativo.`, R`Risolvi la disequazione $4 - x^2 \ge 0$, cioè $x^2 \le 4$.`], risposta: { tipo: 'intervallo', da: -2, a: 2, chiusoDa: true, chiusoA: true }, soluzione: [R`Condizione: $4 - x^2 \ge 0$, cioè $x^2 \le 4$.`, R`Risolvendo (disequazione pura), $-2 \le x \le 2$.`, R`Il dominio è $[-2, 2]$.`] },
     { id: 'es-07', difficolta: 2, testo: R`Trova il dominio naturale di $f(x) = \log(x - 1) + \dfrac{1}{x - 3}$.`, suggerimenti: [R`Ci sono due condizioni distinte da mettere a sistema: una per il logaritmo, una per il denominatore.`, R`Argomento del logaritmo: $x - 1 > 0$. Denominatore: $x - 3 \ne 0$.`, R`Il dominio è l'insieme dei valori che rispettano entrambe le condizioni insieme.`], soluzione: [R`Argomento del logaritmo positivo: $x - 1 > 0 \Rightarrow x > 1$.`, R`Denominatore diverso da zero: $x - 3 \ne 0 \Rightarrow x \ne 3$.`, R`A sistema: $x > 1$ e $x \ne 3$, cioè il dominio è $(1, 3) \cup (3, +\infty)$.`] },
-    { id: 'es-08', difficolta: 2, testo: R`Verifica che $f(x) = 2x + 7$ è invertibile e trova $f^{-1}(x)$.`, suggerimenti: [R`Una funzione lineare non costante è sempre biunivoca su $\mathbb{R}$.`, R`Scambia $x$ e $y$ in $y = 2x + 7$ e risolvi rispetto alla nuova $y$.`], risposta: { tipo: 'testo', accettate: ['(x-7)/2', 'x/2-7/2', '(x−7)/2', 'y=(x-7)/2', 'x/2-3.5', 'y=x/2-7/2'] }, soluzione: [R`$f$ è lineare e non costante: è biunivoca su $\mathbb{R}$, quindi invertibile.`, R`Pongo $y = 2x + 7$, scambio $x$ e $y$: $x = 2y + 7$.`, R`Risolvo rispetto a $y$: $y = \dfrac{x - 7}{2}$.`] },
-    { id: 'es-09', difficolta: 3, testo: R`Date $f(x) = \sqrt{x - 2}$ e $g(x) = x^2 + 1$, trova il dominio di $(f \circ g)(x)$.`, suggerimenti: [R`Calcola prima l'espressione di $(f \circ g)(x) = f(g(x))$.`, R`Poi imponi che il radicando sia non negativo.`, R`Arrivi a $x^2 + 1 - 2 \ge 0$, cioè $x^2 \ge 1$.`], risposta: { tipo: 'testo', accettate: ['x≤-1 o x≥1', 'x<=-1 o x>=1', 'x<=-1 or x>=1', 'x≤-1 ∨ x≥1', '(-inf,-1]u[1,+inf)', '(-inf;-1]u[1;+inf)', ']-inf;-1]u[1;+inf[', '|x|≥1'] }, soluzione: [R`$(f \circ g)(x) = f(x^2+1) = \sqrt{x^2 + 1 - 2} = \sqrt{x^2 - 1}$.`, R`Serve $x^2 - 1 \ge 0$, cioè $x^2 \ge 1$.`, R`Risolvendo (disequazione pura), $x \le -1$ oppure $x \ge 1$.`] },
-    { id: 'es-10', difficolta: 3, testo: R`Date $f(x) = \dfrac{1}{x}$ e $g(x) = x - 3$, scrivi l'espressione di $(g \circ f)(x)$ e stabilisci per quali $x$ è definita.`, suggerimenti: [R`$(g \circ f)(x) = g(f(x))$: sostituisci $f(x)$ dentro $g$.`, R`Il denominatore di $f$ impone già una condizione.`], risposta: { tipo: 'testo', accettate: ['1/x-3', '1/x - 3', '(1-3x)/x', 'y=1/x-3', '1/x-3, x≠0', '1/x-3 con x≠0'] }, soluzione: [R`$(g \circ f)(x) = g\left(\dfrac{1}{x}\right) = \dfrac{1}{x} - 3$.`, R`È definita per $x \ne 0$, la stessa condizione richiesta da $f$: $g$ non aggiunge altre restrizioni, perché è definita per ogni numero reale.`] },
-    { id: 'es-11', difficolta: 3, testo: R`Scrivi l'equazione della parabola ottenuta traslando $y = x^2$ di $3$ unità a destra e $2$ unità verso il basso.`, suggerimenti: [R`Una traslazione a destra di $h$ agisce sull'argomento: $y = f(x - h)$.`, R`Una traslazione verso il basso di $2$ significa $k = -2$ in $y = f(x) + k$.`], risposta: { tipo: 'testo', accettate: ['(x-3)^2-2', '(x-3)²-2', 'y=(x-3)^2-2'] }, soluzione: [R`Traslazione a destra di $3$: si sostituisce $x$ con $x - 3$, ottenendo $y = (x-3)^2$.`, R`Traslazione verso il basso di $2$: si aggiunge $k = -2$.`, R`Equazione finale: $y = (x - 3)^2 - 2$.`] }
+    { id: 'es-08', difficolta: 2, testo: R`Verifica che $f(x) = 2x + 7$ è invertibile e trova $f^{-1}(x)$.`, suggerimenti: [R`Una funzione lineare non costante è sempre biunivoca su $\mathbb{R}$.`, R`Scambia $x$ e $y$ in $y = 2x + 7$ e risolvi rispetto alla nuova $y$.`], risposta: espr(['(x-7)/2', 'x/2-7/2', 'x/2-3.5', '1/2x-7/2', '(1/2)x-7/2', '0.5x-3.5', '-7/2+x/2'], INV), soluzione: [R`$f$ è lineare e non costante: è biunivoca su $\mathbb{R}$, quindi invertibile.`, R`Pongo $y = 2x + 7$, scambio $x$ e $y$: $x = 2y + 7$.`, R`Risolvo rispetto a $y$: $y = \dfrac{x - 7}{2}$.`] },
+    { id: 'es-09', difficolta: 3, testo: R`Date $f(x) = \sqrt{x - 2}$ e $g(x) = x^2 + 1$, trova il dominio di $(f \circ g)(x)$.`, suggerimenti: [R`Calcola prima l'espressione di $(f \circ g)(x) = f(g(x))$.`, R`Poi imponi che il radicando sia non negativo.`, R`Arrivi a $x^2 + 1 - 2 \ge 0$, cioè $x^2 \ge 1$.`], risposta: fuori(-1, 1), soluzione: [R`$(f \circ g)(x) = f(x^2+1) = \sqrt{x^2 + 1 - 2} = \sqrt{x^2 - 1}$.`, R`Serve $x^2 - 1 \ge 0$, cioè $x^2 \ge 1$.`, R`Risolvendo (disequazione pura), $x \le -1$ oppure $x \ge 1$.`] },
+    { id: 'es-10', difficolta: 3, testo: R`Date $f(x) = \dfrac{1}{x}$ e $g(x) = x - 3$, scrivi l'espressione di $(g \circ f)(x)$ e stabilisci per quali $x$ è definita. Nella casella scrivi l'espressione.`, suggerimenti: [R`$(g \circ f)(x) = g(f(x))$: sostituisci $f(x)$ dentro $g$.`, R`Il denominatore di $f$ impone già una condizione.`], risposta: espr(['1/x-3', '(1-3x)/x', '-3+1/x', '1/x-3,x≠0', '1/x-3 con x≠0', '1/x-3;x≠0'], ['(g∘f)(x)=', 'g(f(x))=']), soluzione: [R`$(g \circ f)(x) = g\left(\dfrac{1}{x}\right) = \dfrac{1}{x} - 3$.`, R`È definita per $x \ne 0$, la stessa condizione richiesta da $f$: $g$ non aggiunge altre restrizioni, perché è definita per ogni numero reale.`] },
+    { id: 'es-11', difficolta: 3, testo: R`Scrivi l'equazione della parabola ottenuta traslando $y = x^2$ di $3$ unità a destra e $2$ unità verso il basso.`, suggerimenti: [R`Una traslazione a destra di $h$ agisce sull'argomento: $y = f(x - h)$.`, R`Una traslazione verso il basso di $2$ significa $k = -2$ in $y = f(x) + k$.`], risposta: espr(['(x-3)^2-2', '-2+(x-3)^2', 'x^2-6x+7'], []), soluzione: [R`Traslazione a destra di $3$: si sostituisce $x$ con $x - 3$, ottenendo $y = (x-3)^2$.`, R`Traslazione verso il basso di $2$: si aggiunge $k = -2$.`, R`Equazione finale: $y = (x - 3)^2 - 2$.`] }
   ],
 
   quiz: [

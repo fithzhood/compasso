@@ -1,54 +1,65 @@
 (function () {
 const R = String.raw;
+/* allenamento: una sola risposta, ma con il tipo 'numeri', che pesca il numero dentro la scritta:
+   così passano anche «36,87°» e «5 cm» (con 'numero' il segno ° la bocciava). Non legge le radici,
+   perciò i risultati irrazionali si chiedono con due decimali. Tolleranza 0,015 per chi arrotonda a metà conto. */
+const num = (v, tol) => ({ tipo: 'numeri', valori: [v], tolleranza: tol, segnaposto: tol ? 'due decimali, es. 4,33' : 'solo il numero, es. 6', simboli: [] });
+const gradi = (v, tol) => ({ tipo: 'numeri', valori: [v], tolleranza: tol, segnaposto: tol ? 'in gradi, due decimali, es. 41,81' : 'in gradi, es. 45', simboli: ['°'] });
 COMPASSO.registra({
   id: 'trigonometria',
   titolo: 'Trigonometria',
 
-  introduzione: R`Vuoi sapere quanto è alto un campanile, ma non puoi salirci. Puoi però misurare quanto sei lontano dalla base e sotto che angolo vedi la cima. Con questi due numeri e un triangolo rettangolo immaginario, l'altezza si calcola. La **trigonometria** (dal greco, «misura dei triangoli») serve a questo: ricavare i lati e gli angoli che non si possono misurare da quelli che si possono misurare.
+  introduzione: R`Vuoi sapere quanto è alto un campanile, ma non puoi salirci. Puoi misurare quanto sei lontano dalla base e sotto che angolo vedi la cima. Con questi due numeri calcoli l'altezza.
 
-Si divide in due parti. Prima vengono i **triangoli rettangoli**, dove seno, coseno e tangente legano un angolo ai rapporti fra i lati. Poi i **triangoli qualunque**, con il teorema dei seni e il teorema del coseno: nascono dai primi, e qui si vede come.
+La **trigonometria** serve a questo: ricava i lati e gli angoli che non puoi misurare da quelli che puoi misurare. Prima vengono i triangoli rettangoli, poi i triangoli qualunque.
 
-Serve conoscere seno, coseno e tangente e i loro valori negli angoli notevoli, la somma degli angoli di un triangolo e il teorema di Pitagora. Tieni vicino una calcolatrice scientifica, impostata in gradi.`,
+Ti servono seno, coseno e tangente, con i loro valori negli angoli notevoli, e il teorema di Pitagora. Tieni vicino una calcolatrice scientifica impostata in gradi.`,
 
   inBreve: [
-    R`In un triangolo rettangolo un cateto è l'ipotenusa per il seno dell'angolo **opposto** (o per il coseno dell'angolo **adiacente**), oppure l'altro cateto per la tangente dell'angolo opposto.`,
-    R`Opposto e adiacente dipendono dall'angolo che guardi: segna sempre l'angolo sulla figura prima di scegliere la formula.`,
+    R`In un triangolo rettangolo un cateto è l'ipotenusa per il seno dell'angolo **opposto**, o per il coseno dell'angolo **adiacente**. È anche l'altro cateto per la tangente dell'angolo opposto.`,
+    R`Opposto e adiacente dipendono dall'angolo che guardi. Segna sempre l'angolo sulla figura, prima di scegliere la formula.`,
     R`L'area di un triangolo è $\frac12 ab\sin\gamma$, con $\gamma$ l'angolo **compreso** fra i due lati.`,
-    R`Teorema dei seni: $\dfrac{a}{\sin\alpha}=\dfrac{b}{\sin\beta}=\dfrac{c}{\sin\gamma}=2R$. Serve quando hai un lato e l'angolo che gli sta di fronte. Con due lati e un angolo non compreso i triangoli possono essere due: controlla sempre il supplementare.`,
-    R`Teorema del coseno: $c^2=a^2+b^2-2ab\cos\gamma$, cioè Pitagora corretto per un angolo non retto. Serve quando non hai nessuna coppia lato-angolo opposto.`
+    R`Teorema dei seni: un lato diviso il seno dell'angolo opposto dà lo stesso numero per tutti e tre i lati. Serve quando conosci un lato e l'angolo di fronte. Con due lati e un angolo non compreso i triangoli possono essere due.`,
+    R`Teorema del coseno: $c^2=a^2+b^2-2ab\cos\gamma$. È Pitagora corretto per un angolo non retto.`
   ],
 
   sezioni: [
-    { id: 'teoremi-triangoli-rettangoli', titolo: 'I teoremi sui triangoli rettangoli', testo: R`Una scala lunga $5\ \text{m}$ è appoggiata a un muro e forma con il pavimento un angolo di $60^\circ$. A che altezza tocca il muro? Scala, muro e pavimento formano un triangolo rettangolo: la scala è l'ipotenusa, l'altezza cercata è un cateto. Serve una regola che leghi un cateto all'ipotenusa e a un angolo.
+    { id: 'teoremi-triangoli-rettangoli', titolo: 'I teoremi sui triangoli rettangoli', testo: R`Una scala lunga $5\ \text{m}$ è appoggiata a un muro e forma con il pavimento un angolo di $60^\circ$. A che altezza tocca il muro? La scala è l'ipotenusa di un triangolo rettangolo, e l'altezza è un cateto.
 
-Prima i nomi. Rispetto a un angolo acuto $\alpha$, il cateto **opposto** è quello che sta di fronte ad $\alpha$ e non lo tocca; il cateto **adiacente** è quello che forma $\alpha$ insieme all'ipotenusa.
+Guarda un angolo acuto $\alpha$. Il cateto **opposto** sta di fronte ad $\alpha$ e non lo tocca. Il cateto **adiacente** forma $\alpha$ insieme all'ipotenusa.
 
 [[grafico:rettangoloAlpha]]
 
-Nel grafico, se tieni fermo l'angolo e ingrandisci il triangolo, i lati cambiano ma i rapporti fra i lati restano uguali (i triangoli sono simili). Quei rapporti dipendono solo dall'angolo, e hanno un nome: cateto opposto diviso ipotenusa è $\sin\alpha$, cateto adiacente diviso ipotenusa è $\cos\alpha$, cateto opposto diviso cateto adiacente è $\tan\alpha$. Basta moltiplicare per l'ipotenusa, o per l'altro cateto, e si hanno i due teoremi.
+Nel grafico tieni fermo l'angolo e ingrandisci il triangolo. I lati cambiano, ma i rapporti fra i lati restano uguali. Quei rapporti dipendono solo dall'angolo:
 
->* **Primo teorema:** un cateto è uguale all'ipotenusa per il seno dell'angolo **opposto**, oppure per il coseno dell'angolo **adiacente**: $$a = c\sin\alpha \qquad\qquad b = c\cos\alpha$$ **Secondo teorema:** un cateto è uguale all'altro cateto per la tangente dell'angolo opposto al primo: $$a = b\tan\alpha$$
+- $\sin\alpha$ è il cateto opposto diviso l'ipotenusa;
+- $\cos\alpha$ è il cateto adiacente diviso l'ipotenusa;
+- $\tan\alpha$ è il cateto opposto diviso il cateto adiacente.
 
-Con la scala: l'altezza è il cateto opposto all'angolo di $60^\circ$, quindi $h = 5\sin 60^\circ = 5 \cdot \dfrac{\sqrt3}{2} \approx 4{,}33\ \text{m}$. Il piede della scala è il cateto adiacente: dista dal muro $5\cos 60^\circ = 2{,}5\ \text{m}$.
+Moltiplica per l'ipotenusa, o per l'altro cateto, e ottieni i due teoremi.
 
-Il secondo teorema si ricava dal primo, quindi non è una regola in più da imparare:
+>* **Primo teorema:** un cateto è l'ipotenusa per il seno dell'angolo **opposto**, oppure per il coseno dell'angolo **adiacente**: $$a = c\sin\alpha \qquad\qquad b = c\cos\alpha$$ **Secondo teorema:** un cateto è l'altro cateto per la tangente dell'angolo opposto al primo: $$a = b\tan\alpha$$
+
+Con la scala: l'altezza è opposta all'angolo di $60^\circ$, quindi $h = 5\sin 60^\circ = 5 \cdot \dfrac{\sqrt3}{2} \approx 4{,}33\ \text{m}$. Il piede della scala dista dal muro $5\cos 60^\circ = 2{,}5\ \text{m}$.
+
+Il secondo teorema viene dal primo:
 
 ~ a = c\sin\alpha \qquad b = c\cos\alpha :: le due formule del primo teorema
 ~ \dfrac{a}{b} = \dfrac{\evid{c}\sin\alpha}{\evid{c}\cos\alpha} :: divido la prima per la seconda: $c$ si semplifica
 ~ \dfrac{a}{b} = \evid{\tan\alpha} :: seno diviso coseno è la tangente
 ~ a = \evidb{b\tan\alpha} :: moltiplico per $b$: è il secondo teorema
 
->! Opposto e adiacente dipendono dall'angolo che stai usando. Lo stesso cateto $a$ è opposto ad $\alpha$ ma adiacente all'altro angolo acuto $\beta$. Prima di scrivere la formula, segna l'angolo sulla figura e guarda quale cateto lo tocca.
+>! Lo stesso cateto $a$ è opposto ad $\alpha$, ma adiacente all'altro angolo acuto $\beta$. Prima di scrivere la formula, segna l'angolo sulla figura.
 
 ?? Il triangolo è rettangolo, con ipotenusa $c$. L'angolo acuto $\beta$ sta di fronte al cateto $b$. Quanto vale $b$?
 [x] $c\sin\beta$
 [ ] $c\cos\beta$
 [ ] $c\tan\beta$
-=> $b$ sta di fronte a $\beta$: è il cateto opposto, quindi ipotenusa per il seno. Chi sceglie $c\cos\beta$ sta ancora pensando ad $\alpha$, rispetto al quale $b$ era adiacente. La tangente lega i due cateti fra loro, non un cateto e l'ipotenusa.` },
+=> $b$ sta di fronte a $\beta$: è il cateto opposto, quindi ipotenusa per il seno. Chi sceglie $c\cos\beta$ pensa ancora ad $\alpha$. La tangente lega i due cateti, non un cateto e l'ipotenusa.` },
 
-    { id: 'risoluzione-triangoli-rettangoli', titolo: 'Risolvere un triangolo rettangolo', testo: R`**Risolvere** un triangolo vuol dire trovare tutti i suoi lati e tutti i suoi angoli partendo da quelli che conosci. In un triangolo rettangolo l'angolo retto lo conosci già: bastano altri **due** elementi, purché almeno uno sia un lato. Con i soli due angoli acuti conosci la forma ma non la grandezza: ci sono infiniti triangoli simili con quegli angoli.
+    { id: 'risoluzione-triangoli-rettangoli', titolo: 'Risolvere un triangolo rettangolo', testo: R`**Risolvere** un triangolo vuol dire trovare tutti i suoi lati e tutti i suoi angoli. Nel triangolo rettangolo l'angolo retto lo conosci già. Bastano altri **due** elementi, e almeno uno deve essere un lato.
 
-Gli strumenti sono sempre gli stessi: i due teoremi della sezione precedente, il teorema di Pitagora, e il fatto che gli angoli acuti sono complementari, $\alpha + \beta = 90^\circ$ (con l'angolo retto la somma deve fare $180^\circ$).
+Gli strumenti sono i due teoremi, Pitagora e $\alpha + \beta = 90^\circ$, perché gli angoli acuti sono complementari.
 
 | dati | da dove parti |
 |---|---|
@@ -57,32 +68,30 @@ Gli strumenti sono sempre gli stessi: i due teoremi della sezione precedente, il
 | i due cateti | l'ipotenusa con Pitagora, l'angolo con $\tan\alpha = \frac{a}{b}$ |
 | ipotenusa e un cateto | l'altro cateto con Pitagora, l'angolo con $\sin\alpha = \frac{a}{c}$ |
 
-Quando conosci il seno (o il coseno, o la tangente) e ti serve l'angolo, usi le funzioni inverse della calcolatrice: $\arcsin$, $\arccos$, $\arctan$, che sui tasti si trovano spesso come $\sin^{-1}$, $\cos^{-1}$, $\tan^{-1}$. Per esempio, con i cateti $a = 3$ e $b = 4$:
+Conosci la tangente e ti serve l'angolo? Usa la funzione inversa della calcolatrice, $\arctan$, che sul tasto è scritta $\tan^{-1}$. Allo stesso modo ci sono $\arcsin$ e $\arccos$. Esempio con i cateti $a = 3$ e $b = 4$:
 
 ~ c = \sqrt{a^2 + b^2} = \sqrt{9 + 16} = \evidb{5} :: l'ipotenusa con Pitagora
 ~ \tan\alpha = \dfrac{a}{b} = \evid{\dfrac{3}{4}} = 0{,}75 :: $a$ è opposto ad $\alpha$, $b$ è adiacente
 ~ \alpha = \arctan 0{,}75 \approx \evidb{36{,}87^\circ} :: la funzione inversa restituisce l'angolo
 ~ \beta = 90^\circ - 36{,}87^\circ = \evidb{53{,}13^\circ} :: gli angoli acuti sono complementari
 
->* Nel triangolo rettangolo bastano due dati oltre all'angolo retto, e almeno uno deve essere un lato. Si risolve sempre con primo e secondo teorema, Pitagora e $\alpha + \beta = 90^\circ$.
-
 ?? Di un triangolo rettangolo conosci solo i due angoli acuti, $30^\circ$ e $60^\circ$. Puoi trovare i lati?
-[ ] sì, con il primo teorema
-[ ] sì, con il teorema di Pitagora
-[x] no, manca almeno un lato
-=> Gli angoli fissano la forma, non la grandezza: il triangolo con lati $1$, $2$, $\sqrt3$ e quello con lati $10$, $20$, $10\sqrt3$ hanno gli stessi angoli. Il primo teorema e Pitagora partono sempre da un lato che conosci.
+[ ] sì, con i teoremi
+[ ] sì, con Pitagora
+[x] no
+=> Manca un lato. I lati $1$, $2$, $\sqrt3$ e i lati $10$, $20$, $10\sqrt3$ danno gli stessi angoli.
 
->! Controlla che la calcolatrice sia in gradi (DEG) e non in radianti (RAD). In radianti $\arctan 0{,}75$ dà $0{,}6435$, che letto come angolo in gradi non ha senso.` },
+>! Controlla che la calcolatrice sia in gradi (DEG), non in radianti (RAD). In radianti $\arctan 0{,}75$ dà $0{,}6435$, che non è un angolo in gradi.` },
 
-    { id: 'applicazioni', titolo: 'Applicazioni: altezze, angoli di elevazione, pendenze', testo: R`Come si misura l'altezza di un campanile senza salirci? Ti metti a una distanza nota dalla base, per esempio $40\ \text{m}$, e misuri l'angolo fra l'orizzontale e la linea che va dai tuoi occhi alla cima: $35^\circ$. I tuoi occhi, il punto del campanile alla loro stessa altezza e la cima formano un triangolo rettangolo.
+    { id: 'applicazioni', titolo: 'Applicazioni: altezze, angoli di elevazione, pendenze', testo: R`Sei a $40\ \text{m}$ dalla base di un campanile e guardi la cima. La linea dei tuoi occhi forma con l'orizzontale un angolo di $35^\circ$. I tuoi occhi, la cima e il punto del campanile all'altezza degli occhi formano un triangolo rettangolo.
 
->* **Angolo di elevazione:** l'angolo, misurato dall'orizzontale verso l'alto, sotto cui vedi un oggetto più in alto di te. **Angolo di depressione:** lo stesso, ma verso il basso, per un oggetto più in basso (una barca vista da una scogliera). Le due orizzontali sono parallele, quindi la depressione da $A$ verso $B$ è uguale all'elevazione da $B$ verso $A$: sono angoli alterni interni.
+>* **Angolo di elevazione:** l'angolo fra l'orizzontale e la linea verso un oggetto più in alto di te. **Angolo di depressione:** lo stesso, verso un oggetto più in basso. La depressione da $A$ verso $B$ è uguale all'elevazione da $B$ verso $A$, perché sono angoli alterni interni.
 
-?? Sei a $40\ \text{m}$ dalla base del campanile e vedi la cima sotto un angolo di $35^\circ$. Quale conto dà il tratto di campanile sopra i tuoi occhi?
+?? Quale conto dà il tratto di campanile sopra i tuoi occhi?
 [x] $40\tan 35^\circ$
 [ ] $40\sin 35^\circ$
 [ ] $\dfrac{40}{\tan 35^\circ}$
-=> I $40\ \text{m}$ sono il cateto adiacente all'angolo, l'altezza è il cateto opposto: opposto uguale adiacente per la tangente. Con il seno servirebbe l'ipotenusa, cioè la distanza dai tuoi occhi alla cima, che non conosci. Dividere per la tangente darebbe un cateto adiacente, non l'altezza.
+=> I $40\ \text{m}$ sono il cateto adiacente, l'altezza è il cateto opposto: serve la tangente. Con il seno ti servirebbe l'ipotenusa, che non conosci. Dividere per la tangente dà un cateto adiacente.
 
 Il conto completo, con gli occhi a $1{,}6\ \text{m}$ da terra:
 
@@ -90,15 +99,15 @@ Il conto completo, con gli occhi a $1{,}6\ \text{m}$ da terra:
 ~ x = 40 \cdot \tan 35^\circ \approx 40 \cdot 0{,}700 \approx \evid{28{,}0} :: con la calcolatrice in gradi
 ~ h = \evid{1{,}6} + 28{,}0 = \evidb{29{,}6\ \text{m}} :: aggiungo il tratto dal suolo agli occhi
 
-Nella scheda **Laboratorio** c'è *Misura la torre*: punti il clinometro sulla cima, leggi l'angolo e fai proprio questo conto.
+Nella scheda **Laboratorio** c'è *Misura la torre*: punti il clinometro sulla cima e fai proprio questo conto.
 
->! Il triangolo parte dai tuoi occhi, non dai tuoi piedi. Se il testo dà l'altezza dell'osservatore, va sommata alla fine; se non la dà, l'osservatore si considera a terra.
+>! Il triangolo parte dai tuoi occhi. Se il testo dà l'altezza dell'osservatore, sommala alla fine. Se non la dà, l'osservatore è a terra.
 
-**Pendenza di una strada.** Il cartello con scritto $10\%$ vuol dire che per ogni $100\ \text{m}$ in orizzontale si sale di $10\ \text{m}$. La pendenza è quindi la tangente dell'angolo di salita, scritta in percentuale: $p = 100\tan\alpha$. Non è l'angolo: una pendenza del $100\%$ vuol dire $\tan\alpha = 1$, cioè $45^\circ$, una salita ripidissima ma non una parete verticale.` },
+**Pendenza di una strada.** Un cartello del $10\%$ vuol dire: ogni $100\ \text{m}$ in orizzontale sali di $10\ \text{m}$. La pendenza è la tangente dell'angolo di salita, in percentuale: $p = 100\tan\alpha$. Una pendenza del $100\%$ vuol dire $\tan\alpha = 1$, cioè $45^\circ$.` },
 
-    { id: 'area-triangolo', titolo: "Area di un triangolo con due lati e l'angolo compreso", testo: R`Di un triangolo conosci due lati, $a = 8\ \text{cm}$ e $b = 5\ \text{cm}$, e l'angolo fra loro, $\gamma = 30^\circ$. L'area è base per altezza diviso due, ma l'altezza nessuno te l'ha data. La puoi ricavare dall'angolo.
+    { id: 'area-triangolo', titolo: "Area di un triangolo con due lati e l'angolo compreso", testo: R`Di un triangolo conosci due lati, $a = 8\ \text{cm}$ e $b = 5\ \text{cm}$, e l'angolo fra loro, $\gamma = 30^\circ$. Per l'area ti serve l'altezza, e la ricavi dall'angolo.
 
-Prendi $a$ come base. L'altezza $h$ scende dal vertice opposto fino alla retta di $a$ e forma un triangolo rettangolo con ipotenusa $b$, in cui $h$ è il cateto opposto a $\gamma$:
+Prendi $a$ come base. L'altezza $h$ forma un triangolo rettangolo con ipotenusa $b$. In quel triangolo $h$ è il cateto opposto a $\gamma$:
 
 ~ h = b\sin\gamma :: primo teorema: cateto uguale ipotenusa per il seno dell'angolo opposto
 ~ \text{Area} = \dfrac{1}{2}\,a\,\evid{h} :: la solita formula, base per altezza diviso due
@@ -107,21 +116,21 @@ Prendi $a$ come base. L'altezza $h$ scende dal vertice opposto fino alla retta d
 
 >* **Area con due lati e l'angolo compreso:** $$\text{Area} = \frac{1}{2}\,a\,b\,\sin\gamma$$ L'angolo è quello **compreso** fra i due lati che usi.
 
-La formula vale anche se $\gamma$ è ottuso: l'altezza cade fuori dal triangolo, ma $\sin\gamma$ resta positivo e il conto è lo stesso. Con $\gamma = 90^\circ$ si ha $\sin\gamma = 1$ e torna la formula del triangolo rettangolo, cateto per cateto diviso due.
+Se $\gamma$ è ottuso la formula vale lo stesso, perché $\sin\gamma$ resta positivo. Con $\gamma = 90^\circ$ si ha $\sin\gamma = 1$, e torna cateto per cateto diviso due.
 
 [[grafico:triangoloArea]]
 
-?? I lati di un triangolo misurano $6$ e $10$, e l'angolo **opposto** al lato $10$ misura $40^\circ$. L'area è $\frac12\cdot 6\cdot 10\cdot\sin 40^\circ$?
-[ ] sì, bastano due lati e un angolo qualunque
-[x] no, serve l'angolo compreso fra i lati $6$ e $10$
-[ ] sì, perché $40^\circ$ è acuto
-=> Il $\sin\gamma$ della formula serve a trovare l'altezza, e l'altezza viene $b\sin\gamma$ solo se $\gamma$ sta fra i due lati. Con l'angolo opposto a uno dei due, prima devi ricavare l'angolo compreso (con il teorema dei seni, più avanti). Che l'angolo sia acuto o ottuso non c'entra.` },
+?? Due lati misurano $6$ e $10$. L'angolo **opposto** al lato $10$ misura $40^\circ$. L'area è $\frac12\cdot 6\cdot 10\cdot\sin 40^\circ$?
+[ ] sì
+[x] no
+[ ] solo se $40^\circ$ è acuto
+=> No. L'altezza viene $b\sin\gamma$ solo se $\gamma$ sta fra i due lati. Qui prima devi ricavare l'angolo compreso, con il teorema dei seni.` },
 
-    { id: 'teorema-della-corda', titolo: 'Il teorema della corda', testo: R`In una circonferenza prendi una corda $AB$ e un punto $V$ sull'arco più grande. L'angolo $A\widehat{V}B$ si chiama **angolo alla circonferenza** che insiste sulla corda. Dalla geometria sai che, se sposti $V$ lungo l'arco, quell'angolo non cambia (angoli alla circonferenza che insistono sullo stesso arco sono congruenti). Provalo nel grafico.
+    { id: 'teorema-della-corda', titolo: 'Il teorema della corda', testo: R`In una circonferenza prendi una corda $AB$ e un punto $V$ sull'arco più grande. L'angolo $A\widehat{V}B$ è un **angolo alla circonferenza**. Se sposti $V$ lungo l'arco, quell'angolo non cambia. Provalo nel grafico.
 
 [[grafico:cordaCirconferenza]]
 
-Visto che l'angolo non dipende da dove sta $V$, puoi mettere $V$ nel posto più comodo: all'altro estremo del diametro che parte da $A$. Chiama $A'$ quel punto e guarda il triangolo $ABA'$:
+Allora metti $V$ nel posto più comodo: all'altro estremo del diametro che parte da $A$. Chiama $A'$ quel punto e guarda il triangolo $ABA'$:
 
 ~ A\widehat{B}A' = 90^\circ :: è inscritto in una semicirconferenza (teorema di Talete)
 ~ A\widehat{A'}B = \gamma :: insiste sulla stessa corda $AB$, quindi è uguale all'angolo in $V$
@@ -130,33 +139,33 @@ Visto che l'angolo non dipende da dove sta $V$, puoi mettere $V$ nel posto più 
 
 >* **Teorema della corda:** una corda è uguale al diametro per il seno di un qualunque angolo alla circonferenza che insiste su di essa: $$AB = 2R\sin\gamma$$
 
-Esempio: in una circonferenza di raggio $7{,}5\ \text{cm}$ una corda di $10\ \text{cm}$ è vista dai punti dell'arco grande sotto un angolo con $\sin\gamma = \dfrac{10}{15} \approx 0{,}667$, cioè $\gamma \approx 41{,}81^\circ$. I punti dell'arco **piccolo** la vedono sotto l'angolo supplementare, $180^\circ - 41{,}81^\circ = 138{,}19^\circ$: il seno è lo stesso, e la formula vale anche per loro.
+Esempio: raggio $7{,}5\ \text{cm}$ e corda di $10\ \text{cm}$. Allora $\sin\gamma = \dfrac{10}{15} \approx 0{,}667$, quindi $\gamma \approx 41{,}81^\circ$. Dall'arco **piccolo** la corda si vede sotto $180^\circ - 41{,}81^\circ = 138{,}19^\circ$, che ha lo stesso seno.
 
 ?? In una circonferenza di raggio $R$ c'è una corda lunga proprio $R$. Sotto che angolo acuto la vede un punto della circonferenza?
 [x] $30^\circ$
 [ ] $60^\circ$
 [ ] $90^\circ$
-=> $\sin\gamma = \frac{R}{2R} = \frac12$, quindi $\gamma = 30^\circ$. $60^\circ$ è l'angolo **al centro**: con il centro e la corda si forma un triangolo equilatero. L'angolo alla circonferenza è la metà di quello al centro che insiste sulla stessa corda.
+=> $\sin\gamma = \frac{R}{2R} = \frac12$, quindi $\gamma = 30^\circ$. $60^\circ$ è l'angolo **al centro**, che è il doppio.
 
 >! Nella formula c'è $2R$, il **diametro**. Scrivere $AB = R\sin\gamma$ è l'errore più comune.` },
 
-    { id: 'teorema-dei-seni', titolo: 'Il teorema dei seni e il caso ambiguo', testo: R`Il teorema della corda vale per qualunque triangolo. Ogni triangolo ha una circonferenza che passa per i suoi tre vertici, la **circonferenza circoscritta**, di raggio $R$. Ogni lato è una corda di quella circonferenza, e l'angolo opposto è un angolo alla circonferenza che insiste su di essa:
+    { id: 'teorema-dei-seni', titolo: 'Il teorema dei seni e il caso ambiguo', testo: R`Ogni triangolo ha una **circonferenza circoscritta**, che passa per i tre vertici. Chiama $R$ il suo raggio. Ogni lato è una corda di questa circonferenza, e l'angolo opposto insiste su quella corda. Quindi vale il teorema della corda:
 
 ~ a = 2R\sin\alpha :: teorema della corda per il lato $a$ e l'angolo opposto $\alpha$
 ~ \dfrac{a}{\sin\alpha} = \evid{2R} :: divido per $\sin\alpha$
 ~ \dfrac{a}{\sin\alpha} = \dfrac{b}{\sin\beta} = \dfrac{c}{\sin\gamma} = \evidb{2R} :: con $b$ e $c$ il conto è identico: i tre rapporti valgono tutti $2R$
 
->* **Teorema dei seni:** in ogni triangolo il rapporto fra un lato e il seno dell'angolo opposto è lo stesso per tutti e tre i lati, ed è il diametro della circonferenza circoscritta: $$\frac{a}{\sin\alpha} = \frac{b}{\sin\beta} = \frac{c}{\sin\gamma} = 2R$$
+>* **Teorema dei seni:** in ogni triangolo il rapporto fra un lato e il seno dell'angolo opposto è sempre lo stesso: $$\frac{a}{\sin\alpha} = \frac{b}{\sin\beta} = \frac{c}{\sin\gamma} = 2R$$
 
-Per usarlo ti serve una **coppia completa**: un lato e l'angolo che gli sta di fronte. Quella coppia ti dà il rapporto, e con il rapporto trovi gli altri lati (se conosci gli angoli) o gli altri angoli (se conosci i lati).
+Per usarlo ti serve una **coppia completa**: un lato e l'angolo di fronte. Da quella coppia ricavi il rapporto. Con il rapporto trovi gli altri lati, o gli altri angoli.
 
 ### Il caso ambiguo
 
-Se conosci due lati $a$, $b$ e l'angolo $\alpha$ opposto ad $a$, il teorema dei seni ti dà $\sin\beta = \dfrac{b\sin\alpha}{a}$. Ma fra $0^\circ$ e $180^\circ$ ci sono **due** angoli con lo stesso seno: uno acuto e il suo supplementare ottuso. A volte vanno bene tutti e due, e i triangoli sono due.
+Conosci due lati $a$, $b$ e l'angolo $\alpha$ opposto ad $a$. Il teorema dei seni dà $\sin\beta = \dfrac{b\sin\alpha}{a}$. Ma fra $0^\circ$ e $180^\circ$ ci sono **due** angoli con lo stesso seno: uno acuto e il suo supplementare. A volte vanno bene tutti e due.
 
 [[grafico:casoAmbiguo]]
 
-Il grafico mostra perché. Il lato $a$ parte da $C$ e deve arrivare sulla semiretta che parte da $A$ con l'angolo $\alpha$; la distanza di $C$ da quella semiretta è $b\sin\alpha$. Con $\alpha$ acuto:
+Nel grafico il lato $a$ parte da $C$ e deve toccare la semiretta che parte da $A$. La distanza di $C$ dalla semiretta è $b\sin\alpha$. Con $\alpha$ acuto:
 
 | confronto | triangoli |
 |---|---|
@@ -172,25 +181,25 @@ Esempio: $a = 5$, $b = 8$, $\alpha = 30^\circ$. Qui $b\sin\alpha = 4$ e $4 < 5 <
 ~ \beta_2 = 180^\circ - 53{,}13^\circ = \evidb{126{,}87^\circ} :: il supplementare ha lo stesso seno
 ~ \alpha + \beta_2 = 156{,}87^\circ < 180^\circ :: $30^\circ + 126{,}87^\circ$: resta posto per il terzo angolo, quindi anche $\beta_2$ va bene
 
->! La calcolatrice con $\arcsin$ ti dà solo l'angolo acuto. Il supplementare lo devi controllare tu: se sommato all'angolo che conosci resta sotto $180^\circ$, è una seconda soluzione.
+>! La calcolatrice con $\arcsin$ ti dà solo l'angolo acuto. Il supplementare lo controlli tu: se sommato all'angolo noto resta sotto $180^\circ$, è una seconda soluzione.
 
 ?? Con $a = 10$, $b = 8$ e $\alpha = 30^\circ$ opposto ad $a$, quanti triangoli ci sono?
 [x] uno
 [ ] due
 [ ] nessuno
-=> Qui $a \ge b$. Da $\sin\beta = \frac{8\cdot 0{,}5}{10} = 0{,}4$ vengono $\beta \approx 23{,}58^\circ$ e il supplementare $156{,}42^\circ$, ma $30^\circ + 156{,}42^\circ$ supera $180^\circ$: non c'è posto per il terzo angolo. Rispondere «due» solo perché ci sono due angoli con quel seno è proprio la trappola.` },
+=> Da $\sin\beta = \frac{8\cdot 0{,}5}{10} = 0{,}4$ vengono $\beta \approx 23{,}58^\circ$ e $156{,}42^\circ$. Ma $30^\circ + 156{,}42^\circ$ supera $180^\circ$, quindi il secondo non va bene.` },
 
-    { id: 'teorema-del-coseno', titolo: 'Il teorema del coseno (di Carnot)', testo: R`Di un triangolo conosci due lati e l'angolo **fra** loro. Nessun lato ha di fronte un angolo noto, quindi il teorema dei seni non parte. Serve un'altra strada, e la si trova correggendo il teorema di Pitagora.
+    { id: 'teorema-del-coseno', titolo: 'Il teorema del coseno (di Carnot)', testo: R`Di un triangolo conosci due lati e l'angolo **fra** loro. Nessun lato ha di fronte un angolo noto, quindi il teorema dei seni non parte. Serve il teorema di Pitagora, corretto.
 
-Pitagora, $c^2 = a^2 + b^2$, vale solo se l'angolo fra $a$ e $b$ è retto. Se quell'angolo si chiude, il lato di fronte si accorcia; se si apre, si allunga. Prova nel grafico.
+Pitagora vale solo se l'angolo fra $a$ e $b$ è retto. Se l'angolo si chiude, il lato di fronte si accorcia. Se si apre, si allunga. Prova nel grafico.
 
 [[grafico:carnot]]
 
 >* **Teorema del coseno (di Carnot):** $$c^2 = a^2 + b^2 - 2ab\cos\gamma$$ dove $\gamma$ è l'angolo **compreso** fra $a$ e $b$, cioè quello di fronte a $c$.
 
-Con $\gamma = 90^\circ$ si ha $\cos\gamma = 0$ e torna Pitagora. Con $\gamma$ acuto $\cos\gamma > 0$ e il termine $2ab\cos\gamma$ si toglie: $c$ viene più corto. Con $\gamma$ ottuso $\cos\gamma < 0$, e togliere un numero negativo vuol dire aggiungere: $c$ viene più lungo.
+Con $\gamma = 90^\circ$ si ha $\cos\gamma = 0$, e torna Pitagora. Con $\gamma$ ottuso $\cos\gamma$ è negativo: togliere un numero negativo vuol dire aggiungere, e $c$ si allunga.
 
-Da dove viene? Metti il vertice dell'angolo $\gamma$ nell'origine e il lato $a$ sull'asse $x$. Allora un estremo di $c$ è $(a;\ 0)$ e l'altro è $(b\cos\gamma;\ b\sin\gamma)$, e $c$ è la loro distanza:
+Per dimostrarlo metti il vertice di $\gamma$ nell'origine e il lato $a$ sull'asse $x$. Gli estremi di $c$ sono $(a;\ 0)$ e $(b\cos\gamma;\ b\sin\gamma)$, e $c$ è la loro distanza:
 
 ~ c^2 = (b\cos\gamma - a)^2 + (b\sin\gamma)^2 :: distanza fra due punti, al quadrato
 ~ \begin{array}{rl} &= \evid{b^2\cos^2\gamma - 2ab\cos\gamma + a^2} \\ &\quad {}+ b^2\sin^2\gamma \end{array} :: sviluppo il quadrato del binomio
@@ -203,13 +212,13 @@ Esempio: $a = 6\ \text{cm}$, $b = 9\ \text{cm}$, $\gamma = 70^\circ$. Allora $c^
 [x] $49$
 [ ] $19$
 [ ] $34$
-=> $c^2 = 9 + 25 - 2\cdot 3\cdot 5\cdot\cos 120^\circ = 34 - 30\cdot\left(-\frac12\right) = 34 + 15 = 49$, quindi $c = 7$. Con $19$ si è tolto $15$ invece di aggiungerlo: il coseno di un angolo ottuso è negativo. $34$ è Pitagora, che qui non vale perché l'angolo non è retto.
+=> $c^2 = 9 + 25 - 2\cdot 3\cdot 5\cos 120^\circ = 34 - 30\cdot\left(-\frac12\right) = 34 + 15 = 49$. Con $19$ hai tolto $15$ invece di aggiungerlo. $34$ è Pitagora, che qui non vale.
 
-La formula si scrive per ogni lato, cambiando le lettere: $a^2 = b^2 + c^2 - 2bc\cos\alpha$ e $b^2 = a^2 + c^2 - 2ac\cos\beta$. Serve in due modi: con due lati e l'angolo compreso trovi il terzo lato; con tre lati trovi un angolo, isolando il coseno: $$\cos\gamma = \frac{a^2 + b^2 - c^2}{2ab}$$
+Con tre lati trovi un angolo, isolando il coseno: $$\cos\gamma = \frac{a^2 + b^2 - c^2}{2ab}$$
 
->! L'angolo della formula è quello **compreso** fra i due lati che moltiplichi, cioè quello di fronte al lato che sta da solo a sinistra. Usare un altro angolo è l'errore più frequente.` },
+>! L'angolo della formula è quello **compreso** fra i due lati che moltiplichi. È l'angolo di fronte al lato che sta da solo a sinistra.` },
 
-    { id: 'risoluzione-triangoli-qualunque', titolo: 'Risolvere un triangolo qualunque', testo: R`Un triangolo ha sei elementi: tre lati e tre angoli. Per trovarli tutti ne servono tre, di cui almeno un lato (con i soli tre angoli conosci la forma, non la grandezza). A seconda di quali tre conosci, si parte in un modo preciso:
+    { id: 'risoluzione-triangoli-qualunque', titolo: 'Risolvere un triangolo qualunque', testo: R`Un triangolo ha tre lati e tre angoli. Per trovarli tutti ne servono tre, e almeno uno deve essere un lato. Da quali tre conosci dipende da dove parti:
 
 | dati | si comincia con |
 |---|---|
@@ -218,7 +227,7 @@ La formula si scrive per ogni lato, cambiando le lettere: $a^2 = b^2 + c^2 - 2bc
 | due angoli e un lato (ALA, AAL) | il terzo angolo per differenza da $180^\circ$, poi il teorema dei seni |
 | due lati e un angolo non compreso (LLA) | teorema dei seni, controllando il caso ambiguo |
 
->* Il teorema dei seni ha bisogno di una **coppia completa**, un lato e l'angolo che gli sta di fronte. Se ce l'hai, parti dai seni; se non ce l'hai, parti dal teorema del coseno.
+>* Il teorema dei seni ha bisogno di una **coppia completa**, un lato e l'angolo di fronte. Se ce l'hai, parti dai seni. Se non ce l'hai, parti dal coseno.
 
 Esempio (ALA): $\alpha = 50^\circ$, $\beta = 60^\circ$, $a = 10\ \text{cm}$.
 
@@ -231,38 +240,40 @@ Esempio (ALA): $\alpha = 50^\circ$, $\beta = 60^\circ$, $a = 10\ \text{cm}$.
 [x] teorema del coseno
 [ ] teorema dei seni
 [ ] somma degli angoli
-=> Nessuno dei due lati ha di fronte un angolo noto ($\gamma$ sta di fronte a $c$, che non conosci), quindi il teorema dei seni non ha una coppia completa da cui partire. Il teorema del coseno invece dà subito $c$. Con la somma degli angoli serve conoscerne due.
+=> $\gamma$ sta di fronte a $c$, che non conosci: non hai una coppia completa. Il teorema del coseno invece dà subito $c$.
 
-Nel caso LLL conviene cercare per primo l'angolo di fronte al lato **più lungo**. È il più ampio, ed è l'unico che può essere ottuso: il coseno lo riconosce, perché viene negativo. Gli altri due sono sicuramente acuti, e puoi trovarli anche con il teorema dei seni senza il rischio del caso ambiguo.
+Nel caso LLL cerca prima l'angolo di fronte al lato **più lungo**. È l'unico che può essere ottuso, e il coseno lo riconosce perché viene negativo.
 
->! Dopo aver trovato tutti gli angoli, controlla che la somma faccia $180^\circ$ (a meno degli arrotondamenti). È un controllo di pochi secondi e scopre quasi tutti gli errori di calcolatrice.` },
+>! Alla fine controlla che gli angoli sommino $180^\circ$, a meno degli arrotondamenti.` },
 
-    { id: 'problemi-geometria', titolo: 'Problemi di geometria: quadrilateri, poligoni, triangolazione', testo: R`Molte figure si risolvono tagliandole in triangoli. Una volta tagliate, valgono gli strumenti di questa pagina.
+    { id: 'problemi-geometria', titolo: 'Problemi di geometria: quadrilateri, poligoni, triangolazione', testo: R`Molte figure si risolvono tagliandole in triangoli.
 
 ### Poligoni regolari
 
-Quanto è lungo l'apotema di un pentagono regolare di lato $6\ \text{cm}$? L'**apotema** è la distanza del centro da un lato. Unendo il centro con i vertici, il pentagono si divide in $5$ triangoli isosceli uguali; l'apotema è l'altezza di uno di loro, e lo taglia in due triangoli rettangoli. In generale, con $n$ lati di lunghezza $l$:
+L'**apotema** di un poligono regolare è la distanza del centro da un lato. Unisci il centro con i vertici: il poligono si divide in triangoli isosceli uguali. L'apotema è l'altezza di uno di loro, e lo taglia in due triangoli rettangoli. Con $n$ lati lunghi $l$:
 
 ~ \text{angolo al centro} = \dfrac{360^\circ}{n} :: il centro vede ogni lato sotto lo stesso angolo
 ~ \text{metà} = \dfrac{180^\circ}{n} :: l'apotema taglia a metà l'angolo al centro e il lato
 ~ \dfrac{l}{2} = \text{apotema}\cdot\tan\dfrac{180^\circ}{n} :: secondo teorema: $\frac{l}{2}$ è opposto a quell'angolo, l'apotema è adiacente
 ~ \text{apotema} = \evidb{\dfrac{l}{2\tan\left(\frac{180^\circ}{n}\right)}} :: isolo l'apotema
 
-Per il pentagono: $\text{apotema} = \dfrac{6}{2\tan 36^\circ} \approx 4{,}13\ \text{cm}$. L'area di un poligono regolare è $\frac12 \cdot \text{perimetro} \cdot \text{apotema}$, qui $\frac12 \cdot 30 \cdot 4{,}129 \approx 61{,}94\ \text{cm}^2$.
+Pentagono di lato $6\ \text{cm}$: $\text{apotema} = \dfrac{6}{2\tan 36^\circ} \approx 4{,}13\ \text{cm}$. L'area è $\frac12 \cdot \text{perimetro} \cdot \text{apotema}$, cioè $\frac12 \cdot 30 \cdot 4{,}129 \approx 61{,}94\ \text{cm}^2$.
 
 ### Quadrilateri
 
-Un quadrilatero qualunque si divide in due triangoli con una diagonale, e l'area è la somma delle due aree, ciascuna con $\frac12 ab\sin\gamma$. Se conosci le due diagonali $d_1$, $d_2$ e l'angolo $\theta$ che formano dove si incrociano, c'è anche una formula diretta:
+Una diagonale divide un quadrilatero in due triangoli. L'area è la somma delle due aree, ciascuna con $\frac12 ab\sin\gamma$. Se conosci le diagonali e l'angolo $\theta$ fra loro, c'è una formula diretta:
 
 >* **Area di un quadrilatero dalle diagonali:** $$\text{Area} = \frac{1}{2}\,d_1 d_2 \sin\theta$$
 
-Viene dai quattro triangoli in cui le diagonali tagliano il quadrilatero: ognuno ha area $\frac12\cdot(\text{pezzo di } d_1)\cdot(\text{pezzo di } d_2)\cdot\sin\theta$ (i due angoli possibili, $\theta$ e $180^\circ - \theta$, hanno lo stesso seno), e sommando i pezzi ricompongono le diagonali intere. Con $d_1 = 8\ \text{cm}$, $d_2 = 10\ \text{cm}$ e $\theta = 70^\circ$: $\text{Area} \approx \frac12\cdot 8\cdot 10\cdot 0{,}940 \approx 37{,}59\ \text{cm}^2$.
+Le diagonali tagliano il quadrilatero in quattro triangoli. Ognuno ha area $\frac12\cdot(\text{pezzo di } d_1)\cdot(\text{pezzo di } d_2)\cdot\sin\theta$, perché $\theta$ e $180^\circ - \theta$ hanno lo stesso seno. Sommando, i pezzi ricompongono le diagonali intere.
 
->! L'angolo $\theta$ è quello fra le **diagonali**, nel punto dove si incrociano, non uno degli angoli interni del quadrilatero.
+Con $d_1 = 8\ \text{cm}$, $d_2 = 10\ \text{cm}$ e $\theta = 70^\circ$: $\text{Area} \approx \frac12\cdot 8\cdot 10\cdot 0{,}940 \approx 37{,}59\ \text{cm}^2$.
+
+>! L'angolo $\theta$ è quello fra le **diagonali**, dove si incrociano. Non è un angolo del quadrilatero.
 
 ### Triangolazione
 
-Per misurare una distanza che non si può percorrere (fra due cime, fra una nave e la costa) basta misurare con cura **una** distanza di riferimento, la base, e due angoli dai suoi estremi: il resto lo dà il teorema dei seni. Incatenando tanti triangoli, uno accanto all'altro, si sono misurate intere nazioni. È la **triangolazione**, usata per secoli per disegnare le carte geografiche.` }
+Con la **triangolazione** misuri una distanza che non puoi percorrere, per esempio fra due cime. Misuri una base e i due angoli ai suoi estremi, poi usi il teorema dei seni.` }
   ],
 
   grafici: {
@@ -456,6 +467,26 @@ Per misurare una distanza che non si può percorrere (fra due cime, fra una nave
   ],
 
   esercizi: [
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Un triangolo rettangolo ha l'ipotenusa di $10$ e un angolo acuto di $30^\circ$. Quanto misura il cateto opposto a quell'angolo?`, suggerimenti: [R`Cateto opposto: ipotenusa per il seno dell'angolo.`], risposta: num(5), soluzione: [R`Il cateto è opposto all'angolo di $30^\circ$, quindi uso il seno.`, R`$10\sin 30^\circ = 10\cdot\frac12 = 5$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Un triangolo rettangolo ha l'ipotenusa di $8$ e un angolo acuto di $60^\circ$. Quanto misura il cateto adiacente a quell'angolo?`, suggerimenti: [R`Cateto adiacente: ipotenusa per il coseno dell'angolo.`], risposta: num(4), soluzione: [R`Il cateto è adiacente all'angolo di $60^\circ$, quindi uso il coseno.`, R`$8\cos 60^\circ = 8\cdot\frac12 = 4$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`In un triangolo rettangolo un cateto misura $7$ e l'angolo acuto adiacente a lui misura $45^\circ$. Quanto misura l'altro cateto?`, suggerimenti: [R`L'altro cateto è opposto all'angolo: usa la tangente.`], risposta: num(7), soluzione: [R`L'altro cateto è opposto all'angolo di $45^\circ$.`, R`Secondo teorema: $7\tan 45^\circ = 7\cdot 1 = 7$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Un triangolo rettangolo ha un angolo acuto di $38^\circ$. Quanto misura l'altro angolo acuto, in gradi?`, suggerimenti: [R`I due angoli acuti di un triangolo rettangolo sommano $90^\circ$.`], risposta: gradi(52), soluzione: [R`Gli angoli acuti sono complementari: $\alpha + \beta = 90^\circ$.`, R`$\beta = 90^\circ - 38^\circ = 52^\circ$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`In un triangolo rettangolo il cateto opposto all'angolo $\alpha$ misura $3$ e l'ipotenusa $6$. Quanto misura $\alpha$, in gradi?`, suggerimenti: [R`Calcola $\sin\alpha = \frac{3}{6}$.`, R`Quale angolo notevole ha seno $\frac12$?`], risposta: gradi(30), soluzione: [R`$\sin\alpha = \frac{3}{6} = \frac12$.`, R`L'angolo acuto con seno $\frac12$ è $\alpha = 30^\circ$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Un triangolo rettangolo ha l'ipotenusa di $12$ e un angolo acuto di $25^\circ$. Quanto misura il cateto opposto a quell'angolo? Rispondi con due decimali.`, suggerimenti: [R`Ipotenusa per il seno dell'angolo, con la calcolatrice in gradi.`], risposta: num(5.07, 0.015), soluzione: [R`Il cateto è opposto all'angolo: $12\sin 25^\circ$.`, R`$12 \cdot 0{,}4226 \approx 5{,}07$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Un triangolo rettangolo ha l'ipotenusa di $9$ e un angolo acuto di $40^\circ$. Quanto misura il cateto adiacente a quell'angolo? Rispondi con due decimali.`, suggerimenti: [R`Ipotenusa per il coseno dell'angolo, con la calcolatrice in gradi.`], risposta: num(6.89, 0.015), soluzione: [R`Il cateto è adiacente all'angolo: $9\cos 40^\circ$.`, R`$9 \cdot 0{,}7660 \approx 6{,}89$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`In un triangolo rettangolo un cateto misura $5$ e l'angolo acuto adiacente a lui misura $35^\circ$. Quanto misura l'altro cateto? Rispondi con due decimali.`, suggerimenti: [R`L'altro cateto è opposto all'angolo: usa la tangente.`], risposta: num(3.50, 0.015), soluzione: [R`Secondo teorema: l'altro cateto è $5\tan 35^\circ$.`, R`$5 \cdot 0{,}7002 \approx 3{,}50$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`I cateti di un triangolo rettangolo misurano $5$ e $12$. Quanto misura l'angolo opposto al cateto $5$? Rispondi in gradi, con due decimali.`, suggerimenti: [R`La tangente dell'angolo è opposto diviso adiacente: $\frac{5}{12}$.`, R`Poi usa il tasto $\tan^{-1}$, con la calcolatrice in gradi.`], risposta: gradi(22.62, 0.015), soluzione: [R`$\tan\alpha = \frac{5}{12} \approx 0{,}4167$.`, R`$\alpha = \tan^{-1} 0{,}4167 \approx 22{,}62^\circ$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`L'ipotenusa di un triangolo rettangolo misura $10$ e un cateto $6$. Quanto misura l'angolo opposto al cateto $6$? Rispondi in gradi, con due decimali.`, suggerimenti: [R`Il seno dell'angolo è opposto diviso ipotenusa: $\frac{6}{10}$.`, R`Poi usa il tasto $\sin^{-1}$.`], risposta: gradi(36.87, 0.015), soluzione: [R`$\sin\alpha = \frac{6}{10} = 0{,}6$.`, R`$\alpha = \sin^{-1} 0{,}6 \approx 36{,}87^\circ$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Sei a $20$ m dalla base di un albero e vedi la cima sotto un angolo di $40^\circ$. Quanto è alto l'albero, in metri? Considerati a terra e rispondi con due decimali.`, suggerimenti: [R`I $20$ m sono il cateto adiacente all'angolo, l'altezza è il cateto opposto.`, R`Usa la tangente.`], risposta: num(16.78, 0.015), soluzione: [R`L'altezza è il cateto opposto all'angolo di $40^\circ$, i $20$ m sono il cateto adiacente.`, R`$h = 20\tan 40^\circ \approx 20 \cdot 0{,}8391 \approx 16{,}78$ m.`] },
+    { id: 'b-12', livello: 'base', difficolta: 1, testo: R`Un triangolo ha due lati di $6$ e $8$, e l'angolo fra loro misura $30^\circ$. Quanto vale l'area?`, suggerimenti: [R`Usa $\text{Area} = \frac12 ab\sin\gamma$.`], risposta: num(12), soluzione: [R`$\text{Area} = \frac12 \cdot 6 \cdot 8 \cdot \sin 30^\circ$.`, R`$= 24 \cdot \frac12 = 12$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 1, testo: R`Un triangolo ha due lati di $4$ e $10$, e l'angolo fra loro misura $150^\circ$. Quanto vale l'area?`, suggerimenti: [R`Usa $\text{Area} = \frac12 ab\sin\gamma$.`, R`$\sin 150^\circ = \sin 30^\circ = \frac12$.`], risposta: num(10), soluzione: [R`$\text{Area} = \frac12 \cdot 4 \cdot 10 \cdot \sin 150^\circ$.`, R`$\sin 150^\circ = \frac12$, quindi $\text{Area} = 20 \cdot \frac12 = 10$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 1, testo: R`Un triangolo ha due lati di $5$ e $7$, e l'angolo fra loro misura $50^\circ$. Quanto vale l'area? Rispondi con due decimali.`, suggerimenti: [R`Usa $\text{Area} = \frac12 ab\sin\gamma$, con la calcolatrice in gradi.`], risposta: num(13.41, 0.015), soluzione: [R`$\text{Area} = \frac12 \cdot 5 \cdot 7 \cdot \sin 50^\circ = 17{,}5 \cdot \sin 50^\circ$.`, R`$17{,}5 \cdot 0{,}7660 \approx 13{,}41$.`] },
+    { id: 'b-15', livello: 'base', difficolta: 1, testo: R`Un triangolo ha due lati di $5$ e $8$, e l'angolo fra loro misura $60^\circ$. Quanto misura il terzo lato?`, suggerimenti: [R`Conosci due lati e l'angolo compreso: usa il teorema del coseno.`], risposta: num(7), soluzione: [R`Teorema del coseno: $c^2 = 5^2 + 8^2 - 2\cdot 5\cdot 8\cos 60^\circ$.`, R`$c^2 = 89 - 80\cdot\frac12 = 89 - 40 = 49$.`, R`$c = \sqrt{49} = 7$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Un triangolo ha due lati di $7$ e $8$, e l'angolo fra loro misura $120^\circ$. Quanto misura il terzo lato?`, suggerimenti: [R`Usa il teorema del coseno.`, R`$\cos 120^\circ = -\frac12$: attento al segno.`], risposta: num(13), soluzione: [R`Teorema del coseno: $c^2 = 7^2 + 8^2 - 2\cdot 7\cdot 8\cos 120^\circ$.`, R`$\cos 120^\circ = -\frac12$, quindi $c^2 = 113 - 112\cdot\left(-\frac12\right) = 113 + 56 = 169$.`, R`$c = \sqrt{169} = 13$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`In un triangolo il lato $a = 10$ ha di fronte l'angolo $\alpha = 30^\circ$, e l'angolo $\beta$ misura $45^\circ$. Quanto misura il lato $b$, opposto a $\beta$? Rispondi con due decimali.`, suggerimenti: [R`$a$ e $\alpha$ sono una coppia completa: usa il teorema dei seni.`, R`$\frac{b}{\sin 45^\circ} = \frac{10}{\sin 30^\circ}$.`], risposta: num(14.14, 0.015), soluzione: [R`Teorema dei seni: $\frac{b}{\sin 45^\circ} = \frac{10}{\sin 30^\circ} = \frac{10}{0{,}5} = 20$.`, R`$b = 20\sin 45^\circ = 20 \cdot \frac{\sqrt2}{2} = 10\sqrt2$.`, R`$10\sqrt2 \approx 14{,}14$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`In un triangolo $a = 8$, $b = 6$ e l'angolo $\alpha = 30^\circ$ sta di fronte ad $a$. Quanto misura l'angolo $\beta$, opposto a $b$? Rispondi in gradi, con due decimali.`, suggerimenti: [R`Teorema dei seni: $\sin\beta = \frac{b\sin\alpha}{a}$.`, R`Poi usa $\sin^{-1}$. Controlla se anche il supplementare va bene.`], risposta: gradi(22.02, 0.015), soluzione: [R`$\sin\beta = \frac{6 \cdot 0{,}5}{8} = 0{,}375$.`, R`$\beta = \sin^{-1} 0{,}375 \approx 22{,}02^\circ$.`, R`Il supplementare, $157{,}98^\circ$, non va: sommato a $30^\circ$ supera $180^\circ$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`I lati di un triangolo misurano $5$, $7$ e $8$. Quanto misura l'angolo opposto al lato $7$, in gradi?`, suggerimenti: [R`Conosci tre lati: usa il teorema del coseno, isolando il coseno.`, R`$\cos\gamma = \frac{a^2 + b^2 - c^2}{2ab}$, con $c = 7$.`], risposta: gradi(60), soluzione: [R`$\cos\gamma = \frac{5^2 + 8^2 - 7^2}{2\cdot 5\cdot 8}$.`, R`$\cos\gamma = \frac{25 + 64 - 49}{80} = \frac{40}{80} = \frac12$.`, R`L'angolo con coseno $\frac12$ è $\gamma = 60^\circ$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`In un triangolo $\alpha = 50^\circ$, $\beta = 70^\circ$ e il lato $c = 10$. Quanto misura il lato $a$, opposto ad $\alpha$? Rispondi con due decimali.`, suggerimenti: [R`Trova prima $\gamma$, che sta di fronte a $c$.`, R`Poi usa il teorema dei seni con la coppia $c$, $\gamma$.`], risposta: num(8.85, 0.015), soluzione: [R`$\gamma = 180^\circ - 50^\circ - 70^\circ = 60^\circ$.`, R`Teorema dei seni: $\frac{a}{\sin 50^\circ} = \frac{10}{\sin 60^\circ}$.`, R`$a = \frac{10\sin 50^\circ}{\sin 60^\circ} \approx \frac{7{,}660}{0{,}866} \approx 8{,}85$.`] },
     { id: 'es-01', difficolta: 1, testo: R`Un triangolo rettangolo ha ipotenusa $c = 10\ \text{cm}$ e un angolo acuto $\alpha = 36{,}87^\circ$. Calcola i due cateti $a$ (opposto ad $\alpha$) e $b$ (adiacente), arrotondati al centesimo.`, suggerimenti: [
       R`Usa il primo teorema sui triangoli rettangoli: un cateto è ipotenusa per seno o coseno dell'angolo.`,
       R`$a = c\sin\alpha$, $b = c\cos\alpha$.`

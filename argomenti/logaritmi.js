@@ -1,39 +1,50 @@
 (function () {
 const R = String.raw;
+/* allenamento: tre caselle. valore(v) per i logaritmi da calcolare (accetta anche 1/2, -2, 0,5);
+   sol(v) e NESSUNA per le equazioni logaritmiche (stessa casella e stessi simboli, così la casella
+   non dice se la soluzione c'è); dec(v) per le equazioni esponenziali risolte con i logaritmi:
+   si chiede il risultato con due cifre decimali, e la tolleranza 0,01 accetta sia l'arrotondamento
+   sia il troncamento (si allena il metodo, non l'ultima cifra). */
+const SIMB = ['/', '−', '√', '^', '(', ')'];
+const SEGNA_EQ = 'es. 5/2 oppure nessuna';
+const valore = v => ({ tipo: 'numero', valore: v, tolleranza: 0.005, segnaposto: 'es. -5 oppure 2/3', simboli: SIMB });
+const sol = v => ({ tipo: 'numeri', valori: [v], tolleranza: 0.005, segnaposto: SEGNA_EQ, simboli: SIMB });
+const NESSUNA = { tipo: 'testo', accettate: ['nessuna', 'nessuna soluzione', 'nessuno', 'impossibile', 'non ci sono soluzioni', 'non ha soluzioni', '∅', 'ø', '{}', 'S = ∅', 'insieme vuoto'], segnaposto: SEGNA_EQ, simboli: SIMB };
+const dec = v => ({ tipo: 'numero', valore: v, tolleranza: 0.01, segnaposto: 'es. 1,23', simboli: ['−', '(', ')'] });
 COMPASSO.registra({
   id: 'logaritmi',
   titolo: 'Logaritmi',
 
-  introduzione: R`Un capitale cresce del $5\%$ all'anno: dopo quanti anni sarà raddoppiato? Bisogna risolvere $1{,}05^x = 2$, cioè trovare un **esponente**. Con le potenze si sa calcolare $1{,}05^{10}$, ma non si sa tornare indietro dal risultato all'esponente. Il logaritmo serve proprio a questo.
+  introduzione: R`Un capitale cresce del $5\%$ all'anno: dopo quanti anni raddoppia? Devi risolvere $1{,}05^x = 2$, dove l'incognita è un **esponente**. Per trovarla serve il logaritmo.
 
-Il **logaritmo** in base $a$ di $b$, scritto $\log_a b$, è l'esponente da dare ad $a$ per ottenere $b$. Per esempio $\log_2 8 = 3$, perché $2^3 = 8$. Il logaritmo disfa la potenza, come la radice quadrata disfa il quadrato.
+Il **logaritmo** $\log_a b$ è l'esponente da dare ad $a$ per ottenere $b$. Per esempio $\log_2 8 = 3$, perché $2^3 = 8$.
 
-I logaritmi servono ogni volta che la domanda è "dopo quanto tempo" in una crescita esponenziale, e stanno dietro alle scale che comprimono numeri enormi in pochi valori leggibili: il pH, i decibel, la scala Richter dei terremoti. Serve conoscere bene le proprietà delle potenze e il grafico della funzione esponenziale $y = a^x$.`,
+Ti servono le proprietà delle potenze e il grafico di $y = a^x$.`,
 
   inBreve: [
-    R`$\log_a b = x$ vuol dire $a^x = b$: il logaritmo è un esponente. Si può calcolare solo con base $a > 0$, $a \ne 1$ e argomento $b > 0$.`,
-    R`Il logaritmo trasforma prodotti in somme: $\log_a(bc) = \log_a b + \log_a c$, $\log_a \frac{b}{c} = \log_a b - \log_a c$, $\log_a b^k = k\log_a b$. Per le somme dentro l'argomento non c'è nessuna regola.`,
-    R`Per cambiare base: $\log_a b = \dfrac{\log b}{\log a}$ (oppure con $\ln$). È così che si calcola con la calcolatrice.`,
-    R`Il grafico di $y = \log_a x$ è il simmetrico di $y = a^x$ rispetto alla retta $y = x$: passa per $(1;0)$, esiste solo per $x > 0$ e ha l'asintoto verticale $x = 0$.`,
-    R`In equazioni e disequazioni logaritmiche si scrivono **prima** le condizioni di esistenza (argomenti positivi), poi si porta tutto a un logaritmo per parte. Nelle disequazioni con base fra $0$ e $1$ il verso si rovescia.`,
+    R`$\log_a b = x$ vuol dire $a^x = b$: il logaritmo è un esponente. Esiste solo con base $a > 0$, $a \ne 1$ e argomento $b > 0$.`,
+    R`Il logaritmo trasforma i prodotti in somme: $\log_a(bc) = \log_a b + \log_a c$. Poi $\log_a \frac{b}{c} = \log_a b - \log_a c$ e $\log_a b^k = k\log_a b$. Per una somma dentro l'argomento non c'è nessuna regola.`,
+    R`Per cambiare base: $\log_a b = \dfrac{\log b}{\log a}$, oppure con $\ln$. Così lo calcoli con la calcolatrice.`,
+    R`Il grafico di $y = \log_a x$ è il simmetrico di $y = a^x$ rispetto alla retta $y = x$. Passa per $(1;0)$, esiste solo per $x > 0$ e ha l'asintoto verticale $x = 0$.`,
+    R`Nelle equazioni e disequazioni logaritmiche scrivi **prima** le condizioni di esistenza: argomenti positivi. Con base fra $0$ e $1$, nelle disequazioni il verso si rovescia.`,
     R`Un'equazione come $a^x = b$ si risolve prendendo il logaritmo dei due membri: $x = \dfrac{\log b}{\log a}$.`
   ],
 
   sezioni: [
-    { id: 'definizione', titolo: 'Definizione di logaritmo', testo: R`A quale numero devi elevare $2$ per ottenere $8$? A $3$. Questo $3$ si chiama **logaritmo in base $2$ di $8$** e si scrive $\log_2 8 = 3$. Il numero in basso ($2$) è la **base**, quello di cui si calcola il logaritmo ($8$) è l'**argomento**.
+    { id: 'definizione', titolo: 'Definizione di logaritmo', testo: R`A quale numero devi elevare $2$ per ottenere $8$? A $3$. Questo $3$ è il **logaritmo in base $2$ di $8$** e si scrive $\log_2 8 = 3$. Il $2$ in basso è la **base**, l'$8$ è l'**argomento**.
 
->* **Definizione:** $$\log_a b = x \iff a^x = b$$ con $a > 0$, $a \ne 1$, $b > 0$. Il logaritmo è un esponente: quello da dare alla base per ottenere l'argomento.
+>* **Definizione:** $$\log_a b = x \iff a^x = b$$ con $a > 0$, $a \ne 1$, $b > 0$. Il logaritmo è l'esponente da dare alla base per ottenere l'argomento.
 
-Per calcolare un logaritmo si scrive l'argomento come potenza della base:
+Per calcolare un logaritmo, scrivi l'argomento come potenza della base:
 
 ~ \log_3 \frac19 = x :: cerco l'esponente $x$
 ~ 3^x = \frac19 :: stessa cosa, detta con la definizione
 ~ 3^x = \evid{3^{-2}} :: $\frac19 = \frac{1}{3^2} = 3^{-2}$
 ~ x = \evidb{-2} :: stessa base, esponenti uguali
 
-Le condizioni vengono dalle potenze. La base deve essere positiva e diversa da $1$, come nelle funzioni esponenziali (con base $1$ ogni potenza vale $1$, e non si potrebbe risalire all'esponente). L'argomento deve essere **positivo**, perché una potenza con base positiva non dà mai zero né un numero negativo: $\log_2(-4)$ e $\log_2 0$ non esistono.
+Una potenza con base positiva è sempre positiva, quindi l'argomento deve essere **positivo**: $\log_2(-4)$ e $\log_2 0$ non esistono. La base $1$ è esclusa perché $1^x$ vale sempre $1$.
 
-Trascina $P$ lungo la curva $y = \log_2 x$. Porta $p$ a $1$, $2$, $4$, $8$: che cosa fa il logaritmo? E quando $p$ si avvicina a $0$?
+Trascina $P$ lungo la curva e porta $p$ a $1$, $2$, $4$, $8$: che cosa fa il logaritmo? E vicino a $0$?
 
 [[grafico:puntoMobile]]
 
@@ -42,33 +53,35 @@ Trascina $P$ lungo la curva $y = \log_2 x$. Porta $p$ a $1$, $2$, $4$, $8$: che 
 [ ] $2$
 [ ] $-2$
 [ ] $8$
-=> Cerco $x$ con $4^x = 2$: siccome $\sqrt4 = 2$, $x = \frac12$. La risposta $2$ scambia base e argomento: è $\log_2 4$. Base e argomento non si possono scambiare.
+=> Cerco $x$ con $4^x = 2$, e siccome $\sqrt4 = 2$, $x = \frac12$. La risposta $2$ scambia base e argomento: è $\log_2 4$.
 
->! Deve essere positivo l'**argomento**, non il risultato: $\log_3 \frac19 = -2$ va benissimo. Un logaritmo è negativo quando l'argomento è fra $0$ e $1$ (con base maggiore di $1$).` },
+>! Deve essere positivo l'**argomento**, non il risultato: $\log_3 \frac19 = -2$ va bene. Con base maggiore di $1$, il logaritmo è negativo se l'argomento sta fra $0$ e $1$.` },
 
-    { id: 'logaritmi-notevoli', titolo: 'Logaritmi notevoli: decimale e naturale', testo: R`Due logaritmi valgono sempre lo stesso, qualunque sia la base.
+    { id: 'logaritmi-notevoli', titolo: 'Logaritmi notevoli: decimale e naturale', testo: R`Due logaritmi hanno lo stesso valore con qualunque base.
 
->* Per ogni base: $\log_a 1 = 0$, perché $a^0 = 1$; $\log_a a = 1$, perché $a^1 = a$.
+>* Per ogni base $\log_a 1 = 0$, perché $a^0 = 1$, e $\log_a a = 1$, perché $a^1 = a$.
 
-Due basi si usano così spesso da avere un simbolo tutto loro, e sono le uniche sui tasti della calcolatrice.
+Due basi hanno un simbolo tutto loro e sono le uniche sui tasti della calcolatrice.
 
 | nome | si scrive | base | tasto |
 |---|---|---|---|
 | logaritmo decimale | $\log b$ | $10$ | log |
 | logaritmo naturale | $\ln b$ | $e \approx 2{,}718$ | ln |
 
-Il **logaritmo decimale** conta gli zeri: $\log 1000 = 3$, $\log 0{,}01 = -2$. Il **logaritmo naturale** usa come base il numero di Nepero $e$, quello della crescita esponenziale continua; lo incontrerai spesso nelle derivate, dove rende le formule più semplici.
+Il **logaritmo decimale** conta gli zeri: $\log 1000 = 3$, $\log 0{,}01 = -2$. Il **logaritmo naturale** ha come base il numero di Nepero $e$ e lo userai molto con le derivate.
 
 ?? Quanto vale $\log 0{,}001$?
 [x] $-3$
 [ ] $3$
 [ ] $-2$
 [ ] non esiste, perché l'argomento è minore di $1$
-=> $0{,}001 = \frac{1}{1000} = 10^{-3}$, quindi $\log 0{,}001 = -3$. L'argomento è positivo, quindi il logaritmo esiste; essendo minore di $1$, viene negativo. Chi risponde $-2$ conta gli zeri dopo la virgola invece di contare le posizioni fino all'$1$.
+=> $0{,}001 = \frac{1}{1000} = 10^{-3}$, quindi $\log 0{,}001 = -3$. L'argomento è positivo, quindi il logaritmo esiste, ma è minore di $1$ e il logaritmo viene negativo. Chi risponde $-2$ conta solo gli zeri dopo la virgola.
 
->! Senza base scritta, $\log$ vuol dire base $10$ (a scuola e sulla calcolatrice); $\ln$ vuol dire base $e$. Sono diversi: $\log 10 = 1$, ma $\ln 10 \approx 2{,}303$.` },
+>! Senza base scritta, $\log$ vuol dire base $10$, mentre $\ln$ vuol dire base $e$: $\log 10 = 1$, ma $\ln 10 \approx 2{,}303$.` },
 
-    { id: 'proprieta', titolo: 'Le proprietà dei logaritmi', testo: R`$8 \cdot 4 = 32$, cioè $2^3 \cdot 2^2 = 2^5$: moltiplicando le potenze, gli esponenti si **sommano**. Siccome i logaritmi sono esponenti, $\log_2 8 = 3$, $\log_2 4 = 2$ e $\log_2 32 = 5 = 3 + 2$. Il logaritmo di un prodotto è la somma dei logaritmi. Lo stesso ragionamento, con lettere al posto dei numeri:
+    { id: 'proprieta', titolo: 'Le proprietà dei logaritmi', testo: R`Guarda: $8 \cdot 4 = 32$, cioè $2^3 \cdot 2^2 = 2^5$. Moltiplicando le potenze, gli esponenti si **sommano**.
+
+I logaritmi sono esponenti, quindi il logaritmo di un prodotto è la somma dei logaritmi: $\log_2 32 = \log_2 8 + \log_2 4 = 3 + 2$. Con le lettere:
 
 ~ \log_a b = x,\quad \log_a c = y :: do un nome ai due logaritmi
 ~ \evid{a^x = b},\quad \evid{a^y = c} :: per la definizione
@@ -77,7 +90,9 @@ Il **logaritmo decimale** conta gli zeri: $\log 1000 = 3$, $\log 0{,}01 = -2$. I
 
 >* Con $a > 0$, $a \ne 1$, $b > 0$, $c > 0$: $$\log_a(b \cdot c) = \log_a b + \log_a c$$ $$\log_a\frac{b}{c} = \log_a b - \log_a c$$ $$\log_a b^k = k \log_a b$$ Sono le proprietà del **prodotto**, del **quoziente** e della **potenza**.
 
-La proprietà della potenza vale anche con gli esponenti frazionari, quindi anche per le radici: $\log_a \sqrt[n]{b} = \log_a b^{\frac1n} = \frac1n\log_a b$. Spesso le proprietà servono al contrario, per riunire più logaritmi in uno solo:
+La proprietà della potenza vale anche per le radici: $\log_a \sqrt[n]{b} = \log_a b^{\frac1n} = \frac1n\log_a b$.
+
+Le proprietà servono anche al contrario, per riunire più logaritmi in uno solo:
 
 ~ 2\log_3 6 - \log_3 4 :: due logaritmi nella stessa base
 ~ \log_3 \evid{6^2} - \log_3 4 :: potenza: il $2$ davanti diventa esponente
@@ -89,13 +104,13 @@ La proprietà della potenza vale anche con gli esponenti frazionari, quindi anch
 [ ] $\log 7$
 [ ] $\log 2 \cdot \log 5$
 [ ] $\log 25$
-=> Per la proprietà del prodotto $\log 2 + \log 5 = \log(2 \cdot 5) = \log 10 = 1$. Sommando i logaritmi si **moltiplicano** gli argomenti: $\log 7$ è quello che si ottiene sommandoli, ed è l'errore più diffuso con i logaritmi.
+=> Per la proprietà del prodotto $\log 2 + \log 5 = \log(2 \cdot 5) = \log 10 = 1$. $\log 7$ somma gli argomenti invece di moltiplicarli: è l'errore più diffuso.
 
-Nella scheda **Laboratorio** c'è *Il regolo calcolatore*: due righelli con le tacche a distanza logaritmica, che moltiplicano i numeri sommando lunghezze.
+Nella scheda **Laboratorio** c'è *Il regolo calcolatore*: moltiplica i numeri sommando lunghezze.
 
->! Nessuna proprietà vale per somme e differenze **dentro** l'argomento: $\log_a(b + c)$ non si spezza. Con $b = c = 1$: $\log(1 + 1) = \log 2 \approx 0{,}301$, mentre $\log 1 + \log 1 = 0$.` },
+>! Non c'è nessuna regola per una somma **dentro** l'argomento: $\log_a(b + c)$ non si spezza. Prova con $b = c = 1$: $\log(1 + 1) = \log 2 \approx 0{,}301$, ma $\log 1 + \log 1 = 0$.` },
 
-    { id: 'cambiamento-base', titolo: 'Il cambiamento di base', testo: R`Quanto vale $\log_2 5$? Non è un numero intero: $2^2 = 4$ e $2^3 = 8$, quindi è fra $2$ e $3$. La calcolatrice ha solo i tasti log (base $10$) e ln (base $e$). Per usarli serve una formula che trasforma un logaritmo in una base qualsiasi in logaritmi nella base che vuoi tu.
+    { id: 'cambiamento-base', titolo: 'Il cambiamento di base', testo: R`Quanto vale $\log_2 5$? Sta fra $2$ e $3$, perché $2^2 = 4$ e $2^3 = 8$. Sulla calcolatrice però ci sono solo log e ln, quindi serve una formula per cambiare base.
 
 ~ \log_2 5 = x :: cerco questo numero
 ~ 2^x = 5 :: definizione di logaritmo
@@ -103,58 +118,74 @@ Nella scheda **Laboratorio** c'è *Il regolo calcolatore*: due righelli con le t
 ~ \evid{x}\ln 2 = \ln 5 :: proprietà della potenza: l'esponente scende davanti
 ~ x = \evidb{\frac{\ln 5}{\ln 2}} \approx \frac{1{,}609}{0{,}693} \approx 2{,}32 :: divido per $\ln 2$
 
->* **Cambiamento di base**: $$\log_a b = \frac{\log_c b}{\log_c a}$$ con $c$ base qualsiasi ($c > 0$, $c \ne 1$), di solito $10$ oppure $e$. Sopra l'argomento, sotto la base.
+>* **Cambiamento di base**: $$\log_a b = \frac{\log_c b}{\log_c a}$$ con $c > 0$, $c \ne 1$, di solito $10$ oppure $e$. Sopra l'argomento, sotto la base.
 
-Controllo: $2^{2{,}32} \approx 4{,}99$, quasi $5$. Prendendo $c = b$ nella formula si ottiene un caso utile: $\log_a b = \dfrac{1}{\log_b a}$, perché $\log_b b = 1$.
+Controllo: $2^{2{,}32} \approx 4{,}99$, quasi $5$.
+
+> Con $c = b$ ottieni $\log_a b = \dfrac{1}{\log_b a}$, perché $\log_b b = 1$.
 
 ?? Quanto vale $\log_9 27$?
 [x] $\frac32$
 [ ] $3$
 [ ] $\frac23$
 [ ] $\frac13$
-=> Con la base $3$: $\log_9 27 = \frac{\log_3 27}{\log_3 9} = \frac32$. Controllo: $9^{\frac32} = \left(\sqrt9\right)^3 = 27$. La risposta $\frac23$ mette la base sopra e l'argomento sotto: è $\log_{27} 9$.
+=> Con la base $3$: $\log_9 27 = \frac{\log_3 27}{\log_3 9} = \frac32$. Controllo: $9^{\frac32} = \left(\sqrt9\right)^3 = 27$. La risposta $\frac23$ mette la base sopra: è $\log_{27} 9$.
 
->! La formula non cambia il valore del logaritmo, solo il modo di calcolarlo: $\frac{\ln 5}{\ln 2}$ e $\frac{\log 5}{\log 2}$ danno lo stesso numero. Non si semplifica il $\ln$: $\frac{\ln 5}{\ln 2}$ non è $\ln\frac52$.` },
+>! Il $\ln$ non si semplifica: $\frac{\ln 5}{\ln 2}$ non è $\ln\frac52$.` },
 
-    { id: 'inversa-esponenziale', titolo: 'Logaritmo ed esponenziale: funzioni inverse', testo: R`La funzione $y = 2^x$ prende un esponente e dà una potenza: $3 \mapsto 8$. Il logaritmo in base $2$ fa il viaggio opposto: $8 \mapsto 3$. Si dice che $y = \log_2 x$ è la **funzione inversa** di $y = 2^x$: ogni punto $(3;8)$ del grafico della prima diventa il punto $(8;3)$ del grafico della seconda, con le coordinate scambiate.
+    { id: 'inversa-esponenziale', titolo: 'Logaritmo ed esponenziale: funzioni inverse', testo: R`La funzione $y = 2^x$ prende un esponente e dà una potenza: $3 \mapsto 8$. Il logaritmo in base $2$ fa il viaggio opposto, $8 \mapsto 3$: è la **funzione inversa** di $y = 2^x$.
 
-Scambiare le coordinate, sul piano, vuol dire ribaltare il punto rispetto alla retta $y = x$. Trascina $P$ sulla curva esponenziale e guarda dove finisce il suo gemello $Q$.
+Il punto $(3;8)$ del primo grafico diventa il punto $(8;3)$ del secondo. Scambiare le coordinate vuol dire ribaltare il punto rispetto alla retta $y = x$: trascina $P$ e guarda dove finisce $Q$.
 
 [[grafico:inversa]]
 
 >* $y = \log_a x$ è l'inversa di $y = a^x$: i due grafici sono simmetrici rispetto alla retta $y = x$. Una funzione disfa l'altra: $$a^{\log_a x} = x$$ per ogni $x > 0$, e $$\log_a\left(a^x\right) = x$$ per ogni $x$.
 
-Dalla simmetria si leggono subito le proprietà del logaritmo. L'esponenziale passa per $(0;1)$, il logaritmo per $(1;0)$. L'esponenziale ha l'asintoto orizzontale $y = 0$, il logaritmo quello verticale $x = 0$. L'esponenziale prende tutti i numeri e dà solo valori positivi; il logaritmo accetta solo numeri positivi e dà tutti i valori.
+Dalla simmetria leggi le proprietà del logaritmo:
+
+| | $y = a^x$ | $y = \log_a x$ |
+|---|---|---|
+| passa per | $(0;1)$ | $(1;0)$ |
+| asintoto | orizzontale, $y = 0$ | verticale, $x = 0$ |
+| accetta | tutti i numeri | solo $x > 0$ |
+| dà | solo valori positivi | tutti i valori |
 
 ?? Quanto fa $2^{\log_2 7}$?
 [x] $7$
 [ ] $14$
 [ ] $2^7$
 [ ] $\log_2 7$
-=> $\log_2 7$ è l'esponente da dare a $2$ per ottenere $7$. Se poi a $2$ dai proprio quell'esponente, ottieni $7$: la potenza disfa il logaritmo.
+=> $\log_2 7$ è l'esponente da dare a $2$ per ottenere $7$. Se dai a $2$ proprio quell'esponente, ottieni $7$.
 
->! "Inversa" qui non vuol dire reciproca: l'inversa di $2^x$ è $\log_2 x$, non $\frac{1}{2^x}$. La reciproca $\frac{1}{2^x} = 2^{-x}$ è un'altra esponenziale, il cui grafico è il simmetrico di quello di $2^x$ rispetto all'asse $y$.` },
+>! «Inversa» non vuol dire reciproca: l'inversa di $2^x$ è $\log_2 x$, non $\frac{1}{2^x}$.` },
 
-    { id: 'funzione-logaritmica', titolo: 'Dominio, andamento e asintoto', testo: R`Come cambia il grafico di $y = \log_a x$ se cambi la base? Siccome $\log_a a = 1$, la curva passa sempre per il punto $(a;1)$: nel grafico trascina quel punto a destra e a sinistra, e cambierai la base. Guarda che cosa resta fermo e che cosa succede quando $a$ scende sotto $1$.
+    { id: 'funzione-logaritmica', titolo: 'Dominio, andamento e asintoto', testo: R`Come cambia il grafico di $y = \log_a x$ se cambi la base? La curva passa sempre per $(a;1)$, perché $\log_a a = 1$, quindi trascinando quel punto cambi la base. Guarda cosa succede quando $a$ scende sotto $1$.
 
 [[grafico:baseVariabile]]
 
->* **Funzione logaritmica** $y = \log_a x$ ($a > 0$, $a \ne 1$). Dominio: $x > 0$. Passa sempre per $(1;0)$, perché $\log_a 1 = 0$. Asintoto verticale: $x = 0$, cioè l'asse $y$. È **crescente** se $a > 1$, **decrescente** se $0 < a < 1$.
+>* **Funzione logaritmica** $y = \log_a x$, con $a > 0$ e $a \ne 1$. Il dominio è $x > 0$ e l'asintoto verticale è $x = 0$, cioè l'asse $y$. Passa sempre per $(1;0)$, perché $\log_a 1 = 0$. È **crescente** se $a > 1$, **decrescente** se $0 < a < 1$.
 
-Con $a > 1$, vicino a $0$ la curva precipita verso il basso; per $x$ grande continua a salire, ma sempre più piano. Da $x = 1000$ a $x = 1\,000\,000$, un numero mille volte più grande, $\log x$ passa solo da $3$ a $6$. Non ha però un asintoto orizzontale: prima o poi supera qualunque altezza.
+Con $a > 1$ la curva sale sempre, ma sempre più piano: da $x = 1000$ a $x = 1\,000\,000$, $\log x$ passa solo da $3$ a $6$. Però non ha un asintoto orizzontale, perché prima o poi supera qualunque altezza.
 
 ?? Per quali $x$ si ha $\log_{\frac12} x > 0$?
 [x] $0 < x < 1$
 [ ] $x > 1$
 [ ] $x > 0$
 [ ] $x > \frac12$
-=> Con base $\frac12$ la funzione è decrescente e passa per $(1;0)$: sta sopra l'asse $x$ a **sinistra** di $1$, cioè per $0 < x < 1$. Controllo con $x = \frac14$: $\left(\frac12\right)^2 = \frac14$, quindi $\log_{\frac12}\frac14 = 2 > 0$. La risposta $x > 1$ vale per le basi maggiori di $1$.
+=> Con base $\frac12$ la funzione è decrescente e passa per $(1;0)$, quindi sta sopra l'asse $x$ a **sinistra** di $1$. Controllo: $\log_{\frac12}\frac14 = 2 > 0$. La risposta $x > 1$ vale per le basi maggiori di $1$.
 
->! Il dominio è $x > 0$ per qualunque base: $x = 0$ è escluso, non incluso. Il logaritmo può invece valere qualunque numero, anche negativo.` },
+>! Il dominio è $x > 0$ con qualunque base, e $x = 0$ è escluso. Il valore del logaritmo invece può essere negativo.` },
 
-    { id: 'equazioni-logaritmiche', titolo: 'Le equazioni logaritmiche', testo: R`Un'**equazione logaritmica** ha l'incognita dentro un logaritmo, come $\log_2(x+1) = 3$. Le più semplici si risolvono con la definizione: $\log_2(x+1) = 3$ vuol dire $x + 1 = 2^3 = 8$, quindi $x = 7$. Per quelle con più logaritmi serve uno schema.
+    { id: 'equazioni-logaritmiche', titolo: 'Le equazioni logaritmiche', testo: R`Un'**equazione logaritmica** ha l'incognita dentro un logaritmo. Le più semplici si risolvono con la definizione: $\log_2(x+1) = 3$ vuol dire $x + 1 = 2^3 = 8$, quindi $x = 7$.
 
->* **Schema.** 1) Scrivo le **condizioni di esistenza** (c.e.): ogni argomento deve essere positivo. 2) Con le proprietà porto l'equazione alla forma $\log_a f(x) = \log_a g(x)$, un solo logaritmo per parte, nella stessa base. 3) Due logaritmi nella stessa base sono uguali solo se gli argomenti sono uguali: risolvo $f(x) = g(x)$ e tengo solo le soluzioni che rispettano le c.e.
+Con più logaritmi, segui questi passi:
+
+1. Scrivi le **condizioni di esistenza** (c.e.): ogni argomento deve essere positivo.
+2. Usa le proprietà: un solo logaritmo per parte, nella stessa base.
+3. Togli i logaritmi e uguaglia gli argomenti.
+4. Risolvi, e tieni solo le soluzioni che rispettano le c.e.
+
+>* Se $\log_a f(x) = \log_a g(x)$, allora $f(x) = g(x)$. Ogni soluzione però va confrontata con le c.e.
 
 ~ \log(x-1) + \log(x+2) = \log(2x+10) :: tre logaritmi
 ~ x - 1 > 0,\quad x + 2 > 0,\quad 2x + 10 > 0 \ \Rightarrow\ \evid{x > 1} :: c.e., sugli argomenti di partenza: devono valere tutte
@@ -168,17 +199,22 @@ Con $a > 1$, vicino a $0$ la curva precipita verso il basso; per $x$ grande cont
 [ ] $x = 4$ e $x = -2$
 [ ] solo $x = -2$
 [ ] nessuna
-=> Le c.e. sono $x > 0$ e $x - 2 > 0$, cioè $x > 2$. $x = -2$ non le rispetta: $\log_2(-2)$ non esiste. Controllo con $x = 4$: $\log_2 4 + \log_2 2 = 2 + 1 = 3$. Dimenticare le c.e. porta a tenere soluzioni che rendono negativo un argomento.
+=> Le c.e. sono $x > 0$ e $x - 2 > 0$, cioè $x > 2$. $x = -2$ non le rispetta: $\log_2(-2)$ non esiste. Controllo con $x = 4$: $\log_2 4 + \log_2 2 = 2 + 1 = 3$.
 
-Alcune equazioni si risolvono con una **sostituzione**, come quelle esponenziali. In $(\ln x)^2 - \ln x - 2 = 0$ (c.e. $x > 0$) si pone $t = \ln x$: $t^2 - t - 2 = 0$ dà $t = 2$ e $t = -1$, quindi $x = e^2$ oppure $x = e^{-1}$. Qui nessuna $t$ va scartata, perché il logaritmo può valere qualunque numero.
+Alcune equazioni si risolvono con una **sostituzione**. In $(\ln x)^2 - \ln x - 2 = 0$, con c.e. $x > 0$, poni $t = \ln x$ e ottieni $t^2 - t - 2 = 0$. Le soluzioni sono $t = 2$ e $t = -1$, quindi $x = e^2$ oppure $x = e^{-1}$. Nessuna $t$ va scartata, perché il logaritmo può valere qualunque numero.
 
->! Le c.e. si scrivono **prima** di usare le proprietà, sugli argomenti di partenza. Dopo, il dominio sembra più largo: $(x-1)(x+2) > 0$ vale anche per $x < -2$, ma lì $\log(x-1)$ e $\log(x+2)$ non esistono.` },
+>! Scrivi le c.e. **prima** di usare le proprietà, sugli argomenti di partenza, perché dopo il dominio sembra più largo. Per esempio $(x-1)(x+2) > 0$ vale anche per $x < -2$, dove $\log(x-1)$ non esiste.` },
 
-    { id: 'disequazioni-logaritmiche', titolo: 'Le disequazioni logaritmiche', testo: R`Nelle **disequazioni logaritmiche** si fa come nelle equazioni: c.e., un logaritmo per parte, poi si tolgono i logaritmi. Il passo delicato è l'ultimo, perché bisogna decidere il verso. Con base maggiore di $1$ il logaritmo è crescente: argomento più grande, logaritmo più grande, e il verso resta. Con base fra $0$ e $1$ è decrescente, e il verso si rovescia.
+    { id: 'disequazioni-logaritmiche', titolo: 'Le disequazioni logaritmiche', testo: R`Le **disequazioni logaritmiche** si risolvono come le equazioni: c.e., un logaritmo per parte, poi togli i logaritmi. Il passo delicato è l'ultimo, perché devi decidere il verso.
 
->* Da $\log_a f(x) > \log_a g(x)$ si passa a $f(x) > g(x)$ se $a > 1$ (il verso **resta**), e a $f(x) < g(x)$ se $0 < a < 1$ (il verso **si rovescia**). In tutti e due i casi valgono anche le c.e., $f(x) > 0$ e $g(x) > 0$: la soluzione è la parte comune.
+| base | il logaritmo è | togliendo i logaritmi, il verso |
+|---|---|---|
+| $a > 1$ | crescente | **resta** |
+| $0 < a < 1$ | decrescente | **si rovescia** |
 
-Con base maggiore di $1$: $\log_2(x-1) \le 3$. C.e.: $x > 1$. Scrivo $3 = \log_2 8$, tolgo i logaritmi senza cambiare verso: $x - 1 \le 8$, cioè $x \le 9$. Con le c.e.: $1 < x \le 9$.
+>* Da $\log_a f(x) > \log_a g(x)$ passi a $f(x) > g(x)$ se $a > 1$, e a $f(x) < g(x)$ se $0 < a < 1$. Alla fine prendi la parte comune con le c.e.
+
+Con base maggiore di $1$: $\log_2(x-1) \le 3$, con c.e. $x > 1$. Scrivi $3 = \log_2 8$ e togli i logaritmi: $x - 1 \le 8$, cioè $x \le 9$. Con le c.e.: $1 < x \le 9$.
 
 Con base minore di $1$:
 
@@ -194,15 +230,15 @@ Con base minore di $1$:
 [ ] $x > \frac13$
 [ ] $x < \frac13$
 [ ] $x > 3$
-=> C.e.: $x > 0$. Scrivo $1 = \log_{\frac13}\frac13$; la base è minore di $1$, quindi il verso si rovescia: $x < \frac13$. Con le c.e.: $0 < x < \frac13$. La risposta $x < \frac13$ dimentica le c.e. (comprende anche i numeri negativi), la risposta $x > \frac13$ dimentica di rovesciare il verso.
+=> C.e.: $x > 0$. Scrivo $1 = \log_{\frac13}\frac13$ e, siccome la base è minore di $1$, rovescio il verso: $x < \frac13$. Con le c.e.: $0 < x < \frac13$. La risposta $x < \frac13$ dimentica le c.e., la risposta $x > \frac13$ non rovescia il verso.
 
->! Due dimenticanze tipiche: non rovesciare il verso quando la base è fra $0$ e $1$, e non intersecare con le c.e. alla fine.` },
+>! Due dimenticanze tipiche: non rovesciare il verso con base fra $0$ e $1$, e non fare la parte comune con le c.e.` },
 
-    { id: 'esponenziali-con-logaritmi', titolo: 'Risolvere le equazioni esponenziali con i logaritmi', testo: R`$2^x = 8$ si risolve scrivendo $8 = 2^3$. Ma $2^x = 5$? $5$ non è una potenza intera di $2$, e uguagliare le basi non funziona. La soluzione esiste lo stesso, per definizione è $x = \log_2 5$; per calcolarla si prende il logaritmo dei due membri, che fa scendere l'incognita dall'esponente.
+    { id: 'esponenziali-con-logaritmi', titolo: 'Risolvere le equazioni esponenziali con i logaritmi', testo: R`$2^x = 8$ si risolve scrivendo $8 = 2^3$. E $2^x = 5$? $5$ non è una potenza intera di $2$, ma la soluzione c'è lo stesso: è $x = \log_2 5$. Per calcolarla prendi il logaritmo dei due membri, così l'incognita scende dall'esponente.
 
->* Da $a^x = b$ (con $a > 0$, $a \ne 1$, $b > 0$) si prende il logaritmo, in base $10$ o $e$, dei due membri: $$x \log a = \log b \quad\Longrightarrow\quad x = \frac{\log b}{\log a}.$$
+>* Da $a^x = b$, con $b > 0$, prendi il logaritmo dei due membri: $$x \log a = \log b \quad\Longrightarrow\quad x = \frac{\log b}{\log a}.$$ Va bene anche $\ln$ al posto di $\log$.
 
-È il metodo per le domande "dopo quanto tempo". Una colonia di batteri cresce del $10\%$ all'ora: dopo quante ore è raddoppiata?
+Serve per le domande «dopo quanto tempo». Una colonia di batteri cresce del $10\%$ all'ora: dopo quante ore raddoppia?
 
 ~ N_0 \cdot 1{,}1^t = 2N_0 :: crescere del $10\%$ vuol dire moltiplicare per $1{,}1$ ogni ora
 ~ 1{,}1^t = 2 :: divido per $N_0$: la quantità iniziale non conta
@@ -210,22 +246,20 @@ Con base minore di $1$:
 ~ \evid{t} \ln 1{,}1 = \ln 2 :: l'esponente scende davanti
 ~ t = \frac{\ln 2}{\ln 1{,}1} \approx \frac{0{,}693}{0{,}0953} \approx \evidb{7{,}27} :: divido per $\ln 1{,}1$
 
-Poco più di $7$ ore. Lo stesso schema funziona quando l'esponente è più complicato: da $3^{x+1} = 20$ si ottiene $(x + 1)\ln 3 = \ln 20$, cioè $x = \frac{\ln 20}{\ln 3} - 1 \approx 1{,}727$.
+Poco più di $7$ ore. Lo schema funziona anche con esponenti più complicati: da $3^{x+1} = 20$ ottieni $(x + 1)\ln 3 = \ln 20$, cioè $x = \frac{\ln 20}{\ln 3} - 1 \approx 1{,}727$.
 
 ?? Qual è la soluzione di $2^x = 5$?
 [x] $x = \frac{\log 5}{\log 2}$
 [ ] $x = \frac52$
 [ ] $x = \log 5 - \log 2$
 [ ] $x = \frac{\log 2}{\log 5}$
-=> Prendendo il logaritmo, $x \log 2 = \log 5$, quindi $x = \frac{\log 5}{\log 2} \approx 2{,}32$. La risposta $\log 5 - \log 2$ è $\log\frac52$: confonde la divisione **fra** due logaritmi con il logaritmo di una divisione. La risposta $\frac{\log 2}{\log 5}$ scambia base e argomento.
+=> Prendendo il logaritmo, $x \log 2 = \log 5$, quindi $x = \frac{\log 5}{\log 2} \approx 2{,}32$. La risposta $\log 5 - \log 2$ è $\log\frac52$: è il logaritmo di una divisione, non una divisione fra logaritmi. La risposta $\frac{\log 2}{\log 5}$ scambia base e argomento.
 
->! Il logaritmo si prende di **tutto** il membro: da $2^x = 5$ si scrive $\ln(2^x) = \ln 5$, e non $x\ln 2 = 5$. E se il membro è una somma, come in $2^x + 1 = 5$, prima si isola la potenza ($2^x = 4$), poi si prende il logaritmo.` },
+>! Prendi il logaritmo di **tutto** il membro: da $2^x = 5$ scrivi $\ln(2^x) = \ln 5$, non $x\ln 2 = 5$. Se c'è una somma, come in $2^x + 1 = 5$, prima isola la potenza: $2^x = 4$.` },
 
-    { id: 'applicazioni', titolo: 'Le scale logaritmiche: decibel, pH e Richter', testo: R`Il suono più debole che l'orecchio sente e quello di un aereo al decollo differiscono di un fattore di circa mille miliardi. Scritti come numeri normali non si confrontano a colpo d'occhio. Con il logaritmo in base $10$ quei mille miliardi ($10^{12}$) diventano $12$: una **scala logaritmica** trasforma ogni fattore $10$ in un gradino di $1$.
+    { id: 'applicazioni', titolo: 'Le scale logaritmiche: decibel, pH e Richter', testo: R`Il suono più debole che senti e il rumore di un aereo differiscono di circa mille miliardi di volte. Con il logaritmo decimale, mille miliardi ($10^{12}$) diventano $12$. Una **scala logaritmica** trasforma ogni fattore $10$ in un gradino di $1$.
 
->* In una scala logaritmica, **sommare** un numero fisso sulla scala vuol dire **moltiplicare** la grandezza per un fattore fisso. È la proprietà del prodotto: $\log(10 \cdot I) = 1 + \log I$.
-
-Le scale più comuni:
+>* In una scala logaritmica, **sommare** un numero fisso vuol dire **moltiplicare** la grandezza per un fattore fisso. È la proprietà del prodotto: $\log(10 \cdot I) = 1 + \log I$.
 
 | scala | formula | un passo sulla scala |
 |---|---|---|
@@ -233,16 +267,16 @@ Le scale più comuni:
 | pH (acidità) | $\text{pH} = -\log[\text{H}^+]$ | pH $-1$: ioni $\text{H}^+$ $\times 10$ |
 | Richter (terremoti) | magnitudo | $+1$: ampiezza delle onde $\times 10$ |
 
-Nei decibel $I$ è l'intensità del suono e $I_0$ un'intensità di riferimento, quella appena udibile. Nel pH $[\text{H}^+]$ è la concentrazione di ioni idrogeno in moli per litro: con $[\text{H}^+] = 10^{-7}$ il pH è $7$, cioè neutro; ogni unità in meno vuol dire una soluzione dieci volte più acida. Nella scala Richter ogni grado in più corrisponde a onde dieci volte più ampie e a circa $32$ volte l'energia.
+Nei decibel, $I$ è l'intensità del suono e $I_0$ quella appena udibile. Nel pH, $[\text{H}^+]$ è la concentrazione di ioni idrogeno in moli per litro. Con $[\text{H}^+] = 10^{-7}$ il pH è $7$: la soluzione è neutra.
 
 ?? Un suono passa da $60$ a $80$ decibel. Di quanto è aumentata la sua intensità?
 [x] è diventata $100$ volte maggiore
 [ ] è aumentata di un terzo
 [ ] è diventata $20$ volte maggiore
 [ ] è raddoppiata
-=> $+20$ dB sono due passi da $10$ dB, e ogni passo moltiplica l'intensità per $10$: $10 \cdot 10 = 100$. Ragionare "$80$ è un terzo più di $60$" vuol dire leggere la scala come se fosse normale, ed è l'errore tipico con le scale logaritmiche.
+=> $+20$ dB sono due passi da $10$ dB. Ogni passo moltiplica l'intensità per $10$: $10 \cdot 10 = 100$. «$80$ è un terzo più di $60$» legge la scala come una scala normale: è l'errore tipico.
 
->! Sulle scale logaritmiche una differenza va letta come un rapporto: fra due terremoti di magnitudo $7$ e $5$ ci sono due gradi, e le onde del primo sono $10 \cdot 10 = 100$ volte più ampie.` }
+>! Sulle scale logaritmiche una differenza si legge come un rapporto. Fra magnitudo $7$ e $5$ ci sono due gradi: le onde sono $10 \cdot 10 = 100$ volte più ampie.` }
   ],
 
   grafici: {
@@ -360,7 +394,7 @@ Nei decibel $I$ è l'intensità del suono e $I_0$ un'intensità di riferimento, 
     { id: 'fc-16', sezione: 'funzione-logaritmica', tipo: 'concetto', fronte: R`Dominio di $y=\log_a x$`, retro: R`$x>0$: l'argomento deve essere positivo.` },
     { id: 'fc-17', sezione: 'funzione-logaritmica', tipo: 'concetto', fronte: R`Asintoto di $y=\log_a x$`, retro: R`La retta verticale $x=0$ (l'asse $y$).` },
     { id: 'fc-18', sezione: 'funzione-logaritmica', tipo: 'concetto', fronte: R`Quando $y=\log_a x$ è decrescente?`, retro: R`Quando $0<a<1$. È crescente quando $a>1$.` },
-    { id: 'fc-19', sezione: 'equazioni-logaritmiche', tipo: 'procedura', fronte: R`Passi per risolvere un'equazione logaritmica`, retro: R`1) Condizioni di esistenza. 2) Un solo logaritmo per parte, stessa base. 3) Uguagliare gli argomenti e risolvere.` },
+    { id: 'fc-19', sezione: 'equazioni-logaritmiche', tipo: 'procedura', fronte: R`Passi per risolvere un'equazione logaritmica`, retro: R`1) Condizioni di esistenza. 2) Un solo logaritmo per parte, stessa base. 3) Uguagliare gli argomenti e risolvere. 4) Tenere solo le soluzioni che rispettano le c.e.` },
     { id: 'fc-20', sezione: 'equazioni-logaritmiche', tipo: 'concetto', fronte: R`Quando si scrivono le c.e. di un'equazione logaritmica?`, retro: R`Prima di applicare le proprietà, sugli argomenti originali.` },
     { id: 'fc-21', sezione: 'disequazioni-logaritmiche', tipo: 'concetto', fronte: R`Verso di una disequazione logaritmica con $a>1$`, retro: R`Si mantiene: $\log_a f(x) > \log_a g(x) \iff f(x) > g(x)$.` },
     { id: 'fc-22', sezione: 'disequazioni-logaritmiche', tipo: 'concetto', fronte: R`Verso di una disequazione logaritmica con $0<a<1$`, retro: R`Si inverte: $\log_a f(x) > \log_a g(x) \iff f(x) < g(x)$.` },
@@ -369,6 +403,26 @@ Nei decibel $I$ è l'intensità del suono e $I_0$ un'intensità di riferimento, 
   ],
 
   esercizi: [
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Calcola $\log_2 8$.`, suggerimenti: [R`Quale potenza di $2$ fa $8$?`], risposta: valore(3), soluzione: [R`$2^3 = 8$.`, R`Quindi $\log_2 8 = 3$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Calcola $\log 1000$.`, suggerimenti: [R`Senza base scritta, la base è $10$.`], risposta: valore(3), soluzione: [R`$\log$ senza base vuol dire base $10$.`, R`$10^3 = 1000$, quindi $\log 1000 = 3$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Calcola $\log_5 1$.`, suggerimenti: [R`A quale esponente devi elevare $5$ per ottenere $1$?`], risposta: valore(0), soluzione: [R`$5^0 = 1$.`, R`Quindi $\log_5 1 = 0$. Con ogni base, il logaritmo di $1$ vale $0$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Calcola $\log_3 \dfrac19$.`, suggerimenti: [R`Scrivi $\dfrac19$ come potenza di $3$: l'esponente è negativo.`], risposta: valore(-2), soluzione: [R`$9 = 3^2$, quindi $\dfrac19 = 3^{-2}$.`, R`Quindi $\log_3 \dfrac19 = -2$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Calcola $\log 0{,}01$.`, suggerimenti: [R`$0{,}01 = \dfrac{1}{100}$: scrivilo come potenza di $10$.`], risposta: valore(-2), soluzione: [R`$0{,}01 = \dfrac{1}{100} = 10^{-2}$.`, R`Quindi $\log 0{,}01 = -2$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Calcola $\log_4 2$. Scrivi il risultato come frazione, per esempio «1/3».`, suggerimenti: [R`Quale operazione trasforma $4$ in $2$? Pensa alla radice quadrata.`], risposta: valore(1 / 2), soluzione: [R`$\sqrt4 = 2$, cioè $4^{\frac12} = 2$.`, R`Quindi $\log_4 2 = \dfrac12$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Calcola $\log_6 4 + \log_6 9$.`, suggerimenti: [R`Somma di logaritmi con la stessa base: moltiplica gli argomenti.`], risposta: valore(2), soluzione: [R`Proprietà del prodotto: $\log_6 4 + \log_6 9 = \log_6(4 \cdot 9) = \log_6 36$.`, R`$6^2 = 36$, quindi il risultato è $2$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Calcola $\log_2 24 - \log_2 3$.`, suggerimenti: [R`Differenza di logaritmi con la stessa base: dividi gli argomenti.`], risposta: valore(3), soluzione: [R`Proprietà del quoziente: $\log_2 24 - \log_2 3 = \log_2 \dfrac{24}{3} = \log_2 8$.`, R`$2^3 = 8$, quindi il risultato è $3$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Calcola $\log 2 + \log 50$.`, suggerimenti: [R`Somma di logaritmi: moltiplica gli argomenti.`], risposta: valore(2), soluzione: [R`Proprietà del prodotto: $\log 2 + \log 50 = \log(2 \cdot 50) = \log 100$.`, R`$10^2 = 100$, quindi il risultato è $2$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Calcola $\log_3 9^5$.`, suggerimenti: [R`Proprietà della potenza: l'esponente $5$ scende davanti.`], risposta: valore(10), soluzione: [R`Proprietà della potenza: $\log_3 9^5 = 5\log_3 9$.`, R`$\log_3 9 = 2$, perché $3^2 = 9$.`, R`$5 \cdot 2 = 10$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 2, testo: R`Risolvi $\log_2 x = 5$. Se non ci sono soluzioni, scrivi *nessuna*.`, suggerimenti: [R`Usa la definizione: $x$ è la potenza $2^5$.`], risposta: sol(32), soluzione: [R`C.e.: $x > 0$.`, R`Per la definizione, $x = 2^5 = 32$.`, R`$32 > 0$: la soluzione va bene.`] },
+    { id: 'b-12', livello: 'base', difficolta: 2, testo: R`Risolvi $\log_3(x - 1) = 2$.`, suggerimenti: [R`C.e.: l'argomento $x - 1$ deve essere positivo.`, R`Per la definizione, $x - 1 = 3^2$.`], risposta: sol(10), soluzione: [R`C.e.: $x - 1 > 0$, cioè $x > 1$.`, R`Per la definizione, $x - 1 = 3^2 = 9$.`, R`$x = 10$, che rispetta le c.e.`] },
+    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Risolvi $\log(2x) = 2$.`, suggerimenti: [R`La base è $10$: per la definizione, $2x = 10^2$.`], risposta: sol(50), soluzione: [R`C.e.: $2x > 0$, cioè $x > 0$.`, R`Per la definizione, $2x = 10^2 = 100$.`, R`$x = 50$, che rispetta le c.e.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Risolvi $\log_2(x + 3) = \log_2(2x - 1)$.`, suggerimenti: [R`Prima le c.e.: tutti e due gli argomenti devono essere positivi.`, R`Stessa base da tutte e due le parti: uguaglia gli argomenti.`], risposta: sol(4), soluzione: [R`C.e.: $x + 3 > 0$ e $2x - 1 > 0$, cioè $x > \dfrac12$.`, R`Uguaglio gli argomenti: $x + 3 = 2x - 1$.`, R`$x = 4$, che rispetta le c.e.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Risolvi $\log_3 x = \log_3(2x + 4)$. Se non ci sono soluzioni, scrivi *nessuna*.`, suggerimenti: [R`Prima le c.e.: tutti e due gli argomenti devono essere positivi.`, R`Uguaglia gli argomenti, poi confronta il risultato con le c.e.`], risposta: NESSUNA, soluzione: [R`C.e.: $x > 0$ e $2x + 4 > 0$. Insieme: $x > 0$.`, R`Uguaglio gli argomenti: $x = 2x + 4$, quindi $x = -4$.`, R`$-4$ non rispetta $x > 0$: l'equazione non ha soluzioni.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Risolvi $2^x = 5$. Scrivi $x$ con due cifre decimali, per esempio «1,23».`, suggerimenti: [R`Prendi il logaritmo dei due membri: l'esponente scende davanti.`, R`$x = \dfrac{\log 5}{\log 2}$: fai la divisione con la calcolatrice.`], risposta: dec(Math.log(5) / Math.log(2)), soluzione: [R`Logaritmo dei due membri: $x \log 2 = \log 5$.`, R`Divido per $\log 2$: $x = \dfrac{\log 5}{\log 2}$.`, R`$x \approx \dfrac{0{,}699}{0{,}301} \approx 2{,}32$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Risolvi $3^x = 10$. Scrivi $x$ con due cifre decimali.`, suggerimenti: [R`Prendi il logaritmo decimale dei due membri. Quanto vale $\log 10$?`], risposta: dec(Math.log(10) / Math.log(3)), soluzione: [R`Logaritmo dei due membri: $x \log 3 = \log 10 = 1$.`, R`Divido per $\log 3$: $x = \dfrac{1}{\log 3}$.`, R`$x \approx \dfrac{1}{0{,}477} \approx 2{,}10$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Risolvi $10^x = 50$. Scrivi $x$ con due cifre decimali.`, suggerimenti: [R`La base è $10$: per la definizione, $x = \log 50$.`], risposta: dec(Math.log10(50)), soluzione: [R`Per la definizione di logaritmo, $x = \log 50$.`, R`Con la calcolatrice: $x \approx 1{,}70$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Risolvi $e^x = 7$. Scrivi $x$ con due cifre decimali.`, suggerimenti: [R`La base è $e$: prendi il logaritmo naturale dei due membri.`], risposta: dec(Math.log(7)), soluzione: [R`Logaritmo naturale dei due membri: $\ln e^x = \ln 7$.`, R`$\ln e^x = x$, quindi $x = \ln 7$.`, R`Con la calcolatrice: $x \approx 1{,}95$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Risolvi $5^{x-1} = 3$. Scrivi $x$ con due cifre decimali.`, suggerimenti: [R`Prendi il logaritmo dei due membri: scende tutto l'esponente $x - 1$.`, R`Trovi $x - 1 = \dfrac{\log 3}{\log 5}$. Poi aggiungi $1$.`], risposta: dec(1 + Math.log(3) / Math.log(5)), soluzione: [R`Logaritmo dei due membri: $(x - 1)\log 5 = \log 3$.`, R`Divido per $\log 5$: $x - 1 = \dfrac{\log 3}{\log 5} \approx 0{,}683$.`, R`Aggiungo $1$: $x \approx 1{,}68$.`] },
     { id: 'es-01', difficolta: 1, testo: R`Calcola $\log_2 32$.`, suggerimenti: [R`Pensa a che potenza di $2$ fa $32$.`, R`$2^5 = 32$.`], risposta: { tipo: 'numero', valore: 5, tolleranza: 0.01 }, soluzione: [R`$2^5=32$, quindi $\log_2 32 = 5$.`] },
     { id: 'es-02', difficolta: 1, testo: R`Calcola $\log_5 \dfrac{1}{25}$.`, suggerimenti: [R`Scrivi $\dfrac{1}{25}$ come potenza di $5$.`, R`$25 = 5^2$, quindi $\dfrac{1}{25} = 5^{-2}$.`], risposta: { tipo: 'numero', valore: -2, tolleranza: 0.01 }, soluzione: [R`$\dfrac{1}{25}=5^{-2}$, quindi $\log_5\dfrac{1}{25}=-2$.`] },
     { id: 'es-03', difficolta: 1, testo: R`Usa le proprietà dei logaritmi per calcolare $\log_2 6 + \log_2 8 - \log_2 3$.`, suggerimenti: [R`Applica prima la proprietà del prodotto, poi quella del quoziente.`, R`Dovresti arrivare a $\log_2 16$.`], risposta: { tipo: 'numero', valore: 4, tolleranza: 0.01 }, soluzione: [R`$\log_2 6 + \log_2 8 = \log_2(6\cdot8) = \log_2 48$.`, R`$\log_2 48 - \log_2 3 = \log_2\dfrac{48}{3} = \log_2 16$.`, R`$\log_2 16 = 4$ perché $2^4=16$.`] },

@@ -114,6 +114,9 @@ L'utente sceglie quali carte studiare, quindi ogni carta deve reggersi da sola.
     un piccolo modulo (estremi + inclusione) e lo confronta
   - omessa → l'esercizio si controlla solo leggendo la soluzione.
 - `soluzione`: array di passi (markdown), come negli esempi. Sempre presente.
+- `livello: 'base'` (facoltativo): esercizio dell'**allenamento**, mostrato uno alla volta in cima
+  alla scheda. Venti per argomento, solo sull'argomento, numeri semplici, `risposta` obbligatoria.
+  Gli altri sono gli esercizi avanzati. `risposta.segnaposto` cambia il testo grigio della casella.
 
 ### `quiz` (12–18) — domande di **teoria**
 Domande su definizioni, proprietà, condizioni, «quale affermazione è vera», «cosa

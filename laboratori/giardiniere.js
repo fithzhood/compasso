@@ -7,52 +7,75 @@
    Obiettivo di ogni livello: sistemare picchetti e spago perché l'aiuola passi per le bandierine
    (o tocchi i lati di un recinto, o abbia l'eccentricità chiesta), e poi disegnarla tutta.
    Ultimo livello: il rocchetto doppio tiene costante d₁ − d₂, cioè l'iperbole.
-   Contratto: SCHEMA-LAB.md — modelli: ruota.js, specchio.js */
+   Schermata singola (27/9/2026): il prato riempie la scena e il viewBox si allarga con l'erba
+   invece di lasciare bande vuote; in verticale le formule stanno in cima alla scena, in orizzontale
+   nel pannello. Modalità libera: spago e picchetti liberi, ellisse o iperbole, nessun obiettivo.
+   Contratto: SCHEMA-LAB.md — modelli: bilancia.js, canestro.js, regolo.js */
 (function () {
   const STILE = `
-    .lab-giardiniere { container-type: inline-size; }
-    .lab-giardiniere .gd { display: flex; flex-direction: column; }
-    .lab-giardiniere .gd-sx, .lab-giardiniere .gd-dx { display: contents; }
-    .lab-giardiniere .gd-obiettivo { order: 1; padding: 12px 16px 8px; font-size: .98rem; line-height: 1.55; color: var(--testo); }
-    .lab-giardiniere .gd-obiettivo p { margin: 0; }
+    /* --- scena: il prato riempie tutto lo spazio; in verticale le formule stanno in cima, in orizzontale nel pannello --- */
+    .lab-giardiniere .lab-scena { flex-direction: column; align-items: stretch; justify-content: flex-start; overflow: hidden; background: color-mix(in srgb, var(--s3) 22%, var(--sup)); }
+    .lab-giardiniere .lab-scena > svg { flex: 1 1 0; min-height: 0; width: 100%; height: auto; cursor: grab; outline: none; touch-action: none; }
+    .lab-giardiniere .lab-scena > svg.presa { cursor: grabbing; }
+    .lab-giardiniere .lab-scena > svg:focus-visible { box-shadow: inset 0 0 0 3px var(--accento); }
+    /* --- formule --- */
+    .lab-giardiniere .gd-formula { flex: none; }
+    .lab-giardiniere .gd-et { font-size: 12px; letter-spacing: .05em; text-transform: uppercase; color: var(--testo2); font-weight: 600; white-space: nowrap; }
+    .lab-giardiniere .gd-tex { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 2px 16px; min-width: 0; font-size: clamp(1.1rem, 2.4cqmin, 1.3rem); }
+    .lab-giardiniere .gd-tex .katex { white-space: nowrap; }
+    .lab-giardiniere .gd-nota { font-size: .9rem; color: var(--no); }
+    .lab-giardiniere .gd-r.ponte .gd-et { color: var(--ok); }
+    .lab-giardiniere .gd-r.ponte .gd-tex { background: var(--ok-tenue); border-radius: 10px; padding: 2px 8px; animation: lab-gd-pop .5s var(--molla); }
+    /* in cima alla scena: una fascia chiara, righe centrate */
+    .lab-giardiniere .lab-scena > .gd-formula { display: grid; grid-template-columns: auto auto; justify-content: center; align-items: baseline; gap: 2px 12px; padding: clamp(6px, 1.2cqh, 12px) 12px; background: color-mix(in srgb, var(--sup) 88%, transparent); border-bottom: 1px solid var(--bordo); }
+    .lab-giardiniere .lab-scena > .gd-formula .gd-r { display: grid; grid-template-columns: subgrid; grid-column: 1 / -1; align-items: baseline; }
+    .lab-giardiniere .lab-scena > .gd-formula .gd-et { text-align: right; }
+    /* sul telefono: niente etichette, le formule scorrono una dopo l'altra (la riga del bastoncino è già nel cartello del prato) */
+    @container lab (max-width: 599px) {
+      .lab-giardiniere .lab-scena > .gd-formula { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 1px 18px; padding: 5px 8px; }
+      .lab-giardiniere .lab-scena > .gd-formula .gd-r, .lab-giardiniere .lab-scena > .gd-formula .gd-tex { display: contents; }
+      .lab-giardiniere .lab-scena > .gd-formula .gd-et, .lab-giardiniere .lab-scena > .gd-formula .gd-r[data-r="bast"] { display: none; }
+      .lab-giardiniere .lab-scena > .gd-formula .katex { font-size: 1.1rem; }
+      .lab-giardiniere .lab-scena > .gd-formula .gd-r.ponte .katex { color: var(--ok); }
+    }
+    /* nel pannello (orizzontale): la carta con le righe, etichetta a sinistra */
+    .lab-giardiniere .lab-lato > .gd-formula { display: flex; flex-direction: column; padding: 4px 12px; border-radius: 14px; background: var(--sup); border: 1px solid var(--bordo); }
+    .lab-giardiniere .lab-lato .gd-r { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 10px; padding: 4px 0; border-bottom: 1px dashed var(--bordo); }
+    .lab-giardiniere .lab-lato .gd-r:last-child { border-bottom: 0; }
+    .lab-giardiniere .lab-lato .gd-r .gd-et { min-width: 7.2em; }
+    .lab-giardiniere .lab-lato .gd-tex { font-size: 1.1rem; gap: 2px 14px; }
+    /* --- pannello --- */
+    .lab-giardiniere .gd-obiettivo { font-size: clamp(.92rem, 2.1cqmin, 1.05rem); line-height: 1.45; text-align: center; color: var(--testo); }
+    .lab-giardiniere .gd-obiettivo p { margin: 0; display: inline; }
     .lab-giardiniere .gd-obiettivo strong { color: var(--accento-testo); }
-    .lab-giardiniere .gd-parte { display: block; font-size: .68rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--testo2); margin-bottom: 2px; }
-    .lab-giardiniere .gd-aiuto { order: 2; margin: 0 14px 10px; padding: 10px 14px; border-radius: 12px; background: var(--accento-tenue); color: var(--testo); font-size: .92rem; line-height: 1.5; animation: lab-gd-pop .3s var(--morbido); }
-    .lab-giardiniere .gd-aiuto p { margin: 0; }
-    .lab-giardiniere .lab-scena { order: 3; background: transparent; padding: 0 8px; }
-    .lab-giardiniere .lab-scena svg { max-width: 640px; margin: 0 auto; border-radius: 20px; box-shadow: var(--ombra); cursor: grab; outline: none; touch-action: none; }
-    .lab-giardiniere .lab-scena svg.presa { cursor: grabbing; }
-    .lab-giardiniere .lab-scena svg:focus-visible { box-shadow: 0 0 0 3px var(--accento); }
-    .lab-giardiniere .lab-messaggio { order: 4; padding: 8px 16px 2px; line-height: 1.5; }
-    .lab-giardiniere .lab-messaggio .katex { font-size: 1em; }
-    .lab-giardiniere .lab-messaggio:empty { min-height: 0; padding: 0; }
-    .lab-giardiniere .gd-comandi { order: 5; display: flex; flex-direction: column; gap: 2px; padding: 6px 12px 2px; }
-    .lab-giardiniere .gd-riga { display: grid; grid-template-columns: 7.9em 44px minmax(0, 1fr) 44px; align-items: center; gap: 6px; }
+    .lab-giardiniere .gd-obiettivo .katex { font-size: 1.22em; }
+    .lab-giardiniere .gd-obiettivo .c-breve { display: none; }
+    /* consegna breve sul telefono e in orizzontale se lo spazio è basso; quella intera sta nel «?» */
+    @container lab (max-aspect-ratio: 5 / 4) and (max-width: 599px) { .lab-giardiniere .gd-obiettivo .c-breve { display: inline; } .lab-giardiniere .gd-obiettivo .c-breve + .c-lungo { display: none; } }
+    @container lab (min-aspect-ratio: 5 / 4) and (max-height: 900px) { .lab-giardiniere .gd-obiettivo .c-breve { display: inline; } .lab-giardiniere .gd-obiettivo .c-breve + .c-lungo { display: none; } }
+    .lab-giardiniere .lab-aiuto .consegna { color: var(--testo2); margin-bottom: 10px; }
+    .lab-giardiniere .lab-aiuto .consegna p, .lab-giardiniere .lab-aiuto .testo-aiuto p { margin: 0 0 8px; }
+    .lab-giardiniere .lab-aiuto .katex { font-size: 1.1em; }
+    .lab-giardiniere .gd-comandi { display: flex; flex-direction: column; gap: 2px; }
+    .lab-giardiniere .gd-riga { display: grid; grid-template-columns: 7.6em 40px minmax(0, 1fr) 40px; align-items: center; gap: 6px; }
     .lab-giardiniere .gd-nome { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
-    .lab-giardiniere .gd-et { font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--testo2); font-weight: 600; white-space: nowrap; }
     .lab-giardiniere .gd-val { font: 700 1.02rem var(--font); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--testo); }
     .lab-giardiniere .gd-riga[data-q="C"] .gd-val { color: var(--accento-testo); }
-    .lab-giardiniere .gd-riga .btn { min-height: 44px; min-width: 44px; width: 44px; padding: 0; font-size: 1.3rem; line-height: 1; border-radius: 12px; }
-    .lab-giardiniere .gd-riga input[type=range] { width: 100%; min-width: 0; height: 44px; margin: 0; accent-color: var(--accento); cursor: pointer; }
+    .lab-giardiniere .gd-riga .btn { min-height: 40px; min-width: 40px; width: 40px; padding: 0; font-size: 1.3rem; line-height: 1; border-radius: 12px; }
+    .lab-giardiniere .gd-riga input[type=range] { width: 100%; min-width: 0; height: 40px; margin: 0; accent-color: var(--accento); cursor: pointer; }
     .lab-giardiniere .gd-riga.bloccata .gd-val { color: var(--testo2); }
     .lab-giardiniere .gd-riga.bloccata input, .lab-giardiniere .gd-riga.bloccata .btn { opacity: .3; }
     .lab-giardiniere .btn[disabled] { opacity: .38; cursor: default; }
     .lab-giardiniere input[disabled] { cursor: default; }
-    .lab-giardiniere .gd-carta { order: 6; margin: 8px 12px 6px; padding: 6px 12px 6px; border-radius: 16px; background: var(--sup); border: 1px solid var(--bordo); box-shadow: var(--ombra); }
-    .lab-giardiniere .gd-r { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 10px; padding: 5px 0; border-bottom: 1px dashed var(--bordo); min-height: 1.9em; }
-    .lab-giardiniere .gd-r:last-child { border-bottom: 0; }
-    .lab-giardiniere .gd-r .gd-et { min-width: 9.6em; }
-    .lab-giardiniere .gd-tex { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 2px 16px; font-size: 1.05rem; min-width: 0; }
-    .lab-giardiniere .gd-nota { font-size: .9rem; color: var(--no); }
-    .lab-giardiniere .gd-r.ponte { background: var(--ok-tenue); border-radius: 10px; padding: 6px 8px; margin-top: 4px; border-bottom: 0; animation: lab-gd-pop .5s var(--molla); }
-    .lab-giardiniere .gd-r.ponte .gd-et { color: var(--ok); }
-    .lab-giardiniere .gd-livelli { display: flex; gap: 6px; flex-wrap: wrap; }
-    .lab-giardiniere .gd-pill { width: 40px; height: 40px; border-radius: 12px; border: 1.5px solid var(--bordo2); background: var(--sup);
-      color: var(--testo2); font: 700 .95rem var(--font); cursor: pointer; padding: 0; transition: transform .3s var(--molla), background .2s, color .2s; }
-    .lab-giardiniere .gd-pill.fatto { background: var(--ok-tenue); color: var(--ok); border-color: color-mix(in srgb, var(--ok) 45%, var(--bordo)); }
-    .lab-giardiniere .gd-pill.qui { background: var(--accento); color: #fff; border-color: var(--accento); transform: scale(1.07); }
-    .lab-giardiniere .gd-pill[disabled] { opacity: .35; cursor: default; }
-    .lab-giardiniere .b-aiuto { min-width: 42px; }
+    .lab-giardiniere .lab-messaggio { padding: 0 4px; min-height: 0; font-size: clamp(.88rem, 2cqmin, 1.02rem); text-align: center; line-height: 1.45; }
+    .lab-giardiniere .lab-messaggio:empty { display: none; }
+    .lab-giardiniere .lab-messaggio .katex { font-size: 1.2em; }
+    .lab-giardiniere .lab-barra { padding: 0; border: 0; gap: 8px; justify-content: center; }
+    .lab-giardiniere .lab-barra .btn { min-height: 40px; }
+    .lab-giardiniere .lab-parametri { grid-template-columns: 1fr; max-width: 460px; }
+    .lab-giardiniere .lab-param.modo { gap: 6px; }
+    .lab-giardiniere .lab-param.modo .btn { font-size: 1rem; padding: 0 16px; }
+    .lab-giardiniere .lab-param.modo .btn[aria-pressed="true"] { background: var(--accento); border-color: var(--accento); color: #fff; }
     .lab-giardiniere .vinto { display: inline-block; animation: lab-gd-pop .45s var(--molla); }
     .lab-giardiniere .fiore { transform-box: fill-box; transform-origin: 50% 50%; }
     .lab-giardiniere .fiore.nuovo { animation: lab-gd-sboccia .42s var(--molla) both; }
@@ -64,13 +87,6 @@
     @keyframes lab-gd-danza { 0% { transform: none } 45% { transform: scale(1.55) rotate(50deg) } 100% { transform: none } }
     @keyframes lab-gd-invito { 0%, 100% { opacity: .35 } 50% { opacity: 1 } }
     @keyframes lab-gd-pop { from { transform: scale(.75); opacity: 0 } to { transform: none; opacity: 1 } }
-    @container (min-width: 720px) {
-      .lab-giardiniere .gd { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); align-items: start; }
-      .lab-giardiniere .gd-sx, .lab-giardiniere .gd-dx { display: flex; flex-direction: column; min-width: 0; }
-      .lab-giardiniere .gd-sx { padding: 12px 0 0 4px; }
-      .lab-giardiniere .gd-dx { padding: 2px 6px 0 0; }
-      .lab-giardiniere .gd-obiettivo { font-size: 1rem; }
-    }
   `;
 
   /* ---------------- misure del prato ----------------
@@ -139,6 +155,19 @@
       vittoria: 'Rocchetto di 8 m e picchetti a 5 m dal centro: nell\'iperbole c² = a² + b² = 16 + 9. Su un ramo resta costante d₁ − d₂, sull\'altro d₂ − d₁: tutti e due valgono 8.' }
   ];
 
+  /* consegne brevi per il pannello quando lo spazio è poco: quella intera si legge nel «?» */
+  const BREVI = [
+    'Trascina il **bastoncino** con lo spago teso e fai tutto il giro. Guarda $d_1$ e $d_2$.',
+    'Spago di $8$ m: fai un\'aiuola **rotonda** che passi per le quattro bandierine.',
+    'Scegli spago e picchetti: l\'aiuola deve passare per le quattro bandierine.',
+    'L\'aiuola deve **toccare i quattro lati** del recinto, senza uscirne.',
+    'Spago di $12$ m: dove vanno i picchetti per avere $e = 0{,}8$?',
+    'Col **rocchetto doppio** resta costante $d_1 - d_2$. Passa per le quattro bandierine.'
+  ];
+  /* la modalità libera: nessun obiettivo, spago e picchetti liberi */
+  const TESTO_LIBERO = 'Scegli tu spago e picchetti, **ellisse** o **iperbole**, e disegna la curva.';
+  const AIUTO_LIBERO = 'In modalità libera non c\'è niente da indovinare. Cambia spago e picchetti con $-$ e $+$ (o trascinando un picchetto), scegli **ellisse** (lo spago: $d_1 + d_2 = 2a$) o **iperbole** (il rocchetto doppio: $|d_1 - d_2| = 2a$), poi trascina il bastoncino. Le formule si aggiornano mentre cambi: guarda come cambia l\'eccentricità $e = c/a$. «Casuale» propone una curva a caso.';
+
   const PETALI = ['var(--a5)', 'var(--a4)', 'var(--a1)', 'var(--a6)'];
 
   COMPASSO.registraLab({
@@ -154,31 +183,34 @@
                 <button type="button" class="btn gd-piu" aria-label="${piu}">+</button>
               </div>`;
       radice.innerHTML = `
-        <div class="gd">
-          <div class="gd-sx">
-            <div class="lab-scena"></div>
+        <div class="lab-layout">
+          <div class="lab-scena">
+            <div class="gd-formula"></div>
+            <div class="lab-aiuto" hidden data-scorre><div class="consegna" hidden></div><div class="testo-aiuto"></div><button type="button" class="btn piccolo m-chiudi">Ho capito</button></div>
+          </div>
+          <div class="lab-lato">
+            <div class="lab-livelli" role="group" aria-label="Livelli"><button type="button" class="btn piccolo lab-libero" aria-pressed="false" title="Modalità libera: spago e picchetti liberi, nessun obiettivo">Libero</button></div>
+            <div class="gd-obiettivo"></div>
+            <div class="lab-parametri" hidden>
+              <div class="lab-param modo" role="group" aria-label="Che curva"><button type="button" class="btn piccolo" data-modo="ell" aria-pressed="true">Ellisse</button><button type="button" class="btn piccolo" data-modo="ip" aria-pressed="false">Iperbole</button></div>
+            </div>
             <div class="gd-comandi">
               ${riga('C', 'picchetti', 'Avvicina i picchetti', 'Allontana i picchetti', 0, C_MAX)}
               ${riga('A', 'spago', 'Accorcia lo spago', 'Allunga lo spago', A_MIN, A_MAX)}
             </div>
-          </div>
-          <div class="gd-dx">
-            <div class="gd-obiettivo"></div>
-            <div class="gd-aiuto" hidden></div>
             <div class="lab-messaggio" aria-live="polite"></div>
-            <div class="gd-carta gd-formula"></div>
+            <div class="lab-barra">
+              <button type="button" class="btn piccolo b-ric">Ricomincia</button>
+              <button type="button" class="btn piccolo b-casuale" hidden>Casuale</button>
+              <button type="button" class="btn piccolo b-aiuto" title="Come si fa" aria-label="Come si fa">?</button>
+            </div>
           </div>
-        </div>
-        <div class="lab-barra">
-          <div class="gd-livelli" role="group" aria-label="Livelli"></div>
-          <button type="button" class="btn piccolo b-aiuto" title="Come si fa" aria-label="Come si fa">?</button>
-          <button type="button" class="btn piccolo b-ric">Ricomincia</button>
-          <span class="lab-livello"></span>
         </div>`;
 
       const q = s => radice.querySelector(s);
-      const scena = q('.lab-scena'), objEl = q('.gd-obiettivo'), aiutoEl = q('.gd-aiuto'), formEl = q('.gd-formula'), msg = q('.lab-messaggio');
-      const pillEl = q('.gd-livelli'), livEl = q('.lab-livello'), bAiuto = q('.b-aiuto'), bRic = q('.b-ric');
+      const scena = q('.lab-scena'), lato = q('.lab-lato'), objEl = q('.gd-obiettivo'), aiutoEl = q('.lab-aiuto'), formEl = q('.gd-formula'), msg = q('.lab-messaggio');
+      const livelliEl = q('.lab-livelli'), bAiuto = q('.b-aiuto'), bRic = q('.b-ric'), bLibero = q('.lab-libero'), bCasuale = q('.b-casuale');
+      const parametriEl = q('.lab-parametri'), barra = q('.lab-barra');
       const rigaC = q('.gd-riga[data-q="C"]'), rigaA = q('.gd-riga[data-q="A"]');
       const scuro = ctx.tema() === 'scuro';
 
@@ -188,42 +220,56 @@
       const annulla = t => { if (t) { clearTimeout(t); timers.delete(t); } };
 
       /* ================= la scena: il prato visto dall'alto ================= */
-      const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', tabindex: '0',
+      /* il prato "vero" è W × H attorno a (OX; OY); il viewBox (vb) ne mostra almeno x ±7,5 e y ±6 m,
+         e si allarga con altra erba nella direzione in cui la scena ha spazio */
+      let vb = { x0: 0, y0: 0, w: W, h: H, x1: W, y1: H };
+      const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: 'xMidYMid meet', role: 'img', tabindex: '0',
         'aria-label': 'Il prato visto dall\'alto. Trascina il bastoncino per disegnare l\'aiuola, o un picchetto per spostarlo. Con le frecce il bastoncino avanza lungo l\'aiuola.' });
-      scena.appendChild(svg);
+      scena.insertBefore(svg, aiutoEl);
       const defs = el('defs'); svg.appendChild(defs);
-      const taglio = el('clipPath', { id: 'gd-taglio' }); taglio.appendChild(el('rect', { x: 0, y: 0, width: W, height: H, rx: 22 })); defs.appendChild(taglio);
       const ombra = el('filter', { id: 'gd-ombra', x: '-60%', y: '-60%', width: '220%', height: '220%' });
       ombra.appendChild(el('feDropShadow', { dx: 0, dy: 2, stdDeviation: 1.8, 'flood-color': '#000', 'flood-opacity': scuro ? .5 : .24 }));
       defs.appendChild(ombra);
-      /* lo spago può essere tutto orizzontale (riquadro alto zero): la sua ombra ha una regione fissa */
+      /* lo spago può essere tutto orizzontale (riquadro alto zero): la sua ombra ha una regione fissa, grande quanto il prato visibile */
       const ombraSpago = el('filter', { id: 'gd-ombra-spago', filterUnits: 'userSpaceOnUse', x: -40, y: -40, width: W + 80, height: H + 80 });
       ombraSpago.appendChild(el('feDropShadow', { dx: 0, dy: 2, stdDeviation: 1.6, 'flood-color': '#000', 'flood-opacity': scuro ? .5 : .22 }));
       defs.appendChild(ombraSpago);
-      const mondo = el('g', { 'clip-path': 'url(#gd-taglio)' }); svg.appendChild(mondo);
+      const mondo = el('g'); svg.appendChild(mondo);
       const g = nome => { const x = el('g', { class: nome }); mondo.appendChild(x); return x; };
 
-      /* prato a strisce di tosatura, ciuffi d'erba */
+      /* prato a strisce di tosatura, ciuffi d'erba, griglia in metri: si ridisegnano quando cambia il viewBox */
       const gFondo = g('gd-fondo');
-      gFondo.appendChild(el('rect', { x: 0, y: 0, width: W, height: H, style: `fill: color-mix(in srgb, var(--s3) ${scuro ? 16 : 22}%, var(--sup))` }));
-      for (let i = 0; i * U < W; i += 2) gFondo.appendChild(el('rect', { x: i * U - 20, y: 0, width: U, height: H, style: `fill: color-mix(in srgb, var(--s3) ${scuro ? 24 : 32}%, var(--sup))`, opacity: .38 }));
-      let seme = 11;
-      const caso = () => { seme = (seme * 16807) % 2147483647; return seme / 2147483647; };
-      let dErba = '';
-      for (let i = 0; i < 110; i++) {
-        const x = (caso() * W).toFixed(1), y = (caso() * H).toFixed(1);
-        dErba += `M${x} ${y} l-3 -6 M${x} ${y} l1 -7 M${x} ${y} l4 -5 `;
-      }
-      gFondo.appendChild(el('path', { d: dErba, fill: 'none', style: 'stroke: color-mix(in srgb, var(--s3) 65%, var(--testo))', 'stroke-width': 1.4, 'stroke-linecap': 'round', opacity: scuro ? .3 : .28 }));
-
-      /* griglia in metri: una riga ogni metro, gli assi tratteggiati, i numeri sui bordi */
       const gGriglia = g('gd-griglia');
-      for (let x = -7; x <= 7; x++) gGriglia.appendChild(el('line', { x1: X(x), y1: 0, x2: X(x), y2: H, stroke: 'var(--testo)', 'stroke-width': x ? 1 : 1.5, opacity: x ? (scuro ? .07 : .09) : .24, 'stroke-dasharray': x ? null : '8 6' }));
-      for (let y = -6; y <= 6; y++) gGriglia.appendChild(el('line', { x1: 0, y1: Y(y), x2: W, y2: Y(y), stroke: 'var(--testo)', 'stroke-width': y ? 1 : 1.5, opacity: y ? (scuro ? .07 : .09) : .24, 'stroke-dasharray': y ? null : '8 6' }));
-      const numGriglia = (x, y, t, anc) => gGriglia.appendChild(el('text', { x, y, 'text-anchor': anc || 'middle', fill: 'var(--testo2)', stroke: 'var(--sup)', 'stroke-width': 3, 'paint-order': 'stroke', opacity: .85, style: 'font: 500 16px var(--font)' }, t));
-      for (let x = -6; x <= 6; x += 2) if (x) numGriglia(X(x), H - 9, x === 6 ? '6 m' : nTxt(x));
-      for (let y = -6; y <= 6; y += 2) if (y) numGriglia(9, Y(y) + 5, nTxt(y), 'start');
-      numGriglia(X(0) - 8, Y(0) + 19, 'O', 'end');
+      function disegnaFondo() {
+        vuota(gFondo); vuota(gGriglia);
+        const { x0, y0, x1, y1, w, h } = vb;
+        gFondo.appendChild(el('rect', { x: x0, y: y0, width: w, height: h, style: `fill: color-mix(in srgb, var(--s3) ${scuro ? 16 : 22}%, var(--sup))` }));
+        const striscia = `fill: color-mix(in srgb, var(--s3) ${scuro ? 24 : 32}%, var(--sup))`;
+        for (let i = Math.floor((x0 - OX) / U / 2) * 2; X(i) - 20 < x1; i += 2) {
+          const sx0 = Math.max(x0, X(i) - 20), sx1 = Math.min(x1, X(i) + 20);
+          if (sx1 > sx0) gFondo.appendChild(el('rect', { x: sx0, y: y0, width: sx1 - sx0, height: h, style: striscia, opacity: .38 }));
+        }
+        let seme = 11;
+        const caso = () => { seme = (seme * 16807) % 2147483647; return seme / 2147483647; };
+        let dErba = '';
+        const nErba = Math.round(110 * w * h / (W * H));
+        for (let i = 0; i < nErba; i++) {
+          const x = (x0 + 4 + caso() * (w - 9)).toFixed(1), y = (y0 + 8 + caso() * (h - 8)).toFixed(1);   /* i ciuffi restano dentro il prato */
+          dErba += `M${x} ${y} l-3 -6 M${x} ${y} l1 -7 M${x} ${y} l4 -5 `;
+        }
+        gFondo.appendChild(el('path', { d: dErba, fill: 'none', style: 'stroke: color-mix(in srgb, var(--s3) 65%, var(--testo))', 'stroke-width': 1.4, 'stroke-linecap': 'round', opacity: scuro ? .3 : .28 }));
+        /* griglia: una riga ogni metro, gli assi tratteggiati, i numeri sui bordi visibili */
+        const mx0 = Math.ceil((x0 - OX) / U), mx1 = Math.floor((x1 - OX) / U), my0 = Math.ceil((OY - y1) / U), my1 = Math.floor((OY - y0) / U);
+        for (let x = mx0; x <= mx1; x++) gGriglia.appendChild(el('line', { x1: X(x), y1: y0, x2: X(x), y2: y1, stroke: 'var(--testo)', 'stroke-width': x ? 1 : 1.5, opacity: x ? (scuro ? .07 : .09) : .24, 'stroke-dasharray': x ? null : '8 6' }));
+        for (let y = my0; y <= my1; y++) gGriglia.appendChild(el('line', { x1: x0, y1: Y(y), x2: x1, y2: Y(y), stroke: 'var(--testo)', 'stroke-width': y ? 1 : 1.5, opacity: y ? (scuro ? .07 : .09) : .24, 'stroke-dasharray': y ? null : '8 6' }));
+        const numGriglia = (x, y, t, anc) => gGriglia.appendChild(el('text', { x, y, 'text-anchor': anc || 'middle', fill: 'var(--testo2)', stroke: 'var(--sup)', 'stroke-width': 3, 'paint-order': 'stroke', opacity: .85, style: 'font: 500 16px var(--font)' }, t));
+        const xMax = Math.floor(((x1 - OX) / U - .4) / 2) * 2, yMax = Math.floor(((OY - y0) / U - .4) / 2) * 2;
+        for (let x = -xMax; x <= xMax; x += 2) if (x) numGriglia(X(x), y1 - 9, x === xMax ? nTxt(x) + ' m' : nTxt(x));
+        for (let y = -yMax; y <= yMax; y += 2) if (y) numGriglia(x0 + 9, Y(y) + 5, nTxt(y), 'start');
+        numGriglia(X(0) - 8, Y(0) + 19, 'O', 'end');
+        ombraSpago.setAttribute('x', (x0 - 40).toFixed(0)); ombraSpago.setAttribute('y', (y0 - 40).toFixed(0));
+        ombraSpago.setAttribute('width', (w + 80).toFixed(0)); ombraSpago.setAttribute('height', (h + 80).toFixed(0));
+      }
 
       const gSotto = g('gd-sotto');           /* recinto, rettangolo, sagoma: cambiano col livello */
       const gSvanisce = g('gd-svanisce');     /* il solco vecchio che si dissolve */
@@ -287,7 +333,7 @@
         c.t.textContent = testo;
         const w = testo.length * 9.4 + 18;
         c.r.setAttribute('x', (-w / 2).toFixed(1)); c.r.setAttribute('width', w.toFixed(1));
-        c.g.setAttribute('transform', `translate(${morsa(x, w / 2 + 4, W - w / 2 - 4).toFixed(1)} ${morsa(y, 18, H - 18).toFixed(1)})`);
+        c.g.setAttribute('transform', `translate(${morsa(x, vb.x0 + w / 2 + 4, vb.x1 - w / 2 - 4).toFixed(1)} ${morsa(y, vb.y0 + 18, vb.y1 - 18).toFixed(1)})`);
         c.g.style.display = '';
       }
 
@@ -325,6 +371,11 @@
       }
 
       const gFx = g('gd-fx');
+      /* cartello in alto a sinistra e avviso in basso seguono i bordi del prato visibile */
+      function posaCornici() {
+        gCart.setAttribute('transform', `translate(${vb.x0.toFixed(1)} ${vb.y0.toFixed(1)})`);
+        gAvv.setAttribute('transform', `translate(0 ${(vb.y1 - H).toFixed(1)})`);
+      }
 
       /* ================= stato ================= */
       const completati = ctx.stato().livelli;
@@ -338,7 +389,9 @@
       let bandiere = [], lati = [];
       let rafTw = 0, timerTw = 0, rafFx = 0, effetti = [], timerZen = 0, timerFesta = 0;
       const detti = new Set();
-      const L = () => LIVELLI[livello];
+      let libero = false, salvato = null;   /* modalità libera, e il livello da cui ci si è entrati */
+      const LIBERO = { modo: 'ell', A: 50, C: 30, meta: { tipo: 'libero' }, testo: TESTO_LIBERO, aiuto: AIUTO_LIBERO, ponte: [] };
+      const L = () => libero ? LIBERO : LIVELLI[livello];
       const ip = () => L().modo === 'ip';
       const nBin = () => ip() ? 2 * NI : NE;
 
@@ -493,7 +546,7 @@
         b.base = el('circle', { class: 'base', r: 5, fill: 'var(--accento2)', stroke: 'var(--sup)', 'stroke-width': 2 });
         gb.appendChild(b.drappo); gb.appendChild(b.base);
         const testo = '(' + nTxt(x) + '; ' + nTxt(y) + ')';
-        const aSinistra = X(x) + 30 + testo.length * 9.2 > W - 6;
+        const aSinistra = X(x) + 30 + testo.length * 9.2 > Math.min(W, vb.x1) - 6;
         gb.appendChild(el('text', { x: aSinistra ? -7 : 30, y: -21, 'text-anchor': aSinistra ? 'end' : 'start', fill: 'var(--testo)', stroke: 'var(--sup)', 'stroke-width': 4, 'paint-order': 'stroke', 'stroke-linejoin': 'round', style: 'font: 600 16px var(--font)' }, testo));
         gBandiere.appendChild(gb);
         return b;
@@ -548,7 +601,7 @@
         });
       }
       function creaRettangolo(ra, rb) {
-        const k = rb / ra, xe = 7.5;
+        const k = rb / ra, xe = Math.min(7.5, 5.9 / k);   /* gli asintoti restano dentro il prato sempre visibile */
         [1, -1].forEach(sg => gSotto.appendChild(el('line', { x1: X(-xe), y1: Y(-sg * k * xe), x2: X(xe), y2: Y(sg * k * xe), stroke: 'var(--testo2)', 'stroke-width': 1.6, 'stroke-dasharray': '3 7', 'stroke-linecap': 'round', opacity: .7 })));
         gSotto.appendChild(el('rect', { x: X(-ra), y: Y(rb), width: 2 * ra * U, height: 2 * rb * U, fill: 'var(--sup)', 'fill-opacity': .18, stroke: 'var(--testo2)', 'stroke-width': 2, 'stroke-dasharray': '8 6', rx: 2 }));
         gSotto.appendChild(el('text', { x: X(0), y: Y(rb) - 10, 'text-anchor': 'middle', fill: 'var(--testo2)', stroke: 'var(--sup)', 'stroke-width': 4, 'paint-order': 'stroke', 'stroke-linejoin': 'round', style: 'font: 600 16px var(--font)' }, nTxt(2 * ra) + ' m × ' + nTxt(2 * rb) + ' m'));
@@ -616,7 +669,9 @@
             const lung = Math.hypot(P[0] - ax, P[1]) * U, w = testo.length * 9.4 + 18;
             if (lung < w + 30 && lung > 1) {       /* pezzo corto: il cartellino va oltre il bastoncino, lungo lo spago */
               const ux = (P[0] - ax) * U / lung, uy = P[1] * U / lung;
-              posaCartellino(et, testo, X(P[0]) + ux * (w / 2 + 26), Y(P[1]) - uy * 30 - 4);
+              /* spago quasi orizzontale: l'altro cartellino sta sopra (d₁) o sotto (d₂), questo va dalla parte opposta */
+              const dy = Math.abs(uy) < .35 ? (sopra ? -30 : 30) : -uy * 30 - 4;
+              posaCartellino(et, testo, X(P[0]) + ux * (w / 2 + 26), Y(P[1]) + dy);
               return;
             }
             const mx = (ax + P[0]) / 2, my = P[1] / 2;
@@ -666,7 +721,7 @@
       let cacheForm = '';
       function formula() {
         const l = L(), a = A / 10, c = C / 10, fe = esatta(), a2 = A * A / 100, c2 = C * C / 100;
-        const r = (et, corpo, cls) => `<div class="gd-r${cls ? ' ' + cls : ''}"><span class="gd-et">${et}</span><span class="gd-tex">${corpo}</span></div>`;
+        const r = (et, corpo, cls) => `<div class="gd-r${cls ? ' ' + cls : ''}"${et === 'il bastoncino' ? ' data-r="bast"' : ''}><span class="gd-et">${et}</span><span class="gd-tex">${corpo}</span></div>`;
         const bTex = b2 => { const b = Math.sqrt(b2); return Math.abs(tondo1(b) - b) < 1e-9 ? `b = ${nTex(b, 1)}` : `b \\approx ${nTex(b, 2)}`; };
         let h = r(ip() ? 'rocchetto e picchetti' : 'spago e picchetti', T(`2a = ${nTex(2 * a)} \\;\\Rightarrow\\; a = ${nTex(a)}`) + T(`2c = ${nTex(2 * c)} \\;\\Rightarrow\\; c = ${nTex(c)}`));
         const m = misure();
@@ -720,6 +775,7 @@
           if (A === 40 && (C === 26 || C === 27)) { chiave = 'nulla-ell'; zen = 'Hai usato c² = a² − b², la regola dell\'ellisse. Nell\'iperbole i picchetti stanno oltre le bandierine più vicine al centro: c è il più lungo dei tre.'; }
           else { chiave = 'nulla'; zen = 'Nel triangolo F₁ P F₂ la differenza di due lati è sempre minore del terzo: per l\'iperbole serve 2a < 2c, il contrario dell\'ellisse.'; }
         }
+        if (libero) { avvisa(testo); return; }   /* in modalità libera: solo quello che succede, niente errori */
         if (testo) avvisa(testo, 'no');
         else if (!completo && msg.classList.contains('no')) avvisa('');
         if (zen) { const A0 = A, C0 = C; timerZen = dopo(() => { timerZen = 0; if (A === A0 && C === C0 && !vinto) zenone(chiave, zen); }, 1100); }
@@ -732,6 +788,10 @@
         aggiornaTraguardi(false);
         let ok = false, testo = '', zen = '', chiave = '';
         const cosa = ip() ? 'Curva finita' : 'Aiuola finita';
+        if (m.tipo === 'libero') {   /* nessun verdetto e nessuna festa: si dice solo che cosa resta costante */
+          avvisa(ctx.md(cosa + (ip() ? ': in ogni punto $|d_1 - d_2| = ' : ': in ogni punto $d_1 + d_2 = ') + nTex(A / 5) + '$ m.').replace(/^<p>|<\/p>$/g, ''));
+          ridisegna(); return;
+        }
         if (m.tipo === 'giro') ok = true;
         else if (m.tipo === 'bandiere') {
           const prese = bandiere.filter(b => b.stato === 'ok').length, tot = bandiere.length;
@@ -863,11 +923,13 @@
       rigaA.querySelector('input').addEventListener('input', ev => imposta(+ev.target.value, C, false));
 
       /* ================= il dito sulla scena ================= */
+      /* dal dito alle coordinate del prato: il viewBox cambia forma con lo spazio, quindi si passa
+         dalla matrice dello schermo, mai dal rettangolo dell'svg */
       function mondoDa(ev) {
-        const r = svg.getBoundingClientRect();
-        if (!r.width) return null;
-        const sx = (ev.clientX - r.left) * W / r.width, sy = (ev.clientY - r.top) * H / r.height;
-        return { sx, sy, x: (sx - OX) / U, y: (OY - sy) / U };
+        const M = svg.getScreenCTM();
+        if (!M) return null;
+        const p = new DOMPoint(ev.clientX, ev.clientY).matrixTransform(M.inverse());
+        return { sx: p.x, sy: p.y, x: (p.x - OX) / U, y: (OY - p.y) / U };
       }
       const spostaPicchetti = m => imposta(A, Math.abs(m.x) * 10, false);
       function giu(ev) {
@@ -898,7 +960,7 @@
         }
         ev.preventDefault();
       }
-      function su() { if (!presa) return; presa = null; svg.classList.remove('presa'); }
+      function su() { if (!presa) return; presa = null; svg.classList.remove('presa'); if (rimandato) { rimandato = false; adatta(); } }
       svg.addEventListener('pointerdown', giu);
       window.addEventListener('pointermove', muovi, { passive: false });
       window.addEventListener('pointerup', su);
@@ -919,50 +981,164 @@
       });
 
       /* ================= livelli ================= */
-      function pillole() {
-        vuota(pillEl);
-        const max = completati.length ? Math.max(...completati) : -1;
-        LIVELLI.forEach((_, i) => {
-          const b = document.createElement('button');
-          b.type = 'button'; b.className = 'gd-pill' + (completati.includes(i) ? ' fatto' : '') + (i === livello ? ' qui' : '');
-          b.textContent = String(i + 1); b.title = 'Livello ' + (i + 1);
-          b.disabled = i > max + 1;
-          b.addEventListener('click', () => { if (i !== livello || vinto) avviaLivello(i); });
-          pillEl.appendChild(b);
+      function aggiornaLivelli() {
+        const fatti = ctx.stato().livelli, sblocco = fatti.length ? Math.max(...fatti) + 1 : 0;
+        [...livelliEl.querySelectorAll('.lab-pallino')].forEach((p, i) => {
+          p.classList.toggle('fatto', fatti.includes(i));
+          p.classList.toggle('attivo', !libero && i === livello);
+          p.disabled = i > sblocco && i !== livello;
+          p.setAttribute('aria-current', !libero && i === livello ? 'step' : 'false');
         });
+        bLibero.setAttribute('aria-pressed', libero);
       }
-      function avviaLivello(n) {
+      const pillole = aggiornaLivelli;
+      /* nel pannello la consegna breve (se lo spazio è poco) e quella intera: il CSS sceglie quale si vede */
+      function consegna() {
+        const breve = libero ? null : BREVI[livello];
+        return (breve ? '<span class="c-breve">' + ctx.md(breve) + '</span>' : '') + '<span class="c-lungo">' + ctx.md(L().testo) + '</span>';
+      }
+      /* prepara il prato per il livello corrente (o per la modalità libera): recinto, bandierine,
+         rettangolo, e i fiori già piantati se si torna a un disegno lasciato a metà */
+      function preparaScena(vecchiSegni) {
         cancelAnimationFrame(rafTw); rafTw = 0; annulla(timerTw); annulla(timerZen); annulla(timerFesta);
         cancelAnimationFrame(rafFx); rafFx = 0; effetti = []; vuota(gFx); vuota(gSvanisce);
-        livello = n;
         const l = L();
-        A = l.A; C = l.C; vis = { a: A / 10, c: C / 10 };
-        par = { t: 0, s: 1, y: 0 };
-        vinto = false; completo = false; presa = null; detti.clear();
-        vuota(gFiori); segni = new Uint8Array(nBin()); nSegni = 0; fiori = [];
-        solcoBase.setAttribute('d', ''); solcoGrana.setAttribute('d', '');
-        alone.classList.add('invita');
+        vis = { a: A / 10, c: C / 10 };
+        presa = null;
+        vuota(gFiori); fiori = [];
+        segni = vecchiSegni && vecchiSegni.length === nBin() ? vecchiSegni : new Uint8Array(nBin());
+        nSegni = segni.reduce((t, v) => t + v, 0);
+        const f = esatta();
+        if (nSegni && (f.tipo === 'ell' || f.tipo === 'ip')) {
+          for (let i = 0; i < segni.length; i++) if (segni[i]) { pianta(f, i); fiori[i].classList.remove('nuovo'); }
+          disegnaSolco(f);
+        } else { solcoBase.setAttribute('d', ''); solcoGrana.setAttribute('d', ''); }
+        alone.classList.toggle('invita', !nSegni);
         vuota(gSotto); vuota(gBandiere); vuota(gGap); sagoma = null; lati = []; bandiere = [];
         if (l.rettangolo) creaRettangolo(l.rettangolo[0], l.rettangolo[1]);
         if (l.meta.tipo === 'recinto') creaRecinto(l.meta.rx, l.meta.ry);
         if (l.meta.punti) bandiere = l.meta.punti.map(p => creaBandiera(p[0], p[1]));
-        objEl.innerHTML = '<span class="gd-parte">' + (ip() ? 'Sfida finale · la differenza delle distanze' : 'Livello ' + (n + 1) + ' · la somma delle distanze') + '</span>' + ctx.md(l.testo);
-        aiutoEl.hidden = true; aiutoEl.innerHTML = ctx.md(l.aiuto);
+        objEl.innerHTML = consegna();
+        aiutoEl.hidden = true;
+        calcolaBandiere(); aggiornaTraguardi(false);
+      }
+      function avviaLivello(n) {
+        libero = false; salvato = null; mostraLibero();
+        livello = n;
+        const l = L();
+        A = l.A; C = l.C;
+        par = { t: 0, s: 1, y: 0 };
+        vinto = false; completo = false; detti.clear();
+        preparaScena();
         avvisa('');
         bRic.textContent = 'Ricomincia'; bRic.classList.remove('primario');
-        livEl.textContent = 'Livello ' + (n + 1) + ' di ' + LIVELLI.length;
-        calcolaBandiere(); aggiornaTraguardi(false);
-        pillole(); comandi(); ridisegna(); controllaForma();
+        aggiornaLivelli(); comandi(); ridisegna(); controllaForma();
       }
-      bRic.addEventListener('click', () => avviaLivello(vinto ? (livello + 1) % LIVELLI.length : livello));
-      bAiuto.addEventListener('click', () => { aiutoEl.hidden = !aiutoEl.hidden; });
+      bRic.addEventListener('click', () => {
+        if (libero) {   /* in modalità libera si cancella solo il disegno: spago e picchetti restano */
+          cancellaSolco(); completo = false; alone.classList.add('invita');
+          avvisa(''); ridisegna(); controllaForma(); return;
+        }
+        avviaLivello(vinto ? (livello + 1) % LIVELLI.length : livello);
+      });
+      bAiuto.addEventListener('click', () => {
+        if (!aiutoEl.hidden) { aiutoEl.hidden = true; return; }
+        /* se nel pannello c'è la consegna breve, quella intera si legge qui */
+        const breve = objEl.querySelector('.c-breve'), cEl = aiutoEl.querySelector('.consegna');
+        cEl.hidden = libero || !breve || getComputedStyle(breve).display === 'none';
+        if (!cEl.hidden) cEl.innerHTML = ctx.md(L().testo);
+        aiutoEl.querySelector('.testo-aiuto').innerHTML = ctx.md(L().aiuto);
+        aiutoEl.hidden = false;
+      });
+      aiutoEl.querySelector('.m-chiudi').addEventListener('click', () => { aiutoEl.hidden = true; });
 
+      /* ================= modalità libera: spago e picchetti liberi, ellisse o iperbole, nessun obiettivo ================= */
+      function mostraLibero() {
+        parametriEl.hidden = !libero; bCasuale.hidden = !libero;
+        radice.classList.toggle('in-libero', libero);
+        parametriEl.querySelectorAll('[data-modo]').forEach(b => b.setAttribute('aria-pressed', b.dataset.modo === LIBERO.modo ? 'true' : 'false'));
+      }
+      function entraLibero() {
+        salvato = { livello, A, C, par: Object.assign({}, par), segni: segni.slice(), completo, vinto, detti: new Set(detti),
+          msg: msg.innerHTML, cls: msg.className, ric: bRic.textContent, prim: bRic.classList.contains('primario') };
+        libero = true;
+        LIBERO.modo = LIVELLI[livello].modo;
+        mostraLibero();
+        vinto = false; completo = false;
+        preparaScena();
+        avvisa(''); bRic.textContent = 'Ricomincia'; bRic.classList.remove('primario');
+        aggiornaLivelli(); comandi(); ridisegna(); controllaForma();
+      }
+      function esciLibero() {   /* si torna al livello com'era, fiori compresi */
+        const z = salvato; libero = false; salvato = null; mostraLibero();
+        livello = z.livello; A = z.A; C = z.C; par = z.par; vinto = z.vinto; completo = z.completo;
+        detti.clear(); z.detti.forEach(d => detti.add(d));
+        preparaScena(z.segni);
+        if (completo && !vinto) { if (bandiere.length) mostraDistanze(); if (L().meta.tipo === 'ecc') mostraSagoma(); }
+        msg.innerHTML = z.msg; msg.className = z.cls;
+        bRic.textContent = z.ric; bRic.classList.toggle('primario', z.prim);
+        aggiornaLivelli(); comandi(); ridisegna();
+      }
+      function cambiaModo(m) {
+        if (!libero || LIBERO.modo === m) return;
+        LIBERO.modo = m;
+        /* spago e picchetti restano, se disegnano ancora qualcosa; altrimenti si sistemano */
+        if (m === 'ip' && C <= A) { A = morsa(Math.round(C * .6), A_MIN, 40); if (C <= A) C = Math.min(C_MAX, A + 15); }
+        if (m === 'ell' && A <= C) { A = Math.min(A_MAX, C + 20); if (A <= C) C = A - 20; }
+        par = { t: 0, s: 1, y: 0 }; completo = false;
+        preparaScena(); mostraLibero(); avvisa('');
+        comandi(); ridisegna(); controllaForma();
+      }
+      function casuale() {
+        if (!libero) return;
+        const r = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
+        let nA, nC, giri = 0;
+        do {
+          if (LIBERO.modo === 'ip') { nA = r(2, 4) * 5; nC = nA + r(2, 6) * 5; }   /* a da 1 a 2 m, c più lungo */
+          else { nA = r(6, 11) * 5; nC = r(0, nA / 5 - 2) * 5; }                  /* a da 3 a 5,5 m, c più corto */
+          giri++;
+        } while (giri < 20 && nA === A && nC === C);
+        imposta(nA, nC, true);
+      }
+      bLibero.addEventListener('click', () => { if (libero) esciLibero(); else entraLibero(); });
+      bCasuale.addEventListener('click', casuale);
+      parametriEl.addEventListener('click', ev => { const b = ev.target.closest('[data-modo]'); if (b) cambiaModo(b.dataset.modo); });
+      LIVELLI.forEach((_, i) => {
+        const p = document.createElement('button'); p.type = 'button'; p.className = 'lab-pallino';
+        p.setAttribute('aria-label', 'Livello ' + (i + 1)); p.innerHTML = '<span>' + (i + 1) + '</span>';
+        p.addEventListener('click', () => { if (libero || i !== livello || vinto) avviaLivello(i); });
+        livelliEl.insertBefore(p, bLibero);
+      });
+
+      /* ================= la forma dello spazio decide il viewBox ================= */
+      let misura = '', rimandato = false;
+      function adatta() {
+        if (presa) { rimandato = true; return; }     /* mentre si trascina si aspetta che il dito si stacchi */
+        const orizz = radice.clientWidth * 4 >= radice.clientHeight * 5;   /* come la container query di .lab-layout */
+        if (orizz && formEl.parentNode !== lato) lato.insertBefore(formEl, barra);
+        else if (!orizz && formEl.parentNode !== scena) scena.insertBefore(formEl, scena.firstChild);
+        const r = svg.getBoundingClientRect();
+        if (r.width < 10 || r.height < 10) return;
+        /* il prato mostra almeno x da −7,5 a 7,5 m e y da −6 a 6 m; il resto dello spazio è altra erba */
+        const s = Math.min(r.width / W, r.height / 480, 1.75), w = r.width / s, h = r.height / s;   /* su schermi enormi si vede più prato, non un prato gigante */
+        const m = Math.round(w) + 'x' + Math.round(h);
+        if (m === misura) return;
+        misura = m;
+        vb = { x0: OX - w / 2, y0: OY - h / 2, w, h, x1: OX + w / 2, y1: OY + h / 2 };
+        svg.setAttribute('viewBox', `${vb.x0.toFixed(1)} ${vb.y0.toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`);
+        disegnaFondo(); posaCornici(); ridisegna();
+      }
+
+      disegnaFondo(); posaCornici();
       avviaLivello(livello);
+      adatta();
+      const ro = new ResizeObserver(adatta); ro.observe(radice); ro.observe(svg);
 
       return function smonta() {
         cancelAnimationFrame(rafTw); cancelAnimationFrame(rafFx); rafTw = 0; rafFx = 0; effetti = [];
         timers.forEach(t => clearTimeout(t)); timers.clear();
         fermaRipetizioni.forEach(f => f());
+        ro.disconnect();
         window.removeEventListener('pointermove', muovi, { passive: false });
         window.removeEventListener('pointerup', su);
         window.removeEventListener('pointercancel', su);

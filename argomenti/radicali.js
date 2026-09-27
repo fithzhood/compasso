@@ -1,85 +1,94 @@
 (function () {
 const R = String.raw;
+/* allenamento: la casella accetta la radice scritta con √, sqrt o rad (sul telefono √ non sempre c'è) */
+const SEGNA = 'es. 3√2 o 3 rad 2';
+const forme = f => {
+  const alt = [s => s, s => s.replace(/√(\d+)/g, 'sqrt$1'), s => s.replace(/√(\d+)/g, 'sqrt($1)'), s => s.replace(/√(\d+)/g, '√($1)'),
+    s => s.replace(/√(\d+)/g, 'rad$1'), s => s.replace(/√(\d+)/g, 'rad($1)'), s => s.replace(/(\d)√/g, '$1*√'),
+    s => s.replace(/√(\d+)/g, 'radice di $1'), s => s.replace(/√(\d+)/g, 'radice $1')];
+  return [...new Set(alt.map(g => g(f)))];
+};
+const rad = (...f) => ({ tipo: 'testo', accettate: f.flatMap(forme), segnaposto: SEGNA });
 COMPASSO.registra({
   id: 'radicali',
   titolo: 'Radicali',
 
-  introduzione: R`Un quadrato ha area $50\ \text{cm}^2$: quanto misura il lato? Serve un numero che, moltiplicato per sé stesso, dia $50$. Quel numero si scrive $\sqrt{50}$ e vale circa $7{,}07$. Non è un intero e nemmeno una frazione, ma si può maneggiare benissimo lo stesso, se si conoscono le regole giuste.
+  introduzione: R`Un quadrato ha area $50\ \text{cm}^2$. Quanto misura il lato? Ti serve un numero che al quadrato dia $50$. Si scrive $\sqrt{50}$ e vale circa $7{,}07$.
 
-La radice è l'operazione che torna indietro da una potenza: siccome $5^3 = 125$, la radice cubica di $125$ è $5$. La incontri ogni volta che da un'area o da un volume vuoi risalire a una lunghezza, nel teorema di Pitagora, e nella formula delle equazioni di secondo grado, che contiene $\sqrt{\Delta}$.
+La radice torna indietro da una potenza. Siccome $5^3 = 125$, la radice cubica di $125$ è $5$. La trovi nel teorema di Pitagora e nella formula delle equazioni di secondo grado.
 
-Qui impari a fare i conti con i radicali senza calcolatrice: semplificarli, confrontarli, moltiplicarli, portare fattori dentro e fuori dalla radice, togliere le radici dal denominatore. Serve saper usare le potenze con le loro proprietà e sapere che cosa sono i numeri irrazionali.`,
+Qui impari a fare i conti con i radicali senza calcolatrice. Ti servono le proprietà delle potenze.`,
 
   inBreve: [
-    R`$\sqrt[n]{a}$ è il numero che elevato alla $n$ dà $a$. Con indice pari il radicando non può essere negativo e il risultato è sempre $\ge 0$: $\sqrt{9}=3$, mai $-3$.`,
-    R`$\sqrt{a^2}=|a|$: quando non sai il segno di $a$, il valore assoluto resta.`,
-    R`Si moltiplicano e si dividono solo radicali con lo stesso indice; se gli indici sono diversi, prima si portano allo stesso indice con la proprietà invariantiva.`,
-    R`Si sommano solo radicali simili (stesso indice e stesso radicando), come i monomi simili. $\sqrt{a}+\sqrt{b}$ non è $\sqrt{a+b}$.`,
-    R`Per togliere la radice dal denominatore si moltiplicano numeratore e denominatore per il fattore giusto: $\sqrt{a}$, oppure il binomio con il segno centrale cambiato.`,
+    R`$\sqrt[n]{a}$ è il numero che elevato alla $n$ dà $a$. Con indice pari il radicando non può essere negativo, e il risultato non è mai negativo: $\sqrt{9}=3$, mai $-3$.`,
+    R`$\sqrt{a^2}=|a|$: se non sai il segno di $a$, il valore assoluto resta.`,
+    R`Moltiplichi e dividi solo radicali con lo stesso indice. Se gli indici sono diversi, prima li porti allo stesso indice.`,
+    R`Sommi solo radicali simili, come i monomi simili. $\sqrt{a}+\sqrt{b}$ è diverso da $\sqrt{a+b}$.`,
+    R`Per togliere la radice dal denominatore, moltiplica sopra e sotto per il fattore giusto.`,
     R`$a^{\frac{m}{n}}=\sqrt[n]{a^m}$, con $a>0$: il denominatore dell'esponente diventa l'indice.`
   ],
 
   sezioni: [
-    { id: 'radice-n-esima', titolo: 'La radice n-esima', testo: R`Quale numero, elevato al cubo, dà $8$? È $2$, e si scrive $\sqrt[3]{8}=2$. In generale la **radice $n$-esima** di $a$ è il numero che elevato alla $n$ dà $a$. Nel simbolo $\sqrt[n]{a}$ il numero $n$ si chiama **indice** e $a$ si chiama **radicando**. Se l'indice è $2$ non si scrive: $\sqrt{a}$ è la radice quadrata.
+    { id: 'radice-n-esima', titolo: 'La radice n-esima', testo: R`Quale numero, elevato al cubo, dà $8$? È $2$. Si scrive $\sqrt[3]{8}=2$.
 
-Le radici si comportano in modo diverso a seconda che l'indice sia pari o dispari.
+La **radice $n$-esima** di $a$ è il numero che elevato alla $n$ dà $a$. Nel simbolo $\sqrt[n]{a}$, $n$ è l'*indice* e $a$ è il *radicando*. L'indice $2$ non si scrive: $\sqrt{a}$ è la radice quadrata.
+
+Conta se l'indice è pari o dispari.
 
 | | indice pari | indice dispari |
 |---|---|---|
 | radicando negativo | non esiste: $\sqrt{-4}$ | esiste: $\sqrt[3]{-8}=-2$ |
 | segno del risultato | sempre $\ge 0$ | come il radicando |
 
-Perché con indice pari il radicando non può essere negativo? Perché un numero elevato a una potenza pari viene sempre positivo o zero: $3^2=9$ e anche $(-3)^2=9$. Nessun numero reale al quadrato dà $-9$.
+Con indice pari il radicando non può essere negativo. Una potenza pari non è mai negativa: $3^2=9$ e anche $(-3)^2=9$.
 
->* $\sqrt[n]{a}=b$ vuol dire $b^n=a$. Se $n$ è pari serve $a\ge 0$, e come risultato si prende il numero $b\ge 0$.
+>* $\sqrt[n]{a}=b$ vuol dire $b^n=a$. Se $n$ è pari serve $a\ge 0$, e come risultato si prende $b\ge 0$.
 
-Quell'ultima parte è una convenzione, e conta. Sia $3$ sia $-3$ al quadrato danno $9$, ma il simbolo $\sqrt{9}$ indica soltanto $3$. Le due soluzioni $\pm 3$ appartengono all'equazione $x^2=9$, non al simbolo di radice.
+Sia $3$ sia $-3$ al quadrato danno $9$. Ma il simbolo $\sqrt{9}$ indica solo $3$. Le due soluzioni $\pm 3$ sono dell'equazione $x^2=9$.
 
 ?? Quanto vale $\sqrt{(-5)^2}$?
 [ ] $-5$
 [x] $5$
 [ ] non esiste, perché dentro c'è un numero negativo
-=> Prima si calcola il radicando: $(-5)^2=25$, che è positivo. Poi $\sqrt{25}=5$. Semplificare la radice con il quadrato e scrivere $-5$ è la trappola: una radice quadrata non dà mai un risultato negativo.
+=> Prima calcoli il radicando: $(-5)^2=25$. Poi $\sqrt{25}=5$. La trappola è semplificare radice e quadrato e scrivere $-5$: una radice quadrata non è mai negativa.
 
-Da questa domanda viene una regola che serve di continuo quando ci sono lettere.
-
->! $\sqrt{a^2}=|a|$, e non $a$. Se $a\ge 0$ le due scritture coincidono; se $a$ è negativo, $\sqrt{a^2}$ è il suo opposto. Finché non sai il segno di $a$, il valore assoluto resta.
+>! $\sqrt{a^2}=|a|$. Se $a\ge 0$ è proprio $a$. Se $a<0$ è il suo opposto. Finché non sai il segno di $a$, il valore assoluto resta.
 
 Una radice rende sempre un numero più piccolo? Trascina il punto e scoprilo.
 
 [[grafico:radiceN]]
 
-Se il numero è maggiore di $1$ la radice lo rimpicciolisce, ma se sta fra $0$ e $1$ lo ingrandisce: $\sqrt{0{,}25}=0{,}5$. Più l'indice è alto, più il risultato si avvicina a $1$.` },
+Se il numero è maggiore di $1$, la radice lo rimpicciolisce. Se sta fra $0$ e $1$, lo ingrandisce: $\sqrt{0{,}25}=0{,}5$. Più l'indice è alto, più il risultato si avvicina a $1$.` },
 
-    { id: 'proprieta-invariantiva', titolo: 'Proprietà invariantiva e semplificazione', testo: R`Calcola con la calcolatrice $\sqrt[4]{9}$ e $\sqrt{3}$: vengono uguali, $1{,}732\ldots$ Il motivo è che $9=3^2$, e in $\sqrt[4]{3^2}$ l'indice $4$ e l'esponente $2$ si possono dividere entrambi per $2$ senza cambiare il valore.
+    { id: 'proprieta-invariantiva', titolo: 'Proprietà invariantiva e semplificazione', testo: R`Con la calcolatrice, $\sqrt[4]{9}$ e $\sqrt{3}$ danno lo stesso numero: $1{,}732\ldots$ Il motivo è che $9=3^2$. In $\sqrt[4]{3^2}$ puoi dividere per $2$ sia l'indice sia l'esponente.
 
->* **Proprietà invariantiva:** se si moltiplicano, o si dividono, l'indice della radice e l'esponente del radicando per lo stesso numero naturale diverso da zero, il valore del radicale non cambia. $$\sqrt[n]{a^m}=\sqrt[n\cdot k]{a^{m\cdot k}}\qquad(a\ge 0)$$
+>* **Proprietà invariantiva:** moltiplica o dividi l'indice e l'esponente del radicando per lo stesso numero intero positivo. Il valore del radicale non cambia. $$\sqrt[n]{a^m}=\sqrt[n\cdot k]{a^{m\cdot k}}\qquad(a\ge 0)$$
 
-Si usa in due direzioni:
+Si usa in due modi:
 
-- **dividendo**, per semplificare un radicale: si dividono indice ed esponente per il loro MCD;
-- **moltiplicando**, per portare più radicali allo stesso indice (lo vedi nella prossima sezione).
+- **dividendo**, per semplificare: dividi indice ed esponente per il loro MCD;
+- **moltiplicando**, per portare più radicali allo stesso indice (sezione seguente).
 
-Ecco come si semplifica $\sqrt[6]{8}$.
+Semplifica $\sqrt[6]{8}$.
 
 ~ \sqrt[6]{8} :: il radicando non sembra una potenza, ma lo è
 ~ \sqrt[6]{\evid{2^3}} :: scrivo $8$ come potenza: $8=2^3$
 ~ \sqrt[\evid{6:3}]{2^{\evid{3:3}}} :: il MCD fra l'indice $6$ e l'esponente $3$ è $3$: divido tutti e due per $3$
 ~ \evidb{\sqrt{2}} :: l'indice è diventato $2$, che non si scrive
 
-Semplificare conviene quasi sempre come primo passo: un radicale ridotto ai minimi termini è più facile da confrontare e da sommare con gli altri.
+Conviene semplificare subito: dopo è più facile confrontare e sommare.
 
 ?? Si può semplificare $\sqrt[6]{5^4}$?
 [x] Sì: diventa $\sqrt[3]{5^2}$
 [ ] Sì: diventa $\sqrt[3]{5^4}$
 [ ] No: $6$ e $4$ non sono uno multiplo dell'altro
-=> Il MCD fra $6$ e $4$ è $2$: dividendo per $2$ **sia** l'indice **sia** l'esponente si ottiene $\sqrt[3]{5^2}=\sqrt[3]{25}$. Dividere soltanto l'indice cambia il valore. E per semplificare basta un divisore comune: non serve che un numero sia multiplo dell'altro.
+=> Il MCD fra $6$ e $4$ è $2$. Dividi per $2$ **sia** l'indice **sia** l'esponente: ottieni $\sqrt[3]{5^2}=\sqrt[3]{25}$. Dividere solo l'indice cambia il valore. Non serve che un numero sia multiplo dell'altro: basta un divisore comune.
 
->! Attenzione quando il radicando può essere negativo. Con le lettere, $\sqrt[4]{a^2}$ si semplifica in $\sqrt{|a|}$ e non in $\sqrt{a}$, perché $a^2$ è positivo anche quando $a$ è negativo. Con i numeri, $\sqrt[3]{-2}$ è negativo mentre $\sqrt[6]{(-2)^2}=\sqrt[6]{4}$ è positivo: moltiplicando indice ed esponente per $2$ si è cambiato il valore.` },
+>! Attento se il radicando può essere negativo. $\sqrt[4]{a^2}$ diventa $\sqrt{|a|}$, perché $a^2$ è positivo anche con $a$ negativo. E $\sqrt[3]{-2}$ è negativo, mentre $\sqrt[6]{(-2)^2}=\sqrt[6]{4}$ è positivo: moltiplicando per $2$ indice ed esponente, il valore è cambiato.` },
 
-    { id: 'riduzione-stesso-indice', titolo: 'Riduzione allo stesso indice e confronto', testo: R`Quale è più grande, $\sqrt{2}$ o $\sqrt[3]{3}$? Guardare i radicandi non basta, perché gli indici sono diversi. Bisogna prima riscrivere i due numeri con lo **stesso indice**.
+    { id: 'riduzione-stesso-indice', titolo: 'Riduzione allo stesso indice e confronto', testo: R`Quale è più grande, $\sqrt{2}$ o $\sqrt[3]{3}$? Gli indici sono diversi, quindi i radicandi da soli non bastano. Prima riscrivi i due numeri con lo **stesso indice**.
 
->* **Riduzione allo stesso indice:** si calcola il mcm degli indici; poi, con la proprietà invariantiva, si moltiplicano indice ed esponente di ogni radicale per il numero che porta il suo indice al mcm.
+>* **Riduzione allo stesso indice:** calcola il mcm degli indici. Poi moltiplica indice ed esponente di ogni radicale per il numero che porta il suo indice al mcm.
 
 ~ \sqrt{2}\quad\text{e}\quad\sqrt[3]{3} :: gli indici sono $2$ e $3$: il loro mcm è $6$
 ~ \sqrt[\evid{2\cdot 3}]{2^{\evid{3}}}\quad\text{e}\quad\sqrt[\evid{3\cdot 2}]{3^{\evid{2}}} :: il primo va moltiplicato per $3$, il secondo per $2$, sia nell'indice sia nell'esponente
@@ -88,23 +97,21 @@ Semplificare conviene quasi sempre come primo passo: un radicale ridotto ai mini
 
 Quindi $\sqrt{2}<\sqrt[3]{3}$. Con la calcolatrice: $\sqrt{2}\approx 1{,}414$ e $\sqrt[3]{3}\approx 1{,}442$.
 
->* Con lo stesso indice il confronto si fa sui radicandi: per $a,b\ge 0$, $\sqrt[n]{a}<\sqrt[n]{b}$ esattamente quando $a<b$.
+>* Con lo stesso indice confronti i radicandi: se $0\le a<b$, allora $\sqrt[n]{a}<\sqrt[n]{b}$.
 
 ?? Quale dei due è maggiore, $\sqrt[3]{5}$ o $\sqrt{3}$?
 [ ] $\sqrt[3]{5}$, perché $5>3$
 [x] $\sqrt{3}$
 [ ] sono uguali
-=> Portali all'indice $6$: $\sqrt[3]{5}=\sqrt[6]{5^2}=\sqrt[6]{25}$ e $\sqrt{3}=\sqrt[6]{3^3}=\sqrt[6]{27}$. Siccome $27>25$, è maggiore $\sqrt{3}$. Confrontare subito $5$ e $3$ è proprio l'errore da evitare: con indici diversi i radicandi da soli non dicono niente.
+=> All'indice $6$: $\sqrt[3]{5}=\sqrt[6]{5^2}=\sqrt[6]{25}$ e $\sqrt{3}=\sqrt[6]{3^3}=\sqrt[6]{27}$. Siccome $27>25$, è maggiore $\sqrt{3}$. Confrontare subito $5$ e $3$ è l'errore da evitare: con indici diversi i radicandi da soli non dicono niente.` },
 
-La stessa riduzione serve anche per moltiplicare e dividere radicali con indici diversi, come nella prossima sezione.` },
-
-    { id: 'moltiplicazione-divisione', titolo: 'Moltiplicazione e divisione di radicali', testo: R`Quanto fa $\sqrt{3}\cdot\sqrt{12}$? Nessuno dei due fattori è un numero comodo, ma il prodotto sì: se l'indice è lo stesso, i radicandi si possono mettere sotto un'unica radice.
+    { id: 'moltiplicazione-divisione', titolo: 'Moltiplicazione e divisione di radicali', testo: R`Quanto fa $\sqrt{3}\cdot\sqrt{12}$? I due fattori sono scomodi, ma il prodotto no. Con lo stesso indice, metti i radicandi sotto un'unica radice.
 
 >* Con lo stesso indice: $$\sqrt[n]{a}\cdot\sqrt[n]{b}=\sqrt[n]{a\cdot b}$$ $$\frac{\sqrt[n]{a}}{\sqrt[n]{b}}=\sqrt[n]{\frac{a}{b}}$$ Se $n$ è pari servono $a,b\ge 0$; nella divisione $b\ne 0$.
 
-Così $\sqrt{3}\cdot\sqrt{12}=\sqrt{36}=6$ e $\dfrac{\sqrt{18}}{\sqrt{2}}=\sqrt{9}=3$. Dopo aver moltiplicato, controlla sempre se il nuovo radicando è una potenza perfetta: se lo è, la radice sparisce.
+Così $\sqrt{3}\cdot\sqrt{12}=\sqrt{36}=6$ e $\dfrac{\sqrt{18}}{\sqrt{2}}=\sqrt{9}=3$. Dopo il prodotto guarda il nuovo radicando: se è un quadrato perfetto, la radice sparisce.
 
-Se gli indici sono diversi, prima si portano allo stesso indice.
+Con indici diversi, prima porta i radicali allo stesso indice.
 
 ~ \sqrt{2}\cdot\sqrt[3]{2} :: indici diversi: così non si possono moltiplicare
 ~ \sqrt[\evid{6}]{2^{\evid{3}}}\cdot\sqrt[\evid{6}]{2^{\evid{2}}} :: porto tutti e due all'indice $6$, il mcm di $2$ e $3$
@@ -117,22 +124,28 @@ La regola vale per prodotti e quozienti. Per le somme no.
 [ ] $\sqrt{25}=5$
 [x] $7$
 [ ] $\sqrt{144}=12$
-=> $\sqrt{9}+\sqrt{16}=3+4=7$. Scrivere $\sqrt{9+16}=5$ vuol dire usare per la somma una regola che vale solo per il prodotto; e $\sqrt{144}$ è la radice del prodotto $9\cdot 16$, non della somma.
+=> $\sqrt{9}+\sqrt{16}=3+4=7$. Con $\sqrt{9+16}=5$ hai usato per la somma la regola del prodotto. $\sqrt{144}$ è la radice del prodotto $9\cdot 16$.
 
->! $\sqrt{a+b}\ne\sqrt{a}+\sqrt{b}$, e lo stesso vale per la differenza: $\sqrt{25-9}=\sqrt{16}=4$, mentre $\sqrt{25}-\sqrt{9}=5-3=2$.` },
+>! $\sqrt{a+b}\ne\sqrt{a}+\sqrt{b}$. Vale anche per la differenza: $\sqrt{25-9}=\sqrt{16}=4$, mentre $\sqrt{25}-\sqrt{9}=5-3=2$.` },
 
-    { id: 'trasporto-segno-radice', titolo: 'Portare fuori e portare dentro dal segno di radice', testo: R`$\sqrt{72}$ sembra un numero qualunque, ma dentro nasconde un quadrato perfetto: $72=36\cdot 2$. Siccome $\sqrt{36}=6$, quel $6$ può uscire dalla radice.
+    { id: 'trasporto-segno-radice', titolo: 'Portare fuori e portare dentro dal segno di radice', testo: R`$\sqrt{72}$ nasconde un quadrato perfetto: $72=36\cdot 2$. Siccome $\sqrt{36}=6$, il $6$ può uscire dalla radice.
 
 ~ \sqrt{72} :: cerco il quadrato perfetto più grande che divide $72$
 ~ \sqrt{\evid{36}\cdot 2} :: $72=36\cdot 2$, e $36=6^2$
 ~ \sqrt{36}\cdot\sqrt{2} :: la radice di un prodotto è il prodotto delle radici
 ~ \evidb{6}\sqrt{2} :: $\sqrt{36}=6$ esce dalla radice, il $2$ resta dentro
 
-Il metodo generale: scomponi il radicando in fattori primi. Ogni fattore con esponente uguale all'indice esce; se l'esponente è più grande, esce la parte multipla dell'indice e il resto rimane dentro. Con indice $3$ escono i cubi: $\sqrt[3]{54}=\sqrt[3]{27\cdot 2}=3\sqrt[3]{2}$.
+Il metodo generale:
 
->* **Portare fuori:** $$\sqrt[n]{a^n\cdot b}=a\sqrt[n]{b}\qquad(a\ge 0)$$ Con indice pari e una lettera di cui non conosci il segno esce il valore assoluto: $\sqrt{a^2 b}=|a|\sqrt{b}$.
+1. Scomponi il radicando in fattori primi.
+2. Un fattore con esponente uguale all'indice esce.
+3. Se l'esponente è più grande, esce la parte multipla dell'indice. Il resto rimane dentro.
 
-Con le lettere, guarda prima le condizioni di esistenza (c.e.): a volte dicono già che il fattore è positivo.
+Con indice $3$ escono i cubi: $\sqrt[3]{54}=\sqrt[3]{27\cdot 2}=3\sqrt[3]{2}$.
+
+>* **Portare fuori:** $$\sqrt[n]{a^n\cdot b}=a\sqrt[n]{b}\qquad(a\ge 0)$$ Con indice pari e una lettera di segno sconosciuto, esce il valore assoluto: $\sqrt{a^2 b}=|a|\sqrt{b}$.
+
+Con le lettere, guarda prima le condizioni di esistenza (c.e.). A volte dicono già che il fattore è positivo.
 
 ~ \sqrt{18a^3} :: c.e.: serve $18a^3\ge 0$, cioè $a\ge 0$
 ~ \sqrt{\evid{9}\cdot 2\cdot\evid{a^2}\cdot a} :: separo i quadrati: $18=9\cdot 2$ e $a^3=a^2\cdot a$
@@ -148,23 +161,23 @@ E se il fattore fuori è negativo? Con indice pari il meno non può entrare, per
 ~ \evid{-}\sqrt{3^2\cdot 2} :: dentro entra solo $3$; il meno resta fuori dalla radice
 ~ \evidb{-\sqrt{18}} :: il risultato è ancora negativo, come deve essere
 
-Con indice dispari, invece, il meno può entrare, perché le radici dispari dei numeri negativi esistono: $-2\sqrt[3]{3}=\sqrt[3]{(-2)^3\cdot 3}=\sqrt[3]{-24}$.
+Con indice dispari il meno può entrare: $-2\sqrt[3]{3}=\sqrt[3]{(-2)^3\cdot 3}=\sqrt[3]{-24}$.
 
 ?? Come si scrive $-5\sqrt{3}$ con il fattore dentro la radice?
 [ ] $\sqrt{-75}$
 [ ] $\sqrt{75}$
 [x] $-\sqrt{75}$
-=> Dentro entra $5^2=25$, e $25\cdot 3=75$. Il meno resta fuori: $-5\sqrt{3}$ è negativo e una radice quadrata non lo è mai. $\sqrt{-75}$ non esiste, e $\sqrt{75}$ ha cambiato segno al numero.
+=> Dentro entra $5^2=25$, e $25\cdot 3=75$. Il meno resta fuori, perché $-5\sqrt{3}$ è negativo. $\sqrt{-75}$ non esiste. $\sqrt{75}$ ha cambiato segno al numero.
 
->! Portando dentro, il fattore va elevato all'indice: $2\sqrt{5}=\sqrt{4\cdot 5}=\sqrt{20}$, non $\sqrt{2\cdot 5}$.` },
+>! Portando dentro, il fattore va elevato all'indice: $2\sqrt{5}=\sqrt{4\cdot 5}=\sqrt{20}$, e non $\sqrt{2\cdot 5}$.` },
 
-    { id: 'potenza-radice-di-radicale', titolo: 'Potenza di un radicale e radice di radicale', testo: R`Due regole servono quando una radice è elevata a potenza, oppure quando c'è una radice dentro un'altra.
+    { id: 'potenza-radice-di-radicale', titolo: 'Potenza di un radicale e radice di radicale', testo: R`Due regole servono quando una radice è elevata a potenza, o sta dentro un'altra radice.
 
 >* **Potenza di un radicale:** l'esponente entra nel radicando. $$\left(\sqrt[n]{a}\right)^m=\sqrt[n]{a^m}$$ **Radice di un radicale:** gli indici si moltiplicano. $$\sqrt[k]{\sqrt[n]{a}}=\sqrt[k\cdot n]{a}$$
 
-Per la potenza: $(\sqrt{3})^4=\sqrt{3^4}=\sqrt{81}=9$. Spesso fai prima a raggruppare, perché $(\sqrt{3})^2=3$ per definizione: $(\sqrt{3})^4=\left((\sqrt{3})^2\right)^2=3^2=9$.
+Per la potenza: $(\sqrt{3})^4=\sqrt{3^4}=\sqrt{81}=9$. Più in fretta: $(\sqrt{3})^2=3$, quindi $(\sqrt{3})^4=3^2=9$.
 
-Per la radice di radice capita spesso che ci sia un fattore in mezzo, che va portato dentro prima.
+Nella radice di radice spesso c'è un fattore in mezzo. Portalo dentro per primo.
 
 ~ \sqrt{2\sqrt{2}} :: davanti alla radice interna c'è un $2$: prima lo porto dentro
 ~ \sqrt{\sqrt{\evid{2^2}\cdot 2}} :: il $2$ entra elevato all'indice della radice interna
@@ -175,34 +188,34 @@ Per la radice di radice capita spesso che ci sia un fattore in mezzo, che va por
 [x] $\sqrt[6]{5}$
 [ ] $\sqrt[5]{5}$
 [ ] $\sqrt[3]{5^2}$
-=> Gli indici si moltiplicano: $3\cdot 2=6$. Sommarli e scrivere $\sqrt[5]{5}$ è l'errore tipico. La regola è la stessa della potenza di potenza, dove gli esponenti si moltiplicano; $\sqrt[3]{5^2}$ invece ha scambiato l'indice $2$ per un esponente.
+=> Gli indici si moltiplicano: $3\cdot 2=6$. L'errore tipico è sommarli e scrivere $\sqrt[5]{5}$. In $\sqrt[3]{5^2}$ l'indice $2$ è diventato un esponente.
 
-> Le due regole sono le proprietà delle potenze viste da un'altra parte: una radice è una potenza con esponente frazionario, come si vede nella sezione dedicata.` },
+> Queste regole vengono dalle proprietà delle potenze: lo vedi nella sezione sull'esponente frazionario.` },
 
-    { id: 'addizione-radicali-simili', titolo: 'Addizione di radicali simili', testo: R`$2\sqrt{3}+5\sqrt{3}$ funziona come $2x+5x$: fa $7\sqrt{3}$. Invece $\sqrt{2}+\sqrt{3}$ è come $x+y$: non si può scrivere in modo più corto, e il risultato resta $\sqrt{2}+\sqrt{3}$.
+    { id: 'addizione-radicali-simili', titolo: 'Addizione di radicali simili', testo: R`$2\sqrt{3}+5\sqrt{3}$ funziona come $2x+5x$: fa $7\sqrt{3}$. Invece $\sqrt{2}+\sqrt{3}$ è come $x+y$: resta così.
 
->* Due radicali sono **simili** se, dopo averli semplificati, hanno lo stesso indice e lo stesso radicando. Si sommano solo i radicali simili, sommando i coefficienti: $$p\sqrt[n]{a}+q\sqrt[n]{a}=(p+q)\sqrt[n]{a}$$
+>* Due radicali sono **simili** se, semplificati, hanno lo stesso indice e lo stesso radicando. Sommi solo radicali simili, sommando i coefficienti: $$p\sqrt[n]{a}+q\sqrt[n]{a}=(p+q)\sqrt[n]{a}$$
 
-Spesso due radicali sembrano diversi e diventano simili solo dopo aver portato fuori qualcosa.
+Spesso due radicali diventano simili solo dopo aver portato fuori qualcosa.
 
 ~ \sqrt{50}-\sqrt{18}+\sqrt{8} :: radicandi diversi: prima provo a semplificarli
 ~ \evid{5}\sqrt{2}-\evid{3}\sqrt{2}+\evid{2}\sqrt{2} :: $50=25\cdot 2$, $18=9\cdot 2$, $8=4\cdot 2$: da ciascuno esce un quadrato
 ~ (5-3+2)\sqrt{2} :: ora sono tutti simili: sommo i coefficienti
 ~ \evidb{4\sqrt{2}}
 
-In un'espressione con radicali diversi, ogni radicale si comporta come una lettera diversa: $\sqrt{2}+\sqrt{3}-4\sqrt{2}+2\sqrt{3}=-3\sqrt{2}+3\sqrt{3}$.
+Radicali diversi si comportano come lettere diverse: $\sqrt{2}+\sqrt{3}-4\sqrt{2}+2\sqrt{3}=-3\sqrt{2}+3\sqrt{3}$.
 
 ?? Quanto fa $3\sqrt{2}+\sqrt{8}$?
 [x] $5\sqrt{2}$
 [ ] $3\sqrt{10}$
 [ ] $4\sqrt{10}$
-=> $\sqrt{8}=2\sqrt{2}$, quindi $3\sqrt{2}+2\sqrt{2}=5\sqrt{2}$. Sommare i radicandi ($2+8=10$) non si può mai: si sommano i coefficienti, e solo fra radicali simili.
+=> $\sqrt{8}=2\sqrt{2}$, quindi $3\sqrt{2}+2\sqrt{2}=5\sqrt{2}$. I radicandi non si sommano mai: si sommano i coefficienti dei radicali simili.
 
->! Anche i prodotti si sviluppano come fra polinomi: $(\sqrt{3}+1)^2=3+2\sqrt{3}+1=4+2\sqrt{3}$. Scrivere soltanto $3+1=4$ vuol dire dimenticare il doppio prodotto, lo stesso errore di $(a+b)^2=a^2+b^2$.` },
+>! Anche i prodotti si sviluppano come fra polinomi: $(\sqrt{3}+1)^2=3+2\sqrt{3}+1=4+2\sqrt{3}$. Se scrivi solo $3+1=4$, perdi il doppio prodotto.` },
 
-    { id: 'razionalizzazione', titolo: 'Razionalizzazione del denominatore', testo: R`Un risultato come $\dfrac{1}{\sqrt{2}}$ è corretto, ma per convenzione non si lasciano radici al denominatore. **Razionalizzare** vuol dire riscrivere la frazione, con lo stesso valore, in modo che sotto non ci siano più radici.
+    { id: 'razionalizzazione', titolo: 'Razionalizzazione del denominatore', testo: R`Un risultato come $\dfrac{1}{\sqrt{2}}$ è corretto. Però per convenzione non si lasciano radici al denominatore. **Razionalizzare** vuol dire riscrivere la frazione senza radici sotto, con lo stesso valore.
 
-Il trucco è sempre lo stesso: si moltiplicano numeratore e denominatore per lo stesso fattore (cioè si moltiplica per $1$, e il valore non cambia), scelto in modo che al denominatore la radice sparisca. Cambia solo il fattore da scegliere.
+Moltiplica numeratore e denominatore per lo stesso fattore. È come moltiplicare per $1$: il valore non cambia. Scegli il fattore che fa sparire la radice sotto.
 
 | sotto c'è | moltiplico sopra e sotto per |
 |---|---|
@@ -219,7 +232,7 @@ Il trucco è sempre lo stesso: si moltiplicano numeratore e denominatore per lo 
 
 ### Una radice di indice più alto
 
-Con $\sqrt[3]{4}$ al denominatore, moltiplicare per $\sqrt[3]{4}$ non basta: verrebbe $\sqrt[3]{16}$, ancora una radice. L'esponente sotto la radice deve arrivare esattamente a $3$.
+Con $\sqrt[3]{4}$ sotto, moltiplicare per $\sqrt[3]{4}$ non basta: viene $\sqrt[3]{16}$, ancora una radice. L'esponente sotto radice deve arrivare a $3$.
 
 ~ \frac{2}{\sqrt[3]{4}} :: il denominatore è una radice cubica
 ~ \frac{2}{\sqrt[3]{2^{\evid{2}}}} :: scrivo $4=2^2$: all'esponente manca $1$ per arrivare a $3$
@@ -229,7 +242,7 @@ Con $\sqrt[3]{4}$ al denominatore, moltiplicare per $\sqrt[3]{4}$ non basta: ver
 
 ### Un binomio al denominatore
 
-Qui si usa il prodotto notevole $(x+y)(x-y)=x^2-y^2$: i due termini vengono elevati al quadrato, e il quadrato di una radice quadrata non ha più radici. Il fattore da usare si chiama **razionalizzante**.
+Qui usi il prodotto notevole $(x+y)(x-y)=x^2-y^2$. I due termini finiscono al quadrato, e la radice sparisce. Il fattore da usare si chiama **razionalizzante**.
 
 ~ \frac{4}{\sqrt{5}-1} :: al denominatore c'è una differenza con una radice
 ~ \frac{4}{\sqrt{5}-1}\cdot\evid{\frac{\sqrt{5}+1}{\sqrt{5}+1}} :: moltiplico per il binomio con il segno centrale cambiato
@@ -237,26 +250,26 @@ Qui si usa il prodotto notevole $(x+y)(x-y)=x^2-y^2$: i due termini vengono elev
 ~ \frac{4(\sqrt{5}+1)}{4} :: $5-1=4$
 ~ \evidb{\sqrt{5}+1} :: semplifico il $4$
 
-Con due radici funziona allo stesso modo: il razionalizzante di $\sqrt{a}+\sqrt{b}$ è $\sqrt{a}-\sqrt{b}$, e il prodotto dà $a-b$.
+Con due radici è uguale: il razionalizzante di $\sqrt{a}+\sqrt{b}$ è $\sqrt{a}-\sqrt{b}$, e il prodotto dà $a-b$.
 
 ?? Per razionalizzare $\dfrac{1}{2+\sqrt{3}}$, per che cosa moltiplichi sopra e sotto?
 [x] $2-\sqrt{3}$
 [ ] $-2-\sqrt{3}$
 [ ] $\sqrt{3}$
-=> Serve $2-\sqrt{3}$: il prodotto $(2+\sqrt{3})(2-\sqrt{3})=4-3=1$ non ha più radici. Con $-2-\sqrt{3}$ hai cambiato tutti e due i segni: il prodotto è $-(2+\sqrt{3})^2$, che la radice ce l'ha ancora. Con $\sqrt{3}$ viene $2\sqrt{3}+3$, stesso problema.
+=> Serve $2-\sqrt{3}$: $(2+\sqrt{3})(2-\sqrt{3})=4-3=1$, senza radici. Con $-2-\sqrt{3}$ hai cambiato tutti e due i segni: il prodotto è $-(2+\sqrt{3})^2$, e la radice resta. Con $\sqrt{3}$ viene $2\sqrt{3}+3$: la radice resta anche qui.
 
 >! Si moltiplica **sia** il numeratore **sia** il denominatore. Moltiplicare solo il denominatore cambia il valore della frazione.` },
 
-    { id: 'esponente-frazionario', titolo: 'Potenze con esponente frazionario', testo: R`Che senso può avere $8^{\frac{1}{3}}$? Se le proprietà delle potenze devono continuare a valere, allora $\left(8^{\frac13}\right)^3=8^{\frac13\cdot 3}=8^1=8$. Quindi $8^{\frac13}$ è il numero che al cubo dà $8$, cioè $\sqrt[3]{8}=2$. Da qui viene la definizione.
+    { id: 'esponente-frazionario', titolo: 'Potenze con esponente frazionario', testo: R`Che senso ha $8^{\frac{1}{3}}$? Se valgono ancora le proprietà delle potenze, $\left(8^{\frac13}\right)^3=8^{\frac13\cdot 3}=8^1=8$. Quindi $8^{\frac13}$ è il numero che al cubo dà $8$: $\sqrt[3]{8}=2$.
 
->* **Potenza con esponente frazionario:** $$a^{\frac{m}{n}}=\sqrt[n]{a^m}\qquad(a>0)$$ Il denominatore dell'esponente diventa l'indice della radice, il numeratore diventa l'esponente del radicando.
+>* **Potenza con esponente frazionario:** $$a^{\frac{m}{n}}=\sqrt[n]{a^m}\qquad(a>0)$$ Il denominatore dell'esponente diventa l'indice. Il numeratore diventa l'esponente del radicando.
 
 ~ 8^{\frac{2}{3}} :: il denominatore è $3$: sarà una radice cubica
 ~ \left(\sqrt[\evid{3}]{8}\right)^{\evid{2}} :: conviene estrarre prima la radice, così i numeri restano piccoli
 ~ 2^2 :: $\sqrt[3]{8}=2$
 ~ \evidb{4}
 
-Con questa definizione valgono tutte le proprietà delle potenze. Diventano anche un modo comodo per fare i conti con radici di indici diversi.
+Con questa definizione valgono tutte le proprietà delle potenze. Così fai i conti anche con radici di indici diversi.
 
 ~ \sqrt{a}\cdot\sqrt[3]{a} :: indici diversi, con $a>0$
 ~ a^{\evid{\frac12}}\cdot a^{\evid{\frac13}} :: scrivo le radici come potenze
@@ -267,15 +280,15 @@ Con questa definizione valgono tutte le proprietà delle potenze. Diventano anch
 [ ] $12$
 [x] $8$
 [ ] $\sqrt[3]{16^4}$
-=> Il denominatore $4$ è l'indice: $\left(\sqrt[4]{16}\right)^3=2^3=8$. Il $12$ viene da $16\cdot\frac34$, cioè dal moltiplicare la base per l'esponente. $\sqrt[3]{16^4}$ ha scambiato indice ed esponente.
+=> Il denominatore $4$ è l'indice: $\left(\sqrt[4]{16}\right)^3=2^3=8$. Il $12$ viene da $16\cdot\frac34$: hai moltiplicato la base per l'esponente. $\sqrt[3]{16^4}$ ha scambiato indice ed esponente.
 
->! La definizione vale solo per basi positive. Con una base negativa si arriverebbe a una contraddizione: $(-8)^{\frac13}$ dovrebbe essere $\sqrt[3]{-8}=-2$, ma $\frac13=\frac26$ e $(-8)^{\frac26}=\sqrt[6]{(-8)^2}=\sqrt[6]{64}=2$. Lo stesso esponente, scritto in due modi, darebbe due risultati diversi.` },
+>! La definizione vale solo per basi positive. Con $-8$ avresti $(-8)^{\frac13}=\sqrt[3]{-8}=-2$. Ma $\frac13=\frac26$, e $(-8)^{\frac26}=\sqrt[6]{(-8)^2}=\sqrt[6]{64}=2$. Lo stesso esponente darebbe due risultati diversi.` },
 
-    { id: 'radicali-doppi', titolo: 'Radicali doppi', testo: R`Un **radicale doppio** è una radice quadrata che ne contiene un'altra: $\sqrt{A+\sqrt{B}}$ oppure $\sqrt{A-\sqrt{B}}$. A volte si può riscrivere come somma o differenza di due radicali semplici, molto più comodi nei calcoli.
+    { id: 'radicali-doppi', titolo: 'Radicali doppi', testo: R`Un **radicale doppio** è una radice quadrata che ne contiene un'altra: $\sqrt{A+\sqrt{B}}$ oppure $\sqrt{A-\sqrt{B}}$. A volte diventa una somma o una differenza di due radicali semplici.
 
-L'idea viene dal quadrato di un binomio: $(\sqrt{5}+\sqrt{2})^2=5+2+2\sqrt{10}=7+2\sqrt{10}$. Letto al contrario, questo dice che $\sqrt{7+2\sqrt{10}}=\sqrt{5}+\sqrt{2}$.
+L'idea viene dal quadrato di un binomio: $(\sqrt{5}+\sqrt{2})^2=5+2+2\sqrt{10}=7+2\sqrt{10}$. Letto al contrario: $\sqrt{7+2\sqrt{10}}=\sqrt{5}+\sqrt{2}$.
 
->* Se trovi due numeri $p\ge q\ge 0$ con $p+q=A$ e $p\cdot q=B$, allora $$\sqrt{A\pm 2\sqrt{B}}=\sqrt{p}\pm\sqrt{q}$$ Sono gli stessi due numeri di somma e prodotto dati che si cercano nelle equazioni di secondo grado.
+>* Cerca due numeri $p\ge q\ge 0$ con $p+q=A$ e $p\cdot q=B$. Allora $$\sqrt{A\pm 2\sqrt{B}}=\sqrt{p}\pm\sqrt{q}$$
 
 ~ \sqrt{6+\sqrt{20}} :: il doppio prodotto non si vede ancora
 ~ \sqrt{6+\evid{2\sqrt{5}}} :: $\sqrt{20}=2\sqrt{5}$: ora c'è la forma $A+2\sqrt{B}$, con $A=6$ e $B=5$
@@ -283,23 +296,30 @@ L'idea viene dal quadrato di un binomio: $(\sqrt{5}+\sqrt{2})^2=5+2+2\sqrt{10}=7
 ~ \sqrt{\left(\sqrt{5}+1\right)^2} :: è il quadrato di $\sqrt{5}+\sqrt{1}$
 ~ \evidb{\sqrt{5}+1} :: la radice quadrata del quadrato di un numero positivo è il numero stesso
 
-Con il segno meno bisogna fare attenzione all'ordine.
+Con il segno meno, attento all'ordine.
 
 ?? Quanto vale $\sqrt{4-2\sqrt{3}}$?
 [x] $\sqrt{3}-1$
 [ ] $1-\sqrt{3}$
 [ ] $2-\sqrt{3}$
-=> Due numeri con somma $4$ e prodotto $3$: sono $3$ e $1$. Con il meno, il più grande va davanti: $\sqrt{3}-1$, che è positivo come deve essere una radice quadrata. $1-\sqrt{3}$ è negativo, quindi non può essere il valore di una radice. $2-\sqrt{3}$ viene dal "separare" la radice sulla differenza, cosa che non si può fare.
+=> Due numeri con somma $4$ e prodotto $3$: sono $3$ e $1$. Con il meno il più grande va davanti: $\sqrt{3}-1$, che è positivo. $1-\sqrt{3}$ è negativo: non può essere una radice quadrata. $2-\sqrt{3}$ viene dallo spezzare la radice sulla differenza, e questo non si può fare.
 
->! Non tutti i radicali doppi si semplificano. Se non esistono due numeri comodi con quella somma e quel prodotto, il radicale si lascia com'è. Per esempio in $\sqrt{5+2\sqrt{3}}$ servirebbero due numeri con somma $5$ e prodotto $3$, e non sono razionali.` },
+>! Non tutti i radicali doppi si semplificano. In $\sqrt{5+2\sqrt{3}}$ servono due numeri con somma $5$ e prodotto $3$, e non sono razionali. Allora il radicale resta così.` },
 
-    { id: 'espressioni-equazioni', titolo: 'Espressioni ed equazioni con i radicali', testo: R`Nelle **espressioni** con i radicali l'ordine è quello di sempre: prima le parentesi, poi potenze e radici, poi prodotti e divisioni, infine somme e differenze. Ogni singolo passaggio si fa con le regole di questo capitolo.
+    { id: 'espressioni-equazioni', titolo: 'Espressioni ed equazioni con i radicali', testo: R`Nelle **espressioni** con i radicali l'ordine è quello solito: parentesi, potenze e radici, prodotti e divisioni, somme e differenze.
 
-Un'**equazione irrazionale** ha l'incognita sotto una radice, come $\sqrt{2x-3}=3$. Per liberarsi della radice si elevano al quadrato i due membri: $2x-3=9$, quindi $x=6$. Il problema è che elevare al quadrato può far comparire soluzioni false.
+Un'**equazione irrazionale** ha l'incognita sotto radice, come $\sqrt{2x-3}=3$. Elevi al quadrato i due membri: $2x-3=9$, quindi $x=6$.
 
-Guarda cosa succede con un'equazione banale: $x=2$ ha una sola soluzione, ma elevando al quadrato si passa a $x^2=4$, che ha anche la soluzione $-2$. Il quadrato ha aggiunto un valore che prima non c'era. Queste soluzioni in più si chiamano **estranee**.
+Però elevare al quadrato può far comparire soluzioni false. Prendi $x=2$: ha una sola soluzione. Al quadrato diventa $x^2=4$, che ha anche $-2$. Queste soluzioni in più si chiamano **estranee**.
 
->* Per risolvere $\sqrt{f(x)}=g(x)$: si impone $f(x)\ge 0$ (c.e.) e $g(x)\ge 0$, perché una radice quadrata non è mai negativa; poi si eleva al quadrato e si risolve. Si tengono solo le soluzioni che rispettano le condizioni. Se $g(x)$ è un numero negativo, l'equazione è impossibile senza fare calcoli.
+Per risolvere $\sqrt{f(x)}=g(x)$:
+
+1. Imponi $f(x)\ge 0$: è la condizione di esistenza.
+2. Imponi $g(x)\ge 0$: una radice quadrata non è mai negativa.
+3. Eleva al quadrato e risolvi.
+4. Tieni solo le soluzioni che rispettano le condizioni.
+
+>* In $\sqrt{f(x)}=g(x)$ servono $f(x)\ge 0$ e $g(x)\ge 0$. Se $g(x)$ è un numero negativo, l'equazione è impossibile.
 
 ~ \sqrt{2x+7}=x+2 :: la radice è già isolata a sinistra
 ~ \evid{x+2\ge 0}\ \Rightarrow\ x\ge -2 :: la radice non è mai negativa, quindi non deve esserlo neanche il secondo membro
@@ -308,15 +328,15 @@ Guarda cosa succede con un'equazione banale: $x=2$ ha una sola soluzione, ma ele
 ~ x=-3\ \lor\ x=1 :: risolvo: due numeri con somma $-2$ e prodotto $-3$
 ~ \evidb{x=1} :: $x=-3$ non rispetta $x\ge -2$: è una soluzione estranea e si scarta
 
-Verifica: con $x=1$ si ha $\sqrt{9}=3$ e $1+2=3$. Con $x=-3$ invece $\sqrt{1}=1$ mentre $-3+2=-1$: non torna. Qui il radicando $2x+7$ non ha dato problemi, perché dopo il quadrato è uguale a $(x+2)^2$, che non è mai negativo.
+Verifica: con $x=1$ hai $\sqrt{9}=3$ e $1+2=3$. Con $x=-3$ hai $\sqrt{1}=1$, ma $-3+2=-1$: non torna.
 
 ?? Quante soluzioni ha $\sqrt{x-1}=-2$?
 [ ] una: $x=5$
 [x] nessuna
 [ ] una: $x=-3$
-=> Una radice quadrata non è mai negativa, quindi non può valere $-2$: l'equazione è impossibile. Elevando al quadrato senza pensarci si trova $x-1=4$, cioè $x=5$; ma la verifica lo smentisce subito, perché $\sqrt{4}=2$ e non $-2$.
+=> Una radice quadrata non è mai negativa: non può valere $-2$. L'equazione è impossibile. Elevando al quadrato trovi $x-1=4$, cioè $x=5$. Ma la verifica dà $\sqrt{4}=2$, non $-2$.
 
->! Elevare al quadrato può aggiungere soluzioni che l'equazione di partenza non ha. Ogni soluzione va confrontata con le condizioni, oppure verificata sostituendola nell'equazione di partenza.` }
+>! Elevare al quadrato può aggiungere soluzioni. Confronta ogni soluzione con le condizioni, oppure sostituiscila nell'equazione di partenza.` }
   ],
 
   grafici: {
@@ -430,6 +450,28 @@ Verifica: con $x=1$ si ha $\sqrt{9}=3$ e $1+2=3$. Con $x=-3$ invece $\sqrt{1}=1$
   ],
 
   esercizi: [
+    /* allenamento: prodotti, quozienti, portare fuori, semplificare, razionalizzare; numeri piccoli */
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Calcola $\sqrt{2}\cdot\sqrt{8}$.`, suggerimenti: [R`Stesso indice: metti i radicandi sotto un'unica radice.`], risposta: rad('4'), soluzione: [R`Moltiplico i radicandi: $\sqrt{2\cdot 8}=\sqrt{16}$.`, R`$\sqrt{16}=4$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Calcola $\sqrt{3}\cdot\sqrt{5}$. Per la radice scrivi √ oppure *rad*.`, suggerimenti: [R`Stesso indice: moltiplica i radicandi.`], risposta: rad('√15'), soluzione: [R`$\sqrt{3}\cdot\sqrt{5}=\sqrt{3\cdot 5}=\sqrt{15}$.`, R`$15=3\cdot 5$ non contiene quadrati: il risultato resta $\sqrt{15}$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Calcola $\dfrac{\sqrt{50}}{\sqrt{2}}$.`, suggerimenti: [R`Stesso indice: dividi i radicandi.`], risposta: rad('5'), soluzione: [R`Divido i radicandi: $\sqrt{\dfrac{50}{2}}=\sqrt{25}$.`, R`$\sqrt{25}=5$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Semplifica $\sqrt{12}$ portando fuori un fattore.`, suggerimenti: [R`Cerca un quadrato perfetto che divide $12$.`, R`$12=4\cdot 3$.`], risposta: rad('2√3'), soluzione: [R`$12=4\cdot 3$, e $4=2^2$.`, R`Il $2$ esce: $\sqrt{12}=2\sqrt{3}$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Semplifica $\sqrt{18}$ portando fuori un fattore.`, suggerimenti: [R`Cerca un quadrato perfetto che divide $18$.`, R`$18=9\cdot 2$.`], risposta: rad('3√2'), soluzione: [R`$18=9\cdot 2$, e $9=3^2$.`, R`Il $3$ esce: $\sqrt{18}=3\sqrt{2}$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Semplifica $\sqrt[4]{9}$ con la proprietà invariantiva.`, suggerimenti: [R`Scrivi $9$ come potenza: $9=3^2$.`, R`Dividi per $2$ l'indice e l'esponente.`], risposta: rad('√3'), soluzione: [R`$\sqrt[4]{9}=\sqrt[4]{3^2}$.`, R`Divido indice ed esponente per $2$: $\sqrt[2]{3^1}=\sqrt{3}$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Calcola $\sqrt[3]{2}\cdot\sqrt[3]{4}$.`, suggerimenti: [R`Stesso indice $3$: moltiplica i radicandi.`, R`$2\cdot 4=8$, che è un cubo.`], risposta: rad('2'), soluzione: [R`Moltiplico i radicandi: $\sqrt[3]{2\cdot 4}=\sqrt[3]{8}$.`, R`$\sqrt[3]{8}=2$, perché $2^3=8$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Semplifica $\sqrt{50}$ portando fuori un fattore.`, suggerimenti: [R`Cerca un quadrato perfetto che divide $50$.`, R`$50=25\cdot 2$.`], risposta: rad('5√2'), soluzione: [R`$50=25\cdot 2$, e $25=5^2$.`, R`Il $5$ esce: $\sqrt{50}=5\sqrt{2}$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Razionalizza $\dfrac{1}{\sqrt{3}}$. Scrivi la frazione con la barra, per esempio √2/2.`, suggerimenti: [R`Moltiplica sopra e sotto per $\sqrt{3}$.`], risposta: rad('√3/3', '(√3)/3', '(1/3)√3', '1/3√3'), soluzione: [R`Moltiplico sopra e sotto per $\sqrt{3}$: $\dfrac{1\cdot\sqrt{3}}{\sqrt{3}\cdot\sqrt{3}}$.`, R`Sotto $\sqrt{3}\cdot\sqrt{3}=3$: il risultato è $\dfrac{\sqrt{3}}{3}$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Semplifica $\sqrt[6]{27}$ con la proprietà invariantiva.`, suggerimenti: [R`Scrivi $27$ come potenza di $3$.`, R`$27=3^3$: dividi indice ed esponente per $3$.`], risposta: rad('√3'), soluzione: [R`$27=3^3$, quindi $\sqrt[6]{27}=\sqrt[6]{3^3}$.`, R`Divido indice ed esponente per $3$: $\sqrt[2]{3^1}=\sqrt{3}$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Semplifica $\sqrt{45}$ portando fuori un fattore.`, suggerimenti: [R`Cerca un quadrato perfetto che divide $45$.`, R`$45=9\cdot 5$.`], risposta: rad('3√5'), soluzione: [R`$45=9\cdot 5$, e $9=3^2$.`, R`Il $3$ esce: $\sqrt{45}=3\sqrt{5}$.`] },
+    { id: 'b-12', livello: 'base', difficolta: 1, testo: R`Razionalizza $\dfrac{6}{\sqrt{2}}$ e semplifica.`, suggerimenti: [R`Moltiplica sopra e sotto per $\sqrt{2}$.`, R`Alla fine semplifica il $6$ con il $2$.`], risposta: rad('3√2'), soluzione: [R`Moltiplico sopra e sotto per $\sqrt{2}$: $\dfrac{6\sqrt{2}}{2}$.`, R`Semplifico $6$ con $2$: $3\sqrt{2}$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Calcola $\sqrt{2}\cdot\sqrt{6}$ e porta fuori quello che puoi.`, suggerimenti: [R`Prima moltiplica i radicandi.`, R`Ottieni $\sqrt{12}$: ora porta fuori.`], risposta: rad('2√3'), soluzione: [R`Moltiplico i radicandi: $\sqrt{2\cdot 6}=\sqrt{12}$.`, R`$12=4\cdot 3$.`, R`Il $2$ esce: $2\sqrt{3}$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Calcola $2\sqrt{3}\cdot 5\sqrt{3}$.`, suggerimenti: [R`Moltiplica i numeri fuori fra loro e le radici fra loro.`, R`$\sqrt{3}\cdot\sqrt{3}=3$.`], risposta: rad('30'), soluzione: [R`Numeri fuori: $2\cdot 5=10$.`, R`Radici: $\sqrt{3}\cdot\sqrt{3}=3$.`, R`Risultato: $10\cdot 3=30$.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Semplifica $\sqrt{48}$ portando fuori tutto quello che puoi.`, suggerimenti: [R`Cerca il quadrato perfetto più grande che divide $48$.`, R`$48=16\cdot 3$.`], risposta: rad('4√3'), soluzione: [R`$48=16\cdot 3$, e $16=4^2$.`, R`Il $4$ esce: $\sqrt{48}=4\sqrt{3}$.`, R`Se usi $48=4\cdot 12$ ottieni $2\sqrt{12}$: da $\sqrt{12}$ esce ancora un $2$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Razionalizza $\dfrac{10}{\sqrt{5}}$ e semplifica.`, suggerimenti: [R`Moltiplica sopra e sotto per $\sqrt{5}$.`, R`Alla fine semplifica il $10$ con il $5$.`], risposta: rad('2√5'), soluzione: [R`Moltiplico sopra e sotto per $\sqrt{5}$: $\dfrac{10\sqrt{5}}{5}$.`, R`Semplifico $10$ con $5$: $2\sqrt{5}$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Calcola $\sqrt{3}\cdot\sqrt{15}$ e porta fuori quello che puoi.`, suggerimenti: [R`Prima moltiplica i radicandi.`, R`$3\cdot 15=45=9\cdot 5$.`], risposta: rad('3√5'), soluzione: [R`Moltiplico i radicandi: $\sqrt{3\cdot 15}=\sqrt{45}$.`, R`$45=9\cdot 5$.`, R`Il $3$ esce: $3\sqrt{5}$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Calcola $\sqrt{12}+\sqrt{27}$.`, suggerimenti: [R`Così non sono simili: porta fuori in tutti e due.`, R`$\sqrt{12}=2\sqrt{3}$ e $\sqrt{27}=3\sqrt{3}$.`], risposta: rad('5√3'), soluzione: [R`$\sqrt{12}=\sqrt{4\cdot 3}=2\sqrt{3}$.`, R`$\sqrt{27}=\sqrt{9\cdot 3}=3\sqrt{3}$.`, R`Sono simili: sommo i coefficienti, $2\sqrt{3}+3\sqrt{3}=5\sqrt{3}$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Razionalizza $\dfrac{4}{\sqrt{6}}$ e semplifica. Scrivi la frazione con la barra.`, suggerimenti: [R`Moltiplica sopra e sotto per $\sqrt{6}$.`, R`Ottieni $\dfrac{4\sqrt{6}}{6}$: semplifica $4$ e $6$ per $2$.`], risposta: rad('2√6/3', '(2√6)/3', '(2/3)√6', '2/3√6'), soluzione: [R`Moltiplico sopra e sotto per $\sqrt{6}$: $\dfrac{4\sqrt{6}}{6}$.`, R`Divido $4$ e $6$ per $2$: $\dfrac{2\sqrt{6}}{3}$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Calcola $\sqrt{50}-\sqrt{8}$.`, suggerimenti: [R`Così non sono simili: porta fuori in tutti e due.`, R`$\sqrt{50}=5\sqrt{2}$ e $\sqrt{8}=2\sqrt{2}$.`], risposta: rad('3√2'), soluzione: [R`$\sqrt{50}=\sqrt{25\cdot 2}=5\sqrt{2}$.`, R`$\sqrt{8}=\sqrt{4\cdot 2}=2\sqrt{2}$.`, R`Sono simili: $5\sqrt{2}-2\sqrt{2}=3\sqrt{2}$.`] },
+
     { id: 'es-01', difficolta: 1, testo: R`Semplifica $\sqrt{75}$ portando fuori dal segno di radice tutti i fattori possibili.`, suggerimenti: [R`Scomponi $75$ cercando il più grande quadrato perfetto che lo divide.`, R`$75 = 25 \cdot 3$.`], risposta: { tipo: 'testo', accettate: ['5√3', '5*sqrt(3)', '5 sqrt 3', '5sqrt(3)', '5sqrt3'] }, soluzione: [R`$75 = 25 \cdot 3$, e $25=5^2$.`, R`$\sqrt{75}=\sqrt{25\cdot3}=\sqrt{25}\cdot\sqrt{3}=5\sqrt{3}$.`] },
     { id: 'es-02', difficolta: 1, testo: R`Calcola $\sqrt{3} \cdot \sqrt{12}$.`, suggerimenti: [R`Con lo stesso indice, moltiplica i radicandi.`, R`$3 \cdot 12 = 36$, un quadrato perfetto.`], risposta: { tipo: 'numero', valore: 6 }, soluzione: [R`$\sqrt{3}\cdot\sqrt{12}=\sqrt{3\cdot12}=\sqrt{36}$.`, R`$\sqrt{36}=6$.`] },
     { id: 'es-03', difficolta: 1, testo: R`Semplifica $\sqrt[4]{36}$ usando la proprietà invariantiva.`, suggerimenti: [R`Scrivi $36$ come potenza: $36=6^2$.`, R`L'indice è $4$, l'esponente è $2$: dividili per il loro MCD.`], risposta: { tipo: 'testo', accettate: ['√6', 'sqrt(6)', 'sqrt 6'] }, soluzione: [R`$36=6^2$, quindi $\sqrt[4]{36}=\sqrt[4]{6^2}$.`, R`Il MCD tra indice $4$ ed esponente $2$ è $2$: dividendo entrambi si ottiene $\sqrt{6}$.`] },
@@ -438,7 +480,7 @@ Verifica: con $x=1$ si ha $\sqrt{9}=3$ e $1+2=3$. Con $x=-3$ invece $\sqrt{1}=1$
     { id: 'es-06', difficolta: 2, testo: R`Scrivi $-2\sqrt{7}$ portando il fattore $2$ dentro il segno di radice.`, suggerimenti: [R`Il segno meno resta fuori dal radicale (l'indice è pari).`, R`Eleva $2$ al quadrato e moltiplicalo per $7$.`], risposta: { tipo: 'testo', accettate: ['-√28', '-sqrt(28)', '-sqrt 28', '-sqrt28'] }, soluzione: [R`$2\sqrt{7}=\sqrt{2^2\cdot7}=\sqrt{28}$.`, R`Il segno meno non entra (indice pari, radicale mai negativo): $-2\sqrt{7}=-\sqrt{28}$.`] },
     { id: 'es-07', difficolta: 2, testo: R`Razionalizza $\dfrac{1}{\sqrt{5}}$.`, suggerimenti: [R`Moltiplica numeratore e denominatore per $\sqrt{5}$.`, R`Al denominatore ottieni $(\sqrt{5})^2=5$.`], risposta: { tipo: 'testo', accettate: ['√5/5', 'sqrt(5)/5', 'sqrt5/5'] }, soluzione: [R`$\dfrac{1}{\sqrt{5}}\cdot\dfrac{\sqrt{5}}{\sqrt{5}}=\dfrac{\sqrt{5}}{5}$.`] },
     { id: 'es-08', difficolta: 2, testo: R`Calcola $16^{\frac{3}{4}}$ senza calcolatrice.`, suggerimenti: [R`Usa $a^{\frac{m}{n}}=\sqrt[n]{a^m}$: qui $n=4$, $m=3$.`, R`Conviene calcolare prima $\sqrt[4]{16}=2$, poi elevare al cubo.`], risposta: { tipo: 'numero', valore: 8 }, soluzione: [R`$16^{\frac{3}{4}}=(\sqrt[4]{16})^3$.`, R`$\sqrt[4]{16}=2$ (perché $2^4=16$), quindi $2^3=8$.`] },
-    { id: 'es-09', difficolta: 3, testo: R`Razionalizza $\dfrac{3}{2-\sqrt{3}}$.`, suggerimenti: [R`Il razionalizzante di $2-\sqrt{3}$ è $2+\sqrt{3}$.`, R`Al denominatore userai $2^2-3$.`], risposta: { tipo: 'testo', accettate: ['6+3√3', '6+3*sqrt(3)', '6+3 sqrt 3', '6+3sqrt(3)', '6+3sqrt3'] }, soluzione: [R`$\dfrac{3}{2-\sqrt{3}}\cdot\dfrac{2+\sqrt{3}}{2+\sqrt{3}}=\dfrac{3(2+\sqrt{3})}{4-3}$.`, R`$\dfrac{6+3\sqrt{3}}{1}=6+3\sqrt{3}$.`] },
+    { id: 'es-09', difficolta: 3, testo: R`Razionalizza $\dfrac{3}{2-\sqrt{3}}$.`, suggerimenti: [R`Il razionalizzante di $2-\sqrt{3}$ è $2+\sqrt{3}$.`, R`Al denominatore userai $2^2-3$.`], risposta: { tipo: 'testo', accettate: ['6+3√3', '6+3*sqrt(3)', '6+3 sqrt 3', '6+3sqrt(3)', '6+3sqrt3', '3√3+6', '3(2+√3)', '3rad3+6', '6+3rad3'] }, soluzione: [R`$\dfrac{3}{2-\sqrt{3}}\cdot\dfrac{2+\sqrt{3}}{2+\sqrt{3}}=\dfrac{3(2+\sqrt{3})}{4-3}$.`, R`$\dfrac{6+3\sqrt{3}}{1}=6+3\sqrt{3}$.`] },
     { id: 'es-10', difficolta: 3, testo: R`Risolvi l'equazione irrazionale $\sqrt{2x-3}=3$, verificando le condizioni.`, suggerimenti: [R`Scrivi prima la condizione $2x-3\ge0$.`, R`Eleva al quadrato entrambi i membri.`], risposta: { tipo: 'numero', valore: 6 }, soluzione: [R`Condizione: $2x-3\ge0 \Rightarrow x\ge\dfrac32$.`, R`Elevo al quadrato: $2x-3=9 \Rightarrow x=6$.`, R`$x=6$ rispetta la condizione: è accettabile. Verifica: $\sqrt{9}=3$. ✓`] },
     { id: 'es-11', difficolta: 3, testo: R`Scrivi $\sqrt{7+2\sqrt{10}}$ come somma di due radicali semplici (radicale doppio).`, suggerimenti: [R`Cerca due numeri $p,q$ con $p+q=7$ e $pq=10$.`, R`Sono le soluzioni di $t^2-7t+10=0$.`], risposta: { tipo: 'testo', accettate: ['√5+√2', 'sqrt(5)+sqrt(2)', 'sqrt5+sqrt2', '√2+√5', 'sqrt(2)+sqrt(5)', 'sqrt2+sqrt5'] }, soluzione: [R`Cerco $p+q=7$, $pq=10$: sono $5$ e $2$.`, R`$\sqrt{7+2\sqrt{10}}=\sqrt{5}+\sqrt{2}$.`, R`Verifica: $(\sqrt{5}+\sqrt{2})^2=5+2+2\sqrt{10}=7+2\sqrt{10}$. ✓`] }
   ],

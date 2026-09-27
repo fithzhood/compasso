@@ -9,46 +9,57 @@ const ANG = (V, U, W) => {
 const PA = ['4*cos((90 + w/2)*pi/180)', '4*sin((90 + w/2)*pi/180)'];
 const PB = ['4*cos((90 - w/2)*pi/180)', '4*sin((90 - w/2)*pi/180)'];
 const PC = ['4*cos(t*pi/180)', '4*sin(t*pi/180)'];
+/* allenamento: una sola risposta numerica, ma con il tipo 'numeri', che pesca il numero dentro
+   la scritta. Così passano anche «70°», «70 gradi», «20 cm» e «9π»; con 'numero' il segno ° la bocciava.
+   In cambio non legge le radici («√64»): per questo il tasto √ non c'è, e i risultati sono numeri finiti. */
+const gradi = v => ({ tipo: 'numeri', valori: [v], segnaposto: 'in gradi, es. 40', simboli: ['°'] });
+const num = v => ({ tipo: 'numeri', valori: [v], segnaposto: 'solo il numero, es. 12', simboli: ['/'] });
+/* aree: 'numero', perché la casella a un numero toglie l'unità in fondo («20 cm^2») e legge «25 π» con lo spazio */
+const area = v => ({ tipo: 'numero', valore: v, tolleranza: 0.01, segnaposto: 'solo il numero, es. 12', simboli: ['/'] });
+const conPi = v => ({ tipo: 'numero', valore: v * Math.PI, tolleranza: 0.01, segnaposto: 'con π, es. 4π', simboli: ['π'] });
+const SI = { tipo: 'testo', accettate: ['sì', 'si', 'sì, è rettangolo', 'si, è rettangolo', 'sì è rettangolo', 'si è rettangolo', 'è rettangolo', 'rettangolo'], segnaposto: 'sì o no', simboli: [] };
 COMPASSO.registra({
   id: 'geometria-euclidea',
   titolo: 'Geometria euclidea',
 
-  introduzione: R`Come fai a sapere che gli angoli di un triangolo sommano sempre $180^\circ$? Puoi misurarne dieci con il goniometro, ma il prossimo triangolo potrebbe fare eccezione. La geometria euclidea risponde in un altro modo: parte da poche affermazioni accettate senza prova, i **postulati**, e da lì ricava tutte le altre, i **teoremi**, con il solo ragionamento. Il disegno aiuta a capire, ma non dimostra niente.
+  introduzione: R`Come fai a sapere che gli angoli di un triangolo sommano sempre $180^\circ$? Puoi misurarne dieci con il goniometro, ma l'undicesimo potrebbe fare eccezione.
 
-Il metodo porta il nome di Euclide di Alessandria, che intorno al 300 a.C. raccolse la geometria greca negli *Elementi*. I risultati li usi ancora: il teorema di Pitagora ti dà la diagonale di uno schermo o la lunghezza di una scala appoggiata al muro, la similitudine ti fa misurare un albero dalla sua ombra.
+La geometria euclidea parte da poche affermazioni accettate senza prova, i **postulati**. Da queste ricava tutte le altre, i **teoremi**, con il ragionamento.
 
-Qui trovi angoli e parallele, triangoli e quadrilateri, Pitagora ed Euclide, Talete e la similitudine, cerchio e aree. Ti servono solo le proporzioni, le frazioni e le radici quadrate.`,
+I risultati li usi ancora oggi. Con Pitagora trovi la diagonale di uno schermo. Con la similitudine misuri un albero dalla sua ombra.
+
+Ti servono le proporzioni, le frazioni e le radici quadrate.`,
 
   inBreve: [
-    R`Un teorema si dimostra con una catena di passaggi che partono da cose già accettate; un disegno, anche preciso, non è una dimostrazione.`,
-    R`Due parallele tagliate da una trasversale formano angoli alterni interni e corrispondenti congruenti. Da qui viene che gli angoli di un triangolo sommano $180^\circ$.`,
-    R`Due triangoli sono congruenti con i criteri LAL, ALA, LLL; con tre angoli uguali (AAA) sono solo simili.`,
-    R`Pitagora: nel triangolo rettangolo $c^2=a^2+b^2$. Euclide: ogni cateto al quadrato è l'ipotenusa per la sua proiezione, e l'altezza al quadrato è il prodotto delle due proiezioni.`,
+    R`Un teorema si dimostra con una catena di passaggi. Un disegno, anche preciso, non è una dimostrazione.`,
+    R`Due parallele tagliate da una trasversale formano angoli alterni interni congruenti. Da qui viene che gli angoli di un triangolo sommano $180^\circ$.`,
+    R`Due triangoli sono congruenti con i criteri LAL, ALA o LLL. Con tre angoli uguali sono solo simili.`,
+    R`Pitagora: nel triangolo rettangolo $c^2=a^2+b^2$. Euclide: un cateto al quadrato è l'ipotenusa per la sua proiezione, e l'altezza al quadrato è il prodotto delle due proiezioni.`,
     R`Se due figure sono simili con rapporto $k$, i perimetri stanno nel rapporto $k$ e le aree nel rapporto $k^2$.`,
-    R`L'angolo al centro è il doppio di quello alla circonferenza sullo stesso arco; perciò un triangolo inscritto in una semicirconferenza è rettangolo.`
+    R`L'angolo al centro è il doppio di quello alla circonferenza sullo stesso arco. Per questo un triangolo inscritto in una semicirconferenza è rettangolo.`
   ],
 
   sezioni: [
-    { id: 'enti-primitivi-assiomi', titolo: 'Enti primitivi, assiomi e dimostrazioni', testo: R`Prova a definire «retta». Dici «una linea dritta», ma che cos'è una linea? E che cosa vuol dire dritta? Prima o poi usi parole che non sai definire a loro volta. Per non girare in tondo, la geometria sceglie un punto di partenza e lo dichiara.
+    { id: 'enti-primitivi-assiomi', titolo: 'Enti primitivi, assiomi e dimostrazioni', testo: R`Prova a definire «retta». Dici «una linea dritta», ma poi devi definire «linea» e «dritta». Per non girare in tondo, la geometria sceglie da dove partire.
 
-- Gli **enti primitivi** sono le nozioni che non si definiscono: **punto**, **retta**, **piano**. Si descrivono (il punto non ha dimensioni, la retta non ha fine né inizio), ma non si definiscono.
-- I **postulati** (o **assiomi**) sono le affermazioni su questi enti che si accettano senza dimostrarle. Per esempio: per due punti passa una e una sola retta.
+- Gli **enti primitivi** non si definiscono: sono punto, retta e piano.
+- I **postulati** (o assiomi) si accettano senza dimostrarli. Per esempio: per due punti passa una sola retta.
 
-Il più famoso è il **quinto postulato di Euclide**, quello delle parallele: *per un punto fuori da una retta passa una sola parallela a quella retta*. Per secoli si è cercato di dimostrarlo a partire dagli altri, senza riuscirci. Nell'Ottocento si è capito perché: negandolo si ottengono altre geometrie, diverse ma senza contraddizioni.
+Il più famoso è il **quinto postulato**: *per un punto fuori da una retta passa una sola parallela a quella retta*.
 
->* **Dimostrare** un teorema vuol dire arrivare alla tesi con una catena di passaggi, ognuno giustificato da un postulato o da un teorema già dimostrato. La dimostrazione deve valere per *ogni* figura di quel tipo, non solo per quella disegnata.
+>* **Dimostrare** un teorema vuol dire arrivare alla tesi con una catena di passaggi. Ogni passaggio si appoggia a un postulato o a un teorema già dimostrato.
 
-Ogni teorema ha un'**ipotesi**, quello che supponi vero, e una **tesi**, quello che devi dimostrare. Nel teorema «se un triangolo è isoscele, allora ha due angoli congruenti» l'ipotesi è «il triangolo è isoscele», la tesi è «ha due angoli congruenti».
+Un teorema ha la forma «se **ipotesi**, allora **tesi**». L'ipotesi è quello che supponi vero. La tesi è quello che devi dimostrare.
 
 ?? «Se un quadrilatero è un rettangolo, allora le sue diagonali sono congruenti.» Qual è l'ipotesi?
-[x] il quadrilatero è un rettangolo
-[ ] le diagonali sono congruenti
-[ ] il quadrilatero ha quattro angoli
-=> L'ipotesi è quello che viene dopo «se», la tesi quello che viene dopo «allora». Scambiarle cambia il teorema: esistono quadrilateri con le diagonali congruenti che non sono rettangoli, per esempio il trapezio isoscele.
+[x] è un rettangolo
+[ ] ha le diagonali congruenti
+[ ] ha quattro angoli
+=> L'ipotesi viene dopo «se». Se scambi ipotesi e tesi, il teorema cambia. Anche il trapezio isoscele ha le diagonali congruenti, ma non è un rettangolo.
 
->! Misurare con il righello e trovare due segmenti uguali non è una dimostrazione. Un disegno può ingannare di un millimetro, e soprattutto mostra un solo caso.` },
+>! Misurare con il righello non è una dimostrazione. Il disegno può sbagliare di un millimetro, e mostra un solo caso.` },
 
-    { id: 'angoli-parallele', titolo: 'Angoli, e rette parallele tagliate da una trasversale', testo: R`Un **angolo** è la parte di piano fra due semirette che partono dallo stesso punto, il **vertice**. Si misura in gradi.
+    { id: 'angoli-parallele', titolo: 'Angoli, e rette parallele tagliate da una trasversale', testo: R`Un **angolo** è la parte di piano fra due semirette che partono dallo stesso punto, il vertice.
 
 | nome | misura |
 |---|---|
@@ -58,11 +69,11 @@ Ogni teorema ha un'**ipotesi**, quello che supponi vero, e una **tesi**, quello 
 | piatto | $180^\circ$ (le due semirette formano una retta) |
 | giro | $360^\circ$ |
 
-Due angoli sono **complementari** se insieme fanno $90^\circ$, **supplementari** se insieme fanno $180^\circ$. Un angolo di $35^\circ$ ha complementare $55^\circ$ e supplementare $145^\circ$.
+Due angoli sono **complementari** se insieme fanno $90^\circ$, **supplementari** se fanno $180^\circ$. Per esempio, $35^\circ$ ha complementare $55^\circ$ e supplementare $145^\circ$.
 
 ### Angoli opposti al vertice
 
-Due rette che si incrociano formano quattro angoli. Quelli che stanno uno di fronte all'altro si dicono **opposti al vertice**, e sono sempre congruenti. È la prima dimostrazione a catena che incontri, e dura tre righe. Chiama $\alpha$ e $\gamma$ due angoli opposti e $\beta$ quello che sta in mezzo:
+Due rette che si incrociano formano quattro angoli. Due angoli uno di fronte all'altro sono **opposti al vertice**, e sono congruenti. Chiama $\alpha$ e $\gamma$ due angoli opposti, e $\beta$ quello in mezzo:
 
 ~ \alpha+\beta=180^\circ :: $\alpha$ e $\beta$ insieme formano un angolo piatto
 ~ \gamma+\beta=180^\circ :: anche $\gamma$ e $\beta$ formano un angolo piatto
@@ -70,27 +81,27 @@ Due rette che si incrociano formano quattro angoli. Quelli che stanno uno di fro
 
 ### Due parallele e una trasversale
 
-Taglia due rette parallele $r$ e $s$ con una terza retta $t$, la **trasversale**. Si formano otto angoli, quattro in ogni incrocio, e alcune coppie hanno un nome.
+Taglia due rette parallele $r$ e $s$ con una terza retta $t$, la **trasversale**. Si formano otto angoli, e alcune coppie hanno un nome:
 
 - **corrispondenti**: nella stessa posizione nei due incroci. Sono **congruenti**.
 - **alterni interni**: fra le parallele, da parti opposte di $t$. Sono **congruenti**.
 - **coniugati interni**: fra le parallele, dalla stessa parte di $t$. Sono **supplementari**.
 
-Trascina il punto $Q$ per inclinare la trasversale: gli angoli segnati con $\alpha$ cambiano tutti insieme e restano uguali, e $\beta$ è sempre quello che manca per arrivare a $180^\circ$.
+Trascina il punto $Q$: gli angoli $\alpha$ cambiano insieme e restano uguali.
 
 [[grafico:trasversale]]
 
->* Se due parallele sono tagliate da una trasversale, gli angoli alterni interni e quelli corrispondenti sono congruenti. Vale anche il contrario: se due rette formano con una trasversale due angoli alterni interni congruenti, sono parallele.
+>* Vale anche il contrario: se due rette formano con una trasversale angoli alterni interni congruenti, sono parallele.
 
-?? Due rette tagliate da una trasversale formano angoli coniugati interni di $70^\circ$ e $110^\circ$. Che cosa puoi dire delle due rette?
-[x] sono parallele, perché gli angoli coniugati interni sono supplementari
-[ ] non sono parallele, perché gli angoli sono diversi
-[ ] non si può dire niente senza misurare la distanza fra le rette
-=> $70^\circ+110^\circ=180^\circ$: gli angoli coniugati interni sono supplementari, e questo succede solo se le rette sono parallele. Gli angoli *uguali* sono gli alterni interni e i corrispondenti, non i coniugati.
+?? Due rette tagliate da una trasversale formano angoli coniugati interni di $70^\circ$ e $110^\circ$. Le due rette sono parallele?
+[x] sì
+[ ] no, i due angoli sono diversi
+[ ] non si può dire
+=> Sì. I coniugati interni sommano $180^\circ$ solo con due parallele, e qui $70^\circ+110^\circ=180^\circ$. Gli angoli *uguali* sono gli alterni interni e i corrispondenti, non i coniugati.
 
->! «Alterni» e «opposti al vertice» non sono la stessa cosa. Gli opposti al vertice stanno nello stesso incrocio; gli alterni interni stanno in due incroci diversi, uno su $r$ e uno su $s$.` },
+>! Gli opposti al vertice stanno nello stesso incrocio. Gli alterni interni stanno in due incroci diversi, uno su $r$ e uno su $s$.` },
 
-    { id: 'triangoli-classificazione', titolo: 'Triangoli: classificazione, somma degli angoli e disuguaglianza triangolare', testo: R`Un triangolo si classifica in due modi, indipendenti fra loro: guardando i lati oppure guardando gli angoli.
+    { id: 'triangoli-classificazione', titolo: 'Triangoli: classificazione, somma degli angoli e disuguaglianza triangolare', testo: R`Un triangolo si classifica in due modi: guardando i lati oppure guardando gli angoli.
 
 | per i lati | |
 |---|---|
@@ -104,13 +115,15 @@ Trascina il punto $Q$ per inclinare la trasversale: gli angoli segnati con $\alp
 | rettangolo | un angolo retto |
 | ottusangolo | un angolo ottuso |
 
-Nel triangolo rettangolo i due lati che formano l'angolo retto si chiamano **cateti**, il terzo **ipotenusa**. L'equilatero è un caso particolare di isoscele.
+Nel triangolo rettangolo i lati che formano l'angolo retto sono i **cateti**, il terzo è l'**ipotenusa**.
 
->* Nel triangolo isoscele gli angoli alla base (quelli opposti ai lati congruenti) sono congruenti. Nel triangolo equilatero i tre angoli misurano $60^\circ$ ciascuno.
+>* Nel triangolo isoscele gli **angoli alla base**, opposti ai lati congruenti, sono congruenti. Nel triangolo equilatero i tre angoli misurano $60^\circ$.
 
 ### La somma degli angoli
 
-Gli angoli di un triangolo, qualunque triangolo, sommano $180^\circ$. Guarda prima l'animazione, poi la dimostrazione scritta. Chiama $\alpha$, $\beta$, $\gamma$ gli angoli in $A$, $B$, $C$, e traccia per $C$ la retta $r$ parallela ad $AB$.
+Due angoli di un triangolo misurano $50^\circ$ e $60^\circ$. Il terzo misura $180^\circ-50^\circ-60^\circ=70^\circ$, perché gli angoli di qualunque triangolo sommano $180^\circ$.
+
+Guarda l'animazione, poi la dimostrazione. Chiama $\alpha$, $\beta$, $\gamma$ gli angoli in $A$, $B$, $C$. Poi traccia per $C$ la parallela $r$ ad $AB$.
 
 [[animazione:somma-angoli]]
 
@@ -120,97 +133,89 @@ Gli angoli di un triangolo, qualunque triangolo, sommano $180^\circ$. Guarda pri
 ~ \alpha'+\gamma+\beta'=180^\circ :: i tre angoli in $C$, uno accanto all'altro, formano l'angolo piatto su $r$
 ~ \evidb{\alpha+\beta+\gamma=180^\circ} :: sostituisco $\alpha'$ e $\beta'$
 
-Nel laboratorio «Il triangolo che si muove» puoi trascinare i vertici e guardare la somma restare ferma a $180^\circ$.
-
 ?? Un triangolo può avere due angoli retti?
-=> No. Due angoli retti fanno già $180^\circ$, e per il terzo non resterebbe niente. Per lo stesso motivo un triangolo ha al massimo un angolo ottuso.
+=> No. Due angoli retti fanno già $180^\circ$, e per il terzo angolo non resta niente. Per lo stesso motivo un triangolo ha al massimo un angolo ottuso.
 
 ### La disuguaglianza triangolare
 
-Prova a costruire un triangolo con bastoncini lunghi $2$, $3$ e $10$: i due corti, messi in fila, arrivano a $5$ e non riescono a chiudere. Perché si chiuda, ogni lato deve essere più corto degli altri due messi insieme.
+Con bastoncini lunghi $2$, $3$ e $10$ non fai un triangolo. I due corti, in fila, arrivano solo a $5$.
 
->* **Disuguaglianza triangolare:** ogni lato è minore della somma degli altri due e maggiore della loro differenza. Con due lati di $4$ e $9$ il terzo sta fra $9-4=5$ e $9+4=13$, estremi esclusi.
+>* **Disuguaglianza triangolare:** ogni lato è minore della somma degli altri due, e maggiore della loro differenza. Con due lati di $4$ e $9$, il terzo sta fra $9-4=5$ e $9+4=13$.` },
 
->! Tre angoli che sommano $180^\circ$ non individuano un triangolo solo: ce ne sono infiniti, tutti con la stessa forma ma di grandezze diverse. Per fissare un triangolo servono anche dei lati.` },
+    { id: 'congruenza-punti-notevoli', titolo: 'Congruenza dei triangoli e punti notevoli', testo: R`Due triangoli sono **congruenti** se, ritagliati, si sovrappongono perfettamente. Per esserne sicuro bastano tre elementi, scelti bene.
 
-    { id: 'congruenza-punti-notevoli', titolo: 'Congruenza dei triangoli e punti notevoli', testo: R`Due triangoli sono **congruenti** se, ritagliati, si sovrappongono perfettamente: stessi lati e stessi angoli. Per esserne sicuro non devi controllare tutti e sei gli elementi: tre, scelti bene, bastano.
-
->* **Criteri di congruenza dei triangoli** (L = lato, A = angolo). **LAL:** due lati e l'angolo compreso fra loro. **ALA:** due angoli e il lato compreso fra loro. **LLL:** i tre lati.
-
-Nei triangoli rettangoli basta anche avere congruenti l'ipotenusa e un cateto.
+>* **Criteri di congruenza** (L = lato, A = angolo). **LAL:** due lati e l'angolo fra loro. **ALA:** due angoli e il lato fra loro. **LLL:** i tre lati.
 
 ?? Due triangoli hanno gli angoli di $50^\circ$, $60^\circ$ e $70^\circ$. Sono congruenti?
 [ ] sì, per il criterio ALA
-[x] non necessariamente: hanno la stessa forma, ma uno può essere più grande
-[ ] sì, perché hanno tutti e tre gli angoli uguali
-=> Con tre angoli uguali (AAA) i triangoli sono **simili**, non per forza congruenti: pensa a un triangolo e alla sua fotocopia ingrandita. ALA chiede anche un **lato** uguale, compreso fra i due angoli, e qui di lati non si sa niente.
+[x] non per forza: uno può essere più grande
+[ ] sì, perché hanno tre angoli uguali
+=> Con tre angoli uguali i triangoli sono **simili**. Pensa a un triangolo e alla sua fotocopia ingrandita. Il criterio ALA chiede anche un **lato** uguale, e qui dei lati non sai niente.
 
 ### I punti notevoli
 
-In ogni triangolo ci sono quattro terne di linee speciali, e ogni terna si incontra in un punto solo.
+In ogni triangolo ci sono quattro terne di linee speciali. Le tre linee di ogni terna si incontrano in un punto.
 
-- Le **mediane** vanno da un vertice al punto medio del lato opposto. Si incontrano nel **baricentro**, che divide ogni mediana in due parti, una doppia dell'altra (la più lunga è verso il vertice).
-- Le **altezze** partono da un vertice e sono perpendicolari al lato opposto. Si incontrano nell'**ortocentro**, che nel triangolo ottusangolo sta fuori dal triangolo.
-- Le **bisettrici** dividono a metà gli angoli. Si incontrano nell'**incentro**, che è alla stessa distanza dai tre lati: è il centro della circonferenza **inscritta**.
-- Gli **assi** sono le perpendicolari ai lati nel loro punto medio. Si incontrano nel **circocentro**, che è alla stessa distanza dai tre vertici: è il centro della circonferenza **circoscritta**.
+- Le **mediane** vanno da un vertice al punto medio del lato opposto. Si incontrano nel **baricentro**, che divide ogni mediana in due parti: una è il doppio dell'altra.
+- Le **altezze** partono da un vertice e sono perpendicolari al lato opposto. Si incontrano nell'**ortocentro**.
+- Le **bisettrici** dividono a metà gli angoli. Si incontrano nell'**incentro**, il centro della circonferenza inscritta.
+- Gli **assi** sono le perpendicolari ai lati nel punto medio. Si incontrano nel **circocentro**, il centro della circonferenza circoscritta.
 
->! Mediana, altezza e bisettrice che partono dallo stesso vertice in generale sono tre segmenti diversi. Coincidono solo nel triangolo isoscele (partendo dal vertice fra i due lati congruenti); nel triangolo equilatero coincidono tutte, e i quattro punti notevoli diventano uno solo.` },
+>! Mediana, altezza e bisettrice dallo stesso vertice sono tre segmenti diversi. Coincidono solo nel triangolo isoscele, partendo dal vertice fra i lati congruenti.` },
 
-    { id: 'quadrilateri', titolo: 'I quadrilateri', testo: R`Traccia una diagonale in un quadrilatero: lo dividi in due triangoli, e gli angoli dei due triangoli insieme sono proprio quelli del quadrilatero. Per questo gli angoli di un quadrilatero sommano $2\cdot180^\circ=360^\circ$.
+    { id: 'quadrilateri', titolo: 'I quadrilateri', testo: R`Una diagonale divide un quadrilatero in due triangoli. Per questo gli angoli di un quadrilatero sommano $2\cdot180^\circ=360^\circ$.
 
-La famiglia più importante è quella dei **parallelogrammi**, i quadrilateri con i lati opposti paralleli.
+Il **parallelogramma** ha i lati opposti paralleli.
 
->* In ogni **parallelogramma**: i lati opposti sono congruenti, gli angoli opposti sono congruenti, gli angoli consecutivi (sullo stesso lato) sono supplementari, e le diagonali si tagliano a metà a vicenda.
+>* In ogni **parallelogramma** i lati opposti sono congruenti, e anche gli angoli opposti. Due angoli consecutivi sono supplementari. Le diagonali si tagliano a metà.
 
-Alcuni parallelogrammi hanno qualcosa in più:
+Esempio: un angolo misura $65^\circ$. Quello consecutivo misura $180^\circ-65^\circ=115^\circ$, quello opposto di nuovo $65^\circ$.
 
-- Il **rettangolo** ha i quattro angoli retti; in più, le sue diagonali sono **congruenti**.
-- Il **rombo** ha i quattro lati congruenti; in più, le sue diagonali sono **perpendicolari** e dividono a metà gli angoli.
-- Il **quadrato** ha angoli retti e lati congruenti, e quindi tutte le proprietà di entrambi.
+- Il **rettangolo** ha quattro angoli retti e le diagonali congruenti.
+- Il **rombo** ha quattro lati congruenti e le diagonali perpendicolari.
+- Il **quadrato** è rettangolo e rombo insieme.
 
-Il **trapezio** non è un parallelogramma: ha una sola coppia di lati paralleli, la **base maggiore** e la **base minore**; gli altri due lati si dicono **obliqui**. Se gli obliqui sono congruenti il trapezio è **isoscele** (gli angoli su ciascuna base sono congruenti); se un obliquo è perpendicolare alle basi è **rettangolo**.
-
-Esempio: in un parallelogramma un angolo misura $65^\circ$. L'angolo consecutivo è supplementare, $180^\circ-65^\circ=115^\circ$; quello opposto misura di nuovo $65^\circ$. I quattro angoli sono $65^\circ$, $115^\circ$, $65^\circ$, $115^\circ$, e in totale fanno $360^\circ$.
+Il **trapezio** ha una sola coppia di lati paralleli, le basi. Nel trapezio **isoscele** gli altri due lati sono congruenti.
 
 ?? Un quadrilatero ha le diagonali perpendicolari. È per forza un rombo?
-=> No. Il rombo ha le diagonali perpendicolari **e** che si tagliano a metà. Un aquilone (due coppie di lati consecutivi uguali, come quello dei bambini) ha le diagonali perpendicolari ma non è un parallelogramma. La proprietà di una figura non basta, da sola, a riconoscerla.
+=> No. Nel rombo le diagonali sono perpendicolari **e** si tagliano a metà. Pensa all'aquilone: ha le diagonali perpendicolari, ma non è un parallelogramma.
 
->! «Ogni quadrato è un rombo» è vero; «ogni rombo è un quadrato» no, perché al rombo mancano gli angoli retti. Lo stesso vale per quadrato e rettangolo.` },
+>! «Ogni quadrato è un rombo» è vero. «Ogni rombo è un quadrato» è falso, perché al rombo mancano gli angoli retti.` },
 
-    { id: 'pitagora-euclide', titolo: 'Il teorema di Pitagora e i teoremi di Euclide', testo: R`Una scala lunga $5$ metri è appoggiata al muro con il piede a $3$ metri dalla parete. A che altezza arriva? Muro, pavimento e scala formano un triangolo rettangolo, e per i triangoli rettangoli c'è un teorema che lega i tre lati.
+    { id: 'pitagora-euclide', titolo: 'Il teorema di Pitagora e i teoremi di Euclide', testo: R`Una scala lunga $5$ metri è appoggiata al muro, con il piede a $3$ metri dal muro. Muro, pavimento e scala formano un triangolo rettangolo. La scala è l'ipotenusa, il lato opposto all'angolo retto.
 
-Nel triangolo rettangolo il lato opposto all'angolo retto, il più lungo, è l'**ipotenusa**; gli altri due sono i **cateti**.
+Per trovare l'altezza $h$ scrivi $3^2+h^2=5^2$, quindi $h^2=25-9=16$ e $h=4$ metri.
 
->* **Teorema di Pitagora:** $$c^2=a^2+b^2$$ con $c$ ipotenusa e $a$, $b$ cateti. In figura: il quadrato costruito sull'ipotenusa ha la stessa area dei due quadrati costruiti sui cateti messi insieme.
+>* **Teorema di Pitagora:** $$c^2=a^2+b^2$$ con $c$ ipotenusa e $a$, $b$ cateti.
 
 [[animazione:pitagora]]
-
-Per la scala: $3^2+h^2=5^2$, quindi $h^2=25-9=16$ e $h=4$ metri.
 
 ?? Un triangolo rettangolo ha ipotenusa $13$ e un cateto $5$. Quanto misura l'altro cateto?
 [x] $12$
 [ ] $\sqrt{194}$
 [ ] $8$
 [ ] $18$
-=> Il cateto mancante è $\sqrt{13^2-5^2}=\sqrt{169-25}=\sqrt{144}=12$. $\sqrt{194}$ viene sommando i quadrati come se $13$ fosse un cateto: la somma dei quadrati dà l'ipotenusa, e qui l'ipotenusa è già nota. $8$ e $18$ vengono da differenza e somma dei lati, senza elevare al quadrato.
+=> $\sqrt{13^2-5^2}=\sqrt{169-25}=\sqrt{144}=12$. Per un cateto si fa la **differenza** dei quadrati; $\sqrt{194}$ viene dalla somma, come se $13$ fosse un cateto. $8$ e $18$ vengono dai lati senza elevare al quadrato.
 
 ### Il teorema inverso
 
-Vale anche il contrario: se il quadrato del lato più lungo è uguale alla somma dei quadrati degli altri due, il triangolo è rettangolo, e l'angolo retto sta di fronte al lato più lungo. Così riconosci un triangolo rettangolo dai soli lati: $5$, $12$, $13$ lo è, perché $25+144=169$.
+I lati $5$, $12$, $13$ formano un triangolo rettangolo, perché $25+144=169$. Vale infatti anche il contrario: se il quadrato del lato più lungo è la somma degli altri due quadrati, il triangolo è rettangolo.
 
-Trascina il vertice $C$. Quando $AC^2+BC^2$ è uguale ad $AB^2=25$ l'angolo in $C$ è retto, e $C$ sta sulla semicirconferenza tratteggiata. Dentro la semicirconferenza la somma è più piccola e l'angolo è ottuso; fuori è più grande e l'angolo è acuto.
+Trascina il vertice $C$. Quando $AC^2+BC^2=AB^2$, l'angolo in $C$ è retto e $C$ sta sulla semicirconferenza.
 
 [[grafico:pitagoraInverso]]
 
 ### I teoremi di Euclide
 
-Traccia nel triangolo rettangolo l'altezza $h$ relativa all'ipotenusa. Divide l'ipotenusa $c$ in due pezzi, $m$ e $n$: sono le **proiezioni** dei cateti sull'ipotenusa. La proiezione di un cateto è il pezzo di ipotenusa che gli sta attaccato.
+Traccia l'altezza $h$ relativa all'ipotenusa. Divide l'ipotenusa $c$ in due pezzi, $m$ e $n$: sono le **proiezioni** dei cateti. La proiezione di un cateto è il pezzo di ipotenusa attaccato a lui.
 
 [[animazione:euclide-primo]]
 
->* **Primo teorema di Euclide:** ogni cateto al quadrato è uguale all'ipotenusa per la proiezione di quel cateto: $b^2=c\cdot m$ (e $a^2=c\cdot n$). **Secondo teorema di Euclide:** l'altezza al quadrato è uguale al prodotto delle due proiezioni: $h^2=m\cdot n$.
+>* **Primo teorema di Euclide:** un cateto al quadrato è uguale all'ipotenusa per la sua proiezione: $b^2=c\cdot m$ e $a^2=c\cdot n$. **Secondo teorema di Euclide:** l'altezza al quadrato è il prodotto delle due proiezioni: $h^2=m\cdot n$.
 
-Dal primo teorema, applicato ai due cateti, viene fuori Pitagora:
+Sul libro trovi spesso la stessa cosa scritta come proporzione: $c:b=b:m$. Per questo si dice che il cateto è **medio proporzionale** fra l'ipotenusa e la sua proiezione. Allo stesso modo l'altezza è medio proporzionale fra le due proiezioni.
+
+Dal primo teorema viene fuori Pitagora:
 
 ~ b^2=c\cdot m :: primo teorema per il cateto $b$
 ~ a^2=c\cdot n :: primo teorema per il cateto $a$
@@ -225,25 +230,25 @@ Esempio: cateti $12$ e $16$. Trova ipotenusa, proiezioni e altezza.
 ~ n=\frac{16^2}{20}=12{,}8 :: primo teorema per l'altro cateto; controllo: $7{,}2+12{,}8=20$
 ~ h=\sqrt{7{,}2\cdot12{,}8}=\evidb{9{,}6} :: secondo teorema
 
->! Ogni cateto va con la **sua** proiezione, quella attaccata a lui. Con $b=12$, $c=20$ e $m=7{,}2$ viene $144=20\cdot7{,}2$ e torna; se sbagli proiezione, $20\cdot12{,}8=256$ è il quadrato dell'altro cateto.` },
+>! Ogni cateto va con la **sua** proiezione: $20\cdot7{,}2=144=12^2$. Con l'altra viene $20\cdot12{,}8=256=16^2$, il quadrato dell'altro cateto.` },
 
-    { id: 'talete-similitudine', titolo: 'Il teorema di Talete e la similitudine', testo: R`Un palo alto $3$ metri fa un'ombra di $2$ metri. Nello stesso momento un albero fa un'ombra di $10$ metri. Quanto è alto l'albero? I raggi del sole arrivano paralleli, quindi palo e albero, con le loro ombre, formano due triangoli con la stessa forma. L'ombra dell'albero è $5$ volte quella del palo, e anche l'altezza sarà $5$ volte: $15$ metri.
+    { id: 'talete-similitudine', titolo: 'Il teorema di Talete e la similitudine', testo: R`Un palo alto $3$ metri fa un'ombra di $2$ metri. Nello stesso momento un albero fa un'ombra di $10$ metri. Quanto è alto l'albero?
 
-Dietro questo ragionamento c'è un teorema.
+I raggi del sole arrivano paralleli, quindi i due triangoli hanno la stessa forma. L'ombra dell'albero è $5$ volte quella del palo. Allora anche l'albero è alto $5$ volte il palo: $15$ metri.
 
->* **Teorema di Talete:** un fascio di rette parallele taglia due trasversali in segmenti proporzionali. Se su una trasversale un segmento è il doppio di un altro, anche sull'altra trasversale i segmenti corrispondenti stanno nel rapporto $2$.
+>* **Teorema di Talete:** un fascio di rette parallele taglia due trasversali in segmenti proporzionali.
 
 [[animazione:talete]]
 
 ### La similitudine
 
-Due figure sono **simili** se una è un ingrandimento (o un rimpicciolimento) dell'altra: angoli corrispondenti congruenti e lati corrispondenti tutti moltiplicati per lo stesso numero $k$, il **rapporto di similitudine**.
+Due figure sono **simili** se una è un ingrandimento dell'altra. Gli angoli corrispondenti sono congruenti. I lati corrispondenti sono moltiplicati tutti per lo stesso numero $k$, il **rapporto di similitudine**.
 
->* **Criteri di similitudine dei triangoli.** **Primo:** due angoli congruenti (il terzo allora è uguale per forza). **Secondo:** due lati in proporzione e l'angolo compreso congruente. **Terzo:** i tre lati in proporzione.
+>* **Criteri di similitudine dei triangoli.** **Primo:** due angoli congruenti. **Secondo:** due lati in proporzione e l'angolo fra loro congruente. **Terzo:** i tre lati in proporzione.
 
 ### Perimetri e aree
 
-Se tutti i lati si moltiplicano per $k$, anche il perimetro si moltiplica per $k$. L'area invece no, e la dimostrazione con il triangolo è breve:
+Se i lati si moltiplicano per $k$, il perimetro si moltiplica per $k$. L'area invece si moltiplica per $k^2$:
 
 ~ A=\frac{b\cdot h}{2} :: area del triangolo di partenza
 ~ A'=\frac{\evid{k\,b}\cdot \evid{k\,h}}{2} :: nel triangolo simile base e altezza sono moltiplicate tutte e due per $k$
@@ -251,57 +256,66 @@ Se tutti i lati si moltiplicano per $k$, anche il perimetro si moltiplica per $k
 
 >* Rapporto dei perimetri: $k$. Rapporto delle aree: $k^2$.
 
-Trascina il vertice $B'$ per ingrandire il triangolo e guarda i due rapporti: quando i lati raddoppiano, l'area diventa quattro volte tanto.
+Trascina il vertice $B'$: quando i lati raddoppiano, l'area diventa quattro volte tanto.
 
 [[grafico:simili]]
 
-?? Una pizza ha diametro $30$ cm, un'altra $15$ cm. Quante pizze piccole servono per avere la stessa quantità di pizza di una grande?
+?? Una pizza ha diametro $30$ cm, un'altra $15$ cm. Quante pizze piccole fanno una pizza grande?
 [x] $4$
 [ ] $2$
 [ ] $3{,}14$
-=> Le due pizze sono simili con rapporto $k=2$, quindi le aree stanno nel rapporto $k^2=4$. Chi risponde $2$ confronta i diametri, cioè le lunghezze, non le superfici.
+=> Le due pizze sono simili con $k=2$, quindi le aree stanno nel rapporto $k^2=4$. Chi risponde $2$ confronta i diametri, non le superfici.
 
->! Raddoppiare i lati di una figura non raddoppia l'area: la moltiplica per $4$. Triplicarli la moltiplica per $9$.` },
+>! Se raddoppi i lati, l'area non raddoppia: si moltiplica per $4$.` },
 
-    { id: 'circonferenza', titolo: 'La circonferenza e il cerchio', testo: R`La **circonferenza** è l'insieme dei punti che stanno alla stessa distanza, il **raggio**, da un punto fisso, il **centro**. Il **cerchio** è la circonferenza con tutto quello che c'è dentro. Una **corda** è un segmento che unisce due punti della circonferenza; il **diametro** è la corda che passa per il centro, lunga due raggi.
+    { id: 'circonferenza', titolo: 'La circonferenza e il cerchio', testo: R`La **circonferenza** è fatta dai punti che hanno la stessa distanza, il **raggio**, da un punto fisso, il **centro**. Il **cerchio** è la circonferenza con tutto quello che c'è dentro.
+
+Una **corda** unisce due punti della circonferenza. Il **diametro** è la corda che passa per il centro.
 
 ### Angoli al centro e alla circonferenza
 
-Prendi due punti $A$ e $B$ sulla circonferenza. L'angolo $A\widehat{O}B$, con il vertice nel centro, si chiama **angolo al centro**. Un angolo $A\widehat{C}B$ con il vertice $C$ sulla circonferenza si chiama **angolo alla circonferenza**. Tutti e due **insistono** sull'arco $AB$, cioè i loro lati passano per $A$ e $B$.
+Prendi due punti $A$ e $B$ sulla circonferenza di centro $O$.
 
-Trascina $C$ lungo la circonferenza: finché resta sull'arco grande, l'angolo in $C$ non cambia ed è sempre la metà di $A\widehat{O}B$. Poi, con il cursore, allarga $A\widehat{O}B$ fino a $180^\circ$: l'angolo in $C$ diventa retto.
+- $A\widehat{O}B$ ha il vertice nel centro: è un **angolo al centro**.
+- $A\widehat{C}B$ ha il vertice $C$ sulla circonferenza: è un **angolo alla circonferenza**.
+
+Tutti e due **insistono** sull'arco $AB$. Trascina $C$ lungo l'arco grande: l'angolo in $C$ non cambia, ed è la metà di $A\widehat{O}B$.
 
 [[grafico:angoliCerchio]]
 
->* L'angolo al centro è il **doppio** dell'angolo alla circonferenza che insiste sullo stesso arco. Quindi tutti gli angoli alla circonferenza che insistono sullo stesso arco sono congruenti.
+>* L'angolo al centro è il **doppio** dell'angolo alla circonferenza che insiste sullo stesso arco.
 
-Perché il doppio? Il caso più semplice è quello in cui un lato dell'angolo in $C$ passa per il centro, cioè $CA$ è un diametro:
+Perché il doppio? Guarda il caso in cui $CA$ è un diametro:
 
 ~ OC=OB :: sono due raggi
 ~ O\widehat{B}C=O\widehat{C}B=\alpha :: il triangolo $OBC$ è isoscele, quindi ha gli angoli alla base congruenti
 ~ A\widehat{O}B=\alpha+\alpha :: $A\widehat{O}B$ è un angolo esterno del triangolo $OBC$: è la somma dei due angoli interni non adiacenti
 ~ A\widehat{O}B=\evidb{2\alpha} :: l'angolo al centro è il doppio di quello in $C$
 
-Gli altri casi si riportano a questo tracciando il diametro che passa per $C$.
+Gli altri casi si riportano a questo.
 
-La conseguenza più usata: se l'arco è una semicirconferenza, l'angolo al centro è piatto ($180^\circ$), e l'angolo alla circonferenza è retto. **Ogni triangolo inscritto in una semicirconferenza, con un lato sul diametro, è rettangolo.**
+Se l'arco è una semicirconferenza, l'angolo al centro è piatto. Quindi l'angolo alla circonferenza è retto.
 
-?? Un angolo alla circonferenza misura $40^\circ$. Quanto misura l'angolo al centro che insiste sullo stesso arco?
+>* Un triangolo inscritto in una semicirconferenza, con un lato sul diametro, è **rettangolo**.
+
+?? Un angolo alla circonferenza misura $40^\circ$. Quanto misura l'angolo al centro sullo stesso arco?
 [x] $80^\circ$
 [ ] $20^\circ$
 [ ] $40^\circ$
 [ ] $140^\circ$
-=> L'angolo al centro è il doppio: $80^\circ$. Chi risponde $20^\circ$ ha scambiato i ruoli, dimezzando invece di raddoppiare: l'angolo con il vertice nel centro è sempre il più grande dei due.
+=> L'angolo al centro è il doppio: $80^\circ$. Chi risponde $20^\circ$ ha dimezzato invece di raddoppiare. L'angolo con il vertice nel centro è sempre il più grande dei due.
 
 ### Rette e circonferenza
 
-Una retta può avere con la circonferenza due punti in comune (**secante**), uno solo (**tangente**) o nessuno (**esterna**). Il confronto si fa con la distanza $d$ della retta dal centro: $d<r$ secante, $d=r$ tangente, $d>r$ esterna.
+Confronta la distanza $d$ della retta dal centro con il raggio $r$:
 
->* La **tangente** in un punto è **perpendicolare** al raggio che arriva in quel punto.
+- $d<r$: la retta è **secante** (due punti in comune);
+- $d=r$: la retta è **tangente** (un punto);
+- $d>r$: la retta è **esterna** (nessun punto).
 
->! Una retta che nel disegno «sembra sfiorare» la circonferenza non è per forza tangente. La tangenza si verifica con la perpendicolarità al raggio o con $d=r$, non a occhio.` },
+>* La **tangente** in un punto è **perpendicolare** al raggio che arriva in quel punto.` },
 
-    { id: 'aree-poligoni', titolo: 'Aree, lunghezza della circonferenza e poligoni regolari', testo: R`Le formule delle aree vengono quasi tutte dal rettangolo, base per altezza. Un parallelogramma si trasforma in un rettangolo spostando un triangolino da un lato all'altro; un triangolo è metà di un parallelogramma.
+    { id: 'aree-poligoni', titolo: 'Aree, lunghezza della circonferenza e poligoni regolari', testo: R`Le formule delle aree vengono quasi tutte dal rettangolo, base per altezza. Un triangolo è metà di un parallelogramma.
 
 | figura | area |
 |---|---|
@@ -310,39 +324,39 @@ Una retta può avere con la circonferenza due punti in comune (**secante**), uno
 | trapezio | $\frac{(B+b)\cdot h}{2}$ |
 | rombo | $\frac{d\cdot d'}{2}$ (diagonali) |
 
-Nel triangolo la base $b$ può essere un lato qualunque, purché $h$ sia l'altezza relativa a **quel** lato, cioè la distanza del vertice opposto dalla retta del lato.
+Nel triangolo la base può essere un lato qualunque. L'altezza è la distanza del vertice opposto dalla retta di **quel** lato.
 
-Trascina il vertice $C$ in orizzontale, parallelamente alla base: il triangolo cambia forma ma l'area resta la stessa, perché base e altezza non cambiano. Poi trascinalo in verticale.
+Trascina il vertice $C$ in orizzontale: il triangolo cambia forma, ma base e altezza restano uguali, e quindi anche l'area.
 
 [[grafico:areaTriangolo]]
 
->* Triangoli con la stessa base e la stessa altezza hanno la stessa area, anche se hanno forme diverse.
-
-?? Un triangolo ottusangolo ha un lato di $6$ cm; il vertice opposto dista $4$ cm dalla retta di quel lato ma «cade fuori», oltre l'estremo del lato. Quanto vale l'area?
+?? Un triangolo ha un lato di $6$ cm. Il vertice opposto dista $4$ cm dalla retta di quel lato, ma l'altezza cade fuori dal lato. Quanto vale l'area?
 [x] $12\ \text{cm}^2$
 [ ] $24\ \text{cm}^2$
-[ ] non si può calcolare, perché l'altezza cade fuori dal triangolo
-=> $\frac{6\cdot4}{2}=12$. L'altezza è la distanza del vertice dalla **retta** che contiene la base: può cadere fuori dal lato, e la formula vale lo stesso. $24$ è il parallelogramma, senza dividere per $2$.
+[ ] non si può calcolare
+=> $\frac{6\cdot4}{2}=12$. L'altezza è la distanza dalla **retta** della base, e può cadere fuori dal lato. La formula vale lo stesso. $24$ è l'area del parallelogramma: manca la divisione per $2$.
 
 ### Circonferenza e cerchio
 
-La lunghezza della circonferenza e l'area del cerchio dipendono dal raggio attraverso lo stesso numero $\pi\approx3{,}14$. L'animazione taglia il cerchio in spicchi e li rimette in fila: viene quasi un rettangolo con base metà della circonferenza, $\pi r$, e altezza $r$.
-
-[[animazione:area-cerchio]]
+Con raggio $5$ cm la circonferenza è lunga $2\pi\cdot5=10\pi\approx31{,}4$ cm. Il cerchio ha area $\pi\cdot5^2=25\pi\approx78{,}5\ \text{cm}^2$.
 
 >* $$C=2\pi r\qquad A=\pi r^2$$
 
-Con raggio $5$ cm: la circonferenza è lunga $2\pi\cdot5=10\pi\approx31{,}4$ cm e il cerchio ha area $25\pi\approx78{,}5\ \text{cm}^2$.
+L'animazione taglia il cerchio in spicchi e li mette in fila. Viene quasi un rettangolo di base $\pi r$ e altezza $r$.
+
+[[animazione:area-cerchio]]
 
 ### Poligoni regolari
 
-Un poligono è **regolare** se ha tutti i lati e tutti gli angoli congruenti. Da un vertice di un poligono di $n$ lati puoi tracciare diagonali che lo dividono in $n-2$ triangoli, quindi la somma degli angoli interni è $(n-2)\cdot180^\circ$. Nel poligono regolare gli angoli sono uguali, e basta dividere per $n$:
+Un poligono è **regolare** se ha i lati tutti congruenti e gli angoli tutti congruenti.
+
+Le diagonali che partono da un vertice dividono un poligono di $n$ lati in $n-2$ triangoli. Quindi gli angoli interni sommano $(n-2)\cdot180^\circ$.
 
 ~ (n-2)\cdot180^\circ :: somma degli angoli interni di un poligono di $n$ lati
 ~ (6-2)\cdot180^\circ=\evid{720^\circ} :: per l'esagono, $n=6$: quattro triangoli
 ~ 720^\circ:6=\evidb{120^\circ} :: nell'esagono regolare i sei angoli sono uguali
 
->! $\pi$ vale **circa** $3{,}14$: è un numero con infinite cifre decimali, senza periodo. Nei conti tieni $\pi$ fino alla fine (per esempio $25\pi$) e approssima solo nel risultato.` }
+>! $\pi$ vale **circa** $3{,}14$: ha infinite cifre decimali. Nei conti tieni $\pi$ fino alla fine, per esempio $25\pi$. Approssima solo il risultato.` }
   ],
 
   grafici: {
@@ -523,6 +537,26 @@ Un poligono è **regolare** se ha tutti i lati e tutti gli angoli congruenti. Da
   ],
 
   esercizi: [
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Due angoli di un triangolo misurano $45^\circ$ e $75^\circ$. Quanto misura il terzo angolo?`, suggerimenti: [R`Gli angoli di un triangolo sommano $180^\circ$.`], risposta: gradi(60), soluzione: [R`I tre angoli insieme fanno $180^\circ$.`, R`Il terzo misura $180^\circ-45^\circ-75^\circ=60^\circ$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`In un triangolo rettangolo un angolo acuto misura $35^\circ$. Quanto misura l'altro angolo acuto?`, suggerimenti: [R`L'angolo retto prende già $90^\circ$: ai due angoli acuti restano $90^\circ$.`], risposta: gradi(55), soluzione: [R`I due angoli acuti insieme fanno $180^\circ-90^\circ=90^\circ$.`, R`L'altro misura $90^\circ-35^\circ=55^\circ$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Due rette parallele sono tagliate da una trasversale. Un angolo alterno interno misura $65^\circ$. Quanto misura l'altro?`, suggerimenti: [R`Fra due parallele gli angoli alterni interni sono congruenti.`], risposta: gradi(65), soluzione: [R`Gli alterni interni fra due parallele sono congruenti.`, R`Anche l'altro misura $65^\circ$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Due rette parallele sono tagliate da una trasversale. Un angolo coniugato interno misura $110^\circ$. Quanto misura l'altro?`, suggerimenti: [R`I coniugati interni sono supplementari: insieme fanno $180^\circ$.`], risposta: gradi(70), soluzione: [R`I coniugati interni fra due parallele sommano $180^\circ$.`, R`L'altro misura $180^\circ-110^\circ=70^\circ$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Un triangolo rettangolo ha i cateti di $3$ e $4$. Quanto misura l'ipotenusa?`, suggerimenti: [R`Usa Pitagora: $c^2=a^2+b^2$.`], risposta: num(5), soluzione: [R`$c^2=3^2+4^2=9+16=25$.`, R`$c=\sqrt{25}=5$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Un triangolo isoscele ha l'angolo al vertice di $80^\circ$. Quanto misura ciascun angolo alla base?`, suggerimenti: [R`Togli $80^\circ$ da $180^\circ$: quello che resta va ai due angoli alla base.`, R`Gli angoli alla base sono uguali: dividi per $2$.`], risposta: gradi(50), soluzione: [R`Ai due angoli alla base restano $180^\circ-80^\circ=100^\circ$.`, R`Sono congruenti, quindi ciascuno misura $100^\circ:2=50^\circ$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Un triangolo rettangolo ha l'ipotenusa di $10$ e un cateto di $6$. Quanto misura l'altro cateto?`, suggerimenti: [R`Per trovare un cateto fai la **differenza** dei quadrati.`], risposta: num(8), soluzione: [R`$b^2=10^2-6^2=100-36=64$.`, R`$b=\sqrt{64}=8$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Un angolo alla circonferenza misura $35^\circ$. Quanto misura l'angolo al centro che insiste sullo stesso arco?`, suggerimenti: [R`L'angolo al centro è il doppio di quello alla circonferenza.`], risposta: gradi(70), soluzione: [R`L'angolo al centro è il doppio.`, R`$2\cdot35^\circ=70^\circ$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Un angolo al centro misura $100^\circ$. Quanto misura un angolo alla circonferenza che insiste sullo stesso arco?`, suggerimenti: [R`L'angolo alla circonferenza è la metà di quello al centro.`], risposta: gradi(50), soluzione: [R`L'angolo alla circonferenza è la metà di quello al centro.`, R`$100^\circ:2=50^\circ$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Un triangolo ha base $8$ cm e altezza $5$ cm. Quanto vale l'area, in $\text{cm}^2$?`, suggerimenti: [R`Area del triangolo: base per altezza, diviso $2$.`], risposta: area(20), soluzione: [R`$A=\frac{b\cdot h}{2}=\frac{8\cdot5}{2}$.`, R`$A=\frac{40}{2}=20\ \text{cm}^2$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Un trapezio ha le basi di $10$ cm e $6$ cm e l'altezza di $4$ cm. Quanto vale l'area, in $\text{cm}^2$?`, suggerimenti: [R`Somma le due basi, moltiplica per l'altezza e dividi per $2$.`], risposta: area(32), soluzione: [R`Somma delle basi: $10+6=16$.`, R`$A=\frac{16\cdot4}{2}=32\ \text{cm}^2$.`] },
+    { id: 'b-12', livello: 'base', difficolta: 1, testo: R`Un rombo ha le diagonali di $6$ cm e $8$ cm. Quanto vale l'area, in $\text{cm}^2$?`, suggerimenti: [R`Area del rombo: diagonale per diagonale, diviso $2$.`], risposta: area(24), soluzione: [R`$A=\frac{d\cdot d'}{2}=\frac{6\cdot8}{2}$.`, R`$A=\frac{48}{2}=24\ \text{cm}^2$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 1, testo: R`I lati di un triangolo misurano $8$, $15$ e $17$. È un triangolo rettangolo? Scrivi *sì* o *no*.`, suggerimenti: [R`Confronta il quadrato del lato più lungo con la somma dei quadrati degli altri due.`], risposta: SI, soluzione: [R`$8^2+15^2=64+225=289$.`, R`$17^2=289$: sono uguali.`, R`Per il teorema di Pitagora inverso il triangolo è rettangolo.`] },
+    { id: 'b-14', livello: 'base', difficolta: 1, testo: R`Due triangoli sono simili. Il primo ha i lati di $3$, $4$ e $5$. Nel secondo il lato che corrisponde a $3$ misura $6$. Quanto misura il lato che corrisponde a $5$?`, suggerimenti: [R`Trova prima il rapporto di similitudine: $6:3$.`], risposta: num(10), soluzione: [R`Il rapporto di similitudine è $k=6:3=2$.`, R`Ogni lato si moltiplica per $2$: $5\cdot2=10$.`] },
+    { id: 'b-15', livello: 'base', difficolta: 1, testo: R`Due triangoli sono simili con rapporto $2$. Il più piccolo ha area $7\ \text{cm}^2$. Quanto vale l'area del più grande, in $\text{cm}^2$?`, suggerimenti: [R`Le aree stanno nel rapporto $k^2$, non nel rapporto $k$.`], risposta: area(28), soluzione: [R`Le aree stanno nel rapporto $k^2=2^2=4$.`, R`L'area grande è $7\cdot4=28\ \text{cm}^2$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Un triangolo è inscritto in una semicirconferenza, con un lato sul diametro. Un suo angolo acuto misura $25^\circ$. Quanto misura l'altro angolo acuto?`, suggerimenti: [R`Che triangolo è un triangolo inscritto in una semicirconferenza?`, R`È rettangolo: i due angoli acuti sommano $90^\circ$.`], risposta: gradi(65), soluzione: [R`Il triangolo è rettangolo: l'angolo opposto al diametro è retto.`, R`I due angoli acuti sommano $90^\circ$.`, R`L'altro misura $90^\circ-25^\circ=65^\circ$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`In un triangolo rettangolo l'ipotenusa misura $25$ e un cateto $15$. Quanto misura la proiezione di questo cateto sull'ipotenusa?`, suggerimenti: [R`Usa il primo teorema di Euclide: $b^2=c\cdot m$.`, R`Ricava $m=\frac{b^2}{c}$.`], risposta: num(9), soluzione: [R`Primo teorema di Euclide: $15^2=25\cdot m$.`, R`$225=25\cdot m$, quindi $m=\frac{225}{25}=9$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`In un triangolo rettangolo le proiezioni dei cateti sull'ipotenusa misurano $4$ e $9$. Quanto misura l'altezza relativa all'ipotenusa?`, suggerimenti: [R`Usa il secondo teorema di Euclide: $h^2=m\cdot n$.`], risposta: num(6), soluzione: [R`Secondo teorema di Euclide: $h^2=4\cdot9=36$.`, R`$h=\sqrt{36}=6$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Una circonferenza è lunga $10\pi$ cm. Quanto vale l'area del cerchio? Scrivi il risultato con $\pi$, per esempio *4π*.`, suggerimenti: [R`Da $C=2\pi r$ ricava il raggio.`, R`Poi usa $A=\pi r^2$.`], risposta: conPi(25), soluzione: [R`$2\pi r=10\pi$, quindi $r=5$ cm.`, R`$A=\pi\cdot5^2=25\pi\ \text{cm}^2$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Un triangolo rettangolo ha i cateti di $6$ e $8$. Quanto misura l'altezza relativa all'ipotenusa?`, suggerimenti: [R`Trova prima l'ipotenusa con Pitagora.`, R`L'area si calcola in due modi: $\frac{6\cdot8}{2}$ oppure $\frac{c\cdot h}{2}$.`], risposta: num(4.8), soluzione: [R`Ipotenusa: $c=\sqrt{36+64}=\sqrt{100}=10$.`, R`Area con i cateti: $\frac{6\cdot8}{2}=24$.`, R`Area con l'ipotenusa: $\frac{10\cdot h}{2}=24$, quindi $h=\frac{48}{10}=4{,}8$.`] },
     { id: 'es-01', difficolta: 1, testo: R`Due angoli sono complementari. Il primo misura $42^\circ$. Quanto misura il secondo (in gradi)?`, suggerimenti: [R`Complementare vuol dire che la somma con l'altro angolo dà un valore preciso: quale?`, R`La somma di due angoli complementari è $90^\circ$.`], risposta: { tipo: 'numero', valore: 48 }, soluzione: [R`Angoli complementari: la somma vale $90^\circ$.`, R`Il secondo angolo misura $90^\circ - 42^\circ = 48^\circ$.`] },
 
     { id: 'es-02', difficolta: 1, testo: R`In un triangolo rettangolo i cateti misurano $6\ \text{cm}$ e $8\ \text{cm}$. Quanto misura l'ipotenusa (in cm)?`, suggerimenti: [R`Usa il teorema di Pitagora.`, R`L'ipotenusa al quadrato è la somma dei quadrati dei cateti: $36+64$.`], risposta: { tipo: 'numero', valore: 10 }, soluzione: [R`Teorema di Pitagora: $c^2=a^2+b^2=6^2+8^2=36+64=100$.`, R`$c=\sqrt{100}=10\ \text{cm}$.`] },

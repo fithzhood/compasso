@@ -7,52 +7,61 @@
    Contratto e regole: SCHEMA-LAB.md — modelli: laboratori/ruota.js, laboratori/regolo.js */
 (function () {
   const STILE = `
-    .lab-giostra { container-type: inline-size; }
-    .lab-giostra .gs { display: grid; grid-template-columns: minmax(0, 1fr); }
-    .lab-giostra .gs-sx, .lab-giostra .gs-dx { min-width: 0; }
-    @container (min-width: 720px) {
-      .lab-giostra .gs { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: start; }
-      .lab-giostra .gs-dx { padding: 12px 12px 0 2px; }
-    }
-    .lab-giostra .lab-scena { background: transparent; padding: 10px 10px 0; }
-    .lab-giostra .lab-scena svg { max-width: 520px; margin: 0 auto; border-radius: 20px; box-shadow: var(--ombra); }
+    /* --- scena: il prato riempie tutto lo spazio (adatta() allarga il viewBox), il piano sta al centro --- */
+    .lab-giostra .lab-scena { background: color-mix(in srgb, var(--s3) 13%, var(--sup)); overflow: hidden; }
     .lab-giostra .gs-svg { touch-action: none; cursor: crosshair; outline: none; }
     .lab-giostra .gs-svg.presa { cursor: grabbing; }
-    .lab-giostra .gs-svg:focus-visible { box-shadow: 0 0 0 3px var(--accento), var(--ombra); }
-    .lab-giostra .gs-comandi { display: flex; justify-content: center; align-items: center; gap: 8px; padding: 10px 10px 4px; }
-    .lab-giostra .gs-comandi .btn { min-height: 48px; min-width: 12em; font-size: 1rem; font-weight: 600; }
-    .lab-giostra .gs-comandi .btn .gs-x { font-size: 1.15em; line-height: 1; opacity: .9; }
-    .lab-giostra .btn[disabled] { opacity: .4; cursor: default; }
-    .lab-giostra .gs-obiettivo { padding: 10px 16px 2px; font-size: .97rem; line-height: 1.55; }
+    .lab-giostra .gs-svg:focus-visible { outline: 3px solid var(--accento); outline-offset: -3px; }
+    .lab-giostra .gs-maniglia { transition: r .2s var(--molla); }
+    .lab-giostra .lab-aiuto .gs-aiuto-testo p { margin: 0 0 10px; }
+    /* --- pannello --- */
+    .lab-giostra .gs-obiettivo { font-size: clamp(1rem, 2.2cqmin, 1.08rem); line-height: 1.45; text-align: center; }
+    .lab-giostra .gs-obiettivo .katex { font-size: 1.22em; }
     .lab-giostra .gs-obiettivo p { margin: 0; }
     .lab-giostra .gs-obiettivo strong { color: var(--accento-testo); }
-    .lab-giostra .gs-aiuto { margin: 8px 12px 0; padding: 10px 14px; border-radius: 14px; background: var(--accento-tenue); color: var(--testo); font-size: .92rem; line-height: 1.5; animation: lab-giostra-pop .3s var(--morbido); }
-    .lab-giostra .gs-aiuto p { margin: 0; }
-    .lab-giostra .gs-carta { margin: 10px 12px 0; padding: 8px 12px 8px; border-radius: 16px; background: var(--sup); border: 1px solid var(--bordo); box-shadow: var(--ombra); display: flex; flex-direction: column; gap: 2px; }
-    .lab-giostra .gs-riga { display: flex; align-items: baseline; gap: 2px 10px; flex-wrap: wrap; min-height: 1.95em; }
-    .lab-giostra .gs-et { font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--testo2); font-weight: 600; min-width: 7.4em; }
+    .lab-giostra .gs-obiettivo[hidden], .lab-giostra .gs-breve { display: none; }
+    /* sul telefono la consegna è la frase essenziale: il resto sta nel «?» */
+    @container lab (max-aspect-ratio: 5 / 4) and (max-width: 600px) { .lab-giostra .gs-lungo { display: none; } .lab-giostra .gs-breve { display: block; } }
+    .lab-giostra .gs-carta { padding: 5px 10px; border-radius: 12px; background: var(--sup); border: 1px solid var(--bordo); display: flex; flex-direction: column; gap: 1px; }
+    .lab-giostra .gs-riga { display: flex; align-items: baseline; gap: 0 8px; flex-wrap: wrap; min-height: 1.75em; }
+    .lab-giostra .gs-et { font-size: .75rem; letter-spacing: .05em; text-transform: uppercase; color: var(--testo2); font-weight: 600; min-width: 8.4em; white-space: nowrap; }
     .lab-giostra .gs-et i { font-style: normal; display: inline-block; width: .7em; height: .7em; border-radius: 50%; margin-right: 5px; vertical-align: -.05em; }
-    .lab-giostra .gs-tex { font-size: 1.06rem; display: inline-flex; flex-wrap: wrap; gap: 2px 14px; align-items: baseline; color: var(--testo); }
-    .lab-giostra .gs-tex .katex { white-space: nowrap; }
-    @media (max-width: 600px) { .lab-giostra .gs-tex { font-size: .98rem; } .lab-giostra .gs-et { min-width: 100%; } .lab-giostra .gs-riga { min-height: 0; padding-top: 3px; } }
-    .lab-giostra .gs-riga.esito { margin-top: 4px; padding: 5px 8px; border-radius: 12px; animation: lab-giostra-pop .45s var(--molla); }
+    .lab-giostra .gs-tex { font-size: clamp(1rem, 2.5cqmin, 1.15rem); display: inline-flex; flex-wrap: wrap; gap: 0 12px; align-items: baseline; color: var(--testo); }
+    .lab-giostra .gs-tex { max-width: 100%; }
+    .lab-giostra .gs-vuoto { color: var(--testo3); font-size: .9rem; }
+    /* sul telefono le righe della formula perdono la parola (resta il pallino colorato) */
+    @container lab (max-aspect-ratio: 5 / 4) and (max-width: 600px) {
+      .lab-giostra .gs-riga:not(.esito) .gs-et .t { display: none; }
+      .lab-giostra .gs-riga:not(.esito) .gs-et { min-width: 0; }
+      .lab-giostra .gs-riga { min-height: 1.6em; flex-wrap: nowrap; }
+      .lab-giostra .gs-tex { flex: 1 1 0; min-width: 0; }
+    }
+    /* in orizzontale il pannello è stretto: la parola sopra, la formula sotto */
+    @container lab (min-aspect-ratio: 5 / 4) {
+      .lab-giostra .gs-riga { flex-direction: column; align-items: flex-start; min-height: 0; padding: 2px 0; }
+      .lab-giostra .gs-et { min-width: 0; }
+    }
+    .lab-giostra .gs-riga.esito { margin-top: 3px; padding: 3px 8px; border-radius: 10px; animation: lab-giostra-pop .45s var(--molla); background: var(--sup2); }
     .lab-giostra .gs-riga.esito.ok { background: var(--ok-tenue); }
     .lab-giostra .gs-riga.esito.ok .gs-et { color: var(--ok); }
     .lab-giostra .gs-riga.esito.no { background: var(--no-tenue); }
     .lab-giostra .gs-riga.esito.no .gs-et { color: var(--no); }
-    .lab-giostra .gs-vuoto { color: var(--testo3); font-size: .9rem; }
-    .lab-giostra .lab-messaggio { padding-left: 16px; padding-right: 16px; line-height: 1.5; }
+    .lab-giostra .lab-messaggio { padding: 0 4px; min-height: 1.5em; font-size: clamp(.95rem, 2.1cqmin, 1.05rem); text-align: center; line-height: 1.45; }
+    .lab-giostra .lab-messaggio:empty { display: none; }
+    .lab-giostra .lab-messaggio .katex { font-size: 1.2em; }
+    .lab-giostra.in-libero .lab-messaggio { color: var(--testo2); }
+    .lab-giostra .lab-barra { padding: 0; border: 0; gap: 8px; justify-content: center; }
+    .lab-giostra .lab-barra .btn { min-height: clamp(40px, 6cqh, 50px); }
+    .lab-giostra .b-molt { font-weight: 600; padding-left: 18px; padding-right: 18px; }
+    .lab-giostra .b-molt .gs-x { font-size: 1.15em; line-height: 1; opacity: .9; margin-right: 4px; }
+    .lab-giostra .btn[disabled] { opacity: .4; cursor: default; }
+    .lab-giostra .lab-parametri { max-width: 460px; }
+    .lab-giostra .lab-param .nome { min-width: 0; }
+    .lab-giostra .gs-b-griglia { min-height: 38px; }
     .lab-giostra .vinto { display: inline-block; animation: lab-giostra-pop .5s var(--molla); }
-    .lab-giostra .livelli { display: flex; gap: 6px; flex-wrap: wrap; }
-    .lab-giostra .pill { width: 40px; height: 40px; border-radius: 12px; border: 1.5px solid var(--bordo2); background: var(--sup);
-      color: var(--testo2); font: 700 .95rem var(--font); cursor: pointer; padding: 0; transition: transform .3s var(--molla), background .2s, color .2s; }
-    .lab-giostra .pill.fatto { background: var(--ok-tenue); color: var(--ok); border-color: color-mix(in srgb, var(--ok) 45%, var(--bordo)); }
-    .lab-giostra .pill.qui { background: var(--accento); color: #fff; border-color: var(--accento); transform: scale(1.07); }
-    .lab-giostra .pill[disabled] { opacity: .35; cursor: default; }
     .lab-giostra .scuoti { animation: lab-giostra-no .38s ease; }
     @keyframes lab-giostra-pop { from { transform: scale(.8); opacity: 0 } to { transform: none; opacity: 1 } }
     @keyframes lab-giostra-no { 20%, 60% { transform: translateX(-5px) } 40%, 80% { transform: translateX(5px) } }
-    .lab-giostra .gs-maniglia { transition: r .2s var(--molla); }
   `;
 
   /* ---------------- livelli ----------------
@@ -61,31 +70,37 @@
   const R3 = Math.sqrt(3);
   const LIVELLI = [
     { z: [2, 0], t: [0, 2], tTex: '2i', tTesto: '2i', agg: 'quadrato',
+      breve: 'Porta il razzo $z = 2$ sul bersaglio $2i$: scegli $w$, poi «Moltiplica».',
       testo: 'Il razzo $z = 2$ deve atterrare sul bersaglio $2i$. Scegli il numero $w$ trascinando il punto blu, poi premi «Moltiplica»: il razzo diventa $z \\cdot w$.',
       aiuto: 'Il punto blu è $w$. Quando premi «Moltiplica» il razzo fa due cose, una dopo l\'altra: prima **gira** dell\'angolo di $w$ (l\'angolo fra il semiasse reale positivo e il segmento blu, contato in senso antiorario), poi **si allunga** di tante volte quanto è lungo $w$. Guarda di quanto deve girare il razzo per puntare al bersaglio, e se deve cambiare lunghezza.',
       vittoria: 'Moltiplicare per i fa girare di un quarto di giro in senso antiorario, e la lunghezza resta quella perché |i| = 1. Così 2 · i fa 2i. La croce rossa è 2 + i: lì finirebbe il razzo se moltiplicare per i volesse dire aggiungere 1 alla parte immaginaria.',
       ponte: '2 \\cdot i = 2i \\qquad (\\text{non } 2 + i)', falso: { p: [2, 1], testo: '2 + i ?' } },
     { z: [1, 1], t: [-1, -1], tTex: '-1 - i', tTesto: '−1 − i', agg: 'quadrato',
+      breve: 'Dal razzo $z = 1 + i$ al bersaglio $-1 - i$.',
       testo: 'Ora il razzo parte da $z = 1 + i$ e il bersaglio è $-1 - i$, dall\'altra parte dell\'origine.',
       aiuto: 'Confronta le lunghezze: se il bersaglio è lontano dall\'origine quanto la punta del razzo, $w$ deve essere lungo $1$, cioè stare sul cerchio tratteggiato. Poi conta di quanti gradi deve girare il razzo, sempre in senso antiorario.',
       vittoria: 'Moltiplicare per −1 fa mezzo giro, 180°. Ogni punto finisce dalla parte opposta dell\'origine, alla stessa distanza. Due mezzi giri fanno un giro intero: ecco perché (−1)·(−1) torna a 1.',
       ponte: '(1 + i)\\cdot(-1) = -1 - i' },
     { z: [1, 1], t: [3, 3], tTex: '3 + 3i', tTesto: '3 + 3i', agg: 'quadrato',
+      breve: 'Dal razzo $z = 1 + i$ al bersaglio $3 + 3i$, nella stessa direzione.',
       testo: 'Il bersaglio $3 + 3i$ sta nella stessa direzione del razzo $z = 1 + i$, ma più lontano.',
       aiuto: 'Se la direzione è già giusta il razzo non deve girare: pensa a quali numeri hanno argomento $0^\\circ$. La lunghezza del prodotto è la lunghezza di $z$ **moltiplicata** per quella di $w$: guarda quante volte la distanza del bersaglio dall\'origine contiene la lunghezza del razzo.',
       vittoria: 'Un numero reale positivo non fa girare: allunga soltanto. Il razzo era lungo √2 ed è diventato lungo 3√2, tre volte tanto.',
       ponte: '(1 + i)\\cdot 3 = 3 + 3i' },
     { z: [1, 1], t: [-2, 2], tTex: '-2 + 2i', tTesto: '−2 + 2i', agg: 'quadrato',
+      breve: 'Bersaglio $-2 + 2i$: il razzo deve girare **e** allungarsi.',
       testo: 'Bersaglio $-2 + 2i$: stavolta il razzo deve girare **e** allungarsi.',
       aiuto: 'Separa le due cose. Di quanti gradi deve girare il razzo per puntare verso il bersaglio? E quante volte deve diventare più lungo? Il $w$ che cerchi ha proprio quell\'argomento e quel modulo.',
       vittoria: 'w = 2i gira di 90° come i e raddoppia come 2. Nel prodotto gli argomenti si sommano, 45° + 90° = 135°, e i moduli si moltiplicano, √2 · 2 = 2√2.',
       ponte: '(1 + i)\\cdot 2i = 2i + 2i^2 = -2 + 2i' },
     { z: [2, 0], t: [1, R3], tTex: '1 + i\\sqrt{3}', tTesto: '1 + i√3', agg: 'polare',
+      breve: 'Bersaglio $1 + i\\sqrt{3}$, con la griglia a cerchi e raggi.',
       testo: 'Il bersaglio è $1 + i\\sqrt{3}$. Qui la griglia è fatta di cerchi e di raggi ogni $15^\\circ$, e $w$ si aggancia a quelli.',
       aiuto: 'Trova il bersaglio sulla griglia a cerchi: su quale cerchio sta, e su quale raggio? Il razzo parte da $2$, sul semiasse reale, con argomento $0^\\circ$. Il modulo di $w$ è il rapporto fra le due lunghezze, l\'argomento di $w$ è la differenza fra i due angoli.',
       vittoria: 'Il bersaglio ha modulo 2, come il razzo, e argomento 60°. Quindi w ha modulo 1 e argomento 60°: in forma algebrica è ½ + i·√3/2, un numero che sulla griglia quadrata non avresti trovato.',
       ponte: '2\\left(\\cos 60^\\circ + i\\sin 60^\\circ\\right) = 1 + i\\sqrt{3}' },
     { z: [1, 0], t: [-1, 0], tTex: '-1', tTesto: '−1', agg: 'polare', volte: 2, sol: 2,
+      breve: 'Il razzo parte da $1$ e arriva su $w^2$: trova i due $w$ con $w^2 = -1$.',
       testo: 'Ultimo livello. Il razzo parte da $1$ e «Moltiplica» lo moltiplica **due volte** per lo stesso $w$, quindi arriva su $w^2$. Trova i numeri $w$ con $w^2 = -1$: sono due, trovali tutti e due.',
       aiuto: 'Due moltiplicazioni per $w$ fanno girare due volte dello stesso angolo e allungano due volte dello stesso fattore. Quale lunghezza, moltiplicata per sé stessa, dà la distanza di $-1$ dall\'origine? Quale angolo, preso due volte, porta a $180^\\circ$? Ricorda che anche un giro in più, $360^\\circ$, riporta nello stesso punto.',
       vittoria: 'w = i e w = −i. Tutti e due hanno modulo 1: i gira di 90°, −i di 270°. Presi due volte fanno 180° e 540°, cioè mezzo giro e mezzo giro più un giro intero, e tutti e due portano 1 su −1. Per questo i² = −1 e anche (−i)² = −1.',
@@ -99,6 +114,7 @@
   const el = (n, a, testo) => { const e = document.createElementNS(NS, n); for (const k in a || {}) if (a[k] != null) e.setAttribute(k, a[k]); if (testo != null) e.textContent = testo; return e; };
   const vuota = n => { while (n.firstChild) n.removeChild(n.firstChild); };
   const RAD = Math.PI / 180;
+  const APICE = ['', '', '²', '³', '⁴', '⁵', '⁶'];
   const X = a => CX + a * U, Y = b => CY - b * U;
   const norm = a => ((a % 360) + 360) % 360;
   const dAng = (a, b) => { const d = Math.abs(norm(a) - norm(b)); return Math.min(d, 360 - d); };
@@ -171,40 +187,61 @@
       if (!document.getElementById('stile-lab-giostra')) { const s = document.createElement('style'); s.id = 'stile-lab-giostra'; s.textContent = STILE; document.head.appendChild(s); }
       radice.classList.add('lab-giostra');
       radice.innerHTML = `
-        <div class="gs">
-          <div class="gs-sx">
-            <div class="lab-scena"></div>
-            <div class="gs-comandi">
-              <button type="button" class="btn primario b-molt"><span class="gs-x">×</span><span class="b-molt-t">Moltiplica</span></button>
-            </div>
+        <div class="lab-layout">
+          <div class="lab-scena">
+            <div class="lab-aiuto" hidden data-scorre><div class="gs-aiuto-testo"></div><button type="button" class="btn piccolo m-chiudi">Ho capito</button></div>
           </div>
-          <div class="gs-dx">
+          <div class="lab-lato">
+            <div class="lab-livelli" role="group" aria-label="Livelli"><button type="button" class="btn piccolo lab-libero" aria-pressed="false" title="Modalità libera: niente bersaglio, z e w li scegli tu">Libero</button></div>
             <div class="gs-obiettivo"></div>
-            <div class="gs-aiuto" hidden></div>
+            <div class="lab-parametri" hidden>
+              <div class="didascalia">Trascina ${ctx.tex('w')} (il punto blu) o la punta del razzo ${ctx.tex('z')}; ${ctx.tex('n')} dice quante volte moltiplichi per ${ctx.tex('w')}.</div>
+              <div class="lab-param" data-p="n"><span class="nome">${ctx.tex('n')}</span><button type="button" class="btn piccolo" data-d="-1" aria-label="una moltiplicazione in meno">−</button><output></output><button type="button" class="btn piccolo" data-d="1" aria-label="una moltiplicazione in più">+</button></div>
+              <button type="button" class="btn piccolo gs-b-griglia">Griglia a cerchi</button>
+            </div>
             <div class="gs-carta"></div>
             <div class="lab-messaggio" aria-live="polite"></div>
+            <div class="lab-barra">
+              <button type="button" class="btn primario b-molt"><span class="gs-x">×</span><span class="b-molt-t">Moltiplica</span></button>
+              <button type="button" class="btn piccolo b-ric">Ricomincia</button>
+              <button type="button" class="btn piccolo b-casuale" hidden>Casuale</button>
+              <button type="button" class="btn piccolo b-aiuto" aria-label="Come si gioca" title="Come si gioca">?</button>
+            </div>
           </div>
-        </div>
-        <div class="lab-barra">
-          <div class="livelli" role="group" aria-label="Livelli"></div>
-          <button type="button" class="btn piccolo b-aiuto" aria-label="Come si gioca" title="Come si gioca">?</button>
-          <button type="button" class="btn piccolo b-ric">Ricomincia</button>
-          <span class="lab-livello"></span>
         </div>`;
 
-      const scena = radice.querySelector('.lab-scena');
-      const objEl = radice.querySelector('.gs-obiettivo'), aiutoEl = radice.querySelector('.gs-aiuto'), carta = radice.querySelector('.gs-carta');
-      const msg = radice.querySelector('.lab-messaggio'), livEl = radice.querySelector('.lab-livello'), pillEl = radice.querySelector('.livelli');
+      const scena = radice.querySelector('.lab-scena'), lato = radice.querySelector('.lab-lato');
+      const objEl = radice.querySelector('.gs-obiettivo'), aiutoEl = radice.querySelector('.lab-aiuto'), aiutoTesto = radice.querySelector('.gs-aiuto-testo'), carta = radice.querySelector('.gs-carta');
+      const msg = radice.querySelector('.lab-messaggio'), livelliEl = radice.querySelector('.lab-livelli');
       const bMolt = radice.querySelector('.b-molt'), bMoltT = radice.querySelector('.b-molt-t');
-      const bRic = radice.querySelector('.b-ric'), bAiuto = radice.querySelector('.b-aiuto');
+      const bRic = radice.querySelector('.b-ric'), bAiuto = radice.querySelector('.b-aiuto'), bCasuale = radice.querySelector('.b-casuale'), bLibero = radice.querySelector('.lab-libero');
+      const parametriEl = radice.querySelector('.lab-parametri'), bGriglia = radice.querySelector('.gs-b-griglia');
       const scuro = ctx.tema() === 'scuro';
 
-      /* ================= scena ================= */
-      const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, class: 'gs-svg', role: 'img', tabindex: 0,
+      /* KaTeX disegna il tratto della radice lungo 400000 unità e ne nasconde la coda con un overflow: a vederlo è
+         giusto, ma per getBoundingClientRect (e per il misuratore della schermata) esce di metri. Lo si accorcia
+         alla larghezza del radicando; il rapporto fra larghezza e altezza non cambia con la scala del testo. */
+      function radiciCorte() {
+        radice.querySelectorAll('.katex .hide-tail svg:not([data-corta])').forEach(s => {
+          const w = s.parentNode.getBoundingClientRect().width, h = s.getBoundingClientRect().height, vb = String(s.getAttribute('viewBox')).split(/[\s,]+/).map(Number);
+          if (!(w > 0 && h > 0 && vb[3] > 0)) return;   /* nascosta: si accorcia quando compare */
+          const n = Math.ceil(w * vb[3] / h);   /* il tratto arriva a x = 400000: basta arrivare alla larghezza vera */
+          s.querySelectorAll('path').forEach(p => p.setAttribute('d', p.getAttribute('d').replace(/H400000/g, 'H' + Math.max(n, 900))
+            .replace(/M([\d.]+)[ ,]([-\d.]+)\s*h400000v([-\d.]+)h-400000/g, (_, x, y, v) => { const l = Math.max(10, n - x); return 'M' + x + ' ' + y + 'h' + l + 'v' + v + 'h-' + l; })));
+          s.setAttribute('data-corta', '');
+        });
+      }
+      const osservaTex = new MutationObserver(radiciCorte);
+      osservaTex.observe(radice, { childList: true, subtree: true });
+
+      /* ================= scena =================
+         Il piano vero è il quadrato 400 × 400 attorno all'origine (da −4,5 a 4,5). Se lo spazio non è
+         quadrato, adatta() allarga il viewBox da una parte sola e il prato continua: niente vuoti. */
+      const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, class: 'gs-svg', role: 'img', tabindex: 0, preserveAspectRatio: 'xMidYMid meet',
         'aria-label': 'Piano di Gauss visto dall\'alto: tocca o trascina per scegliere w, frecce per spostarlo, Invio per moltiplicare' });
-      scena.appendChild(svg);
+      scena.insertBefore(svg, aiutoEl);
+      const BX = { x0: 0, y0: 0, x1: W, y1: H };     /* il rettangolo visibile, in coordinate del piano (px del viewBox) */
       const defs = el('defs'); svg.appendChild(defs);
-      const taglio = el('clipPath', { id: 'gs-taglio' }); taglio.appendChild(el('rect', { x: 0, y: 0, width: W, height: H, rx: 20 })); defs.appendChild(taglio);
       const ombra = el('filter', { id: 'gs-ombra', x: '-50%', y: '-50%', width: '200%', height: '200%' });
       ombra.appendChild(el('feDropShadow', { dx: 0, dy: 2, stdDeviation: 1.8, 'flood-color': '#000', 'flood-opacity': scuro ? .5 : .24 }));
       defs.appendChild(ombra);
@@ -213,36 +250,48 @@
       vign.appendChild(el('stop', { offset: '1', 'stop-color': '#000', 'stop-opacity': scuro ? .32 : .09 }));
       defs.appendChild(vign);
 
-      const mondo = el('g', { 'clip-path': 'url(#gs-taglio)' }); svg.appendChild(mondo);
+      const mondo = el('g'); svg.appendChild(mondo);
       const g = (cls, attr) => { const x = el('g', Object.assign({ class: cls }, attr || {})); mondo.appendChild(x); return x; };
       const scritta = (gr, x, y, t, stile, anc, col, alone) => gr.appendChild(el('text', { x, y, 'text-anchor': anc || 'middle', fill: col || 'var(--testo2)',
         stroke: alone || PRATO, 'stroke-width': 4, 'paint-order': 'stroke', 'stroke-linejoin': 'round', style: stile }, t));
 
       /* prato a strisce, come un campo appena tagliato */
       const gPrato = g('gs-prato');
-      gPrato.appendChild(el('rect', { x: 0, y: 0, width: W, height: H, style: 'fill: ' + PRATO }));
-      for (let i = -5; i < 5; i += 2) gPrato.appendChild(el('rect', { x: X(i), y: 0, width: U, height: H, style: 'fill: ' + PRATO2, opacity: .5 }));
-      gPrato.appendChild(el('rect', { x: 0, y: 0, width: W, height: H, fill: 'url(#gs-vign)' }));
-      gPrato.appendChild(el('rect', { x: 7, y: 7, width: W - 14, height: H - 14, rx: 15, fill: 'none', style: 'stroke: ' + LINEA2, 'stroke-width': 1.6, opacity: .7 }));
-
       const gGriglia = g('gs-griglia');
-
-      /* assi del piano */
       const gAssi = g('gs-assi');
-      const AX = 4.42;
-      gAssi.appendChild(el('line', { x1: X(-AX), y1: Y(0), x2: X(AX) - 4, y2: Y(0), stroke: 'var(--testo2)', 'stroke-width': 1.7, opacity: .85 }));
-      gAssi.appendChild(el('line', { x1: X(0), y1: Y(-AX), x2: X(0), y2: Y(AX) + 4, stroke: 'var(--testo2)', 'stroke-width': 1.7, opacity: .85 }));
-      gAssi.appendChild(el('path', { d: `M${X(AX) + 3} ${Y(0)} l-10 -5 v10 Z`, fill: 'var(--testo2)', opacity: .85 }));
-      gAssi.appendChild(el('path', { d: `M${X(0)} ${Y(AX) - 3} l-5 10 h10 Z`, fill: 'var(--testo2)', opacity: .85 }));
-      for (let k = -3; k <= 3; k++) {
-        if (!k) continue;
-        gAssi.appendChild(el('line', { x1: X(k), y1: Y(0) - 4, x2: X(k), y2: Y(0) + 4, stroke: 'var(--testo2)', 'stroke-width': 1.4 }));
-        gAssi.appendChild(el('line', { x1: X(0) - 4, y1: Y(k), x2: X(0) + 4, y2: Y(k), stroke: 'var(--testo2)', 'stroke-width': 1.4 }));
-        scritta(gAssi, X(k), Y(0) + 17, (k < 0 ? '−' : '') + Math.abs(k), 'font: 500 11.5px var(--font)');
-        scritta(gAssi, X(0) - 8, Y(k) + 4, (k < 0 ? '−' : '') + (Math.abs(k) === 1 ? '' : Math.abs(k)) + 'i', 'font: italic 500 11.5px var(--font)', 'end');
+
+      /* prato e assi coprono tutto il rettangolo visibile (si ridisegnano quando cambia forma) */
+      function disegnaPrato() {
+        vuota(gPrato); vuota(gAssi);
+        const { x0, y0, x1, y1 } = BX, larg = x1 - x0, alt = y1 - y0;
+        gPrato.appendChild(el('rect', { x: x0, y: y0, width: larg, height: alt, style: 'fill: ' + PRATO }));
+        const ex = (x1 - CX) / U, ey = (y1 - CY) / U;
+        for (let i = -2 * Math.ceil((ex + 1) / 2) - 1; i < ex + 1; i += 2) {   /* strisce tagliate al bordo: niente fuori dal riquadro */
+          const a = Math.max(x0, X(i)), b = Math.min(x1, X(i) + U);
+          if (b > a) gPrato.appendChild(el('rect', { x: a, y: y0, width: b - a, height: alt, style: 'fill: ' + PRATO2, opacity: .5 }));
+        }
+        gPrato.appendChild(el('rect', { x: x0, y: y0, width: larg, height: alt, fill: 'url(#gs-vign)' }));
+        gPrato.appendChild(el('rect', { x: x0 + 7, y: y0 + 7, width: larg - 14, height: alt - 14, rx: 15, fill: 'none', style: 'stroke: ' + LINEA2, 'stroke-width': 1.6, opacity: .7 }));
+        /* assi del piano */
+        const AXx = ex - .18, AXy = ey - .18;
+        gAssi.appendChild(el('line', { x1: X(-AXx), y1: Y(0), x2: X(AXx) - 4, y2: Y(0), stroke: 'var(--testo2)', 'stroke-width': 1.7, opacity: .85 }));
+        gAssi.appendChild(el('line', { x1: X(0), y1: Y(-AXy), x2: X(0), y2: Y(AXy) + 4, stroke: 'var(--testo2)', 'stroke-width': 1.7, opacity: .85 }));
+        gAssi.appendChild(el('path', { d: `M${X(AXx) + 3} ${Y(0)} l-10 -5 v10 Z`, fill: 'var(--testo2)', opacity: .85 }));
+        gAssi.appendChild(el('path', { d: `M${X(0)} ${Y(AXy) - 3} l-5 10 h10 Z`, fill: 'var(--testo2)', opacity: .85 }));
+        const kx = Math.min(6, Math.floor(ex - .45)), ky = Math.min(6, Math.floor(ey - .45));
+        for (let k = -kx; k <= kx; k++) {
+          if (!k) continue;
+          gAssi.appendChild(el('line', { x1: X(k), y1: Y(0) - 4, x2: X(k), y2: Y(0) + 4, stroke: 'var(--testo2)', 'stroke-width': 1.4 }));
+          scritta(gAssi, X(k), Y(0) + 17, (k < 0 ? '−' : '') + Math.abs(k), 'font: 500 12px var(--font)');
+        }
+        for (let k = -ky; k <= ky; k++) {
+          if (!k) continue;
+          gAssi.appendChild(el('line', { x1: X(0) - 4, y1: Y(k), x2: X(0) + 4, y2: Y(k), stroke: 'var(--testo2)', 'stroke-width': 1.4 }));
+          scritta(gAssi, X(0) - 8, Y(k) + 4, (k < 0 ? '−' : '') + (Math.abs(k) === 1 ? '' : Math.abs(k)) + 'i', 'font: italic 500 12px var(--font)', 'end');
+        }
+        scritta(gAssi, X(AXx) - 2, Y(0) - 9, 'Re', 'font: 600 12px var(--font)', 'end');
+        scritta(gAssi, X(0) + 9, Y(AXy) + 8, 'Im', 'font: 600 12px var(--font)', 'start');
       }
-      scritta(gAssi, X(AX) - 2, Y(0) - 9, 'Re', 'font: 600 11px var(--font)', 'end');
-      scritta(gAssi, X(0) + 9, Y(AX) + 8, 'Im', 'font: 600 11px var(--font)', 'start');
 
       const gBers = g('gs-bersaglio');
       const gTraccia = g('gs-traccia');
@@ -252,7 +301,7 @@
       const gW = g('gs-w');
       const wSettore = el('path', { style: 'fill: color-mix(in srgb, var(--s1) 16%, transparent)' }); gW.appendChild(wSettore);
       const wArco = el('path', { fill: 'none', stroke: C_W, 'stroke-width': 2, 'stroke-linecap': 'round' }); gW.appendChild(wArco);
-      const wLinea = el('line', { x1: CX, y1: CY, stroke: C_W, 'stroke-width': 2.6, 'stroke-dasharray': '6 5', 'stroke-linecap': 'round' }); gW.appendChild(wLinea);
+      const wLinea = el('line', { x1: CX, y1: CY, x2: CX, y2: CY, stroke: C_W, 'stroke-width': 2.6, 'stroke-dasharray': '6 5', 'stroke-linecap': 'round' }); gW.appendChild(wLinea);
       const wAlone = el('circle', { r: 19, fill: C_W, opacity: .16 }); gW.appendChild(wAlone);
       const wPunto = el('circle', { class: 'gs-maniglia', r: 10.5, fill: C_W, stroke: 'var(--sup)', 'stroke-width': 3, filter: 'url(#gs-ombra)' }); gW.appendChild(wPunto);
       const wNome = el('text', { fill: C_W, stroke: PRATO, 'stroke-width': 4, 'paint-order': 'stroke', 'stroke-linejoin': 'round', 'text-anchor': 'middle', style: 'font: italic 700 17px var(--font-titoli)' }, 'w');
@@ -260,9 +309,9 @@
 
       /* impronta di z: resta dove partiva il razzo mentre il razzo si muove */
       const zOrma = el('g', { opacity: 0 }); mondo.appendChild(zOrma);
-      const zOrmaLinea = el('line', { x1: CX, y1: CY, stroke: C_Z, 'stroke-width': 2.4, 'stroke-dasharray': '3 5', 'stroke-linecap': 'round', opacity: .8 }); zOrma.appendChild(zOrmaLinea);
-      const zOrmaPunto = el('circle', { r: 4.5, fill: 'var(--sup)', stroke: C_Z, 'stroke-width': 2 }); zOrma.appendChild(zOrmaPunto);
-      const zOrmaNome = el('text', { fill: C_Z, stroke: PRATO, 'stroke-width': 4, 'paint-order': 'stroke', 'text-anchor': 'middle', style: 'font: italic 700 15px var(--font-titoli)', opacity: .85 }, 'z');
+      const zOrmaLinea = el('line', { x1: CX, y1: CY, x2: CX, y2: CY, stroke: C_Z, 'stroke-width': 2.4, 'stroke-dasharray': '3 5', 'stroke-linecap': 'round', opacity: .8 }); zOrma.appendChild(zOrmaLinea);
+      const zOrmaPunto = el('circle', { cx: CX, cy: CY, r: 4.5, fill: 'var(--sup)', stroke: C_Z, 'stroke-width': 2 }); zOrma.appendChild(zOrmaPunto);
+      const zOrmaNome = el('text', { x: CX, y: CY, fill: C_Z, stroke: PRATO, 'stroke-width': 4, 'paint-order': 'stroke', 'text-anchor': 'middle', style: 'font: italic 700 15px var(--font-titoli)', opacity: .85 }, 'z');
       zOrma.appendChild(zOrmaNome);
 
       /* il razzo: scia dall'origine e razzo con la punta sul numero */
@@ -276,6 +325,8 @@
       razzo.appendChild(el('circle', { cx: -12, cy: 0, r: 2.9, fill: 'var(--sup)', stroke: SCURO(C_Z), 'stroke-width': 1.3 }));
       const zNome = el('text', { fill: C_Z, stroke: PRATO, 'stroke-width': 4, 'paint-order': 'stroke', 'stroke-linejoin': 'round', 'text-anchor': 'middle', style: 'font: italic 700 16px var(--font-titoli)' }, 'z');
       gRazzo.appendChild(zNome);
+      /* in modalità libera la punta del razzo si prende col dito: un alone arancione lo dice */
+      const zPresa = el('circle', { r: 17, fill: C_Z, 'fill-opacity': .15, opacity: 0, stroke: C_Z, 'stroke-width': 2, 'stroke-dasharray': '4 4', 'pointer-events': 'none' }); gRazzo.appendChild(zPresa);
 
       /* rampa di lancio nell'origine */
       const gPerno = g('gs-perno');
@@ -289,7 +340,9 @@
       const completati = ctx.stato().livelli;
       let livello = completati.length ? Math.max(...completati) + 1 : 0;
       if (livello >= LIVELLI.length) livello = LIVELLI.length - 1;
-      const L = () => LIVELLI[livello];
+      let libero = false, salvato = null;              /* modalità libera, e lo stato del livello da cui ci si è entrati */
+      const LIB = { z: [2, 0], t: null, agg: 'quadrato', volte: 1 };   /* il «livello» libero: niente bersaglio */
+      const L = () => (libero ? LIB : LIVELLI[livello]);
       let w = { p: [1, 0], r: 1, th: 0 };
       let anim = false, fatto = false, vinto = false, colpito = false, prodotto = null, trovati = [], trascino = false, vivo = true;
       let rafAnim = 0, rafFx = 0, gen = 0, seq = 0, effetti = [], chiaveF = '';
@@ -307,12 +360,10 @@
       function disegnaGriglia() {
         vuota(gGriglia);
         const polare = L().agg === 'polare';
-        for (let k = -4; k <= 4; k++) {
-          if (!k) continue;
-          const st = { style: 'stroke: ' + LINEA, 'stroke-width': 1.2, opacity: polare ? .45 : 1 };
-          gGriglia.appendChild(el('line', Object.assign({ x1: X(k), y1: Y(-4.6), x2: X(k), y2: Y(4.6) }, st)));
-          gGriglia.appendChild(el('line', Object.assign({ x1: X(-4.6), y1: Y(k), x2: X(4.6), y2: Y(k) }, st)));
-        }
+        const ex = Math.floor((BX.x1 - CX) / U), ey = Math.floor((BX.y1 - CY) / U);
+        const st = { style: 'stroke: ' + LINEA, 'stroke-width': 1.2, opacity: polare ? .45 : 1 };
+        for (let k = -ex; k <= ex; k++) if (k) gGriglia.appendChild(el('line', Object.assign({ x1: X(k), y1: BX.y0, x2: X(k), y2: BX.y1 }, st)));
+        for (let k = -ey; k <= ey; k++) if (k) gGriglia.appendChild(el('line', Object.assign({ x1: BX.x0, y1: Y(k), x2: BX.x1, y2: Y(k) }, st)));
         if (polare) {
           for (let a = 0; a < 360; a += 15) {
             const forte = a % 30 === 0;
@@ -323,19 +374,35 @@
             const intero = r % 1 === 0;
             gGriglia.appendChild(el('circle', { cx: CX, cy: CY, r: r * U, fill: 'none', style: 'stroke: ' + (intero ? LINEA2 : LINEA), 'stroke-width': intero ? 1.4 : .9 }));
           }
-          [30, 60, 120, 150, 210, 240, 300, 330].forEach(a => scritta(gGriglia, X(4.12 * Math.cos(a * RAD)), Y(4.12 * Math.sin(a * RAD)) + 4, a + '°', 'font: 500 10.5px var(--font)', 'middle', 'var(--testo3)'));
+          [30, 60, 120, 150, 210, 240, 300, 330].forEach(a => scritta(gGriglia, X(4.12 * Math.cos(a * RAD)), Y(4.12 * Math.sin(a * RAD)) + 4, a + '°', 'font: 500 12px var(--font)', 'middle', 'var(--testo3)'));
         }
         gGriglia.appendChild(el('circle', { cx: CX, cy: CY, r: U, fill: 'none', stroke: 'var(--testo2)', 'stroke-width': 1.5, 'stroke-dasharray': '3 5', opacity: .55 }));
       }
+      /* quanti px dal centro si può andare nella direzione th restando a m px dal bordo del campo visibile */
+      function rVis(th, m) {
+        const dx = Math.cos(th * RAD), dy = -Math.sin(th * RAD); let t = Infinity;
+        if (dx > 1e-9) t = Math.min(t, (BX.x1 - m - CX) / dx); else if (dx < -1e-9) t = Math.min(t, (BX.x0 + m - CX) / dx);
+        if (dy > 1e-9) t = Math.min(t, (BX.y1 - m - CY) / dy); else if (dy < -1e-9) t = Math.min(t, (BX.y0 + m - CY) / dy);
+        return Math.max(0, t);
+      }
+      function rientra(t) {                          /* una scritta che sborda dal campo si sposta dentro */
+        let b; try { b = t.getBBox(); } catch (e) { return t; }
+        if (!b || !b.width) return t;
+        const dx = Math.max(BX.x0 + 4 - b.x, Math.min(0, BX.x1 - 4 - b.x - b.width)), dy = Math.max(BX.y0 + 4 - b.y, Math.min(0, BX.y1 - 4 - b.y - b.height));
+        if (dx) t.setAttribute('x', +t.getAttribute('x') + dx);
+        if (dy) t.setAttribute('y', +t.getAttribute('y') + dy);
+        return t;
+      }
       function etichetta(gr, pxX, pxY, ang, dist, t, col, stile) {
         const c = Math.cos(ang * RAD), s = Math.sin(ang * RAD);
-        const x = Math.max(16, Math.min(W - 16, pxX + c * dist)), y = Math.max(16, Math.min(H - 10, pxY - s * dist + 5));
+        const x = Math.max(BX.x0 + 16, Math.min(BX.x1 - 16, pxX + c * dist)), y = Math.max(BX.y0 + 16, Math.min(BX.y1 - 10, pxY - s * dist + 5));
         const anc = c > .35 ? 'start' : c < -.35 ? 'end' : 'middle';
-        return scritta(gr, x, y, t, stile, anc, col);
+        return rientra(scritta(gr, x, y, t, stile, anc, col));
       }
       let bersaglio = null;
       function disegnaBersaglio() {
-        vuota(gBers);
+        vuota(gBers); bersaglio = null;
+        if (!L().t) return;                            /* modalità libera: nessun bersaglio */
         const l = L(), bx = X(l.t[0]), by = Y(l.t[1]);
         bersaglio = el('g', { transform: `translate(${bx} ${by})` }); gBers.appendChild(bersaglio);
         bersaglio.appendChild(el('circle', { r: 22, fill: C_T, opacity: .13 }));
@@ -346,7 +413,10 @@
         etichetta(gBers, bx, by, at + (l.t[1] === 0 ? 90 : 0), 28, l.tTesto, C_T, 'font: 700 13.5px var(--font)');
       }
       function posRazzo(r, th, nome) {
-        const x = CX + r * U * Math.cos(th * RAD), y = CY - r * U * Math.sin(th * RAD), lun = r * U;
+        const lim = rVis(th, 18), fuoriCampo = r * U > lim + .5, lun = Math.min(r * U, lim);
+        const x = CX + lun * Math.cos(th * RAD), y = CY - lun * Math.sin(th * RAD);
+        razzo.setAttribute('opacity', fuoriCampo ? .55 : 1);
+        scia.setAttribute('stroke-dasharray', fuoriCampo ? '7 6' : 'none');
         const sc = Math.max(.55, Math.min(1, lun / 26 + .2));
         const cor = Math.max(0, lun - 14);
         scia.setAttribute('x2', (CX + cor * Math.cos(th * RAD)).toFixed(1)); scia.setAttribute('y2', (CY - cor * Math.sin(th * RAD)).toFixed(1));
@@ -354,7 +424,8 @@
         razzo.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(-th).toFixed(2)}) scale(${sc.toFixed(3)})`);
         if (nome != null) zNome.textContent = nome;
         const pa = th + 90, dx = 17 * Math.cos(pa * RAD) - 10 * Math.cos(th * RAD), dy = -17 * Math.sin(pa * RAD) + 10 * Math.sin(th * RAD);
-        zNome.setAttribute('x', Math.max(14, Math.min(W - 14, x + dx)).toFixed(1)); zNome.setAttribute('y', Math.max(18, Math.min(H - 8, y + dy + 5)).toFixed(1));
+        zNome.setAttribute('x', Math.max(BX.x0 + 14, Math.min(BX.x1 - 14, x + dx)).toFixed(1)); zNome.setAttribute('y', Math.max(BX.y0 + 18, Math.min(BX.y1 - 8, y + dy + 5)).toFixed(1));
+        zPresa.setAttribute('cx', x.toFixed(1)); zPresa.setAttribute('cy', y.toFixed(1));
         zNome.setAttribute('opacity', zNome.textContent ? 1 : 0);
       }
       function razzoSu(p, nome) { posRazzo(modulo(p), argD(p) || 0, nome); }
@@ -364,13 +435,13 @@
         wLinea.setAttribute('opacity', w.r * U > 14 ? 1 : 0);
         wAlone.setAttribute('cx', x); wAlone.setAttribute('cy', y);
         wPunto.setAttribute('cx', x); wPunto.setAttribute('cy', y);
-        wPunto.setAttribute('r', trascino ? 13 : 10.5);
+        wPunto.setAttribute('r', trascino === 'w' ? 13 : 10.5);
         const conArco = w.r > 1e-9 && w.th > .5;
         wArco.setAttribute('d', conArco ? arcoD(24, 0, w.th) : 'M0 0');
         wSettore.setAttribute('d', conArco ? arcoD(24, 0, w.th) + ` L${CX} ${CY} Z` : 'M0 0');
         const la = w.r > 1e-9 && (dAng(w.th, 45) < 25 || dAng(w.th, 225) < 25) ? 135 : 45;   /* mai sopra il segmento blu */
-        wNome.setAttribute('x', Math.max(12, Math.min(W - 12, x + 19 * Math.cos(la * RAD))).toFixed(1));
-        wNome.setAttribute('y', Math.max(18, Math.min(H - 8, y - 19 * Math.sin(la * RAD) + 6)).toFixed(1));
+        wNome.setAttribute('x', Math.max(BX.x0 + 12, Math.min(BX.x1 - 12, x + 19 * Math.cos(la * RAD))).toFixed(1));
+        wNome.setAttribute('y', Math.max(BX.y0 + 18, Math.min(BX.y1 - 8, y - 19 * Math.sin(la * RAD) + 6)).toFixed(1));
       }
       function disegnaTrovati() {
         trovati.forEach((q, i) => {
@@ -390,16 +461,17 @@
       }
 
       /* ================= formula scritta ================= */
-      const riga = (et, corpo, cls, pallino) => '<div class="gs-riga' + (cls ? ' ' + cls : '') + '"><span class="gs-et">' + (pallino ? '<i style="background:' + pallino + '"></i>' : '') + et + '</span><span class="gs-tex">' + corpo + '</span></div>';
+      const riga = (et, corpo, cls, pallino) => '<div class="gs-riga' + (cls ? ' ' + cls : '') + '"><span class="gs-et">' + (pallino ? '<i style="background:' + pallino + '"></i>' : '') + '<span class="t">' + et + '</span></span><span class="gs-tex">' + corpo + '</span></div>';
       function formula(forza) {
         const l = L(), volte = l.volte || 1;
-        const chiave = [livello, w.p.join(','), fatto, vinto, colpito, trovati.length].join('|');
+        const chiave = [libero, livello, w.p.join(','), l.z.join(','), volte, fatto, vinto, colpito, trovati.length].join('|');
         if (!forza && chiave === chiaveF) return;
         chiaveF = chiave;
         const T = s => ctx.tex(s);
         const mz = modulo(l.z), az = argD(l.z) || 0;
         let h = '';
-        if (volte === 1) h += riga('razzo', T('z = ' + texC(l.z).t) + T('|z| = ' + texR(mz).t) + T('\\theta_z = ' + gT(az)), '', C_Z);
+        const zc = texC(l.z);
+        if (volte === 1 || libero) h += riga('razzo', T('z ' + (zc.esatto ? '=' : '\\approx') + ' ' + zc.t) + T('|z| = ' + texR(mz).t) + T('\\theta_z = ' + gT(az)), '', C_Z);
         else h += riga('razzo', T('z = 1') + T('z \\cdot w \\cdot w = w^2'), '', C_Z);
         /* w in forma algebrica e trigonometrica */
         let wt;
@@ -410,6 +482,7 @@
           wt = alg.esatto && thE ? T('w = ' + alg.t + ' = ' + trig) : T('w ' + (alg.esatto ? '=' : '\\approx') + ' ' + alg.t) + T('w ' + (thE ? '=' : '\\approx') + ' ' + trig);
         }
         h += riga('moltiplicatore', wt, '', C_W);
+        if (libero) { carta.innerHTML = h + righeLibere(T, mz, az); return; }
         /* il prodotto: moduli che si moltiplicano, argomenti che si sommano */
         if (w.r < 1e-12) {
           h += riga('moduli', T(volte === 1 ? '|z\\cdot w| = ' + texR(mz).t + ' \\cdot 0 = 0' : '|w^2| = 0 \\cdot 0 = 0'));
@@ -429,7 +502,7 @@
           if (fin >= 360 - 1e-9) coda += ' = 360^\\circ + ' + gT(fin - 360);
           h += riga('argomenti', T('\\theta = ' + som + coda));
         }
-        if (fatto && prodotto) {
+        if (fatto && prodotto && !vinto) {   /* a livello vinto lo dice già il messaggio */
           const nome = volte === 1 ? 'z\\cdot w' : 'w^2', pc = texC(prodotto);
           h += riga(colpito ? 'centrato' : 'atterrato su', T(nome + (pc.esatto ? ' = ' : ' \\approx ') + pc.t + (colpito ? '' : ' \\neq ' + l.tTex)), 'esito ' + (colpito ? 'ok' : 'no'));
         }
@@ -437,11 +510,33 @@
         carta.innerHTML = h;
       }
 
+      /* modalità libera: z·wⁿ, moduli che si moltiplicano n volte, argomenti che si sommano n volte */
+      function righeLibere(T, mz, az) {
+        const n = LIB.volte, nome = n === 1 ? 'z\\cdot w' : 'z\\cdot w^{' + n + '}';
+        let h = '';
+        if (w.r < 1e-12) {
+          h += riga('moduli', T('|' + nome + '| = ' + texR(mz).t + ' \\cdot 0 = 0'));
+          h += riga('argomenti', '<span class="gs-vuoto">con w = 0 l\'angolo non esiste</span>');
+        } else {
+          const rw = texR(w.r).t, rwP = /^[0-9]+$/.test(rw) ? rw : '\\left(' + rw + '\\right)';
+          const m = texR(mz * Math.pow(w.r, n));
+          h += riga('moduli', T('|' + nome + '| = |z|\\cdot|w|' + (n > 1 ? '^{' + n + '}' : '') + ' = ' + texR(mz).t + ' \\cdot ' + (n > 1 ? rwP + '^{' + n + '}' : rw) + (m.esatto ? ' = ' : ' \\approx ') + m.t));
+          const fin = az + n * w.th, esA = gEsatto(az) && gEsatto(w.th), giri = Math.floor((fin + 1e-9) / 360);
+          let t = '\\theta = \\theta_z + ' + (n > 1 ? n + '\\,' : '') + '\\theta_w = ' + gT(az) + ' + ' + (n > 1 ? n + '\\cdot ' : '') + gT(w.th) + (esA ? ' = ' : ' \\approx ') + gT(fin);
+          if (giri >= 1) t += ' = ' + (giri > 1 ? giri + '\\cdot ' : '') + '360^\\circ + ' + gT(fin - giri * 360);
+          h += riga('argomenti', T(t));
+        }
+        if (fatto && prodotto) { const pc = texC(prodotto); h += riga('risultato', T(nome + (pc.esatto ? ' = ' : ' \\approx ') + pc.t), 'esito'); }
+        return h;
+      }
+
       function aggiornaComandi() {
-        const l = L();
-        bMolt.disabled = anim || vinto;
-        bMoltT.textContent = (l.volte || 1) === 2 ? 'Moltiplica due volte' : 'Moltiplica';
+        const l = L(), volte = l.volte || 1;
+        bMolt.disabled = anim || vinto; bMolt.hidden = vinto;
+        bMoltT.textContent = volte === 1 ? 'Moltiplica' : volte === 2 ? 'Moltiplica due volte' : 'Moltiplica ' + volte + ' volte';
         bRic.disabled = anim;
+        bCasuale.disabled = anim; bGriglia.disabled = anim;
+        if (libero) aggiornaParametri();
       }
 
       /* ================= animazioni ================= */
@@ -494,13 +589,14 @@
         zOrma.setAttribute('opacity', 0);
         fiamma.setAttribute('opacity', 0);
         razzoSu(l.z, 'z');
+        zPresa.setAttribute('opacity', libero ? 1 : 0);
         if (!vinto) { msg.textContent = ''; msg.className = 'lab-messaggio'; }
       }
       function moltiplica() {
         if (anim || vinto) return;
         if (fatto) rimetti();
         const l = L(), volte = l.volte || 1, mio = seq;
-        anim = true; aggiornaComandi();
+        anim = true; aggiornaComandi(); zPresa.setAttribute('opacity', 0);
         msg.textContent = ''; msg.className = 'lab-messaggio';
         /* l'impronta di z resta dove partiva il razzo */
         const zx = X(l.z[0]), zy = Y(l.z[1]);
@@ -510,7 +606,7 @@
         zOrmaNome.setAttribute('x', zx + 16 * Math.cos((za - 90) * RAD)); zOrmaNome.setAttribute('y', zy - 16 * Math.sin((za - 90) * RAD) + 5);
         zOrma.setAttribute('opacity', 1);
         let r = modulo(l.z), th = za, k = 0, pEsatto = l.z.slice();
-        const nomeDopo = n => (volte === 1 ? 'z·w' : n === 1 ? 'w' : 'w²');
+        const nomeDopo = n => (libero ? 'z·w' + (n > 1 ? APICE[n] : '') : volte === 1 ? 'z·w' : n === 1 ? 'w' : 'w²');
         const fiammeggia = () => fiamma.setAttribute('transform', `scale(${(0.85 + Math.random() * .45).toFixed(2)} 1)`);
         fiamma.setAttribute('opacity', 1);
         posRazzo(r, th, '');
@@ -523,11 +619,11 @@
           const r0 = r, th0 = th;
           /* 1) gira dell'argomento di w */
           const gira = w.r > 1e-12 && w.th > .01 && r0 > 1e-12;
-          const arco = el('path', { fill: 'none', stroke: C_W, 'stroke-width': 3.2, 'stroke-linecap': 'round', 'stroke-dasharray': k > 1 ? '7 5' : null }); gTraccia.appendChild(arco);
-          const punta = el('circle', { r: 3.4, fill: C_W, opacity: 0 }); gTraccia.appendChild(punta);
+          const arco = el('path', { d: 'M' + CX + ' ' + CY, fill: 'none', stroke: C_W, 'stroke-width': 3.2, 'stroke-linecap': 'round', 'stroke-dasharray': k > 1 ? '7 5' : null }); gTraccia.appendChild(arco);
+          const punta = el('circle', { cx: CX, cy: CY, r: 3.4, fill: C_W, opacity: 0 }); gTraccia.appendChild(punta);   /* nell'origine finché non serve: in (0, 0) allargherebbe la traccia fino all'angolo */
           const faseGiro = fine => {
             if (!gira) return fine();
-            const rp = r0 * U + (k - 1) * 9;
+            const rp = Math.min(r0 * U + (k - 1) * 9, Math.min(BX.x1 - CX, CX - BX.x0, BX.y1 - CY, CY - BX.y0) - 8);
             anima(Math.min(580, 260 + w.th * 1.25), u => {
               const e = morbida(u), a = th0 + w.th * e;
               posRazzo(r0, a); fiammeggia();
@@ -539,7 +635,7 @@
               const cand = [rp + 15, Math.max(24, rp - 16)].map(rr => [CX + rr * ca, CY - rr * sa]);
               const lontano = c => Math.hypot(c[0] - wx, c[1] - wy);
               const c = lontano(cand[0]) > 34 || lontano(cand[0]) >= lontano(cand[1]) ? cand[0] : cand[1];
-              scritta(gTraccia, c[0], c[1] + 4.5, '+' + gTesto(w.th), 'font: 700 13px var(--font)', 'middle', C_W);
+              rientra(scritta(gTraccia, c[0], c[1] + 4.5, '+' + gTesto(w.th), 'font: 700 13px var(--font)', 'middle', C_W));
               fine();
             });
           };
@@ -548,14 +644,14 @@
             const r1 = r0 * w.r, a = th0 + (gira ? w.th : 0);
             if (Math.abs(r1 - r0) < 1e-9) return fine(r1, a);
             const tratto = el('line', { stroke: C_W, 'stroke-width': 9, 'stroke-linecap': 'round', opacity: .3 }); gTraccia.appendChild(tratto);
-            const ca = Math.cos(a * RAD), sa = Math.sin(a * RAD);
+            const ca = Math.cos(a * RAD), sa = Math.sin(a * RAD), lim = rVis(a, 8);
             anima(Math.min(560, 300 + Math.abs(r1 - r0) * 90), u => {
-              const rr = r0 + (r1 - r0) * liscia(u);
+              const rr = r0 + (r1 - r0) * liscia(u), p0 = Math.min(r0 * U, lim), p1 = Math.min(rr * U, lim);
               posRazzo(rr, a); fiammeggia();
-              tratto.setAttribute('x1', CX + r0 * U * ca); tratto.setAttribute('y1', CY - r0 * U * sa);
-              tratto.setAttribute('x2', CX + rr * U * ca); tratto.setAttribute('y2', CY - rr * U * sa);
+              tratto.setAttribute('x1', CX + p0 * ca); tratto.setAttribute('y1', CY - p0 * sa);
+              tratto.setAttribute('x2', CX + p1 * ca); tratto.setAttribute('y2', CY - p1 * sa);
             }, () => {
-              const rm = (r0 + r1) / 2 * U;
+              const rm = Math.min((r0 + r1) / 2 * U, lim - 10);
               etichetta(gTraccia, CX + rm * ca, CY - rm * sa, a - 90, 15, '×' + testoR(w.r), C_W, 'font: 700 13px var(--font)');
               fine(r1, a);
             });
@@ -569,6 +665,13 @@
         const l = L();
         anim = false; fatto = true; prodotto = p;
         fiamma.setAttribute('opacity', 0);
+        if (libero) {   /* niente bersaglio e niente verdetto: si dice solo che cosa è successo */
+          colpito = false;
+          razzoSu(p, 'z·w' + (LIB.volte > 1 ? APICE[LIB.volte] : ''));
+          osserva(p);
+          aggiornaComandi(); formula(true);
+          return;
+        }
         colpito = vicini(p, l.t);
         razzoSu(p, colpito ? '' : (l.volte || 1) === 2 ? 'w²' : 'z·w');   /* sul bersaglio la scritta coprirebbe il centro */
         if (colpito) {
@@ -593,7 +696,7 @@
       function vittoria() {
         const l = L();
         vinto = true;
-        ctx.completato(livello); pillole();
+        ctx.completato(livello); aggiornaLivelli();
         const cosa = l.sol === 2 ? 'Trovate tutte e due: ' + trovati.map((q, i) => ctx.tex('w_' + (i + 1) + ' = ' + texC(q).t)).join(' e ') : 'Centrato: ' + ctx.tex('z \\cdot w = ' + l.tTex);
         msg.innerHTML = '<span class="vinto">' + cosa + '</span>';
         msg.className = 'lab-messaggio ok';
@@ -640,8 +743,9 @@
 
       function sbaglio(p) {
         const l = L(), nome = (l.volte || 1) === 2 ? 'w^2' : 'z\\cdot w', pc = texC(p);
-        const fuori = Math.abs(p[0]) > 4.4 || Math.abs(p[1]) > 4.4;
-        if (!fuori) {
+        const fuori = X(p[0]) < BX.x0 + 6 || X(p[0]) > BX.x1 - 6 || Y(p[1]) < BX.y0 + 6 || Y(p[1]) > BX.y1 - 6;
+        const aBordo = X(p[0]) < BX.x0 + 18 || X(p[0]) > BX.x1 - 18 || Y(p[1]) < BX.y0 + 18 || Y(p[1]) > BX.y1 - 18;
+        if (!aBordo) {   /* il cerchio rosso solo se ci sta tutto */
           const x = X(p[0]), y = Y(p[1]);
           gOrme.appendChild(el('circle', { cx: x, cy: y, r: 15, fill: 'none', stroke: 'var(--no)', 'stroke-width': 2.2, 'stroke-dasharray': '4 3' }));
           impulso(x, y, 'var(--no)', 28);
@@ -681,22 +785,48 @@
         if (fatto) rimetti();
         aggiornaW(); formula();
       }
+      function scegliZ(nuovo) {                       /* solo in modalità libera: z non può essere 0 */
+        if (anim || !libero || nuovo.r < 1e-9) return;
+        if (vicini(nuovo.p, LIB.z)) { if (fatto) rimetti(); return; }
+        LIB.z = nuovo.p;
+        rimetti(); formula();
+      }
+      /* dal dito al piano: con preserveAspectRatio e il viewBox che cambia forma
+         si passa dalla matrice dello schermo, mai dal rettangolo dell'svg */
       function puntoDa(ev) {
-        const r = svg.getBoundingClientRect();
-        if (!r.width) return null;
-        const sx = (ev.clientX - r.left) * W / r.width, sy = (ev.clientY - r.top) * H / r.height;
-        return [(sx - CX) / U, (CY - sy) / U];
+        const m = svg.getScreenCTM();
+        if (!m) return null;
+        const p = new DOMPoint(ev.clientX, ev.clientY).matrixTransform(m.inverse());
+        return [(p.x - CX) / U, (CY - p.y) / U];
       }
       function giu(ev) {
         if (anim || vinto) return;
         const q = puntoDa(ev); if (!q) return;
-        trascino = true; svg.classList.add('presa');
+        let cosa = 'w';
+        if (libero) {   /* vicino alla punta di z (più che a w) si prende il razzo */
+          const dz = Math.hypot(q[0] - LIB.z[0], q[1] - LIB.z[1]) * U, dw = Math.hypot(q[0] - w.p[0], q[1] - w.p[1]) * U;
+          if (dz < 26 && dz < dw) cosa = 'z';
+        }
+        trascino = cosa; svg.classList.add('presa');
+        fermaLato(true);   /* mentre il dito trascina il pannello non cambia altezza: la scena non si ridimensiona sotto il dito */
         try { svg.setPointerCapture(ev.pointerId); } catch (e) { /* niente */ }
-        scegli(aggancia(q[0], q[1])); aggiornaW();
+        if (cosa === 'z') scegliZ(aggancia(q[0], q[1])); else scegli(aggancia(q[0], q[1]));
+        aggiornaW();
         ev.preventDefault();
       }
-      function muovi(ev) { if (!trascino) return; const q = puntoDa(ev); if (q) scegli(aggancia(q[0], q[1])); ev.preventDefault(); }
-      function molla() { if (!trascino) return; trascino = false; svg.classList.remove('presa'); aggiornaW(); }
+      function muovi(ev) {
+        if (!trascino) return;
+        const q = puntoDa(ev);
+        if (q) { const a = aggancia(q[0], q[1]); if (trascino === 'z') scegliZ(a); else scegli(a); }
+        ev.preventDefault();
+      }
+      function molla() { if (!trascino) return; trascino = false; svg.classList.remove('presa'); fermaLato(false); aggiornaW(); }
+      /* durante un trascinamento il pannello tiene l'altezza che ha: se crescesse (una riga in più nella formula,
+         un messaggio più lungo) la scena si rimpicciolirebbe e il punto sotto il dito non sarebbe più quello */
+      function fermaLato(si) {
+        if (si) { lato.style.height = lato.offsetHeight + 'px'; lato.style.overflow = 'hidden'; }
+        else { lato.style.height = ''; lato.style.overflow = ''; }
+      }
       function tasto(ev) {
         if (ev.key === 'Enter' || ev.key === ' ') { moltiplica(); ev.preventDefault(); return; }
         const quad = L().agg === 'quadrato';
@@ -713,31 +843,28 @@
       window.addEventListener('pointercancel', molla);
 
       /* ================= livelli ================= */
-      function pillole() {
-        vuota(pillEl);
-        const max = completati.length ? Math.max(...completati) : -1;
-        LIVELLI.forEach((_, i) => {
-          const b = document.createElement('button');
-          b.type = 'button'; b.className = 'pill' + (completati.includes(i) ? ' fatto' : '') + (i === livello ? ' qui' : '');
-          b.textContent = String(i + 1); b.title = 'Livello ' + (i + 1);
-          b.disabled = i > max + 1;
-          b.addEventListener('click', () => { if (anim) return; if (i !== livello || vinto) avviaLivello(i); });
-          pillEl.appendChild(b);
+      function aggiornaLivelli() {
+        const fatti = ctx.stato().livelli, sblocco = fatti.length ? Math.max(...fatti) + 1 : 0;
+        [...livelliEl.querySelectorAll('.lab-pallino')].forEach((p, k) => {
+          p.classList.toggle('fatto', fatti.includes(k));
+          p.classList.toggle('attivo', !libero && k === livello);
+          p.disabled = k > sblocco && k !== livello;
+          p.setAttribute('aria-current', !libero && k === livello ? 'step' : 'false');
         });
+        bLibero.setAttribute('aria-pressed', libero);
       }
       function avviaLivello(n) {
         seq++; gen++; cancelAnimationFrame(rafAnim);
+        libero = false; salvato = null; mostraLibero(); aiutoEl.hidden = true;
         livello = n; vinto = false; anim = false; trovati = []; trascino = false;
         const l = L();
         w = aggancia(1, 0);
         disegnaGriglia(); disegnaBersaglio();
         rimetti(); aggiornaW();
         msg.textContent = ''; msg.className = 'lab-messaggio';
-        objEl.innerHTML = ctx.md(l.testo);
-        aiutoEl.innerHTML = ctx.md(l.aiuto); aiutoEl.hidden = true;
+        objEl.innerHTML = '<div class="gs-lungo">' + ctx.md(l.testo) + '</div><div class="gs-breve">' + ctx.md(l.breve || l.testo) + '</div>';
         bRic.textContent = 'Ricomincia'; bRic.classList.remove('primario');
-        livEl.textContent = 'Livello ' + (n + 1) + ' di ' + LIVELLI.length;
-        pillole(); aggiornaComandi(); formula(true);
+        aggiornaLivelli(); aggiornaComandi(); formula(true);
         /* entrata: il razzo esce dalla rampa, il bersaglio si posa */
         const mz = modulo(l.z), az = argD(l.z) || 0, bx = X(l.t[0]), by = Y(l.t[1]);
         anima(460, u => {
@@ -749,12 +876,127 @@
 
       bMolt.addEventListener('click', moltiplica);
       bRic.addEventListener('click', () => { if (anim) return; avviaLivello(vinto ? (livello + 1) % LIVELLI.length : livello); });
-      bAiuto.addEventListener('click', () => { aiutoEl.hidden = !aiutoEl.hidden; });
+      bAiuto.addEventListener('click', () => {
+        if (!aiutoEl.hidden) { aiutoEl.hidden = true; return; }
+        aiutoTesto.innerHTML = libero ? ctx.md(AIUTO_LIBERO) : ctx.md(L().testo) + ctx.md(L().aiuto);
+        aiutoEl.hidden = false;
+      });
+      aiutoEl.querySelector('.m-chiudi').addEventListener('click', () => { aiutoEl.hidden = true; });
 
+      /* ================= modalità libera: z e w li sceglie lo studente, e nessuno giudica ================= */
+      const N_MAX = 6;
+      const AIUTO_LIBERO = 'In modalità libera non c\'è nessun bersaglio. Trascina il punto blu per scegliere $w$, e la punta del razzo per scegliere $z$. Con − e + decidi quante volte moltiplicare per $w$: il razzo arriva su $z \\cdot w^n$.\n\nOgni moltiplicazione **gira** il razzo dell\'argomento di $w$ e lo **allunga** di $|w|$: quindi $|z \\cdot w^n| = |z| \\cdot |w|^n$, e l\'angolo diventa $\\theta_z + n\\,\\theta_w$.\n\n«Griglia a cerchi» fa agganciare i punti a cerchi ogni $0{,}5$ e a raggi ogni $15^\\circ$. «Casuale» propone due numeri a caso.';
+      function aggiornaParametri() {
+        const box = parametriEl.querySelector('.lab-param'), [meno, piu] = box.querySelectorAll('button');
+        box.querySelector('output').textContent = String(LIB.volte);
+        meno.disabled = anim || LIB.volte <= 1; piu.disabled = anim || LIB.volte >= N_MAX;
+        bGriglia.textContent = LIB.agg === 'polare' ? 'Griglia quadrata' : 'Griglia a cerchi';
+      }
+      function osserva(p) {                           /* osservazioni neutre, mai valutazioni */
+        const n = LIB.volte;
+        if (w.r < 1e-12) { msg.textContent = 'Con w = 0 il prodotto fa 0: il razzo si accartoccia nell\'origine.'; msg.className = 'lab-messaggio'; return; }
+        const giro = n * w.th, lung = Math.pow(w.r, n);
+        const g = w.th < .01 ? 'non ha girato' : 'ha girato di ' + gTesto(giro) + (n > 1 ? ' (' + n + ' volte ' + gTesto(w.th) + ')' : '');
+        const esatto = !!riconosci(lung), per = (esatto ? '' : 'circa ') + testoR(lung);
+        const a = Math.abs(lung - 1) < 1e-9 ? 'la lunghezza è rimasta quella' : lung > 1 ? 'si è allungato ' + per + ' volte' : 'si è accorciato: la lunghezza è per ' + per;
+        const fuori = X(p[0]) < BX.x0 + 6 || X(p[0]) > BX.x1 - 6 || Y(p[1]) < BX.y0 + 6 || Y(p[1]) > BX.y1 - 6;
+        msg.textContent = 'Il razzo ' + g + ' e ' + a + '.' + (fuori ? ' È uscito dal campo.' : '');
+        msg.className = 'lab-messaggio';
+      }
+      function mostraLibero() {
+        parametriEl.hidden = !libero; objEl.hidden = libero; bCasuale.hidden = !libero; bRic.hidden = libero;
+        radice.classList.toggle('in-libero', libero);
+      }
+      function entraLibero() {
+        if (anim) return;
+        salvato = { livello, w, trovati: trovati.map(q => q.slice()), vinto, fatto, prodotto, colpito,
+          msg: msg.innerHTML, cls: msg.className, ric: bRic.textContent, ricPrim: bRic.classList.contains('primario') };
+        seq++; gen++;
+        const l = LIVELLI[livello];
+        libero = true; mostraLibero(); aiutoEl.hidden = true;
+        vinto = false; trovati = [];
+        LIB.z = l.z.slice(); LIB.agg = l.agg; LIB.volte = l.volte || 1;
+        w = aggancia(w.p[0], w.p[1]);
+        disegnaGriglia(); disegnaBersaglio(); rimetti(); aggiornaW();
+        msg.textContent = ''; msg.className = 'lab-messaggio'; bRic.classList.remove('primario');
+        aggiornaLivelli(); aggiornaComandi(); formula(true);
+      }
+      function esciLibero() {                          /* si torna al livello com'era */
+        if (anim) return;
+        const z = salvato; libero = false; salvato = null; mostraLibero(); aiutoEl.hidden = true;
+        seq++; gen++;
+        livello = z.livello; w = z.w; trovati = z.trovati; vinto = z.vinto;
+        disegnaGriglia(); disegnaBersaglio(); rimetti(); aggiornaW();
+        if (z.fatto && z.prodotto) {
+          fatto = true; prodotto = z.prodotto; colpito = z.colpito;
+          razzoSu(prodotto, colpito ? '' : (L().volte || 1) === 2 ? 'w²' : 'z·w');
+        }
+        msg.innerHTML = z.msg; msg.className = z.cls;
+        bRic.textContent = z.ric; bRic.classList.toggle('primario', z.ricPrim);
+        aggiornaLivelli(); aggiornaComandi(); formula(true);
+      }
+      function casuale() {
+        if (anim || !libero) return;
+        const r = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+        for (let giri = 0; giri < 300; giri++) {
+          const polare_ = LIB.agg === 'polare';
+          const z = polare_ ? polare(r(2, 6) / 2, r(0, 23) * 15) : aggancia(r(-3, 3), r(-3, 3));
+          const ww = polare_ ? polare(r(1, 4) / 2, r(0, 23) * 15) : aggancia(r(-2, 2), r(-2, 2));
+          const n = r(1, 3), fin = z.r * Math.pow(ww.r, n);
+          if (z.r < 1e-9 || ww.r < 1e-9 || vicini(ww.p, [1, 0]) || fin > 4.3 || fin < .45) continue;
+          if (vicini(z.p, LIB.z) && vicini(ww.p, w.p) && n === LIB.volte) continue;
+          LIB.z = z.p; LIB.volte = n; w = ww; break;
+        }
+        rimetti(); aggiornaW(); aggiornaComandi(); formula(true);
+      }
+      bLibero.addEventListener('click', () => { if (anim) return; if (libero) esciLibero(); else entraLibero(); });
+      bCasuale.addEventListener('click', casuale);
+      bGriglia.addEventListener('click', () => {
+        if (anim || !libero) return;
+        LIB.agg = LIB.agg === 'polare' ? 'quadrato' : 'polare';
+        const z = aggancia(LIB.z[0], LIB.z[1]); if (z.r > 1e-9) LIB.z = z.p;
+        w = aggancia(w.p[0], w.p[1]);
+        disegnaGriglia(); rimetti(); aggiornaW(); aggiornaComandi(); formula(true);
+      });
+      parametriEl.addEventListener('click', ev => {
+        const b = ev.target.closest('button[data-d]'); if (!b || !libero || anim) return;
+        LIB.volte = Math.max(1, Math.min(N_MAX, LIB.volte + +b.dataset.d));
+        rimetti(); aggiornaComandi(); formula(true);
+      });
+      LIVELLI.forEach((_, i) => {
+        const p = document.createElement('button'); p.type = 'button'; p.className = 'lab-pallino';
+        p.setAttribute('aria-label', 'Livello ' + (i + 1)); p.innerHTML = '<span>' + (i + 1) + '</span>';
+        p.addEventListener('click', () => { if (anim) return; if (libero || i !== livello || vinto) avviaLivello(i); });
+        livelliEl.insertBefore(p, bLibero);
+      });
+
+      /* ================= la forma dello spazio decide il viewBox =================
+         Il quadrato del piano resta intero e al centro; il prato si allunga dalla parte che avanza. */
+      let forma = '';
+      function adatta() {
+        radiciCorte();
+        const r = svg.getBoundingClientRect();
+        if (r.width < 10 || r.height < 10) return;
+        const rapp = r.width / r.height;
+        let vw = W, vh = H;
+        if (rapp >= 1) vw = Math.min(1400, Math.ceil(H * rapp / 2) * 2); else vh = Math.min(1400, Math.ceil(W / rapp / 2) * 2);
+        const chiave = vw + 'x' + vh;
+        if (chiave === forma) return;
+        forma = chiave;
+        BX.x0 = CX - vw / 2; BX.x1 = CX + vw / 2; BX.y0 = CY - vh / 2; BX.y1 = CY + vh / 2;
+        svg.setAttribute('viewBox', BX.x0 + ' ' + BX.y0 + ' ' + vw + ' ' + vh);
+        disegnaPrato(); disegnaGriglia();
+        if (!anim) { disegnaBersaglio(); aggiornaW(); razzoSu(fatto && prodotto ? prodotto : L().z, null); }
+      }
+
+      disegnaPrato();
       avviaLivello(livello);
+      adatta();
+      const ro = new ResizeObserver(adatta); ro.observe(radice); ro.observe(svg);
 
       return function smonta() {
         vivo = false; seq++; gen++;
+        ro.disconnect(); osservaTex.disconnect();
         cancelAnimationFrame(rafAnim); cancelAnimationFrame(rafFx);
         timers.forEach(clearTimeout); effetti = [];
         window.removeEventListener('pointermove', muovi, { passive: false });

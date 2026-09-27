@@ -1,50 +1,53 @@
 (function () {
 const R = String.raw;
+/* risposte dell'allenamento: un numero (anche una radice o una frazione), oppure una percentuale */
+const num = v => ({ tipo: 'numero', valore: v, tolleranza: 0.005, segnaposto: 'un numero, es. 6,5', simboli: ['√', '/', '−'] });
+const pc = (n, ...fr) => ({ tipo: 'testo', accettate: [n + '%', String(n), String(n / 100), (n / 100).toFixed(2), ...fr], segnaposto: 'es. 40%', simboli: ['%'] });
 COMPASSO.registra({
   id: 'statistica',
   titolo: 'Statistica descrittiva',
 
-  introduzione: R`Hai i voti di tutta la classe nell'ultima verifica: venticinque numeri. Com'è andata? Per rispondere non basta guardarli uno per uno. Si contano (quanti 6, quanti 7), si mettono in tabella e si riassumono in pochi numeri: la media, il voto che sta a metà, quanto sono sparpagliati. Questo è il lavoro della **statistica descrittiva**: descrivere bene dei dati già raccolti.
+  introduzione: R`Hai i voti della classe nell'ultima verifica: venticinque numeri. Com'è andata? Guardarli uno per uno non basta.
 
-La incontri ogni giorno: la media sul registro, i grafici al telegiornale, i sondaggi, «7 dentisti su 10» sulla scatola del dentifricio. Sapere come si costruiscono quei numeri serve anche a difendersi, perché gli stessi dati, presentati in due modi diversi, possono sembrare due storie diverse.
+Allora li conti, li metti in tabella e li riassumi in pochi numeri. Per esempio la media, il voto che sta a metà, quanto sono sparpagliati. Questo è il lavoro della **statistica descrittiva**.
+
+La incontri ogni giorno: la media sul registro, i grafici al telegiornale, i sondaggi. Capire come nascono quei numeri ti aiuta a non farti ingannare.
 
 Ti bastano frazioni, numeri decimali e percentuali.`,
 
   inBreve: [
-    R`Prima di tutto chiediti che tipo di dati hai: parole (qualitativo), numeri che si contano (discreto) o numeri che si misurano (continuo). Da lì dipende quello che puoi calcolare.`,
-    R`Le frequenze relative (o le percentuali) servono a confrontare gruppi di grandezza diversa; la somma delle relative fa sempre $1$.`,
-    R`Nella media di una tabella ogni valore va moltiplicato per la sua frequenza.`,
-    R`La mediana si trova solo dopo aver ordinato i dati. Un valore anomalo sposta la media ma quasi non tocca la mediana.`,
-    R`La deviazione standard misura quanto i dati stanno lontani dalla media: si fa la media dei quadrati degli scarti e poi la radice.`,
-    R`Correlazione non vuol dire causa: due grandezze possono crescere insieme perché dipendono da una terza.`
+    R`Prima chiediti che dati hai: parole (qualitativo), numeri che si contano (discreto) o numeri che si misurano (continuo).`,
+    R`Le frequenze relative e le percentuali servono a confrontare gruppi di grandezza diversa. Le relative sommano sempre a $1$.`,
+    R`Nella media di una tabella moltiplichi ogni valore per la sua frequenza.`,
+    R`La mediana si trova dopo aver ordinato i dati. Un valore anomalo sposta la media, ma quasi non tocca la mediana.`,
+    R`La deviazione standard misura quanto i dati stanno lontani dalla media: fai la media dei quadrati degli scarti, poi la radice.`,
+    R`Due grandezze possono crescere insieme senza che una causi l'altra.`
   ],
 
   sezioni: [
-    { id: 'popolazione-campione', titolo: 'Popolazione, unità statistica, caratteri', testo: R`Vuoi sapere quante ore dormono gli studenti del tuo liceo. Prima di chiedere qualunque cosa devi decidere **chi** intervisti e **che cosa** gli chiedi.
+    { id: 'popolazione-campione', titolo: 'Popolazione, unità statistica, caratteri', testo: R`Vuoi sapere quante ore dormono gli studenti del tuo liceo. Il liceo ha $900$ iscritti, e tu ne intervisti $90$.
 
->* La **popolazione** (o collettivo statistico) è l'insieme di tutti gli individui su cui si indaga; il singolo individuo è l'**unità statistica**; un **campione** è un sottoinsieme della popolazione, scelto per studiarla senza esaminarla tutta.
+>* La **popolazione** è l'insieme di tutti gli individui che studi: qui i $900$ studenti. Ogni individuo è un'**unità statistica**. Un **campione** è una parte della popolazione: qui i $90$ intervistati.
 
-Nell'esempio del sonno, se il liceo ha 900 iscritti, la popolazione sono i 900 studenti, l'unità statistica è il singolo studente e, se ne intervisti 90, quei 90 sono il campione. Un campione serve solo se è **rappresentativo**, cioè se somiglia alla popolazione: intervistando soltanto la squadra di pallavolo avresti un'immagine distorta della scuola.
+Il campione deve somigliare alla popolazione, cioè essere **rappresentativo**. Se intervisti solo la squadra di pallavolo, ottieni un'immagine sbagliata della scuola.
 
-Di ogni unità si osserva un **carattere** (le ore di sonno, il colore degli occhi, il voto). I valori che il carattere assume si chiamano **modalità**.
+Di ogni unità osservi un **carattere**, per esempio le ore di sonno o il colore degli occhi. I valori del carattere si chiamano **modalità**.
 
-- Carattere **qualitativo**: le modalità sono parole, non numeri. È *ordinabile* se le modalità hanno un ordine naturale (insufficiente, sufficiente, buono, ottimo), *sconnesso* se non ce l'hanno (colore degli occhi, sport praticato).
-- Carattere **quantitativo discreto**: le modalità sono numeri isolati, che si **contano** (numero di fratelli, voto, numero di errori in un dettato).
-- Carattere **quantitativo continuo**: le modalità possono essere tutti i numeri di un intervallo e si **misurano** (altezza, peso, tempo). Fra due valori ce n'è sempre un terzo.
+- Carattere **qualitativo**: le modalità sono parole (colore degli occhi, sport). Se hanno un ordine naturale, come «insufficiente, sufficiente, buono», il carattere è *ordinabile*. Altrimenti è *sconnesso*.
+- Carattere **quantitativo discreto**: le modalità sono numeri che si **contano** (fratelli, voti, errori in un dettato).
+- Carattere **quantitativo continuo**: le modalità sono numeri che si **misurano** (altezza, peso, tempo).
 
 ?? Il numero di maglia dei giocatori di una squadra di calcio è un carattere…
 [x] qualitativo
 [ ] quantitativo discreto
 [ ] quantitativo continuo
-=> Il numero di maglia è un nome scritto con le cifre: la media dei numeri di maglia non vuol dire niente, e il 10 non è «più» del 5. Sembra discreto perché è un numero intero, ma è un'etichetta.
+=> Il numero di maglia è un nome scritto con le cifre. La media dei numeri di maglia non vuol dire niente, e il 10 non è «più» del 5.
 
->! Un carattere fatto di numeri non è per forza quantitativo: il numero di maglia e il codice di avviamento postale sono etichette. Se fare la media non ha senso, il carattere è qualitativo.` },
+>! Un carattere fatto di numeri non è per forza quantitativo. Se fare la media non ha senso, il carattere è qualitativo.` },
 
-    { id: 'frequenze', titolo: 'Frequenze assolute, relative, percentuali e cumulate', testo: R`Il primo passo, con qualunque elenco di dati, è contare quante volte compare ogni modalità.
+    { id: 'frequenze', titolo: 'Frequenze assolute, relative, percentuali e cumulate', testo: R`Ecco i voti di una verifica in una classe di $N = 25$ studenti. Il $6$ l'hanno preso in $7$. Allora $7$ è la sua frequenza assoluta, $\dfrac{7}{25} = 0{,}28$ la relativa, $28\%$ la percentuale.
 
->* La **frequenza assoluta** $n_i$ è il numero di unità che presentano la modalità $x_i$. La **frequenza relativa** è $f_i = \dfrac{n_i}{N}$, dove $N$ è il numero totale di unità. La **frequenza percentuale** è $f_i \cdot 100$.
-
-Questi sono i voti dell'ultima verifica in una classe di $N = 25$ studenti. Il $6$, per esempio, l'hanno preso in $7$: frequenza assoluta $7$, relativa $\dfrac{7}{25} = 0{,}28$, percentuale $28$.
+>* La **frequenza assoluta** $n_i$ dice quante volte compare il valore $x_i$. La **frequenza relativa** è $f_i = \dfrac{n_i}{N}$. La **frequenza percentuale** è $f_i \cdot 100$.
 
 | voto $x_i$ | $n_i$ | $f_i$ | % | $N_i$ |
 |---|---|---|---|---|
@@ -58,23 +61,23 @@ Questi sono i voti dell'ultima verifica in una classe di $N = 25$ studenti. Il $
 | 10 | 1 | 0,04 | 4 | 25 |
 | totale | 25 | 1,00 | 100 | |
 
-La somma delle frequenze assolute è sempre $N$, quella delle relative è sempre $1$, quella delle percentuali è sempre 100: è il primo controllo da fare su una tabella, e smaschera subito un errore di conteggio.
+Controlla sempre i totali. Le frequenze assolute sommano a $N$, le relative a $1$, le percentuali a $100$.
 
-Le frequenze relative servono a **confrontare gruppi di grandezza diversa**: «in 3ªA cinque insufficienti, in 3ªB sette» non dice dove è andata peggio, finché non sai quanti studenti ci sono in ciascuna classe.
+Le frequenze relative servono a **confrontare gruppi di grandezza diversa**.
 
 ?? In 3ªA (25 studenti) ci sono 5 insufficienze, in 3ªB (20 studenti) anche 5. Dove è andata peggio?
 [x] in 3ªB: $25\%$ contro $20\%$
 [ ] è andata uguale: 5 e 5
 [ ] in 3ªA, che ha più studenti
-=> In 3ªA le insufficienze sono $\dfrac{5}{25} = 0{,}20$, cioè il $20\%$; in 3ªB sono $\dfrac{5}{20} = 0{,}25$, il $25\%$. A parità di frequenza assoluta, pesa di più nella classe più piccola.
+=> In 3ªA le insufficienze sono $\dfrac{5}{25} = 0{,}20$, cioè il $20\%$. In 3ªB sono $\dfrac{5}{20} = 0{,}25$, cioè il $25\%$. Lo stesso numero pesa di più nella classe più piccola.
 
-La **frequenza cumulata** $N_i$ è la somma delle frequenze di tutte le modalità minori o uguali a $x_i$: risponde alla domanda «quanti hanno preso *al più* 6?». Nella tabella vale $1 + 2 + 4 + 7 = 14$, cioè il $56\%$ della classe. Ha senso solo se le modalità si possono mettere in ordine.` },
+La **frequenza cumulata** $N_i$ risponde alla domanda «quanti hanno preso *al più* 6?». Sommi le frequenze fino a quel valore: $1 + 2 + 4 + 7 = 14$. Ha senso solo se le modalità hanno un ordine.` },
 
-    { id: 'classi', titolo: 'Tabelle per classi e densità di frequenza', testo: R`Misuri l'altezza di 40 studenti al millimetro. Quasi sicuramente non ci sono due misure uguali, e la tabella delle frequenze avrebbe 40 righe con frequenza 1: non direbbe niente. Con un carattere continuo i dati si raggruppano in **classi**, intervalli uno di seguito all'altro che non si sovrappongono.
+    { id: 'classi', titolo: 'Tabelle per classi e densità di frequenza', testo: R`Misuri l'altezza di 40 studenti al millimetro. Quasi di sicuro non ci sono due misure uguali. Una tabella con 40 righe, tutte con frequenza 1, non direbbe niente. Allora raggruppi i dati in **classi**.
 
->* Una **classe** è un intervallo di valori, di solito chiuso a sinistra e aperto a destra, come $[165; 170)$. La sua **ampiezza** $a_i$ è la differenza fra gli estremi; il suo **valore centrale** $c_i$ è la media dei due estremi.
+>* Una **classe** è un intervallo di valori, come $[165; 170)$. La sua **ampiezza** $a_i$ è la differenza fra gli estremi. Il suo **valore centrale** $c_i$ è la media dei due estremi.
 
-Le altezze in centimetri di 40 studenti, in classi di ampiezza 5:
+Ecco le altezze in centimetri, in classi di ampiezza 5:
 
 | classe | $c_i$ | $n_i$ | $f_i$ | $h_i$ |
 |---|---|---|---|---|
@@ -85,13 +88,13 @@ Le altezze in centimetri di 40 studenti, in classi di ampiezza 5:
 | [175; 180) | 177,5 | 5 | 0,125 | 1,0 |
 | [180; 185) | 182,5 | 2 | 0,050 | 0,4 |
 
-Perché la convenzione «chiuso a sinistra, aperto a destra»? Perché uno studente alto esattamente 170 cm deve finire in una classe sola: con $[165; 170)$ e $[170; 175)$ non c'è ambiguità.
+Le classi sono chiuse a sinistra e aperte a destra. Così uno studente alto 170 cm finisce solo in $[170; 175)$.
 
-Quando le classi hanno **ampiezze diverse**, le frequenze da sole ingannano: una classe larga raccoglie più dati solo perché è larga. Per confrontarle si divide la frequenza per l'ampiezza.
+Se le classi hanno **ampiezze diverse**, le frequenze ingannano. Una classe larga raccoglie più dati solo perché è larga. Allora dividi la frequenza per l'ampiezza.
 
->* La **densità di frequenza** di una classe è $$h_i = \frac{n_i}{a_i}$$ cioè quanti dati ci sono per ogni unità di ampiezza (qui, per ogni centimetro).
+>* La **densità di frequenza** di una classe è $$h_i = \frac{n_i}{a_i}$$
 
-Se nella tabella unissi le ultime due classi in $[175; 185)$, la nuova classe avrebbe frequenza $7$ e ampiezza $10$. Sembrerebbe numerosa quanto $[160; 165)$, che ha anche lei $7$ studenti, ma in un intervallo largo la metà. Le densità dicono come stanno le cose: $\dfrac{7}{10} = 0{,}7$ contro $\dfrac{7}{5} = 1{,}4$.
+La densità dice quanti dati ci sono per ogni centimetro di classe.
 
 ?? Un circolo ha 30 iscritti fra 0 e 10 anni e 60 iscritti fra 10 e 30 anni. In quale fascia le età sono più «fitte»?
 [ ] fra 10 e 30, perché ha il doppio degli iscritti
@@ -99,35 +102,37 @@ Se nella tabella unissi le ultime due classi in $[175; 185)$, la nuova classe av
 [ ] fra 0 e 10, perché è la classe più stretta
 => Le densità sono $\dfrac{30}{10} = 3$ e $\dfrac{60}{20} = 3$ iscritti per anno di età: uguali. La seconda classe ha il doppio degli iscritti, ma è anche larga il doppio.
 
->! Raggruppare in classi fa perdere informazione: dei dati originali resta solo la classe in cui cadono. Per questo la media calcolata dalle classi, usando i valori centrali, è **approssimata**.` },
+>! Con le classi perdi i dati originali. Per questo la media calcolata con i valori centrali è **approssimata**.` },
 
-    { id: 'rappresentazioni', titolo: 'Quale grafico usare', testo: R`Una tabella si legge riga per riga; un grafico fa vedere tutto insieme, per esempio qual è la modalità più frequente o se un valore sta crescendo. Ogni tipo di grafico serve per un tipo di dati.
+    { id: 'rappresentazioni', titolo: 'Quale grafico usare', testo: R`Un grafico fa vedere i dati tutti insieme. Ogni tipo di grafico serve per un tipo di dati.
 
-- **ortogramma** (diagramma a barre): barre staccate, alte quanto la frequenza. Per caratteri qualitativi e discreti.
-- **istogramma**: barre attaccate, una per classe. Per caratteri continui divisi in classi.
-- **aerogramma** (diagramma a torta): un cerchio diviso in settori. Per mostrare come si divide un totale fra poche modalità.
-- **diagramma cartesiano**: punti uniti da una spezzata, con il tempo in orizzontale. Per un andamento nel tempo (serie storica).
+- **Ortogramma** (a barre): barre staccate, alte quanto la frequenza. Per caratteri qualitativi e discreti.
+- **Istogramma**: barre attaccate, una per classe. Per caratteri continui divisi in classi.
+- **Aerogramma** (a torta): un cerchio diviso in settori. Per le parti di un totale.
+- **Diagramma cartesiano**: punti uniti da una spezzata, con il tempo in orizzontale. Per un andamento nel tempo, cioè una **serie storica**.
 
-Nell'ortogramma le barre sono **staccate** perché fra una modalità e l'altra non c'è niente: fra 2 fratelli e 3 fratelli non esiste un valore in mezzo. Nell'istogramma sono **attaccate** perché le classi di un carattere continuo si toccano. Con due gruppi da confrontare si affiancano le barre, usando le percentuali se i gruppi hanno grandezze diverse.
+Nell'ortogramma le barre sono **staccate**, perché fra 2 fratelli e 3 fratelli non c'è niente. Nell'istogramma sono **attaccate**, perché le classi si toccano.
 
-Nell'istogramma conta l'**area** dei rettangoli, non l'altezza: se le classi hanno ampiezze diverse, in verticale si mette la densità $h_i$, così una classe larga non sembra più numerosa di quello che è.
+Nell'istogramma conta l'**area** dei rettangoli. Se le classi hanno ampiezze diverse, l'altezza è la densità $h_i$.
 
-Nell'aerogramma ogni settore ha un angolo proporzionale alla frequenza relativa: $\alpha_i = f_i \cdot 360^\circ$. Se il $45\%$ degli studenti va a scuola in autobus, il suo settore è $0{,}45 \cdot 360^\circ = 162^\circ$.
+Nell'aerogramma l'angolo di un settore è $\alpha_i = f_i \cdot 360^\circ$. Se il $45\%$ degli studenti va a scuola in autobus, il settore è $0{,}45 \cdot 360^\circ = 162^\circ$.
 
 ?? Vuoi mostrare come sono cambiati, mese per mese, gli iscritti alla palestra della scuola. Quale grafico scegli?
 [x] un diagramma cartesiano
 [ ] un aerogramma
 [ ] un istogramma
-=> Si vuole vedere un **andamento nel tempo**: mesi in orizzontale, iscritti in verticale, punti uniti da una spezzata. L'aerogramma mostra come si divide un totale, e gli iscritti di mesi diversi non sono parti di un totale; l'istogramma serve per un carattere continuo diviso in classi.
+=> Vuoi vedere un **andamento nel tempo**: mesi in orizzontale, iscritti in verticale. Gli iscritti dei vari mesi non sono parti di un totale, quindi la torta non va bene.
 
->! Il trucco più usato per ingannare con un grafico è tagliare l'asse verticale. Se l'asse parte da 700 invece che da 0, un aumento da 700 a 710 sembra enorme, anche se è poco più dell'$1\%$. Prima di stupirti, guarda da dove parte l'asse.
-
->* Qualitativo o discreto → barre staccate. Continuo in classi → istogramma. Parti di un totale → torta. Andamento nel tempo → diagramma cartesiano.` }
+>! Guarda sempre da dove parte l'asse verticale. Se parte da 700 invece che da 0, un aumento da 700 a 710 sembra enorme. Invece è poco più dell'$1\%$.` }
 ,
 
-    { id: 'indici-posizione', titolo: 'Media, mediana e moda', testo: R`«Com'è andata la verifica?» Nessuno risponde leggendo venticinque voti: si dice un numero solo, per esempio «la media è 6,36». Un numero che riassume dove stanno i dati si chiama **indice di posizione**. I più usati sono tre: media, mediana e moda.
+    { id: 'indici-posizione', titolo: 'Media, mediana e moda', testo: R`«Com'è andata la verifica?» Nessuno risponde leggendo venticinque voti. Si dice un numero solo, per esempio «la media è 6,36». Un numero così si chiama **indice di posizione**. I più usati sono media, mediana e moda.
 
->* **Media aritmetica**: $\overline{x} = \dfrac{x_1 + x_2 + \dots + x_N}{N}$. Se i dati sono in una tabella di frequenze, ogni valore si conta tante volte quanta è la sua frequenza: $$\overline{x} = \frac{\sum x_i n_i}{N}$$ È la **media ponderata**, con pesi $n_i$.
+I voti $4, 6, 8$ hanno media $\dfrac{4 + 6 + 8}{3} = 6$: sommi i dati e dividi per quanti sono.
+
+>* **Media aritmetica**: $$\overline{x} = \frac{x_1 + x_2 + \dots + x_N}{N}$$
+
+In una tabella, ogni valore conta tante volte quanta è la sua frequenza. Allora usi la **media ponderata**: $$\overline{x} = \frac{\sum x_i n_i}{N}$$
 
 Con i voti della tabella delle frequenze:
 
@@ -135,40 +140,42 @@ Con i voti della tabella delle frequenze:
 ~ \textstyle\sum x_i n_i = \evid{159} :: sommo i prodotti
 ~ \overline{x} = \dfrac{159}{\evid{25}} = \evidb{6{,}36} :: divido per il numero di studenti, $25$, non per il numero di voti diversi, $8$
 
-I pesi non sono per forza frequenze. Se lo scritto vale il doppio dell'orale, chi ha 7 allo scritto e 6 all'orale ha media $\dfrac{7 \cdot 2 + 6 \cdot 1}{3} = \dfrac{20}{3} \approx 6{,}67$, non $6{,}5$.
+I pesi possono essere anche altri numeri. Lo scritto vale il doppio dell'orale, e hai 7 allo scritto e 6 all'orale. La media è $\dfrac{7 \cdot 2 + 6 \cdot 1}{3} = \dfrac{20}{3} \approx 6{,}67$, non $6{,}5$.
 
-La media è il punto di **equilibrio** dei dati: le distanze dei dati che stanno sopra la media, sommate, pareggiano quelle dei dati che stanno sotto. In formule, la somma degli scarti $x_i - \overline{x}$ fa sempre zero. Nel laboratorio «La tavola in equilibrio» metti dei pesi su una tavola e cerchi il punto dove sta ferma.
+La media è il punto di **equilibrio** dei dati: la somma degli scarti $x_i - \overline{x}$ fa sempre zero. Nel laboratorio «La tavola in equilibrio» lo vedi con dei pesi su una tavola.
 
->* **Mediana**: il valore che sta al centro dopo aver **ordinato** i dati. Con $N$ dispari è quello di posto $\dfrac{N+1}{2}$; con $N$ pari è la media dei due centrali. **Moda**: la modalità con la frequenza più alta.
+>* **Mediana**: il valore al centro, dopo aver **ordinato** i dati. Con $N$ pari è la media dei due valori centrali. **Moda**: il valore con la frequenza più alta.
 
-Nei 25 voti in ordine il tredicesimo è un 6, quindi la mediana è $6$. La moda è ancora $6$, preso da 7 studenti.
+Nei 25 voti in ordine, il tredicesimo è un 6: la mediana è $6$. Anche la moda è $6$, preso da 7 studenti.
+
+Con $N$ pari, per esempio $2, 4, 6, 10$, i centrali sono $4$ e $6$. La mediana è $\dfrac{4 + 6}{2} = 5$.
 
 ?? Qual è la mediana dei dati $2, 9, 4, 7, 5$?
 [x] $5$
 [ ] $4$
 [ ] $5{,}4$
-=> In ordine i dati sono $2, 4, 5, 7, 9$, e quello centrale è $5$. Il $4$ è il valore che sta a metà nell'elenco **non ordinato**; $5{,}4$ è la media, non la mediana.
+=> In ordine i dati sono $2, 4, 5, 7, 9$, e quello centrale è $5$. Il $4$ sta a metà dell'elenco **non ordinato**. $5{,}4$ è la media.
 
-Quale indice usare? La media usa tutti i dati, e proprio per questo un solo **valore anomalo**, molto lontano dagli altri, la trascina via. Cinque stipendi annui, in migliaia di euro: 20, 24, 28, 32 e 200. La media è $60{,}8$, uno stipendio che non prende nessuno; la mediana è $28$ e racconta meglio come si vive in quell'azienda.
+Un **valore anomalo** è un dato molto lontano dagli altri. La media lo sente molto, la mediana quasi per niente. Prendi cinque stipendi annui, in migliaia di euro: 20, 24, 28, 32 e 200. La media è $60{,}8$, ma nessuno prende quella cifra. La mediana è $28$ e descrive meglio l'azienda.
 
-Nel grafico trascina il quinto stipendio (il punto arancione) avanti e indietro, e guarda le due linee.
+Nel grafico trascina il quinto stipendio (il punto arancione) e guarda le due linee.
 
 [[grafico:outlier]]
 
-La mediana si sposta solo mentre il quinto stipendio sta fra 24 e 28, cioè quando diventa lui il valore centrale; fuori da lì resta ferma. La media invece lo insegue sempre.
+La mediana si muove solo quando il quinto stipendio sta fra 24 e 28. La media invece lo segue sempre.
 
->! La moda è l'unico indice che si può usare per un carattere qualitativo come il colore degli occhi: la media dei colori non esiste. La mediana richiede almeno che le modalità si possano mettere in ordine.` },
+>! Per un carattere qualitativo, come il colore degli occhi, la media non esiste: usi la moda.` },
 
-    { id: 'variabilita', titolo: 'Indici di variabilità', testo: R`Due classi prendono entrambe media $6$. Nella prima i voti sono $5, 6, 6, 6, 7$: tutti vicini. Nella seconda sono $1, 2, 6, 10, 11$: metà disastro e metà eccellenza. La media non vede la differenza. Serve un altro numero, che misuri quanto i dati sono **sparpagliati** attorno alla media.
+    { id: 'variabilita', titolo: 'Indici di variabilità', testo: R`Due classi hanno entrambe media $6$. Nella prima i voti sono $5, 6, 6, 6, 7$: tutti vicini. Nella seconda sono $1, 2, 6, 10, 11$: molto sparpagliati. La media non vede la differenza, quindi serve un altro numero.
 
-Lavoriamo sui cinque dati $3, 5, 6, 7, 9$, che hanno media $6$.
+Lavoriamo sui dati $3, 5, 6, 7, 9$, che hanno media $6$.
 
-Il **campo di variazione** (o range) è la distanza fra il dato più grande e il più piccolo: $R = x_{\max} - x_{\min} = 9 - 3 = 6$. È semplice, ma guarda solo due dati: basta un valore anomalo a gonfiarlo.
+Il **campo di variazione** è il dato più grande meno il più piccolo: $9 - 3 = 6$. È facile, ma guarda solo due dati.
 
-Per usare tutti i dati si guarda quanto ciascuno dista dalla media. La differenza $x_i - \overline{x}$ si chiama **scarto**. Gli scarti però sommano sempre zero (quelli positivi pareggiano quelli negativi), quindi farne la media non serve. Ci sono due modi per togliere il segno:
+Per usare tutti i dati, guardi quanto ognuno dista dalla media. La differenza $x_i - \overline{x}$ si chiama **scarto**. Gli scarti però sommano sempre zero. Per togliere il segno ci sono due strade:
 
-- con il valore assoluto: lo **scarto medio assoluto** $S = \dfrac{1}{N}\sum |x_i - \overline{x}|$; qui $S = \dfrac{3 + 1 + 0 + 1 + 3}{5} = 1{,}6$;
-- con il quadrato: è la strada della varianza, quella che si usa di più.
+- il valore assoluto: lo **scarto medio assoluto** è $S = \dfrac{1}{N}\sum |x_i - \overline{x}|$, qui $\dfrac{3 + 1 + 0 + 1 + 3}{5} = 1{,}6$;
+- il quadrato: è la strada della varianza, la più usata.
 
 >* **Varianza**: la media dei quadrati degli scarti, $$\sigma^2 = \frac{1}{N}\sum (x_i - \overline{x})^2$$ **Deviazione standard** (o scarto quadratico medio): $\sigma = \sqrt{\sigma^2}$.
 
@@ -178,9 +185,9 @@ Per usare tutti i dati si guarda quanto ciascuno dista dalla media. La differenz
 ~ \sigma^2 = \dfrac{9 + 1 + 0 + 1 + 9}{5} = \evid{4} :: la varianza è la media dei quadrati
 ~ \sigma = \sqrt{4} = \evidb{2} :: con la radice si torna all'unità di misura dei dati
 
-Perché alla fine la radice? Se i dati sono in centimetri, i quadrati degli scarti sono in centimetri **quadrati**, e anche la varianza. La deviazione standard torna in centimetri e si può confrontare con i dati: dà un'idea della distanza tipica di un dato dalla media, qui circa $2$.
+Perché la radice alla fine? Se i dati sono in centimetri, la varianza è in centimetri **quadrati**. Con la radice torni ai centimetri. Così $\sigma$ si confronta con i dati: è la distanza tipica di un dato dalla media.
 
-Il grafico mostra il perché dei quadrati: ogni dato ha il suo quadrato, con il lato uguale al suo scarto, e la varianza è la media delle aree. Trascina i due punti arancioni. Allontanali dalla media e guarda come crescono i loro quadrati, molto più in fretta degli scarti. Poi spostali della stessa quantità in versi opposti: la media resta ferma, $\sigma$ no.
+Nel grafico ogni dato ha un quadrato con il lato uguale al suo scarto. La varianza è la media delle aree. Trascina i due punti arancioni lontano dalla media: i quadrati crescono molto più in fretta degli scarti.
 
 [[grafico:scarto]]
 
@@ -188,19 +195,19 @@ Il grafico mostra il perché dei quadrati: ogni dato ha il suo quadrato, con il 
 [x] ancora $2$
 [ ] $12$
 [ ] $4$
-=> Tutti i dati si spostano insieme, e con loro la media, che diventa $16$: gli scarti restano $-3, -1, 0, 1, 3$, quindi $\sigma$ non cambia. La deviazione standard misura quanto i dati sono sparsi, non dove stanno.
+=> Anche la media si sposta, e diventa $16$. Gli scarti restano $-3, -1, 0, 1, 3$, quindi $\sigma$ non cambia. $\sigma$ misura quanto i dati sono sparsi, non dove stanno.
 
-Per la varianza c'è anche una **formula rapida**, comoda quando la media non è un numero tondo: la media dei quadrati meno il quadrato della media.
+Per la varianza c'è anche una **formula rapida**: la media dei quadrati meno il quadrato della media. È comoda quando la media non è un numero tondo.
 
 ~ \sigma^2 = \overline{x^2} - \overline{x}^{\,2} :: media dei quadrati, meno la media al quadrato
 ~ \overline{x^2} = \dfrac{9 + 25 + 36 + 49 + 81}{5} = \evid{40} :: elevo al quadrato ogni **dato** (non lo scarto) e faccio la media
 ~ \sigma^2 = 40 - \evid{6^2} = \evidb{4} :: tolgo il quadrato della media: stesso risultato di prima
 
-Il **coefficiente di variazione** $\text{CV} = \dfrac{\sigma}{\overline{x}}$ è un numero puro (senza unità di misura) e serve a confrontare la variabilità di grandezze diverse, come altezze e pesi. Qui vale $\dfrac{2}{6} \approx 0{,}33$, cioè il $33\%$.
+Il **coefficiente di variazione** è $\text{CV} = \dfrac{\sigma}{\overline{x}}$, qui $\dfrac{2}{6} \approx 33\%$. Non ha unità di misura, quindi confronta grandezze diverse, come altezze e pesi.
 
->! La varianza non è mai negativa, ed è zero **solo** se tutti i dati sono uguali. Se ti viene negativa, hai sbagliato un segno o hai dimenticato di elevare al quadrato. E attenzione a non confondere $\overline{x^2}$ (media dei quadrati) con $\overline{x}^{\,2}$ (quadrato della media).` },
+>! La varianza non è mai negativa. Se ti viene negativa, forse hai confuso $\overline{x^2}$, la media dei quadrati, con $\overline{x}^{\,2}$, il quadrato della media.` },
 
-    { id: 'doppia-entrata', titolo: 'Due caratteri insieme: tabelle e correlazione', testo: R`A 120 studenti chiedi due cose: se sono maschi o femmine, e quale sport praticano. Ora ogni studente ha **due** caratteri, e i dati si mettono in una **tabella a doppia entrata**: le modalità del primo carattere sulle righe, quelle del secondo sulle colonne.
+    { id: 'doppia-entrata', titolo: 'Due caratteri insieme: tabelle e correlazione', testo: R`Chiedi a 120 studenti se sono maschi o femmine, e quale sport fanno. Ogni studente ha **due** caratteri. I dati vanno in una **tabella a doppia entrata**: un carattere sulle righe, l'altro sulle colonne.
 
 | | maschi | femmine | tot. |
 |---|---|---|---|
@@ -209,47 +216,49 @@ Il **coefficiente di variazione** $\text{CV} = \dfrac{\sigma}{\overline{x}}$ è 
 | nuoto | 20 | 10 | 30 |
 | totale | 70 | 50 | 120 |
 
-I totali di riga e di colonna sono le **frequenze marginali**: da soli descrivono un carattere alla volta (quanti maschi, quanti calciatori). Se invece guardi una colonna sola, per esempio solo i maschi, e dividi per il suo totale, ottieni le **frequenze condizionate**: fra i maschi il calcio raccoglie $\dfrac{40}{70} \approx 57\%$, fra le femmine solo $\dfrac{10}{50} = 20\%$. Le due distribuzioni sono diverse, quindi i due caratteri **non sono indipendenti**: sapere il genere cambia la previsione sullo sport.
+I totali di riga e di colonna sono le **frequenze marginali**. Descrivono un carattere alla volta: quanti maschi, quanti calciatori.
+
+Ora guarda una colonna sola e dividi per il suo totale: ottieni le **frequenze condizionate**. Fra i maschi il calcio ha $\dfrac{40}{70} \approx 57\%$, fra le femmine $\dfrac{10}{50} = 20\%$. Le percentuali sono diverse, quindi i due caratteri **non sono indipendenti**.
 
 ?? Nella tabella, fra i maschi, che percentuale fa nuoto?
 [x] circa il $29\%$
 [ ] circa il $67\%$
 [ ] circa il $17\%$
-=> I maschi sono $70$ e di questi $20$ nuotano: $\dfrac{20}{70} \approx 0{,}29$. Il $67\%$ è $\dfrac{20}{30}$, cioè la percentuale di maschi **fra chi nuota**: la domanda rovesciata. Il $17\%$ è $\dfrac{20}{120}$, i maschi nuotatori su tutti gli studenti.
+=> I maschi sono $70$ e di questi $20$ nuotano: $\dfrac{20}{70} \approx 0{,}29$. Il $67\%$ è $\dfrac{20}{30}$, la percentuale di maschi **fra chi nuota**. Il $17\%$ è $\dfrac{20}{120}$, su tutti gli studenti.
 
-Se i due caratteri sono entrambi numeri, ogni unità diventa un punto $(x_i, y_i)$ del piano, e l'insieme dei punti si chiama **nuvola di punti** (o diagramma di dispersione). Nel grafico ci sono otto studenti: in orizzontale le ore di studio settimanali, in verticale il voto medio.
+Se i due caratteri sono numeri, ogni studente diventa un punto $(x_i, y_i)$. L'insieme dei punti è una **nuvola di punti**. Nel grafico ci sono otto studenti: in orizzontale le ore di studio a settimana, in verticale il voto medio.
 
->* Il **coefficiente di correlazione lineare** $r$ è un numero fra $-1$ e $1$ che dice quanto i punti stanno su una retta: vicino a $1$ si allineano su una retta che sale, vicino a $-1$ su una retta che scende, vicino a $0$ non c'è un legame di tipo lineare.
+>* Il **coefficiente di correlazione** $r$ va da $-1$ a $1$ e dice quanto i punti stanno su una retta. Vicino a $1$: retta che sale. Vicino a $-1$: retta che scende. Vicino a $0$: nessun legame lineare.
 
-La **retta di regressione** è la retta che passa «in mezzo» ai punti nel modo migliore: quella che rende minima la somma dei quadrati delle distanze verticali dai punti (metodo dei **minimi quadrati**). Passa sempre per il punto $(\overline{x}, \overline{y})$. Per gli otto studenti è $y = 0{,}5x + 3{,}75$ con $r \approx 0{,}98$, e il $0{,}5$ si legge così: un'ora di studio in più vale in media mezzo punto.
+La **retta di regressione** passa «in mezzo» ai punti nel modo migliore. Per gli otto studenti è $y = 0{,}5x + 3{,}75$, con $r \approx 0{,}98$. Lo $0{,}5$ vuol dire: un'ora di studio in più vale in media mezzo punto.
 
-Trascina l'ottavo studente (il punto arancione) e guarda la retta e $r$. Portalo in basso a destra, tante ore e voto basso: basta un solo punto anomalo per piegare la retta e far crollare $r$.
+Trascina l'ottavo studente (il punto arancione) in basso a destra. Un solo punto anomalo piega la retta e fa crollare $r$.
 
 [[grafico:regressione]]
 
->! Correlazione non è causa. Il numero di gelati venduti e quello degli annegamenti crescono insieme, ma il gelato non annega nessuno: c'è una terza variabile, il caldo. E $r$ misura solo il legame **lineare**: dati disposti su una parabola possono avere $r = 0$.` },
+>! Due grandezze possono crescere insieme senza che una causi l'altra. I gelati venduti e gli annegamenti crescono insieme, ma per una terza causa: il caldo.` },
 
-    { id: 'normale', titolo: 'La distribuzione normale', testo: R`Misura l'altezza di migliaia di persone e disegna l'istogramma con classi sempre più strette: viene una **campana**, simmetrica, alta al centro e bassa ai lati. La stessa forma esce per il peso dei neonati, per gli errori di misura, per i tempi di un atleta su molte gare. Si chiama **distribuzione normale**, o gaussiana.
+    { id: 'normale', titolo: 'La distribuzione normale', testo: R`Misura l'altezza di migliaia di persone e disegna l'istogramma. Viene una **campana**: simmetrica, alta al centro e bassa ai lati. Si chiama **distribuzione normale**, o gaussiana. La stessa forma esce per il peso dei neonati e per gli errori di misura.
 
-Il motivo è che ognuna di queste grandezze nasce da tanti piccoli effetti indipendenti che si sommano. La macchina di Galton lo fa vedere: ogni pallina riceve tanti urti a caso, a destra o a sinistra, e le palline si ammucchiano a campana.
+Queste grandezze nascono da tanti piccoli effetti a caso che si sommano. Lo vedi nella macchina di Galton: ogni pallina riceve tanti urti a caso, e le palline si ammucchiano a campana.
 
 [[animazione:galton]]
 
-La curva ha equazione $y = \dfrac{1}{\sigma\sqrt{2\pi}}\,e^{-\frac{(x-\mu)^2}{2\sigma^2}}$, ma per usarla basta sapere che dipende da due numeri: la media $\mu$ dice **dove** sta il centro, la deviazione standard $\sigma$ dice **quanto** è larga. Muovi i due cursori: spostando $\mu$ la campana scivola di lato, aumentando $\sigma$ si allarga e si abbassa (l'area sotto la curva resta sempre $1$, cioè il $100\%$ dei dati).
+La campana dipende da due numeri. La media $\mu$ dice **dove** sta il centro. La deviazione standard $\sigma$ dice **quanto** è larga. Muovi i cursori: con $\mu$ la campana scivola di lato, con $\sigma$ si allarga e si abbassa.
 
 [[grafico:gaussiana]]
 
->* **Regola 68 - 95 - 99,7**: in una distribuzione normale, circa il $68\%$ dei dati sta fra $\mu - \sigma$ e $\mu + \sigma$, circa il $95\%$ fra $\mu - 2\sigma$ e $\mu + 2\sigma$, circa il $99{,}7\%$ fra $\mu - 3\sigma$ e $\mu + 3\sigma$.
+>* **Regola 68 - 95 - 99,7**: circa il $68\%$ dei dati sta fra $\mu - \sigma$ e $\mu + \sigma$. Circa il $95\%$ sta fra $\mu - 2\sigma$ e $\mu + 2\sigma$. Circa il $99{,}7\%$ sta fra $\mu - 3\sigma$ e $\mu + 3\sigma$.
 
-Se le altezze dei diciottenni hanno $\mu = 170$ cm e $\sigma = 8$ cm, circa 68 ragazzi su 100 stanno fra 162 e 178 cm, 95 su 100 fra 154 e 186 cm. Superare i 194 cm, cioè tre deviazioni standard sopra la media, capita a poco più di una persona su mille.
+Le altezze dei diciottenni hanno $\mu = 170$ cm e $\sigma = 8$ cm. Allora circa 68 ragazzi su 100 stanno fra 162 e 178 cm. Circa 95 su 100 stanno fra 154 e 186 cm.
 
 ?? Sempre con $\mu = 170$ cm e $\sigma = 8$ cm, circa quanti ragazzi su 100 superano i 178 cm?
 [x] circa $16$
 [ ] circa $32$
 [ ] circa $68$
-=> Fra 162 e 178 cm ce ne sono circa $68$, quindi fuori ne restano $32$. La campana è simmetrica: metà di quei $32$ sta sotto i 162 cm e metà sopra i 178 cm, cioè circa $16$. Il $32$ conta tutte e due le code insieme.
+=> Fra 162 e 178 cm ce ne sono circa $68$, quindi fuori ne restano $32$. La campana è simmetrica: metà sta sotto i 162 cm e metà sopra i 178 cm. Quindi circa $16$.
 
->! La campana non è una legge universale: i redditi, i tempi di attesa a uno sportello e i prezzi delle case non sono normali, sono fortemente asimmetrici. Applicare la regola del 68 a dati che non hanno forma di campana porta a conclusioni sbagliate.` }
+>! Non tutti i dati hanno forma di campana. I redditi, per esempio, sono molto asimmetrici: lì la regola del 68 non vale.` }
   ],
 
   grafici: {
@@ -445,6 +454,46 @@ Se le altezze dei diciottenni hanno $\mu = 170$ cm e $\sigma = 8$ cm, circa 68 r
   ],
 
   esercizi: [
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Calcola la media dei dati $5, 7, 9$.`, suggerimenti: [R`Somma i dati e dividi per quanti sono.`], risposta: num(7), soluzione: [R`Somma: $5 + 7 + 9 = 21$.`, R`I dati sono $3$: $\overline{x} = \dfrac{21}{3} = 7$.`] },
+
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Qual è la moda dei dati $3, 5, 5, 6, 8$?`, suggerimenti: [R`La moda è il valore che compare più volte.`], risposta: num(5), soluzione: [R`Il $5$ compare due volte, gli altri una volta sola.`, R`La moda è $5$.`] },
+
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Qual è la mediana dei dati $2, 4, 7, 8, 9$?`, suggerimenti: [R`I dati sono già in ordine: cerca quello al centro.`], risposta: num(7), soluzione: [R`I dati sono $5$, già in ordine.`, R`Il valore centrale è il terzo: la mediana è $7$.`] },
+
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Calcola il campo di variazione dei dati $12, 5, 9, 20, 7$.`, suggerimenti: [R`Trova il dato più grande e il più piccolo.`], risposta: num(15), soluzione: [R`Il dato più grande è $20$, il più piccolo è $5$.`, R`Campo di variazione: $20 - 5 = 15$.`] },
+
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`In una classe di $20$ studenti, $5$ hanno preso $8$. Qual è la frequenza relativa del voto $8$?`, suggerimenti: [R`Frequenza relativa: frequenza assoluta diviso numero totale.`], risposta: num(0.25), soluzione: [R`Frequenza assoluta: $5$. Totale: $N = 20$.`, R`$f = \dfrac{5}{20} = \dfrac{1}{4} = 0{,}25$.`] },
+
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Calcola la media dei dati $3, 5, 6, 10$.`, suggerimenti: [R`I dati sono $4$: dividi la somma per $4$.`], risposta: num(6), soluzione: [R`Somma: $3 + 5 + 6 + 10 = 24$.`, R`$\overline{x} = \dfrac{24}{4} = 6$.`] },
+
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Qual è la mediana dei dati $9, 3, 7, 1, 5$?`, suggerimenti: [R`Prima metti i dati in ordine.`], risposta: num(5), soluzione: [R`In ordine: $1, 3, 5, 7, 9$.`, R`Il valore centrale è il terzo: la mediana è $5$.`] },
+
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`In una classe di $30$ studenti, $6$ vanno a scuola a piedi. Che percentuale è?`, suggerimenti: [R`Calcola la frequenza relativa, poi moltiplica per $100$.`], risposta: pc(20, '6/30', '1/5'), soluzione: [R`Frequenza relativa: $\dfrac{6}{30} = 0{,}2$.`, R`Percentuale: $0{,}2 \cdot 100 = 20\%$.`] },
+
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Sei amici dicono il colore preferito: rosso, blu, blu, verde, blu, rosso. Qual è la moda?`, suggerimenti: [R`Conta quante volte compare ogni colore.`], risposta: { tipo: 'testo', accettate: ['blu', 'il blu', 'moda blu', 'la moda è blu'], segnaposto: 'un colore', simboli: [] }, soluzione: [R`Rosso: $2$ volte. Blu: $3$ volte. Verde: $1$ volta.`, R`La moda è il colore più frequente: **blu**.`] },
+
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Qual è la mediana dei dati $2, 5, 7, 10$?`, suggerimenti: [R`I dati sono $4$, un numero pari: i valori centrali sono due.`], risposta: num(6), soluzione: [R`I dati sono già in ordine. I due centrali sono $5$ e $7$.`, R`Mediana: $\dfrac{5 + 7}{2} = 6$.`] },
+
+    { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Hai $6$ all'orale e $9$ allo scritto. Lo scritto vale il doppio dell'orale. Qual è la tua media?`, suggerimenti: [R`Media ponderata: l'orale ha peso $1$, lo scritto peso $2$.`], risposta: num(8), soluzione: [R`Moltiplica ogni voto per il suo peso: $6 \cdot 1 + 9 \cdot 2 = 24$.`, R`Dividi per la somma dei pesi, $1 + 2 = 3$: $\dfrac{24}{3} = 8$.`] },
+
+    { id: 'b-12', livello: 'base', difficolta: 1, testo: R`Le temperature minime di cinque giorni sono $-3, 2, 5, -1, 4$ gradi. Calcola il campo di variazione.`, suggerimenti: [R`Il valore più piccolo è negativo: attento al segno.`], risposta: num(8), soluzione: [R`Il valore più grande è $5$, il più piccolo è $-3$.`, R`Campo di variazione: $5 - (-3) = 5 + 3 = 8$.`] },
+
+    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Qual è la mediana dei dati $4, 8, 6, 2, 8, 10$?`, suggerimenti: [R`Metti i dati in ordine.`, R`I dati sono $6$: la mediana è la media del terzo e del quarto.`], risposta: num(7), soluzione: [R`In ordine: $2, 4, 6, 8, 8, 10$.`, R`I dati sono $6$, quindi i centrali sono il terzo e il quarto: $6$ e $8$.`, R`Mediana: $\dfrac{6 + 8}{2} = 7$.`] },
+
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`In una verifica, $2$ studenti hanno preso $5$, $5$ hanno preso $6$ e $3$ hanno preso $7$. Calcola la media dei voti.`, suggerimenti: [R`Moltiplica ogni voto per quanti l'hanno preso.`, R`Dividi per il numero di studenti, non per il numero di voti diversi.`], risposta: num(6.1), soluzione: [R`Prodotti: $5 \cdot 2 = 10$, $6 \cdot 5 = 30$, $7 \cdot 3 = 21$.`, R`Somma: $10 + 30 + 21 = 61$.`, R`Gli studenti sono $2 + 5 + 3 = 10$: $\overline{x} = \dfrac{61}{10} = 6{,}1$.`] },
+
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`La media di quattro numeri è $6$. Tre di questi sono $5$, $6$ e $8$. Qual è il quarto?`, suggerimenti: [R`Se la media di $4$ numeri è $6$, la loro somma è $4 \cdot 6$.`], risposta: num(5), soluzione: [R`La somma dei quattro numeri è $4 \cdot 6 = 24$.`, R`I tre noti sommano $5 + 6 + 8 = 19$.`, R`Il quarto è $24 - 19 = 5$.`] },
+
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Calcola la varianza dei dati $1, 3, 5, 7$.`, suggerimenti: [R`Calcola la media, poi gli scarti dalla media.`, R`La varianza è la media dei quadrati degli scarti.`], risposta: num(5), soluzione: [R`Media: $\dfrac{1 + 3 + 5 + 7}{4} = 4$.`, R`Scarti: $-3, -1, 1, 3$. Quadrati: $9, 1, 1, 9$.`, R`Varianza: $\dfrac{9 + 1 + 1 + 9}{4} = \dfrac{20}{4} = 5$.`] },
+
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Calcola la deviazione standard $\sigma$ dei dati $2, 8, 2, 8$. Se serve, scrivi una radice o un decimale con due cifre.`, suggerimenti: [R`Calcola prima la varianza, poi fai la radice.`], risposta: num(3), soluzione: [R`Media: $\dfrac{2 + 8 + 2 + 8}{4} = 5$.`, R`Scarti: $-3, 3, -3, 3$. Quadrati: tutti $9$.`, R`Varianza: $\dfrac{9 \cdot 4}{4} = 9$, quindi $\sigma = \sqrt{9} = 3$.`] },
+
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`In una classe, $12$ studenti hanno media $6$ e gli altri $8$ hanno media $7{,}5$. Qual è la media di tutta la classe?`, suggerimenti: [R`Non fare la media fra $6$ e $7{,}5$: i due gruppi hanno grandezze diverse.`, R`Usa la media ponderata, con pesi $12$ e $8$.`], risposta: num(6.6), soluzione: [R`Somma dei voti del primo gruppo: $12 \cdot 6 = 72$. Del secondo: $8 \cdot 7{,}5 = 60$.`, R`Gli studenti sono $12 + 8 = 20$.`, R`Media: $\dfrac{72 + 60}{20} = \dfrac{132}{20} = 6{,}6$.`] },
+
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Calcola la deviazione standard $\sigma$ dei dati $3, 5, 7, 9, 11$. Se serve, scrivi una radice o un decimale con due cifre.`, suggerimenti: [R`La media è il dato centrale, perché i dati sono equidistanti.`, R`Varianza: media dei quadrati degli scarti. Poi fai la radice.`], risposta: num(Math.sqrt(8)), soluzione: [R`Media: $\dfrac{3 + 5 + 7 + 9 + 11}{5} = 7$.`, R`Scarti: $-4, -2, 0, 2, 4$. Quadrati: $16, 4, 0, 4, 16$.`, R`Varianza: $\dfrac{40}{5} = 8$.`, R`$\sigma = \sqrt{8} \approx 2{,}83$.`] },
+
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Calcola la varianza dei dati $2, 3, 3, 4, 8$.`, suggerimenti: [R`La media è $4$.`, R`Gli scarti sono $-2, -1, -1, 0, 4$.`], risposta: num(4.4), soluzione: [R`Media: $\dfrac{2 + 3 + 3 + 4 + 8}{5} = \dfrac{20}{5} = 4$.`, R`Scarti: $-2, -1, -1, 0, 4$. Quadrati: $4, 1, 1, 0, 16$.`, R`Varianza: $\dfrac{4 + 1 + 1 + 0 + 16}{5} = \dfrac{22}{5} = 4{,}4$.`] },
+
     { id: 'es-01', difficolta: 1, testo: R`Su 50 studenti intervistati, 18 vanno a scuola in autobus. Calcola la frequenza relativa di questa modalità (scrivila come numero decimale).`, suggerimenti: [R`La frequenza relativa è la frequenza assoluta divisa per il totale.`, R`Calcola $\dfrac{18}{50}$.`], risposta: { tipo: 'numero', valore: 0.36, tolleranza: 0.005 }, soluzione: [R`$f = \dfrac{18}{50} = 0{,}36$.`, R`In percentuale: il 36% degli studenti prende l'autobus.`] },
     { id: 'es-02', difficolta: 1, testo: R`I voti di 9 studenti sono $4, 5, 5, 6, 6, 7, 8, 8, 9$. Calcola la media aritmetica arrotondata ai centesimi.`, suggerimenti: [R`Somma tutti i voti e dividi per quanti sono.`, R`La somma è $58$.`], risposta: { tipo: 'numero', valore: 6.44, tolleranza: 0.01 }, soluzione: [R`Somma: $4 + 5 + 5 + 6 + 6 + 7 + 8 + 8 + 9 = 58$.`, R`$\overline{x} = \dfrac{58}{9} = 6{,}4\overline{4} \approx 6{,}44$.`] },
     { id: 'es-03', difficolta: 1, testo: R`Calcola la mediana dei dati $4, 5, 5, 6, 6, 7, 8, 8, 9$.`, suggerimenti: [R`I dati sono già ordinati: conta quanti sono.`, R`$N = 9$ è dispari, quindi la mediana è il valore di posto $\dfrac{9+1}{2}$.`], risposta: { tipo: 'numero', valore: 6, tolleranza: 0.01 }, soluzione: [R`$N = 9$ è dispari: la mediana è il valore di posto $5$.`, R`Contando: $4, 5, 5, 6, \mathbf{6}, 7, 8, 8, 9$. La mediana è $6$.`] },

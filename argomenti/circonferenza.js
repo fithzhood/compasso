@@ -16,58 +16,81 @@ const TE = (function () {
     sulla: (g, asse) => asse === 'x' ? 'px - (' + g + ')*6*' + z + '*py/(sqrt(' + D + '))' : 'py + (' + g + ')*6*' + z + '*px/(sqrt(' + D + '))'
   };
 })();
+/* allenamento: coppie (x; y) in ordine, numeri, sì/no, posizione di una retta, equazioni di circonferenze */
+const cop = (x, y) => ({ tipo: 'numeri', valori: [x, y], ordinati: true, segnaposto: 'es. 2; -1' });
+const num = v => ({ tipo: 'numero', valore: v, tolleranza: 0.01, segnaposto: 'es. 6 o √5' });
+const SI = { tipo: 'testo', accettate: ['sì', 'si', 'sì, ci sta', 'si, ci sta', 'ci sta', 'appartiene', 'sì, appartiene', 'sì appartiene', 'sta sulla circonferenza'], segnaposto: 'sì o no', simboli: [] };
+const NO = { tipo: 'testo', accettate: ['no', 'no, non ci sta', 'non ci sta', 'non appartiene', 'no, non appartiene', 'no non appartiene', 'no, è fuori', 'no, è esterno', 'no, sta fuori'], segnaposto: 'sì o no', simboli: [] };
+const pos = p => ({ tipo: 'testo', accettate: [p, 'è ' + p, 'la retta è ' + p, 'retta ' + p], segnaposto: 'secante, tangente o esterna', simboli: [] });
+/* la circonferenza di centro (p; q) con r² = r2: forma canonica (anche con i due quadrati scambiati e con r² scritto
+   come potenza) e forma generale (con il termine noto a sinistra o a destra, e con i termini in x vicini).
+   Con solo = 'generale' accetta solo la forma generale. La casella toglie gli spazi e legge ² come ^2. */
+function circ(p, q, r2, solo) {
+  const quad = (v, k) => k === 0 ? v + '^2' : '(' + v + (k > 0 ? '-' + k : '+' + (-k)) + ')^2';
+  const lin = (k, v) => k === 0 ? '' : (k > 0 ? '+' : '-') + (Math.abs(k) === 1 ? '' : Math.abs(k)) + v;
+  const cost = k => k === 0 ? '' : (k > 0 ? '+' : '-') + Math.abs(k);
+  const acc = [];
+  if (solo !== 'generale') {
+    const r = Math.sqrt(r2), destre = [String(r2)].concat(Number.isInteger(r) ? [r + '^2'] : []);
+    destre.forEach(d => { acc.push(quad('x', p) + '+' + quad('y', q) + '=' + d); acc.push(quad('y', q) + '+' + quad('x', p) + '=' + d); });
+  }
+  const a = -2 * p, b = -2 * q, c = p * p + q * q - r2;
+  acc.push('x^2+y^2' + lin(a, 'x') + lin(b, 'y') + cost(c) + '=0');
+  acc.push('x^2+y^2' + lin(a, 'x') + lin(b, 'y') + '=' + (-c));
+  acc.push('x^2' + lin(a, 'x') + '+y^2' + lin(b, 'y') + cost(c) + '=0');
+  return { tipo: 'testo', accettate: Array.from(new Set(acc)), segnaposto: solo === 'generale' ? 'es. x² + y² + 6x − 2y + 1 = 0' : 'es. (x − 1)² + (y + 2)² = 9', simboli: ['x²', 'y²', '(', ')', '+', '−', '='] };
+}
 COMPASSO.registra({
   id: 'circonferenza',
   titolo: 'La circonferenza',
 
-  introduzione: R`Punta l'ago del compasso sul foglio e fai girare la matita: la curva che ottieni è una circonferenza. Ogni suo punto sta alla stessa distanza dall'ago. Tutto questo capitolo nasce da quell'idea sola, un centro e una distanza fissa.
+  introduzione: R`Punta l'ago del compasso sul foglio e fai girare la matita. La curva che ottieni è una **circonferenza**. Ogni suo punto sta alla stessa distanza dall'ago.
 
-Nel piano cartesiano quell'idea diventa un'equazione in cui compaiono insieme $x^2$ e $y^2$. Con quell'equazione rispondi a domande concrete: una retta taglia la circonferenza, la sfiora o le passa lontano? Due circonferenze si incontrano? Quale circonferenza passa per tre punti dati? Se tre paesi vogliono un ripetitore che stia alla stessa distanza da tutti e tre, va messo proprio nel centro di quella circonferenza.
+Nel piano cartesiano questa idea diventa un'equazione con $x^2$ e $y^2$. Con l'equazione capisci se una retta taglia la circonferenza, la sfiora o le passa lontano. E trovi la circonferenza che passa per tre punti dati.
 
-Ti servono la distanza fra due punti, l'equazione della retta, la distanza di un punto da una retta e le equazioni di secondo grado, soprattutto il discriminante $\Delta$. Qui le ritrovi applicate a una figura.`,
+Ti servono la distanza fra due punti e quella di un punto da una retta. Servono anche l'equazione della retta e il $\Delta$.`,
 
   inBreve: [
-    R`La circonferenza è l'insieme dei punti che distano $r$ dal centro $C(\alpha;\beta)$; scritta con la formula della distanza diventa $(x-\alpha)^2+(y-\beta)^2=r^2$.`,
-    R`Nella forma $x^2+y^2+ax+by+c=0$ il centro è $\left(-\frac a2;-\frac b2\right)$ e il raggio è $\sqrt{\frac{a^2}{4}+\frac{b^2}{4}-c}$: se sotto radice non c'è un numero positivo, la circonferenza non esiste.`,
-    R`Prima di leggere centro e raggio, $x^2$ e $y^2$ devono avere coefficiente $1$: se non ce l'hanno, dividi tutta l'equazione.`,
-    R`Retta e circonferenza: confronta la distanza del centro dalla retta con il raggio, oppure sostituisci e guarda il $\Delta$. Due punti, uno (tangente) o nessuno.`,
-    R`La tangente in un punto della circonferenza è perpendicolare al raggio. Da un punto esterno partono due tangenti, e la verticale va controllata a parte.`,
-    R`Sottraendo le equazioni di due circonferenze spariscono $x^2$ e $y^2$: resta una retta, l'asse radicale, che passa per i loro punti comuni.`
+    R`La circonferenza è fatta dei punti che distano $r$ dal centro $C(\alpha;\beta)$. La sua equazione è $(x-\alpha)^2+(y-\beta)^2=r^2$.`,
+    R`Da $x^2+y^2+ax+by+c=0$ leggi il centro $\left(-\frac a2;-\frac b2\right)$ e il raggio $\sqrt{\frac{a^2}{4}+\frac{b^2}{4}-c}$. Se sotto la radice non c'è un numero positivo, la circonferenza non esiste.`,
+    R`Prima di leggere centro e raggio, $x^2$ e $y^2$ devono avere coefficiente $1$. Se non ce l'hanno, dividi tutta l'equazione.`,
+    R`Per una retta, confronta la distanza $d$ del centro con il raggio: $d<r$ secante, $d=r$ tangente, $d>r$ esterna.`,
+    R`La tangente in un punto della circonferenza è perpendicolare al raggio. Da un punto esterno partono due tangenti.`,
+    R`Se sottrai le equazioni di due circonferenze, spariscono $x^2$ e $y^2$. Resta una retta: l'asse radicale.`
   ],
 
   sezioni: [
-    { id: 'definizione-luogo', titolo: 'La circonferenza come luogo geometrico', testo: R`Quando dici che un punto $P$ «sta sulla circonferenza» di centro $C$ e raggio $3$, dici una cosa sola: la distanza fra $P$ e $C$ è $3$. Non importa se $P$ è sopra, sotto o di sbieco rispetto al centro. Conta solo quella distanza.
+    { id: 'definizione-luogo', titolo: 'La circonferenza come luogo geometrico', testo: R`Prendi il centro $C(1;2)$ e il raggio $3$. Il punto $P(4;2)$ sta $3$ quadretti a destra di $C$, quindi dista $3$ da $C$ e sta sulla circonferenza.
 
->* La **circonferenza** di centro $C$ e raggio $r>0$ è l'insieme di tutti i punti $P$ del piano che distano esattamente $r$ da $C$: $\overline{CP}=r$.
+>* La **circonferenza** di centro $C$ e raggio $r>0$ è l'insieme dei punti $P$ che distano esattamente $r$ da $C$: $\overline{CP}=r$.
 
-Una definizione che dice quale proprietà hanno *tutti e soli* i punti di una figura si chiama **luogo geometrico**. Il vantaggio è che si traduce subito in un calcolo, perché la distanza fra due punti la sai già trovare.
+Una definizione così si chiama **luogo geometrico**. Si traduce subito in un calcolo con la formula della distanza.
 
-Esempio: centro $C(1;2)$ e raggio $3$.
+Altri punti, con lo stesso centro e raggio:
 
-- $P(4;2)$ ci sta: è $3$ quadretti a destra di $C$.
 - $Q(1;5)$ ci sta: è $3$ quadretti sopra $C$.
-- $S(2;2)$ no: dista solo $1$ da $C$, quindi è dentro.
-- $T(3;4)$ sembra sul bordo, ma la formula dice $\overline{CT}=\sqrt{(3-1)^2+(4-2)^2}=\sqrt8\approx2{,}83$. È dentro anche lui.
+- $S(2;2)$ no: dista $1$ da $C$, quindi è dentro.
+- $T(3;4)$ sembra sul bordo. Ma $\overline{CT}=\sqrt{2^2+2^2}=\sqrt8\approx2{,}83$: è dentro.
 
 ?? Il punto $P(4;6)$ sta sulla circonferenza di centro $C(1;2)$ e raggio $5$?
-[x] sì, perché $\overline{CP}=\sqrt{3^2+4^2}=5$
-[ ] no, perché $4+6$ non fa $5$
-[ ] no, perché non è sulla stessa riga né sulla stessa colonna di $C$
-=> Si calcola la distanza da $C$: gli scarti sono $4-1=3$ e $6-2=4$, e $\sqrt{9+16}=5$, proprio il raggio. Sommare le coordinate di $P$ non ha senso: conta solo la distanza dal centro, e un punto in diagonale va bene quanto uno in orizzontale.
+[x] sì: $\overline{CP}=\sqrt{3^2+4^2}=5$
+[ ] no: $4+6$ non fa $5$
+[ ] no: non è sulla riga né sulla colonna di $C$
+=> Sì. Gli scarti da $C$ sono $3$ e $4$, e $\sqrt{9+16}=5$ è proprio il raggio. Conta solo la distanza dal centro, anche in diagonale.
 
->! **Circonferenza** e **cerchio** non sono sinonimi. La circonferenza è solo la linea, cioè i punti a distanza *esattamente* $r$. Il cerchio è la linea più tutto quello che c'è dentro, cioè i punti a distanza *al massimo* $r$. In geometria analitica si lavora quasi sempre con la circonferenza.` },
+>! **Circonferenza** e **cerchio** sono cose diverse. La circonferenza è solo la linea: i punti a distanza *esattamente* $r$. Il cerchio comprende anche la parte interna.` },
 
-    { id: 'equazione-canonica', titolo: 'L’equazione canonica', testo: R`Prendi un punto qualsiasi $P(x;y)$ e chiedi che stia sulla circonferenza di centro $C(\alpha;\beta)$ e raggio $r$. Basta scrivere la definizione con la formula della distanza:
+    { id: 'equazione-canonica', titolo: 'L’equazione canonica', testo: R`Prendi un punto $P(x;y)$ e chiedi che stia sulla circonferenza di centro $C(\alpha;\beta)$ e raggio $r$. Basta scrivere la definizione con la formula della distanza:
 
 ~ \overline{CP}=r :: la definizione: $P$ dista $r$ dal centro
 ~ \evid{\sqrt{(x-\alpha)^2+(y-\beta)^2}}=r :: scrivo la distanza fra $P(x;y)$ e $C(\alpha;\beta)$
-~ (x-\alpha)^2+(y-\beta)^2=\evidb{r^2} :: elevo al quadrato; si può fare senza cambiare le soluzioni perché i due membri non sono mai negativi
+~ (x-\alpha)^2+(y-\beta)^2=\evidb{r^2} :: elevo al quadrato: i due membri non sono negativi, quindi le soluzioni non cambiano
 
->* **Equazione canonica** (o *centro-raggio*): $$(x-\alpha)^2+(y-\beta)^2=r^2$$ con centro $C(\alpha;\beta)$ e raggio $r$. Un punto sta sulla circonferenza se e solo se le sue coordinate rendono vera l'uguaglianza.
+>* **Equazione canonica** (o *centro-raggio*): $$(x-\alpha)^2+(y-\beta)^2=r^2$$ Centro $C(\alpha;\beta)$, raggio $r$. Un punto sta sulla circonferenza quando le sue coordinate rendono vera l'uguaglianza.
 
-È la forma comoda quando centro e raggio li conosci già: li sostituisci e hai finito. Centro $C(3;-1)$ e raggio $4$ danno $(x-3)^2+(y+1)^2=16$.
+Esempio: centro $C(3;-1)$ e raggio $4$ danno $(x-3)^2+(y+1)^2=16$.
 
-Occhio ai segni: nella formula c'è $x-\alpha$, quindi se $\alpha$ è negativo il meno e il meno fanno più. Nel grafico trascina il centro $C$ in un punto con coordinate negative e guarda come cambia l'equazione; trascina $P$ per cambiare il raggio.
+Occhio ai segni. Nella formula c'è $x-\alpha$: con $\alpha=-2$ viene $x-(-2)=x+2$. Nel grafico trascina $C$ dove le coordinate sono negative, e $P$ per cambiare il raggio.
 
 [[grafico:canonica]]
 
@@ -76,23 +99,23 @@ Occhio ai segni: nella formula c'è $x-\alpha$, quindi se $\alpha$ è negativo i
 [x] $(x+2)^2+(y-5)^2=9$
 [ ] $(x+2)^2+(y-5)^2=3$
 [ ] $(x-2)^2+(y-5)^2=9$
-=> Con $\alpha=-2$ viene $x-(-2)=x+2$; con $\beta=5$ viene $y-5$. Nelle parentesi i segni sono opposti a quelli delle coordinate del centro. A destra va $r^2=9$: scrivere $3$ è l'altro errore più comune.
+=> Con $\alpha=-2$ viene $x+2$, con $\beta=5$ viene $y-5$. Nelle parentesi i segni sono opposti a quelli del centro. A destra va $r^2=9$, non $3$.
 
 >! A destra dell'uguale c'è il raggio **al quadrato**. In $(x-1)^2+(y-2)^2=9$ il raggio è $3$, non $9$.` },
 
-    { id: 'equazione-generale', titolo: 'La forma generale e la condizione di esistenza', testo: R`Se sviluppi i quadrati della forma canonica ottieni un'equazione senza parentesi. Con centro $C(1;2)$ e raggio $3$:
+    { id: 'equazione-generale', titolo: 'La forma generale e la condizione di esistenza', testo: R`Sviluppa i quadrati della forma canonica: ottieni un'equazione senza parentesi. Con centro $C(1;2)$ e raggio $3$:
 
 ~ (x-1)^2+(y-2)^2=9 :: forma canonica
 ~ \evid{x^2-2x+1}+\evid{y^2-4y+4}=9 :: sviluppo i due quadrati di binomio
 ~ x^2+y^2-2x-4y\evidb{-4}=0 :: porto il $9$ a sinistra e sommo i numeri: $1+4-9=-4$
 
-Qualunque centro e qualunque raggio tu scelga, il risultato ha sempre questa forma.
+Il risultato ha sempre questa forma.
 
->* **Forma generale:** $$x^2+y^2+ax+by+c=0$$ $x^2$ e $y^2$ hanno **lo stesso coefficiente** e **non c'è il termine** $xy$. Centro e raggio si leggono dai coefficienti: $$C\left(-\frac{a}{2};-\frac{b}{2}\right)$$ $$r=\sqrt{\frac{a^2}{4}+\frac{b^2}{4}-c}$$
+>* **Forma generale:** $$x^2+y^2+ax+by+c=0$$ $x^2$ e $y^2$ hanno **lo stesso coefficiente** e non c'è il termine $xy$. Centro e raggio: $$C\left(-\frac{a}{2};-\frac{b}{2}\right)$$ $$r=\sqrt{\frac{a^2}{4}+\frac{b^2}{4}-c}$$
 
-Da dove vengono queste formule? Sviluppando $(x-\alpha)^2$ compare $-2\alpha x$, quindi $a=-2\alpha$, cioè $\alpha=-\frac a2$. Allo stesso modo $\beta=-\frac b2$. Il meno davanti fa parte della formula.
+Da dove viene il centro? Sviluppando $(x-\alpha)^2$ compare $-2\alpha x$, quindi $a=-2\alpha$ e $\alpha=-\frac a2$. Allo stesso modo $\beta=-\frac b2$.
 
-Se le formule non le ricordi, puoi sempre tornare alla forma canonica **completando i quadrati**: aggiungi ai due membri il numero che manca per avere un quadrato di binomio.
+Se non ricordi le formule, **completa i quadrati**. Aggiungi ai due membri il numero che manca per avere un quadrato di binomio.
 
 ~ x^2+y^2-2x-4y-4=0 :: forma generale
 ~ (x^2-2x)+(y^2-4y)=4 :: metto vicini i termini in $x$ e quelli in $y$, porto il numero a destra
@@ -101,11 +124,11 @@ Se le formule non le ricordi, puoi sempre tornare alla forma canonica **completa
 
 ### La condizione di esistenza
 
-Non tutte le equazioni di questa forma sono circonferenze. Prova a completare i quadrati in $x^2+y^2-2x-4y+10=0$: viene $(x-1)^2+(y-2)^2=-5$. Una somma di due quadrati non è mai negativa, quindi nessun punto rende vera l'equazione.
+Prova con $x^2+y^2-2x-4y+10=0$. Completando i quadrati viene $(x-1)^2+(y-2)^2=-5$. Ma una somma di quadrati non è mai negativa, quindi nessun punto va bene.
 
->* **Condizione di esistenza:** $$\frac{a^2}{4}+\frac{b^2}{4}-c>0$$ È il numero sotto la radice del raggio, cioè $r^2$. Se vale $0$ l'equazione descrive un solo punto, il centro. Se è negativo non descrive nessun punto.
+>* **Condizione di esistenza:** $$\frac{a^2}{4}+\frac{b^2}{4}-c>0$$ È il numero sotto la radice, cioè $r^2$. Se vale $0$ resta solo il centro, se è negativo non resta nessun punto.
 
-Nel grafico aumenta $c$ un po' alla volta e guarda il numero $r^2$ in alto: quando arriva a zero la circonferenza si stringe nel centro, poi sparisce.
+Nel grafico aumenta $c$ e guarda $r^2$ in alto: a zero la circonferenza si stringe nel centro, poi sparisce.
 
 [[grafico:coefficienti]]
 
@@ -114,11 +137,11 @@ Nel grafico aumenta $c$ un po' alla volta e guarda il numero $r^2$ in alto: quan
 [ ] $x^2+y^2+xy-1=0$
 [x] $3x^2+3y^2-6x-9=0$
 [ ] $x^2-y^2+2x=0$
-=> Servono lo stesso coefficiente su $x^2$ e $y^2$ e nessun termine $xy$. La terza, divisa per $3$, diventa $x^2+y^2-2x-3=0$: centro $(1;0)$ e $r^2=1+0+3=4$, raggio $2$. La prima ha coefficienti diversi, la seconda ha il termine $xy$, la quarta ha $x^2$ e $y^2$ con segni opposti: nessuna delle tre è una circonferenza.
+=> $3x^2+3y^2-6x-9=0$, divisa per $3$, diventa $x^2+y^2-2x-3=0$: centro $(1;0)$ e $r^2=1+3=4$. Le altre no: in $x^2+2y^2-4=0$ i coefficienti sono diversi, in $x^2+y^2+xy-1=0$ c'è il termine $xy$, in $x^2-y^2+2x=0$ i segni sono opposti.
 
->! Le formule del centro e del raggio valgono solo se $x^2$ e $y^2$ hanno coefficiente $1$. Davanti a $2x^2+2y^2-4x+8y-10=0$ prima dividi tutto per $2$: $x^2+y^2-2x+4y-5=0$, centro $(1;-2)$. Chi legge $a=-4$ dall'equazione non divisa trova il centro sbagliato $(2;-4)$.` },
+>! Le formule valgono solo se $x^2$ e $y^2$ hanno coefficiente $1$. Con $2x^2+2y^2-4x+8y-10=0$ prima dividi per $2$: $x^2+y^2-2x+4y-5=0$, centro $(1;-2)$. Senza dividere troveresti il centro sbagliato $(2;-4)$.` },
 
-    { id: 'casi-particolari', titolo: 'Casi particolari', testo: R`Quando alcuni coefficienti sono zero, capisci subito dove sta la circonferenza, senza fare conti.
+    { id: 'casi-particolari', titolo: 'Casi particolari', testo: R`Quando alcuni coefficienti sono zero, capisci subito dove sta la circonferenza.
 
 | se | l'equazione diventa | vuol dire che |
 |---|---|---|
@@ -127,22 +150,22 @@ Nel grafico aumenta $c$ un po' alla volta e guarda il numero $r^2$ in alto: quan
 | $a=0$ | $x^2+y^2+by+c=0$ | il centro è sull'asse $y$ |
 | $a=b=0$ | $x^2+y^2=r^2$ | il centro è l'origine |
 
-Il perché è breve. Se sostituisci $O(0;0)$ nella forma generale resta solo $c$: l'origine sta sulla circonferenza esattamente quando $c=0$. E il centro è $\left(-\frac a2;-\frac b2\right)$: con $b=0$ ha ordinata zero, quindi sta sull'asse $x$; con $a=0$ ha ascissa zero.
+Se sostituisci $O(0;0)$ nella forma generale resta solo $c$, quindi l'origine sta sulla circonferenza quando $c=0$. Il centro è $\left(-\frac a2;-\frac b2\right)$: con $b=0$ ha ordinata zero, con $a=0$ ha ascissa zero.
 
-Esempio: $x^2+y^2+6x-8y=0$. Manca il termine noto, quindi passa per l'origine. Il centro è $(-3;4)$ e il raggio $\sqrt{9+16-0}=5$. Infatti $O$ dista dal centro $\sqrt{3^2+4^2}=5$, proprio il raggio.
+Esempio: $x^2+y^2+6x-8y=0$. Manca il termine noto, quindi passa per l'origine. Il centro è $(-3;4)$ e il raggio è $\sqrt{9+16}=5$.
 
->* Centro nell'origine e raggio $r$: $$x^2+y^2=r^2$$ È il caso che incontri più spesso negli esercizi su rette e tangenti.
+>* Centro nell'origine e raggio $r$: $$x^2+y^2=r^2$$
 
 ?? Qual è il raggio della circonferenza $x^2+y^2=16$? E che cosa rappresenta $x^2+y^2=-16$?
-=> Il raggio è $4$, perché a destra c'è $r^2$. La seconda equazione non rappresenta niente: $x^2+y^2$ non è mai negativo, quindi nessun punto la soddisfa.
+=> Il raggio è $4$, perché a destra c'è $r^2$. La seconda non rappresenta niente: $x^2+y^2$ non è mai negativo.
 
->! Un termine che manca non vuol dire che non è una circonferenza. $x^2+y^2-6y=0$ va benissimo: $a=0$ e $c=0$, centro $(0;3)$ sull'asse $y$, raggio $3$, e passa per l'origine. Quello che decide è la condizione di esistenza.` },
+>! Se manca un termine, la circonferenza c'è lo stesso. $x^2+y^2-6y=0$ ha $a=0$ e $c=0$: centro $(0;3)$, raggio $3$, e passa per l'origine.` },
 
-    { id: 'retta-circonferenza', titolo: 'Posizione di una retta rispetto alla circonferenza', testo: R`Una retta e una circonferenza possono avere due punti in comune, uno solo o nessuno. Nel primo caso la retta si dice **secante**, nel secondo **tangente**, nel terzo **esterna**. Per capire in quale caso sei hai due strade.
+    { id: 'retta-circonferenza', titolo: 'Posizione di una retta rispetto alla circonferenza', testo: R`Una retta e una circonferenza possono avere due punti in comune, uno o nessuno. La retta si dice **secante**, **tangente** o **esterna**.
 
 ### Con la distanza
 
-Pensa al centro: se la retta gli passa più vicino del raggio, deve per forza tagliare la circonferenza; se gli passa più lontano, non la tocca. Calcoli quindi la distanza $d$ del centro dalla retta e la confronti con il raggio $r$.
+Calcola la distanza $d$ del centro dalla retta e confrontala con il raggio $r$. Se la retta passa vicino al centro taglia la circonferenza, se passa lontano non la tocca.
 
 | distanza | punti comuni | la retta è |
 |---|---|---|
@@ -150,13 +173,13 @@ Pensa al centro: se la retta gli passa più vicino del raggio, deve per forza ta
 | $d=r$ | 1 | tangente |
 | $d>r$ | 0 | esterna |
 
-Trascina il punto $Q$ sull'asse $y$ per spostare la retta e guarda $d$: i due punti comuni si avvicinano, si fondono quando $d$ arriva a $5$, poi spariscono.
+Trascina $Q$ e guarda $d$: i due punti comuni si fondono quando $d=5$, poi spariscono.
 
 [[grafico:rettaCirconferenza]]
 
 ### Con il $\Delta$
 
-I punti comuni sono le soluzioni del sistema fra l'equazione della retta e quella della circonferenza. Se sostituisci la retta nella circonferenza resta un'equazione di secondo grado con una sola incognita, e il numero delle sue soluzioni è il numero dei punti comuni.
+Se sostituisci la retta nella circonferenza resta un'equazione di secondo grado. Quante soluzioni ha, tanti sono i punti comuni.
 
 >* $\Delta>0$: secante (due punti). $\Delta=0$: tangente (un punto). $\Delta<0$: esterna (nessun punto).
 
@@ -169,36 +192,36 @@ Esempio: la retta $y=2x-5$ e la circonferenza $x^2+y^2=5$.
 ~ x^2-4x+4=0 :: divido per $5$ per lavorare con numeri più piccoli
 ~ \Delta=16-16=\evidb{0} :: una sola soluzione: la retta è tangente
 
-Con la distanza arrivi allo stesso verdetto: la retta scritta come $2x-y-5=0$ dista da $O$ $\;d=\frac{|-5|}{\sqrt{4+1}}=\frac{5}{\sqrt5}=\sqrt5$, uguale al raggio.
+Con la distanza il verdetto è lo stesso, perché la retta $2x-y-5=0$ dista da $O$ $\;d=\frac{|-5|}{\sqrt{4+1}}=\sqrt5$, uguale al raggio.
 
 ?? Retta $y=x+1$ e circonferenza $x^2+y^2=1$: sostituendo si ottiene $2x^2+2x=0$. Com'è la retta?
-[x] secante, con punti comuni $(0;1)$ e $(-1;0)$
-[ ] tangente, perché si vede subito la soluzione $x=0$
-[ ] esterna, perché manca il termine noto e il $\Delta$ non si può calcolare
-=> Raccogliendo viene $2x(x+1)=0$: due soluzioni, $x=0$ e $x=-1$, quindi due punti comuni. Il $\Delta$ si calcola anche senza termine noto, con $c=0$: $\Delta=4-0=4>0$. Chi si ferma alla prima soluzione che vede perde l'altra.
+[x] secante: punti comuni $(0;1)$ e $(-1;0)$
+[ ] tangente: si vede subito la soluzione $x=0$
+[ ] esterna: senza termine noto il $\Delta$ non si calcola
+=> Raccogliendo viene $2x(x+1)=0$, con due soluzioni: $x=0$ e $x=-1$. Anche senza termine noto $\Delta=4-0=4>0$.
 
->! La distanza è più rapida, ma ti dice solo *quanti* sono i punti comuni. Se l'esercizio chiede *quali* sono, la sostituzione la devi fare comunque.` },
+>! La distanza è più rapida, ma dice solo *quanti* sono i punti comuni. Per sapere *quali* sono, devi sostituire.` },
 
-    { id: 'rette-tangenti', titolo: 'Le rette tangenti', testo: R`Cercare le tangenti è diverso a seconda che il punto da cui parti stia sulla circonferenza oppure fuori.
+    { id: 'rette-tangenti', titolo: 'Le rette tangenti', testo: R`Il metodo cambia se il punto sta sulla circonferenza oppure fuori.
 
 ### Tangente in un punto della circonferenza
 
-Se $P_0$ sta sulla circonferenza, la tangente in $P_0$ è la retta per $P_0$ **perpendicolare al raggio** $CP_0$ (lo sai dalla geometria). Trovi la pendenza del raggio, prendi l'antireciproco e scrivi la retta per $P_0$. Esempio con $x^2+y^2=25$ e $P_0(3;4)$:
+La tangente in $P_0$ è **perpendicolare al raggio** $CP_0$. Esempio con $x^2+y^2=25$ e $P_0(3;4)$:
 
 ~ m_{OP_0}=\frac{4-0}{3-0}=\frac43 :: pendenza del raggio da $O(0;0)$ a $P_0(3;4)$
 ~ m_t=\evid{-\frac34} :: la tangente è perpendicolare al raggio: antireciproco
 ~ y-4=-\frac34(x-3) :: retta per $P_0$ con quella pendenza
 ~ \evidb{3x+4y-25=0} :: moltiplico per $4$ e porto tutto a sinistra
 
-Esiste una scorciatoia, la **formula di sdoppiamento**: nell'equazione della circonferenza sostituisci $x^2$ con $x_0x$, $y^2$ con $y_0y$, $x$ con $\frac{x+x_0}{2}$ e $y$ con $\frac{y+y_0}{2}$.
+La scorciatoia è la **formula di sdoppiamento**: sostituisci $x^2$ con $x_0x$, $y^2$ con $y_0y$, $x$ con $\frac{x+x_0}{2}$ e $y$ con $\frac{y+y_0}{2}$.
 
->* Tangente in $P_0(x_0;y_0)$ alla circonferenza $x^2+y^2+ax+by+c=0$: $$x_0x+y_0y+a\,\frac{x+x_0}{2}\;+$$ $$+\;b\,\frac{y+y_0}{2}+c=0$$ Vale solo se $P_0$ sta davvero sulla circonferenza: controllalo sempre prima.
+>* Tangente in $P_0(x_0;y_0)$ alla circonferenza $x^2+y^2+ax+by+c=0$: $$x_0x+y_0y+a\,\frac{x+x_0}{2}\;+$$ $$+\;b\,\frac{y+y_0}{2}+c=0$$ Vale solo se $P_0$ sta sulla circonferenza: controllalo prima.
 
-Con $x^2+y^2=25$ e $P_0(3;4)$ lo sdoppiamento dà subito $3x+4y-25=0$, come sopra.
+Con $x^2+y^2=25$ e $P_0(3;4)$ dà subito $3x+4y-25=0$.
 
 ### Tangenti da un punto esterno
 
-Se $P_1$ è fuori dalla circonferenza le tangenti sono due, e i punti di contatto non li conosci. Allora scrivi tutte le rette per $P_1$, cioè il **fascio** $y-y_1=m(x-x_1)$, e cerchi i valori di $m$ per cui la retta dista dal centro quanto il raggio. Esempio: tangenti a $x^2+y^2=25$ da $P_1(13;0)$.
+Da un punto esterno $P_1$ partono due tangenti. Per trovarle scrivi tutte le rette per $P_1$, cioè il **fascio** $y-y_1=m(x-x_1)$. Poi cerca le $m$ per cui la retta dista dal centro quanto il raggio. Esempio: tangenti a $x^2+y^2=25$ da $P_1(13;0)$.
 
 ~ mx-y-13m=0 :: il fascio per $P_1$ è $y=m(x-13)$; lo scrivo in forma implicita per poter usare la distanza
 ~ \frac{|\evid{-13m}|}{\sqrt{m^2+1}}=5 :: distanza di $O(0;0)$ dalla retta, uguale al raggio
@@ -206,19 +229,19 @@ Se $P_1$ è fuori dalla circonferenza le tangenti sono due, e i punti di contatt
 ~ 144m^2=25 :: porto i termini con $m^2$ a sinistra
 ~ m=\evidb{\pm\frac{5}{12}} :: due valori di $m$, due tangenti: $5x-12y-65=0$ e $5x+12y-65=0$
 
-Nel grafico trascina $P$. Fuori dalla circonferenza le tangenti sono due; quando $P$ tocca la circonferenza ne resta una; dentro non ce ne sono. Poi porta $P$ in un punto con $x=5$, per esempio $(5;7)$: una delle due tangenti diventa verticale.
+Nel grafico trascina $P$. Fuori dalla circonferenza le tangenti sono due, sopra ne resta una, dentro nessuna. Poi porta $P$ in $(5;7)$: una tangente diventa verticale.
 
 [[grafico:tangentiEsterno]]
 
-?? Da $P(5;7)$ si cercano le tangenti a $x^2+y^2=25$ con il fascio $y-7=m(x-5)$, e si trova un solo valore di $m$. Che cosa è successo?
-[x] la seconda tangente è la retta verticale $x=5$, che nel fascio non c'è
-[ ] $P$ sta sulla circonferenza, quindi la tangente è una sola
-[ ] c'è un errore di calcolo: da un punto esterno i valori di $m$ sono sempre due
-=> $P$ dista da $O$ $\sqrt{25+49}=\sqrt{74}>5$: è esterno, le tangenti sono due. L'equazione in $m$ qui diventa di primo grado e dà solo $m=\frac{12}{35}$. L'altra tangente è $x=5$, che dista $5$ dal centro ma non si può scrivere come $y-7=m(x-5)$ per nessun $m$.
+?? Cerchi le tangenti a $x^2+y^2=25$ da $P(5;7)$ con il fascio $y-7=m(x-5)$. Trovi un solo valore di $m$. Perché?
+[x] l'altra tangente è la verticale $x=5$
+[ ] $P$ sta sulla circonferenza
+[ ] c'è un errore di calcolo
+=> Manca la verticale. $P$ è esterno, perché dista da $O$ $\sqrt{74}>5$, quindi le tangenti sono due. L'equazione in $m$ qui dà solo $m=\frac{12}{35}$. L'altra tangente è $x=5$, che nel fascio non c'è.
 
->! Il fascio $y-y_1=m(x-x_1)$ contiene tutte le rette per $P_1$ tranne quella verticale. Quando trovi un solo valore di $m$, controlla sempre la retta $x=x_1$: confronta la sua distanza dal centro con il raggio.` },
+>! Il fascio $y-y_1=m(x-x_1)$ contiene tutte le rette per $P_1$, tranne quella verticale. Se trovi un solo valore di $m$, controlla la retta $x=x_1$.` },
 
-    { id: 'due-circonferenze', titolo: 'Due circonferenze: posizione reciproca e asse radicale', testo: R`Fai scivolare due monete una verso l'altra sul tavolo: prima sono staccate, poi si toccano, poi si sovrappongono. Per due circonferenze di raggi $r_1\ge r_2$ succede lo stesso, e per capire in che situazione sei basta la distanza $d$ fra i centri.
+    { id: 'due-circonferenze', titolo: 'Due circonferenze: posizione reciproca e asse radicale', testo: R`Fai scivolare due monete una verso l'altra: prima sono staccate, poi si toccano, poi si sovrappongono. Con due circonferenze di raggi $r_1\ge r_2$ decide la distanza $d$ fra i centri.
 
 | distanza fra i centri | posizione | punti comuni |
 |---|---|---|
@@ -228,22 +251,22 @@ Nel grafico trascina $P$. Fuori dalla circonferenza le tangenti sono due; quando
 | $d=r_1-r_2$ | tangenti internamente | 1 |
 | $d<r_1-r_2$ | una dentro l'altra | 0 |
 
-Se $d=0$ i centri coincidono e le circonferenze si dicono **concentriche**.
+Se $d=0$ i centri coincidono: le circonferenze sono **concentriche**.
 
 ### L'asse radicale
 
-Scrivi le due circonferenze in forma generale e **sottrai** un'equazione dall'altra. In tutte e due $x^2$ e $y^2$ hanno coefficiente $1$, quindi spariscono: resta un'equazione di primo grado, cioè una retta. Si chiama **asse radicale**.
+Scrivi le due circonferenze in forma generale e **sottrai** le equazioni. $x^2$ e $y^2$ spariscono, perché in tutte e due hanno coefficiente $1$. Resta una retta: l'**asse radicale**.
 
 ~ \gamma_1:\ x^2+y^2-9=0 :: centro $O(0;0)$, raggio $3$
 ~ \gamma_2:\ x^2+y^2-8x+7=0 :: centro $(4;0)$, raggio $\sqrt{16-7}=3$
 ~ \gamma_1-\gamma_2:\ \evid{8x}-9\evid{-7}=0 :: $x^2$ e $y^2$ si cancellano; $-(-8x)$ diventa $+8x$ e $-(+7)$ diventa $-7$
 ~ \evidb{x=2} :: l'asse radicale
 
-Perché questa retta è speciale? Un punto che sta su tutte e due le circonferenze rende vere tutte e due le equazioni, quindi anche la loro differenza. Per questo l'asse radicale passa per i punti comuni.
+Un punto comune rende vere tutte e due le equazioni, quindi anche la loro differenza. Per questo l'asse radicale passa per i punti comuni.
 
->* **Asse radicale** di due circonferenze non concentriche: si ottiene sottraendo le equazioni in forma generale: $$(a_1-a_2)x+(b_1-b_2)y\;+$$ $$+\;(c_1-c_2)=0$$ Se le circonferenze sono secanti passa per i due punti comuni; se sono tangenti è la tangente comune. È sempre perpendicolare alla retta dei centri.
+>* **Asse radicale** di due circonferenze non concentriche: $$(a_1-a_2)x+(b_1-b_2)y\;+$$ $$+\;(c_1-c_2)=0$$ Se sono secanti, passa per i due punti comuni. Se sono tangenti, è la tangente comune. È sempre perpendicolare alla retta dei centri.
 
-Trascina il centro $C_2$ lungo l'asse $x$ e guarda la retta tratteggiata: resta perpendicolare alla retta dei centri, passa per i punti comuni quando ci sono, e non sparisce quando le circonferenze si staccano.
+Trascina $C_2$: l'asse radicale resta perpendicolare alla retta dei centri.
 
 [[grafico:assiRadicale]]
 
@@ -252,11 +275,11 @@ Trascina il centro $C_2$ lungo l'asse $x$ e guarda la retta tratteggiata: resta 
 [ ] $-4x+2y-3=0$
 [ ] $4x+2y+3=0$
 [ ] $2x^2+2y^2-4x+2y-3=0$
-=> Sottraendo la seconda dalla prima: $-4x-2y-(-3)=0$, cioè $-4x-2y+3=0$, che moltiplicata per $-1$ è $4x+2y-3=0$. La trappola è cambiare segno solo ad alcuni termini della seconda equazione: vanno cambiati tutti, termine noto compreso. Sommare le equazioni invece di sottrarle lascia $x^2$ e $y^2$, e non viene una retta.
+=> Sottrai la seconda dalla prima: $-4x-2y+3=0$, cioè $4x+2y-3=0$. Cambia segno a tutti i termini della seconda, anche al termine noto.
 
->! Se non sai quale dei due raggi è più grande, nella tabella scrivi $|r_1-r_2|$ al posto di $r_1-r_2$: la differenza fra i raggi va presa sempre positiva.` },
+>! Se non sai quale raggio è più grande, nella tabella usa $|r_1-r_2|$ al posto di $r_1-r_2$.` },
 
-    { id: 'determinare-equazione', titolo: 'Determinare l’equazione di una circonferenza', testo: R`Per scrivere l'equazione di una circonferenza servono tre numeri: $\alpha$, $\beta$, $r$ nella forma canonica, oppure $a$, $b$, $c$ nella forma generale. Il testo dell'esercizio ti dà le informazioni da cui ricavarli. Le situazioni più comuni sono queste.
+    { id: 'determinare-equazione', titolo: 'Determinare l’equazione di una circonferenza', testo: R`Per scrivere l'equazione servono tre numeri: $\alpha$, $\beta$, $r$ nella forma canonica, oppure $a$, $b$, $c$ nella forma generale. I dati del problema servono a trovarli.
 
 | dati | come si trova l'equazione |
 |---|---|
@@ -270,9 +293,9 @@ Trascina il centro $C_2$ lungo l'asse $x$ e guarda la retta tratteggiata: resta 
 [ ] $\frac{10}{7}$
 [ ] $10$
 [ ] $\frac{18}{5}$
-=> Il raggio è la distanza del centro dalla retta: $\frac{|3\cdot2+4\cdot(-1)+8|}{\sqrt{3^2+4^2}}=\frac{10}{5}=2$. Sotto la radice ci sono i quadrati dei coefficienti, non la loro somma $3+4$; e $y_C=-1$ va sostituito con il suo segno, altrimenti viene $\frac{18}{5}$.
+=> Il raggio è la distanza del centro dalla retta: $\frac{|3\cdot2+4\cdot(-1)+8|}{\sqrt{3^2+4^2}}=\frac{10}{5}=2$. Sotto la radice vanno i quadrati, non $3+4$. E $-1$ va messo con il suo segno.
 
-Il caso dei tre punti è quello con più conti, ma non è difficile. Quando sostituisci le coordinate di un punto in $x^2+y^2+ax+by+c=0$, $x^2$ e $y^2$ diventano numeri: le equazioni che ottieni sono di **primo grado** in $a$, $b$, $c$. Esempio con $A(-1;0)$, $B(3;0)$, $C(0;3)$:
+Con tre punti, sostituisci le coordinate in $x^2+y^2+ax+by+c=0$. Ottieni equazioni di **primo grado** in $a$, $b$, $c$. Esempio con $A(-1;0)$, $B(3;0)$, $C(0;3)$:
 
 ~ \begin{cases} 1-a+c=0 \\ 9+3a+c=0 \\ 9+3b+c=0 \end{cases} :: sostituisco $A$, $B$ e $C$ nella forma generale
 ~ c=\evid{a-1} :: ricavo $c$ dalla prima equazione
@@ -281,27 +304,30 @@ Il caso dei tre punti è quello con più conti, ma non è difficile. Quando sost
 ~ 9+3b\evid{-3}=0\ \Rightarrow\ b=-2 :: sostituisco $c$ nella terza: $3b+6=0$
 ~ \evidb{x^2+y^2-2x-2y-3=0} :: centro $(1;1)$, raggio $\sqrt{1+1+3}=\sqrt5$
 
->* Qualunque siano i dati, il traguardo è trovare tre numeri. Scegli subito la forma che rende i conti più semplici: la canonica se conosci il centro, la generale se hai dei punti.
+>* Scegli la forma che rende i conti più semplici: la canonica se conosci il centro, la generale se hai dei punti.
 
->! Tre punti allineati non stanno su nessuna circonferenza, e il sistema in $a$, $b$, $c$ non ha soluzione. Se il sistema «non torna», controlla prima se i punti sono allineati.` },
+>! Per tre punti allineati non passa nessuna circonferenza. Se il sistema non ha soluzione, controlla se i punti sono allineati.` },
 
     { id: 'fasci-e-problemi', titolo: 'Fasci di circonferenze e problemi', testo: R`### Fasci di circonferenze (cenni)
 
-Prendi due circonferenze $\gamma_1: x^2+y^2+a_1x+b_1y+c_1=0$ e $\gamma_2: x^2+y^2+a_2x+b_2y+c_2=0$ che si tagliano in due punti $A$ e $B$. Quante altre circonferenze passano per $A$ e $B$? Infinite, e si possono scrivere tutte insieme.
+Due circonferenze $\gamma_1$ e $\gamma_2$ si tagliano nei punti $A$ e $B$. Per $A$ e $B$ passano infinite altre circonferenze.
 
->* Il **fascio di circonferenze** generato da $\gamma_1$ e $\gamma_2$ è $$\gamma_1+k\,\gamma_2=0\qquad k\in\mathbb{R}$$ Per ogni valore di $k$ si ottiene una curva che passa per tutti i punti comuni a $\gamma_1$ e $\gamma_2$.
+>* Il **fascio di circonferenze** generato da $\gamma_1$ e $\gamma_2$ è $$\gamma_1+k\,\gamma_2=0\qquad k\in\mathbb{R}$$ Per ogni $k$ ottieni una curva che passa per i punti comuni a $\gamma_1$ e $\gamma_2$.
 
-Il motivo è lo stesso dell'asse radicale: in $A$ le due equazioni valgono entrambe zero, quindi vale zero anche $\gamma_1+k\,\gamma_2$, qualunque sia $k$.
-
-Per $k=-1$ i termini $x^2+y^2$ si cancellano e resta l'**asse radicale**: è l'unico elemento del fascio che è una retta e non una circonferenza.
+In $A$ le due equazioni valgono zero, quindi vale zero anche $\gamma_1+k\,\gamma_2$. Per $k=-1$ i termini $x^2+y^2$ si cancellano: resta l'**asse radicale**.
 
 ### Problemi
 
-Nei problemi si traducono i dati in equazioni con le formule di questo capitolo, si risolve, e alla fine si controlla che il risultato abbia senso: un raggio deve essere positivo, un punto deve stare dove il testo dice che sta.
+Traduci i dati in equazioni e risolvi. Poi controlla il risultato: un raggio deve essere positivo.
 
-Esempio: tre sensori si trovano in $A(0;0)$, $B(6;0)$ e $C(0;8)$, e si vuole un ripetitore alla stessa distanza da tutti e tre. Va messo nel centro della circonferenza per $A$, $B$, $C$. Siccome la circonferenza passa per l'origine, $c=0$; sostituendo $B$ viene $36+6a=0$, quindi $a=-6$; sostituendo $C$ viene $64+8b=0$, quindi $b=-8$. L'equazione è $x^2+y^2-6x-8y=0$: il ripetitore va in $(3;4)$, a distanza $5$ da ciascun sensore.
+Esempio: tre sensori stanno in $A(0;0)$, $B(6;0)$ e $C(0;8)$. Il ripetitore va nel centro della circonferenza per $A$, $B$, $C$: così è alla stessa distanza da tutti e tre.
 
->! Un'equazione di secondo grado in un parametro può dare due soluzioni, e non è detto che vadano bene tutte e due. Scarta quelle che danno un raggio nullo o negativo, o che contraddicono un dato del problema: l'algebra da sola non se ne accorge.` }
+1. La circonferenza passa per l'origine, quindi $c=0$.
+2. Sostituisci $B$: $36+6a=0$, quindi $a=-6$.
+3. Sostituisci $C$: $64+8b=0$, quindi $b=-8$.
+4. L'equazione è $x^2+y^2-6x-8y=0$. Il ripetitore va in $(3;4)$, a distanza $5$ da ogni sensore.
+
+>! Un'equazione di secondo grado in un parametro può dare due soluzioni. Scarta quelle che danno un raggio nullo o negativo, o che vanno contro un dato del problema.` }
   ],
 
   grafici: {
@@ -479,7 +505,28 @@ Esempio: tre sensori si trovano in $A(0;0)$, $B(6;0)$ e $C(0;8)$, e si vuole un 
   ],
 
   esercizi: [
-    { id: 'es-01', difficolta: 1, testo: R`Scrivi in forma generale l'equazione della circonferenza di centro $C(2;-3)$ e raggio $r=5$.`, suggerimenti: [R`Parti dalla forma canonica $(x-\alpha)^2+(y-\beta)^2=r^2$ e sviluppa i quadrati.`, R`Dovresti arrivare a coefficienti $a=-4$, $b=6$.`], risposta: { tipo: 'testo', accettate: ['x^2+y^2-4x+6y-12=0', 'x²+y²−4x+6y−12=0', 'x^2 + y^2 - 4x + 6y - 12 = 0'] }, soluzione: [R`Forma canonica: $(x-2)^2+(y+3)^2=25$.`, R`Sviluppo: $x^2-4x+4+y^2+6y+9=25$.`, R`Riduco: $x^2+y^2-4x+6y+13-25=0$, cioè $x^2+y^2-4x+6y-12=0$.`, R`Verifica: centro $(2;-3)$ ✓, $\dfrac{a^2}{4}+\dfrac{b^2}{4}-c=4+9+12=25=r^2$ ✓.`] },
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Trova il centro della circonferenza $(x-2)^2+(y-5)^2=9$. Scrivi le coordinate come *x; y*.`, suggerimenti: [R`Nelle parentesi il segno è opposto a quello delle coordinate del centro.`], risposta: cop(2, 5), soluzione: [R`Confronto con $(x-\alpha)^2+(y-\beta)^2=r^2$: $\alpha=2$ e $\beta=5$.`, R`Centro $C(2;5)$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Trova il raggio della circonferenza $(x-1)^2+(y+3)^2=16$.`, suggerimenti: [R`A destra dell'uguale c'è $r^2$, non $r$.`], risposta: num(4), soluzione: [R`A destra c'è $r^2=16$.`, R`$r=\sqrt{16}=4$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Trova il raggio della circonferenza $x^2+y^2=49$.`, suggerimenti: [R`Il centro è l'origine, e a destra c'è $r^2$.`], risposta: num(7), soluzione: [R`È la forma $x^2+y^2=r^2$, con $r^2=49$.`, R`$r=\sqrt{49}=7$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Trova il centro della circonferenza $(x+4)^2+(y-1)^2=25$. Scrivi le coordinate come *x; y*.`, suggerimenti: [R`$x+4$ è lo stesso che $x-(-4)$.`], risposta: cop(-4, 1), soluzione: [R`$x+4=x-(-4)$, quindi $\alpha=-4$.`, R`Da $y-1$ viene $\beta=1$.`, R`Centro $C(-4;1)$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Scrivi l'equazione della circonferenza con centro nell'origine e raggio $5$.`, suggerimenti: [R`Con il centro nell'origine l'equazione è $x^2+y^2=r^2$.`], risposta: circ(0, 0, 25), soluzione: [R`Centro $O(0;0)$: la forma è $x^2+y^2=r^2$.`, R`$r^2=25$, quindi $x^2+y^2=25$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Scrivi l'equazione della circonferenza di centro $C(2;3)$ e raggio $4$.`, suggerimenti: [R`Metti centro e raggio in $(x-\alpha)^2+(y-\beta)^2=r^2$.`], risposta: circ(2, 3, 16), soluzione: [R`$\alpha=2$, $\beta=3$, $r^2=16$.`, R`$(x-2)^2+(y-3)^2=16$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Scrivi l'equazione della circonferenza di centro $C(-1;2)$ e raggio $3$.`, suggerimenti: [R`Con $\alpha=-1$ nella parentesi viene $x-(-1)$, cioè $x+1$.`], risposta: circ(-1, 2, 9), soluzione: [R`$x-(-1)=x+1$ e $y-2$.`, R`A destra $r^2=9$.`, R`$(x+1)^2+(y-2)^2=9$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Il punto $P(3;4)$ sta sulla circonferenza $x^2+y^2=25$? Scrivi *sì* o *no*.`, suggerimenti: [R`Metti $x=3$ e $y=4$ nell'equazione e guarda se viene vera.`], risposta: SI, soluzione: [R`$3^2+4^2=9+16=25$.`, R`L'uguaglianza è vera: sì, $P$ ci sta.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Il punto $P(1;5)$ sta sulla circonferenza $(x-1)^2+(y-2)^2=4$? Scrivi *sì* o *no*.`, suggerimenti: [R`Metti $x=1$ e $y=5$ a sinistra e confronta con $4$.`], risposta: NO, soluzione: [R`$(1-1)^2+(5-2)^2=0+9=9$.`, R`$9\ne4$: no. $P$ dista $3$ dal centro, più del raggio $2$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`La retta $y=3$ è secante, tangente o esterna alla circonferenza $x^2+y^2=4$?`, suggerimenti: [R`Centro $O(0;0)$, raggio $2$. Quanto dista la retta $y=3$ dall'origine?`], risposta: pos('esterna'), soluzione: [R`Centro $O(0;0)$, raggio $r=2$.`, R`La retta $y=3$ dista $3$ dall'origine: $d=3$.`, R`$d>r$: la retta è esterna.`] },
+    { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Trova il centro della circonferenza $x^2+y^2-4x-6y+4=0$. Scrivi le coordinate come *x; y*.`, suggerimenti: [R`Il centro è $\left(-\frac a2;-\frac b2\right)$.`], risposta: cop(2, 3), soluzione: [R`$a=-4$ e $b=-6$.`, R`$-\frac{-4}{2}=2$ e $-\frac{-6}{2}=3$: centro $(2;3)$.`] },
+    { id: 'b-12', livello: 'base', difficolta: 1, testo: R`Trova il centro della circonferenza $x^2+y^2-8x+2y+8=0$. Scrivi le coordinate come *x; y*.`, suggerimenti: [R`Il centro è $\left(-\frac a2;-\frac b2\right)$. Attento ai segni.`], risposta: cop(4, -1), soluzione: [R`$a=-8$ e $b=2$.`, R`$-\frac{-8}{2}=4$ e $-\frac{2}{2}=-1$: centro $(4;-1)$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 1, testo: R`Trova il raggio della circonferenza $x^2+y^2+2x-4y-4=0$.`, suggerimenti: [R`$r=\sqrt{\frac{a^2}{4}+\frac{b^2}{4}-c}$.`, R`Qui $a=2$, $b=-4$ e $c=-4$.`], risposta: num(3), soluzione: [R`$a=2$, $b=-4$, $c=-4$.`, R`$r^2=\frac{4}{4}+\frac{16}{4}-(-4)=1+4+4=9$.`, R`$r=\sqrt9=3$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Il punto $P(0;-2)$ sta sulla circonferenza $x^2+y^2-4x+2y=0$? Scrivi *sì* o *no*.`, suggerimenti: [R`Metti $x=0$ e $y=-2$ nell'equazione e guarda se viene $0$.`], risposta: SI, soluzione: [R`$0^2+(-2)^2-4\cdot0+2\cdot(-2)=0+4-0-4$.`, R`Viene $0$: sì, $P$ ci sta.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`La retta $x=5$ è secante, tangente o esterna alla circonferenza $(x-2)^2+(y-1)^2=9$?`, suggerimenti: [R`Centro $C(2;1)$, raggio $3$.`, R`La distanza di un punto dalla retta verticale $x=5$ è la differenza fra le ascisse.`], risposta: pos('tangente'), soluzione: [R`Centro $C(2;1)$, raggio $r=3$.`, R`La retta $x=5$ dista $|5-2|=3$ dal centro.`, R`$d=r$: la retta è tangente.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Scrivi l'equazione della circonferenza di centro $C(1;1)$ che passa per $P(4;5)$.`, suggerimenti: [R`Il raggio è la distanza fra $C$ e $P$.`, R`Poi usa $(x-\alpha)^2+(y-\beta)^2=r^2$.`], risposta: circ(1, 1, 25), soluzione: [R`$\overline{CP}=\sqrt{3^2+4^2}=\sqrt{25}=5$.`, R`Quindi $r^2=25$.`, R`$(x-1)^2+(y-1)^2=25$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`La retta $3x+4y+20=0$ è secante, tangente o esterna alla circonferenza $x^2+y^2=9$?`, suggerimenti: [R`Confronta con il raggio la distanza del centro $O$ dalla retta.`, R`$d=\frac{|3x_0+4y_0+20|}{\sqrt{3^2+4^2}}$, con $(x_0;y_0)$ il centro.`], risposta: pos('esterna'), soluzione: [R`Centro $O(0;0)$, raggio $r=3$.`, R`$d=\frac{|0+0+20|}{\sqrt{9+16}}=\frac{20}{5}=4$.`, R`$d>r$: la retta è esterna.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`La retta $3x+4y=0$ è secante, tangente o esterna alla circonferenza $(x-2)^2+(y-1)^2=25$?`, suggerimenti: [R`Centro $C(2;1)$, raggio $5$.`, R`$d=\frac{|3x_0+4y_0|}{\sqrt{3^2+4^2}}$, con $(x_0;y_0)$ il centro.`], risposta: pos('secante'), soluzione: [R`Centro $C(2;1)$, raggio $r=5$.`, R`$d=\frac{|3\cdot2+4\cdot1|}{\sqrt{9+16}}=\frac{10}{5}=2$.`, R`$d<r$: la retta è secante.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Una circonferenza ha centro $C(2;1)$ ed è tangente alla retta $3x+4y+5=0$. Trova il raggio.`, suggerimenti: [R`Se la retta è tangente, il raggio è la distanza del centro dalla retta.`], risposta: num(3), soluzione: [R`$r=d=\frac{|3\cdot2+4\cdot1+5|}{\sqrt{9+16}}$.`, R`$r=\frac{15}{5}=3$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Scrivi in forma generale l'equazione della circonferenza di centro $C(1;-2)$ e raggio $3$.`, suggerimenti: [R`Parti da $(x-1)^2+(y+2)^2=9$.`, R`Sviluppa i quadrati e porta tutto a sinistra.`], risposta: circ(1, -2, 9, 'generale'), soluzione: [R`Forma canonica: $(x-1)^2+(y+2)^2=9$.`, R`Sviluppo: $x^2-2x+1+y^2+4y+4=9$.`, R`Porto il $9$ a sinistra: $x^2+y^2-2x+4y-4=0$.`] },
+
+    { id: 'es-01', difficolta: 1, testo: R`Scrivi in forma generale l'equazione della circonferenza di centro $C(2;-3)$ e raggio $r=5$.`, suggerimenti: [R`Parti dalla forma canonica $(x-\alpha)^2+(y-\beta)^2=r^2$ e sviluppa i quadrati.`, R`Dovresti arrivare a coefficienti $a=-4$, $b=6$.`], risposta: { tipo: 'testo', accettate: ['x^2+y^2-4x+6y-12=0', 'x^2+y^2-4x+6y=12', 'x^2-4x+y^2+6y-12=0'] }, soluzione: [R`Forma canonica: $(x-2)^2+(y+3)^2=25$.`, R`Sviluppo: $x^2-4x+4+y^2+6y+9=25$.`, R`Riduco: $x^2+y^2-4x+6y+13-25=0$, cioè $x^2+y^2-4x+6y-12=0$.`, R`Verifica: centro $(2;-3)$ ✓, $\dfrac{a^2}{4}+\dfrac{b^2}{4}-c=4+9+12=25=r^2$ ✓.`] },
 
     { id: 'es-02', difficolta: 1, testo: R`Determina le coordinate del centro (nella forma «$x;y$») della circonferenza $x^2+y^2+6x-8y=0$.`, suggerimenti: [R`Confronta con $x^2+y^2+ax+by+c=0$: qui $c=0$.`, R`Il centro è $\left(-\dfrac{a}{2};-\dfrac{b}{2}\right)$.`], risposta: { tipo: 'numeri', valori: [-3, 4], ordinati: true }, soluzione: [R`$a=6$, $b=-8$, $c=0$: passa per l'origine perché $c=0$.`, R`Centro: $\left(-\dfrac{6}{2};-\dfrac{-8}{2}\right)=(-3;4)$.`, R`Raggio: $r=\sqrt{9+16-0}=\sqrt{25}=5$.`] },
 
@@ -489,7 +536,7 @@ Esempio: tre sensori si trovano in $A(0;0)$, $B(6;0)$ e $C(0;8)$, e si vuole un 
 
     { id: 'es-05', difficolta: 2, testo: R`Trova le ascisse dei punti in cui la retta $y=2$ interseca la circonferenza $x^2+y^2-2x-4y-4=0$.`, suggerimenti: [R`Sostituisci $y=2$ nell'equazione della circonferenza.`, R`Dovresti ottenere un'equazione di secondo grado con soluzioni intere.`], risposta: { tipo: 'numeri', valori: [-2, 4] }, soluzione: [R`Sostituendo $y=2$: $x^2+4-2x-8-4=0 \Rightarrow x^2-2x-8=0$.`, R`$(x-4)(x+2)=0 \Rightarrow x=4 \lor x=-2$.`, R`La retta $y=2$ passa per il centro $(1;2)$: i due punti sono gli estremi di un diametro orizzontale.`] },
 
-    { id: 'es-06', difficolta: 2, testo: R`Scrivi l'equazione della retta tangente alla circonferenza $x^2+y^2=25$ nel suo punto $P(3;4)$.`, suggerimenti: [R`Verifica prima che $P$ appartenga davvero alla circonferenza.`, R`Usa la formula di sdoppiamento con $a=b=0$, $c=-25$: $x\,x_0+y\,y_0+c=0$.`], risposta: { tipo: 'testo', accettate: ['3x+4y-25=0', '3x + 4y - 25 = 0'] }, soluzione: [R`$P(3;4)$ è sulla circonferenza: $9+16=25$ ✓.`, R`Sdoppiamento: $x\cdot3+y\cdot4-25=0$, cioè $3x+4y-25=0$.`, R`Verifica con il raggio: la pendenza di $OP$ è $4/3$, la tangente ha pendenza $-3/4$: $y-4=-\dfrac34(x-3) \Rightarrow 3x+4y-25=0$. Stesso risultato.`] },
+    { id: 'es-06', difficolta: 2, testo: R`Scrivi l'equazione della retta tangente alla circonferenza $x^2+y^2=25$ nel suo punto $P(3;4)$.`, suggerimenti: [R`Verifica prima che $P$ appartenga davvero alla circonferenza.`, R`Usa la formula di sdoppiamento con $a=b=0$, $c=-25$: $x\,x_0+y\,y_0+c=0$.`], risposta: { tipo: 'testo', accettate: ['3x+4y-25=0', '3x+4y=25', 'y=-3/4x+25/4', 'y=-3x/4+25/4', 'y=-(3/4)x+25/4'] }, soluzione: [R`$P(3;4)$ è sulla circonferenza: $9+16=25$ ✓.`, R`Sdoppiamento: $x\cdot3+y\cdot4-25=0$, cioè $3x+4y-25=0$.`, R`Verifica con il raggio: la pendenza di $OP$ è $4/3$, la tangente ha pendenza $-3/4$: $y-4=-\dfrac34(x-3) \Rightarrow 3x+4y-25=0$. Stesso risultato.`] },
 
     { id: 'es-07', difficolta: 2, testo: R`Determina le equazioni delle tangenti alla circonferenza $x^2+y^2=4$ condotte dal punto $P(4;0)$.`, suggerimenti: [R`Verifica che $P$ sia esterno alla circonferenza.`, R`Scrivi il fascio $y=m(x-4)$ e imponi che la distanza dal centro sia uguale al raggio.`], soluzione: [R`Centro $O(0;0)$, raggio $2$; $OP=4>2$, quindi $P$ è esterno.`, R`Fascio: $mx-y-4m=0$. Distanza da $O$: $\dfrac{|-4m|}{\sqrt{m^2+1}}=2 \Rightarrow 16m^2=4(m^2+1) \Rightarrow 12m^2=4 \Rightarrow m^2=\dfrac13 \Rightarrow m=\pm\dfrac{\sqrt3}{3}$.`, R`La retta verticale $x=4$ ha distanza $4\ne2$ da $O$: non è tangente.`, R`Tangenti: $y=\dfrac{\sqrt3}{3}(x-4)$ e $y=-\dfrac{\sqrt3}{3}(x-4)$.`] },
 

@@ -14,7 +14,7 @@ require(path.join(radice, 'compasso-indice.js'));
 const INDICE = global.window.COMPASSO_INDICE;
 const ANIMAZIONI = require(path.join(radice, 'compasso-animazioni.js')).nomi();
 
-const CONTA = { sezioni: [5, 9], esempi: [4, 6], formulario: [6, 14], flashcards: [16, 26], esercizi: [8, 12], quiz: [12, 18], suggerimenti: [6, 10], aneddoti: [3, 5] };
+const CONTA = { sezioni: [5, 9], esempi: [4, 6], formulario: [6, 14], flashcards: [16, 26], esercizi: [8, 40], quiz: [12, 18], suggerimenti: [6, 10], aneddoti: [3, 5] };
 const KOPZ = { strict: 'ignore', macros: { '\\evid': '\\htmlClass{evid}{#1}', '\\evidb': '\\htmlClass{evid evid2}{#1}' }, trust: c => c.command === '\\htmlClass' };
 const KT = (t, d) => katex.renderToString(t, Object.assign({ throwOnError: true, displayMode: !!d }, KOPZ, { macros: Object.assign({}, KOPZ.macros) }));
 const VIETATI = [/\\\(/, /\\\[/, /\\begin\{align\*?\}/, /\\begin\{equation/, /\\textbf/, /\\newcommand/];
@@ -75,6 +75,11 @@ function verificaFile(file) {
       else E(d + '.risposta: tipo sconosciuto "' + r.tipo + '"');
     }
   });
+  /* esercizi di base (livello: 'base'): l'allenamento, uno alla volta; ognuno si controlla da solo */
+  const base = (arg.esercizi || []).filter(e => e.livello === 'base');
+  (arg.esercizi || []).forEach((e, i) => { if (e.livello != null && e.livello !== 'base' && e.livello !== 'avanzato') E(`esercizi[${i}]: livello deve essere 'base' o 'avanzato'`); if (e.livello === 'base' && !e.risposta) E(`esercizi[${i}] (${e.id}): un esercizio di base deve avere la risposta controllabile`); });
+  if (base.length && (base.length < 18 || base.length > 25)) A(`esercizi di base: ${base.length}, ne servono 18–25`);
+  if (!base.length) A('nessun esercizio di base (livello: "base")');
   const conRisposta = (arg.esercizi || []).filter(e => e.risposta).length;
   if (arg.esercizi && conRisposta < Math.ceil(arg.esercizi.length / 2)) A(`solo ${conRisposta} esercizi su ${arg.esercizi.length} hanno una risposta controllabile`);
   const idQ = new Set(); const posizioni = [0, 0, 0, 0];

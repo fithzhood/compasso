@@ -1,25 +1,47 @@
 (function () {
 const R = String.raw;
+/* allenamento: tre caselle. valore(v) per i calcoli di potenze; sol(v) e NESSUNA per le equazioni
+   (stessa casella e stessi simboli, così la casella non dice se la soluzione c'è);
+   dis('>', 4) per le disequazioni: accetta x>4, 4<x, ]4;+inf[, (4;+∞) … (≥ e ≤ diventano >= e <= da soli). */
+const SIMB = ['/', '−', '√', '^', '(', ')'];
+const SEGNA_EQ = 'es. 5/2 oppure nessuna';
+const valore = v => ({ tipo: 'numero', valore: v, tolleranza: 0.01, segnaposto: 'es. 5/2 oppure 0,4', simboli: SIMB });
+const sol = v => ({ tipo: 'numeri', valori: [v], segnaposto: SEGNA_EQ, simboli: SIMB });
+const NESSUNA = { tipo: 'testo', accettate: ['nessuna', 'nessuna soluzione', 'nessuno', 'impossibile', 'non ci sono soluzioni', 'non ha soluzioni', '∅', 'ø', '{}', 'insieme vuoto', 'non ha soluzione', 'nessuna soluzione reale', 'non esiste', 'non esistono', 'non ci sono', 'nessun valore', 'mai'], segnaposto: SEGNA_EQ, simboli: SIMB };
+const dis = (op, n) => {
+  const rovescio = { '>': '<', '<': '>', '>=': '<=', '<=': '>=' }[op], f = ['x' + op + n, n + rovescio + 'x'];
+  const INF = ['inf', '∞', 'infinito'];
+  INF.forEach(i => [';', ','].forEach(s => {
+    if (op === '>') f.push(']' + n + s + '+' + i + '[', '(' + n + s + '+' + i + ')', ']' + n + s + i + '[', '(' + n + s + i + ')');
+    if (op === '>=') f.push('[' + n + s + '+' + i + '[', '[' + n + s + '+' + i + ')', '[' + n + s + i + '[', '[' + n + s + i + ')');
+    if (op === '<') f.push(']-' + i + s + n + '[', '(-' + i + s + n + ')');
+    if (op === '<=') f.push(']-' + i + s + n + ']', '(-' + i + s + n + ']');
+  }));
+  return { tipo: 'testo', accettate: f.concat(f.map(a => 'x∈' + a)), segnaposto: 'es. x ≥ 7' };
+};
 COMPASSO.registra({
   id: 'esponenziali',
   titolo: 'Esponenziali',
 
-  introduzione: R`Un batterio si divide in due ogni $20$ minuti. Dopo un'ora i batteri sono $8$, dopo due ore $64$, dopo cinque ore più di trentamila. A ogni passo non se ne aggiunge un numero fisso: il numero **raddoppia**, e più batteri ci sono più ne nascono. Dopo $t$ passi i batteri sono $2^t$, con la variabile all'esponente.
+  introduzione: R`Un batterio si divide in due ogni $20$ minuti. Dopo un'ora i batteri sono $8$, dopo due ore $64$. Dopo cinque ore sono più di trentamila. A ogni passo il numero **raddoppia**, quindi dopo $t$ passi i batteri sono $2^t$. La variabile sta all'esponente.
 
-Una funzione come $y = 2^x$, o in generale $y = a^x$ con $a$ numero positivo, si chiama **esponenziale**. Descrive tutto quello che cambia della stessa percentuale a ogni intervallo di tempo: un capitale a interesse composto, una popolazione, un farmaco che si dimezza nel sangue ogni tante ore, un materiale radioattivo che decade. All'inizio può sembrare lenta, ma prima o poi supera qualunque crescita che aggiunge ogni volta la stessa quantità.
+Una funzione come $y = 2^x$ si chiama **esponenziale**. In generale è $y = a^x$, con $a$ positivo. Descrive quello che cambia della stessa percentuale a ogni intervallo di tempo: un capitale in banca, una popolazione, un farmaco che si dimezza nel sangue.
 
-In questo argomento si allargano le potenze a esponenti qualsiasi, si studia il grafico di $y = a^x$ e si risolvono equazioni e disequazioni con l'incognita all'esponente. Servono le proprietà delle potenze, i radicali e le equazioni e disequazioni di primo e secondo grado.`,
+Qui vedi le potenze con un esponente qualsiasi e il grafico di $y = a^x$. Poi risolvi equazioni e disequazioni con l'incognita all'esponente. Ti servono le proprietà delle potenze e i radicali.`,
 
   inBreve: [
-    R`Con base $a > 0$ la potenza $a^x$ ha senso per ogni numero reale $x$: $a^{-n} = \frac{1}{a^n}$, $a^{\frac{m}{n}} = \sqrt[n]{a^m}$, e le proprietà delle potenze restano le stesse.`,
-    R`Il grafico di $y = a^x$ passa sempre per $(0;1)$, sta sempre sopra l'asse $x$ e ha l'asintoto $y = 0$. È crescente se $a > 1$, decrescente se $0 < a < 1$.`,
-    R`Per risolvere un'equazione esponenziale si scrivono i due membri come potenze della stessa base e si uguagliano gli esponenti. Se la base compare con esponenti $x$ e $2x$ si pone $t = a^x$, e si scartano le $t$ negative o nulle.`,
-    R`Nelle disequazioni, togliendo la base, il verso resta com'è se $a > 1$ e si **rovescia** se $0 < a < 1$.`,
-    R`Una quantità che cambia della stessa percentuale a ogni passo segue $y = y_0 \cdot a^t$: crescita se $a > 1$, decadimento se $0 < a < 1$.`
+    R`Con base $a > 0$ la potenza $a^x$ ha senso per ogni $x$ reale. $a^{-n} = \frac{1}{a^n}$ e $a^{\frac{m}{n}} = \sqrt[n]{a^m}$. Le proprietà delle potenze restano le stesse.`,
+    R`Il grafico di $y = a^x$ passa per $(0;1)$ e sta sempre sopra l'asse $x$. Sale se $a > 1$, scende se $0 < a < 1$.`,
+    R`Per risolvere un'equazione esponenziale scrivi i due membri con la stessa base. Poi uguagli gli esponenti.`,
+    R`Se compaiono $a^{2x}$ e $a^x$, poni $t = a^x$ e scarta le $t$ negative o nulle.`,
+    R`Nelle disequazioni, quando togli la base, il verso resta se $a > 1$. Si **rovescia** se $0 < a < 1$.`,
+    R`Una quantità che cambia della stessa percentuale a ogni passo segue $y = y_0 \cdot a^t$.`
   ],
 
   sezioni: [
-    { id: 'potenze-esponente-reale', titolo: 'Potenze con esponente reale', testo: R`Con un esponente intero una potenza è una moltiplicazione ripetuta: $2^3 = 2 \cdot 2 \cdot 2$. Ma che cosa vuol dire $2^{0{,}5}$, o $2^{-1}$? Per dare un significato a questi esponenti si sceglie l'unico che fa funzionare ancora le proprietà delle potenze. Per esempio $2^{0{,}5} \cdot 2^{0{,}5}$ deve fare $2^1 = 2$, quindi $2^{0{,}5}$ è il numero che moltiplicato per sé stesso dà $2$: $\sqrt2$.
+    { id: 'potenze-esponente-reale', titolo: 'Potenze con esponente reale', testo: R`Con un esponente intero la potenza è una moltiplicazione ripetuta: $2^3 = 2 \cdot 2 \cdot 2$. Ma che cosa vuol dire $2^{0{,}5}$? E $2^{-1}$?
+
+Si sceglie il significato che fa funzionare ancora le proprietà delle potenze. Per esempio $2^{0{,}5} \cdot 2^{0{,}5}$ deve fare $2^1 = 2$. Quindi $2^{0{,}5}$ è il numero che, moltiplicato per sé stesso, dà $2$: è $\sqrt2$.
 
 >* Per $a > 0$: $$a^0 = 1, \qquad a^{-n} = \frac{1}{a^n},$$ $$a^{\frac{m}{n}} = \sqrt[n]{a^m}.$$ L'esponente negativo fa il reciproco, il denominatore dell'esponente fa la radice.
 
@@ -32,20 +54,19 @@ In questo argomento si allargano le potenze a esponenti qualsiasi, si studia il 
 [x] $\frac12$
 [ ] $-2$
 [ ] $-\frac12$
-[ ] $2$
-=> $4^{\frac12} = \sqrt4 = 2$, e il meno all'esponente fa il reciproco: $\frac12$. Il meno all'esponente non rende negativo il risultato: con base positiva la potenza è sempre positiva.
+=> $4^{\frac12} = \sqrt4 = 2$, e il meno all'esponente fa il reciproco: $\frac12$. Con base positiva la potenza è sempre positiva.
 
-E un esponente irrazionale, come in $2^{\sqrt2}$? Non si può scrivere come radice, ma si può avvicinare: $\sqrt2 = 1{,}41421\ldots$, e le potenze $2^{1{,}4}$, $2^{1{,}41}$, $2^{1{,}414}$, … si avvicinano sempre di più a un numero preciso, circa $2{,}665$. Quel numero è $2^{\sqrt2}$. Così, con base positiva, $a^x$ ha senso per **ogni** numero reale $x$.
+E un esponente irrazionale, come $2^{\sqrt2}$? Le potenze $2^{1{,}4}$, $2^{1{,}41}$, $2^{1{,}414}$ si avvicinano sempre più a circa $2{,}665$. Quel numero è $2^{\sqrt2}$. Quindi, con base positiva, $a^x$ ha senso per **ogni** $x$ reale.
 
 [[grafico:scopriPotenza]]
 
->! Le basi negative si escludono. Con $a < 0$ lo stesso esponente scritto in due modi darebbe due risultati: $(-8)^{\frac13}$ dovrebbe essere $\sqrt[3]{-8} = -2$, ma $\frac13 = \frac26$ e $(-8)^{\frac26} = \sqrt[6]{64} = 2$. Per questo da qui in avanti la base è sempre positiva.` },
+>! Le basi negative si escludono, perché la stessa potenza darebbe due risultati. $(-8)^{\frac13}$ sarebbe $\sqrt[3]{-8} = -2$. Ma $\frac13 = \frac26$, e $(-8)^{\frac26} = \sqrt[6]{64} = 2$.` },
 
-    { id: 'proprieta-potenze', titolo: 'Le proprietà delle potenze', testo: R`Le proprietà delle potenze che conosci dagli esponenti interi valgono uguali con esponenti reali qualsiasi, purché le basi siano positive.
+    { id: 'proprieta-potenze', titolo: 'Le proprietà delle potenze', testo: R`Le proprietà delle potenze valgono anche con esponenti reali. Serve solo che le basi siano positive.
 
 >* **Proprietà delle potenze**, per $a, b > 0$ e $x, y$ reali: $$a^x \cdot a^y = a^{x+y}, \qquad \frac{a^x}{a^y} = a^{x-y},$$ $$\left(a^x\right)^y = a^{xy}, \qquad (ab)^x = a^x b^x.$$
 
-Nelle equazioni esponenziali servono soprattutto a due cose. La prima è **portare tutto alla stessa base**: $9^x = \left(3^2\right)^x = 3^{2x}$, e $\sqrt{2^x} = 2^{\frac{x}{2}}$. La seconda è **staccare un numero dall'esponente** e raccogliere:
+Nelle equazioni servono soprattutto a due cose. La prima è **portare tutto alla stessa base**: $9^x = \left(3^2\right)^x = 3^{2x}$. La seconda è **staccare un numero dall'esponente** e raccogliere:
 
 ~ 2^{x+2} - 2^x = 24 :: la stessa potenza $2^x$ compare in due termini
 ~ \evid{2^x \cdot 2^2} - 2^x = 24 :: $a^{x+y} = a^x \cdot a^y$ letta al contrario
@@ -58,37 +79,36 @@ Nelle equazioni esponenziali servono soprattutto a due cose. La prima è **porta
 [x] $2^{x+1}$
 [ ] $4^x$
 [ ] $2^{2x}$
-[ ] $4^{2x}$
-=> $2^x + 2^x = 2 \cdot 2^x = 2^{x+1}$: due volte la stessa quantità. Le altre risposte applicano alla somma regole che valgono solo per il prodotto. Controllo con $x = 3$: $8 + 8 = 16 = 2^4$, mentre $4^3 = 64$.
+=> $2^x + 2^x = 2 \cdot 2^x = 2^{x+1}$: due volte la stessa quantità. Controllo con $x = 3$: $8 + 8 = 16 = 2^4$, mentre $4^3 = 64$.
 
->! Le proprietà valgono per prodotti, quozienti e potenze di potenze, **mai per le somme**: $a^x + a^y$ non è $a^{x+y}$, e $(a + b)^x$ non è $a^x + b^x$. Si moltiplicano le basi, $a^x \cdot b^x = (ab)^x$, solo se gli esponenti sono uguali.` },
+>! Le proprietà valgono per prodotti, quozienti e potenze di potenze. **Mai per le somme**: $a^x + a^y$ non è $a^{x+y}$, e $(a + b)^x$ non è $a^x + b^x$.` },
 
-    { id: 'funzione-esponenziale', titolo: 'La funzione esponenziale e il suo grafico', testo: R`Che differenza c'è fra aggiungere $2$ a ogni passo e moltiplicare per $2$ a ogni passo? All'inizio poca; dopo dieci passi, la prima strada porta a $21$, la seconda a $1024$. Guarda l'animazione.
+    { id: 'funzione-esponenziale', titolo: 'La funzione esponenziale e il suo grafico', testo: R`Parti da $1$. Che differenza c'è fra aggiungere $2$ a ogni passo e moltiplicare per $2$? All'inizio poca. Dopo dieci passi la prima strada porta a $21$, la seconda a $1024$.
 
 [[animazione:crescita-esponenziale]]
 
-La **funzione esponenziale** di base $a$ è $y = a^x$, con $a > 0$ e $a \ne 1$. La base $a = 1$ si esclude perché $1^x = 1$ sempre: sarebbe una retta orizzontale.
+La **funzione esponenziale** di base $a$ è $y = a^x$, con $a > 0$ e $a \ne 1$. La base $1$ si esclude perché $1^x = 1$ sempre.
 
-Nel grafico trascina il punto che sta sopra $x = 1$: la sua altezza è $a^1 = a$, quindi spostandolo cambi la base. Guarda quale punto resta fermo e che cosa succede quando $a$ scende sotto $1$.
+Trascina il punto sopra $x = 1$: la sua altezza è la base $a$. Guarda quale punto resta fermo, e che cosa succede con $a$ sotto $1$.
 
 [[grafico:famigliaEsponenziali]]
 
->* **Funzione esponenziale** $y = a^x$ ($a > 0$, $a \ne 1$). Dominio: tutti i numeri reali. Valori: solo positivi. Passa sempre per $(0;1)$, perché $a^0 = 1$. Asintoto orizzontale: $y = 0$, cioè l'asse $x$, che la curva non tocca mai.
+>* **Funzione esponenziale** $y = a^x$ ($a > 0$, $a \ne 1$). Dominio: tutti i numeri reali. Valori: solo positivi. Passa sempre per $(0;1)$, perché $a^0 = 1$. Asintoto orizzontale: l'asse $x$, che la curva non tocca mai.
 
-Il verso dipende dal confronto fra $a$ e $1$:
-
-- se $a > 1$ la funzione è **crescente**, e sale sempre più in fretta;
-- se $0 < a < 1$ è **decrescente**, e scende verso $0$ al crescere di $x$.
+- Se $a > 1$ la funzione è **crescente**, e sale sempre più in fretta.
+- Se $0 < a < 1$ è **decrescente**, e scende verso $0$.
 
 ?? Per quali valori di $x$ si ha $3^x \le 0$?
 [x] per nessuno
 [ ] per $x \le 0$
 [ ] per $x < 0$
-=> $3^x$ è sempre positivo: per $x = 0$ vale $1$, per $x$ negativi vale una frazione positiva, per esempio $3^{-2} = \frac19$. Il grafico sta tutto sopra l'asse $x$. Chi risponde $x \le 0$ confonde "esponente negativo" con "risultato negativo".
+=> $3^x$ è sempre positivo. Con $x$ negativo vale una frazione positiva, per esempio $3^{-2} = \frac19$. Chi risponde $x \le 0$ confonde esponente negativo e risultato negativo.
 
->! Per $x$ molto negativo (o molto positivo, se $0 < a < 1$) la curva si schiaccia sull'asse $x$ fino a sembrare appoggiata, ma non lo raggiunge mai: $a^x = 0$ non ha soluzioni.` },
+>! $a^x = 0$ non ha soluzioni: la curva non tocca mai l'asse $x$.` },
 
-    { id: 'numero-e', titolo: 'Il numero di Nepero e la funzione esponenziale naturale', testo: R`Metti in banca $1$ euro al $100\%$ di interesse annuo. Dopo un anno hai $2$ euro. Se la banca ti accredita metà interesse ogni sei mesi hai $\left(1 + \frac12\right)^2 = 2{,}25$ euro; con un dodicesimo ogni mese, $\left(1 + \frac1{12}\right)^{12} \approx 2{,}613$. Più spesso si accredita, più si guadagna, ma sempre meno: il risultato non supera mai un certo numero, vicino a $2{,}718$.
+    { id: 'numero-e', titolo: 'Il numero di Nepero e la funzione esponenziale naturale', testo: R`Metti in banca $1$ euro al $100\%$ di interesse annuo. Dopo un anno hai $2$ euro. Se la banca accredita metà interesse ogni sei mesi, hai $\left(1 + \frac12\right)^2 = 2{,}25$ euro. Con un dodicesimo ogni mese hai $\left(1 + \frac1{12}\right)^{12} \approx 2{,}613$ euro.
+
+Più accrediti ci sono, più guadagni, ma sempre meno. Il risultato resta sotto un numero vicino a $2{,}718$.
 
 | accrediti in un anno ($n$) | $\left(1 + \frac1n\right)^n$ |
 |---|---|
@@ -99,28 +119,28 @@ Il verso dipende dal confronto fra $a$ e $1$:
 
 Quel numero è il **numero di Nepero**, $e$.
 
->* $$e = \lim_{n \to \infty} \left(1 + \frac1n\right)^n \approx 2{,}71828\ldots$$ È irrazionale: le sue cifre decimali non finiscono e non si ripetono. La funzione $y = e^x$ si chiama **esponenziale naturale**.
+>* $$e = \lim_{n \to \infty} \left(1 + \frac1n\right)^n \approx 2{,}71828\ldots$$ È un numero irrazionale. La funzione $y = e^x$ si chiama **esponenziale naturale**.
 
 ?? Che cosa succede a $\left(1 + \frac1n\right)^n$ quando $n$ diventa enorme?
 [x] si avvicina a $2{,}718\ldots$
-[ ] si avvicina a $1$, perché $1 + \frac1n$ si avvicina a $1$
-[ ] diventa enorme, perché l'esponente diventa enorme
-=> La base si avvicina a $1$ e l'esponente cresce: i due effetti si bilanciano, e il risultato si ferma vicino a $e$. Le altre due risposte guardano un pezzo solo; la tabella qui sopra mostra che cosa succede davvero.
+[ ] si avvicina a $1$
+[ ] diventa enorme
+=> La base si avvicina a $1$, ma l'esponente cresce. I due effetti si bilanciano, e il risultato si ferma vicino a $e$.
 
-Perché proprio questa base? Nel grafico cambia la base $a$ e guarda la pendenza $m$ della tangente nel punto $(0;1)$. C'è una sola base per cui la pendenza vale esattamente $1$.
+Perché proprio questa base? Nel grafico cambia la base $a$ e guarda la pendenza $m$ della tangente in $(0;1)$. Solo una base dà pendenza esattamente $1$.
 
 [[grafico:tangenteE]]
 
-Quella base è $e$. Con $e$ la velocità di crescita di $e^x$ in ogni punto è uguale al valore stesso di $e^x$: per questo nei modelli di crescita e decadimento continui (popolazioni, radioattività) si usa quasi sempre la forma $e^{kt}$, crescente se $k > 0$ e decrescente se $k < 0$.
+Quella base è $e$. Con $e$, la velocità di crescita di $e^x$ è uguale al valore di $e^x$. Per questo nei modelli di crescita continua si usa quasi sempre $e^{kt}$.
 
->! $e$ è un numero preciso, definito da quel limite, e $2{,}7$ ne è solo un'approssimazione grossolana. Il logaritmo in base $e$ si chiama **logaritmo naturale**, $\ln x$, e lo trovi nell'argomento sui logaritmi.` },
+> Il logaritmo in base $e$ si chiama **logaritmo naturale**, $\ln x$. Lo trovi nell'argomento sui logaritmi.` },
 
-    { id: 'equazioni-esponenziali', titolo: 'Equazioni esponenziali', testo: R`In $2^x = 8$ l'incognita sta all'esponente: è un'**equazione esponenziale**. Scrivendo $8 = 2^3$ diventa $2^x = 2^3$, e l'unico modo perché due potenze di $2$ siano uguali è che abbiano lo stesso esponente: $x = 3$.
+    { id: 'equazioni-esponenziali', titolo: 'Equazioni esponenziali', testo: R`In $2^x = 8$ l'incognita sta all'esponente: è un'**equazione esponenziale**. Scrivi $8 = 2^3$ e ottieni $2^x = 2^3$. Due potenze di $2$ sono uguali solo con lo stesso esponente, quindi $x = 3$.
 
->* Con $a > 0$ e $a \ne 1$: $$a^{f(x)} = a^{g(x)} \iff f(x) = g(x).$$ Vale perché esponenti diversi danno sempre potenze diverse: il grafico di $y = a^x$ sale (o scende) sempre, e non ripassa mai alla stessa altezza.
+>* Con $a > 0$ e $a \ne 1$: $$a^{f(x)} = a^{g(x)} \iff f(x) = g(x).$$
 
 ### Stessa base, anche se non si vede
-Se le basi sono potenze dello stesso numero, si riscrivono prima con quel numero:
+Se le basi sono potenze dello stesso numero, riscrivile con quel numero:
 
 ~ 8^x = 16^{x-1} :: $8$ e $16$ sono potenze di $2$
 ~ \left(\evid{2^3}\right)^x = \left(\evid{2^4}\right)^{x-1} :: $8 = 2^3$, $16 = 2^4$
@@ -131,7 +151,7 @@ Se le basi sono potenze dello stesso numero, si riscrivono prima con quel numero
 Controllo: $8^4 = 4096$ e $16^3 = 4096$.
 
 ### La sostituzione $t = a^x$
-Quando compaiono $a^{2x}$ e $a^x$, la prima è il quadrato della seconda: con $t = a^x$ l'equazione diventa di secondo grado.
+Se compaiono $a^{2x}$ e $a^x$, la prima è il quadrato della seconda. Poni $t = a^x$: l'equazione diventa di secondo grado.
 
 ~ 9^x - 4\cdot 3^x - 45 = 0 :: compaiono $9^x$ e $3^x$
 ~ \left(3^x\right)^2 - 4\cdot 3^x - 45 = 0 :: $9^x = \left(3^2\right)^x = \left(3^x\right)^2$
@@ -143,15 +163,15 @@ Quando compaiono $a^{2x}$ e $a^x$, la prima è il quadrato della seconda: con $t
 [x] solo $x = 2$
 [ ] $x = 2$ e $x = -1$
 [ ] $x = 2$ e $x = 0$
-=> $2^x = 4$ dà $x = 2$. $2^x = -1$ non ha soluzioni, perché una potenza di $2$ è sempre positiva. Scrivere $x = -1$ vuol dire confondere il valore di $t$ con quello di $x$: $2^{-1}$ fa $\frac12$, non $-1$.
+=> $2^x = 4$ dà $x = 2$. $2^x = -1$ non ha soluzioni, perché una potenza di $2$ è sempre positiva. Chi scrive $x = -1$ confonde $t$ con $x$: $2^{-1}$ fa $\frac12$, non $-1$.
 
->! Le $t$ negative o nulle vanno scartate **prima** di tornare alla $x$. E ricordati di tornarci: $t$ non è la soluzione, è il valore di $a^x$.` },
+>! Scarta le $t$ negative o nulle **prima** di tornare alla $x$. E ricordati di tornarci: $t$ è il valore di $a^x$, non la soluzione.` },
 
-    { id: 'disequazioni-esponenziali', titolo: 'Disequazioni esponenziali', testo: R`Qual è più grande, $2^5$ o $2^3$? $2^5 = 32$, quindi il primo. E fra $\left(\frac12\right)^5$ e $\left(\frac12\right)^3$? $\left(\frac12\right)^5 = \frac1{32}$ e $\left(\frac12\right)^3 = \frac18$: questa volta vince l'esponente **più piccolo**. Con una base minore di $1$, moltiplicare più volte fa rimpicciolire.
+    { id: 'disequazioni-esponenziali', titolo: 'Disequazioni esponenziali', testo: R`$2^5 = 32$ è più grande di $2^3 = 8$. Invece $\left(\frac12\right)^5 = \frac1{32}$ è più piccolo di $\left(\frac12\right)^3 = \frac18$. Con una base minore di $1$, più moltiplichi e più il numero rimpicciolisce.
 
-Nelle **disequazioni esponenziali** si portano i due membri alla stessa base e si confrontano gli esponenti, come nelle equazioni. Ma prima di togliere la base bisogna guardare se è maggiore o minore di $1$.
+Nelle **disequazioni esponenziali** porti i due membri alla stessa base, come nelle equazioni. Poi confronti gli esponenti, ma prima guarda se la base è maggiore o minore di $1$.
 
->* Se $a > 1$: $$a^{f(x)} > a^{g(x)} \iff f(x) > g(x)$$ Se $0 < a < 1$: $$a^{f(x)} > a^{g(x)} \iff f(x) < g(x)$$ Con $a > 1$ la funzione è crescente e il verso **resta**; con $0 < a < 1$ è decrescente e il verso **si rovescia**.
+>* Se $a > 1$: $$a^{f(x)} > a^{g(x)} \iff f(x) > g(x)$$ Se $0 < a < 1$: $$a^{f(x)} > a^{g(x)} \iff f(x) < g(x)$$ Il verso resta con $a > 1$ e **si rovescia** con $0 < a < 1$.
 
 Esempio con $a > 1$: $3^{2x+1} \ge 3^{x+4}$ diventa $2x + 1 \ge x + 4$, cioè $x \ge 3$.
 
@@ -165,53 +185,54 @@ Con base minore di $1$:
 [x] $x < -2$
 [ ] $x > -2$
 [ ] $x > 2$
-[ ] $x < 2$
-=> $9 = \left(\frac13\right)^{-2}$, quindi $\left(\frac13\right)^x > \left(\frac13\right)^{-2}$. La base è minore di $1$: il verso si rovescia, $x < -2$. Controllo con $x = -3$: $\left(\frac13\right)^{-3} = 27 > 9$, vero. Chi risponde $x > -2$ ha dimenticato di rovesciare il verso.
+=> $9 = \left(\frac13\right)^{-2}$, quindi $\left(\frac13\right)^x > \left(\frac13\right)^{-2}$. La base è minore di $1$: il verso si rovescia, $x < -2$. Chi risponde $x > -2$ ha dimenticato di rovesciarlo.
 
->! Prima di confrontare gli esponenti chiediti sempre: la base è maggiore o minore di $1$? Se hai trasformato le basi, guarda quella che resta alla fine: $\left(\frac14\right)^x$ si può anche scrivere $4^{-x}$, con base maggiore di $1$, e allora il verso resta ma l'esponente cambia segno.` },
+>! Prima di togliere la base chiediti: è maggiore o minore di $1$? Se hai trasformato le basi, guarda quella finale. Per esempio $\left(\frac14\right)^x = 4^{-x}$: con base $4$ il verso resta, ma l'esponente è $-x$.` },
 
-    { id: 'modelli-crescita-decadimento', titolo: 'Modelli di crescita e decadimento', testo: R`Un capitale cresce del $5\%$ all'anno. Aggiungere il $5\%$ vuol dire moltiplicare per $1{,}05$: dopo un anno il capitale è $C_0 \cdot 1{,}05$, dopo due $C_0 \cdot 1{,}05^2$, dopo $t$ anni $C_0 \cdot 1{,}05^t$. Ogni volta che una grandezza cambia della **stessa percentuale** a ogni intervallo di tempo, si moltiplica sempre per lo stesso numero, e il risultato è un'esponenziale.
+    { id: 'modelli-crescita-decadimento', titolo: 'Modelli di crescita e decadimento', testo: R`Un capitale cresce del $5\%$ all'anno, cioè si moltiplica per $1{,}05$. Dopo un anno è $C_0 \cdot 1{,}05$, dopo due $C_0 \cdot 1{,}05^2$, dopo $t$ anni $C_0 \cdot 1{,}05^t$. Una grandezza che cambia della **stessa percentuale** a ogni passo segue un'esponenziale.
 
->* **Modello esponenziale:** $$y(t) = y_0 \cdot a^t$$ $y_0$ è il valore iniziale (quello per $t = 0$), $a$ è il fattore per cui si moltiplica a ogni unità di tempo. Crescita del $p\%$: $a = 1 + \frac{p}{100}$. Calo del $p\%$: $a = 1 - \frac{p}{100}$.
+>* **Modello esponenziale:** $$y(t) = y_0 \cdot a^t$$ $y_0$ è il valore iniziale, per $t = 0$. $a$ è il fattore che moltiplica a ogni unità di tempo. Crescita del $p\%$: $a = 1 + \frac{p}{100}$. Calo del $p\%$: $a = 1 - \frac{p}{100}$.
 
-**Interesse composto.** Con tasso $r$ (scritto come numero decimale: $5\% = 0{,}05$), un capitale $C_0$ dopo $t$ periodi diventa $C(t) = C_0(1 + r)^t$. Con $2000$ € al $5\%$, dopo $3$ anni: $2000 \cdot 1{,}05^3 = 2000 \cdot 1{,}157625 = 2315{,}25$ €.
+**Interesse composto.** Con tasso $r$, dopo $t$ periodi il capitale è $C(t) = C_0(1 + r)^t$. Per esempio $2000$ € al $5\%$ per $3$ anni diventano $2000 \cdot 1{,}05^3 = 2315{,}25$ €.
 
 ?? Un'auto perde il $20\%$ del suo valore ogni anno. Per quale numero si moltiplica il valore ogni anno?
 [x] $0{,}8$
 [ ] $0{,}2$
 [ ] $1{,}2$
-[ ] $-0{,}2$
-=> Se perde il $20\%$ ne resta l'$80\%$: si moltiplica per $1 - 0{,}2 = 0{,}8$. Moltiplicare per $0{,}2$ vorrebbe dire tenere solo un quinto del valore; $1{,}2$ è l'aumento del $20\%$.
+=> Se perde il $20\%$, ne resta l'$80\%$: moltiplichi per $0{,}8$. Moltiplicare per $0{,}2$ vuol dire tenere un quinto del valore. $1{,}2$ è un aumento del $20\%$.
 
-**Dimezzamento.** Una sostanza che si dimezza ogni intervallo fisso $T$ (il **tempo di dimezzamento**) segue $N(t) = N_0\left(\frac12\right)^{\frac{t}{T}}$: l'esponente $\frac{t}{T}$ conta quanti dimezzamenti ci sono stati.
+**Dimezzamento.** Una sostanza si dimezza ogni intervallo $T$, il **tempo di dimezzamento**. Segue $N(t) = N_0\left(\frac12\right)^{\frac{t}{T}}$. L'esponente $\frac{t}{T}$ conta i dimezzamenti.
 
 ~ N(t) = 160 \cdot \left(\frac12\right)^{\frac{t}{8}} :: $160$ mg iniziali, dimezzamento ogni $8$ giorni
 ~ N(24) = 160 \cdot \left(\frac12\right)^{\evid{3}} :: dopo $24$ giorni: $\frac{24}{8} = 3$ dimezzamenti
 ~ N(24) = 160 \cdot \evid{\frac18} :: $\left(\frac12\right)^3 = \frac18$
 ~ N(24) = \evidb{20}\ \text{mg} :: $160 \to 80 \to 40 \to 20$
 
-Nella scheda **Laboratorio** c'è *La provetta*: prima scrivi quanti batteri ti aspetti, poi fai scorrere il tempo e guardi la curva che impenna.
+>! Il tasso va scritto come decimale: il $5\%$ è $r = 0{,}05$. Con $r = 5$ il capitale si moltiplicherebbe per sei ogni anno.
 
->! Il tasso va scritto come numero decimale: il $5\%$ è $r = 0{,}05$, non $r = 5$. Con $r = 5$ la formula diventerebbe $C_0 \cdot 6^t$, e il capitale si moltiplicherebbe per sei ogni anno.` },
+Nella scheda **Laboratorio** c'è *La provetta*: prevedi quanti batteri ci saranno, poi fai scorrere il tempo.` },
 
-    { id: 'trasformazioni-grafico', titolo: 'Trasformazioni del grafico', testo: R`Il grafico di $y = 2^{x-h} + k$ è quello di $y = 2^x$ spostato. Nel grafico qui sotto trascina il punto $P$, che all'inizio sta in $(0;1)$: guarda come cambiano $h$, $k$ e l'asintoto.
+    { id: 'trasformazioni-grafico', titolo: 'Trasformazioni del grafico', testo: R`Il grafico di $y = 2^{x-h} + k$ è quello di $y = 2^x$ spostato. Trascina il punto $P$, che parte da $(0;1)$. Guarda come cambiano $h$, $k$ e l'asintoto.
 
 [[grafico:traslazione]]
 
->* **Traslazioni.** $y = a^{x-h} + k$ è il grafico di $y = a^x$ spostato di $h$ in orizzontale e di $k$ in verticale. Il punto $(0;1)$ va in $(h;\,1 + k)$ e l'asintoto diventa $y = k$. Con $h$ positivo il grafico va a **destra**, anche se nella formula c'è un meno.
+>* **Traslazioni.** $y = a^{x-h} + k$ è $y = a^x$ spostato di $h$ in orizzontale e di $k$ in verticale. Il punto $(0;1)$ va in $(h;\,1 + k)$ e l'asintoto diventa $y = k$. Con $h$ positivo il grafico va a **destra**, anche se nella formula c'è un meno.
 
-Per esempio $y = 2^x - 3$ è $y = 2^x$ abbassata di $3$: passa per $(0;-2)$, ha asintoto $y = -3$ e, a differenza di $2^x$, assume anche valori negativi.
+Per esempio $y = 2^x - 3$ è $y = 2^x$ abbassata di $3$. Passa per $(0;-2)$ e ha asintoto $y = -3$, quindi assume anche valori negativi.
 
-**Ribaltamenti.** $y = -a^x$ è il ribaltamento rispetto all'asse $x$: ogni valore cambia segno, e il grafico sta tutto sotto l'asse. $y = a^{-x}$ è il ribaltamento rispetto all'asse $y$: per le proprietà delle potenze $a^{-x} = \left(\frac1a\right)^x$, quindi per esempio $2^{-x}$ e $\left(\frac12\right)^x$ sono la stessa funzione.
+**Ribaltamenti.**
+
+- $y = -a^x$ ribalta il grafico rispetto all'asse $x$: sta tutto sotto l'asse.
+- $y = a^{-x}$ ribalta il grafico rispetto all'asse $y$, perché $a^{-x} = \left(\frac1a\right)^x$.
 
 ?? Quale di queste funzioni ha lo stesso grafico di $y = \left(\frac13\right)^x$?
 [x] $y = 3^{-x}$
 [ ] $y = -3^x$
 [ ] $y = \frac13 \cdot 3^x$
 [ ] $y = 3^{\frac{x}{3}}$
-=> $3^{-x} = \left(3^{-1}\right)^x = \left(\frac13\right)^x$. $-3^x$ è invece sempre negativa: il meno sta davanti alla potenza e cambia segno al **risultato**, non all'esponente. Controllo con $x = 1$: $\left(\frac13\right)^1 = \frac13$, $3^{-1} = \frac13$, $-3^1 = -3$.
+=> $3^{-x} = \left(3^{-1}\right)^x = \left(\frac13\right)^x$. Invece $-3^x$ è sempre negativa: il meno davanti cambia segno al **risultato**. Controllo con $x = 1$: $\left(\frac13\right)^1 = \frac13$, $3^{-1} = \frac13$, $-3^1 = -3$.
 
->! $-a^x$ e $a^{-x}$ sono due cose diverse. Nel primo il meno si applica al risultato (ribalta su e giù), nel secondo all'esponente (ribalta destra e sinistra). E $-2^x$ si legge $-(2^x)$, non $(-2)^x$.` }
+>! $-2^x$ si legge $-(2^x)$, non $(-2)^x$: il meno va sul risultato.` }
   ],
 
   grafici: {
@@ -350,6 +371,27 @@ Per esempio $y = 2^x - 3$ è $y = 2^x$ abbassata di $3$: passa per $(0;-2)$, ha 
   ],
 
   esercizi: [
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Calcola $2^{-3}$. Scrivi il risultato come frazione, per esempio «1/5».`, suggerimenti: [R`Il meno all'esponente fa il reciproco.`], risposta: valore(1 / 8), soluzione: [R`Il meno all'esponente fa il reciproco: $2^{-3} = \dfrac{1}{2^3}$.`, R`$2^3 = 8$, quindi $2^{-3} = \dfrac18$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Calcola $9^{\frac12}$.`, suggerimenti: [R`L'esponente $\frac12$ vuol dire radice quadrata.`], risposta: valore(3), soluzione: [R`L'esponente $\frac12$ fa la radice quadrata: $9^{\frac12} = \sqrt9$.`, R`$\sqrt9 = 3$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Calcola $8^{\frac13}$.`, suggerimenti: [R`L'esponente $\frac13$ vuol dire radice cubica.`], risposta: valore(2), soluzione: [R`L'esponente $\frac13$ fa la radice cubica: $8^{\frac13} = \sqrt[3]{8}$.`, R`$2 \cdot 2 \cdot 2 = 8$, quindi $\sqrt[3]{8} = 2$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Risolvi $2^x = 8$. Scrivi il valore di $x$. Se non ci sono soluzioni, scrivi *nessuna*.`, suggerimenti: [R`Scrivi $8$ come potenza di $2$.`], risposta: sol(3), soluzione: [R`$8 = 2^3$, quindi $2^x = 2^3$.`, R`Stessa base: uguaglio gli esponenti, $x = 3$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Risolvi $3^x = 81$.`, suggerimenti: [R`Quante volte devi moltiplicare $3$ per sé stesso per avere $81$?`], risposta: sol(4), soluzione: [R`$81 = 3 \cdot 3 \cdot 3 \cdot 3 = 3^4$.`, R`$3^x = 3^4$: uguaglio gli esponenti, $x = 4$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Calcola $4^{\frac32}$.`, suggerimenti: [R`Il $2$ al denominatore fa la radice quadrata, il $3$ al numeratore fa il cubo.`, R`Conviene fare prima la radice: $\sqrt4 = 2$.`], risposta: valore(8), soluzione: [R`$4^{\frac32} = \left(\sqrt4\right)^3$.`, R`$\sqrt4 = 2$.`, R`$2^3 = 8$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Calcola $\left(\dfrac12\right)^{-2}$.`, suggerimenti: [R`Il meno all'esponente capovolge la frazione.`], risposta: valore(4), soluzione: [R`Il meno all'esponente fa il reciproco: $\left(\dfrac12\right)^{-2} = 2^2$.`, R`$2^2 = 4$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Risolvi $5^x = \dfrac{1}{25}$.`, suggerimenti: [R`$25 = 5^2$. Come scrivi il reciproco di una potenza?`], risposta: sol(-2), soluzione: [R`$25 = 5^2$, quindi $\dfrac{1}{25} = 5^{-2}$.`, R`$5^x = 5^{-2}$: uguaglio gli esponenti, $x = -2$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Risolvi $3^{x+1} = 27$.`, suggerimenti: [R`Scrivi $27$ come potenza di $3$.`, R`Poi uguaglia gli esponenti: $x + 1 = \ldots$`], risposta: sol(2), soluzione: [R`$27 = 3^3$, quindi $3^{x+1} = 3^3$.`, R`Uguaglio gli esponenti: $x + 1 = 3$.`, R`$x = 2$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Risolvi $2^x > 16$. Scrivi la soluzione come disuguaglianza, per esempio «x ≥ 7».`, suggerimenti: [R`Scrivi $16$ come potenza di $2$.`, R`La base $2$ è maggiore di $1$: il verso resta.`], risposta: dis('>', 4), soluzione: [R`$16 = 2^4$, quindi $2^x > 2^4$.`, R`La base $2$ è maggiore di $1$: tolgo la base e il verso resta.`, R`$x > 4$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 2, testo: R`Calcola $27^{-\frac23}$.`, suggerimenti: [R`Un pezzo alla volta: il $3$ fa la radice cubica, il $2$ il quadrato, il meno il reciproco.`], risposta: valore(1 / 9), soluzione: [R`$\sqrt[3]{27} = 3$, perché $3^3 = 27$.`, R`Il $2$ fa il quadrato: $27^{\frac23} = 3^2 = 9$.`, R`Il meno fa il reciproco: $27^{-\frac23} = \dfrac19$.`] },
+    { id: 'b-12', livello: 'base', difficolta: 2, testo: R`Risolvi $4^x = 2^{x+3}$.`, suggerimenti: [R`$4 = 2^2$: scrivi tutto in base $2$.`, R`$4^x = \left(2^2\right)^x = 2^{2x}$.`], risposta: sol(3), soluzione: [R`$4^x = \left(2^2\right)^x = 2^{2x}$.`, R`$2^{2x} = 2^{x+3}$: uguaglio gli esponenti, $2x = x + 3$.`, R`$x = 3$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Risolvi $\left(\dfrac13\right)^x < 9$.`, suggerimenti: [R`Scrivi $9$ come potenza di $\dfrac13$: l'esponente è negativo.`, R`La base $\dfrac13$ è minore di $1$: il verso si rovescia.`], risposta: dis('>', -2), soluzione: [R`$9 = \left(\dfrac13\right)^{-2}$, quindi $\left(\dfrac13\right)^x < \left(\dfrac13\right)^{-2}$.`, R`La base è minore di $1$: tolgo la base e rovescio il verso.`, R`$x > -2$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Risolvi $2^x = -4$.`, suggerimenti: [R`Che segno ha una potenza di $2$?`], risposta: NESSUNA, soluzione: [R`Una potenza con base positiva è sempre positiva: $2^x > 0$ per ogni $x$.`, R`Quindi non può valere $-4$: l'equazione non ha soluzioni.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Risolvi $3^x \le \dfrac19$.`, suggerimenti: [R`$\dfrac19 = \dfrac{1}{3^2}$: scrivilo con l'esponente negativo.`, R`La base $3$ è maggiore di $1$.`], risposta: dis('<=', -2), soluzione: [R`$\dfrac19 = 3^{-2}$, quindi $3^x \le 3^{-2}$.`, R`La base $3$ è maggiore di $1$: tolgo la base e il verso resta.`, R`$x \le -2$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Risolvi $9^x = 27$.`, suggerimenti: [R`$9$ e $27$ sono tutti e due potenze di $3$.`, R`Arrivi a $2x = 3$.`], risposta: sol(3 / 2), soluzione: [R`$9 = 3^2$ e $27 = 3^3$: l'equazione diventa $3^{2x} = 3^3$.`, R`Uguaglio gli esponenti: $2x = 3$.`, R`$x = \dfrac32$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Calcola $16^{-\frac34}$.`, suggerimenti: [R`$\sqrt[4]{16} = 2$.`, R`Poi il cubo, poi il reciproco.`], risposta: valore(1 / 8), soluzione: [R`$\sqrt[4]{16} = 2$, perché $2^4 = 16$.`, R`Il $3$ fa il cubo: $16^{\frac34} = 2^3 = 8$.`, R`Il meno fa il reciproco: $16^{-\frac34} = \dfrac18$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Risolvi $3^{2x-1} = 27$.`, suggerimenti: [R`$27 = 3^3$.`, R`Uguaglia gli esponenti: $2x - 1 = 3$.`], risposta: sol(2), soluzione: [R`$27 = 3^3$, quindi $3^{2x-1} = 3^3$.`, R`Uguaglio gli esponenti: $2x - 1 = 3$.`, R`$2x = 4$, quindi $x = 2$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Risolvi $8^x = 4^{x+2}$.`, suggerimenti: [R`$8 = 2^3$ e $4 = 2^2$.`, R`Potenza di potenza: gli esponenti si moltiplicano. Attento alla parentesi.`], risposta: sol(4), soluzione: [R`$8^x = 2^{3x}$ e $4^{x+2} = 2^{2(x+2)} = 2^{2x+4}$.`, R`Uguaglio gli esponenti: $3x = 2x + 4$.`, R`$x = 4$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Risolvi $\left(\dfrac13\right)^{x-1} > \dfrac19$.`, suggerimenti: [R`$\dfrac19 = \left(\dfrac13\right)^2$.`, R`La base è minore di $1$: il verso si rovescia.`], risposta: dis('<', 3), soluzione: [R`$\dfrac19 = \left(\dfrac13\right)^2$, quindi $\left(\dfrac13\right)^{x-1} > \left(\dfrac13\right)^2$.`, R`La base è minore di $1$: tolgo la base e rovescio il verso, $x - 1 < 2$.`, R`$x < 3$.`] },
+
     { id: 'es-01', difficolta: 1, testo: R`Calcola $27^{2/3}$.`, suggerimenti: [R`Riscrivi l'esponente come radice e potenza: $27^{2/3} = \left(\sqrt[3]{27}\right)^2$.`, R`$\sqrt[3]{27}=3$.`], risposta: { tipo: 'numero', valore: 9, tolleranza: 0.001 }, soluzione: [R`$27^{2/3} = \left(\sqrt[3]{27}\right)^2 = 3^2 = 9$.`] },
     { id: 'es-02', difficolta: 1, testo: R`Calcola $4^{-3/2}$.`, suggerimenti: [R`L'esponente negativo dà il reciproco: $4^{-3/2} = \dfrac{1}{4^{3/2}}$.`, R`$4^{3/2} = \left(\sqrt4\right)^3 = 2^3 = 8$.`], risposta: { tipo: 'numero', valore: 0.125, tolleranza: 0.001 }, soluzione: [R`$4^{-3/2} = \dfrac{1}{4^{3/2}} = \dfrac{1}{\left(\sqrt4\right)^3} = \dfrac{1}{8} = 0{,}125$.`] },
     { id: 'es-03', difficolta: 1, testo: R`Risolvi l'equazione $5^{3x-2} = 5^{x+6}$.`, suggerimenti: [R`Le basi sono già uguali: uguaglia gli esponenti.`, R`Dovresti arrivare a $2x=8$.`], risposta: { tipo: 'numero', valore: 4 }, soluzione: [R`$3x-2 = x+6$.`, R`$2x=8$, quindi $x=4$.`] },
@@ -359,9 +401,9 @@ Per esempio $y = 2^x - 3$ è $y = 2^x$ abbassata di $3$: passa per $(0;-2)$, ha 
     { id: 'es-07', difficolta: 2, testo: R`Risolvi la disequazione $\left(\dfrac13\right)^{3x+1} \le \left(\dfrac13\right)^{x-3}$.`, suggerimenti: [R`La base $\frac13$ è minore di $1$: il verso della disuguaglianza fra gli esponenti si inverte.`, R`Dovresti arrivare a $3x+1 \ge x-3$.`], risposta: { tipo: 'intervallo', da: -2, a: 'inf', chiusoDa: true, chiusoA: false }, soluzione: [R`Base $0<\frac13<1$: il verso si inverte. $3x+1 \ge x-3$.`, R`$2x \ge -4$, quindi $x \ge -2$.`] },
     { id: 'es-08', difficolta: 2, testo: R`Un capitale di $2000$ € è investito al tasso di interesse composto annuo del $5\%$. Quanto vale dopo $3$ anni? (Arrotonda ai centesimi.)`, suggerimenti: [R`Usa $C(t) = C_0(1+r)^t$, con $r$ scritto come numero decimale.`, R`$C_0=2000$, $r=0{,}05$, $t=3$.`], risposta: { tipo: 'numero', valore: 2315.25, tolleranza: 0.5 }, soluzione: [R`$C(3) = 2000\cdot(1{,}05)^3 = 2000\cdot1{,}157625$.`, R`$C(3) = 2315{,}25$ €.`] },
     { id: 'es-09', difficolta: 3, testo: R`Una sostanza radioattiva ha un tempo di dimezzamento di $8$ giorni. Se all'inizio ce ne sono $160$ mg, quanti milligrammi restano dopo $24$ giorni?`, suggerimenti: [R`Usa $N(t) = N_0\left(\frac12\right)^{t/T}$, con $T$ tempo di dimezzamento.`, R`$24$ giorni sono $3$ tempi di dimezzamento: quante volte si è dimezzata la quantità?`], risposta: { tipo: 'numero', valore: 20 }, soluzione: [R`$t/T = 24/8 = 3$.`, R`$N(24) = 160\cdot\left(\frac12\right)^3 = 160\cdot\frac18 = 20$ mg.`] },
-    { id: 'es-10', difficolta: 2, testo: R`Determina l'equazione dell'asintoto orizzontale del grafico di $y=5^x+2$.`, suggerimenti: [R`Confronta con $y=a^x+k$: come cambia l'asintoto $y=0$ di $y=a^x$?`, R`L'asintoto si sposta verticalmente della stessa quantità del grafico.`], risposta: { tipo: 'testo', accettate: ['y=2', 'y = 2'] }, soluzione: [R`Il grafico di $y=5^x+2$ è quello di $y=5^x$ traslato verticalmente di $2$.`, R`L'asintoto $y=0$ diventa $y=2$.`] },
+    { id: 'es-10', difficolta: 2, testo: R`Determina l'equazione dell'asintoto orizzontale del grafico di $y=5^x+2$.`, suggerimenti: [R`Confronta con $y=a^x+k$: come cambia l'asintoto $y=0$ di $y=a^x$?`, R`L'asintoto si sposta verticalmente della stessa quantità del grafico.`], risposta: { tipo: 'testo', accettate: ['y=2', 'asintoto y=2', 'asintoto orizzontale y=2'], segnaposto: 'es. y = 5' }, soluzione: [R`Il grafico di $y=5^x+2$ è quello di $y=5^x$ traslato verticalmente di $2$.`, R`L'asintoto $y=0$ diventa $y=2$.`] },
     { id: 'es-11', difficolta: 3, testo: R`Risolvi l'equazione $2^{2x+1} - 3\cdot2^x - 2 = 0$.`, suggerimenti: [R`$2^{2x+1} = 2\cdot\left(2^x\right)^2$: poni $t=2^x$, con $t>0$.`, R`Dovresti arrivare a $2t^2-3t-2=0$.`], risposta: { tipo: 'numero', valore: 1 }, soluzione: [R`Con $t=2^x$: $2t^2-3t-2=0$. $\Delta=9+16=25$, $t=\dfrac{3\pm5}{4}$: $t=2$ oppure $t=-\frac12$.`, R`$t=-\frac12$ va scartata perché $2^x>0$ sempre. Da $2^x=2$ si ha $x=1$.`] },
-    { id: 'es-12', difficolta: 2, testo: R`Descrivi come si ottiene il grafico di $y=3^{x-2}+1$ a partire da quello di $y=3^x$, e scrivi l'equazione del suo asintoto.`, suggerimenti: [R`Separa l'effetto dell'esponente $x-2$ da quello del $+1$ fuori dalla potenza.`, R`Una trasforma il grafico orizzontalmente, l'altra verticalmente.`], risposta: { tipo: 'testo', accettate: ['y=1', 'y = 1'] }, soluzione: [R`$x-2$ nell'esponente trasla il grafico di $y=3^x$ orizzontalmente di $2$ verso destra (l'asintoto resta $y=0$).`, R`Il $+1$ fuori dalla potenza trasla poi tutto verticalmente di $1$: il punto $(2;1)$ diventa $(2;2)$ e l'asintoto diventa $y=1$.`] }
+    { id: 'es-12', difficolta: 2, testo: R`Descrivi come si ottiene il grafico di $y=3^{x-2}+1$ a partire da quello di $y=3^x$. Nella casella scrivi l'equazione del suo asintoto, per esempio «y = 5».`, suggerimenti: [R`Separa l'effetto dell'esponente $x-2$ da quello del $+1$ fuori dalla potenza.`, R`Una trasforma il grafico orizzontalmente, l'altra verticalmente.`], risposta: { tipo: 'testo', accettate: ['y=1', 'asintoto y=1', 'asintoto orizzontale y=1'], segnaposto: 'es. y = 5' }, soluzione: [R`$x-2$ nell'esponente trasla il grafico di $y=3^x$ orizzontalmente di $2$ verso destra (l'asintoto resta $y=0$).`, R`Il $+1$ fuori dalla potenza trasla poi tutto verticalmente di $1$: il punto $(2;1)$ diventa $(2;2)$ e l'asintoto diventa $y=1$.`] }
   ],
 
   quiz: [

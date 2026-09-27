@@ -1,49 +1,65 @@
 (function () {
 const R = String.raw;
+/* risposte dell'allenamento: la coppia (x; y) in quell'ordine, oppure una parola */
+const SEGNA = 'es. 2; -1';
+const cop = (x, y) => ({ tipo: 'numeri', valori: [x, y], ordinati: true, segnaposto: SEGNA });
+const IMPOSSIBILE = { tipo: 'testo', segnaposto: SEGNA, accettate: ['impossibile', 'sistema impossibile', 'è impossibile', 'nessuna', 'nessuna soluzione', 'nessuna coppia', 'non ha soluzioni', 'nessun punto', '∅', 'ø', '{}', 'S=∅', 'S=ø', 'S={}', 'insieme vuoto', 'vuoto'] };
+const INDETERMINATO = { tipo: 'testo', segnaposto: SEGNA, accettate: ['indeterminato', 'sistema indeterminato', 'è indeterminato', 'infinite', 'infinite soluzioni', 'infinite coppie', 'ha infinite soluzioni', 'soluzioni infinite', 'indeterminata', 'infinito', 'infiniti', 'infiniti punti', '∞'] };
 COMPASSO.registra({
   id: 'sistemi-lineari',
   titolo: 'Sistemi lineari',
 
-  introduzione: R`Al bar, 2 caffè e un cornetto costano 3,50 €; il giorno dopo, un caffè e 2 cornetti costano 4 €. Quanto costa un caffè? Con uno scontrino solo non si può dire, perché i prezzi sconosciuti sono due. Con tutti e due sì: se $x$ è il prezzo del caffè e $y$ quello del cornetto, deve valere $2x + y = 3{,}5$ **e anche** $x + 2y = 4$. L'unica possibilità è $x = 1$ e $y = 1{,}5$.
+  introduzione: R`Al bar, 2 caffè e un cornetto costano 3,50 €. Il giorno dopo, un caffè e 2 cornetti costano 4 €. Quanto costa un caffè?
 
-Un **sistema** mette insieme più equazioni che devono valere **nello stesso momento**. Se sono tutte di primo grado si chiama **sistema lineare**. Qui impari quattro metodi per risolverlo, a capire prima dei conti se una soluzione c'è, e a vedere il sistema come due rette che si incontrano.
+Chiama $x$ il prezzo del caffè e $y$ quello del cornetto. Devono valere **insieme** $2x + y = 3{,}5$ e $x + 2y = 4$. L'unica possibilità è $x = 1$ e $y = 1{,}5$.
 
-Ti serve saper risolvere le equazioni di primo grado: ogni metodo, alla fine, porta a un'equazione con una sola incognita.`,
+Un **sistema** mette insieme più equazioni che devono valere nello stesso momento. Se sono tutte di primo grado, è un **sistema lineare**.
+
+Ti serve saper risolvere le equazioni di primo grado. Ogni metodo, alla fine, porta a un'equazione con una sola incognita.`,
 
   inBreve: [
-    R`La soluzione di un sistema è una coppia $(x;\,y)$ che rende vere **tutte** le equazioni insieme: per controllarla la si sostituisce in ognuna.`,
-    R`Sostituzione, riduzione, confronto e Cramer danno lo stesso risultato: scegli quello che rende i conti più corti.`,
+    R`La soluzione di un sistema è una coppia $(x;\,y)$ che rende vere **tutte** le equazioni. Per controllarla, sostituiscila in ognuna.`,
+    R`Sostituzione, riduzione, confronto e Cramer danno lo stesso risultato. Scegli quello con i conti più corti.`,
     R`Con Cramer, se $D \ne 0$: $x = \frac{D_x}{D}$ e $y = \frac{D_y}{D}$.`,
-    R`Un sistema lineare di due equazioni in due incognite ha una soluzione (determinato), nessuna (impossibile) o infinite (indeterminato).`,
-    R`Ogni equazione è una retta: rette incidenti, parallele o coincidenti corrispondono ai tre casi.`
+    R`Un sistema può avere una soluzione (determinato), nessuna (impossibile) o infinite (indeterminato).`,
+    R`Ogni equazione è una retta. Rette incidenti, parallele o coincidenti danno i tre casi.`
   ],
 
   sezioni: [
-    { id: 'definizione', titolo: 'Che cos\'è un sistema e la sua soluzione', testo: R`Due numeri hanno somma $5$ e differenza $1$: quali sono? La prima condizione da sola ha infinite risposte ($0$ e $5$, $1$ e $4$, $2{,}5$ e $2{,}5$…). È la seconda, messa **insieme** alla prima, a lasciarne una sola. Scritte una sotto l'altra con la graffa, le due condizioni formano un **sistema**:
+    { id: 'definizione', titolo: 'Che cos\'è un sistema e la sua soluzione', testo: R`Due numeri hanno somma $5$ e differenza $1$. Quali sono?
+
+La somma da sola ha infinite risposte: $0$ e $5$, $1$ e $4$, $2$ e $3$… Con la differenza ne resta una sola. Scritte con la graffa, le due condizioni formano un **sistema**:
 
 $$\begin{cases} x + y = 5 \\ x - y = 1 \end{cases}$$
 
->* La **soluzione di un sistema** in due incognite è una coppia ordinata $(x;\,y)$ che rende vere **tutte** le equazioni nello stesso momento. Risolvere il sistema vuol dire trovare tutte le coppie così, se ce ne sono.
+>* La **soluzione** di un sistema è una coppia $(x;\,y)$ che rende vere **tutte** le equazioni insieme. Nella coppia viene prima $x$, poi $y$.
 
-La coppia $(3;\,2)$ va bene: $3 + 2 = 5$ ✓ e $3 - 2 = 1$ ✓. La coppia $(4;\,1)$ no: soddisfa la prima equazione ($4 + 1 = 5$) ma non la seconda ($4 - 1 = 3$, non $1$).
+La coppia $(3;\,2)$ va bene: $3 + 2 = 5$ ✓ e $3 - 2 = 1$ ✓. La coppia $(4;\,1)$ no: $4 + 1 = 5$ ✓, ma $4 - 1 = 3$.
 
-?? La coppia $(1;\,4)$ è soluzione del sistema $\begin{cases} x + y = 5 \\ 2x - y = 2 \end{cases}$?
+?? La coppia $(1;\,4)$ è soluzione di $\begin{cases} x + y = 5 \\ 2x - y = 2 \end{cases}$?
 [ ] sì, perché $1 + 4 = 5$
 [x] no: la prima equazione torna, la seconda no
-[ ] non si può dire senza risolvere il sistema
-=> Va controllata in **tutte e due**: $1 + 4 = 5$ ✓, ma $2 \cdot 1 - 4 = -2$, non $2$. Fermarsi alla prima equazione è l'errore tipico. E non serve risolvere il sistema: per controllare una coppia basta sostituirla.
+[ ] serve risolvere il sistema
+=> Va controllata in **tutte e due**. $1 + 4 = 5$ ✓, ma $2 \cdot 1 - 4 = -2$. Per controllare una coppia basta sostituirla.
 
 ### Forma normale e grado
 
-Un sistema di due equazioni in $x$ e $y$ è in **forma normale** quando ogni equazione è scritta come $ax + by = c$: i termini con le incognite a sinistra, il termine noto a destra. Da qui in avanti i coefficienti della prima equazione si chiamano $a_1$, $b_1$, $c_1$ e quelli della seconda $a_2$, $b_2$, $c_2$.
+Un sistema è in **forma normale** se ogni equazione è scritta come $ax + by = c$. Le incognite stanno a sinistra. A destra resta il numero, che si chiama **termine noto**.
 
->* Il **grado** di un sistema è il **prodotto** dei gradi delle sue equazioni. Se tutte le equazioni sono di primo grado ($x$ e $y$ solo alla prima potenza, niente $xy$ né quadrati) il grado è $1 \cdot 1 = 1$, e il sistema si dice **lineare**.
+I coefficienti della prima equazione si chiamano $a_1$, $b_1$, $c_1$. Quelli della seconda si chiamano $a_2$, $b_2$, $c_2$.
 
->! Il grado si calcola con il prodotto, non con la somma: due equazioni di primo grado danno un sistema di grado $1$, non $2$.` },
+>* Il **grado** di un sistema è il **prodotto** dei gradi delle equazioni. Due equazioni di primo grado danno grado $1 \cdot 1 = 1$: il sistema è **lineare**.
 
-    { id: 'sostituzione', titolo: 'Il metodo di sostituzione', testo: R`L'idea è questa: se da un'equazione sai quanto vale $y$ «in termini di $x$», puoi mettere quell'espressione al posto di $y$ nell'altra. Resta un'equazione con la sola $x$, che sai già risolvere.
+>! Per il grado si moltiplica: $1 \cdot 1 = 1$. Chi somma trova $2$, e sbaglia.` },
 
->* **Metodo di sostituzione.** 1) Ricava un'incognita da una delle equazioni. 2) **Sostituisci** l'espressione trovata nell'**altra** equazione. 3) Risolvi l'equazione in una sola incognita che resta. 4) Rimetti il valore trovato nell'espressione del passo 1 per avere l'altra incognita.
+    { id: 'sostituzione', titolo: 'Il metodo di sostituzione', testo: R`Da $x + y = 5$ ricavi $y = 5 - x$. Ora puoi scrivere $5 - x$ al posto di $y$ nell'altra equazione. Resta un'equazione con la sola $x$.
+
+>* **Metodo di sostituzione.** Ricavi un'incognita da un'equazione e la sostituisci nell'**altra**.
+
+1. Ricava un'incognita da un'equazione.
+2. Sostituisci l'espressione nell'altra equazione.
+3. Risolvi l'equazione con una sola incognita.
+4. Metti il valore trovato nell'espressione del passo 1.
 
 ~ \begin{cases} x + y = 5 \\ x - y = 1 \end{cases} :: il sistema di partenza
 ~ \begin{cases} \evid{y = 5 - x} \\ x - y = 1 \end{cases} :: ricavo $y$ dalla prima equazione
@@ -51,23 +67,23 @@ Un sistema di due equazioni in $x$ e $y$ è in **forma normale** quando ogni equ
 ~ \begin{cases} y = 5 - x \\ \evid{x = 3} \end{cases} :: risolvo: $2x - 5 = 1$, quindi $2x = 6$
 ~ \begin{cases} y = \evidb{2} \\ x = \evidb{3} \end{cases} :: rimetto $x = 3$ in $y = 5 - x$
 
-La soluzione è $(3;\,2)$. Il metodo conviene quando un'incognita ha coefficiente $1$ o $-1$: ricavarla non fa nascere frazioni.
+La soluzione è $(3;\,2)$. La sostituzione conviene quando un'incognita ha coefficiente $1$ o $-1$. Così non nascono frazioni.
 
-?? Nel sistema $\begin{cases} y = 2x \\ 3x + y = 10 \end{cases}$, sostituendo si ottiene…
+?? Nel sistema $\begin{cases} y = 2x \\ 3x + y = 10 \end{cases}$, che cosa ottieni sostituendo?
 [x] $3x + 2x = 10$
 [ ] $3 \cdot 2x + y = 10$
 [ ] $3x + 2 = 10$
-=> $y$ vale $2x$, quindi nella seconda equazione si scrive $2x$ al posto di $y$: $5x = 10$, $x = 2$, e poi $y = 4$. Chi scrive $3 \cdot 2x$ ha messo l'espressione al posto della $x$ invece che della $y$; chi scrive $3x + 2$ ha perso la $x$ dell'espressione.
+=> $y$ vale $2x$: nella seconda scrivi $2x$ al posto di $y$. Poi $5x = 10$, quindi $x = 2$ e $y = 4$. Chi scrive $3 \cdot 2x$ ha sostituito la $x$ invece della $y$.
 
->! L'espressione ricavata va sostituita nell'**altra** equazione. Se la rimetti in quella da cui l'hai ricavata ottieni un'identità, come $5 = 5$, che non dice niente sulla soluzione.` },
+>! Sostituisci nell'**altra** equazione. Nella stessa ottieni un'uguaglianza come $5 = 5$, che non serve.` },
 
-    { id: 'riduzione', titolo: 'Il metodo di riduzione (addizione e sottrazione)', testo: R`Se in due equazioni la $y$ compare una volta come $+y$ e una come $-y$, sommandole membro a membro (sinistra con sinistra, destra con destra) la $y$ sparisce. Su questo si basa il **metodo di riduzione**, detto anche di addizione e sottrazione.
+    { id: 'riduzione', titolo: 'Il metodo di riduzione (addizione e sottrazione)', testo: R`Guarda $\begin{cases} 4x + y = 7 \\ 2x - y = 5 \end{cases}$. La $y$ compare una volta come $+y$ e una come $-y$.
 
->* **Metodo di riduzione.** Moltiplica (se serve) le equazioni per numeri scelti apposta, in modo che un'incognita abbia **coefficienti opposti**. Poi somma le due equazioni membro a membro: quell'incognita si elimina, e resta un'equazione nell'altra.
+Somma le due equazioni membro a membro: sinistra con sinistra, destra con destra. La $y$ sparisce: $6x = 12$, quindi $x = 2$. Dalla prima, $y = 7 - 8 = -1$.
 
-Nel sistema $\begin{cases} 4x + y = 7 \\ 2x - y = 5 \end{cases}$ i coefficienti di $y$ sono già opposti: sommando si ha $6x = 12$, quindi $x = 2$, e dalla prima $y = 7 - 8 = -1$.
+>* **Metodo di riduzione.** Fai in modo che un'incognita abbia coefficienti **opposti**, come $+6$ e $-6$. Poi somma le equazioni: quell'incognita sparisce.
 
-Quando non sono opposti, li si rende tali:
+Se i coefficienti non sono opposti, moltiplica le equazioni:
 
 ~ \begin{cases} 2x + 3y = 7 \\ 3x - 2y = 4 \end{cases} :: voglio eliminare $y$, che ha coefficienti $3$ e $-2$
 ~ \begin{cases} \evid{4x + 6y = 14} \\ \evid{9x - 6y = 12} \end{cases} :: moltiplico la prima per $2$ e la seconda per $3$: ora la $y$ ha $+6$ e $-6$
@@ -75,50 +91,50 @@ Quando non sono opposti, li si rende tali:
 ~ x = \evidb{2} :: divido per $13$
 ~ 4 + 3y = 7 \;\Rightarrow\; y = \evidb{1} :: rimetto $x = 2$ nella prima equazione
 
-Verifica nella seconda: $3 \cdot 2 - 2 \cdot 1 = 4$ ✓. Un modo di scegliere i moltiplicatori che funziona sempre: se l'incognita da eliminare ha coefficienti $a_1$ e $a_2$, moltiplica la prima equazione per $a_2$ e la seconda per $-a_1$.
+Verifica nella seconda: $3 \cdot 2 - 2 \cdot 1 = 4$ ✓.
 
-?? In $\begin{cases} x + 2y = 8 \\ x - y = 2 \end{cases}$, che cosa conviene fare per eliminare la $x$?
-[x] sottrarre la seconda equazione dalla prima
-[ ] sommare le due equazioni
-[ ] moltiplicare la prima per $2$
-=> La $x$ ha coefficiente $1$ in tutte e due: coefficienti **uguali**, non opposti. Sottraendo si ottiene $3y = 6$, quindi $y = 2$ e poi $x = 4$. Sommando verrebbe $2x + y = 10$, dove la $x$ c'è ancora. Moltiplicare la prima per $2$ non avvicina i coefficienti della $x$, li allontana.
+?? In $\begin{cases} x + 2y = 8 \\ x - y = 2 \end{cases}$, come elimini la $x$?
+[x] sottrai le equazioni
+[ ] sommi le equazioni
+[ ] moltiplichi la prima per $2$
+=> La $x$ ha coefficiente $1$ in tutte e due. I coefficienti sono **uguali**, quindi sottrai: $3y = 6$, $y = 2$ e poi $x = 4$. Sommando, la $x$ resta.
 
->! Prima di sommare controlla che i coefficienti siano **opposti**, come $+6$ e $-6$. Se sono **uguali** va fatta la sottrazione, altrimenti l'incognita non sparisce.` },
+>! Coefficienti **opposti**: somma le equazioni. Coefficienti **uguali**: sottrai.` },
 
-    { id: 'confronto', titolo: 'Il metodo del confronto', testo: R`Se da tutte e due le equazioni ricavi la **stessa** incognita, ottieni due espressioni che valgono entrambe $y$. Due cose uguali alla stessa cosa sono uguali fra loro: puoi uguagliarle. È il **metodo del confronto**.
+    { id: 'confronto', titolo: 'Il metodo del confronto', testo: R`Ricava la **stessa** incognita da tutte e due le equazioni. Ottieni due espressioni che valgono entrambe $y$. Allora sono uguali fra loro.
 
->* **Metodo del confronto.** 1) Ricava la stessa incognita da tutte e due le equazioni. 2) Uguaglia le due espressioni. 3) Risolvi l'equazione che ottieni. 4) Sostituisci il valore trovato per avere l'altra incognita.
+>* **Metodo del confronto.** Ricavi la stessa incognita dalle due equazioni e uguagli le due espressioni.
 
 ~ \begin{cases} y = 2x - 1 \\ y = -x + 5 \end{cases} :: la $y$ è già ricavata in tutte e due
 ~ \evid{2x - 1 = -x + 5} :: le due espressioni valgono entrambe $y$: le uguaglio
 ~ 3x = 6 \;\Rightarrow\; x = \evidb{2} :: risolvo l'equazione in $x$
 ~ y = 2 \cdot 2 - 1 = \evidb{3} :: sostituisco in una delle due espressioni
 
-Verifica nell'altra: $-2 + 5 = 3$ ✓. La soluzione è $(2;\,3)$. È il metodo più comodo quando le equazioni sono già scritte nella forma $y = mx + q$, quella delle rette.
+Verifica nell'altra: $-2 + 5 = 3$ ✓. La soluzione è $(2;\,3)$. Il confronto è comodo quando le equazioni sono già nella forma $y = mx + q$.
 
-?? Per il sistema $\begin{cases} y = 3x \\ y = x + 4 \end{cases}$, con il confronto si scrive…
+?? Nel sistema $\begin{cases} y = 3x \\ y = x + 4 \end{cases}$, che cosa scrivi con il confronto?
 [x] $3x = x + 4$
 [ ] $3x = 0$ e $x + 4 = 0$
 [ ] $3x + x + 4 = 0$
-=> Si uguagliano le due espressioni di $y$: $3x = x + 4$, quindi $x = 2$ e $y = 6$. Porre ciascuna uguale a zero non ha senso, perché $y$ non vale zero. E $3x + x + 4 = 0$ somma le espressioni invece di uguagliarle.
+=> Uguagli le due espressioni di $y$: $3x = x + 4$. Quindi $x = 2$ e $y = 6$. Porre ognuna uguale a zero non ha senso: $y$ non vale zero.
 
->! Si possono uguagliare solo espressioni della **stessa** incognita. Se da un'equazione ricavi $y$ e dall'altra $x$, le due espressioni non si confrontano.` },
+>! Uguaglia solo espressioni della **stessa** incognita: $y$ con $y$, $x$ con $x$.` },
 
-    { id: 'cramer', titolo: 'Il metodo di Cramer e il determinante', testo: R`Si può risolvere un sistema senza sostituire niente, solo facendo tre conti con i coefficienti? Sì, con il **metodo di Cramer**. Serve uno strumento nuovo, il **determinante**.
+    { id: 'cramer', titolo: 'Il metodo di Cramer e il determinante', testo: R`Con il **metodo di Cramer** risolvi un sistema facendo solo tre conti con i coefficienti. Serve il **determinante**.
 
-Il determinante di una tabella di quattro numeri si calcola così: prodotto della diagonale che scende (da sinistra in alto a destra in basso) meno prodotto dell'altra diagonale.
+Il determinante di una tabella di quattro numeri è: prodotto della diagonale che scende, meno prodotto dell'altra diagonale.
 
 $$\begin{vmatrix} a & b \\ c & d \end{vmatrix} = ad - bc$$
 
 Per esempio $\begin{vmatrix} 2 & 3 \\ 1 & 4 \end{vmatrix} = 2 \cdot 4 - 3 \cdot 1 = 5$.
 
-Per un sistema in forma normale, $a_1x + b_1y = c_1$ e $a_2x + b_2y = c_2$, si calcolano tre determinanti:
+Per un sistema in forma normale calcoli tre determinanti:
 
-- $D$, con i coefficienti delle incognite: $\begin{vmatrix} a_1 & b_1 \\ a_2 & b_2 \end{vmatrix}$;
-- $D_x$: come $D$, ma la colonna della $x$ è sostituita dai termini noti: $\begin{vmatrix} c_1 & b_1 \\ c_2 & b_2 \end{vmatrix}$;
-- $D_y$: come $D$, ma la colonna della $y$ è sostituita dai termini noti: $\begin{vmatrix} a_1 & c_1 \\ a_2 & c_2 \end{vmatrix}$.
+- $D$ ha i coefficienti delle incognite: $\begin{vmatrix} a_1 & b_1 \\ a_2 & b_2 \end{vmatrix}$;
+- $D_x$ ha i termini noti al posto della colonna della $x$: $\begin{vmatrix} c_1 & b_1 \\ c_2 & b_2 \end{vmatrix}$;
+- $D_y$ ha i termini noti al posto della colonna della $y$: $\begin{vmatrix} a_1 & c_1 \\ a_2 & c_2 \end{vmatrix}$.
 
->* **Regola di Cramer.** Se $D \ne 0$, il sistema ha una sola soluzione: $x = \dfrac{D_x}{D}$ e $y = \dfrac{D_y}{D}$.
+>* **Regola di Cramer.** Se $D \ne 0$, c'è una sola soluzione: $x = \dfrac{D_x}{D}$ e $y = \dfrac{D_y}{D}$.
 
 Per il sistema $\begin{cases} x + 2y = 4 \\ 3x - y = 5 \end{cases}$:
 
@@ -127,21 +143,21 @@ Per il sistema $\begin{cases} x + 2y = 4 \\ 3x - y = 5 \end{cases}$:
 ~ D_y = \begin{vmatrix} 1 & \evid{4} \\ 3 & \evid{5} \end{vmatrix} = 5 - 12 = \evidb{-7} :: al posto della colonna della $y$ metto i termini noti
 ~ x = \dfrac{-14}{-7} = 2 \qquad y = \dfrac{-7}{-7} = 1 :: divido per $D$
 
-Verifica: $2 + 2 \cdot 1 = 4$ ✓ e $3 \cdot 2 - 1 = 5$ ✓. Cramer conviene quando i coefficienti sono scomodi per gli altri metodi, e si estende anche ai sistemi con tre incognite.
+Verifica: $2 + 2 \cdot 1 = 4$ ✓ e $3 \cdot 2 - 1 = 5$ ✓. Cramer conviene quando i coefficienti sono scomodi per gli altri metodi.
 
 ?? Nel sistema $\begin{cases} 2x + y = 5 \\ x + 3y = 5 \end{cases}$, quanto vale $D$?
 [x] $5$
 [ ] $7$
 [ ] $-5$
-=> $D = 2 \cdot 3 - 1 \cdot 1 = 5$. Chi trova $7$ ha sommato i due prodotti invece di sottrarli; chi trova $-5$ ha fatto la sottrazione al contrario, $1 \cdot 1 - 2 \cdot 3$.
+=> $D = 2 \cdot 3 - 1 \cdot 1 = 5$. Chi trova $7$ ha sommato i due prodotti. Chi trova $-5$ ha sottratto al contrario.
 
->! In $D_x$ e $D_y$ i termini noti prendono il posto della colonna **dell'incognita che cerchi**: per $D_x$ quella della $x$, per $D_y$ quella della $y$. Scambiarle è l'errore più frequente.` },
+>! In $D_x$ i termini noti vanno nella colonna della $x$. In $D_y$ vanno nella colonna della $y$.` },
 
-    { id: 'discussione', titolo: 'Sistemi determinati, impossibili e indeterminati', testo: R`Non sempre un sistema ha una soluzione sola. Può non averne nessuna, o averne infinite, e conviene accorgersene prima di perdersi nei conti.
+    { id: 'discussione', titolo: 'Sistemi determinati, impossibili e indeterminati', testo: R`Un sistema può avere una soluzione, nessuna oppure infinite.
 
->* Un sistema è **determinato** se ha una sola soluzione, **impossibile** se non ne ha nessuna, **indeterminato** se ne ha infinite.
+>* Un sistema è **determinato** se ha una sola soluzione. È **impossibile** se non ne ha. È **indeterminato** se ne ha infinite.
 
-Con i determinanti il caso si legge subito:
+Con i determinanti lo capisci subito:
 
 | $D$ | $D_x$, $D_y$ | sistema |
 |---|---|---|
@@ -149,7 +165,7 @@ Con i determinanti il caso si legge subito:
 | $=0$ | almeno uno $\ne 0$ | impossibile: nessuna soluzione |
 | $=0$ | entrambi $=0$ | indeterminato: infinite soluzioni |
 
-Si arriva alla stessa conclusione anche senza determinanti, confrontando i **rapporti** fra i coefficienti corrispondenti delle due equazioni (quando i denominatori non sono zero):
+Puoi anche confrontare i **rapporti** fra i coefficienti delle due equazioni. Serve che i coefficienti della seconda non siano zero.
 
 | rapporti | sistema |
 |---|---|
@@ -157,25 +173,31 @@ Si arriva alla stessa conclusione anche senza determinanti, confrontando i **rap
 | $\frac{a_1}{a_2} = \frac{b_1}{b_2} \ne \frac{c_1}{c_2}$ | impossibile |
 | $\frac{a_1}{a_2} = \frac{b_1}{b_2} = \frac{c_1}{c_2}$ | indeterminato |
 
-Esempio: in $\begin{cases} 2x + 3y = 6 \\ 4x + 6y = 15 \end{cases}$ i rapporti $\frac{2}{4}$ e $\frac{3}{6}$ valgono tutti e due $\frac{1}{2}$, ma $\frac{6}{15} = \frac{2}{5}$ è diverso. Il sistema è impossibile, e lo sai senza risolverlo. Si capisce anche perché: raddoppiando la prima equazione si ha $4x + 6y = 12$, mentre la seconda chiede che la stessa quantità valga $15$.
+Esempio: $\begin{cases} 2x + 3y = 6 \\ 4x + 6y = 15 \end{cases}$. I rapporti $\frac{2}{4}$ e $\frac{3}{6}$ valgono $\frac{1}{2}$. Ma $\frac{6}{15} = \frac{2}{5}$. Il sistema è impossibile.
 
-Quando il sistema è indeterminato, le due equazioni sono in realtà la stessa, una è un multiplo dell'altra: ogni coppia che soddisfa la prima soddisfa anche la seconda.
+Il motivo: raddoppia la prima equazione e ottieni $4x + 6y = 12$. La seconda vuole che la stessa somma valga $15$.
 
-?? Il sistema $\begin{cases} x - 2y = 3 \\ -2x + 4y = -6 \end{cases}$ è…
+In un sistema indeterminato, un'equazione è un multiplo dell'altra. In pratica sono la stessa equazione.
+
+?? Com'è il sistema $\begin{cases} x - 2y = 3 \\ -2x + 4y = -6 \end{cases}$?
 [ ] determinato
 [ ] impossibile
 [x] indeterminato
-=> I rapporti sono $\frac{1}{-2}$, $\frac{-2}{4}$ e $\frac{3}{-6}$, e valgono tutti $-\frac{1}{2}$: la seconda equazione è la prima moltiplicata per $-2$, quindi le soluzioni sono infinite. Chi risponde «impossibile» ha guardato solo i primi due rapporti, senza controllare i termini noti.
+=> I rapporti $\frac{1}{-2}$, $\frac{-2}{4}$ e $\frac{3}{-6}$ valgono tutti $-\frac{1}{2}$. La seconda equazione è la prima per $-2$: infinite soluzioni. Chi risponde «impossibile» non ha controllato i termini noti.
 
->! «Impossibile» non vuol dire che hai sbagliato i conti o che il sistema è scritto male: vuol dire che nessuna coppia soddisfa le due condizioni insieme. In un problema è una risposta vera e propria: «non esistono due numeri così».` },
+>! «Impossibile» non vuol dire che hai sbagliato i conti. Vuol dire che nessuna coppia rende vere le due equazioni insieme.` },
 
-    { id: 'interpretazione-grafica', titolo: 'Interpretazione grafica: rette incidenti, parallele, coincidenti', testo: R`L'equazione $x + y = 5$ da sola ha infinite soluzioni: $(5;\,0)$, $(4;\,1)$, $(3;\,2)$, $(0;\,5)$… Se le segni nel piano cartesiano, stanno tutte su una **retta**. Ogni equazione di primo grado in $x$ e $y$ è una retta, e una soluzione del sistema è un punto che sta su **tutte e due** le rette: il loro punto d'incontro.
+    { id: 'interpretazione-grafica', titolo: 'Interpretazione grafica: rette incidenti, parallele, coincidenti', testo: R`L'equazione $x + y = 5$ da sola ha infinite soluzioni: $(5;\,0)$, $(4;\,1)$, $(3;\,2)$… Nel piano cartesiano stanno tutte su una **retta**.
 
-Nel grafico la retta $r$ è $x + y = 5$ e resta ferma. La retta $s$ passa per i punti $A$ e $B$, che puoi trascinare. All'inizio $s$ è la retta $x - y = 1$, e le due rette si incontrano in $P(3;\,2)$: la soluzione del sistema che hai già risolto con la sostituzione. In alto leggi i determinanti $D$, $D_x$, $D_y$ del sistema formato da $r$ e da $s$. L'equazione di $s$ è costruita a partire da $A$ e $B$, e all'inizio è $x - y = 1$ moltiplicata per $5$: per questo leggi $D = -10$ invece di $-2$. Quello che conta è se $D$ vale zero o no.
+Ogni equazione di primo grado in $x$ e $y$ è una retta. La soluzione del sistema è il punto in cui le due rette si incontrano.
+
+Nel grafico la retta $r$ è $x + y = 5$ e resta ferma. La retta $s$ passa per $A$ e $B$: trascinali. All'inizio $s$ è $x - y = 1$, e le rette si incontrano in $P(3;\,2)$.
+
+In alto leggi $D$, $D_x$ e $D_y$. All'inizio $D = -10$, perché il grafico usa $x - y = 1$ moltiplicata per $5$. Conta solo se $D$ vale zero o no.
 
 [[grafico:sistemaRette]]
 
-Prova a far sparire il punto $P$. Ci sono due modi diversi, e in tutti e due $D$ diventa $0$:
+Prova a far sparire $P$. Ci sono due modi, e in tutti e due $D$ diventa $0$.
 
 | rette | punti in comune | sistema |
 |---|---|---|
@@ -183,27 +205,31 @@ Prova a far sparire il punto $P$. Ci sono due modi diversi, e in tutti e due $D$
 | parallele e distinte | nessuno | impossibile |
 | coincidenti | tutti | indeterminato |
 
-Nel grafico lo vedi dai numeri in alto: $D \ne 0$ finché le rette si incontrano; $D = 0$ quando sono parallele, con $D_x$ e $D_y$ che non sono entrambi zero; $D = D_x = D_y = 0$ quando coincidono.
+Guarda i numeri in alto. Finché le rette si incontrano, $D \ne 0$. Quando sono parallele, $D = 0$ ma $D_x$ e $D_y$ non sono entrambi zero. Quando coincidono, $D = D_x = D_y = 0$.
 
-Con le rette scritte nella forma $y = mx + q$ basta confrontare le pendenze $m$ e i termini noti $q$: pendenze diverse, rette incidenti; pendenze uguali e $q$ diversi, parallele; tutto uguale, coincidenti.
+Con le rette nella forma $y = mx + q$, confronta la pendenza $m$ e il valore di $q$:
 
->* Determinato ↔ rette incidenti, impossibile ↔ rette parallele distinte, indeterminato ↔ rette coincidenti. Il calcolo (determinanti o rapporti) e il disegno dicono la stessa cosa.
+- $m$ diversi: rette incidenti;
+- $m$ uguali e $q$ diversi: rette parallele;
+- $m$ e $q$ uguali: rette coincidenti.
 
-?? Le rette $y = -x + 4$ e $y = -x - 2$ formano un sistema…
+>* Determinato: rette incidenti. Impossibile: rette parallele distinte. Indeterminato: rette coincidenti.
+
+?? Che sistema formano le rette $y = -x + 4$ e $y = -x - 2$?
 [ ] determinato
 [x] impossibile
 [ ] indeterminato
-=> Stessa pendenza ($m = -1$) ma termini noti diversi: le rette sono parallele e distinte, non si incontrano mai. Con il confronto viene $-x + 4 = -x - 2$, cioè $0 \cdot x = -6$: nessuna soluzione. «Indeterminato» sarebbe il caso con anche lo stesso $q$.
+=> Stessa pendenza, $m = -1$, ma $q$ diversi. Le rette sono parallele e non si incontrano. «Indeterminato» vorrebbe anche lo stesso $q$.
 
->! Due rette «quasi parallele», con pendenze molto vicine ma diverse, si incontrano comunque: il sistema è determinato, anche se il punto d'incontro è lontano e nel disegno non si vede.` },
+>! Rette con pendenze diverse si incontrano sempre, anche se sono quasi parallele. Il punto può essere lontano, fuori dal disegno.` },
 
-    { id: 'tre-incognite', titolo: 'Sistemi a tre incognite', testo: R`Con tre incognite, di solito $x$, $y$ e $z$, servono in generale tre equazioni:
+    { id: 'tre-incognite', titolo: 'Sistemi a tre incognite', testo: R`Con tre incognite, $x$, $y$ e $z$, servono in generale tre equazioni:
 
 $$\begin{cases} a_1x + b_1y + c_1z = d_1 \\ a_2x + b_2y + c_2z = d_2 \\ a_3x + b_3y + c_3z = d_3 \end{cases}$$
 
-L'idea è la stessa della riduzione: eliminare le incognite una alla volta, finché ne resta una sola.
+L'idea è quella della riduzione: elimini le incognite una alla volta.
 
->* **Strategia.** Combinando le equazioni a coppie, elimina la **stessa** incognita due volte: ottieni un sistema di due equazioni in due incognite, che sai risolvere. Poi torna indietro e trova l'incognita rimasta.
+>* **Strategia.** Elimina la **stessa** incognita da due coppie di equazioni. Resta un sistema con due incognite, che sai risolvere. Poi trova la terza.
 
 ~ \begin{cases} x + y + z = 9 \\ x - y + z = 3 \\ x + y - z = 1 \end{cases} :: tre equazioni, tre incognite
 ~ \evid{2y = 6} :: prima meno seconda: $(x + y + z) - (x - y + z) = 9 - 3$, e se ne vanno $x$ e $z$
@@ -211,36 +237,41 @@ L'idea è la stessa della riduzione: eliminare le incognite una alla volta, finc
 ~ y = \evidb{3} \qquad z = \evidb{4} :: divido per $2$
 ~ x + 3 + 4 = 9 \;\Rightarrow\; x = \evidb{2} :: rimetto $y$ e $z$ nella prima equazione
 
-Verifica: $2 - 3 + 4 = 3$ ✓ e $2 + 3 - 4 = 1$ ✓. Qui i coefficienti erano comodi e ogni sottrazione ha eliminato due incognite insieme. In generale si elimina prima una sola incognita da due coppie di equazioni, e poi si risolve il sistema con due incognite che resta. Il procedimento si chiama **eliminazione**.
+Verifica: $2 - 3 + 4 = 3$ ✓ e $2 + 3 - 4 = 1$ ✓. Qui ogni sottrazione ha eliminato due incognite insieme, perché i coefficienti erano comodi. Il procedimento si chiama **eliminazione**.
 
 ?? Un sistema ha tre incognite ma solo due equazioni. Che cosa ti aspetti, di solito?
 [ ] una sola soluzione
 [x] infinite soluzioni
 [ ] nessuna soluzione, sempre
-=> Con meno equazioni che incognite, di solito un'incognita resta «libera»: per ogni valore che le dai trovi le altre due, e le soluzioni sono infinite. Può anche capitare che il sistema sia impossibile, ma non succede sempre.
+=> Un'incognita resta «libera». Per ogni valore che le dai trovi le altre due: le soluzioni sono infinite. A volte il sistema è impossibile, ma non sempre.
 
->! Quando sottrai due equazioni sottrai **tutto**: ogni termine della seconda, compreso il termine noto. Metti la seconda equazione tra parentesi, come nei passi qui sopra, così nessun segno si perde.` },
+>! Quando sottrai due equazioni, sottrai **ogni** termine, anche il termine noto. Metti la seconda equazione tra parentesi.` },
 
-    { id: 'problemi', titolo: 'Problemi con due incognite', testo: R`Quando un problema chiede **due** quantità e dà **due** informazioni, conviene usare due incognite, una per quantità. Le equazioni vengono più facili da scrivere, e il sistema le mette insieme.
+    { id: 'problemi', titolo: 'Problemi con due incognite', testo: R`Un problema chiede **due** quantità e dà **due** informazioni? Usa due incognite, una per quantità.
 
->* **Schema.** 1) Scegli le due incognite e scrivi **che cosa rappresentano**. 2) Traduci ogni informazione del testo in un'equazione. 3) Risolvi il sistema con il metodo più comodo. 4) Controlla che la soluzione abbia senso nel problema (numeri interi se conti oggetti, positivi se sono età o prezzi).
+1. Scegli le due incognite e scrivi che cosa sono.
+2. Traduci ogni informazione in un'equazione.
+3. Risolvi il sistema con il metodo più comodo.
+4. Controlla che la soluzione abbia senso: interi se conti oggetti, positivi se sono prezzi.
 
-In un parcheggio ci sono auto (4 ruote) e moto (2 ruote): in tutto 15 veicoli e 50 ruote. Chiamo $x$ il numero di auto e $y$ quello di moto.
+>* In un problema, ogni informazione del testo diventa un'equazione del sistema.
+
+In un parcheggio ci sono auto (4 ruote) e moto (2 ruote). In tutto sono 15 veicoli e 50 ruote. Chiamo $x$ le auto e $y$ le moto.
 
 ~ \begin{cases} x + y = 15 \\ 4x + 2y = 50 \end{cases} :: la prima conta i veicoli, la seconda le ruote
 ~ \begin{cases} \evid{y = 15 - x} \\ 4x + 2\evid{(15 - x)} = 50 \end{cases} :: ricavo $y$ dalla prima e lo sostituisco nella seconda
 ~ 2x + 30 = 50 \;\Rightarrow\; x = \evidb{10} :: risolvo l'equazione in $x$
 ~ y = 15 - 10 = \evidb{5} :: torno a $y = 15 - x$
 
-Dieci auto e cinque moto: numeri interi e positivi, come deve essere. Verifica: $10 + 5 = 15$ veicoli e $40 + 10 = 50$ ruote ✓.
+Dieci auto e cinque moto: interi e positivi, come deve essere. Verifica: $10 + 5 = 15$ veicoli e $40 + 10 = 50$ ruote ✓.
 
-?? «Un biglietto intero costa 8 €, un ridotto 5 €; sono stati venduti 40 biglietti per 260 €.» Con $x$ gli interi e $y$ i ridotti, il sistema è…
+?? «Un intero costa 8 €, un ridotto 5 €. Venduti 40 biglietti per 260 €.» Con $x$ interi e $y$ ridotti, quale sistema scrivi?
 [x] $x + y = 40$ e $8x + 5y = 260$
 [ ] $x + y = 260$ e $8x + 5y = 40$
 [ ] $x + y = 40$ e $5x + 8y = 260$
-=> Un'equazione conta i biglietti, l'altra gli euro: $x + y = 40$ e $8x + 5y = 260$, da cui $x = 20$ e $y = 20$. Chi scrive $x + y = 260$ ha mescolato biglietti ed euro; chi scrive $5x + 8y$ ha dato agli interi il prezzo dei ridotti.
+=> Un'equazione conta i biglietti, l'altra gli euro. Ne vengono $x = 20$ e $y = 20$. Chi scrive $x + y = 260$ ha mescolato biglietti ed euro.
 
->! Una soluzione giusta per il sistema ma senza senso nel problema (un numero negativo di persone, mezza automobile) va segnalata come non accettabile, non ignorata.` }
+>! Una soluzione senza senso nel problema va scartata, dicendo perché. Per esempio, un numero negativo di persone.` }
   ],
 
   /* sistemaRette: r è x + y = 5; s passa per A(xA; yA) e B(xB; yB), quindi in forma normale è
@@ -360,6 +391,26 @@ Dieci auto e cinque moto: numeri interi e positivi, come deve essere. Verifica: 
   ],
 
   esercizi: [
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Risolvi $\begin{cases} x + y = 7 \\ x - y = 1 \end{cases}$. Scrivi la soluzione come *x; y*.`, suggerimenti: [R`La $y$ ha coefficienti opposti: somma le due equazioni.`], risposta: cop(4, 3), soluzione: [R`Sommo le equazioni: $2x = 8$, quindi $x = 4$.`, R`Nella prima: $4 + y = 7$, quindi $y = 3$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Risolvi $\begin{cases} y = 2x \\ x + y = 9 \end{cases}$. Scrivi la soluzione come *x; y*.`, suggerimenti: [R`Nella seconda scrivi $2x$ al posto di $y$.`], risposta: cop(3, 6), soluzione: [R`Sostituisco: $x + 2x = 9$, cioè $3x = 9$, quindi $x = 3$.`, R`$y = 2 \cdot 3 = 6$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Risolvi $\begin{cases} x = 3 \\ 2x + y = 10 \end{cases}$. Scrivi la soluzione come *x; y*.`, suggerimenti: [R`$x$ lo conosci già: mettilo nella seconda equazione.`], risposta: cop(3, 4), soluzione: [R`Metto $x = 3$ nella seconda: $6 + y = 10$.`, R`$y = 4$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Risolvi $\begin{cases} x + y = 5 \\ x - y = -1 \end{cases}$. Scrivi la soluzione come *x; y*.`, suggerimenti: [R`Somma le due equazioni: la $y$ sparisce.`], risposta: cop(2, 3), soluzione: [R`Sommo le equazioni: $2x = 4$, quindi $x = 2$.`, R`Nella prima: $2 + y = 5$, quindi $y = 3$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Risolvi $\begin{cases} y = x + 2 \\ x + y = 8 \end{cases}$. Scrivi la soluzione come *x; y*.`, suggerimenti: [R`Nella seconda scrivi $x + 2$ al posto di $y$.`], risposta: cop(3, 5), soluzione: [R`Sostituisco: $x + x + 2 = 8$, cioè $2x = 6$, quindi $x = 3$.`, R`$y = 3 + 2 = 5$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Risolvi $\begin{cases} 2x + y = 8 \\ x - y = 1 \end{cases}$. Scrivi la soluzione come *x; y*.`, suggerimenti: [R`La $y$ ha coefficienti opposti: somma le due equazioni.`], risposta: cop(3, 2), soluzione: [R`Sommo le equazioni: $3x = 9$, quindi $x = 3$.`, R`Nella seconda: $3 - y = 1$, quindi $y = 2$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Risolvi $\begin{cases} x + 2y = 9 \\ x - y = 3 \end{cases}$. Scrivi la soluzione come *x; y*.`, suggerimenti: [R`La $x$ ha coefficiente $1$ in tutte e due: sottrai le equazioni.`], risposta: cop(5, 2), soluzione: [R`Sottraggo la seconda dalla prima: $3y = 6$, quindi $y = 2$.`, R`Nella seconda: $x - 2 = 3$, quindi $x = 5$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Risolvi $\begin{cases} y = 3x - 1 \\ y = x + 5 \end{cases}$. Scrivi la soluzione come *x; y*.`, suggerimenti: [R`Tutte e due danno $y$: uguaglia le due espressioni.`], risposta: cop(3, 8), soluzione: [R`Uguaglio: $3x - 1 = x + 5$.`, R`$2x = 6$, quindi $x = 3$.`, R`$y = 3 + 5 = 8$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Risolvi $\begin{cases} 3x + y = 5 \\ 2x - y = 5 \end{cases}$. Scrivi la soluzione come *x; y*.`, suggerimenti: [R`La $y$ ha coefficienti opposti: somma le due equazioni.`], risposta: cop(2, -1), soluzione: [R`Sommo le equazioni: $5x = 10$, quindi $x = 2$.`, R`Nella prima: $6 + y = 5$, quindi $y = -1$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Risolvi $\begin{cases} x - 2y = 1 \\ 3x + y = 10 \end{cases}$. Scrivi *x; y*, oppure *impossibile* o *indeterminato*.`, suggerimenti: [R`Dalla prima ricava $x = 1 + 2y$.`, R`Sostituiscilo nella seconda.`], risposta: cop(3, 1), soluzione: [R`Dalla prima: $x = 1 + 2y$.`, R`Sostituisco: $3(1 + 2y) + y = 10$, cioè $3 + 7y = 10$, quindi $y = 1$.`, R`$x = 1 + 2 = 3$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 2, testo: R`Risolvi $\begin{cases} 2x + 3y = 7 \\ x - y = 1 \end{cases}$. Scrivi *x; y*, oppure *impossibile* o *indeterminato*.`, suggerimenti: [R`Dalla seconda ricava $x = 1 + y$.`, R`Sostituiscilo nella prima.`], risposta: cop(2, 1), soluzione: [R`Dalla seconda: $x = 1 + y$.`, R`Sostituisco: $2(1 + y) + 3y = 7$, cioè $2 + 5y = 7$, quindi $y = 1$.`, R`$x = 1 + 1 = 2$.`] },
+    { id: 'b-12', livello: 'base', difficolta: 2, testo: R`Risolvi $\begin{cases} x + y = 4 \\ 2x + 2y = 5 \end{cases}$. Scrivi *x; y*, oppure *impossibile* o *indeterminato*.`, suggerimenti: [R`Moltiplica la prima per $2$ e confrontala con la seconda.`], risposta: IMPOSSIBILE, soluzione: [R`La prima per $2$: $2x + 2y = 8$.`, R`La seconda vuole $2x + 2y = 5$. La stessa somma non può valere $8$ e $5$.`, R`Il sistema è impossibile.`] },
+    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Risolvi $\begin{cases} 2x + y = 1 \\ 3x + 2y = 3 \end{cases}$. Scrivi *x; y*, oppure *impossibile* o *indeterminato*.`, suggerimenti: [R`Dalla prima ricava $y = 1 - 2x$.`, R`Sostituiscilo nella seconda.`], risposta: cop(-1, 3), soluzione: [R`Dalla prima: $y = 1 - 2x$.`, R`Sostituisco: $3x + 2(1 - 2x) = 3$, cioè $2 - x = 3$, quindi $x = -1$.`, R`$y = 1 - 2 \cdot (-1) = 3$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Risolvi $\begin{cases} x - y = 2 \\ 2x - 2y = 4 \end{cases}$. Scrivi *x; y*, oppure *impossibile* o *indeterminato*.`, suggerimenti: [R`Moltiplica la prima per $2$ e confrontala con la seconda.`], risposta: INDETERMINATO, soluzione: [R`La prima per $2$: $2x - 2y = 4$. È proprio la seconda.`, R`Le due equazioni sono la stessa: il sistema è indeterminato.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Risolvi $\begin{cases} 3x + 2y = 1 \\ x - y = 2 \end{cases}$. Scrivi *x; y*, oppure *impossibile* o *indeterminato*.`, suggerimenti: [R`Dalla seconda ricava $x = 2 + y$.`, R`Sostituiscilo nella prima.`], risposta: cop(1, -1), soluzione: [R`Dalla seconda: $x = 2 + y$.`, R`Sostituisco: $3(2 + y) + 2y = 1$, cioè $6 + 5y = 1$, quindi $y = -1$.`, R`$x = 2 - 1 = 1$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Risolvi $\begin{cases} 2x + 3y = 4 \\ 3x - y = 17 \end{cases}$. Scrivi *x; y*, oppure *impossibile* o *indeterminato*.`, suggerimenti: [R`Dalla seconda ricava $y = 3x - 17$.`, R`Sostituiscilo nella prima.`], risposta: cop(5, -2), soluzione: [R`Dalla seconda: $y = 3x - 17$.`, R`Sostituisco: $2x + 3(3x - 17) = 4$, cioè $11x - 51 = 4$, quindi $x = 5$.`, R`$y = 15 - 17 = -2$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Risolvi $\begin{cases} y = 2x + 1 \\ y = 2x - 3 \end{cases}$. Scrivi *x; y*, oppure *impossibile* o *indeterminato*.`, suggerimenti: [R`Tutte e due danno $y$: uguaglia le due espressioni.`], risposta: IMPOSSIBILE, soluzione: [R`Uguaglio: $2x + 1 = 2x - 3$.`, R`Le $x$ spariscono e resta $1 = -3$, che è falso.`, R`Il sistema è impossibile: le due rette sono parallele.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Risolvi $\begin{cases} 3(x - 1) + y = 5 \\ x - y = 4 \end{cases}$. Scrivi *x; y*, oppure *impossibile* o *indeterminato*.`, suggerimenti: [R`Togli la parentesi: la prima diventa $3x + y = 8$.`, R`Ora la $y$ ha coefficienti opposti.`], risposta: cop(3, -1), soluzione: [R`Tolgo la parentesi: $3x - 3 + y = 5$, cioè $3x + y = 8$.`, R`Sommo con la seconda: $4x = 12$, quindi $x = 3$.`, R`Nella seconda: $3 - y = 4$, quindi $y = -1$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Risolvi $\begin{cases} 3x - y = 2 \\ 6x - 2y = 4 \end{cases}$. Scrivi *x; y*, oppure *impossibile* o *indeterminato*.`, suggerimenti: [R`Moltiplica la prima per $2$ e confrontala con la seconda.`], risposta: INDETERMINATO, soluzione: [R`La prima per $2$: $6x - 2y = 4$. È proprio la seconda.`, R`Le due equazioni sono la stessa: il sistema è indeterminato.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Risolvi $\begin{cases} 3x + 2y = 7 \\ 2x + 3y = 8 \end{cases}$. Scrivi *x; y*, oppure *impossibile* o *indeterminato*.`, suggerimenti: [R`Moltiplica la prima per $3$ e la seconda per $2$.`, R`Ora la $y$ ha coefficiente $6$ in tutte e due: sottrai.`], risposta: cop(1, 2), soluzione: [R`Prima per $3$, seconda per $2$: $9x + 6y = 21$ e $4x + 6y = 16$.`, R`Sottraggo: $5x = 5$, quindi $x = 1$.`, R`Nella prima: $3 + 2y = 7$, quindi $y = 2$.`] },
     { id: 'es-01', difficolta: 1, testo: R`Risolvi il sistema $\begin{cases} x+y=8 \\ x-y=2 \end{cases}$ con il metodo di sostituzione. Scrivi la soluzione come «x; y».`, suggerimenti: [R`Isola una delle due incognite in una delle equazioni.`, R`Dalla prima equazione, $y=8-x$: sostituiscila nella seconda.`], risposta: { tipo: 'numeri', ordinati: true, valori: [5, 3] }, soluzione: [R`Dalla prima equazione, $y=8-x$.`, R`Sostituendo nella seconda: $x-(8-x)=2$, cioè $2x-8=2$, da cui $x=5$.`, R`Allora $y=8-5=3$.`, R`Verifica: $5+3=8$ ✓ e $5-3=2$ ✓.`] },
     { id: 'es-02', difficolta: 1, testo: R`Risolvi il sistema $\begin{cases} 2x+y=9 \\ x-y=3 \end{cases}$ con il metodo di riduzione. Scrivi la soluzione come «x; y».`, suggerimenti: [R`I coefficienti di $y$ sono già opposti: prova a sommare le due equazioni.`, R`Sommando ottieni un'equazione nella sola $x$.`], risposta: { tipo: 'numeri', ordinati: true, valori: [4, 1] }, soluzione: [R`I coefficienti di $y$ sono $+1$ e $-1$: sommo le due equazioni.`, R`$(2x+y)+(x-y)=9+3$, cioè $3x=12$, da cui $x=4$.`, R`Sostituisco in $x-y=3$: $4-y=3$, quindi $y=1$.`, R`Verifica: $2\cdot 4+1=9$ ✓.`] },
     { id: 'es-03', difficolta: 1, testo: R`Risolvi il sistema $\begin{cases} y=3x-2 \\ y=-2x+8 \end{cases}$ con il metodo del confronto. Scrivi la soluzione come «x; y».`, suggerimenti: [R`$y$ è già isolata in entrambe le equazioni: eguaglia i due secondi membri.`], risposta: { tipo: 'numeri', ordinati: true, valori: [2, 4] }, soluzione: [R`Eguaglio: $3x-2=-2x+8$.`, R`$5x=10$, quindi $x=2$.`, R`$y=3\cdot 2-2=4$.`, R`Verifica nell'altra: $y=-2\cdot 2+8=4$ ✓.`] },

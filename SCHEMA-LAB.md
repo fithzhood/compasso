@@ -63,3 +63,85 @@ File `laboratori/<id>.js`:
 - `node --check laboratori/<id>.js` (sintassi), poi il laboratorio va provato nel browser:
   `#/argomento/<argomento>/lab/<id>`. Deve reggere a 384 px di larghezza e a schermo intero.
 - Il modello da leggere prima di scrivere: `laboratori/bilancia.js`.
+
+## Una schermata sola (dal 27 settembre 2026)
+
+Ogni laboratorio si apre in una **pagina tutta sua** (`#/argomento/<arg>/lab/<id>`): in alto una
+barra sottile (indietro, titolo, schermo intero, e a destra la mascotte Ada), sotto la
+`radice` (`.lab-stage`), che ha **altezza e larghezza definite** (tutta la finestra meno la
+barra) ed è un contenitore di nome `lab` (`container: lab / size`). **La pagina non scorre**, e
+il laboratorio non deve mai uscire dalla `radice` né scorrere al suo interno. Deve stare bene su
+telefono (384 × 686 di spazio), tablet verticale (820 × 1126), tablet orizzontale (1180 × 766),
+portatile (1366 × 714) e schermo largo (1920 × 1026), riempiendo lo spazio senza buchi.
+
+Impaginazione consigliata (classi già pronte in `compasso.css`):
+```html
+<div class="lab-layout">
+  <div class="lab-scena">  <!-- la scena: svg con viewBox, riempie lo spazio che resta -->  </div>
+  <div class="lab-lato">   <!-- consegna breve, formula, messaggio, pulsanti, livelli, «?» --> </div>
+</div>
+```
+- In verticale la scena sta sopra e prende tutto lo spazio che resta; il pannello sta sotto,
+  alto quanto il suo contenuto. In orizzontale (contenitore più largo di 5:4) la scena va a
+  sinistra e il pannello a destra, largo `clamp(260px, 32cqw, 400px)`.
+- La scena è un SVG con `viewBox` e `width/height: 100%` (si adatta con `preserveAspectRatio`,
+  di norma `xMidYMid meet`). Se la scena vuole proporzioni diverse in verticale e in orizzontale,
+  il laboratorio può scegliere il `viewBox` misurando la scena (`ResizeObserver`) e ridisegnare.
+- Per le misure usa le unità del contenitore (`cqw`, `cqh`, `cqmin`) e `clamp()`: testo mai sotto
+  i 12 px, pulsanti alti almeno 40 px (36 nei casi stretti).
+- Il pannello deve essere **corto**: consegna in una o due righe, formula su una riga se si può,
+  pulsanti su una o due righe. Le spiegazioni lunghe vanno nel «?» (un riquadro che si apre **sopra**
+  la scena, non sotto il pannello), non nel pannello.
+- Se un elemento ha davvero bisogno di scorrere (un elenco molto lungo) va marcato con
+  `data-scorre`, ma prima si prova a farlo stare.
+- Niente `aspect-ratio` fisso sulla scena, niente altezze in `vh` (usa il contenitore).
+- La mascotte in laboratorio sta nella barra in alto: i messaggi di fine livello vanno bene lì;
+  quello che serve per giocare resta nel pannello (`.lab-messaggio`).
+- `ctx.mascotte(evento, testo?)` fa reagire Ada senza parlare: `'giusto'`, `'sbagliato'`,
+  `'passo'`, `'livello'`, `'ops'`, `'pensa'` (ctx.completato fa già festa da solo).
+
+Collaudo: `node strumenti/prova-lab.js <argomento> <id> --foto <cartella>` misura i cinque schermi
+e dice cosa non va (pagina che scorre, elementi fuori, contenuto tagliato, bersagli bassi, testo
+piccolo, scena troppo piccola, vuoto sotto). Con `--js script.js` porta prima il laboratorio a un
+livello avanzato (lo script usa gli aiuti del banco), perché i livelli alti hanno spesso più roba.
+
+## Modalità libera (richiesta di Luca del 27/9/2026)
+
+Ogni laboratorio ha, oltre ai livelli, una **modalità libera**: un pulsante «Libero» accanto ai
+pallini dei livelli (sempre disponibile, non serve aver finito i livelli). In modalità libera:
+- **non c'è obiettivo né verdetto**: niente bersaglio, niente «livello superato», niente festa;
+- lo studente **sceglie lui i parametri** della scena con controlli chiari: cursori con il valore
+  scritto accanto, oppure pulsanti − / + per i numeri interi (per esempio: nella bilancia i
+  coefficienti dell'equazione $ax + b = cx + d$; nel regolo, nessun livello da risolvere e i due
+  numeri liberi; nella ruota la funzione (seno o coseno) e la quota $k$; nella giostra $z$ e $w$;
+  nel giardiniere spago e picchetti, ellisse o iperbole);
+- tutto quello che nei livelli si manipola resta manipolabile, e la formula scritta si aggiorna;
+- un pulsante «Casuale» (facoltativo, se ha senso) propone parametri a caso sensati;
+- i controlli dei parametri stanno nel pannello `.lab-lato` e devono stare anche loro nella
+  schermata singola (in verticale possono stare in una riga che si apre con un tocco, «Parametri»);
+- i messaggi di Ada qui sono solo osservazioni neutre («Con $a$ negativo la parabola si apre in
+  giù»), facoltative, mai valutazioni;
+- uscire dalla modalità libera riporta al livello in cui si era.
+Il livello libero non si salva fra i completati.
+
+### Pezzi comuni già pronti (in `compasso.css`, dentro `.lab-stage`)
+Presi dalla bilancia, il modello da copiare (`laboratori/bilancia.js`, e `tiro-a-segno.js` per un
+piano cartesiano): `.lab-livelli` con i `.lab-pallino` (un `<button>` con dentro uno `<span>`
+numerato; classi `fatto`, `attivo`) e il pulsante `.btn.lab-libero` (`aria-pressed`);
+`.lab-aiuto` (il riquadro del «?», sopra la scena, `hidden` per chiuderlo); `.lab-parametri` con
+dentro i `.lab-param` (`.nome`, pulsanti − / +, `output` col valore, oppure un `input[type=range]`).
+Non ricopiarli nel tuo `STILE`: usa le classi, e aggiungi solo le differenze.
+
+Ricetta della bilancia (resoconto del 27/9): coordinate del dito con `svg.getScreenCTM().inverse()`
+(mai con `getBoundingClientRect`, che con `meet` sbaglia); scena molto larga → `ResizeObserver` che
+sceglie il `viewBox` e ridisegna allungando la scena invece di lasciare vuoti; in orizzontale, se
+il pannello resta vuoto, ci si sposta un blocco della scena (equazione e passi); contatori piccoli
+in un angolo della scena; modalità libera = flag `libero` + copia dello stato presa entrando e
+ripristinata uscendo, `if (libero)` in testa alla funzione che valuta; `.btn.piccolo` fuori da
+`.lab-barra` è basso: nel laboratorio è già portato a 38 px.
+
+### Le frasi di Ada nei laboratori (27/9)
+I fumetti di Ada sono compatti: quando parla da sola mostra solo la prima frase (circa 120
+caratteri) e si chiude dopo pochi secondi; il resto resta dietro un «Dimmi di più». Quindi
+`ctx.zenone(testo)` va usato con **una frase breve** (fine livello, errore tipico): la cosa
+importante all'inizio. Le spiegazioni lunghe stanno nel «?» del laboratorio, non in Ada.

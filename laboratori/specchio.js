@@ -9,63 +9,80 @@
    Contratto: SCHEMA-LAB.md — modelli: bilancia.js, regolo.js */
 (function () {
   const STILE = `
-    .lab-specchio .lab-scena { background: radial-gradient(130% 110% at 50% 0%, var(--sup), var(--sup2)); overflow: hidden; }
-    .lab-specchio .lab-scena svg { cursor: default; }
-    .lab-specchio .lab-scena.sonda-ok svg { cursor: crosshair; }
-    .lab-specchio .obiettivo { padding: 12px 16px 8px; font-size: 1rem; line-height: 1.55; color: var(--testo); }
-    .lab-specchio .obiettivo p { margin: 0; }
-    .lab-specchio .obiettivo b, .lab-specchio .obiettivo strong { color: var(--accento-testo); }
-    .lab-specchio .obiettivo .parte { display: block; font-size: .68rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--testo2); margin-bottom: 2px; }
-    .lab-specchio .aiuto { margin: 0 16px 10px; padding: 10px 14px; border-radius: 12px; background: var(--accento-tenue); color: var(--testo); font-size: .92rem; line-height: 1.5; animation: lab-specchio-pop .3s var(--morbido); }
+    .lab-specchio { -webkit-user-select: none; user-select: none; }
+    /* --- scena: relazione A ? B in alto, binario in mezzo (prende il resto), passaggi in fondo --- */
+    .lab-specchio .lab-scena { flex-direction: column; align-items: stretch; justify-content: safe center; background: radial-gradient(130% 110% at 50% 0%, var(--sup), var(--sup2)); overflow: hidden; }
+    .lab-specchio .lab-scena > svg { flex: none; min-height: 0; width: 100%; cursor: default; touch-action: none; }   /* l'altezza la decide adatta() */
+    .lab-specchio .lab-scena.sonda-ok > svg { cursor: crosshair; }
+    .lab-specchio .testa { flex: none; padding: clamp(10px, 2.4cqh, 26px) 12px 0; }
     .lab-specchio .pin { filter: drop-shadow(0 1px 1px rgba(30,30,50,.18)) drop-shadow(0 4px 6px rgba(30,30,50,.16)); }
     :root[data-tema="scuro"] .lab-specchio .pin { filter: drop-shadow(0 1px 2px rgba(0,0,0,.5)) drop-shadow(0 5px 9px rgba(0,0,0,.45)); }
     .lab-specchio .binario { filter: drop-shadow(0 2px 3px rgba(30,30,50,.14)); }
     :root[data-tema="scuro"] .lab-specchio .binario { filter: drop-shadow(0 2px 4px rgba(0,0,0,.5)); }
-    .lab-specchio .rel { display: flex; align-items: center; justify-content: center; gap: 8px 14px; flex-wrap: wrap; padding: 14px 12px 0; min-height: 70px; }
-    .lab-specchio .lato { display: inline-flex; flex-direction: column; align-items: center; font-size: 1.55rem; line-height: 1.1; }
-    .lab-specchio .lato small { font: 700 .66rem var(--font); letter-spacing: .08em; opacity: .85; margin-bottom: 1px; }
+    .lab-specchio .rel { display: flex; align-items: center; justify-content: center; gap: 8px 14px; flex-wrap: wrap; }
+    .lab-specchio .lato { display: inline-flex; flex-direction: column; align-items: center; font-size: clamp(1.4rem, 4.2cqmin, 2.3rem); line-height: 1.1; }
+    .lab-specchio .lato small { font: 700 12px var(--font); letter-spacing: .08em; opacity: .85; margin-bottom: 1px; }
     .lab-specchio .lato-a { color: var(--s1); }
     .lab-specchio .lato-b { color: var(--s2); }
     .lab-specchio .lato .katex { font-size: 1em; }
     .lab-specchio .verso { display: inline-flex; gap: 8px; align-items: center; perspective: 300px; }
-    .lab-specchio .v-btn { width: 52px; height: 52px; padding: 0; border-radius: 50%; border: 2px solid var(--bordo2); background: var(--sup);
-      color: var(--testo); font: 600 1.55rem/1 var(--font); display: grid; place-items: center; box-shadow: var(--ombra);
+    .lab-specchio .v-btn { width: clamp(48px, 7.4cqmin, 64px); height: clamp(48px, 7.4cqmin, 64px); padding: 0; border-radius: 50%; border: 2px solid var(--bordo2); background: var(--sup);
+      color: var(--testo); font: 600 clamp(1.45rem, 4cqmin, 1.9rem)/1 var(--font); display: grid; place-items: center; box-shadow: var(--ombra);
       transition: transform .25s var(--molla), background .2s, border-color .2s, color .2s; }
     .lab-specchio .v-btn:hover { transform: translateY(-1px); border-color: var(--accento); }
     .lab-specchio .v-btn:disabled { opacity: .45; cursor: default; transform: none; }
     .lab-specchio .v-scelta { border-style: dashed; border-color: var(--accento); color: var(--accento-testo); background: var(--accento-tenue); animation: lab-specchio-attesa 1.6s ease-in-out infinite; }
     .lab-specchio .v-scelta:disabled { animation: none; }
+    .lab-specchio .v-fisso { cursor: default; border-color: var(--accento); color: var(--accento-testo); }
+    .lab-specchio .v-fisso:hover { transform: none; }
+    .lab-specchio .v-fisso.attesa { opacity: .45; border-style: dashed; }
     .lab-specchio .v-gira.ok { border-color: var(--ok); color: var(--ok); background: var(--ok-tenue); }
     .lab-specchio .v-gira.no { border-color: var(--no); color: var(--no); background: var(--no-tenue); }
-    .lab-specchio .v-gira.gira { animation: lab-specchio-gira .42s var(--morbido); }
+    .lab-specchio .gira { animation: lab-specchio-gira .42s var(--morbido); }
     @keyframes lab-specchio-gira { from { transform: rotateY(180deg) scale(.9); } to { transform: none; } }
     @keyframes lab-specchio-attesa { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accento) 40%, transparent); } 50% { box-shadow: 0 0 0 6px transparent; } }
-    .lab-specchio .verso-nota { text-align: center; font-size: .84rem; color: var(--testo2); min-height: 1.5em; padding: 6px 16px 0; line-height: 1.4; }
+    .lab-specchio .verso-nota { text-align: center; font-size: clamp(.86rem, 1.9cqmin, 1rem); color: var(--testo2); min-height: 1.45em; padding: 4px 4px 0; line-height: 1.45; }
     .lab-specchio .verso-nota.no { color: var(--no); }
-    .lab-specchio .mosse { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 10px 12px 6px; }
-    .lab-specchio .mossa { min-width: 62px; min-height: 46px; font: 600 1.06rem var(--font); border-radius: 14px; padding: 6px 12px; box-shadow: var(--ombra); }
-    .lab-specchio .mossa:disabled { box-shadow: none; }
-    .lab-specchio .storia { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 4px; padding: 4px 12px 2px; font-size: .9rem; color: var(--testo2); }
+    .lab-specchio .storia { flex: none; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 4px; margin: 0 12px clamp(8px, 2cqh, 20px); max-height: 5em; overflow: hidden; font-size: clamp(.9rem, 1.9cqmin, 1.05rem); color: var(--testo2); }
     .lab-specchio .storia .katex { font-size: 1em; }
+    .lab-specchio .storia .riga { display: inline-flex; align-items: center; gap: 4px; }
+    /* in orizzontale relazione e passaggi stanno nel pannello: i passaggi uno sotto l'altro, come sul quaderno */
+    .lab-specchio .lab-lato > .testa { padding: 0; }
+    .lab-specchio .lab-lato > .storia { margin: 0; max-height: 11em; flex-direction: column; flex-wrap: nowrap; justify-content: flex-start; }
     .lab-specchio .rel-s { padding: 2px 9px; border-radius: 9px; background: var(--sup2); border: 1px solid var(--bordo); white-space: nowrap; }
     .lab-specchio .rel-s.errato { background: var(--no-tenue); border-color: var(--no); color: var(--no); }
-    .lab-specchio .passo { display: inline-flex; flex-direction: column; align-items: center; line-height: 1; font-size: .74rem; color: var(--testo3); padding: 0 2px; }
+    .lab-specchio .passo { display: inline-flex; flex-direction: column; align-items: center; line-height: 1; font-size: 12px; color: var(--testo3); padding: 0 2px; }
     .lab-specchio .passo b { font-weight: 600; color: var(--accento-testo); margin-bottom: 1px; }
-    .lab-specchio .livelli { display: flex; gap: 6px; flex-wrap: wrap; }
-    .lab-specchio .pill { width: 40px; height: 40px; border-radius: 12px; border: 1.5px solid var(--bordo2); background: var(--sup);
-      color: var(--testo2); font: 700 .95rem var(--font); cursor: pointer; padding: 0; transition: transform .3s var(--molla), background .2s, color .2s; }
-    .lab-specchio .pill.fatto { background: var(--ok-tenue); color: var(--ok); border-color: color-mix(in srgb, var(--ok) 45%, var(--bordo)); }
-    .lab-specchio .pill.qui { background: var(--accento); color: #fff; border-color: var(--accento); transform: scale(1.07); }
-    .lab-specchio .pill[disabled] { opacity: .35; cursor: default; }
-    .lab-specchio .lab-barra .btn[disabled] { opacity: .38; cursor: default; }
-    .lab-specchio .b-aiuto { min-width: 42px; }
-    .lab-specchio .lab-messaggio { line-height: 1.5; }
+    .lab-specchio .conta-mosse { position: absolute; left: 10px; top: 6px; margin: 0; font-size: 12px; color: var(--testo3); white-space: nowrap; }
+    /* --- pannello --- */
+    .lab-specchio .obiettivo { font-size: clamp(.92rem, 2.1cqmin, 1.05rem); line-height: 1.45; text-align: center; color: var(--testo); }
+    .lab-specchio .obiettivo p { margin: 0; display: inline; }
+    .lab-specchio .obiettivo b, .lab-specchio .obiettivo strong { color: var(--accento-testo); }
+    .lab-specchio .obiettivo .parte { display: block; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--testo2); margin-bottom: 2px; }
+    /* sul telefono in verticale la consegna è quella breve; quella intera sta nel «?» */
+    .lab-specchio .obiettivo .c-breve { display: none; }
+    @container lab (max-aspect-ratio: 5 / 4) and (max-width: 599px) { .lab-specchio .obiettivo .c-breve { display: inline; } .lab-specchio .obiettivo .c-breve + .c-lungo { display: none; } .lab-specchio .obiettivo .parte { display: none; } }
+    .lab-specchio .lab-aiuto .consegna { color: var(--testo2); }
+    .lab-specchio .mosse { display: grid; grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); gap: 6px; }
+    .lab-specchio .mossa { min-width: 0; min-height: clamp(42px, 6cqh, 52px); padding: 4px; font: 600 clamp(1rem, 2.2cqmin, 1.12rem) var(--font); border-radius: 12px; box-shadow: var(--ombra); white-space: nowrap; }
+    .lab-specchio .mossa:disabled { box-shadow: none; opacity: .38; cursor: default; }
+    .lab-specchio.in-libero .mosse { grid-template-columns: 1fr; }
+    .lab-specchio .lab-messaggio { padding: 0 4px; min-height: 1.45em; font-size: clamp(.88rem, 2cqmin, 1.02rem); text-align: center; line-height: 1.45; }
+    .lab-specchio .lab-messaggio:empty { display: none; }
     .lab-specchio .lab-messaggio .katex { font-size: 1em; }
+    .lab-specchio .lab-barra { padding: 0; border: 0; gap: 8px; justify-content: center; }
+    .lab-specchio .lab-barra .btn { min-height: 40px; }
+    .lab-specchio .lab-barra .btn[disabled] { opacity: .38; cursor: default; }
+    /* modalità libera: A, B, l'operazione e il numero */
+    .lab-specchio .lab-param .nome.a { color: var(--s1); font-weight: 700; }
+    .lab-specchio .lab-param .nome.b { color: var(--s2); font-weight: 700; }
+    .lab-specchio .lab-param.op { gap: 3px; flex-wrap: wrap; }
+    .lab-specchio .lab-param.op .btn { min-width: 38px; padding: 0 6px; }
+    .lab-specchio .lab-param.op .btn[aria-pressed="true"] { background: var(--accento); border-color: var(--accento); color: #fff; }
     .lab-specchio .vinto { display: inline-block; animation: lab-specchio-pop .45s cubic-bezier(.34,1.56,.64,1); }
     @keyframes lab-specchio-pop { from { transform: scale(.75); opacity: 0 } to { transform: none; opacity: 1 } }
     .lab-specchio .scuoti { animation: lab-specchio-no .38s ease; }
     @keyframes lab-specchio-no { 20%, 60% { transform: translateX(-6px) } 40%, 80% { transform: translateX(6px) } }
-    @media (min-width: 700px) { .lab-specchio .lato { font-size: 1.85rem; } .lab-specchio .v-btn { width: 58px; height: 58px; font-size: 1.75rem; } .lab-specchio .storia { font-size: 1rem; } }
   `;
 
   /* ---------------- frazioni (i conti restano esatti anche con :3 o ×(−1/2)) ---------------- */
@@ -95,9 +112,10 @@
   }
 
   /* il verso: 'lt' (A a sinistra di B) o 'gt'; stretto = < >, largo = ≤ ≥ */
-  const opposto = d => d === 'lt' ? 'gt' : 'lt';
-  const simbolo = (d, stretto) => d === 'lt' ? (stretto ? '<' : '≤') : (stretto ? '>' : '≥');
-  const simTex = (d, stretto) => d === 'lt' ? (stretto ? '<' : '\\le') : (stretto ? '>' : '\\ge');
+  /* 'eq' (A e B nello stesso punto) capita solo in modalità libera */
+  const opposto = d => d === 'eq' ? 'eq' : d === 'lt' ? 'gt' : 'lt';
+  const simbolo = (d, stretto) => d === 'eq' ? '=' : d === 'lt' ? (stretto ? '<' : '≤') : (stretto ? '>' : '≥');
+  const simTex = (d, stretto) => d === 'eq' ? '=' : d === 'lt' ? (stretto ? '<' : '\\le') : (stretto ? '>' : '\\ge');
   const confronta = (x, y, d, stretto) => { const a = val(x), b = val(y); return d === 'lt' ? (stretto ? a < b : a <= b) : (stretto ? a > b : a >= b); };
 
   /* le mosse, scritte come sui pulsanti: +3, −3, ×2, ×(−1), :2, :(−2) */
@@ -143,6 +161,19 @@
       vittoria: 'Il −1 ha fatto scivolare tutto, il ×(−2) ha specchiato il binario: x ≤ −6. Il pallino pieno dice che anche −6 va bene, perché −(−6)/2 + 1 = 4 e 4 ≥ 4 è vero.' }
   ];
 
+  /* le consegne brevi, per il telefono in verticale (quella intera si legge nel «?») */
+  const BREVI = [
+    'Porta **B** sulla sagoma tratteggiata. Ogni mossa sposta **tutti e due** i gettoni; dopo, scegli il verso.',
+    'Porta **B** sul 12, usando anche le moltiplicazioni. Guarda che cosa fanno al verso.',
+    'Di nuovo $2 < 5$: fai passare **B** a sinistra di **A**. Prova tutti i pulsanti.',
+    'Risolvi $x + 3 < 7$: mosse su tutti e due i lati finché resta solo $x$, e dopo ogni mossa il verso.',
+    'Risolvi $-2x > 6$: il numero davanti alla $x$ è negativo.',
+    'Risolvi $-\\dfrac{x}{2} + 1 \\ge 4$: almeno due mosse, e il verso lo scegli ogni volta.'
+  ];
+  /* modalità libera: le operazioni possibili e i numeri che si possono usare */
+  const OPERAZIONI = ['+', '−', '×', ':'];
+  const AIUTO_LIBERO = 'In modalità libera non c\'è nessun obiettivo. Con − e + scegli dove stanno A e B, poi un\'operazione e un numero, e premi il pulsante: la mossa si fa su tutti e due i gettoni e il verso si aggiorna da solo. Guarda quando si gira: solo quando moltiplichi o dividi per un numero negativo, perché il binario si specchia. «Casuale» propone due numeri a caso.';
+
   const NS = 'http://www.w3.org/2000/svg';
   const el = (n, a, testo) => { const e = document.createElementNS(NS, n); for (const k in a || {}) if (a[k] != null) e.setAttribute(k, a[k]); if (testo != null) e.textContent = testo; return e; };
   const vuota = n => { while (n.firstChild) n.removeChild(n.firstChild); };
@@ -151,45 +182,65 @@
   const liscia = t => 1 - Math.pow(1 - t, 3);
   const R = 12;                                  /* il binario va da −12 a 12 */
 
-  /* geometria in pixel veri: il viewBox è largo quanto la scena */
-  function geometria(W) {
+  /* geometria in pixel veri: il viewBox è largo quanto la scena. Hd = altezza a disposizione:
+     se lo spazio è alto, le aste dei gettoni si allungano (fino a un tetto) invece di lasciare vuoti */
+  function geometria(W, Hd) {
     const largo = W >= 560;
     const k = largo ? Math.min(1.35, .95 + W / 2400) : 1;
     const M = largo ? Math.round(Math.max(48, W * .06)) : 24;
     const ppu = (W - 2 * M) / (2 * R);
-    const H = Math.round(196 * k);
-    const yR = Math.round(96 * k);               /* centro del binario */
-    return { W, H, M, k, largo, ppu, X0: W / 2, yR, yA: Math.round(36 * k), yB: H - Math.round(32 * k), yN: yR + Math.round(25 * k),
+    const H0 = Math.round(196 * k);
+    const e = Math.round(Math.max(0, Math.min((Hd || 0) - H0, 1.1 * H0)));
+    const H = H0 + e;
+    const yR = Math.round(96 * k + e * .5);      /* centro del binario */
+    return { W, H, M, k, largo, ppu, X0: W / 2, yR, yA: Math.round(36 * k + e * .08), yB: H - Math.round(32 * k + e * .08), yN: yR + Math.round(25 * k),
       X: v => W / 2 + v * ppu };
   }
+  const fs = (base, k, min) => Math.round(Math.max(min || 12, base * k));   /* testi dell'svg mai sotto i 12 px */
 
   COMPASSO.registraLab({
     id: 'specchio',
     monta(radice, ctx) {
       if (!document.getElementById('stile-lab-specchio')) { const s = document.createElement('style'); s.id = 'stile-lab-specchio'; s.textContent = STILE; document.head.appendChild(s); }
       radice.classList.add('lab-specchio');
+      const pm = (d, et) => `<button type="button" class="btn piccolo" data-d="${d}" aria-label="${et}">${d < 0 ? '−' : '+'}</button>`;
       radice.innerHTML = `
-        <div class="obiettivo"></div>
-        <div class="aiuto" hidden></div>
-        <div class="lab-scena"></div>
-        <div class="rel"><span class="lato lato-a"></span><span class="verso"></span><span class="lato lato-b"></span></div>
-        <div class="verso-nota"></div>
-        <div class="mosse" role="group" aria-label="Mosse, fatte a tutti e due i gettoni"></div>
-        <div class="storia" aria-label="Passaggi"></div>
-        <div class="lab-messaggio" aria-live="polite"></div>
-        <div class="lab-barra">
-          <div class="livelli" role="group" aria-label="Livelli"></div>
-          <button type="button" class="btn piccolo b-aiuto" title="Come si fa">?</button>
-          <button type="button" class="btn piccolo b-annulla">Annulla</button>
-          <button type="button" class="btn piccolo b-ric">Ricomincia</button>
-          <span class="lab-livello"></span>
+        <div class="lab-layout">
+          <div class="lab-scena">
+            <div class="testa">
+              <div class="rel"><span class="lato lato-a"></span><span class="verso"></span><span class="lato lato-b"></span></div>
+              <div class="verso-nota"></div>
+            </div>
+            <div class="storia" aria-label="Passaggi"></div>
+            <span class="conta-mosse"></span>
+            <div class="lab-aiuto" hidden data-scorre><div class="consegna" hidden></div><p class="testo-aiuto"></p><button type="button" class="btn piccolo m-chiudi">Ho capito</button></div>
+          </div>
+          <div class="lab-lato">
+            <div class="lab-livelli" role="group" aria-label="Livelli"><button type="button" class="btn piccolo lab-libero" aria-pressed="false" title="Modalità libera: due numeri e le operazioni che vuoi">Libero</button></div>
+            <div class="obiettivo"></div>
+            <div class="lab-parametri" hidden>
+              <div class="lab-param" data-p="A"><span class="nome a">A</span>${pm(-1, 'A più a sinistra')}<output></output>${pm(1, 'A più a destra')}</div>
+              <div class="lab-param" data-p="B"><span class="nome b">B</span>${pm(-1, 'B più a sinistra')}<output></output>${pm(1, 'B più a destra')}</div>
+              <div class="lab-param op" data-p="op" role="group" aria-label="Operazione">${OPERAZIONI.map(o => `<button type="button" class="btn piccolo" data-op="${o}" aria-pressed="false" aria-label="${({ '+': 'somma', '−': 'togli', '×': 'moltiplica', ':': 'dividi' })[o]}">${o}</button>`).join('')}</div>
+              <div class="lab-param" data-p="n"><span class="nome">n</span>${pm(-1, 'numero più piccolo')}<output></output>${pm(1, 'numero più grande')}</div>
+            </div>
+            <div class="mosse" role="group" aria-label="Mosse, fatte a tutti e due i gettoni"></div>
+            <div class="lab-messaggio" aria-live="polite"></div>
+            <div class="lab-barra">
+              <button type="button" class="btn piccolo b-annulla">Annulla</button>
+              <button type="button" class="btn piccolo b-ric">Ricomincia</button>
+              <button type="button" class="btn piccolo b-casuale" hidden>Casuale</button>
+              <button type="button" class="btn piccolo b-aiuto" aria-label="Come si gioca">?</button>
+            </div>
+          </div>
         </div>`;
 
       const q = s => radice.querySelector(s);
-      const scena = q('.lab-scena'), objEl = q('.obiettivo'), aiutoEl = q('.aiuto');
+      const scena = q('.lab-scena'), objEl = q('.obiettivo'), aiutoEl = q('.lab-aiuto');
       const latoA = q('.lato-a'), latoB = q('.lato-b'), versoEl = q('.verso'), notaEl = q('.verso-nota');
-      const mosseEl = q('.mosse'), storiaEl = q('.storia'), msg = q('.lab-messaggio'), pillEl = q('.livelli'), livEl = q('.lab-livello');
-      const bAiuto = q('.b-aiuto'), bAnnulla = q('.b-annulla'), bRic = q('.b-ric');
+      const mosseEl = q('.mosse'), storiaEl = q('.storia'), msg = q('.lab-messaggio'), livelliEl = q('.lab-livelli'), livEl = q('.conta-mosse');
+      const bAiuto = q('.b-aiuto'), bAnnulla = q('.b-annulla'), bRic = q('.b-ric'), bCasuale = q('.b-casuale'), bLibero = q('.lab-libero');
+      const parametriEl = q('.lab-parametri');
 
       /* ---------------- stato ---------------- */
       const completati = ctx.stato().livelli;
@@ -200,23 +251,25 @@
       let G = null, raf = 0, rafFesta = 0, fermaAnim = null;
       const timers = [];
       const dopo = (fn, ms) => { const t = setTimeout(fn, ms); timers.push(t); return t; };
-      const liv = () => LIVELLI[livello];
+      let libero = false, salvato = null;                 /* modalità libera, e il livello da cui ci si è entrati */
+      const LIBERO = { parte: 1, libero: true, mosse: [] };
+      const lib = { op: '×', n: -1 };                     /* la mossa pronta in modalità libera */
+      const liv = () => libero ? LIBERO : LIVELLI[livello];
       const p1 = () => liv().parte === 1;
       const stretto = () => p1() ? true : liv().stretto;
       const risolto = s => !p1() && s.a.n === 1 && s.a.d === 1 && s.b.n === 0;
 
       /* ---------------- scena SVG ---------------- */
-      const svg = el('svg', { role: 'img', 'aria-label': 'Binario dei numeri con due gettoni, A sopra e B sotto' });
-      scena.appendChild(svg);
+      const svg = el('svg', { role: 'img', 'aria-label': 'Binario dei numeri con due gettoni, A sopra e B sotto', preserveAspectRatio: 'xMidYMid meet' });
+      scena.insertBefore(svg, storiaEl);
       let gFissi, gDin, gFesta;
 
-      function costruisci() {
-        const W = Math.max(300, Math.round(scena.clientWidth || 360));
-        G = geometria(W);
+      function costruisci(Wd, Hd) {
+        const W = Math.max(300, Math.round(Wd || scena.clientWidth || 360));
+        G = geometria(W, Hd);
         const { H, k } = G;
         vuota(svg);
         svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-        svg.setAttribute('height', H);
         const defs = el('defs'); svg.appendChild(defs);
         const binG = el('linearGradient', { id: 'lab-specchio-bin', x1: 0, y1: 0, x2: 0, y2: 1 });
         binG.appendChild(el('stop', { offset: 0, style: 'stop-color:var(--sup)' }));
@@ -231,7 +284,7 @@
         const passo = G.ppu >= 24 ? 1 : 2;
         for (let i = -R; i <= R; i += passo) {
           gFissi.appendChild(el('text', { x: G.X(i), y: G.yN, 'text-anchor': 'middle', fill: i ? 'var(--testo2)' : 'var(--testo)',
-            style: `font: ${i ? 500 : 700} ${Math.round(10.5 * k)}px var(--font)`, 'paint-order': 'stroke', stroke: 'var(--sup2)', 'stroke-width': 3 }, i < 0 ? MENO + (-i) : String(i)));
+            style: `font: ${i ? 500 : 700} ${fs(10.5, k)}px var(--font)`, 'paint-order': 'stroke', stroke: 'var(--sup2)', 'stroke-width': 3 }, i < 0 ? MENO + (-i) : String(i)));
         }
         gDin = el('g'); svg.insertBefore(gDin, gFissi);
         gFesta = el('g', { 'pointer-events': 'none' }); svg.appendChild(gFesta);
@@ -289,7 +342,7 @@
         const yh = yP(sopra ? G.yA : G.yB, p.s), yE = yP(G.yR + (sopra ? -7 : 7) * k, p.s);
         const sx = Math.max(.06, Math.abs(p.c)) * p.s, r = 16 * k * p.s;
         g.appendChild(el('line', { x1: p.x, y1: yE, x2: p.x, y2: yh + (sopra ? r * .8 : -r * .8), stroke: col, 'stroke-width': 2.6 * k, 'stroke-linecap': 'round' }));
-        const f = Math.round(13 * k);
+        const f = fs(13, k, 13);
         const largo = opz.pillola ? Math.max(34 * k, testo.length * f * .6 + 18 * k) : 32 * k;
         if (opz.pillola) g.appendChild(el('rect', { x: p.x - largo * sx / 2, y: yh - 15 * k * p.s, width: largo * sx, height: 30 * k * p.s, rx: 15 * k * Math.min(sx, p.s), fill: col, stroke: 'var(--sup)', 'stroke-width': 2 }));
         else g.appendChild(el('ellipse', { cx: p.x, cy: yh, rx: r * Math.max(.06, Math.abs(p.c)), ry: r, fill: col, stroke: 'var(--sup)', 'stroke-width': 2 }));
@@ -297,12 +350,12 @@
         /* la lettera, fuori dalla testa */
         if (Math.abs(p.c) > .5) {
           const dx = (opz.pillola ? largo * sx / 2 : r) + 7 * k;
-          g.appendChild(el('text', { x: p.x + dx, y: yh + 4 * k, 'text-anchor': 'start', fill: col, style: `font: 800 ${Math.round(11 * k)}px var(--font)` }, chi));
+          g.appendChild(el('text', { x: p.x + dx, y: yh + 4 * k, 'text-anchor': 'start', fill: col, style: `font: 800 ${fs(11, k)}px var(--font)` }, chi));
         }
         if (opz.dubbio) {                               /* A in attesa del verso */
           const bx = p.x - (opz.pillola ? largo * sx / 2 : r) - 2 * k, by = yh - 13 * k;
           g.appendChild(el('circle', { cx: bx, cy: by, r: 9 * k, fill: 'var(--accento)', stroke: 'var(--sup)', 'stroke-width': 2 }));
-          g.appendChild(el('text', { x: bx, y: by + 4 * k, 'text-anchor': 'middle', fill: '#fff', style: `font: 800 ${Math.round(12 * k)}px var(--font)` }, '?'));
+          g.appendChild(el('text', { x: bx, y: by + 4 * k, 'text-anchor': 'middle', fill: '#fff', style: `font: 800 ${fs(12, k)}px var(--font)` }, '?'));
         }
         if (p.fuori) {                                  /* oltre la fine del binario */
           const xa = p.x + p.fuori * 10 * k;
@@ -349,7 +402,7 @@
       function disegnaSonda() {
         if (sonda == null) return;
         const k = G.k, x = G.X(sonda), esito = esitoSonda(sonda), col = esito.torna ? 'var(--ok)' : 'var(--no)';
-        const testo = 'x = ' + fTxt(F(sonda)) + (esito.vero ? '  ✓' : '  ✗'), f = Math.round(11.5 * k), w = testo.length * f * .58 + 14 * k;
+        const testo = 'x = ' + fTxt(F(sonda)) + (esito.vero ? '  ✓' : '  ✗'), f = fs(11.5, k, 12.5), w = testo.length * f * .58 + 14 * k;
         const y = G.yR - 30 * k, cx = morsa(x, w / 2 + 2, G.W - w / 2 - 2);
         const g = el('g');
         g.appendChild(el('line', { x1: x, y1: y + 9 * k, x2: x, y2: G.yR - 8 * k, stroke: col, 'stroke-width': 2, 'stroke-dasharray': '3 3' }));
@@ -367,14 +420,14 @@
         lastra(flip ? Math.sin(flip) : 0);
         binario(flip);
         if (L.parte === 1) {
-          if (L.meta.tipo === 'bandiera' && !vinto) sagoma(L.meta.v);
+          if (L.meta && L.meta.tipo === 'bandiera' && !vinto) sagoma(L.meta.v);
           const s0 = tr ? tr.st0 : st;
           const pA = tr ? posa(val(s0.A), tr.op, e) : statico(val(st.A));
           const pB = tr ? posa(val(s0.B), tr.op, e) : statico(val(st.B));
           /* chi è più lontano (in prospettiva) va disegnato prima */
           const ordine = pA.s < pB.s ? [['A', pA, st.A], ['B', pB, st.B]] : [['B', pB, st.B], ['A', pA, st.A]];
           /* il numero sul gettone cambia a metà mossa: nel ribaltamento è quando la moneta è di taglio */
-          ordine.forEach(([chi, p, v]) => gettone(chi, p, fTxt(tr && e < .5 ? (chi === 'A' ? s0.A : s0.B) : v), {}));
+          ordine.forEach(([chi, p, v]) => { const t = fTxt(tr && e < .5 ? (chi === 'A' ? s0.A : s0.B) : v); gettone(chi, p, t, { pillola: t.length > 3 }); });
         } else {
           const s0 = tr ? tr.st0 : st;
           const pB = tr ? posa(val(s0.c), tr.op, e) : statico(val(st.c));
@@ -410,7 +463,7 @@
         fermaAnim = () => { chiuso = true; cancelAnimationFrame(raf); raf = 0; fermaAnim = null; animando = false; };
         const frame = tt => {
           if (chiuso) return;
-          const u = Math.min(1, (tt - t0) / dur);
+          const u = Math.max(0, Math.min(1, (tt - t0) / dur));
           passo(dolce(u));
           if (u < 1) raf = requestAnimationFrame(frame); else fine();
         };
@@ -435,7 +488,7 @@
         const chiudi = () => { if (chiuso) return; chiuso = true; cancelAnimationFrame(rafFesta); rafFesta = 0; vuota(gFesta); };
         const passo = tt => {
           if (chiuso) return;
-          const u = Math.min(1, (tt - t0) / dur);
+          const u = Math.max(0, Math.min(1, (tt - t0) / dur));
           anello.setAttribute('r', (4 + 34 * liscia(u)) * k); anello.setAttribute('opacity', 1 - u);
           pezzi.forEach(p => {
             const d = p.v * liscia(u), x = cx + Math.cos(p.ang) * d, y = cy + Math.sin(p.ang) * d + 40 * k * u * u;
@@ -452,11 +505,12 @@
       /* ---------------- logica ---------------- */
       function applica(s, m) {
         const f = x => m.tipo === 'somma' ? somma(x, m.k) : prodotto(x, m.m);
-        if (p1()) { const A = f(s.A), B = f(s.B); return { A, B, dir: null, giusto: val(A) < val(B) ? 'lt' : 'gt', op: m }; }
+        if (p1()) { const A = f(s.A), B = f(s.B); return { A, B, dir: null, giusto: val(A) < val(B) ? 'lt' : val(A) > val(B) ? 'gt' : 'eq', op: m }; }
         return { a: m.tipo === 'somma' ? s.a : prodotto(s.a, m.m), b: f(s.b), c: f(s.c), dir: null, giusto: specchia(m) ? opposto(s.giusto) : s.giusto, op: m };
       }
       function possibile(m) {
         const n = applica(st, m);
+        if (libero) return [n.A, n.B].every(x => x.d <= 12 && Math.abs(val(x)) <= R);   /* in libero anche le frazioni */
         if (p1()) return [n.A, n.B].every(x => x.d === 1 && Math.abs(x.n) <= R);
         return Math.abs(val(n.c)) <= 99 && n.c.d <= 24 && n.a.d <= 24;
       }
@@ -500,7 +554,9 @@
         latoB.innerHTML = '<small>B</small>' + ctx.tex(p1() ? fTex(st.B) : fTex(st.c));
         const blocca = animando || vinto ? ' disabled' : '';
         let h;
-        if (!st.dir) {
+        if (libero) {   /* in modalità libera il verso lo scrive la scena, dopo ogni mossa */
+          h = `<span class="v-btn v-fisso${st.dir ? '' : ' attesa'}" role="img" aria-label="Verso ${st.dir ? esc(simbolo(st.dir, S)) : 'in arrivo'}">${st.dir ? esc(simbolo(st.dir, S)) : '?'}</span>`;
+        } else if (!st.dir) {
           h = `<button type="button" class="v-btn v-scelta" data-d="lt" aria-label="A a sinistra di B"${blocca}>${esc(simbolo('lt', S))}</button>` +
               `<button type="button" class="v-btn v-scelta" data-d="gt" aria-label="A a destra di B"${blocca}>${esc(simbolo('gt', S))}</button>`;
         } else {
@@ -512,16 +568,16 @@
 
         let nota = '', notaNo = false;
         const segni = '(' + simbolo('lt', S) + ') o a destra (' + simbolo('gt', S) + ')';
-        if (vinto) nota = p1() ? '' : 'Tocca il binario per provare altri valori di x.';
+        if (libero) nota = notaLibera;
+        else if (vinto) nota = p1() ? '' : 'Tocca il binario per provare altri valori di x.';
         else if (!st.dir) nota = animando ? '' : (p1() ? 'Dopo la mossa A sta a sinistra di B ' + segni + '?' : 'Dopo la mossa la fascia di A sta a sinistra di B ' + segni + '?');
         else if (p1() && st.dir !== st.giusto) { nota = 'Guarda il binario: il numero più piccolo è quello più a sinistra.'; notaNo = true; }
         else if (!p1()) nota = risolto(st) ? 'Tocca il binario per provare un valore di x.' : 'Tocca il segno se vuoi girarlo.';
         notaEl.textContent = nota; notaEl.className = 'verso-nota' + (notaNo ? ' no' : '');
 
-        const tutti = pila.concat([st]);
-        storiaEl.innerHTML = tutti.map((s, i) => (i ? `<span class="passo"><b>${esc(s.op.et)}</b><span>⟶</span></span>` : '') +
-          `<span class="rel-s${mostraErrori && s.dir !== s.giusto ? ' errato' : ''}">${ctx.tex(relTex(s))}</span>`).join('');
+        adattaStoria();
 
+        if (libero) { aggiornaParametri(); aggiornaMossaLibera(); }
         const ferme = vinto || animando || !st.dir || (p1() && st.dir !== st.giusto);
         Array.from(mosseEl.children).forEach(b => {
           const ok = possibile(b._m);
@@ -529,7 +585,17 @@
           b.title = ok ? 'Fai ' + b._m.et + ' a tutti e due' : 'Un gettone uscirebbe dal binario o non finirebbe su un numero intero';
         });
         bAnnulla.disabled = vinto || animando || !pila.length;
-        livEl.textContent = 'Livello ' + (livello + 1) + ' di ' + LIVELLI.length + ' · mosse: ' + pila.length;
+        livEl.textContent = 'mosse: ' + pila.length;
+      }
+      /* i passaggi stanno su due righe: se non ci stanno, si tengono i più recenti */
+      function adattaStoria() {
+        const tutti = pila.concat([st]);
+        const pezzi = tutti.map((s, i) => '<span class="riga">' + (i ? `<span class="passo"><b>${esc(s.op.et)}</b><span>⟶</span></span>` : '') +
+          `<span class="rel-s${mostraErrori && s.dir !== s.giusto ? ' errato' : ''}">${ctx.tex(relTex(s))}</span></span>`);
+        storiaEl.innerHTML = pezzi.join('');
+        for (let via = 1; storiaEl.scrollHeight > storiaEl.clientHeight + 1 && via < pezzi.length - 1; via++) {
+          storiaEl.innerHTML = '<span class="rel-s">⋯</span>' + pezzi.slice(via).join('');
+        }
       }
       const scuoti = n => { n.classList.remove('scuoti'); void n.offsetWidth; n.classList.add('scuoti'); };
       function avvisa(html, tipo) { msg.innerHTML = html; msg.className = 'lab-messaggio' + (tipo ? ' ' + tipo : ''); }
@@ -540,8 +606,18 @@
         const st0 = st;
         pila.push(st0); st = applica(st0, m);
         sonda = null; mostraErrori = false; avvisa('');
+        if (libero) notaLibera = '';
         tr = { st0, op: m, e: 0 };
-        anima(specchia(m) ? 580 : 420, e => { if (tr) tr.e = e; disegna(); }, () => { tr = null; disegna(); aggiorna(); });
+        anima(specchia(m) ? 580 : 420, e => { if (tr) tr.e = e; disegna(); }, () => {
+          tr = null;
+          if (libero) {   /* niente scelta e niente verdetto: il verso si aggiorna da solo, e si dice perché */
+            st.dir = st.giusto; notaLibera = osserva(st0, st, m);
+            aggiorna(); disegna();
+            if (st.dir !== st0.dir) { const b = versoEl.querySelector('.v-btn'); if (b) b.classList.add('gira'); }
+            return;
+          }
+          disegna(); aggiorna();
+        });
         aggiorna();
       }
       function scegli(d) {
@@ -614,14 +690,16 @@
         aggiorna(); disegna();
       }
 
-      /* toccare il binario = provare un valore di x (solo quando a sinistra resta x) */
+      /* toccare il binario = provare un valore di x (solo quando a sinistra resta x).
+         Dal dito alle coordinate con la matrice dello schermo, mai col rettangolo dell'svg */
       svg.addEventListener('pointerdown', ev => {
         if (!G || p1() || animando) return;
         if (!risolto(st) || !st.dir) {
           if (!avvisoSonda) { avvisoSonda = true; avvisa('Il binario si prova quando a sinistra è rimasta solo x: prima finisci le mosse.'); }
           return;
         }
-        const r = svg.getBoundingClientRect(), x = (ev.clientX - r.left) * (G.W / (r.width || 1));
+        const m = svg.getScreenCTM(); if (!m) return;
+        const x = new DOMPoint(ev.clientX, ev.clientY).matrixTransform(m.inverse()).x;
         const x0 = morsa(Math.round((x - G.X0) / G.ppu), -R, R);
         sonda = x0;
         const es = esitoSonda(x0);
@@ -632,36 +710,44 @@
       });
 
       /* ---------------- livelli ---------------- */
-      function pillole() {
-        vuota(pillEl);
-        const max = completati.length ? Math.max(...completati) : -1;
-        LIVELLI.forEach((_, i) => {
-          const b = document.createElement('button');
-          b.type = 'button'; b.className = 'pill' + (completati.includes(i) ? ' fatto' : '') + (i === livello ? ' qui' : '');
-          b.textContent = String(i + 1); b.title = 'Livello ' + (i + 1);
-          b.disabled = i > max + 1;
-          b.addEventListener('click', () => { if (i !== livello || vinto) avviaLivello(i); });
-          pillEl.appendChild(b);
+      function aggiornaLivelli() {
+        const fatti = ctx.stato().livelli, sblocco = fatti.length ? Math.max(...fatti) + 1 : 0;
+        [...livelliEl.querySelectorAll('.lab-pallino')].forEach((p, i) => {
+          p.classList.toggle('fatto', fatti.includes(i));
+          p.classList.toggle('attivo', !libero && i === livello);
+          p.disabled = i > sblocco && i !== livello;
+          p.setAttribute('aria-current', !libero && i === livello ? 'step' : 'false');
         });
+        bLibero.setAttribute('aria-pressed', libero);
+      }
+      const pillole = aggiornaLivelli;
+      function costruisciMosse(elenco) {
+        vuota(mosseEl);
+        elenco.forEach(et => {
+          const b = document.createElement('button');
+          b.type = 'button'; b.className = 'btn mossa'; b.textContent = et; b.dataset.m = et; b._m = mossa(et);
+          b.addEventListener('click', () => faiMossa(b._m));
+          mosseEl.appendChild(b);
+        });
+      }
+      function consegna(L, n) {
+        const breve = BREVI[n];
+        return '<span class="parte">' + (L.parte === 1 ? 'Parte 1 · due numeri sul binario' : 'Parte 2 · A diventa un\'incognita') + '</span>' +
+          (breve ? '<span class="c-breve">' + ctx.md(breve) + '</span>' : '') + '<span class="c-lungo">' + ctx.md(L.testo) + '</span>';
       }
       function avviaLivello(n) {
         if (fermaAnim) fermaAnim();
         cancelAnimationFrame(rafFesta); rafFesta = 0; if (gFesta) vuota(gFesta);
+        libero = false; salvato = null; mostraLibero();
         livello = n;
         const L = liv();
         st = L.parte === 1 ? { A: F(L.A), B: F(L.B), dir: L.A < L.B ? 'lt' : 'gt', op: null } : { a: L.a, b: L.b, c: L.c, dir: L.dir, op: null };
         st.giusto = st.dir;
         pila = []; vinto = false; animando = false; tr = null; sw = 1; sonda = null;
         mostraErrori = false; zenDetto = false; avvisoSonda = false; cacheVerso = '';
-        objEl.innerHTML = '<span class="parte">' + (L.parte === 1 ? 'Parte 1 · due numeri sul binario' : 'Parte 2 · A diventa un\'incognita') + '</span>' + ctx.md(L.testo);
-        aiutoEl.hidden = true; aiutoEl.textContent = L.aiuto;
-        vuota(mosseEl);
-        L.mosse.forEach(et => {
-          const b = document.createElement('button');
-          b.type = 'button'; b.className = 'btn mossa'; b.textContent = et; b.dataset.m = et; b._m = mossa(et);
-          b.addEventListener('click', () => faiMossa(b._m));
-          mosseEl.appendChild(b);
-        });
+        objEl.innerHTML = consegna(L, n);
+        aiutoEl.hidden = true;
+        costruisciMosse(L.mosse);
         avvisa('');
         bRic.textContent = 'Ricomincia'; bRic.classList.remove('primario');
         pillole(); aggiorna(); disegna();
@@ -669,18 +755,163 @@
       bAnnulla.addEventListener('click', () => {
         if (vinto || animando || !pila.length) return;
         st = pila.pop(); sonda = null; mostraErrori = false; sw = 1; avvisa('');
+        if (libero) notaLibera = pila.length ? '' : osservaInizio();
         aggiorna(); disegna();
       });
-      bRic.addEventListener('click', () => avviaLivello(vinto ? (livello + 1) % LIVELLI.length : livello));
-      bAiuto.addEventListener('click', () => { aiutoEl.hidden = !aiutoEl.hidden; });
+      bRic.addEventListener('click', () => {
+        if (libero) { if (animando) return; if (pila.length) st = pila[0]; nuovoLibero(st.A, st.B); return; }
+        avviaLivello(vinto ? (livello + 1) % LIVELLI.length : livello);
+      });
+      bAiuto.addEventListener('click', () => {
+        if (!aiutoEl.hidden) { aiutoEl.hidden = true; return; }
+        /* se nel pannello c'è la consegna breve, quella intera si legge qui */
+        const breve = objEl.querySelector('.c-breve'), cEl = aiutoEl.querySelector('.consegna');
+        cEl.hidden = libero || !breve || getComputedStyle(breve).display === 'none';
+        if (!cEl.hidden) cEl.innerHTML = ctx.md(LIVELLI[livello].testo);
+        aiutoEl.querySelector('.testo-aiuto').textContent = libero ? AIUTO_LIBERO : LIVELLI[livello].aiuto;
+        aiutoEl.hidden = false;
+      });
+      aiutoEl.querySelector('.m-chiudi').addEventListener('click', () => { aiutoEl.hidden = true; });
 
-      /* la scena si ridisegna quando cambia larghezza (telefono girato, schermo intero) */
-      let largo0 = 0;
-      const ro = new ResizeObserver(() => { const w = Math.round(scena.clientWidth); if (w && Math.abs(w - largo0) > 2) { largo0 = w; costruisci(); } });
-      ro.observe(scena);
-      largo0 = Math.round(scena.clientWidth);
+      /* ---------------- modalità libera: due numeri qualsiasi, tutte le operazioni, nessun obiettivo ---------------- */
+      let notaLibera = '';
+      const etMossa = (op, n) => op === '+' || op === '−' ? op + n : op + (n < 0 ? '(−' + (-n) + ')' : n);
+      const limitiN = op => op === '+' || op === '−' ? [1, 6] : [-6, 6];
+      function osservaInizio() {
+        return st.dir === 'eq' ? 'A e B stanno nello stesso punto: A = B.' : 'Scegli un\'operazione e guarda che cosa fa ai gettoni e al verso.';
+      }
+      function osserva(s0, s1, m) {   /* osservazioni neutre, mai valutazioni */
+        const sy = d => simbolo(d, true);
+        if (s1.dir === 'eq') return 'A e B sono nello stesso punto, e ogni mossa li porta insieme: resta =.';
+        if (m.tipo === 'somma') return 'Con ' + m.et + ' i gettoni scivolano insieme: il verso resta ' + sy(s1.dir) + '.';
+        const v = val(m.m);
+        if (v < 0) return 'Con ' + m.et + ' il binario si specchia attorno allo zero: il verso si gira, da ' + sy(s0.dir) + ' a ' + sy(s1.dir) + '.';
+        if (v === 1) return 'Con ' + m.et + ' non si muove niente.';
+        return 'Con ' + m.et + ' i gettoni ' + (v > 1 ? 'si allontanano dallo zero' : 'si avvicinano allo zero') + ', ognuno dalla sua parte: il verso resta ' + sy(s1.dir) + '.';
+      }
+      function aggiornaParametri() {
+        parametriEl.querySelectorAll('.lab-param').forEach(box => {
+          const p = box.dataset.p;
+          if (p === 'op') { box.querySelectorAll('button').forEach(b => { b.setAttribute('aria-pressed', b.dataset.op === lib.op); b.disabled = animando; }); return; }
+          const out = box.querySelector('output'), [bm, bp] = box.querySelectorAll('button');
+          if (p === 'n') {
+            const [lo, hi] = limitiN(lib.op);
+            out.textContent = String(lib.n).replace('-', '−');
+            bm.disabled = animando || lib.n <= lo; bp.disabled = animando || lib.n >= hi;
+            return;
+          }
+          const v = pila.length ? pila[0][p] : st[p];   /* i numeri di partenza */
+          out.textContent = fTxt(v);
+          bm.disabled = animando || val(v) <= -R; bp.disabled = animando || val(v) >= R;
+        });
+      }
+      function aggiornaMossaLibera() {
+        const b = mosseEl.firstChild; if (!b) return;
+        const et = etMossa(lib.op, lib.n);
+        if (b.dataset.m !== et) { b._m = mossa(et); b.dataset.m = et; }
+        b.textContent = et + ' a tutti e due';
+        const ok = possibile(b._m);
+        if (!ok && !animando && !msg.textContent) avvisa('Con ' + et + ' un gettone uscirebbe dal binario: cambia operazione o numero.');
+        else if (ok && /uscirebbe/.test(msg.textContent)) avvisa('');
+      }
+      function nuovoLibero(A, B) {
+        if (fermaAnim) fermaAnim();
+        st = { A, B, op: null }; st.dir = st.giusto = val(A) < val(B) ? 'lt' : val(A) > val(B) ? 'gt' : 'eq';
+        pila = []; tr = null; sonda = null; mostraErrori = false; cacheVerso = '';
+        avvisa(''); notaLibera = osservaInizio();
+        aggiorna(); disegna();
+      }
+      function mostraLibero() {
+        parametriEl.hidden = !libero; bCasuale.hidden = !libero; objEl.hidden = libero;
+        radice.classList.toggle('in-libero', libero);
+        aggiornaLivelli();
+      }
+      function entraLibero() {
+        if (fermaAnim) fermaAnim();
+        cancelAnimationFrame(rafFesta); rafFesta = 0; if (gFesta) vuota(gFesta);
+        salvato = { livello, st, pila: pila.slice(), vinto, sw, sonda, mostraErrori, zenDetto, avvisoSonda, msg: msg.innerHTML, cls: msg.className, ric: bRic.textContent, ricP: bRic.classList.contains('primario') };
+        const L = LIVELLI[livello];
+        libero = true; vinto = false; sw = 1; aiutoEl.hidden = true; mostraLibero();
+        bRic.textContent = 'Ricomincia'; bRic.classList.remove('primario');
+        costruisciMosse([etMossa(lib.op, lib.n)]);
+        mosseEl.firstChild.classList.add('primario');
+        nuovoLibero(F(L.parte === 1 ? L.A : 2), F(L.parte === 1 ? L.B : 5));
+      }
+      function esciLibero() {   /* si torna al livello com'era */
+        if (fermaAnim) fermaAnim();
+        const z = salvato; libero = false; salvato = null; aiutoEl.hidden = true;
+        livello = z.livello; st = z.st; pila = z.pila; vinto = z.vinto; sw = z.sw; sonda = z.sonda; mostraErrori = z.mostraErrori;
+        zenDetto = z.zenDetto; avvisoSonda = z.avvisoSonda; tr = null; cacheVerso = '';
+        mostraLibero();
+        objEl.innerHTML = consegna(LIVELLI[livello], livello);
+        costruisciMosse(LIVELLI[livello].mosse);
+        bRic.textContent = z.ric; bRic.classList.toggle('primario', z.ricP);
+        aggiorna(); disegna();
+        msg.innerHTML = z.msg; msg.className = z.cls;
+      }
+      function casuale() {
+        if (animando) return;
+        const r = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
+        let A, B, g = 0;
+        do { A = r(-9, 9); B = r(-9, 9); g++; } while (g < 40 && (A === B || (A === val(st.A) && B === val(st.B))));
+        lib.op = OPERAZIONI[r(0, 3)];
+        const [lo, hi] = limitiN(lib.op);
+        do { lib.n = r(lo, hi); } while (!lib.n || ((lib.op === '×' || lib.op === ':') && lib.n === 1));
+        nuovoLibero(F(A), F(B));
+      }
+      bLibero.addEventListener('click', () => { if (libero) esciLibero(); else entraLibero(); });
+      bCasuale.addEventListener('click', casuale);
+      parametriEl.addEventListener('click', ev => {
+        const b = ev.target.closest('button'); if (!b || !libero || animando || b.disabled) return;
+        const p = b.closest('.lab-param').dataset.p;
+        if (p === 'op') {
+          lib.op = b.dataset.op;
+          const [lo, hi] = limitiN(lib.op); lib.n = morsa(lib.n, lo, hi) || 1;
+          if (msg.textContent) avvisa('');
+          aggiorna(); return;
+        }
+        const d = +b.dataset.d;
+        if (p === 'n') {
+          const [lo, hi] = limitiN(lib.op);
+          let n = lib.n + d; if (n === 0) n += d;
+          lib.n = morsa(n, lo, hi);
+          if (msg.textContent) avvisa('');
+          aggiorna(); return;
+        }
+        const A = pila.length ? pila[0].A : st.A, B = pila.length ? pila[0].B : st.B;   /* si cambia il punto di partenza */
+        nuovoLibero(p === 'A' ? F(Math.round(morsa(val(A) + d, -R, R))) : A, p === 'B' ? F(Math.round(morsa(val(B) + d, -R, R))) : B);
+      });
+
+      /* pallini dei livelli */
+      LIVELLI.forEach((_, i) => {
+        const p = document.createElement('button'); p.type = 'button'; p.className = 'lab-pallino';
+        p.setAttribute('aria-label', 'Livello ' + (i + 1)); p.innerHTML = '<span>' + (i + 1) + '</span>';
+        p.addEventListener('click', () => { if (libero || i !== livello || vinto) avviaLivello(i); });
+        livelliEl.insertBefore(p, bLibero);
+      });
+
+      /* la scena si ridisegna quando cambia la forma dello spazio del binario (telefono girato, schermo intero) */
+      /* in orizzontale la relazione e i passaggi vanno nel pannello, e il binario ha tutta la scena;
+         in verticale stanno sopra e sotto il binario, e il gruppo sta in mezzo alla scena */
+      const testa = q('.testa'), lato = q('.lab-lato');
+      let misura = '';
+      function adatta() {
+        const orizz = radice.clientWidth * 4 >= radice.clientHeight * 5;   /* come la container query di .lab-layout */
+        if (orizz && testa.parentNode !== lato) { lato.insertBefore(testa, mosseEl); lato.insertBefore(storiaEl, msg); }
+        else if (!orizz && testa.parentNode !== scena) { scena.insertBefore(testa, scena.firstChild); scena.insertBefore(storiaEl, livEl); }
+        if (st) adattaStoria();
+        const W = scena.clientWidth, H = scena.clientHeight;
+        if (W < 10 || H < 10) return;
+        let Hd = H - 12;
+        if (!orizz) Hd -= testa.offsetHeight + storiaEl.offsetHeight + parseFloat(getComputedStyle(storiaEl).marginBottom || 0);
+        Hd = Math.max(60, Math.round(Hd));
+        const m = Math.round(W) + 'x' + Hd;
+        if (m !== misura) { misura = m; costruisci(W, Hd); svg.style.height = Math.min(G.H, Hd) + 'px'; }
+      }
       avviaLivello(livello);
       costruisci();
+      adatta();
+      const ro = new ResizeObserver(adatta); ro.observe(radice); ro.observe(scena); ro.observe(testa); ro.observe(storiaEl);
 
       return function smonta() {
         if (fermaAnim) fermaAnim();

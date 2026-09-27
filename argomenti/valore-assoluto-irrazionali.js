@@ -1,28 +1,59 @@
 (function () {
 const R = String.raw;
+/* risposte dell'allenamento. Equazioni: sol(8, -2) accetta i numeri in qualunque ordine;
+   NESSUNA ha la stessa casella, così la casella non dice se le soluzioni ci sono.
+   Disequazioni: esterni(-2, 1) accetta x<-2 o x>1 in tutte le scritture ragionevoli (o, oppure,
+   v, ∨, ∪, ]-inf;-2[ ∪ ]1;+inf[ …); interni(-2, 1) accetta -2<x<1, ]-2;1[, (-2;1), x>-2 e x<1 …;
+   con true gli estremi sono compresi (≤ e ≥ diventano <= e >= da soli). */
+const SEGNA = 'Le soluzioni (es. -1; 3)', SEGNA_D = 'es. x<-1 o x>3';
+const sol = (...v) => ({ tipo: 'numeri', valori: v, segnaposto: SEGNA });
+const NESSUNA = { tipo: 'testo', segnaposto: SEGNA, accettate: ['nessuna', 'nessuna soluzione', 'nessuna soluzione reale', 'nessun numero', 'nessuno', 'impossibile', 'non ha soluzioni', 'non ci sono soluzioni', '∅', 'ø', '{}', 'S=∅', 'S={}', 'insieme vuoto', 'vuoto'] };
+const INF = ['inf', '∞', 'infinito'], SEP = [';', ','];
+const disq = f => ({ tipo: 'testo', accettate: f, segnaposto: SEGNA_D });
+const esterni = (a, b, c) => {
+  const lt = c ? '<=' : '<', gt = c ? '>=' : '>', f = [];
+  const sx = ['x' + lt + a, a + gt + 'x'], dx = ['x' + gt + b, b + lt + 'x'];
+  ['o', 'oppure', 'v', '∨', 'u', '∪', ',', ';'].forEach(o => sx.forEach(p => dx.forEach(q => f.push(p + o + q, q + o + p))));
+  INF.forEach(i => SEP.forEach(s => {
+    const ls = [']', '('].flatMap(ap => (c ? [']'] : ['[', ')']).map(ch => ap + '-' + i + s + a + ch));
+    const rs = (c ? ['['] : [']', '(']).flatMap(ap => ['[', ')'].flatMap(ch => ['+', ''].map(p => ap + b + s + p + i + ch)));
+    ['u', '∪', 'o', 'v', '∨'].forEach(o => ls.forEach(l => rs.forEach(r => f.push(l + o + r, r + o + l))));
+  }));
+  return disq(f);
+};
+const interni = (a, b, c) => {
+  const lt = c ? '<=' : '<', gt = c ? '>=' : '>';
+  const f = [a + lt + 'x' + lt + b, b + gt + 'x' + gt + a];
+  const sx = ['x' + gt + a, a + lt + 'x'], dx = ['x' + lt + b, b + gt + 'x'];
+  ['e', 'ed', '∧', ',', ';'].forEach(o => sx.forEach(p => dx.forEach(q => f.push(p + o + q, q + o + p))));
+  SEP.forEach(s => (c ? [['[', ']']] : [[']', '['], ['(', ')']]).forEach(([ap, ch]) => f.push(ap + a + s + b + ch)));
+  return disq(f);
+};
 COMPASSO.registra({
   id: 'valore-assoluto-irrazionali',
   titolo: 'Valore assoluto e irrazionali',
 
-  introduzione: R`Una fabbrica taglia barre che devono essere lunghe $50$ cm, e accetta un errore di $2$ mm in più o in meno. Una barra lunga $x$ cm va bene se la distanza fra $x$ e $50$ non supera $0{,}2$, e questo si scrive $|x - 50| \le 0{,}2$. Il simbolo $|\ |$ è il **valore assoluto**: misura quanto un numero è lontano da un altro, senza badare se sta a destra o a sinistra.
+  introduzione: R`Una fabbrica taglia barre lunghe $50$ cm. Accetta un errore di $2$ mm, in più o in meno. Quindi una barra lunga $x$ cm va bene se $x$ dista da $50$ al massimo $0{,}2$. Si scrive $|x - 50| \le 0{,}2$.
 
-Con il valore assoluto le equazioni e le disequazioni si risolvono **per casi**: dove l'espressione dentro le sbarre è positiva si comporta in un modo, dove è negativa in un altro. La seconda parte della lezione riguarda le **equazioni irrazionali**, quelle con l'incognita sotto una radice. Per togliere la radice si eleva al quadrato, e qui c'è una trappola: il quadrato può far comparire soluzioni che l'equazione di partenza non ha, dette **estranee**. Si imparerà a riconoscerle e a scartarle.
+Il simbolo $|\ |$ è il **valore assoluto**. Misura quanto un numero è lontano da un altro, a destra o a sinistra.
 
-Servono le equazioni e le disequazioni di secondo grado e la scomposizione in fattori.`,
+Le equazioni con il valore assoluto si risolvono **per casi**. Poi ci sono le **equazioni irrazionali**, con l'incognita sotto una radice. Per togliere la radice elevi al quadrato. Ma il quadrato può aggiungere soluzioni false, dette **estranee**: vanno riconosciute e scartate.
+
+Ti servono le equazioni e le disequazioni di secondo grado.`,
 
   inBreve: [
-    R`$|a|$ è la distanza di $a$ da zero, e $|a - b|$ è la distanza fra $a$ e $b$ sulla retta: un valore assoluto non è mai negativo.`,
-    R`Per togliere le sbarre si guarda il segno di quello che c'è dentro: se è positivo o nullo resta com'è, se è negativo gli si cambia segno.`,
-    R`In $|A(x)| = B(x)$ si risolvono $A = B$ e $A = -B$, poi si tengono solo le soluzioni in cui $B(x) \ge 0$.`,
-    R`$|A| < k$ vuol dire $-k < A < k$, un intervallo; $|A| > k$ vuol dire $A < -k$ oppure $A > k$, due semirette.`,
-    R`Elevare al quadrato può aggiungere soluzioni false: in $\sqrt{A(x)} = B(x)$ si impone $B(x) \ge 0$, oppure si prova ogni soluzione nell'equazione di partenza.`,
-    R`Con la radice cubica, o di indice dispari, non serve nessuna condizione: si eleva al cubo e basta.`
+    R`$|a|$ è la distanza di $a$ da zero, quindi non è mai negativo.`,
+    R`$|x-3|=5$ vuol dire $x-3=5$ oppure $x-3=-5$.`,
+    R`$|A|<k$ diventa $-k<A<k$: un tratto solo. $|A|>k$ diventa $A<-k$ oppure $A>k$: due pezzi.`,
+    R`In $|A|=B$ risolvi $A=B$ e $A=-B$. Poi tieni solo le soluzioni con $B\ge 0$.`,
+    R`In $\sqrt{A}=B$ imponi $B\ge 0$ e poi elevi al quadrato. Oppure controlli ogni soluzione nell'equazione di partenza.`,
+    R`Con la radice cubica non serve nessuna condizione: elevi al cubo e basta.`
   ],
 
   sezioni: [
-    { id: 'definizione-valore-assoluto', titolo: 'Il valore assoluto: definizione e proprietà', testo: R`Quanto dista $-7$ da zero sulla retta dei numeri? Sette passi, esattamente come $7$. Questa distanza si chiama **valore assoluto** (o **modulo**) e si scrive fra due sbarre: $|7| = 7$ e $|{-7}| = 7$. Due numeri opposti hanno lo stesso valore assoluto, perché stanno alla stessa distanza da $0$, uno a destra e uno a sinistra.
+    { id: 'definizione-valore-assoluto', titolo: 'Il valore assoluto: definizione e proprietà', testo: R`Quanto dista $-7$ da zero? Sette passi, proprio come $7$. Questa distanza si chiama **valore assoluto**, o **modulo**, e si scrive fra due sbarre: $|7| = 7$ e $|{-7}| = 7$.
 
-Per calcolarlo si guarda il segno. Un numero positivo resta com'è; a un numero negativo si toglie il meno, cioè lo si cambia di segno. Scritto con le lettere:
+Per calcolarlo guarda il segno. Un numero positivo resta com'è, mentre a un numero negativo cambi segno.
 
 >* **Definizione.** $$|a| = \begin{cases} a & \text{se } a \ge 0 \\ -a & \text{se } a < 0 \end{cases}$$ Se $a$ è negativo, $-a$ è positivo: per $a = -7$ si ha $-a = 7$. Il risultato non è mai negativo.
 
@@ -30,31 +61,31 @@ Per calcolarlo si guarda il segno. Un numero positivo resta com'è; a un numero 
 [x] $-a$
 [ ] $a$
 [ ] $-|a|$
-=> Per $a = -3$: $|a| = 3$, e $-a = -(-3) = 3$. Il meno davanti alla lettera non vuol dire che il numero sia negativo: qui cambia segno a un numero che era già negativo. $a$ vale $-3$, e $-|a|$ vale $-3$: sono entrambi negativi, quindi non possono essere un valore assoluto.
+=> Prova con $a = -3$: $|a| = 3$, e $-a = -(-3) = 3$. Il meno davanti alla lettera cambia segno a un numero già negativo. Invece $a$ e $-|a|$ valgono $-3$: sono negativi, quindi non sono un valore assoluto.
 
-La stessa regola vale quando fra le sbarre c'è un'espressione, e qui sta tutto il lavoro della lezione: bisogna capire **dove** l'espressione è positiva e dove è negativa. Si dice «sciogliere il modulo».
+La stessa regola vale con un'espressione fra le sbarre, quindi devi capire **dove** è positiva e dove è negativa. Questo lavoro si chiama «sciogliere il modulo».
 
 ~ |x - 3| :: dentro le sbarre c'è $x - 3$
 ~ x - 3 \ge 0 \iff \evid{x \ge 3} :: studio il segno di quello che sta dentro
 ~ |x - 3| = \evid{x - 3} \quad \text{se } x \ge 3 :: dove è positivo o nullo, lo copio così com'è
 ~ |x - 3| = \evid{-(x - 3)} = \evidb{3 - x} \quad \text{se } x < 3 :: dove è negativo, cambio segno a **tutta** l'espressione
 
-Il valore assoluto misura anche la distanza fra due numeri qualsiasi: $|a - b|$ è quanto $a$ dista da $b$. Per esempio $|2 - 5| = 3$, e fra $2$ e $5$ ci sono proprio tre passi.
+$|a - b|$ è la distanza fra $a$ e $b$. Per esempio $|2 - 5| = 3$: fra $2$ e $5$ ci sono tre passi.
 
 [[grafico:assolutoTrascina]]
 
-Le proprietà che servono sempre:
+Le proprietà che ti servono:
 
 - $|a| \ge 0$, e $|a| = 0$ solo quando $a = 0$;
 - $|{-a}| = |a|$;
 - $|a \cdot b| = |a| \cdot |b|$ e $\left|\dfrac{a}{b}\right| = \dfrac{|a|}{|b|}$ (con $b \ne 0$);
 - $|a|^2 = a^2$: elevando al quadrato le sbarre spariscono, e il segno non conta più.
 
->! Con la somma non funziona: $|a + b|$ **non** è uguale a $|a| + |b|$. Per esempio $|3 + (-5)| = |{-2}| = 2$, mentre $|3| + |{-5}| = 8$. Le sbarre non si «distribuiscono» sui termini di una somma.` },
+>! $|a + b|$ **non** è uguale a $|a| + |b|$. Per esempio $|3 + (-5)| = |{-2}| = 2$, ma $|3| + |{-5}| = 8$.` },
 
-    { id: 'equazioni-valore-assoluto', titolo: 'Equazioni con il valore assoluto', testo: R`Quali numeri hanno valore assoluto $2$? Due soltanto: $2$ e $-2$. Tutte le equazioni con il modulo partono da questa idea: se $|A| = 2$, allora $A$ vale $2$ oppure $-2$. Si risolvono **due** equazioni senza sbarre, una per ciascun caso.
+    { id: 'equazioni-valore-assoluto', titolo: 'Equazioni con il valore assoluto', testo: R`Quali numeri hanno valore assoluto $2$? Solo $2$ e $-2$. Quindi se $|A| = 2$, allora $A = 2$ oppure $A = -2$. Risolvi **due** equazioni senza sbarre.
 
-Le forme che si incontrano sono tre, e cambia solo il controllo da fare alla fine:
+Le forme sono tre, e cambia solo il controllo finale:
 
 | forma | si risolvono | controllo |
 |---|---|---|
@@ -62,9 +93,9 @@ Le forme che si incontrano sono tre, e cambia solo il controllo da fare alla fin
 | $\lvert A(x)\rvert = B(x)$ | $A = B$ e $A = -B$ | si tengono solo le soluzioni con $B(x) \ge 0$ |
 | $\lvert A(x)\rvert = \lvert B(x)\rvert$ | $A = B$ e $A = -B$ | nessuno |
 
-**Primo caso.** $|x - 1| = 2$ dà $x - 1 = 2$, cioè $x = 3$, oppure $x - 1 = -2$, cioè $x = -1$. Controllo a occhio: $3$ e $-1$ distano proprio $2$ da $1$. Un'equazione come $|x - 1| = -2$ invece non ha soluzioni, perché un modulo non è mai negativo.
+**Primo caso.** $|x - 1| = 2$ dà $x - 1 = 2$, cioè $x = 3$, oppure $x - 1 = -2$, cioè $x = -1$. Infatti $3$ e $-1$ distano $2$ da $1$. Invece $|x - 1| = -2$ non ha soluzioni: un modulo non è mai negativo.
 
-**Secondo caso.** Qui a destra c'è un'espressione, e in certi punti può essere negativa. Lì il modulo non può uguagliarla, quindi le soluzioni che cadono in quei punti vanno buttate.
+**Secondo caso.** A destra c'è un'espressione, e in certi punti è negativa. Lì il modulo non può esserle uguale, quindi le soluzioni che cadono lì si scartano.
 
 ~ |x + 3| = 2x :: a destra c'è un'espressione: servirà un controllo alla fine
 ~ x + 3 = \evid{2x} \Rightarrow x = 3 :: primo caso: dentro le sbarre c'è proprio $2x$
@@ -76,50 +107,48 @@ Le forme che si incontrano sono tre, e cambia solo il controllo da fare alla fin
 [x] nessuna: l'equazione è impossibile
 [ ] $x = 6$
 [ ] $x = 6$ e $x = -6$
-=> Per $x = 6$ il secondo membro vale $6 - 7 = -1$, negativo: un modulo non può valere $-1$ (infatti $|6 - 5| = 1$). Scartata $x = 6$ non resta niente. Chi risponde $x = 6$ ha saltato il controllo del segno di $B(x)$, che è proprio il passo che distingue questo caso dal primo.
+=> Per $x = 6$ il secondo membro vale $6 - 7 = -1$: un modulo non può valere $-1$. Scartato $6$, non resta niente. Chi risponde $x = 6$ ha saltato il controllo del segno di $B(x)$.
 
-**Terzo caso.** Due moduli sono uguali quando le espressioni dentro sono uguali oppure opposte: $|A| = |B|$ equivale ad $A = B$ oppure $A = -B$. Non serve nessun controllo, perché tutti e due i membri sono già non negativi.
+**Terzo caso.** $|A| = |B|$ vuol dire $A = B$ oppure $A = -B$. Non serve nessun controllo: i due membri non sono mai negativi.
 
->! Nel caso $|A(x)| = B(x)$ il controllo del segno di $B(x)$ è obbligatorio. Saltarlo porta ad accettare soluzioni che, rimesse nell'equazione di partenza, danno un numero positivo uguale a uno negativo.` },
+>! In $|A(x)| = B(x)$ il controllo del segno di $B(x)$ è obbligatorio.` },
 
-    { id: 'grafico-modulo', titolo: 'Il grafico di y = |f(x)|', testo: R`Se conosci il grafico di $y = f(x)$, quello di $y = |f(x)|$ si disegna senza fare conti. Basta applicare la definizione del modulo punto per punto: dove la $y$ è positiva resta com'è, dove è negativa cambia segno. Cambiare segno alla $y$ vuol dire prendere il punto simmetrico rispetto all'asse $x$.
+    { id: 'grafico-modulo', titolo: 'Il grafico di y = |f(x)|', testo: R`Dal grafico di $y = f(x)$ ottieni quello di $y = |f(x)|$ senza conti. Dove la $y$ è positiva, resta com'è. Dove è negativa, cambia segno: il punto va nel suo simmetrico rispetto all'asse $x$.
 
->* **Regola.** Dove il grafico di $y = f(x)$ sta sopra l'asse $x$ (o sull'asse), quello di $y = |f(x)|$ è identico. Dove sta sotto, si **ribalta verso l'alto**, come se l'asse $x$ fosse uno specchio.
+>* **Regola.** Dove il grafico di $f$ sta sopra l'asse $x$, o sull'asse, non cambia. Dove sta sotto, si **ribalta verso l'alto**, come in uno specchio.
 
-Il caso più semplice è $y = |x - 1|$. La retta $y = x - 1$ sta sotto l'asse per $x < 1$: ribaltando quel tratto si ottiene una **V** con la punta in $(1; 0)$, il punto dove $x - 1$ si annulla.
+Per esempio $y = |x - 1|$. La retta $y = x - 1$ sta sotto l'asse per $x < 1$. Ribalti quel tratto e ottieni una **V** con la punta in $(1; 0)$.
 
-Con una parabola si vede meglio che cosa si ribalta e che cosa no.
+Con una parabola vedi bene che cosa si ribalta.
 
 [[grafico:ribaltaParabola]]
 
-Nei punti in cui il grafico di $f$ attraversa l'asse $x$ si formano delle punte, che si chiamano **punti angolosi**: lì la curva cambia direzione di colpo. Per $y = |x^2 - 4|$ sono in $x = -2$ e $x = 2$, dove $x^2 - 4 = 0$. Il grafico di $y = |f(x)|$ non scende mai sotto l'asse $x$, perché un modulo non è mai negativo.
+Dove il grafico di $f$ attraversa l'asse $x$ si formano delle punte, dette **punti angolosi**. Per $y = |x^2 - 4|$ sono in $x = -2$ e $x = 2$.
 
 ?? Com'è fatto il grafico di $y = |x^2 + 1|$?
 [x] è identico a quello di $y = x^2 + 1$
 [ ] è la parabola $y = x^2 + 1$ capovolta verso il basso
 [ ] ha due punti angolosi, in $x = -1$ e $x = 1$
-=> $x^2 + 1$ è sempre positivo (vale almeno $1$), quindi la parabola sta tutta sopra l'asse e non c'è niente da ribaltare: il modulo non cambia nulla. Capovolgere la parabola sarebbe il contrario della regola, perché il modulo alza, non abbassa. Le punte nascono solo dove $f(x) = 0$, e $x^2 + 1 = 0$ non ha soluzioni.
+=> $x^2 + 1$ vale almeno $1$: la parabola sta tutta sopra l'asse e non c'è niente da ribaltare. Il modulo alza, non abbassa. E le punte nascono solo dove $f(x) = 0$.
 
->! Il modulo alza le parti che stanno sotto l'asse e **non tocca** quelle che stanno sopra. Ribaltare tutto il grafico, o abbassare le parti positive, dà una funzione diversa.` },
+>! Il modulo alza le parti sotto l'asse e **non tocca** quelle sopra.` },
 
-    { id: 'disequazioni-valore-assoluto-rapide', titolo: 'Disequazioni |A| < k e |A| > k: le forme rapide', testo: R`Quali numeri $x$ distano da $1$ meno di $2$? Quelli fra $-1$ e $3$: partendo da $1$ ci si può spostare di meno di due passi a sinistra o a destra. In simboli, $|x - 1| < 2$ vuol dire $-1 < x < 3$. Quelli che distano **più** di $2$, invece, stanno fuori: $x < -1$ oppure $x > 3$.
+    { id: 'disequazioni-valore-assoluto-rapide', titolo: 'Disequazioni |A| < k e |A| > k: le forme rapide', testo: R`Quali numeri distano da $1$ meno di $2$? Quelli fra $-1$ e $3$. In simboli, $|x - 1| < 2$ vuol dire $-1 < x < 3$. Quelli che distano **più** di $2$ stanno fuori: $x < -1$ oppure $x > 3$.
 
-Alza e abbassa la retta orizzontale con il cursore $k$ e guarda le due cose insieme: dove la V taglia la retta ci sono le soluzioni dell'equazione, sotto la retta quelle della disequazione con il «minore».
+Muovi $k$ con il cursore e guarda la retta orizzontale.
 
 [[grafico:assolutoParametro]]
 
-Quando a destra c'è un numero positivo $k$, questa idea diventa una regola che evita di sciogliere il modulo.
+>* **Forme rapide**, con $k > 0$. $|A| < k$ diventa $-k < A < k$: $A$ sta **dentro**. $|A| > k$ diventa $A < -k$ oppure $A > k$: $A$ sta **fuori**.
 
->* **Forme rapide** (con $k > 0$). $|A| < k$ equivale a $-k < A < k$: l'espressione sta in una striscia **dentro**. $|A| > k$ equivale ad $A < -k$ oppure $A > k$: l'espressione sta **fuori**, da una parte o dall'altra.
-
-Con il «minore» si risolve una doppia disuguaglianza, facendo la stessa operazione su tutti e tre i membri:
+Con il «minore» risolvi una doppia disuguaglianza. Fai la stessa operazione su tutti e tre i membri:
 
 ~ |2x - 5| \le 3 :: la forma è $|A| \le k$ con $k = 3$
 ~ -3 \le 2x - 5 \le 3 :: l'espressione dentro sta fra $-3$ e $3$
 ~ \evid{2} \le 2x \le \evid{8} :: aggiungo $5$ a tutti e tre i membri
 ~ \evidb{1 \le x \le 4} :: divido tutto per $2$, che è positivo: i versi restano
 
-Con il «maggiore» si risolvono due disequazioni separate e si **uniscono** le soluzioni:
+Con il «maggiore» risolvi due disequazioni e **unisci** le soluzioni:
 
 ~ |2x + 1| > 3 :: la forma è $|A| > k$ con $k = 3$
 ~ 2x + 1 < -3 \quad \lor \quad 2x + 1 > 3 :: l'espressione sta sotto $-3$ oppure sopra $3$
@@ -130,40 +159,42 @@ Con il «maggiore» si risolvono due disequazioni separate e si **uniscono** le 
 [x] $x < -4$ oppure $x > 4$
 [ ] $x > 4$
 [ ] $-4 < x < 4$
-=> Servono i numeri che distano da $0$ più di $4$, da tutte e due le parti: anche $-5$ va bene, perché $|{-5}| = 5 > 4$. Chi scrive solo $x > 4$ ha tolto le sbarre come se non ci fossero e ha perso tutta la parte negativa. $-4 < x < 4$ è la soluzione di $|x| < 4$, il verso opposto.
+=> Servono i numeri che distano da $0$ più di $4$, da tutte e due le parti. Anche $-5$ va bene: $|{-5}| = 5 > 4$. Chi scrive solo $x > 4$ ha perso la parte negativa.
 
-Se $k$ è negativo o zero non serve nessun conto, basta ricordare che un modulo non è mai negativo:
+Se $k$ è negativo o zero non servono conti, perché un modulo non è mai negativo:
 
 | disequazione | $k < 0$ | $k = 0$ |
 |---|---|---|
 | $\lvert A\rvert < k$ | impossibile | impossibile |
 | $\lvert A\rvert > k$ | sempre vera | vera tranne dove $A = 0$ |
 
->! $|A| > k$ non si scrive $-k > A > k$. Una catena così chiede un numero che sia insieme minore di $-k$ e maggiore di $k$, e non esiste. Le due parti vanno scritte separate, con «oppure».` },
+>! $|A| > k$ non si scrive $-k > A > k$: nessun numero è insieme minore di $-k$ e maggiore di $k$. Scrivi le due parti separate, con «oppure».` },
 
-    { id: 'disequazioni-valore-assoluto-sistemi', titolo: 'Disequazioni |A| < B e |A| > B: quando serve il sistema', testo: R`Che cosa cambia se a destra, al posto del numero $k$, c'è un'espressione $B(x)$? Lo schema resta lo stesso: con il «minore» l'espressione sta dentro, fra $-B$ e $B$; con il «maggiore» sta fuori. Solo che adesso $-B$ e $B$ dipendono da $x$, e la doppia disuguaglianza si spezza in due disequazioni vere.
+    { id: 'disequazioni-valore-assoluto-sistemi', titolo: 'Disequazioni |A| < B e |A| > B: quando serve il sistema', testo: R`Ora a destra c'è un'espressione $B(x)$ al posto del numero $k$. L'idea è la stessa: con il «minore» $A$ sta fra $-B$ e $B$, con il «maggiore» sta fuori. Ma $B$ dipende da $x$, quindi la doppia disuguaglianza diventa due disequazioni.
 
->* $$|A| < B \iff \begin{cases} A < B \\ A > -B \end{cases}$$ $$|A| > B \iff A > B \ \lor\ A < -B$$ Con il «minore» è un **sistema**: devono valere tutte e due, e si prende la parte comune. Con il «maggiore» è un'**unione**: basta che ne valga una.
+>* $$|A| < B \iff \begin{cases} A < B \\ A > -B \end{cases}$$ $$|A| > B \iff A > B \ \lor\ A < -B$$ Con il «minore» è un **sistema**: devono valere tutte e due. Con il «maggiore» è un'**unione**: basta che ne valga una.
 
 ~ |2x - 1| < x + 2 :: la forma è $|A| < B$: serve un sistema
 ~ 2x - 1 < x + 2 \Rightarrow \evid{x < 3} :: prima disequazione, $A < B$
 ~ 2x - 1 > -x - 2 \Rightarrow 3x > -1 \Rightarrow \evid{x > -\tfrac{1}{3}} :: seconda, $A > -B$: attento a cambiare segno a tutti e due i termini di $B$
 ~ \evidb{-\tfrac{1}{3} < x < 3} :: è un sistema: tengo solo i numeri che soddisfano tutte e due
 
-Non c'è bisogno di aggiungere la condizione $B(x) > 0$: la contiene già il sistema. Se $A < B$ e $A > -B$, allora $B$ è più grande sia di $A$ sia di $-A$, quindi più grande di $|A|$, che non è mai negativo.
+Non serve aggiungere $B(x) > 0$: il sistema lo contiene già.
 
-Con il «maggiore» capita che uno dei due pezzi non dia niente. Per $|x - 3| > x - 1$ il primo pezzo è $x - 3 > x - 1$, cioè $-3 > -1$: falso per ogni $x$. Il secondo è $x - 3 < -x + 1$, cioè $x < 2$. Unendo «niente» con $x < 2$ resta $x < 2$.
+Con il «maggiore» a volte un pezzo non dà niente. In $|x - 3| > x - 1$ il primo pezzo è $x - 3 > x - 1$, cioè $-3 > -1$: sempre falso. Il secondo è $x - 3 < -x + 1$, cioè $x < 2$, e quindi resta solo questo.
 
 ?? Senza fare conti: la disequazione $|x| < x - 1$ ha soluzioni?
-=> No. Il sistema chiede anche $x < x - 1$, cioè $0 < -1$, che è falso per ogni $x$. Si vede anche a parole: $|x|$ è sempre almeno $x$, quindi non può essere minore di $x - 1$, che è ancora più piccolo.
+=> No. Il sistema chiede $x < x - 1$, cioè $0 < -1$: falso per ogni $x$.
 
->! Qui non si può ragionare sul segno di $B$ una volta per tutte, come si faceva con $k$: $B(x)$ è positivo in certi punti e negativo in altri. Il sistema (o l'unione) tiene conto da solo di tutti i casi.` },
+>! Qui non puoi guardare il segno di $B$ una volta sola, come con $k$: $B(x)$ cambia segno. Il sistema tiene conto di tutti i casi.` },
 
-    { id: 'equazioni-irrazionali-una-radice', titolo: 'Equazioni irrazionali con una radice', testo: R`Un'equazione è **irrazionale** quando l'incognita sta sotto una radice, come in $\sqrt{x + 10} = x - 2$. Per liberarsi della radice si elevano al quadrato i due membri. Il problema è che il quadrato cancella i segni: $3^2$ e $(-3)^2$ fanno tutti e due $9$. Così l'equazione elevata al quadrato può avere soluzioni in più, che quella di partenza non ha. Si chiamano **soluzioni estranee**.
+    { id: 'equazioni-irrazionali-una-radice', titolo: 'Equazioni irrazionali con una radice', testo: R`Un'equazione è **irrazionale** se l'incognita sta sotto una radice. Per esempio $\sqrt{x + 10} = x - 2$.
 
-La radice quadrata non è mai negativa. Quindi $\sqrt{A(x)} = B(x)$ può essere vera solo dove $B(x) \ge 0$, e questa è la condizione che fa il filtro.
+Per togliere la radice elevi al quadrato i due membri. Ma il quadrato cancella il segno: $3^2$ e $(-3)^2$ fanno tutti e due $9$. Così possono comparire soluzioni in più, dette **soluzioni estranee**.
 
->* $$\sqrt{A} = B \iff \begin{cases} B \ge 0 \\ A = B^2 \end{cases}$$ Qui $A$ e $B$ sono le espressioni in $x$. La condizione $A \ge 0$ non serve scriverla: se $A$ è uguale a un quadrato, è già $\ge 0$.
+Una radice quadrata non è mai negativa. Quindi $\sqrt{A} = B$ può essere vera solo dove $B \ge 0$. Questa condizione scarta le estranee.
+
+>* $$\sqrt{A} = B \iff \begin{cases} B \ge 0 \\ A = B^2 \end{cases}$$ $A$ e $B$ sono espressioni in $x$. La condizione $A \ge 0$ non serve: $A$ è uguale a un quadrato.
 
 ~ \sqrt{x + 10} = x - 2 :: a destra c'è un'espressione che può essere negativa
 ~ \evid{x - 2 \ge 0} \Rightarrow x \ge 2 :: prima la condizione: la radice non può uguagliare un numero negativo
@@ -172,43 +203,43 @@ La radice quadrata non è mai negativa. Quindi $\sqrt{A(x)} = B(x)$ può essere 
 ~ x = 6 \quad \lor \quad x = -1 :: le soluzioni dell'equazione elevata al quadrato
 ~ \evidb{x = 6} :: solo $6$ rispetta $x \ge 2$; con $x = -1$ si avrebbe $\sqrt{9} = -3$, falso
 
-Nel grafico le soluzioni sono i punti in cui la retta incontra la curva della radice. Il quadrato però aggiunge anche la curva tratteggiata, $y = -\sqrt{x + 10}$, che nell'equazione di partenza non c'è.
+Nel grafico le soluzioni sono i punti dove la retta incontra la curva della radice. Il quadrato aggiunge la curva tratteggiata, $y = -\sqrt{x + 10}$: lì cade la soluzione estranea.
 
 [[grafico:irrazionaleEstranea]]
 
-C'è anche un'altra strada: elevare al quadrato senza condizioni, risolvere, e poi **sostituire** ogni soluzione trovata nell'equazione di partenza, tenendo solo quelle che funzionano. È corretta anche questa, e con numeri semplici è spesso più veloce.
+C'è anche un'altra strada. Elevi al quadrato senza condizioni e risolvi. Poi **sostituisci** ogni soluzione nell'equazione di partenza, e tieni quelle che funzionano.
 
 ?? Risolvendo $\sqrt{x + 1} = x - 5$ ed elevando al quadrato si trova $x = 3$ oppure $x = 8$. Quali sono le soluzioni?
 [x] solo $x = 8$
 [ ] $x = 3$ e $x = 8$
 [ ] solo $x = 3$
-=> Serve $x - 5 \ge 0$, cioè $x \ge 5$: resta solo $8$. Controllo: $\sqrt{9} = 3$ e $8 - 5 = 3$. Per $x = 3$ verrebbe $\sqrt{4} = -2$, falso: è estranea. Chi le tiene tutte e due ha controllato solo che la radice esista ($x + 1 \ge 0$ vale per entrambe), non il segno del secondo membro.
+=> Serve $x - 5 \ge 0$, cioè $x \ge 5$: resta solo $8$. Infatti $\sqrt{9} = 3$ e $8 - 5 = 3$. Per $x = 3$ verrebbe $\sqrt{4} = -2$, falso. Chi le tiene tutte e due ha controllato solo che la radice esista.
 
 ### Indice dispari
-Con la radice cubica, o di indice dispari, il problema non c'è. La radice cubica esiste anche per i numeri negativi ($\sqrt[3]{-8} = -2$) e il cubo non cancella il segno: si eleva al cubo e basta, senza condizioni.
+Con la radice cubica il problema non c'è. La radice cubica esiste anche per i negativi: $\sqrt[3]{-8} = -2$. E il cubo non cancella il segno, quindi elevi al cubo senza condizioni.
 
 ~ \sqrt[3]{x^3 - 7} = x - 1 :: indice dispari: nessuna condizione
 ~ x^3 - 7 = \evid{(x - 1)^3} = x^3 - 3x^2 + 3x - 1 :: elevo al cubo i due membri
 ~ 3x^2 - 3x - 6 = 0 \Rightarrow x^2 - x - 2 = 0 :: i cubi si cancellano; divido per $3$
 ~ \evidb{x = 2 \quad \lor \quad x = -1} :: tutte e due valgono: per $x = -1$, $\sqrt[3]{-8} = -2$, e anche $x - 1 = -2$
 
->! L'errore tipico è controllare solo che la radice esista, cioè $A(x) \ge 0$, e dimenticare $B(x) \ge 0$. Sono due condizioni diverse, ed è la seconda a scartare le soluzioni estranee.` },
+>! L'errore tipico: controllare solo $A(x) \ge 0$ e dimenticare $B(x) \ge 0$. È la seconda condizione che scarta le estranee.` },
 
-    { id: 'equazioni-irrazionali-due-radici', titolo: 'Equazioni irrazionali con due radici', testo: R`Se le radici sono due, si eliminano una alla volta, elevando al quadrato due volte.
+    { id: 'equazioni-irrazionali-due-radici', titolo: 'Equazioni irrazionali con due radici', testo: R`Con due radici, le togli una alla volta: elevi al quadrato due volte.
 
-Il caso più facile è una radice uguale a un'altra, $\sqrt{A(x)} = \sqrt{B(x)}$. Qui i due membri sono già non negativi, e basta elevare al quadrato una volta. Serve solo che le radici esistano: se $A(x) = B(x)$, basta controllare uno dei due radicandi, perché l'altro è uguale.
+Il caso più facile è $\sqrt{A} = \sqrt{B}$. I due membri non sono mai negativi, quindi elevi al quadrato una volta sola. Poi controlli che le radici esistano, ma basta un radicando perché, se $A = B$, l'altro è uguale.
 
 >* $$\sqrt{A} = \sqrt{B} \iff \begin{cases} A = B \\ A \ge 0 \end{cases}$$
 
-Per esempio $\sqrt{3x + 1} = \sqrt{x + 9}$: da $3x + 1 = x + 9$ viene $x = 4$, e $3 \cdot 4 + 1 = 13 \ge 0$. La soluzione è $x = 4$.
+Per esempio $\sqrt{3x + 1} = \sqrt{x + 9}$ dà $3x + 1 = x + 9$, cioè $x = 4$. E $3 \cdot 4 + 1 = 13 \ge 0$: va bene.
 
-Quando fra le due radici c'è un altro termine, come in $\sqrt{x + 7} - \sqrt{x + 2} = 1$, si procede così:
+Con un altro termine, come in $\sqrt{x + 7} - \sqrt{x + 2} = 1$, segui questi passi:
 
-1. si scrivono le condizioni di esistenza: ogni radicando $\ge 0$;
-2. si lascia **una** radice da sola in un membro;
-3. si eleva al quadrato: una radice sparisce, l'altra resta;
-4. si isola la radice rimasta e si eleva al quadrato di nuovo;
-5. si risolve e si **sostituisce** ogni soluzione nell'equazione di partenza.
+1. Scrivi le condizioni di esistenza: ogni radicando $\ge 0$.
+2. Lascia **una** radice da sola in un membro.
+3. Eleva al quadrato: una radice sparisce.
+4. Isola la radice rimasta ed eleva di nuovo al quadrato.
+5. Risolvi e **sostituisci** ogni soluzione nell'equazione di partenza.
 
 ~ \sqrt{x + 7} - \sqrt{x + 2} = 1 :: c.e.: $x + 7 \ge 0$ e $x + 2 \ge 0$, cioè $x \ge -2$
 ~ \sqrt{x + 7} = \evid{1 + \sqrt{x + 2}} :: sposto l'altra radice a destra, così a sinistra ne resta una sola
@@ -217,36 +248,36 @@ Quando fra le due radici c'è un altro termine, come in $\sqrt{x + 7} - \sqrt{x 
 ~ x + 2 = 4 \Rightarrow \evidb{x = 2} :: elevo al quadrato la seconda volta
 ~ \sqrt{9} - \sqrt{4} = 3 - 2 = 1 :: verifica nell'equazione di partenza: funziona
 
-Il quinto passo non si salta. Dopo due quadrati tenere traccia di tutte le condizioni di segno è complicato, mentre sostituire è sicuro.
+Non saltare il quinto passo. Dopo due quadrati è difficile seguire tutte le condizioni, invece sostituire è sicuro.
 
 ?? Quanto fa $\left(1 + \sqrt{x + 2}\right)^2$?
 [x] $1 + 2\sqrt{x + 2} + x + 2$
 [ ] $1 + x + 2$
 [ ] $1 + \sqrt{x + 2} + x + 2$
-=> È il quadrato di un binomio, $(a + b)^2 = a^2 + 2ab + b^2$, con $a = 1$ e $b = \sqrt{x + 2}$: il doppio prodotto $2\sqrt{x + 2}$ non sparisce. Elevare al quadrato «termine per termine» è l'errore più frequente in queste equazioni, e fa perdere proprio la radice che andava isolata al passo dopo.
+=> È il quadrato di un binomio, $(a + b)^2 = a^2 + 2ab + b^2$, con $a = 1$ e $b = \sqrt{x + 2}$. Il doppio prodotto $2\sqrt{x + 2}$ non sparisce. Elevare «termine per termine» è l'errore più frequente.
 
->! Con due radici la verifica finale fa parte della soluzione: senza, non si sa se quello che si è trovato risolve davvero l'equazione.` },
+>! Con due radici la verifica finale fa parte della soluzione.` },
 
-    { id: 'disequazioni-irrazionali', titolo: 'Disequazioni irrazionali: √A < B e √A > B', testo: R`Nelle disequazioni con la radice quadrata si usa ancora un sistema, ma bisogna chiedersi di nuovo che cosa succede quando il secondo membro è negativo. La risposta cambia con il verso.
+    { id: 'disequazioni-irrazionali', titolo: 'Disequazioni irrazionali: √A < B e √A > B', testo: R`Anche qui serve un sistema. Ma devi chiederti di nuovo che cosa succede quando il secondo membro è negativo. La risposta cambia con il verso.
 
 ### Radice minore di B
-Una radice, che non è mai negativa, non può essere minore di un numero negativo. Quindi $\sqrt{A} < B$ chiede per forza $B > 0$. Poi servono la radice che esiste e il confronto dei quadrati: tre condizioni insieme.
+Una radice non è mai negativa, quindi non può essere minore di un numero negativo. Allora $\sqrt{A} < B$ chiede $B > 0$. Poi servono la radice che esiste e il confronto dei quadrati.
 
 >* $$\sqrt{A} < B \iff \begin{cases} A \ge 0 \\ B > 0 \\ A < B^2 \end{cases}$$
 
-Per esempio $\sqrt{x - 1} < 3$: la radice esiste per $x \ge 1$, la condizione $3 > 0$ è sempre vera, e $x - 1 < 9$ dà $x < 10$. Le soluzioni sono $1 \le x < 10$.
+Per esempio $\sqrt{x - 1} < 3$. La radice esiste per $x \ge 1$. $3 > 0$ è sempre vero. $x - 1 < 9$ dà $x < 10$. Quindi $1 \le x < 10$.
 
 ?? Risolvendo $\sqrt{x} < x - 2$ un compagno scrive $x \ge 0$ e $x < (x - 2)^2$, e trova $0 \le x < 1 \ \lor\ x > 4$. Che cosa non va?
 [x] ha dimenticato $x - 2 > 0$: la soluzione è solo $x > 4$
 [ ] niente, la soluzione è giusta
 [ ] ha sbagliato il trinomio: la soluzione è $1 < x < 4$
-=> Prova $x = 0$: diventa $0 < -2$, falso. Tutto il pezzo $0 \le x < 1$ sta dove $x - 2$ è negativo, e lì una radice non può essere più piccola. Aggiungendo $x - 2 > 0$, cioè $x > 2$, resta solo $x > 4$. Il trinomio invece era giusto: $x^2 - 5x + 4 > 0$ vale fuori da $1$ e $4$.
+=> Prova $x = 0$: diventa $0 < -2$, falso. Nel pezzo $0 \le x < 1$ il secondo membro $x - 2$ è negativo, e lì una radice non può essere più piccola. Con $x - 2 > 0$, cioè $x > 2$, resta solo $x > 4$.
 
 ### Radice maggiore di B
-Qui la disequazione può essere vera per due motivi diversi, e i casi diventano due sistemi da **unire**:
+Qui i casi sono due, e si **uniscono**:
 
-- se $B(x) < 0$, la radice lo supera sempre, purché esista: non c'è niente da calcolare;
-- se $B(x) \ge 0$, si confrontano davvero i quadrati.
+- se $B(x) < 0$, la radice è sempre più grande, basta che esista;
+- se $B(x) \ge 0$, confronti i quadrati.
 
 >* $$\sqrt{A} > B \iff$$ $$\begin{cases} A \ge 0 \\ B < 0 \end{cases} \ \lor\ \begin{cases} B \ge 0 \\ A > B^2 \end{cases}$$
 
@@ -257,7 +288,7 @@ Qui la disequazione può essere vera per due motivi diversi, e i casi diventano 
 ~ \evid{0 \le x < 2} :: tengo la parte comune con $x \ge 0$
 ~ \evidb{-2 \le x < 2} :: unisco i due sistemi: i pezzi si attaccano in $0$
 
->! Con il «maggiore» l'errore più comune è dimenticare il primo sistema, quello con $B(x) < 0$. Si perdono tutte le soluzioni in cui il secondo membro è negativo, che erano valide senza fare nessun conto.` }
+>! Con il «maggiore» l'errore più comune è dimenticare il primo sistema, quello con $B(x) < 0$. Così perdi soluzioni valide.` }
   ],
 
   grafici: {
@@ -414,12 +445,32 @@ Qui la disequazione può essere vera per due motivi diversi, e i casi diventano 
   ],
 
   esercizi: [
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Risolvi $|x|=4$. Scrivi le soluzioni separate da punto e virgola.`, suggerimenti: [R`Quali numeri distano $4$ da zero?`], risposta: sol(4, -4), soluzione: [R`$|x|=4$ vuol dire che $x$ dista $4$ da zero.`, R`I numeri sono due: $x=4$ e $x=-4$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Risolvi $|x-3|=5$.`, suggerimenti: [R`Quello che sta dentro le sbarre vale $5$ oppure $-5$.`, R`Risolvi $x-3=5$ e $x-3=-5$.`], risposta: sol(8, -2), soluzione: [R`$x-3=5$, quindi $x=8$.`, R`$x-3=-5$, quindi $x=-2$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Risolvi $|x+1|=-2$. Se non ci sono soluzioni, scrivi *nessuna*.`, suggerimenti: [R`Un valore assoluto può essere negativo?`], risposta: NESSUNA, soluzione: [R`Un valore assoluto non è mai negativo.`, R`Quindi non può valere $-2$: nessuna soluzione.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Risolvi $|x|<3$. Scrivi la soluzione come nell'esempio della casella.`, suggerimenti: [R`Quali numeri distano da zero meno di $3$?`], risposta: interni(-3, 3), soluzione: [R`$|x|<3$ vuol dire che $x$ dista da zero meno di $3$.`, R`Sono i numeri fra $-3$ e $3$: $-3<x<3$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Risolvi $\sqrt{x}=3$.`, suggerimenti: [R`Eleva al quadrato i due membri.`], risposta: sol(9), soluzione: [R`Elevo al quadrato: $x=9$.`, R`Verifica: $\sqrt{9}=3$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Risolvi $|2x-1|=5$.`, suggerimenti: [R`Risolvi $2x-1=5$ e $2x-1=-5$.`], risposta: sol(3, -2), soluzione: [R`$2x-1=5$, quindi $2x=6$ e $x=3$.`, R`$2x-1=-5$, quindi $2x=-4$ e $x=-2$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Risolvi $|x-2|=0$. Se non ci sono soluzioni, scrivi *nessuna*.`, suggerimenti: [R`Un valore assoluto vale zero solo se vale zero quello che sta dentro.`], risposta: sol(2), soluzione: [R`$|x-2|=0$ solo se $x-2=0$.`, R`Quindi $x=2$: una soluzione sola.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Risolvi $|x|>2$.`, suggerimenti: [R`Quali numeri distano da zero più di $2$? Pensa anche ai negativi.`], risposta: esterni(-2, 2), soluzione: [R`$|x|>2$ vuol dire che $x$ dista da zero più di $2$.`, R`Sono i numeri fuori dal tratto fra $-2$ e $2$: $x<-2\ \lor\ x>2$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Risolvi $|x-3|<2$.`, suggerimenti: [R`Scrivi $-2<x-3<2$.`, R`Somma $3$ a tutti e tre i membri.`], risposta: interni(1, 5), soluzione: [R`$|x-3|<2$ diventa $-2<x-3<2$.`, R`Sommo $3$ a tutti e tre i membri: $1<x<5$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Risolvi $\sqrt{x+3}=5$.`, suggerimenti: [R`Eleva al quadrato i due membri.`], risposta: sol(22), soluzione: [R`Elevo al quadrato: $x+3=25$.`, R`Quindi $x=22$.`, R`Verifica: $\sqrt{25}=5$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 2, testo: R`Risolvi $|2x+1|<3$.`, suggerimenti: [R`Scrivi $-3<2x+1<3$.`, R`Togli $1$ a tutti e tre i membri, poi dividi per $2$.`], risposta: interni(-2, 1), soluzione: [R`$|2x+1|<3$ diventa $-3<2x+1<3$.`, R`Tolgo $1$: $-4<2x<2$.`, R`Divido per $2$: $-2<x<1$.`] },
+    { id: 'b-12', livello: 'base', difficolta: 2, testo: R`Risolvi $|x+1|\ge 4$. Per $\ge$ usa il tasto ≥ oppure scrivi *>=*.`, suggerimenti: [R`Con il «maggiore» le parti sono due: $x+1\le -4$ oppure $x+1\ge 4$.`], risposta: esterni(-5, 3, true), soluzione: [R`$x+1\le -4$, quindi $x\le -5$.`, R`$x+1\ge 4$, quindi $x\ge 3$.`, R`Unisco: $x\le -5\ \lor\ x\ge 3$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Risolvi $\sqrt{2x+1}=3$.`, suggerimenti: [R`Eleva al quadrato i due membri.`], risposta: sol(4), soluzione: [R`Elevo al quadrato: $2x+1=9$.`, R`$2x=8$, quindi $x=4$.`, R`Verifica: $\sqrt{9}=3$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Risolvi $|3x-6|\le 9$.`, suggerimenti: [R`Scrivi $-9\le 3x-6\le 9$.`, R`Somma $6$ a tutti e tre i membri, poi dividi per $3$.`], risposta: interni(-1, 5, true), soluzione: [R`$|3x-6|\le 9$ diventa $-9\le 3x-6\le 9$.`, R`Sommo $6$: $-3\le 3x\le 15$.`, R`Divido per $3$: $-1\le x\le 5$.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Risolvi $\sqrt{x-1}=-2$. Se non ci sono soluzioni, scrivi *nessuna*.`, suggerimenti: [R`Una radice quadrata può essere negativa?`], risposta: NESSUNA, soluzione: [R`Una radice quadrata non è mai negativa.`, R`Quindi non può valere $-2$: nessuna soluzione.`, R`Elevando al quadrato troveresti $x=5$, ma $\sqrt{4}=2$, non $-2$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Risolvi $\sqrt{x+2}=x$. Controlla ogni soluzione che trovi.`, suggerimenti: [R`Serve $x\ge 0$, perché una radice non è mai negativa. Poi eleva al quadrato.`, R`Ottieni $x^2-x-2=0$.`], risposta: sol(2), soluzione: [R`Condizione: $x\ge 0$. Elevo al quadrato: $x+2=x^2$.`, R`$x^2-x-2=0$, cioè $(x-2)(x+1)=0$: $x=2$ oppure $x=-1$.`, R`$x=-1$ non rispetta $x\ge 0$: si scarta. Resta $x=2$, e infatti $\sqrt{4}=2$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Risolvi $\sqrt{x+7}=x+1$. Se non ci sono soluzioni, scrivi *nessuna*.`, suggerimenti: [R`Serve $x+1\ge 0$. Poi eleva al quadrato.`, R`Ottieni $x^2+x-6=0$.`], risposta: sol(2), soluzione: [R`Condizione: $x+1\ge 0$, cioè $x\ge -1$. Elevo al quadrato: $x+7=x^2+2x+1$.`, R`$x^2+x-6=0$, cioè $(x+3)(x-2)=0$: $x=-3$ oppure $x=2$.`, R`$x=-3$ non rispetta $x\ge -1$: si scarta. Resta $x=2$: $\sqrt{9}=3$ e $2+1=3$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Risolvi $\sqrt{x}=x-2$.`, suggerimenti: [R`Serve $x-2\ge 0$. Poi eleva al quadrato.`, R`Ottieni $x^2-5x+4=0$.`], risposta: sol(4), soluzione: [R`Condizione: $x-2\ge 0$, cioè $x\ge 2$. Elevo al quadrato: $x=x^2-4x+4$.`, R`$x^2-5x+4=0$, cioè $(x-1)(x-4)=0$: $x=1$ oppure $x=4$.`, R`$x=1$ non rispetta $x\ge 2$: si scarta. Resta $x=4$: $\sqrt{4}=2$ e $4-2=2$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Risolvi $\sqrt{x+5}=x-1$.`, suggerimenti: [R`Serve $x-1\ge 0$. Poi eleva al quadrato.`, R`Ottieni $x^2-3x-4=0$.`], risposta: sol(4), soluzione: [R`Condizione: $x-1\ge 0$, cioè $x\ge 1$. Elevo al quadrato: $x+5=x^2-2x+1$.`, R`$x^2-3x-4=0$, cioè $(x-4)(x+1)=0$: $x=4$ oppure $x=-1$.`, R`$x=-1$ non rispetta $x\ge 1$: si scarta. Resta $x=4$: $\sqrt{9}=3$ e $4-1=3$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Risolvi $\sqrt{5-x}=x+1$.`, suggerimenti: [R`Serve $x+1\ge 0$. Poi eleva al quadrato.`, R`Ottieni $x^2+3x-4=0$.`], risposta: sol(1), soluzione: [R`Condizione: $x+1\ge 0$, cioè $x\ge -1$. Elevo al quadrato: $5-x=x^2+2x+1$.`, R`$x^2+3x-4=0$, cioè $(x+4)(x-1)=0$: $x=-4$ oppure $x=1$.`, R`$x=-4$ non rispetta $x\ge -1$: si scarta. Resta $x=1$: $\sqrt{4}=2$ e $1+1=2$.`] },
     { id: 'es-01', difficolta: 1, testo: R`Risolvi $|x + 3| = 5$.`, suggerimenti: [R`È un'equazione $|A|=k$ con $k$ costante positivo.`, R`Separa i due casi: $x+3=5$ e $x+3=-5$.`], risposta: { tipo: 'numeri', valori: [2, -8] }, soluzione: [R`$|x+3|=5$ con $k=5>0$: si separano i due casi.`, R`$x+3=5 \Rightarrow x=2$.`, R`$x+3=-5 \Rightarrow x=-8$.`] },
     { id: 'es-02', difficolta: 1, testo: R`Risolvi $|2x - 6| < 4$.`, suggerimenti: [R`È la forma rapida $|A|<k$: trasformala in una doppia disuguaglianza.`, R`Scrivi $-4<2x-6<4$ e risolvi dividendo per $2$.`], risposta: { tipo: 'intervallo', da: 1, a: 5, chiusoDa: false, chiusoA: false }, soluzione: [R`Forma rapida: $-4<2x-6<4$.`, R`Sommo $6$: $2<2x<10$.`, R`Divido per $2$: $1<x<5$.`] },
-    { id: 'es-03', difficolta: 1, testo: R`Risolvi $|x + 2| > 6$.`, suggerimenti: [R`È la forma rapida $|A|>k$: porta a un'unione di due condizioni.`, R`Risolvi separatamente $x+2>6$ e $x+2<-6$, poi unisci i risultati.`], risposta: { tipo: 'testo', accettate: ['x<-8 o x>4', 'x<-8 ∨ x>4', 'x>4 o x<-8', ']-inf;-8[u]4;+inf[', '(-inf,-8)∪(4,+inf)', 'x<-8 v x>4'] }, soluzione: [R`Forma rapida: $x+2>6$ oppure $x+2<-6$.`, R`Dalla prima: $x>4$.`, R`Dalla seconda: $x<-8$.`, R`Soluzione: $x<-8$ oppure $x>4$.`] },
+    { id: 'es-03', difficolta: 1, testo: R`Risolvi $|x + 2| > 6$.`, suggerimenti: [R`È la forma rapida $|A|>k$: porta a un'unione di due condizioni.`, R`Risolvi separatamente $x+2>6$ e $x+2<-6$, poi unisci i risultati.`], risposta: esterni(-8, 4), soluzione: [R`Forma rapida: $x+2>6$ oppure $x+2<-6$.`, R`Dalla prima: $x>4$.`, R`Dalla seconda: $x<-8$.`, R`Soluzione: $x<-8$ oppure $x>4$.`] },
     { id: 'es-04', difficolta: 2, testo: R`Risolvi $|3x + 2| = x + 6$.`, suggerimenti: [R`È il caso $|A|=B$: risolvi $3x+2=x+6$ e $3x+2=-(x+6)$.`, R`Alla fine controlla che $B(x)=x+6$ sia $\ge 0$ in entrambe le soluzioni trovate.`], risposta: { tipo: 'numeri', valori: [2, -2] }, soluzione: [R`$3x+2=x+6 \Rightarrow 2x=4 \Rightarrow x=2$.`, R`$3x+2=-(x+6) \Rightarrow 4x=-8 \Rightarrow x=-2$.`, R`Verifica $B(x)=x+6\ge 0$: in $x=2$, $B=8$; in $x=-2$, $B=4$. Entrambe accettabili.`] },
     { id: 'es-05', difficolta: 2, testo: R`Risolvi $|x + 1| = |x - 5|$.`, suggerimenti: [R`È il caso $|A|=|B|$: non serve nessuna condizione, ma attento se un caso non porta a nulla.`, R`Un caso porta a un'uguaglianza sempre falsa: scartalo e tieni solo l'altro.`], risposta: { tipo: 'numero', valore: 2, tolleranza: 0.001 }, soluzione: [R`$x+1=x-5 \Rightarrow 1=-5$: falso, nessuna soluzione da questo caso.`, R`$x+1=-(x-5) \Rightarrow x+1=-x+5 \Rightarrow 2x=4 \Rightarrow x=2$.`, R`Verifica: $|2+1|=3$ e $|2-5|=3$. ✓`] },
-    { id: 'es-06', difficolta: 2, testo: R`Risolvi $|x + 6| = x$. Se non ha soluzioni, scrivi "impossibile".`, suggerimenti: [R`È il caso $|A|=B$ con $B(x)=x$: trova prima le soluzioni algebriche.`, R`Controlla il segno di $B(x)=x$ in ogni candidato: forse nessuno lo rispetta.`], risposta: { tipo: 'testo', accettate: ['impossibile', 'nessuna soluzione', 'nessuna', 'non ha soluzioni', 'insieme vuoto', 'vuoto', '∅'] }, soluzione: [R`$x+6=x \Rightarrow 6=0$: falso, nessuna soluzione da questo caso.`, R`$x+6=-x \Rightarrow 2x=-6 \Rightarrow x=-3$.`, R`Verifico il segno di $B(x)=x$: in $x=-3$, $B=-3<0$, va scartata.`, R`Nessuna delle due strade dà una soluzione accettabile: l'equazione è impossibile.`] },
+    { id: 'es-06', difficolta: 2, testo: R`Risolvi $|x + 6| = x$. Se non ha soluzioni, scrivi "impossibile".`, suggerimenti: [R`È il caso $|A|=B$ con $B(x)=x$: trova prima le soluzioni algebriche.`, R`Controlla il segno di $B(x)=x$ in ogni candidato: forse nessuno lo rispetta.`], risposta: NESSUNA, soluzione: [R`$x+6=x \Rightarrow 6=0$: falso, nessuna soluzione da questo caso.`, R`$x+6=-x \Rightarrow 2x=-6 \Rightarrow x=-3$.`, R`Verifico il segno di $B(x)=x$: in $x=-3$, $B=-3<0$, va scartata.`, R`Nessuna delle due strade dà una soluzione accettabile: l'equazione è impossibile.`] },
     { id: 'es-07', difficolta: 2, testo: R`Risolvi $\sqrt{2x + 3} = x$.`, suggerimenti: [R`Sistema: $x\ge 0$ e $2x+3=x^2$.`, R`Risolvi l'equazione di secondo grado e scarta la soluzione che non rispetta $x\ge 0$.`], risposta: { tipo: 'numero', valore: 3, tolleranza: 0.001 }, soluzione: [R`Sistema: $x\ge 0$ e $2x+3=x^2$.`, R`$x^2-2x-3=0 \Rightarrow (x-3)(x+1)=0 \Rightarrow x=3$ oppure $x=-1$.`, R`Solo $x=3$ rispetta $x\ge 0$. Verifica: $\sqrt{9}=3$. ✓`] },
     { id: 'es-08', difficolta: 1, testo: R`Risolvi $\sqrt[3]{2x - 1} = 3$.`, suggerimenti: [R`L'indice è dispari: nessuna condizione da imporre.`, R`Eleva al cubo entrambi i membri: $2x-1=27$.`], risposta: { tipo: 'numero', valore: 14, tolleranza: 0.001 }, soluzione: [R`Indice dispari: nessuna condizione. Elevo al cubo: $2x-1=27$.`, R`$2x=28 \Rightarrow x=14$.`] },
     { id: 'es-09', difficolta: 3, testo: R`Risolvi $\sqrt{x + 1} + \sqrt{x + 6} = 5$.`, suggerimenti: [R`Isola una delle due radici prima di elevare al quadrato.`, R`Dopo il primo elevamento a potenza resterà ancora una radice: isolala ed eleva di nuovo.`, R`Alla fine verifica la soluzione trovata per sostituzione diretta nell'equazione di partenza.`], risposta: { tipo: 'numero', valore: 3, tolleranza: 0.001 }, soluzione: [R`C.e.: $x\ge -1$ (che comprende anche $x+6\ge0$).`, R`Isolo: $\sqrt{x+1}=5-\sqrt{x+6}$. Elevo al quadrato: $x+1=25-10\sqrt{x+6}+x+6$.`, R`Semplifico: $1-31=-10\sqrt{x+6} \Rightarrow \sqrt{x+6}=3$.`, R`Elevo di nuovo: $x+6=9 \Rightarrow x=3$. Verifica: $\sqrt{4}+\sqrt{9}=2+3=5$. ✓`] },

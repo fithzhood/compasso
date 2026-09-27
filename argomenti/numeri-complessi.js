@@ -1,47 +1,61 @@
 (function () {
 const R = String.raw;
+/* allenamento: il numero a + bi scritto in tutti i modi ragionevoli (3+2i, 2i+3, 3+i2, 3+2*i, 3 - i, -i+3…).
+   La casella toglie gli spazi e legge − come -, quindi «3 + 2i» e «3+2i» sono la stessa risposta. */
+function cx(a, b) {
+  const acc = [];
+  const B = Math.abs(b);
+  const im = B === 1 ? ['i', '1i', '1*i'] : [B + 'i', B + '*i', 'i' + B, 'i*' + B];
+  const s = b < 0 ? '-' : '+';
+  if (b === 0) { acc.push(String(a), a + '+0i', a + '-0i'); }
+  else if (a === 0) { im.forEach(t => { acc.push((b < 0 ? '-' : '') + t, (b < 0 ? '-' : '+') + t, '0' + s + t, (b < 0 ? '-' : '') + t + '+0'); }); }
+  else { im.forEach(t => { acc.push(a + s + t, (b < 0 ? '-' : '') + t + (a < 0 ? '-' : '+') + Math.abs(a)); }); }
+  acc.slice().forEach(t => acc.push('(' + t + ')'));
+  return { tipo: 'testo', accettate: Array.from(new Set(acc)), segnaposto: 'es. 3 + 2i', simboli: ['i', '+', '−', '(', ')'] };
+}
+/* due numeri in ordine (parte reale; parte immaginaria, oppure modulo; argomento in gradi) */
+const due = (x, y, ph) => ({ tipo: 'numeri', valori: [x, y], ordinati: true, segnaposto: ph || 'es. 2; -1' });
+const num = v => ({ tipo: 'numero', valore: v, tolleranza: 0.005, segnaposto: 'es. 5 o √2' });
 COMPASSO.registra({
   id: 'numeri-complessi',
   titolo: 'Numeri complessi',
 
-  introduzione: R`Quale numero, elevato al quadrato, dà $-1$? Fra i numeri reali nessuno: un quadrato non è mai negativo. Eppure nel Cinquecento i matematici si accorsero che, per risolvere certe equazioni di terzo grado con soluzioni del tutto normali, la formula li costringeva a passare per $\sqrt{-1}$. Invece di fermarsi, provarono a usarla come un numero nuovo, e i conti tornavano.
+  introduzione: R`Quale numero, elevato al quadrato, dà $-1$? Fra i numeri reali nessuno, perché un quadrato non è mai negativo.
 
-Quel numero nuovo si chiama $i$, e con lui si costruiscono i **numeri complessi**, scritti come $a + bi$ con $a$ e $b$ reali. L'insieme si indica con $\mathbb{C}$ e contiene i numeri reali (quelli con $b = 0$). In $\mathbb{C}$ ogni equazione di secondo grado ha soluzioni, anche con $\Delta < 0$. E i numeri complessi si possono disegnare come punti di un piano: moltiplicarli vuol dire far girare quei punti. Per questo servono in fisica per le onde e le correnti alternate, e in grafica per le rotazioni.
+Nel Cinquecento però i matematici trovarono $\sqrt{-1}$ dentro certi calcoli. Provarono a usarla come un numero nuovo, e i conti tornavano.
 
-Servono le equazioni di secondo grado (discriminante e formula risolutiva) e seno e coseno, perché la forma più utile dei numeri complessi, quella trigonometrica, è scritta con loro.`,
+Quel numero nuovo si chiama $i$. Con lui si costruiscono i **numeri complessi**, come $3 + 2i$. Con i numeri complessi ogni equazione di secondo grado ha soluzioni, anche con $\Delta < 0$. Si disegnano come punti di un piano, e moltiplicarli vuol dire farli girare. Per questo servono in fisica, per le onde e le correnti elettriche.
+
+Ti servono le equazioni di secondo grado. Per la forma trigonometrica ti servono anche seno e coseno.`,
 
   inBreve: [
-    R`$i$ è il numero con $i^2 = -1$. Ogni volta che in un calcolo compare $i^2$, al suo posto si scrive $-1$.`,
-    R`Un numero complesso $a + bi$ si somma, si sottrae e si moltiplica come un binomio; per dividere si moltiplicano sopra e sotto per il **coniugato** del denominatore, $c - di$.`,
-    R`Nel piano di Gauss $a + bi$ è il punto $(a; b)$. Il **modulo** $\lvert z \rvert = \sqrt{a^2 + b^2}$ è la sua distanza dall'origine, l'**argomento** $\theta$ è l'angolo con l'asse reale positivo.`,
-    R`In forma trigonometrica $z = \rho(\cos\theta + i\sin\theta)$: nel prodotto i moduli si moltiplicano e gli argomenti si **sommano**. Moltiplicare vuol dire girare e allungare.`,
-    R`Le radici $n$-esime di un numero complesso sono sempre $n$: stanno sui vertici di un poligono regolare con centro nell'origine.`
+    R`$i$ è il numero con $i^2 = -1$. Quando in un calcolo compare $i^2$, al suo posto scrivi $-1$.`,
+    R`Somma, differenza e prodotto si fanno come con i binomi. Per dividere, moltiplica sopra e sotto per il **coniugato** del denominatore.`,
+    R`Nel piano di Gauss $a + bi$ è il punto $(a; b)$. Il **modulo** $\sqrt{a^2 + b^2}$ è la sua distanza dall'origine.`,
+    R`In forma trigonometrica, nel prodotto i moduli si moltiplicano e gli argomenti si **sommano**.`,
+    R`Le radici $n$-esime di un numero complesso sono sempre $n$.`
   ],
 
   sezioni: [
-    { id: 'perche-servono', titolo: 'Perché servono i numeri complessi', testo: R`L'equazione $x^2 + 1 = 0$, cioè $x^2 = -1$, non ha soluzioni reali, perché il quadrato di un numero reale non è mai negativo. Per le equazioni di secondo grado con $\Delta < 0$ si dice lo stesso: nessuna soluzione reale.
+    { id: 'perche-servono', titolo: 'Perché servono i numeri complessi', testo: R`L'equazione $x^2 = -1$ non ha soluzioni reali, perché il quadrato di un numero reale non è mai negativo. Lo stesso succede alle equazioni di secondo grado con $\Delta < 0$.
 
-Finché si trattava di equazioni di secondo grado, ci si poteva fermare lì. Il problema vero arrivò nel Cinquecento con le equazioni di terzo grado. La formula di del Ferro, Tartaglia e Cardano per risolvere $x^3 = px + q$, in certi casi, chiede di calcolare la radice quadrata di un numero negativo **anche quando l'equazione ha tre soluzioni reali**.
+Il problema vero arrivò nel Cinquecento con le equazioni di terzo grado. L'equazione $x^3 = 15x + 4$ ha la soluzione $x = 4$, eppure la formula risolutiva passa per $\sqrt{-121}$. Questi sono i **casi irriducibili**: il risultato è reale, ma per arrivarci serve una radice «impossibile».
 
-Per esempio $x^3 = 15x + 4$ ha la soluzione $x = 4$ (basta sostituire: $64 = 60 + 4$), ma la formula, a metà strada, porta a $\sqrt{-121}$. Sono i **casi irriducibili**: il risultato è un normalissimo numero reale, ma per arrivarci si passa per una radice "impossibile".
-
-Rafael Bombelli, nel 1572, decise di non buttare via quella radice e scrisse le regole per farci i conti. Con quelle regole la formula dava $x = 4$, il risultato giusto.
-
->* I numeri complessi nascono aggiungendo ai reali un numero nuovo, $i$, con la proprietà $i^2 = -1$. Così anche $x^2 + 1 = 0$ ha soluzioni: $x = i$ e $x = -i$.
+>* I numeri complessi nascono aggiungendo ai reali un numero nuovo, $i$, con $i^2 = -1$. Così anche $x^2 + 1 = 0$ ha due soluzioni, $x = i$ e $x = -i$.
 
 ?? Quante soluzioni ha l'equazione $x^2 + 4 = 0$?
 [x] nessuna reale, due complesse: $2i$ e $-2i$
 [ ] nessuna, in nessun insieme numerico
 [ ] una sola: $x = -2$
-=> $(2i)^2 = 4i^2 = -4$ e $(-2i)^2 = -4$: tutti e due verificano $x^2 = -4$. Dire "nessuna soluzione" è corretto solo se ci si limita ai reali. E $-2$ non va bene: $(-2)^2 = 4$, non $-4$.
+=> $(2i)^2 = 4i^2 = -4$, e anche $(-2i)^2 = -4$. «Nessuna soluzione» vale solo nei reali. E $-2$ non va bene, perché $(-2)^2 = 4$.
 
->! "Impossibile" vuol dire "impossibile nei reali". Un'equazione di secondo grado con $\Delta < 0$ in $\mathbb{C}$ ha sempre due soluzioni.` },
+>! «Impossibile» vuol dire «impossibile nei reali». In $\mathbb{C}$ un'equazione di secondo grado con $\Delta < 0$ ha sempre due soluzioni.` },
 
-    { id: 'unita-immaginaria', titolo: "L'unità immaginaria e le potenze di i", testo: R`>* L'**unità immaginaria** è il numero $i$ tale che $$i^2 = -1.$$ Non è un numero reale, perché nessun numero reale ha quadrato negativo.
+    { id: 'unita-immaginaria', titolo: "L'unità immaginaria e le potenze di i", testo: R`>* L'**unità immaginaria** è il numero $i$ tale che $$i^2 = -1.$$ Non è un numero reale.
 
-Con $i$ si scrive la radice quadrata di qualsiasi numero negativo: si separa il segno meno e si porta fuori come $i$. Per esempio $\sqrt{-9} = \sqrt{9}\cdot\sqrt{-1} = 3i$, e $\sqrt{-5} = i\sqrt5$.
+Con $i$ scrivi la radice quadrata di un numero negativo: separa il segno meno e portalo fuori come $i$. Per esempio $\sqrt{-9} = \sqrt{9}\cdot\sqrt{-1} = 3i$.
 
-Che cosa succede moltiplicando $i$ per sé stesso più volte? Ogni potenza è la precedente per $i$, e ogni volta che compare $i^2$ si scrive $-1$:
+Ora moltiplica $i$ per sé stesso più volte, e ogni volta che compare $i^2$ scrivi $-1$.
 
 | potenza | calcolo | valore |
 |---|---|---|
@@ -51,7 +65,7 @@ Che cosa succede moltiplicando $i$ per sé stesso più volte? Ogni potenza è la
 | $i^4$ | $i^3 \cdot i = -i^2$ | $1$ |
 | $i^5$ | $i^4 \cdot i = 1 \cdot i$ | $i$ |
 
-Con $i^4 = 1$ si torna al punto di partenza, e da lì i quattro valori $i, -1, -i, 1$ si ripetono sempre nello stesso ordine: le potenze di $i$ hanno **periodo 4**. Per calcolare $i^n$ con $n$ grande conta solo il resto della divisione di $n$ per $4$.
+Con $i^4 = 1$ si torna all'inizio, e i valori $i, -1, -i, 1$ si ripetono sempre in quest'ordine. Le potenze di $i$ hanno **periodo 4**. Quindi per calcolare $i^n$ basta il resto di $n$ diviso $4$.
 
 ~ i^{102} :: esponente grande: tolgo i giri completi da $4$
 ~ i^{\evid{4\cdot 25 + 2}} :: $102$ diviso $4$ fa $25$ con resto $2$
@@ -64,45 +78,40 @@ Con $i^4 = 1$ si torna al punto di partenza, e da lì i quattro valori $i, -1, -
 [ ] $-1$
 [ ] $-i$
 [ ] $1$
-=> $37 = 4\cdot 9 + 1$: il resto è $1$, quindi $i^{37} = i^1 = i$. Il quoziente $9$ conta solo i giri completi, che valgono $1$: non va usato come esponente.
+=> $37 = 4\cdot 9 + 1$: il resto è $1$, quindi $i^{37} = i^1 = i$. Il $9$ conta solo i giri completi, che valgono $1$.
 
->! $i^2$ non va lasciato com'è: vale $-1$, un numero reale negativo. Dimenticare il segno meno quando si sostituisce $i^2$ è l'errore più frequente in ogni calcolo con i numeri complessi.` },
+>! $i^2$ va sempre sostituito con $-1$: dimenticare il segno meno è l'errore più frequente.` },
 
-    { id: 'forma-algebrica', titolo: 'La forma algebrica', testo: R`Mettendo insieme un numero reale e un multiplo di $i$ si ottiene un numero complesso.
+    { id: 'forma-algebrica', titolo: 'La forma algebrica', testo: R`Un numero complesso mette insieme un numero reale e un multiplo di $i$, come $3 + 2i$.
 
->* Un numero complesso in **forma algebrica** si scrive $$z = a + bi, \qquad a, b \in \mathbb{R}.$$ $a$ è la **parte reale**, $\text{Re}(z) = a$; $b$ è la **parte immaginaria**, $\text{Im}(z) = b$. L'insieme dei numeri complessi si indica con $\mathbb{C}$.
+>* Un numero complesso in **forma algebrica** si scrive $$z = a + bi, \qquad a, b \in \mathbb{R}.$$ $a$ è la **parte reale** e $b$ è la **parte immaginaria**. L'insieme dei numeri complessi si chiama $\mathbb{C}$.
 
-Due casi particolari hanno un nome:
-
-- se $b = 0$, $z = a$ è un numero **reale**: i reali sono complessi con parte immaginaria nulla, quindi $\mathbb{R} \subset \mathbb{C}$;
-- se $a = 0$ e $b \ne 0$, $z = bi$ si dice **immaginario puro**.
+Se $b = 0$, $z = a$ è un numero **reale**, quindi i reali stanno dentro i complessi. Se $a = 0$ e $b \ne 0$, $z = bi$ si chiama **immaginario puro**.
 
 ?? Qual è la parte immaginaria di $z = 4 - 7i$?
 [x] $-7$
 [ ] $-7i$
 [ ] $7$
 [ ] $4$
-=> La parte immaginaria è il **numero reale** che moltiplica $i$, con il suo segno: $-7$. Scrivere $-7i$ è l'errore più frequente, perché $\text{Im}(z)$ è un numero reale e la $i$ non ne fa parte.
+=> La parte immaginaria è il numero che moltiplica $i$, con il suo segno. È un numero reale e la $i$ non ne fa parte, quindi $-7i$ è sbagliato.
 
-Due numeri complessi sono **uguali** solo se hanno la stessa parte reale **e** la stessa parte immaginaria: $a+bi = c+di$ vuol dire $a=c$ e $b=d$. Così un'uguaglianza fra numeri complessi si spezza in due equazioni fra numeri reali.
+Due numeri complessi sono **uguali** quando hanno la stessa parte reale e la stessa parte immaginaria. Così un'uguaglianza fra complessi diventa due equazioni fra reali.
 
 ~ (x+2) + (y-3)i = 5 - i :: cerco $x$ e $y$ reali
 ~ \evid{x+2 = 5} \quad\text{e}\quad \evidb{y-3 = -1} :: parte reale con parte reale, parte immaginaria con parte immaginaria
 ~ x = 3 \quad\text{e}\quad y = 2 :: due equazioni di primo grado
 
-> $3+2i$, $2i+3$ e $3+i\cdot2$ sono lo stesso numero: l'ordine degli addendi non conta. La scrittura $a+bi$, con la parte reale davanti, si usa perché si confronta a colpo d'occhio.` },
+> $3+2i$ e $2i+3$ sono lo stesso numero, perché l'ordine degli addendi non conta.` },
 
-    { id: 'piano-di-gauss', titolo: 'Il piano di Gauss: modulo e argomento', testo: R`I numeri reali si disegnano su una retta. Un numero complesso ha due parti, $a$ e $b$, e per disegnarlo serve un piano.
+    { id: 'piano-di-gauss', titolo: 'Il piano di Gauss: modulo e argomento', testo: R`Un numero complesso ha due parti, $a$ e $b$, quindi per disegnarlo serve un piano.
 
->* Nel **piano di Gauss** il numero $z = a + bi$ è il punto di coordinate $(a; b)$. Sull'asse orizzontale, l'**asse reale**, stanno i numeri reali; sull'asse verticale, l'**asse immaginario**, gli immaginari puri.
+>* Nel **piano di Gauss** il numero $z = a + bi$ è il punto $(a; b)$. L'asse orizzontale è l'**asse reale**, quello verticale è l'**asse immaginario**.
 
-Per esempio $3 + 2i$ è il punto $(3; 2)$, il numero reale $-2$ è il punto $(-2; 0)$ e l'immaginario puro $3i$ è il punto $(0; 3)$.
+Per esempio $3 + 2i$ è il punto $(3; 2)$ e il numero reale $-2$ è il punto $(-2; 0)$.
 
-Un punto del piano si può anche individuare dicendo **quanto è lontano** dall'origine e **in che direzione**. Per i numeri complessi queste due informazioni hanno un nome.
+>* Il **modulo** $\lvert z \rvert$ è la distanza di $z$ dall'origine. Con il teorema di Pitagora: $$\lvert z \rvert = \sqrt{a^2 + b^2}.$$ L'**argomento** $\theta$ è l'angolo fra il semiasse reale positivo e il segmento $Oz$, misurato in senso antiorario.
 
->* Il **modulo** $\lvert z \rvert$ è la distanza di $z$ dall'origine. Per il teorema di Pitagora, $$\lvert z \rvert = \sqrt{a^2 + b^2}.$$ L'**argomento** $\theta$ è l'angolo fra il semiasse reale positivo e la semiretta che va dall'origine a $z$, misurato in senso antiorario.
-
-Trascina il punto $z$. Guarda il triangolo rettangolo con i cateti lunghi $\lvert a \rvert$ e $\lvert b \rvert$: il modulo è la sua ipotenusa. Poi porta $z$ sotto l'asse reale e guarda che cosa fa l'argomento.
+Trascina il punto $z$ e guarda il triangolo rettangolo: il modulo è la sua ipotenusa. Poi porta $z$ sotto l'asse reale e guarda che cosa fa l'argomento.
 
 [[grafico:gauss]]
 
@@ -115,62 +124,58 @@ Trascina il punto $z$. Guarda il triangolo rettangolo con i cateti lunghi $\lver
 [ ] $-6$
 [ ] $6i$
 [ ] $36$
-=> $-6i$ è il punto $(0; -6)$, che dista $6$ dall'origine: $\sqrt{0^2 + (-6)^2} = 6$. Il modulo è una distanza, quindi è un numero reale e mai negativo: $-6$ e $6i$ non possono esserlo. $36$ è il quadrato del modulo, a cui manca la radice.
+=> $-6i$ è il punto $(0; -6)$, che dista $6$ dall'origine. Il modulo è una distanza, quindi non è mai negativo e non contiene $i$. $36$ è il quadrato del modulo.
 
->! $\lvert a + bi \rvert$ **non** è $a + b$: per $3 - 4i$ darebbe $-1$, un numero negativo, mentre la distanza è $5$. I quadrati sotto radice non si saltano.` },
+>! $\lvert a + bi \rvert$ **non** è $a + b$: per $3 - 4i$ darebbe $-1$, ma la distanza è $5$.` },
 
-    { id: 'coniugato-modulo', titolo: 'Il coniugato', testo: R`Dato $z = a + bi$, il numero che ha la stessa parte reale e la parte immaginaria cambiata di segno si chiama **coniugato** di $z$.
+    { id: 'coniugato-modulo', titolo: 'Il coniugato', testo: R`Il **coniugato** di un numero complesso ha la stessa parte reale e la parte immaginaria con il segno cambiato.
 
->* Il **coniugato** di $z = a + bi$ è $$\overline{z} = a - bi.$$ Nel piano di Gauss è il simmetrico di $z$ rispetto all'asse reale: stessa $a$, $b$ con il segno cambiato. Per questo ha lo stesso modulo: $\lvert \overline z \rvert = \lvert z \rvert$.
+>* Il **coniugato** di $z = a + bi$ è $$\overline{z} = a - bi.$$ Nel piano di Gauss è il simmetrico di $z$ rispetto all'asse reale, quindi ha lo stesso modulo di $z$.
 
-Per esempio il coniugato di $3 - 4i$ è $3 + 4i$, e il coniugato del numero reale $5$ è $5$ stesso.
+Per esempio il coniugato di $3 - 4i$ è $3 + 4i$, e il coniugato di $5$ è ancora $5$.
 
-Il coniugato serve soprattutto per una proprietà: moltiplicando un numero per il suo coniugato, la $i$ sparisce.
+Il coniugato serve soprattutto perché, se moltiplichi un numero per il suo coniugato, la $i$ sparisce.
 
 ~ z \cdot \overline{z} = (a + bi)(a - bi) :: somma per differenza
 ~ a^2 - \evid{(bi)^2} :: prodotto notevole: quadrato del primo meno quadrato del secondo
 ~ a^2 - b^2\evid{i^2} :: $(bi)^2 = b^2 i^2$
 ~ a^2 - b^2\cdot\evid{(-1)} = \evidb{a^2 + b^2} :: $i^2 = -1$: il risultato è reale, ed è il quadrato del modulo
 
->* $z \cdot \overline z = a^2 + b^2 = \lvert z \rvert^2$: il prodotto di un numero complesso per il suo coniugato è sempre un numero reale, positivo o nullo. È il trucco che permette di dividere.
-
-Controllo con $z = 3 - 4i$: $(3 - 4i)(3 + 4i) = 9 + 16 = 25 = 5^2$.
+>* $z \cdot \overline z = a^2 + b^2 = \lvert z \rvert^2$, un numero reale positivo o zero. Con questo trucco si divide.
 
 ?? Qual è il coniugato di $-2 + 5i$?
 [x] $-2 - 5i$
 [ ] $2 - 5i$
 [ ] $2 + 5i$
-=> Si cambia segno **solo** alla parte immaginaria: $-2 - 5i$. La risposta $2 - 5i$ cambia segno a tutte e due le parti: quello è $-z$, l'opposto, che nel piano è il simmetrico rispetto all'origine e non rispetto all'asse reale.
+=> Cambia segno **solo** la parte immaginaria: $-2 - 5i$. La risposta $2 - 5i$ cambia segno a tutte e due le parti, e dà $-z$, il simmetrico rispetto all'origine.
 
->! $\overline z = a - bi$, non $-a - bi$: la parte reale resta com'è. $-a - bi$ è $-z$, un numero diverso.` },
+>! Nel coniugato la parte reale resta com'è. $-a - bi$ è $-z$, un altro numero.` },
 
-    { id: 'operazioni', titolo: 'Le operazioni fra numeri complessi', testo: R`Con i numeri complessi si fanno i conti come con i binomi, trattando $i$ come una lettera. L'unica regola in più è che $i^2$ si sostituisce con $-1$.
+    { id: 'operazioni', titolo: 'Le operazioni fra numeri complessi', testo: R`Con i numeri complessi fai i conti come con i binomi, e tratti $i$ come una lettera. L'unica regola in più è che $i^2$ diventa $-1$.
 
 ### Somma e differenza
 
-Si sommano (o si sottraggono) le parti reali fra loro e le parti immaginarie fra loro, come i termini simili di un polinomio: $$(a+bi) \pm (c+di) = (a\pm c) + (b\pm d)i.$$ Esempio: $(2+3i) + (-5+i) = (2-5)+(3+1)i = -3+4i$.
+Somma le parti reali fra loro e le parti immaginarie fra loro: $$(a+bi) \pm (c+di) = (a\pm c) + (b\pm d)i.$$ Per esempio $(2+3i) + (-5+i) = (2-5)+(3+1)i = -3+4i$.
 
 ### Prodotto
 
-Si moltiplica ogni termine del primo per ogni termine del secondo, come per due binomi, e alla fine si sostituisce $i^2 = -1$.
+Moltiplica ogni termine del primo per ogni termine del secondo, e alla fine sostituisci $i^2 = -1$.
 
 ~ (1+2i)(3-i) :: due binomi
 ~ 3 - i + 6i \evid{- 2i^2} :: proprietà distributiva: quattro prodotti
 ~ 3 - i + 6i \evid{+ 2} :: $-2i^2 = -2\cdot(-1) = +2$
 ~ \evidb{5 + 5i} :: sommo le parti reali ($3 + 2$) e le immaginarie ($-i + 6i$)
 
-In generale $(a+bi)(c+di) = (ac-bd) + (ad+bc)i$: il $-bd$ viene proprio da $bd\,i^2$.
-
 ?? Quanto fa $(2 + i)(2 - i)$?
 [x] $5$
 [ ] $3$
 [ ] $4 - i^2$, che non si può semplificare
 [ ] $5 - 4i$
-=> È una somma per differenza: $4 - i^2 = 4 - (-1) = 5$, un numero reale. Chi risponde $3$ ha scritto $i^2 = 1$; $4 - i^2$ è giusto a metà, perché $i^2$ va sempre sostituito con $-1$.
+=> È una somma per differenza: $4 - i^2 = 4 - (-1) = 5$. Chi risponde $3$ ha usato $i^2 = 1$, e $4 - i^2$ non è finito perché $i^2$ va sostituito.
 
 ### Quoziente
 
-Per dividere, il trucco è far sparire la $i$ dal denominatore. Come nella razionalizzazione, si moltiplicano numeratore e denominatore per lo stesso numero: il **coniugato del denominatore**. Il denominatore diventa $c^2 + d^2$, un numero reale.
+Per dividere devi togliere la $i$ dal denominatore. Moltiplica sopra e sotto per il **coniugato del denominatore**, che diventa $c^2 + d^2$, un numero reale.
 
 ~ \frac{3+i}{1-i} :: al denominatore c'è $1 - i$: il suo coniugato è $1 + i$
 ~ \frac{(3+i)\evid{(1+i)}}{(1-i)\evid{(1+i)}} :: moltiplico sopra e sotto per $1+i$: la frazione non cambia valore
@@ -178,21 +183,21 @@ Per dividere, il trucco è far sparire la $i$ dal denominatore. Come nella razio
 ~ \frac{2 + 4i}{\evid{2}} :: $i^2 = -1$: sopra $3 - 1 = 2$, sotto $1 + 1 = 2$
 ~ \evidb{1 + 2i} :: divido per $2$ la parte reale e quella immaginaria
 
->* Somma: parti reali con parti reali, immaginarie con immaginarie. Prodotto: distributiva e $i^2 = -1$. Quoziente: sopra e sotto per il coniugato del denominatore, $$\frac{a+bi}{c+di} = \frac{(a+bi)(c-di)}{c^2+d^2}.$$
+>* **Quoziente:** $$\frac{a+bi}{c+di} = \frac{(a+bi)(c-di)}{c^2+d^2}$$
 
->! Nel quoziente si moltiplica per il coniugato del **denominatore**, non del numeratore: con il coniugato del numeratore la $i$ resta sotto, e non si è concluso niente.` },
+>! Usa il coniugato del **denominatore**: con quello del numeratore la $i$ resta sotto.` },
 
-    { id: 'forma-trigonometrica', titolo: 'La forma trigonometrica', testo: R`Un numero complesso si può dare con le coordinate $a$ e $b$, oppure con il modulo e l'argomento: quanto è lontano dall'origine e in che direzione. Il modulo si indica anche con $\rho$ (si legge "ro"), l'argomento con $\theta$.
+    { id: 'forma-trigonometrica', titolo: 'La forma trigonometrica', testo: R`Un numero complesso si può dare con le coordinate $a$ e $b$, oppure con il modulo e l'argomento. Il modulo si chiama anche $\rho$ (si legge «ro») e l'argomento $\theta$.
 
-Come si passa da $\rho$ e $\theta$ ad $a$ e $b$? Nel triangolo rettangolo che ha per ipotenusa il segmento da $O$ a $z$, i cateti sono $a$ e $b$. Con la trigonometria: $$a = \rho\cos\theta, \qquad b = \rho\sin\theta.$$ Sostituendo in $z = a + bi$ e raccogliendo $\rho$ si ottiene la forma trigonometrica.
+Nel triangolo rettangolo di ipotenusa $\rho$ i cateti sono $a$ e $b$, quindi $$a = \rho\cos\theta, \qquad b = \rho\sin\theta.$$ Sostituisci in $z = a + bi$ e raccogli $\rho$.
 
->* **Forma trigonometrica:** $$z = \rho(\cos\theta+i\sin\theta),$$ dove $\rho = \lvert z \rvert = \sqrt{a^2+b^2}$ è il modulo e $\theta$ è l'argomento, con $\cos\theta=\dfrac{a}{\rho}$ e $\sin\theta=\dfrac{b}{\rho}$.
+>* **Forma trigonometrica:** $$z = \rho(\cos\theta+i\sin\theta),$$ con $\rho = \sqrt{a^2+b^2}$, $\cos\theta=\dfrac{a}{\rho}$ e $\sin\theta=\dfrac{b}{\rho}$.
 
-Trascina il punto $z$ lungo la circonferenza, e con il cursore cambia il modulo $\rho$. I numeri in alto sono la parte reale e la parte immaginaria: guarda quando diventano negativi.
+Trascina $z$ lungo la circonferenza e cambia $\rho$ con il cursore. Guarda quando la parte reale e quella immaginaria diventano negative.
 
 [[grafico:argomento]]
 
-Dalla forma trigonometrica a quella algebrica basta fare i conti: $2(\cos 30^\circ + i\sin 30^\circ) = 2\cdot\frac{\sqrt3}{2} + 2\cdot\frac12 i = \sqrt3 + i$. Il verso opposto chiede più attenzione, perché bisogna trovare l'angolo.
+Dalla forma trigonometrica a quella algebrica basta fare i conti: $2(\cos 30^\circ + i\sin 30^\circ) = 2\cdot\frac{\sqrt3}{2} + 2\cdot\frac12 i = \sqrt3 + i$. Il verso opposto è più delicato, perché devi trovare l'angolo.
 
 ~ z = 1 + i\sqrt3 :: $a = 1$, $b = \sqrt3$
 ~ \rho = \sqrt{1 + 3} = \evid{2} :: prima il modulo
@@ -205,25 +210,27 @@ Dalla forma trigonometrica a quella algebrica basta fare i conti: $2(\cos 30^\ci
 [ ] $45^\circ$
 [ ] $135^\circ$
 [ ] $315^\circ$
-=> $-1 - i$ è il punto $(-1; -1)$, nel terzo quadrante: $\theta = 180^\circ + 45^\circ = 225^\circ$. Chi risponde $45^\circ$ ha usato solo $\tan\theta = \frac{b}{a} = \frac{-1}{-1} = 1$, ma la tangente vale $1$ sia a $45^\circ$ sia a $225^\circ$: per scegliere bisogna guardare i segni di $a$ e $b$.
+=> $-1 - i$ è il punto $(-1; -1)$, nel terzo quadrante, quindi $\theta = 180^\circ + 45^\circ = 225^\circ$. Chi risponde $45^\circ$ ha guardato solo la tangente, che vale $1$ in tutti e due gli angoli.
 
->! Per trovare $\theta$ non basta $\tan\theta = \frac{b}{a}$: la tangente si ripete ogni $180^\circ$ e non distingue il primo quadrante dal terzo, né il secondo dal quarto. Prima di scrivere l'angolo, disegna il punto e guarda in che quadrante sta.` },
+>! La tangente da sola non basta per trovare $\theta$, perché si ripete ogni $180^\circ$. Prima disegna il punto e guarda in che quadrante sta.` },
 
-    { id: 'de-moivre', titolo: 'Prodotto, quoziente e De Moivre', testo: R`Che cosa succede, nel piano di Gauss, quando si moltiplica per $i$? Prendi $z = 2 + i$: $\;i(2 + i) = 2i + i^2 = -1 + 2i$. Il punto $(2; 1)$ è finito in $(-1; 2)$: stessa distanza dall'origine, ruotato di un quarto di giro. Moltiplicare per $i$ fa girare di $90^\circ$.
+    { id: 'de-moivre', titolo: 'Prodotto, quoziente e De Moivre', testo: R`Moltiplica $z = 2 + i$ per $i$: $\;i(2 + i) = 2i + i^2 = -1 + 2i$. Il punto $(2; 1)$ è finito in $(-1; 2)$, alla stessa distanza dall'origine ma girato di $90^\circ$.
 
-In generale, se $z_1=\rho_1(\cos\theta_1+i\sin\theta_1)$ e $z_2=\rho_2(\cos\theta_2+i\sin\theta_2)$, facendo il prodotto e usando le formule di addizione del seno e del coseno si trova:
+La forma trigonometrica spiega il perché. Moltiplica $z_1=\rho_1(\cos\theta_1+i\sin\theta_1)$ per $z_2=\rho_2(\cos\theta_2+i\sin\theta_2)$ e usa le formule di addizione:
 
 $$z_1 z_2 = \rho_1\rho_2\left[\cos(\theta_1+\theta_2) + i\sin(\theta_1+\theta_2)\right]$$
 
 $$\frac{z_1}{z_2} = \frac{\rho_1}{\rho_2}\left[\cos(\theta_1-\theta_2) + i\sin(\theta_1-\theta_2)\right]$$
 
->* Nel **prodotto** i moduli si moltiplicano e gli argomenti si **sommano**; nel **quoziente** i moduli si dividono e gli argomenti si sottraggono.
+>* Nel **prodotto** i moduli si moltiplicano e gli argomenti si **sommano**. Nel **quoziente** i moduli si dividono e gli argomenti si sottraggono.
 
-Trascina $z_1$ dove vuoi e fai girare $z_2$ sulla sua circonferenza; con il cursore cambia il modulo di $z_2$. Confronta l'argomento del prodotto con la somma dei due argomenti.
+Il numero $i$ ha modulo $1$ e argomento $90^\circ$: per questo moltiplicare per $i$ fa girare di $90^\circ$ senza allungare.
+
+Trascina $z_1$ e $z_2$ e confronta l'argomento del prodotto con la somma dei due argomenti.
 
 [[grafico:prodotto]]
 
-Moltiplicando $z$ per sé stesso $n$ volte, il modulo si moltiplica $n$ volte per $\rho$ e l'argomento si somma $n$ volte a sé stesso.
+Ora moltiplica $z$ per sé stesso $n$ volte. Il modulo si moltiplica $n$ volte per $\rho$, l'argomento si somma $n$ volte.
 
 >* **Formula di De Moivre**, per $n$ naturale: $$z^n = \rho^n\left(\cos n\theta + i\sin n\theta\right)$$ Il modulo si **eleva** alla $n$, l'argomento si **moltiplica** per $n$.
 
@@ -238,17 +245,17 @@ Moltiplicando $z$ per sé stesso $n$ volte, il modulo si moltiplica $n$ volte pe
 [ ] $6(\cos 90^\circ + i\sin 90^\circ) = 6i$
 [ ] $8(\cos 30^\circ + i\sin 30^\circ)$
 [ ] $2(\cos 90^\circ + i\sin 90^\circ) = 2i$
-=> Il modulo si eleva al cubo, $2^3 = 8$, e l'argomento si moltiplica per tre, $3\cdot 30^\circ = 90^\circ$: il risultato è $8i$. La risposta $6i$ moltiplica il modulo per $3$ invece di elevarlo; la terza eleva il modulo ma dimentica di moltiplicare l'argomento.
+=> Il modulo va al cubo e l'argomento si moltiplica per tre. La risposta $6i$ moltiplica il modulo per $3$ invece di elevarlo, la terza dimentica di moltiplicare l'argomento.
 
->! $(\sqrt2)^6$ non è $6\sqrt2$: il modulo va **elevato** alla $n$, l'argomento va **moltiplicato** per $n$. Sono due operazioni diverse su due numeri diversi.` },
+>! $(\sqrt2)^6$ non è $6\sqrt2$: il modulo si **eleva**, l'argomento si **moltiplica**.` },
 
     { id: 'radici-equazioni-esponenziale', titolo: 'Radici n-esime, equazioni e forma esponenziale', testo: R`### Le radici n-esime
 
-Una radice $n$-esima di $w$ è un numero $z$ tale che $z^n = w$. Con De Moivre, elevare alla $n$ vuol dire elevare il modulo e moltiplicare l'argomento per $n$. Per fare il contrario si prende la radice del modulo e si **divide** l'argomento per $n$.
+Una radice $n$-esima di $w$ è un numero $z$ con $z^n = w$. Con De Moivre, per elevare alla $n$ elevi il modulo e moltiplichi l'argomento per $n$. Per tornare indietro prendi la radice del modulo e **dividi** l'argomento per $n$.
 
-C'è però una sorpresa. Un angolo non cambia se gli si aggiunge un giro intero: $\theta$, $\theta + 360^\circ$, $\theta + 720^\circ$, … indicano la stessa direzione. Divisi per $n$, invece, danno angoli **diversi**. Per questo le radici non sono una sola.
+Un angolo però non cambia se aggiungi un giro: $\theta$ e $\theta + 360^\circ$ sono la stessa direzione. Divisi per $n$, invece, danno angoli **diversi**, e per questo le radici sono più di una.
 
->* Un numero complesso non nullo $w=\rho(\cos\theta+i\sin\theta)$ ha esattamente $n$ **radici $n$-esime**. Hanno tutte modulo $\sqrt[n]{\rho}$ e argomenti distanti $\frac{360^\circ}{n}$ l'uno dall'altro: sono i vertici di un **poligono regolare** di $n$ lati con centro nell'origine.
+>* Un numero complesso $w=\rho(\cos\theta+i\sin\theta)$ diverso da zero ha esattamente $n$ **radici $n$-esime**. Hanno tutte modulo $\sqrt[n]{\rho}$ e argomenti distanti $\frac{360^\circ}{n}$ l'uno dall'altro. Sono i vertici di un **poligono regolare** con centro nell'origine.
 
 La formula, con $k=0,1,\ldots,n-1$:
 
@@ -260,13 +267,13 @@ $$z_k = \sqrt[n]{\rho}\left(\cos\frac{\theta+360^\circ k}{n} + i\sin\frac{\theta
 ~ z_1 = \evidb{-\frac12 + \frac{\sqrt3}{2}i} :: $k = 1$: argomento $120^\circ$, con $\cos 120^\circ = -\frac12$ e $\sin 120^\circ = \frac{\sqrt3}{2}$
 ~ z_2 = \evidb{-\frac12 - \frac{\sqrt3}{2}i} :: $k = 2$: argomento $240^\circ$; con $k = 3$ si tornerebbe a $z_0$
 
-Le tre radici sono i vertici di un triangolo equilatero. Nel grafico scegli $n$ con il cursore e trascina $w$ lungo la sua circonferenza: guarda di quanto si spostano le radici quando $w$ fa un giro completo.
+Le tre radici sono i vertici di un triangolo equilatero. Nel grafico scegli $n$ con il cursore e trascina $w$ lungo la circonferenza.
 
 [[grafico:radici]]
 
 ### Equazioni di secondo grado in $\mathbb{C}$
 
-La formula risolutiva funziona anche con $\Delta < 0$: basta scrivere $\sqrt\Delta = i\sqrt{\lvert\Delta\rvert}$.
+La formula risolutiva funziona anche con $\Delta < 0$, se scrivi $\sqrt\Delta = i\sqrt{\lvert\Delta\rvert}$.
 
 ~ x^2 - 2x + 5 = 0 :: $a = 1$, $b = -2$, $c = 5$
 ~ \Delta = 4 - 20 = \evid{-16} :: negativo: nessuna soluzione reale
@@ -274,20 +281,20 @@ La formula risolutiva funziona anche con $\Delta < 0$: basta scrivere $\sqrt\Del
 ~ x = \frac{2 \pm \evid{4i}}{2} :: $\sqrt{-16} = \sqrt{16}\cdot\sqrt{-1} = 4i$
 ~ x = \evidb{1 \pm 2i} :: divido per $2$ tutti e due i termini
 
-Le due soluzioni, $1 + 2i$ e $1 - 2i$, sono una la coniugata dell'altra. Succede sempre quando i coefficienti sono reali e $\Delta < 0$, perché il $\pm$ davanti alla radice cambia segno solo alla parte immaginaria.
+Le soluzioni $1 + 2i$ e $1 - 2i$ sono coniugate. Succede sempre con coefficienti reali e $\Delta < 0$: il $\pm$ cambia segno solo alla parte immaginaria.
 
 ### Cenni alla forma esponenziale
 
-In analisi si dimostra la **formula di Eulero**, $e^{i\theta} = \cos\theta+i\sin\theta$, con $\theta$ in radianti. Così $z=\rho(\cos\theta+i\sin\theta)$ si scrive anche $z=\rho\, e^{i\theta}$: è la **forma esponenziale**. Con questa scrittura la regola del prodotto è quella delle potenze, $e^{i\alpha}\cdot e^{i\beta} = e^{i(\alpha+\beta)}$: gli argomenti si sommano. Per $\theta = \pi$ si ottiene $e^{i\pi} = -1$, cioè $e^{i\pi} + 1 = 0$, una formula che mette insieme $0$, $1$, $e$, $i$ e $\pi$.
+La **formula di Eulero** dice che $e^{i\theta} = \cos\theta+i\sin\theta$, con $\theta$ in radianti. Quindi $z=\rho(\cos\theta+i\sin\theta)$ si scrive anche $z=\rho\, e^{i\theta}$, in **forma esponenziale**. Con $\theta = \pi$ ottieni $e^{i\pi} + 1 = 0$.
 
 ?? Quante sono le radici quarte di $-16$?
 [x] quattro: $\sqrt2 \pm \sqrt2\, i$ e $-\sqrt2 \pm \sqrt2\, i$
 [ ] nessuna, perché $-16$ è negativo
 [ ] due: $2i$ e $-2i$
 [ ] una: $-2$
-=> $-16 = 16(\cos 180^\circ + i\sin 180^\circ)$: le radici quarte hanno modulo $\sqrt[4]{16} = 2$ e argomenti $45^\circ$, $135^\circ$, $225^\circ$, $315^\circ$, cioè $\pm\sqrt2 \pm \sqrt2\,i$. In $\mathbb{C}$ un numero negativo ha radici di ogni indice. $2i$ non va bene: $(2i)^4 = 16i^4 = 16$, non $-16$.
+=> $-16$ ha modulo $16$ e argomento $180^\circ$. Le radici quarte hanno modulo $2$ e argomenti $45^\circ$, $135^\circ$, $225^\circ$ e $315^\circ$. $2i$ non va bene, perché $(2i)^4 = 16$.
 
->! Le radici $n$-esime sono **$n$**, non una sola: fermarsi a $k = 0$ è l'errore più frequente. Vanno scritte tutte, per $k=0,1,\ldots,n-1$.` }
+>! Le radici $n$-esime sono **$n$**. Fermarsi a $k = 0$ è l'errore più frequente: scrivile tutte, da $k=0$ a $k=n-1$.` }
   ],
 
   grafici: {
@@ -472,16 +479,36 @@ In analisi si dimostra la **formula di Eulero**, $e^{i\theta} = \cos\theta+i\sin
   ],
 
   esercizi: [
-    { id: 'es-01', difficolta: 1, testo: R`Calcola $i^{23}$.`, suggerimenti: [R`Le potenze di $i$ si ripetono con periodo $4$.`, R`$23 = 4\cdot 5 + 3$: guarda il resto.`], risposta: { tipo: 'testo', accettate: ['-i', '-1i', '0-i', '-i+0'] }, soluzione: [R`$23 = 4\cdot5+3$, resto $3$.`, R`$i^{23} = i^3 = -i$.`] },
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Scrivi la parte reale e la parte immaginaria di $z = 5 - 3i$, separate da punto e virgola (per esempio *2; -1*).`, suggerimenti: [R`La parte immaginaria è il numero che moltiplica $i$, con il suo segno.`], risposta: due(5, -3), soluzione: [R`La parte reale è il numero senza $i$: $5$.`, R`La parte immaginaria è il numero davanti a $i$, con il segno: $-3$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Calcola $(2 + 3i) + (4 + i)$.`, suggerimenti: [R`Somma le parti reali fra loro e le parti immaginarie fra loro.`], risposta: cx(6, 4), soluzione: [R`Parti reali: $2 + 4 = 6$.`, R`Parti immaginarie: $3 + 1 = 4$. Il risultato è $6 + 4i$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Calcola $(5 + 2i) - (3 + 6i)$.`, suggerimenti: [R`Il meno davanti alla parentesi cambia segno a tutti e due i termini.`], risposta: cx(2, -4), soluzione: [R`Parti reali: $5 - 3 = 2$.`, R`Parti immaginarie: $2 - 6 = -4$. Il risultato è $2 - 4i$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Scrivi il coniugato di $z = 4 + 7i$.`, suggerimenti: [R`Nel coniugato cambia segno solo la parte immaginaria.`], risposta: cx(4, -7), soluzione: [R`La parte reale resta $4$.`, R`La parte immaginaria cambia segno: $\overline z = 4 - 7i$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Calcola $i^3$.`, suggerimenti: [R`Scrivi $i^3 = i^2 \cdot i$ e ricorda che $i^2 = -1$.`], risposta: cx(0, -1), soluzione: [R`$i^3 = i^2 \cdot i$.`, R`$i^2 = -1$, quindi $i^3 = -1 \cdot i = -i$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Calcola $i^{10}$.`, suggerimenti: [R`Dividi $10$ per $4$ e guarda il resto.`], risposta: cx(-1, 0), soluzione: [R`$10 = 4 \cdot 2 + 2$: il resto è $2$.`, R`Quindi $i^{10} = i^2 = -1$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Scrivi $\sqrt{-25}$ usando $i$.`, suggerimenti: [R`$\sqrt{-25} = \sqrt{25} \cdot \sqrt{-1}$.`], risposta: cx(0, 5), soluzione: [R`Separo il segno meno: $\sqrt{-25} = \sqrt{25} \cdot \sqrt{-1}$.`, R`$\sqrt{25} = 5$ e $\sqrt{-1} = i$, quindi il risultato è $5i$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Calcola $3i \cdot 2i$.`, suggerimenti: [R`Moltiplica i numeri e poi le $i$: compare $i^2$.`], risposta: cx(-6, 0), soluzione: [R`$3i \cdot 2i = 6i^2$.`, R`$i^2 = -1$, quindi il risultato è $-6$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Calcola il modulo di $z = 3 + 4i$. Se serve una radice, scrivi √ oppure *rad*.`, suggerimenti: [R`Usa $\lvert z \rvert = \sqrt{a^2 + b^2}$.`], risposta: num(5), soluzione: [R`$\lvert z \rvert = \sqrt{3^2 + 4^2} = \sqrt{9 + 16}$.`, R`$\sqrt{25} = 5$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Calcola $i(4 + 2i)$.`, suggerimenti: [R`Moltiplica $i$ per tutti e due i termini della parentesi.`], risposta: cx(-2, 4), soluzione: [R`$i(4 + 2i) = 4i + 2i^2$.`, R`$2i^2 = -2$, quindi il risultato è $-2 + 4i$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Calcola il modulo di $z = 1 + i$. Se serve una radice, scrivi √ oppure *rad*.`, suggerimenti: [R`Qui $a = 1$ e $b = 1$.`], risposta: num(Math.SQRT2), soluzione: [R`$\lvert z \rvert = \sqrt{1^2 + 1^2} = \sqrt{2}$.`] },
+    { id: 'b-12', livello: 'base', difficolta: 2, testo: R`Calcola $(1 + i)(2 + 3i)$.`, suggerimenti: [R`Moltiplica ogni termine del primo per ogni termine del secondo.`, R`Alla fine sostituisci $i^2 = -1$.`], risposta: cx(-1, 5), soluzione: [R`Distributiva: $2 + 3i + 2i + 3i^2$.`, R`$3i^2 = -3$, quindi $2 - 3 + 5i$.`, R`Il risultato è $-1 + 5i$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Calcola $(3 + 2i)(3 - 2i)$.`, suggerimenti: [R`È una somma per differenza: quadrato del primo meno quadrato del secondo.`], risposta: cx(13, 0), soluzione: [R`$(3 + 2i)(3 - 2i) = 9 - (2i)^2 = 9 - 4i^2$.`, R`$4i^2 = -4$, quindi $9 + 4 = 13$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Calcola $(1 + i)^2$.`, suggerimenti: [R`Quadrato di un binomio: $1 + 2i + i^2$.`], risposta: cx(0, 2), soluzione: [R`$(1 + i)^2 = 1 + 2i + i^2$.`, R`$i^2 = -1$, quindi $1 - 1 + 2i = 2i$.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Calcola $\dfrac{10}{1 + 3i}$.`, suggerimenti: [R`Moltiplica sopra e sotto per il coniugato del denominatore, $1 - 3i$.`, R`Sotto ottieni $1^2 + 3^2 = 10$.`], risposta: cx(1, -3), soluzione: [R`Moltiplico sopra e sotto per $1 - 3i$: $\dfrac{10(1 - 3i)}{(1 + 3i)(1 - 3i)}$.`, R`Sotto: $1 + 9 = 10$. Sopra: $10 - 30i$.`, R`Divido per $10$: il risultato è $1 - 3i$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Calcola $\dfrac{4 + 2i}{1 + i}$.`, suggerimenti: [R`Moltiplica sopra e sotto per $1 - i$.`, R`Sotto ottieni $1 + 1 = 2$.`], risposta: cx(3, -1), soluzione: [R`Sopra: $(4 + 2i)(1 - i) = 4 - 4i + 2i - 2i^2 = 6 - 2i$.`, R`Sotto: $(1 + i)(1 - i) = 1 + 1 = 2$.`, R`Divido per $2$: il risultato è $3 - i$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Scrivi in forma algebrica $4(\cos 180^\circ + i\sin 180^\circ)$.`, suggerimenti: [R`$\cos 180^\circ = -1$ e $\sin 180^\circ = 0$.`], risposta: cx(-4, 0), soluzione: [R`$\cos 180^\circ = -1$ e $\sin 180^\circ = 0$.`, R`$4(-1 + 0 \cdot i) = -4$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Scrivi in forma algebrica $2\left(\cos\dfrac{\pi}{2} + i\sin\dfrac{\pi}{2}\right)$.`, suggerimenti: [R`$\dfrac{\pi}{2}$ è l'angolo di $90^\circ$.`, R`$\cos\dfrac{\pi}{2} = 0$ e $\sin\dfrac{\pi}{2} = 1$.`], risposta: cx(0, 2), soluzione: [R`$\dfrac{\pi}{2}$ vale $90^\circ$: $\cos\dfrac{\pi}{2} = 0$ e $\sin\dfrac{\pi}{2} = 1$.`, R`$2(0 + 1 \cdot i) = 2i$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Trova modulo e argomento di $z = \sqrt3 + i$. Scrivi *modulo; argomento in gradi*.`, suggerimenti: [R`Prima il modulo: $\sqrt{3 + 1}$.`, R`Poi $\cos\theta = \dfrac{\sqrt3}{2}$ e $\sin\theta = \dfrac12$.`], risposta: due(2, 30, 'es. 5; 60'), soluzione: [R`Modulo: $\rho = \sqrt{(\sqrt3)^2 + 1^2} = \sqrt4 = 2$.`, R`$\cos\theta = \dfrac{\sqrt3}{2}$ e $\sin\theta = \dfrac12$, tutti e due positivi: primo quadrante.`, R`L'angolo è $\theta = 30^\circ$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Trova modulo e argomento di $z = -2 + 2i$. Scrivi *modulo; argomento in gradi*.`, suggerimenti: [R`Modulo: $\sqrt{4 + 4} = \sqrt8$.`, R`Disegna il punto $(-2; 2)$: in che quadrante sta?`], risposta: due(2 * Math.SQRT2, 135, 'es. 5; 60'), soluzione: [R`Modulo: $\rho = \sqrt{(-2)^2 + 2^2} = \sqrt8 = 2\sqrt2$.`, R`Il punto $(-2; 2)$ sta nel secondo quadrante, sulla bisettrice.`, R`Quindi $\theta = 180^\circ - 45^\circ = 135^\circ$.`] },
+    { id: 'es-01', difficolta: 1, testo: R`Calcola $i^{23}$.`, suggerimenti: [R`Le potenze di $i$ si ripetono con periodo $4$.`, R`$23 = 4\cdot 5 + 3$: guarda il resto.`], risposta: cx(0, -1), soluzione: [R`$23 = 4\cdot5+3$, resto $3$.`, R`$i^{23} = i^3 = -i$.`] },
     { id: 'es-02', difficolta: 1, testo: R`Calcola il modulo di $z = 5 - 12i$.`, suggerimenti: [R`Usa $|z|=\sqrt{a^2+b^2}$.`, R`$5^2=25$ e $(-12)^2=144$: la somma è un quadrato perfetto.`], risposta: { tipo: 'numero', valore: 13, tolleranza: 0.01 }, soluzione: [R`$|z| = \sqrt{5^2+(-12)^2} = \sqrt{25+144} = \sqrt{169} = 13$.`] },
-    { id: 'es-03', difficolta: 1, testo: R`Calcola la somma $(2+3i) + (-5+i)$.`, suggerimenti: [R`Somma separatamente le parti reali e le parti immaginarie.`], risposta: { tipo: 'testo', accettate: ['-3+4i', '-3 + 4i', '4i-3', '4i - 3'] }, soluzione: [R`Parte reale: $2+(-5) = -3$. Parte immaginaria: $3+1=4$.`, R`Risultato: $-3+4i$.`] },
-    { id: 'es-04', difficolta: 1, testo: R`Risolvi in $\mathbb{C}$ l'equazione $x^2+9=0$ e scrivi la soluzione con parte immaginaria positiva.`, suggerimenti: [R`Isola $x^2$: che segno ha $-9$?`, R`$x^2=-9$: scrivi $-9$ come $9\cdot(-1)$.`], risposta: { tipo: 'testo', accettate: ['3i', '+3i', '0+3i', '3i+0'] }, soluzione: [R`$x^2=-9 \Rightarrow x = \pm\sqrt{-9} = \pm\sqrt{9}\cdot\sqrt{-1} = \pm3i$.`, R`La soluzione con parte immaginaria positiva è $3i$.`] },
-    { id: 'es-05', difficolta: 2, testo: R`Calcola il prodotto $(1+2i)(3-i)$.`, suggerimenti: [R`Applica la proprietà distributiva come per due binomi.`, R`Ricorda che $i^2=-1$ quando semplifichi.`], risposta: { tipo: 'testo', accettate: ['5+5i', '5 + 5i', '5i+5', '5i + 5'] }, soluzione: [R`$(1+2i)(3-i) = 3 - i + 6i - 2i^2 = 3+5i+2 = 5+5i$ (perché $-2i^2 = -2\cdot(-1)=2$).`] },
-    { id: 'es-06', difficolta: 2, testo: R`Calcola il quoziente $\dfrac{1+3i}{1-i}$.`, suggerimenti: [R`Moltiplica sopra e sotto per il coniugato del denominatore.`, R`Il coniugato di $1-i$ è $1+i$.`], risposta: { tipo: 'testo', accettate: ['-1+2i', '-1 + 2i', '2i-1', '2i - 1'] }, soluzione: [R`$\dfrac{(1+3i)(1+i)}{(1-i)(1+i)} = \dfrac{1+i+3i+3i^2}{1+1} = \dfrac{1+4i-3}{2} = \dfrac{-2+4i}{2} = -1+2i$.`] },
+    { id: 'es-03', difficolta: 1, testo: R`Calcola la somma $(2+3i) + (-5+i)$.`, suggerimenti: [R`Somma separatamente le parti reali e le parti immaginarie.`], risposta: cx(-3, 4), soluzione: [R`Parte reale: $2+(-5) = -3$. Parte immaginaria: $3+1=4$.`, R`Risultato: $-3+4i$.`] },
+    { id: 'es-04', difficolta: 1, testo: R`Risolvi in $\mathbb{C}$ l'equazione $x^2+9=0$ e scrivi la soluzione con parte immaginaria positiva.`, suggerimenti: [R`Isola $x^2$: che segno ha $-9$?`, R`$x^2=-9$: scrivi $-9$ come $9\cdot(-1)$.`], risposta: cx(0, 3), soluzione: [R`$x^2=-9 \Rightarrow x = \pm\sqrt{-9} = \pm\sqrt{9}\cdot\sqrt{-1} = \pm3i$.`, R`La soluzione con parte immaginaria positiva è $3i$.`] },
+    { id: 'es-05', difficolta: 2, testo: R`Calcola il prodotto $(1+2i)(3-i)$.`, suggerimenti: [R`Applica la proprietà distributiva come per due binomi.`, R`Ricorda che $i^2=-1$ quando semplifichi.`], risposta: cx(5, 5), soluzione: [R`$(1+2i)(3-i) = 3 - i + 6i - 2i^2 = 3+5i+2 = 5+5i$ (perché $-2i^2 = -2\cdot(-1)=2$).`] },
+    { id: 'es-06', difficolta: 2, testo: R`Calcola il quoziente $\dfrac{1+3i}{1-i}$.`, suggerimenti: [R`Moltiplica sopra e sotto per il coniugato del denominatore.`, R`Il coniugato di $1-i$ è $1+i$.`], risposta: cx(-1, 2), soluzione: [R`$\dfrac{(1+3i)(1+i)}{(1-i)(1+i)} = \dfrac{1+i+3i+3i^2}{1+1} = \dfrac{1+4i-3}{2} = \dfrac{-2+4i}{2} = -1+2i$.`] },
     { id: 'es-07', difficolta: 2, testo: R`Scrivi in forma trigonometrica $z = -1+i\sqrt3$: quanto vale il modulo $\rho$?`, suggerimenti: [R`Usa $\rho=\sqrt{a^2+b^2}$ con $a=-1$, $b=\sqrt3$.`], risposta: { tipo: 'numero', valore: 2, tolleranza: 0.01 }, soluzione: [R`$\rho = \sqrt{(-1)^2+(\sqrt3)^2} = \sqrt{1+3} = 2$.`] },
     { id: 'es-08', difficolta: 2, testo: R`Per lo stesso numero $z=-1+i\sqrt3$ dell'esercizio precedente, quanto vale l'argomento $\theta$ in gradi (fra $0^\circ$ e $360^\circ$)?`, suggerimenti: [R`$\cos\theta = a/\rho$ e $\sin\theta=b/\rho$, con $\rho=2$.`, R`$\cos\theta = -\dfrac12$ e $\sin\theta=\dfrac{\sqrt3}{2}$: in che quadrante siamo?`], risposta: { tipo: 'numero', valore: 120, tolleranza: 0.5 }, soluzione: [R`$\cos\theta=-\dfrac12$, $\sin\theta=\dfrac{\sqrt3}{2}$: segno di $a$ negativo e di $b$ positivo, secondo quadrante.`, R`$\theta = 120^\circ$.`] },
     { id: 'es-09', difficolta: 3, testo: R`Usa la formula di De Moivre per calcolare $(1+i)^8$.`, suggerimenti: [R`Scrivi prima $1+i$ in forma trigonometrica: $\rho=\sqrt2$, $\theta=45^\circ$.`, R`Il modulo va elevato alla potenza, l'argomento va moltiplicato.`], risposta: { tipo: 'numero', valore: 16, tolleranza: 0.01 }, soluzione: [R`$1+i = \sqrt2(\cos45^\circ+i\sin45^\circ)$.`, R`$(1+i)^8 = (\sqrt2)^8(\cos360^\circ+i\sin360^\circ) = 16\cdot(1+0i) = 16$.`] },
-    { id: 'es-10', difficolta: 2, testo: R`Risolvi in $\mathbb{C}$ l'equazione $x^2-4x+13=0$ e scrivi la soluzione con parte immaginaria positiva.`, suggerimenti: [R`Calcola il discriminante: è negativo.`, R`$\Delta=16-52=-36$: scrivi $\sqrt{-36}=6i$.`], risposta: { tipo: 'testo', accettate: ['2+3i', '2 + 3i', '3i+2', '3i + 2'] }, soluzione: [R`$\Delta = (-4)^2-4\cdot1\cdot13 = 16-52=-36$.`, R`$x_{1,2} = \dfrac{4\pm\sqrt{-36}}{2} = \dfrac{4\pm6i}{2} = 2\pm3i$.`, R`La soluzione con parte immaginaria positiva è $2+3i$.`] },
+    { id: 'es-10', difficolta: 2, testo: R`Risolvi in $\mathbb{C}$ l'equazione $x^2-4x+13=0$ e scrivi la soluzione con parte immaginaria positiva.`, suggerimenti: [R`Calcola il discriminante: è negativo.`, R`$\Delta=16-52=-36$: scrivi $\sqrt{-36}=6i$.`], risposta: cx(2, 3), soluzione: [R`$\Delta = (-4)^2-4\cdot1\cdot13 = 16-52=-36$.`, R`$x_{1,2} = \dfrac{4\pm\sqrt{-36}}{2} = \dfrac{4\pm6i}{2} = 2\pm3i$.`, R`La soluzione con parte immaginaria positiva è $2+3i$.`] },
     { id: 'es-11', difficolta: 3, testo: R`Verifica che $z=-\dfrac12+i\dfrac{\sqrt3}{2}$ sia una radice cubica di $1$, cioè che $z^3=1$.`, suggerimenti: [R`Calcola prima $z^2$, poi moltiplica il risultato per $z$.`, R`In alternativa, scrivi $z$ in forma trigonometrica ($\rho=1$, $\theta=120^\circ$) e usa De Moivre con $n=3$.`], soluzione: [R`Forma trigonometrica: $z=\cos120^\circ+i\sin120^\circ$, con $\rho=1$.`, R`Per De Moivre, $z^3 = 1^3(\cos360^\circ+i\sin360^\circ) = \cos360^\circ+i\sin360^\circ = 1+0i = 1$.`, R`In forma algebrica si arriva allo stesso risultato: $z^2=-\dfrac12-i\dfrac{\sqrt3}{2}$, e $z^2\cdot z = 1$.`] },
     { id: 'es-12', difficolta: 2, testo: R`L'equazione $x^3-15x-4=0$ ha $x=4$ come soluzione (verificalo per sostituzione). Dividendo per $(x-4)$ si ottiene $x^2+4x+1=0$. Quante soluzioni reali ha in totale l'equazione di partenza?`, suggerimenti: [R`Verifica prima che $4^3-15\cdot4-4=0$.`, R`Guarda il discriminante di $x^2+4x+1=0$: è positivo o negativo?`], risposta: { tipo: 'numero', valore: 3, tolleranza: 0 }, soluzione: [R`$4^3-15\cdot4-4 = 64-60-4=0$: $x=4$ è soluzione.`, R`$x^2+4x+1=0$ ha $\dfrac{\Delta}{4}=4-1=3>0$: due soluzioni reali, $x=-2\pm\sqrt3$.`, R`In totale l'equazione di terzo grado ha $3$ soluzioni reali: $4$, $-2+\sqrt3$ e $-2-\sqrt3$. Eppure la formula generale, per arrivarci, chiede di passare per $\sqrt{-121}$: è il caso irriducibile citato all'inizio.`] }
   ],

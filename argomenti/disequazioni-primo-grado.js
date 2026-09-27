@@ -1,52 +1,75 @@
 (function () {
 const R = String.raw;
+/* risposte dell'allenamento: dis('>', 3) accetta x>3, 3<x e l'intervallo in tutte le scritture
+   ragionevoli (]3;+inf[, (3;+inf), (3,+∞) …); ≤ e ≥ scritti come simbolo diventano <= e >= */
+const SEGNA = 'es. x > 2 oppure x <= 2';
+const dis = (op, n) => {
+  const giro = { '>': '<', '<': '>', '>=': '<=', '<=': '>=' }[op];
+  const f = ['x' + op + n, n + giro + 'x'];
+  const incluso = op.length === 2, inf = ['inf', '∞', 'infinito'], sep = [';', ','];
+  if (op[0] === '>') {
+    (incluso ? ['['] : [']', '(']).forEach(a => ['[', ')'].forEach(b => sep.forEach(s => inf.forEach(i => ['+', ''].forEach(p => f.push(a + n + s + p + i + b))))));
+  } else {
+    [']', '('].forEach(a => (incluso ? [']'] : ['[', ')']).forEach(b => sep.forEach(s => inf.forEach(i => f.push(a + '-' + i + s + n + b)))));
+  }
+  /* anche «x ∈ ]3;+∞[» e le scritture rovesciate «x=>3», «x=<3» */
+  f.slice(2).forEach(t => f.push('x∈' + t));
+  if (incluso) f.push('x' + op[1] + op[0] + n);
+  return { tipo: 'testo', accettate: f, segnaposto: SEGNA };
+};
+const TUTTI = { tipo: 'testo', segnaposto: SEGNA, accettate: ['R', 'ℝ', 'S=R', 'S=ℝ', 'x∈R', 'x∈ℝ', 'per ogni x', 'ogni x', 'ogni numero', 'qualsiasi x', 'qualsiasi numero', 'tutti', 'tutti i numeri', 'tutti i numeri reali', 'tutti i reali', 'qualunque x', 'qualunque numero', 'ogni x reale', '∀x', 'sempre', 'sempre verificata', 'sempre vera',']-inf;+inf[', '(-inf;+inf)', ']-∞;+∞[', '(-∞;+∞)', '(-inf,+inf)', '(-∞,+∞)'] };
+const NESSUNA = { tipo: 'testo', segnaposto: SEGNA, accettate: ['nessuna', 'nessuna soluzione', 'nessun numero', 'nessun x', 'nessuno', 'non ha soluzioni', 'impossibile', 'mai', 'mai vera','∅', 'ø', '{}', 'S=∅', 'S=ø', 'S={}', 'insieme vuoto', 'vuoto'] };
 COMPASSO.registra({
   id: 'disequazioni-primo-grado',
   titolo: 'Disequazioni di primo grado',
 
-  introduzione: R`Un ascensore porta al massimo 600 kg. Dentro ci sono già persone per 420 kg: quante casse da 30 kg puoi aggiungere? Se chiami $x$ il numero di casse, la condizione è $420 + 30x \le 600$. La risposta non è un numero solo: vanno bene $0, 1, 2, \ldots$ fino a $6$ casse.
+  introduzione: R`Un ascensore porta al massimo 600 kg. Dentro ci sono già 420 kg di persone. Quante casse da 30 kg puoi aggiungere?
 
-Una **disequazione** è come un'equazione, ma al posto dell'uguale c'è un segno di confronto: $<$, $>$, $\le$ oppure $\ge$. Per questo le soluzioni di solito non sono un numero, ma un intero tratto di numeri: $3x - 2 < 7$, per esempio, è vera per tutti i numeri minori di $3$.
+Chiama $x$ il numero di casse. La condizione è $420 + 30x \le 600$. Vanno bene $0, 1, 2$ e così via, fino a $6$ casse.
 
-Ti serve saper risolvere le equazioni di primo grado, perché i passaggi sono quasi gli stessi. C'è una regola in più, quella del cambio di verso, ed è lì che si sbaglia.`,
+Una **disequazione** è come un'equazione, ma al posto di $=$ c'è un segno di confronto: $<$, $>$, $\le$ oppure $\ge$. Le sue soluzioni sono di solito un intero tratto di numeri.
+
+Ti serve saper risolvere le equazioni di primo grado. I passaggi sono quasi gli stessi, con una regola in più: il cambio di verso.`,
 
   inBreve: [
-    R`Una disequazione di solito ha infinite soluzioni: un intervallo di numeri, da scrivere per intero.`,
-    R`Sommare o togliere la stessa quantità ai due membri non cambia il verso; moltiplicare o dividere per un numero **negativo** lo capovolge.`,
-    R`Parentesi quadra (pallino pieno) se l'estremo è incluso, tonda (pallino vuoto) se è escluso; l'infinito vuole sempre la tonda.`,
-    R`Se la $x$ sparisce resta un confronto fra numeri: se è vero la soluzione è $\mathbb{R}$, se è falso è $\varnothing$.`,
-    R`In un sistema le disequazioni devono valere tutte insieme: la soluzione è la parte comune degli intervalli.`,
-    R`Nelle fratte non si moltiplica per il denominatore: si studia il segno con la tabella, e lo zero del denominatore è sempre escluso.`
+    R`Una disequazione ha di solito infinite soluzioni: un tratto di numeri.`,
+    R`Sommare o togliere lo stesso numero ai due membri non cambia il verso.`,
+    R`Moltiplicare o dividere per un numero **negativo** capovolge il verso.`,
+    R`Parentesi quadra se l'estremo è incluso, tonda se è escluso. L'infinito vuole sempre la tonda.`,
+    R`Se la $x$ sparisce, resta un confronto fra numeri. Se è vero la soluzione è $\mathbb{R}$, se è falso è $\varnothing$.`,
+    R`In un sistema di disequazioni la soluzione è la parte comune degli intervalli.`
   ],
 
   sezioni: [
-    { id: 'disuguaglianze', titolo: 'Disuguaglianze e disequazioni', testo: R`$3 < 5$ è vera, $7 < 2$ è falsa: sono confronti fra numeri, e hanno sempre una risposta. Un confronto così si chiama **disuguaglianza**, e si scrive con uno dei simboli $<$ (minore), $>$ (maggiore), $\le$ (minore o uguale), $\ge$ (maggiore o uguale).
+    { id: 'disuguaglianze', titolo: 'Disuguaglianze e disequazioni', testo: R`$3 < 5$ è vera. $7 < 2$ è falsa. Sono confronti fra numeri, e si chiamano **disuguaglianze**.
 
-Se nel confronto compare un'incognita, come in $2x - 6 > 0$, la risposta dipende da $x$: con $x = 5$ viene $4 > 0$, vera; con $x = 1$ viene $-4 > 0$, falsa. Questa è una **disequazione**.
+I simboli sono quattro: $<$ (minore), $>$ (maggiore), $\le$ (minore o uguale), $\ge$ (maggiore o uguale).
 
->* **Risolvere una disequazione** vuol dire trovare **tutti** i valori dell'incognita che la rendono vera. Di solito sono infiniti: un intero tratto di numeri, che si chiama **intervallo**.
+Ora guarda $2x - 6 > 0$. Con $x = 5$ viene $4 > 0$: vera. Con $x = 1$ viene $-4 > 0$: falsa. La risposta dipende da $x$. Questa è una **disequazione**.
 
-Trascina $x$ nel grafico e cerca il punto in cui la disequazione passa da falsa a vera.
+>* **Risolvere** una disequazione vuol dire trovare **tutti** i valori di $x$ che la rendono vera. Di solito sono un intero tratto di numeri: un intervallo.
+
+Trascina $x$ nel grafico. Cerca il punto in cui la disequazione passa da falsa a vera.
 
 [[grafico:provaValori]]
 
-Vanno bene tutti i numeri a destra di $3$, e $3$ no: lì $2x - 6$ vale $0$, e $0 > 0$ è falso. La soluzione è $x > 3$. L'equazione $2x - 6 = 0$ invece ha una sola soluzione, $x = 3$: stessa espressione, ma il segno di confronto cambia il tipo di risposta.
+La soluzione è $x > 3$. Il $3$ è escluso: lì viene $0 > 0$, che è falso.
 
-?? Quante soluzioni ha la disequazione $x + 1 > 5$?
+?? Quante soluzioni ha $x + 1 > 5$?
 [ ] una, $x = 4$
 [x] infinite: tutti i numeri maggiori di $4$
-[ ] infinite: tutti i numeri maggiori di $4$, e anche $4$
-=> Con $x = 4$ viene $5 > 5$, falso: $4$ è il confine ma non è una soluzione. Vanno bene $4{,}1$, $5$, $100$ e così via, cioè tutti i numeri con $x > 4$. Chi risponde «$x = 4$» ha risolto l'equazione $x + 1 = 5$ al posto della disequazione.
+[ ] infinite: i numeri maggiori di $4$, e anche $4$
+=> Con $x = 4$ viene $5 > 5$: falso. Quindi $4$ è il confine, ma non è una soluzione. Chi risponde «$x = 4$» ha risolto l'equazione $x + 1 = 5$.
 
->! L'errore di partenza è cercare «la» soluzione come in un'equazione. Il numero che trovi alla fine dei calcoli è solo il **confine**: la risposta è tutto il tratto di numeri da una parte di quel confine.` },
+>! Il numero che trovi alla fine dei calcoli è solo il **confine**. La risposta è tutto il tratto di numeri da una parte del confine.` },
 
-    { id: 'intervalli', titolo: 'Gli intervalli', testo: R`La soluzione di una disequazione si può scrivere in tre modi, che dicono la stessa cosa: con una disuguaglianza ($-2 \le x < 5$), con un **intervallo** ($[-2, 5)$), oppure con un disegno sulla **retta reale**.
+    { id: 'intervalli', titolo: 'Gli intervalli', testo: R`Prendi i numeri da $-2$ incluso a $5$ escluso. Puoi scriverli in tre modi:
 
-In tutti e tre conta una sola domanda: l'estremo è compreso o no?
+- con una disuguaglianza: $-2 \le x < 5$;
+- con un **intervallo**: $[-2, 5)$;
+- con un disegno sulla **retta reale**.
 
-- estremo **incluso** ($\le$ o $\ge$): parentesi **quadra**, pallino **pieno**;
-- estremo **escluso** ($<$ o $>$): parentesi **tonda**, pallino **vuoto**;
-- se da un lato non c'è un estremo si scrive $+\infty$ o $-\infty$, sempre con la tonda: l'infinito non è un numero, quindi non può essere incluso.
+In tutti e tre conta una domanda: l'estremo è incluso o no?
 
 | disuguaglianza | intervallo | sulla retta reale |
 |---|---|---|
@@ -58,104 +81,108 @@ In tutti e tre conta una sola domanda: l'estremo è compreso o no?
 
 [[grafico:intervalliNotazione]]
 
-Molti libri italiani scrivono l'intervallo aperto con le quadre rovesciate: $]a, b[$ invece di $(a, b)$. Il significato è identico.
+>* Estremo **incluso** ($\le$, $\ge$): parentesi quadra, pallino pieno. Estremo **escluso** ($<$, $>$): parentesi tonda, pallino vuoto. L'infinito ha sempre la tonda.
 
->* Parentesi **quadra** = estremo incluso ($\le$, $\ge$). Parentesi **tonda** = estremo escluso ($<$, $>$). L'infinito ha sempre la tonda.
+Molti libri scrivono $]a, b[$ invece di $(a, b)$. Il significato è lo stesso.
 
 ?? Come si scrive $x \ge -1$ con un intervallo?
 [x] $[-1, +\infty)$
 [ ] $(-1, +\infty)$
 [ ] $[-1, +\infty]$
-=> $\ge$ include $-1$, quindi quadra a sinistra; dall'altra parte c'è $+\infty$, che vuole sempre la tonda. $(-1, +\infty)$ esclude $-1$; $[-1, +\infty]$ «include» l'infinito, che non è un numero.
+=> $\ge$ include $-1$: quadra a sinistra. A destra c'è $+\infty$, che vuole sempre la tonda. $(-1, +\infty)$ esclude $-1$, che invece va incluso.
 
->! $(2, 5)$ può voler dire due cose: l'intervallo dei numeri fra $2$ e $5$, oppure il punto di coordinate $2$ e $5$. Si capisce dal contesto: in questo capitolo è un intervallo.` },
+>! $(2, 5)$ può essere un intervallo o un punto del piano. In questo capitolo è un intervallo.` },
 
-    { id: 'principi-equivalenza', titolo: 'I principi di equivalenza e il cambio di verso', testo: R`Anche per le disequazioni ci sono due principi, come per le equazioni: trasformano una disequazione in una più semplice con le stesse soluzioni (si dice **equivalente**). Il primo non ha sorprese, il secondo sì.
+    { id: 'principi-equivalenza', titolo: 'I principi di equivalenza e il cambio di verso', testo: R`Come per le equazioni, ci sono due principi. Semplificano la disequazione senza cambiarne le soluzioni.
 
->* **Primo principio.** Se sommi o togli la stessa quantità a entrambi i membri, il verso non cambia. Da $x - 5 > 2$, sommando $5$, si ha $x > 7$.
+>* **Primo principio.** Se sommi o togli lo stesso numero ai due membri, il verso non cambia. Da $x - 5 > 2$, sommando $5$, ottieni $x > 7$.
 
-Il **verso** è il senso del segno di confronto: $<$ e $>$ hanno versi opposti, e così $\le$ e $\ge$.
+Il **verso** è il senso del segno: $<$ e $>$ hanno versi opposti, come $\le$ e $\ge$.
 
-Per il secondo principio prova tu. Parti da $2 < 5$ e moltiplica tutti e due i numeri per lo stesso $k$: sposta il cursore e guarda che cosa succede all'ordine quando $k$ diventa negativo.
+Parti da $2 < 5$ e moltiplica i due numeri per $k$. Con il cursore, porta $k$ sotto lo zero.
 
 [[grafico:cambioVerso]]
 
-Con $k = -1$, i numeri $2$ e $5$ diventano $-2$ e $-5$, e ora il più grande è $-2$. Moltiplicando per un numero negativo i numeri si scambiano di posto sulla retta, come in uno specchio, e il segno deve girarsi: $-2 > -5$.
+Con $k = -1$ ottieni $-2$ e $-5$. Ora il più grande è $-2$, quindi $-2 > -5$. Il verso si è girato.
 
->* **Secondo principio.** Se moltiplichi o dividi entrambi i membri per lo stesso numero **positivo**, il verso resta. Se il numero è **negativo**, il verso si capovolge: $<$ diventa $>$, $\le$ diventa $\ge$, e viceversa.
+>* **Secondo principio.** Se moltiplichi o dividi per un numero **positivo**, il verso resta. Se il numero è **negativo**, il verso si capovolge: $<$ diventa $>$, $\le$ diventa $\ge$.
 
-~ -2x < 6 :: il coefficiente della $x$ è negativo
-~ \dfrac{-2x}{\evid{-2}} \evid{>} \dfrac{6}{\evid{-2}} :: divido per $-2$: è negativo, quindi il verso si capovolge
+~ -2x < 6 :: il **coefficiente** della $x$ (il numero davanti) è negativo
+~ \dfrac{-2x}{\evid{-2}} \evid{>} \dfrac{6}{\evid{-2}} :: divido per $-2$, che è negativo: capovolgo il verso
 ~ x > \evidb{-3} :: semplifico
 
-?? Da $-3x \le 12$ si ottiene…
+?? Da $-3x \le 12$ che cosa ottieni?
 [ ] $x \le -4$
 [x] $x \ge -4$
 [ ] $x \ge 4$
-=> Si divide per $-3$, che è negativo: il verso si capovolge, e $12 : (-3) = -4$. Quindi $x \ge -4$. $x \le -4$ dimentica il cambio di verso; $x \ge 4$ sbaglia il segno del risultato.
+=> Dividi per $-3$, che è negativo: il verso si capovolge. Poi $12 : (-3) = -4$. Chi scrive $x \le -4$ ha dimenticato il cambio di verso.
 
->! Dimenticare il cambio di verso quando si divide per un coefficiente negativo è l'errore più comune di tutto l'argomento. Prima di dividere, guarda il segno del numero per cui stai dividendo.` },
+>! Prima di dividere, guarda il segno del numero per cui dividi. Se è negativo, capovolgi il verso.` },
 
-    { id: 'disequazioni-intere', titolo: 'Disequazioni intere', testo: R`Una disequazione è **intera** quando la $x$ non sta in nessun denominatore. Si risolve come un'equazione: si tolgono le parentesi, si portano le $x$ da una parte e i numeri dall'altra, si riducono i termini simili. Alla fine resta la **forma normale** $ax > b$ (o con $<$, $\le$, $\ge$).
+    { id: 'disequazioni-intere', titolo: 'Disequazioni intere', testo: R`Una disequazione è **intera** se la $x$ non sta in nessun denominatore. Si risolve come un'equazione:
+
+1. Togli le parentesi.
+2. Porta le $x$ a sinistra e i numeri a destra.
+3. Somma i termini simili. Ottieni $ax > b$ (o con $<$, $\le$, $\ge$).
+4. Dividi per $a$. Se $a$ è negativo, capovolgi il verso.
 
 ~ 3(x - 2) \le 5x + 4 :: si parte da qui
 ~ 3x - 6 \le 5x + 4 :: tolgo la parentesi
 ~ 3x \evid{- 5x} \le 4 \evid{+ 6} :: $x$ a sinistra, numeri a destra: il verso non cambia
-~ \evid{-2x} \le \evid{10} :: riduco; il coefficiente della $x$ è negativo
+~ \evid{-2x} \le \evid{10} :: sommo i termini simili; il coefficiente è negativo
 ~ x \evid{\ge} \evidb{-5} :: divido per $-2$ e capovolgo il verso
 
-Controllo con un numero della soluzione, $x = 0$: $-6 \le 4$ ✓. E con uno fuori, $x = -6$: $-24 \le -26$ è falso, come deve essere.
+Controlla con un numero della soluzione. Con $x = 0$ viene $-6 \le 4$: vero ✓.
 
-L'ultimo passo dipende dal segno di $a$:
+### Quando la $x$ sparisce
 
-| coefficiente | che cosa fai | soluzione di $ax > b$ |
-|---|---|---|
-| $a > 0$ | divido, il verso resta | $x > \frac{b}{a}$ |
-| $a < 0$ | divido e capovolgo il verso | $x < \frac{b}{a}$ |
-| $a = 0$ | non si divide: la $x$ è sparita | un confronto fra numeri |
+Prendi $2(x + 3) > 2x - 1$. Togli la parentesi: $2x + 6 > 2x - 1$. Porta le $x$ a sinistra: spariscono, e resta $0 > -7$.
 
-Il caso $a = 0$ merita un esempio. In $2(x + 3) > 2x - 1$, togliendo la parentesi si ha $2x + 6 > 2x - 1$. Portando le $x$ a sinistra spariscono, e resta $0 > -7$: vero, qualunque sia $x$. La disequazione è **sempre verificata**, $S = \mathbb{R}$. Con $2(x - 1) > 2x + 5$ si arriva invece a $0 > 7$, falso per ogni $x$: la disequazione è **impossibile**, $S = \varnothing$.
+$0 > -7$ è vero per ogni $x$. La disequazione è **sempre verificata**: $S = \mathbb{R}$.
 
->* Una disequazione intera di primo grado può avere come soluzione un intervallo (il caso normale), tutto $\mathbb{R}$ (sempre verificata) oppure nessun numero, $S = \varnothing$ (impossibile).
+Con $2(x - 1) > 2x + 5$ resta invece $0 > 7$, che è falso. La disequazione è **impossibile**: $S = \varnothing$.
 
-?? Semplificando una disequazione arrivi a $0 \cdot x \ge 0$. La soluzione è…
+>* La soluzione può essere un intervallo, tutto $\mathbb{R}$ (sempre verificata) oppure nessun numero, $S = \varnothing$ (impossibile).
+
+?? Semplificando arrivi a $0 \cdot x \ge 0$. Qual è la soluzione?
 [x] $S = \mathbb{R}$: ogni numero va bene
 [ ] $S = \varnothing$
 [ ] $x \ge 0$
-=> $0 \cdot x$ vale $0$ per ogni $x$, e $0 \ge 0$ è vero: la disequazione è sempre verificata. Attenzione al simbolo: con $0 \cdot x > 0$ sarebbe stata impossibile, perché $0 > 0$ è falso. Chi scrive $x \ge 0$ ha diviso per zero.
+=> $0 \cdot x$ vale $0$ per ogni $x$, e $0 \ge 0$ è vero. Chi scrive $x \ge 0$ ha diviso per zero.
 
->! Quando la $x$ sparisce non hai sbagliato i calcoli: resta un confronto fra numeri, e la risposta è $\mathbb{R}$ se è vero, $\varnothing$ se è falso.` },
+>! Una $x$ che sparisce non è per forza un errore di calcolo. Guarda il confronto fra numeri che resta.` },
 
-    { id: 'sistemi', titolo: 'Sistemi di disequazioni', testo: R`Un **sistema di disequazioni** mette insieme due o più disequazioni che devono essere vere **tutte nello stesso momento**. Si scrive con la parentesi graffa, che si legge «e»:
+    { id: 'sistemi', titolo: 'Sistemi di disequazioni', testo: R`Un **sistema di disequazioni** mette insieme più disequazioni. Devono essere vere **tutte insieme**. La parentesi graffa si legge «e»:
 
 $$\begin{cases} 2x - 3 > -7 \\ -x + 5 \ge -3 \end{cases}$$
 
-Si risolve ogni disequazione per conto suo, poi si disegnano le soluzioni una sotto l'altra sulla retta reale e si prende la parte **comune**, che si chiama **intersezione**.
+1. Risolvi ogni disequazione da sola.
+2. Disegna le soluzioni una sotto l'altra sulla retta reale.
+3. Prendi la parte comune: si chiama **intersezione**.
 
-- Prima disequazione: $2x > -4$, quindi $x > -2$.
-- Seconda disequazione: $-x \ge -8$; divido per $-1$ e capovolgo il verso: $x \le 8$.
+Qui la prima dà $2x > -4$, cioè $x > -2$. La seconda dà $-x \ge -8$. Dividi per $-1$ e capovolgi il verso: $x \le 8$.
 
 [[grafico:sistemaIntersezione]]
 
 La parte comune va da $-2$ escluso a $8$ incluso: $-2 < x \le 8$.
 
->* La soluzione di un sistema è l'**intersezione** delle soluzioni: un numero va bene solo se soddisfa **tutte** le disequazioni.
+>* La soluzione di un sistema è l'**intersezione** delle soluzioni. Un numero va bene solo se rende vere **tutte** le disequazioni.
 
-Se gli intervalli non hanno nessun tratto in comune, il sistema non ha soluzioni. Con $x > 4$ e $x < 1$, per esempio, nessun numero è insieme maggiore di $4$ e minore di $1$: $S = \varnothing$.
+Con $x > 4$ e $x < 1$ la parte comune non c'è: $S = \varnothing$.
 
-?? Il sistema formato da $x \ge 2$ e $x < 6$ ha soluzione…
+?? Quale soluzione ha il sistema di $x \ge 2$ e $x < 6$?
 [x] $2 \le x < 6$
 [ ] tutti i numeri reali
 [ ] $x \ge 2$
-=> Servono tutte e due le condizioni: $x$ deve essere almeno $2$ **e** minore di $6$. «Tutti i numeri reali» è l'unione dei due intervalli (ogni numero ne soddisfa almeno una), che risponde a un'altra domanda. Rispondere $x \ge 2$ vuol dire dimenticare la condizione $x < 6$.
+=> Servono tutte e due le condizioni: $x$ almeno $2$ **e** minore di $6$. «Tutti i numeri reali» mette insieme i due intervalli, invece di prendere la parte comune.
 
->! Unire gli intervalli invece di intersecarli è l'errore tipico: l'unione prende i numeri che vanno bene ad **almeno una** disequazione, ma il sistema li vuole buoni per **tutte**.` },
+>! L'errore tipico è unire gli intervalli. Il sistema vuole solo i numeri buoni per **tutte** le disequazioni.` },
 
-    { id: 'fratte-prodotto', titolo: 'Disequazioni fratte e disequazioni prodotto', testo: R`Come si risolve $(x + 1)(x - 3) < 0$? Non serve svolgere il prodotto: basta sapere il **segno** di ciascun fattore, perché il segno di un prodotto è il prodotto dei segni (meno per meno fa più). Una disequazione così si chiama **disequazione prodotto**.
+    { id: 'fratte-prodotto', titolo: 'Disequazioni fratte e disequazioni prodotto', testo: R`Guarda $(x + 1)(x - 3) < 0$. È una **disequazione prodotto**. Non serve svolgere il prodotto: basta il **segno** di ogni fattore. Meno per meno fa più, meno per più fa meno.
 
-1. Trova dove si annulla ogni fattore: $x + 1 = 0$ per $x = -1$, $x - 3 = 0$ per $x = 3$.
-2. Questi valori tagliano la retta in intervalli; dentro ciascuno, ogni fattore ha sempre lo stesso segno.
-3. Costruisci la **tabella dei segni** e moltiplica i segni in ogni colonna.
+1. Trova dove si annulla ogni fattore: $x = -1$ e $x = 3$.
+2. Questi numeri tagliano la retta in intervalli. In ogni intervallo, ogni fattore ha sempre lo stesso segno.
+3. Fai la **tabella dei segni** e moltiplica i segni in ogni colonna.
 
 | | $x < -1$ | $-1 < x < 3$ | $x > 3$ |
 |---|---|---|---|
@@ -165,11 +192,13 @@ Se gli intervalli non hanno nessun tratto in comune, il sistema non ha soluzioni
 
 Il prodotto è negativo solo nel tratto centrale: $-1 < x < 3$.
 
-Una **disequazione fratta** ha la $x$ anche al denominatore, come $\dfrac{x - 2}{x - 4} \ge 0$. Viene voglia di moltiplicare per $x - 4$ e liberarsene, ma non si può: il segno di $x - 4$ dipende da $x$, e se fosse negativo il verso andrebbe capovolto. Non sapendo se capovolgerlo, si sbaglia.
+### Disequazioni fratte
 
->* **Disequazione fratta:** porta tutto a un membro, in modo da avere una sola frazione confrontata con $0$. Poi studia il segno di numeratore e denominatore con la tabella, come per un prodotto. Il valore che annulla il denominatore è **sempre escluso**.
+Una **disequazione fratta** ha la $x$ anche al denominatore, come $\dfrac{x - 2}{x - 4} \ge 0$.
 
-Per $\dfrac{x - 2}{x - 4} \ge 0$ il numeratore si annulla in $2$, il denominatore in $4$:
+>* **Disequazione fratta.** Porta tutto a sinistra: una sola frazione, confrontata con $0$. Poi fai la tabella dei segni di numeratore e denominatore. Il numero che annulla il denominatore è **sempre escluso**.
+
+Qui il numeratore si annulla in $2$, il denominatore in $4$:
 
 | | $x < 2$ | $2 < x < 4$ | $x > 4$ |
 |---|---|---|---|
@@ -177,19 +206,21 @@ Per $\dfrac{x - 2}{x - 4} \ge 0$ il numeratore si annulla in $2$, il denominator
 | $x - 4$ | $-$ | $-$ | $+$ |
 | frazione | $+$ | $-$ | $+$ |
 
-La frazione è positiva per $x < 2$ e per $x > 4$. Il simbolo è $\ge$, quindi vanno bene anche i punti dove la frazione vale $0$: in $x = 2$ sì, perché lì si annulla il numeratore; in $x = 4$ no, perché lì la frazione non esiste. Soluzione: $x \le 2$ oppure $x > 4$.
+La frazione è positiva per $x < 2$ e per $x > 4$. Il simbolo è $\ge$, quindi va bene anche la frazione uguale a $0$.
 
-?? In $\dfrac{x + 5}{x - 1} \le 0$, gli estremi $-5$ e $1$ sono…
+In $x = 2$ la frazione vale $0$: incluso. In $x = 4$ la frazione non esiste: escluso. Soluzione: $x \le 2$ oppure $x > 4$.
+
+?? In $\dfrac{x + 5}{x - 1} \le 0$, come sono gli estremi $-5$ e $1$?
 [x] $-5$ incluso, $1$ escluso
-[ ] tutti e due inclusi, perché il simbolo è $\le$
+[ ] tutti e due inclusi
 [ ] tutti e due esclusi
-=> In $-5$ la frazione vale $0$, e $0 \le 0$ è vero: incluso. In $1$ il denominatore si annulla e la frazione non esiste: escluso, qualunque sia il simbolo. La soluzione è $-5 \le x < 1$.
+=> In $-5$ la frazione vale $0$: incluso. In $1$ il denominatore vale $0$: escluso, con qualunque simbolo. Soluzione: $-5 \le x < 1$.
 
->! Mai moltiplicare i due membri per un denominatore che contiene la $x$: non ne conosci il segno, quindi non sai se il verso va capovolto.` },
+>! Mai moltiplicare per un denominatore che contiene la $x$. Non ne conosci il segno, quindi non sai se capovolgere il verso.` },
 
-    { id: 'letterali', titolo: 'Disequazioni letterali', testo: R`In $kx > 3$ la lettera $k$ è un **parametro**: un numero fissato che però non conosci. La soluzione cambia a seconda di quanto vale $k$, e **discutere** la disequazione vuol dire dare la risposta per ogni valore possibile.
+    { id: 'letterali', titolo: 'Disequazioni letterali', testo: R`In $kx > 3$ la lettera $k$ è un **parametro**: un numero fisso, ma che non conosci. La soluzione cambia con $k$. **Discutere** la disequazione vuol dire dare la soluzione per ogni valore di $k$.
 
-Per isolare la $x$ devi dividere per $k$, e qui c'è il bivio: il verso resta o si capovolge a seconda del segno di $k$, e se $k = 0$ non puoi dividere affatto.
+Per isolare la $x$ devi dividere per $k$. Il verso dipende dal segno di $k$. E con $k = 0$ non puoi dividere.
 
 | valore di $k$ | che cosa fai | soluzione |
 |---|---|---|
@@ -197,21 +228,26 @@ Per isolare la $x$ devi dividere per $k$, e qui c'è il bivio: il verso resta o 
 | $k < 0$ | divido e capovolgo il verso | $x < \frac{3}{k}$ |
 | $k = 0$ | resta $0 > 3$, falso | nessuna: $S = \varnothing$ |
 
->* In una disequazione letterale $kx > c$ si distinguono sempre tre casi: $k > 0$ (verso invariato), $k < 0$ (verso capovolto), $k = 0$ (la $x$ sparisce e resta un confronto fra numeri).
+Prova con due valori. Con $k = 3$: $3x > 3$, cioè $x > 1$. Con $k = -3$: $-3x > 3$. Dividi per $-3$ e ottieni $x < -1$ ✓.
 
-Controllo con due valori. Con $k = 3$: $3x > 3$, cioè $x > 1$, e infatti $\frac{3}{3} = 1$. Con $k = -3$: $-3x > 3$, e dividendo per $-3$ si ha $x < -1$, come dice la tabella: $\frac{3}{-3} = -1$. ✓
+>* In $kx > c$ ci sono sempre tre casi: $k > 0$ (il verso resta), $k < 0$ (il verso si capovolge), $k = 0$ (la $x$ sparisce).
 
-?? Nella disequazione $(a - 1)\,x < 5$, per quali valori di $a$ la soluzione è $x > \frac{5}{a - 1}$?
+?? In $(a - 1)\,x < 5$, per quali $a$ la soluzione è $x > \frac{5}{a - 1}$?
 [x] per $a < 1$
 [ ] per $a > 1$
 [ ] per $a \ne 1$
-=> Il verso si capovolge quando si divide per un numero negativo, cioè quando $a - 1 < 0$, $a < 1$. Per $a > 1$ il verso resta: $x < \frac{5}{a - 1}$. «Per $a \ne 1$» mette insieme due casi che hanno risposte opposte.
+=> Il verso si capovolge quando dividi per un numero negativo. Qui succede se $a - 1 < 0$, cioè $a < 1$. Per $a > 1$ il verso resta.
 
->! Il caso in cui il coefficiente vale zero va trattato a parte: non è un sottocaso di «positivo» o «negativo». E scrivere solo $x > \frac{3}{k}$, senza dire per quali $k$ vale, è una risposta incompleta.` },
+>! Il caso $k = 0$ va sempre trattato a parte. E una risposta come $x > \frac{3}{k}$, senza dire per quali $k$, è incompleta.` },
 
-    { id: 'problemi', titolo: 'Problemi con le disequazioni', testo: R`Molti problemi non chiedono un valore preciso ma un margine: quante magliette puoi comprare al massimo con un certo budget, quanti punti ti servono almeno per la sufficienza. Sono problemi da disequazione.
+    { id: 'problemi', titolo: 'Problemi con le disequazioni', testo: R`«Quante magliette posso comprare al massimo?» «Quanti punti mi servono almeno?» Sono problemi da disequazione.
 
-Lo schema è quello delle equazioni: scegli l'incognita, traduci le condizioni del testo, risolvi, e alla fine controlla che la soluzione **abbia senso** nel problema. La traduzione passa da poche parole chiave:
+1. Scegli l'incognita.
+2. Traduci il testo in una disequazione.
+3. Risolvi.
+4. Controlla che la soluzione **abbia senso** nel problema.
+
+Per tradurre, guarda le parole chiave:
 
 | il testo dice | si scrive |
 |---|---|
@@ -220,23 +256,23 @@ Lo schema è quello delle equazioni: scegli l'incognita, traduci le condizioni d
 | almeno, non meno di | $\ge$ |
 | meno di | $<$ |
 
-Esempio: *la somma fra il triplo di un numero naturale e $5$ non supera $20$. Quali numeri vanno bene?* Chiamo $x$ il numero.
+Esempio: *la somma fra il triplo di un numero naturale e $5$ non supera $20$.* Chiamo $x$ il numero.
 
 ~ 3x + 5 \le 20 :: «non supera» vuol dire «minore o uguale»
 ~ 3x \le \evid{15} :: porto il $5$ a destra
 ~ x \le \evidb{5} :: divido per $3$, che è positivo: il verso resta
 
-La disequazione dà tutti i numeri reali fino a $5$. Ma il testo parla di numeri **naturali**, quindi le risposte sono solo $0, 1, 2, 3, 4, 5$.
+La disequazione dà tutti i numeri fino a $5$. Ma il testo parla di numeri **naturali**. Quindi le risposte sono $0, 1, 2, 3, 4, 5$.
 
->* La disequazione dà un intervallo di numeri reali; sono le condizioni del problema (numeri naturali, quantità positive…) a dire quali di quei numeri hanno senso.
+>* La disequazione dà un intervallo. Il problema dice quali numeri dell'intervallo hanno senso: naturali, positivi e così via.
 
-?? «Per la sufficienza Giulia deve prendere almeno 18 punti.» Se $x$ sono i suoi punti, la condizione è…
+?? «Giulia deve prendere almeno 18 punti.» Se $x$ sono i suoi punti, quale condizione scrivi?
 [ ] $x > 18$
 [x] $x \ge 18$
 [ ] $x \le 18$
-=> «Almeno 18» vuol dire 18 o di più: anche $18$ va bene, quindi $\ge$. Con $>$ si escluderebbe proprio il $18$; $\le$ è la traduzione di «al massimo».
+=> «Almeno 18» vuol dire 18 o di più. Anche $18$ va bene, quindi $\ge$. Con $>$ escludi proprio il $18$.
 
->! Attento ai vincoli che il testo non scrive: una lunghezza non può essere negativa, un numero di persone non può avere la virgola. L'algebra da sola non lo sa.` }
+>! Attento ai vincoli che il testo non scrive. Una lunghezza è positiva. Un numero di persone è intero.` }
   ],
 
   grafici: {
@@ -373,6 +409,26 @@ La disequazione dà tutti i numeri reali fino a $5$. Ma il testo parla di numeri
   ],
 
   esercizi: [
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Risolvi $x + 3 > 7$. Scrivi la soluzione come nell'esempio della casella.`, suggerimenti: [R`Togli $3$ da tutti e due i membri.`], risposta: dis('>', 4), soluzione: [R`Tolgo $3$ ai due membri: $x > 7 - 3$.`, R`$x > 4$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Risolvi $x - 5 \le 2$. Per $\le$ scrivi *<=*.`, suggerimenti: [R`Somma $5$ a tutti e due i membri.`], risposta: dis('<=', 7), soluzione: [R`Sommo $5$ ai due membri: $x \le 2 + 5$.`, R`$x \le 7$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Risolvi $2x > 10$.`, suggerimenti: [R`Dividi per $2$. È positivo: il verso resta.`], risposta: dis('>', 5), soluzione: [R`Divido per $2$, che è positivo: il verso resta.`, R`$x > 5$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Risolvi $3x \le -12$.`, suggerimenti: [R`Dividi per $3$. Guarda il segno del $3$, non quello del $-12$.`], risposta: dis('<=', -4), soluzione: [R`Divido per $3$, che è positivo: il verso resta.`, R`$x \le -4$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Risolvi $-x > 3$.`, suggerimenti: [R`$-x$ vuol dire $-1 \cdot x$: dividi per $-1$.`, R`Dividi per un numero negativo: il verso si capovolge.`], risposta: dis('<', -3), soluzione: [R`Divido per $-1$, che è negativo: capovolgo il verso.`, R`$x < -3$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Risolvi $2x + 1 \ge 9$.`, suggerimenti: [R`Prima togli $1$ ai due membri, poi dividi per $2$.`], risposta: dis('>=', 4), soluzione: [R`Tolgo $1$: $2x \ge 8$.`, R`Divido per $2$, che è positivo: $x \ge 4$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Risolvi $-3x \ge 6$.`, suggerimenti: [R`Dividi per $-3$.`, R`È negativo: capovolgi il verso.`], risposta: dis('<=', -2), soluzione: [R`Divido per $-3$, che è negativo: capovolgo il verso.`, R`$x \le -2$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Risolvi $3x - 4 < 11$.`, suggerimenti: [R`Somma $4$ ai due membri.`], risposta: dis('<', 5), soluzione: [R`Sommo $4$: $3x < 15$.`, R`Divido per $3$, che è positivo: $x < 5$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Risolvi $5 - x > 2$.`, suggerimenti: [R`Togli $5$ ai due membri: resta $-x$ a sinistra.`, R`Poi dividi per $-1$ e capovolgi il verso.`], risposta: dis('<', 3), soluzione: [R`Tolgo $5$: $-x > -3$.`, R`Divido per $-1$ e capovolgo il verso: $x < 3$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Risolvi $-4x + 2 \le 14$.`, suggerimenti: [R`Togli $2$, poi dividi per $-4$.`, R`Dividi per un numero negativo: il verso si capovolge.`], risposta: dis('>=', -3), soluzione: [R`Tolgo $2$: $-4x \le 12$.`, R`Divido per $-4$ e capovolgo il verso: $x \ge -3$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 2, testo: R`Risolvi $3x + 2 > x + 8$. Se va bene ogni $x$ scrivi *R*; se nessuno, *nessuna*.`, suggerimenti: [R`Porta le $x$ a sinistra e i numeri a destra.`], risposta: dis('>', 3), soluzione: [R`Porto le $x$ a sinistra e i numeri a destra: $3x - x > 8 - 2$.`, R`Sommo i termini simili: $2x > 6$.`, R`Divido per $2$: $x > 3$.`] },
+    { id: 'b-12', livello: 'base', difficolta: 2, testo: R`Risolvi $5x - 1 \le 2x + 8$. Se va bene ogni $x$ scrivi *R*; se nessuno, *nessuna*.`, suggerimenti: [R`Porta le $x$ a sinistra e i numeri a destra.`], risposta: dis('<=', 3), soluzione: [R`$5x - 2x \le 8 + 1$.`, R`$3x \le 9$.`, R`Divido per $3$: $x \le 3$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Risolvi $x + 7 \ge 3x - 1$. Se va bene ogni $x$ scrivi *R*; se nessuno, *nessuna*.`, suggerimenti: [R`Porta le $x$ a sinistra: il coefficiente viene negativo.`, R`Quando dividi per un negativo, capovolgi il verso.`], risposta: dis('<=', 4), soluzione: [R`$x - 3x \ge -1 - 7$.`, R`$-2x \ge -8$.`, R`Divido per $-2$ e capovolgo il verso: $x \le 4$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Risolvi $2(x + 1) < 3x - 4$. Se va bene ogni $x$ scrivi *R*; se nessuno, *nessuna*.`, suggerimenti: [R`Togli la parentesi: $2x + 2$.`, R`Alla fine dividi per $-1$ e capovolgi il verso.`], risposta: dis('>', 6), soluzione: [R`Tolgo la parentesi: $2x + 2 < 3x - 4$.`, R`$2x - 3x < -4 - 2$, cioè $-x < -6$.`, R`Divido per $-1$ e capovolgo il verso: $x > 6$.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Risolvi $3(x - 2) \ge x + 4$. Se va bene ogni $x$ scrivi *R*; se nessuno, *nessuna*.`, suggerimenti: [R`Togli la parentesi: $3x - 6$.`], risposta: dis('>=', 5), soluzione: [R`Tolgo la parentesi: $3x - 6 \ge x + 4$.`, R`$3x - x \ge 4 + 6$, cioè $2x \ge 10$.`, R`Divido per $2$: $x \ge 5$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Risolvi $2(x + 3) > 2x + 1$. Se va bene ogni $x$ scrivi *R*; se nessuno, *nessuna*.`, suggerimenti: [R`Togli la parentesi e porta le $x$ a sinistra.`, R`Le $x$ spariscono: guarda se il confronto che resta è vero o falso.`], risposta: TUTTI, soluzione: [R`Tolgo la parentesi: $2x + 6 > 2x + 1$.`, R`Porto le $x$ a sinistra: $2x - 2x > 1 - 6$, cioè $0 > -5$.`, R`$0 > -5$ è vero per ogni $x$: $S = \mathbb{R}$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Risolvi $4(x - 1) \le 4x - 7$. Se va bene ogni $x$ scrivi *R*; se nessuno, *nessuna*.`, suggerimenti: [R`Togli la parentesi e porta le $x$ a sinistra.`, R`Le $x$ spariscono: guarda se il confronto che resta è vero o falso.`], risposta: NESSUNA, soluzione: [R`Tolgo la parentesi: $4x - 4 \le 4x - 7$.`, R`Porto le $x$ a sinistra: $4x - 4x \le -7 + 4$, cioè $0 \le -3$.`, R`$0 \le -3$ è falso per ogni $x$: nessuna soluzione, $S = \varnothing$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Risolvi $5 - 2(x - 1) > 1$. Se va bene ogni $x$ scrivi *R*; se nessuno, *nessuna*.`, suggerimenti: [R`Attento ai segni: $-2(x - 1) = -2x + 2$.`], risposta: dis('<', 3), soluzione: [R`Tolgo la parentesi: $5 - 2x + 2 > 1$.`, R`$-2x > 1 - 7$, cioè $-2x > -6$.`, R`Divido per $-2$ e capovolgo il verso: $x < 3$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Risolvi $4(x - 2) - (x + 1) > 5x + 3$. Se va bene ogni $x$ scrivi *R*; se nessuno, *nessuna*.`, suggerimenti: [R`Il meno davanti a $(x + 1)$ cambia segno a tutti e due i termini.`, R`Dopo le parentesi ottieni $3x - 9 > 5x + 3$.`], risposta: dis('<', -6), soluzione: [R`Tolgo le parentesi: $4x - 8 - x - 1 > 5x + 3$, cioè $3x - 9 > 5x + 3$.`, R`$3x - 5x > 3 + 9$, cioè $-2x > 12$.`, R`Divido per $-2$ e capovolgo il verso: $x < -6$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Risolvi $2(3 - x) \ge 3(x + 2) - 5$. Se va bene ogni $x$ scrivi *R*; se nessuno, *nessuna*.`, suggerimenti: [R`Togli le parentesi: a destra ottieni $3x + 1$.`, R`Porta le $x$ a sinistra: il coefficiente viene negativo.`], risposta: dis('<=', 1), soluzione: [R`Tolgo le parentesi: $6 - 2x \ge 3x + 6 - 5$, cioè $6 - 2x \ge 3x + 1$.`, R`$-2x - 3x \ge 1 - 6$, cioè $-5x \ge -5$.`, R`Divido per $-5$ e capovolgo il verso: $x \le 1$.`] },
     { id: 'es-01', difficolta: 1, testo: R`Risolvi $4x - 7 > 5$.`, suggerimenti: [R`Isola il termine con $x$ sommando $7$ a entrambi i membri.`, R`Dividi per $4$: è positivo, il verso non cambia.`], risposta: { tipo: 'intervallo', da: 3, a: 'inf', chiusoDa: false, chiusoA: false }, soluzione: [R`$4x - 7 > 5 \Rightarrow 4x > 12$.`, R`Divido per $4$ (positivo): $x > 3$.`] },
     { id: 'es-02', difficolta: 1, testo: R`Risolvi $-3x + 6 \ge 0$.`, suggerimenti: [R`Porta $-3x$ da solo a un membro.`, R`Dividi per $-3$: è negativo, il verso cambia.`], risposta: { tipo: 'intervallo', da: '-inf', a: 2, chiusoDa: false, chiusoA: true }, soluzione: [R`$-3x + 6 \ge 0 \Rightarrow -3x \ge -6$.`, R`Divido per $-3$ (negativo, il verso si capovolge): $x \le 2$.`] },
     { id: 'es-03', difficolta: 1, testo: R`Risolvi $2(x - 1) \le 3x + 4$.`, suggerimenti: [R`Svolgi la parentesi a sinistra.`, R`Porta tutte le $x$ da una parte e i numeri dall'altra.`], risposta: { tipo: 'intervallo', da: -6, a: 'inf', chiusoDa: true, chiusoA: false }, soluzione: [R`$2x - 2 \le 3x + 4$.`, R`$2x - 3x \le 4 + 2 \Rightarrow -x \le 6$.`, R`Divido per $-1$ (il verso cambia): $x \ge -6$.`] },
@@ -380,7 +436,7 @@ La disequazione dà tutti i numeri reali fino a $5$. Ma il testo parla di numeri
     { id: 'es-05', difficolta: 2, testo: R`Risolvi il sistema $\begin{cases} x > 3 \\ x < -1 \end{cases}$.`, suggerimenti: [R`Le due disequazioni sono già risolte: disegna entrambi gli intervalli sulla stessa retta.`, R`Cerca dove si sovrappongono.`], risposta: { tipo: 'testo', accettate: ['impossibile', 'nessuna soluzione', 'insieme vuoto', 'vuoto', '∅', 'nessuna'] }, soluzione: [R`Il primo intervallo è $x > 3$, il secondo $x < -1$: non hanno nessun punto in comune, perché non esiste un numero insieme maggiore di $3$ e minore di $-1$.`, R`Il sistema non ha soluzione: $S = \varnothing$.`] },
     { id: 'es-06', difficolta: 2, testo: R`Risolvi $(x + 1)(x - 3) < 0$.`, suggerimenti: [R`Trova gli zeri dei due fattori: $-1$ e $3$.`, R`Con il prodotto minore di zero, la soluzione è l'intervallo *tra* le due radici.`], risposta: { tipo: 'intervallo', da: -1, a: 3, chiusoDa: false, chiusoA: false }, soluzione: [R`Zeri dei fattori: $x = -1$ e $x = 3$.`, R`Per $x < -1$ entrambi i fattori sono negativi, prodotto positivo. Per $-1 < x < 3$ i fattori hanno segno discorde, prodotto negativo. Per $x > 3$ entrambi positivi, prodotto positivo.`, R`La disequazione chiede il prodotto negativo: $-1 < x < 3$.`] },
     { id: 'es-07', difficolta: 2, testo: R`Risolvi $\dfrac{x + 1}{x - 2} \le 0$.`, suggerimenti: [R`Zero del numeratore: $x = -1$ (incluso, perché il simbolo è $\le$). Zero del denominatore: $x = 2$ (sempre escluso).`, R`Costruisci la tabella dei segni tra questi due valori.`], risposta: { tipo: 'intervallo', da: -1, a: 2, chiusoDa: true, chiusoA: false }, soluzione: [R`Numeratore nullo in $x = -1$ (incluso), denominatore nullo in $x = 2$ (escluso).`, R`Per $x < -1$: numeratore negativo, denominatore negativo, frazione positiva. Per $-1 < x < 2$: numeratore positivo, denominatore negativo, frazione negativa. Per $x > 2$: entrambi positivi, frazione positiva.`, R`La disequazione chiede $\le 0$: soluzione $-1 \le x < 2$.`] },
-    { id: 'es-08', difficolta: 3, testo: R`Risolvi $\dfrac{(x - 1)(x + 2)}{x - 4} \ge 0$.`, suggerimenti: [R`Trova prima gli zeri di ciascun fattore: $x = 1$, $x = -2$ al numeratore, $x = 4$ al denominatore.`, R`Costruisci la tabella dei segni con questi tre valori come confini degli intervalli.`, R`Il denominatore nullo va sempre escluso, anche se il verso è $\ge$: controlla dov'è.`], risposta: { tipo: 'testo', accettate: ['-2<=x<=1 o x>4', '-2≤x≤1 o x>4', 'x>4 o -2<=x<=1', '[-2,1]∪(4,+inf)', '[-2;1]u]4;+inf[', '-2<=x<=1 v x>4'] }, soluzione: [R`Zeri: numeratore in $x = -2$ e $x = 1$ (inclusi), denominatore in $x = 4$ (escluso).`, R`Tabella dei segni: per $x < -2$ il quoziente è negativo; per $-2 < x < 1$ è positivo; per $1 < x < 4$ è negativo; per $x > 4$ è positivo.`, R`La disequazione chiede $\ge 0$: soluzione $-2 \le x \le 1$ oppure $x > 4$, con $x = 4$ sempre escluso.`] },
+    { id: 'es-08', difficolta: 3, testo: R`Risolvi $\dfrac{(x - 1)(x + 2)}{x - 4} \ge 0$.`, suggerimenti: [R`Trova prima gli zeri di ciascun fattore: $x = 1$, $x = -2$ al numeratore, $x = 4$ al denominatore.`, R`Costruisci la tabella dei segni con questi tre valori come confini degli intervalli.`, R`Il denominatore nullo va sempre escluso, anche se il verso è $\ge$: controlla dov'è.`], risposta: { tipo: 'testo', accettate: ['-2<=x<=1 o x>4', '-2≤x≤1 o x>4', 'x>4 o -2<=x<=1', '-2<=x<=1 oppure x>4', 'x>4 oppure -2<=x<=1', '-2<=x<=1 ∨ x>4', '-2<=x<=1 v x>4', '[-2,1]∪(4,+inf)', '[-2;1]∪(4;+inf)', '[-2,1]∪]4,+inf[', '[-2;1]∪]4;+inf[', '[-2;1]u]4;+inf[', '[-2,1]u(4,+inf)', '[-2;1]u(4;+inf)', '[-2,1]∪(4,+∞)', '[-2;1]∪(4;+∞)', '[-2,1]∪]4,+∞[', '[-2;1]∪]4;+∞['] }, soluzione: [R`Zeri: numeratore in $x = -2$ e $x = 1$ (inclusi), denominatore in $x = 4$ (escluso).`, R`Tabella dei segni: per $x < -2$ il quoziente è negativo; per $-2 < x < 1$ è positivo; per $1 < x < 4$ è negativo; per $x > 4$ è positivo.`, R`La disequazione chiede $\ge 0$: soluzione $-2 \le x \le 1$ oppure $x > 4$, con $x = 4$ sempre escluso.`] },
     { id: 'es-09', difficolta: 3, testo: R`Risolvi al variare del parametro $k$ la disequazione $(k - 2)x \le 3$.`, suggerimenti: [R`Isola $x$ dividendo per il coefficiente $k - 2$: il primo bivio è il suo segno.`, R`Distingui tre casi: $k > 2$, $k < 2$, $k = 2$.`, R`Nel caso $k = 2$ il coefficiente si annulla: che cosa resta dell'incognita?`], soluzione: [R`Se $k > 2$ (cioè $k - 2 > 0$): dividendo per un positivo il verso non cambia, $x \le \dfrac{3}{k - 2}$.`, R`Se $k < 2$ (cioè $k - 2 < 0$): dividendo per un negativo il verso cambia, $x \ge \dfrac{3}{k - 2}$.`, R`Se $k = 2$: il coefficiente è $0$, resta $0 \le 3$, sempre vero: la soluzione è $\mathbb{R}$, qualunque $x$.`] },
     { id: 'es-10', difficolta: 3, testo: R`In un rettangolo la base supera l'altezza di $3\ \text{cm}$. Sapendo che il perimetro non deve superare $46\ \text{cm}$, quali valori può assumere l'altezza?`, suggerimenti: [R`Chiama $x$ l'altezza: la base è $x + 3$.`, R`Il perimetro di un rettangolo è il doppio della somma di base e altezza.`, R`Non dimenticare che anche l'altezza deve essere positiva.`], risposta: { tipo: 'intervallo', da: 0, a: 10, chiusoDa: false, chiusoA: true }, soluzione: [R`Altezza $x$, base $x + 3$. Perimetro: $2(x + (x + 3)) = 4x + 6$.`, R`Condizione: $4x + 6 \le 46$, cioè $4x \le 40$, $x \le 10$.`, R`In più l'altezza deve essere positiva: $x > 0$. Insieme: $0 < x \le 10\ \text{cm}$.`] }
   ],

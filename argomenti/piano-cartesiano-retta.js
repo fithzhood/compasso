@@ -1,32 +1,72 @@
 (function () {
 const R = String.raw;
+/* allenamento: coppie (x; y) in ordine, numeri, ed equazioni di rette */
+const SEGNA_P = 'es. 2; -1';
+const cop = (x, y) => ({ tipo: 'numeri', valori: [x, y], ordinati: true, segnaposto: SEGNA_P });
+const num = (v, segna) => ({ tipo: 'numero', valore: v, tolleranza: 0.01, segnaposto: segna || 'es. -3/2' });
+/* la retta ax + by + c = 0 (a, b, c interi) in tutte le forme ragionevoli: y = mx + q anche con q davanti,
+   m frazionario come 1/2x, x/2, (1/2)x o 0.5x; forma implicita con i due segni, e con il termine noto a destra.
+   La casella toglie gli spazi e legge − come -, quindi basta una forma senza spazi. */
+const mcd = (p, q) => q ? mcd(q, p % q) : Math.abs(p);
+const frazione = (n, d) => { if (d < 0) { n = -n; d = -d; } const g = mcd(n, d) || 1; return { n: n / g, d: d / g }; };
+const decimale = (a, d) => { const v = a / d; return String(v).length <= 5 ? [String(v)] : []; };
+const noto = f => { const s = f.n < 0 ? '-' : '', a = Math.abs(f.n); return f.d === 1 ? [s + a] : [s + a + '/' + f.d].concat(decimale(a, f.d).map(v => s + v)); };
+const perX = f => { const s = f.n < 0 ? '-' : '', a = Math.abs(f.n);
+  if (f.d === 1) return a === 1 ? [s + 'x', s + '1x'] : [s + a + 'x'];
+  return [s + a + '/' + f.d + 'x', s + (a === 1 ? '' : a) + 'x/' + f.d, s + '(' + a + '/' + f.d + ')x'].concat(s ? ['(-' + a + '/' + f.d + ')x'] : [],decimale(a, f.d).map(v => s + v + 'x')); };
+const segno = t => (t[0] === '-' ? t : '+' + t);
+function retta(a, b, c) {
+  const acc = [];
+  if (b === 0) noto(frazione(-c, a)).forEach(k => acc.push('x=' + k));
+  else {
+    const m = frazione(-a, b), q = frazione(-c, b);
+    const mx = m.n === 0 ? [''] : perX(m), qq = q.n === 0 ? [''] : noto(q);
+    mx.forEach(t => qq.forEach(k => {
+      if (!t) acc.push('y=' + (k || '0'));
+      else { acc.push('y=' + t + (k ? segno(k) : '')); if (k) acc.push('y=' + k + segno(t)); }
+    }));
+  }
+  const g = mcd(mcd(a, b), c) || 1;
+  [1, -1].forEach(s => {
+    const A = s * a / g, B = s * b / g, C = s * c / g;
+    const t = [];
+    if (A) t.push(A === 1 ? 'x' : A === -1 ? '-x' : A + 'x');
+    if (B) t.push(B === 1 ? 'y' : B === -1 ? '-y' : B + 'y');
+    const sx = t.map((u, i) => (i ? segno(u) : u)).join('');
+    acc.push(sx + (C ? segno(String(C)) : '') + '=0');
+    acc.push(sx + '=' + (C ? -C : 0));
+  });
+  return { tipo: 'testo', accettate: Array.from(new Set(acc)), segnaposto: 'es. y = 2x − 1', simboli: ['=', 'x', 'y', '+', '−', '/', '(', ')'] };
+}
 COMPASSO.registra({
   id: 'piano-cartesiano-retta',
   titolo: 'Piano cartesiano e retta',
 
-  introduzione: R`Un taxi costa $3$ euro alla partenza più $1{,}50$ euro per ogni chilometro. Dopo $x$ chilometri il prezzo è $y = 1{,}5x + 3$. Se segni su un foglio a quadretti i punti $(x; y)$ per $x = 0, 1, 2, 3, \ldots$, li trovi tutti allineati: l'equazione disegna una **retta**.
+  introduzione: R`Un taxi costa $3$ euro alla partenza più $1{,}50$ euro al chilometro. Dopo $x$ chilometri il prezzo è $y = 1{,}5x + 3$. Segna su un foglio a quadretti i punti $(x; y)$ per $x = 0, 1, 2, 3, \ldots$: sono tutti allineati. L'equazione disegna una **retta**.
 
-Il **piano cartesiano** serve proprio a questo. Con due assi perpendicolari ogni punto diventa una coppia di numeri, le sue coordinate, e ogni retta diventa un'equazione di primo grado in $x$ e $y$. Così le domande di geometria si risolvono con i conti: quanto sono lontani due punti, se due rette sono perpendicolari, dove si incontrano.
+Nel **piano cartesiano** ogni punto diventa una coppia di numeri, le sue coordinate. Ogni retta diventa un'equazione di primo grado in $x$ e $y$. Così i problemi di geometria si risolvono con i conti.
 
-Servono le equazioni di primo grado e i sistemi lineari: dove due rette si incontrano c'è sempre un sistema da risolvere.`,
+Servono le equazioni di primo grado e i sistemi lineari.`,
 
   inBreve: [
-    R`Un punto si scrive $P(x; y)$: prima l'ascissa, che dice quanto andare a destra o a sinistra, poi l'ordinata, che dice quanto salire o scendere.`,
-    R`La distanza fra due punti è Pitagora sui cateti $\Delta x$ e $\Delta y$; il punto medio si trova facendo la media delle ascisse e la media delle ordinate.`,
-    R`In $y = mx + q$, $q$ è dove la retta taglia l'asse $y$ e $m$ è quanto sale la retta per ogni passo verso destra: $m = \dfrac{\Delta y}{\Delta x}$.`,
-    R`Le rette verticali, $x = k$, non hanno coefficiente angolare e non si scrivono nella forma $y = mx + q$.`,
-    R`Rette parallele hanno lo stesso $m$; rette perpendicolari hanno $m_1 \cdot m_2 = -1$, cioè una ha il coefficiente opposto e reciproco dell'altra.`,
-    R`Dove due rette si incontrano c'è la soluzione del sistema fra le loro equazioni; per la distanza di un punto da una retta la retta va scritta nella forma $ax + by + c = 0$.`
+    R`Un punto si scrive $P(x; y)$. Prima l'ascissa, che dice quanto andare a destra o a sinistra. Poi l'ordinata, che dice quanto salire o scendere.`,
+    R`La distanza fra due punti è Pitagora sui cateti $\Delta x$ e $\Delta y$. Il punto medio ha per coordinate la media delle ascisse e la media delle ordinate.`,
+    R`In $y = mx + q$, $q$ è dove la retta taglia l'asse $y$. $m$ è quanto sale la retta a ogni passo verso destra: $m = \dfrac{\Delta y}{\Delta x}$.`,
+    R`Le rette verticali, $x = k$, non hanno coefficiente angolare.`,
+    R`Rette parallele hanno lo stesso $m$. Rette perpendicolari hanno $m_1 \cdot m_2 = -1$: una ha il coefficiente opposto e reciproco dell'altra.`,
+    R`Dove due rette si incontrano c'è la soluzione del loro sistema. Per la distanza di un punto da una retta, scrivi la retta come $ax + by + c = 0$.`
   ],
 
   sezioni: [
-    { id: 'coordinate-piano', titolo: 'Le coordinate e i quadranti', testo: R`Come si spiega a qualcuno dove sta un punto su un foglio? Si fissa un punto di partenza, l'**origine** $O$, e si dice quanti passi fare verso destra (o sinistra) e quanti verso l'alto (o il basso). Le due direzioni sono due rette perpendicolari che passano per $O$: quella orizzontale è l'asse delle **ascisse**, o asse $x$; quella verticale è l'asse delle **ordinate**, o asse $y$.
+    { id: 'coordinate-piano', titolo: 'Le coordinate e i quadranti', testo: R`Per dire dove sta un punto su un foglio, fissa un punto di partenza: l'**origine** $O$. Poi di' quanti passi fare a destra o a sinistra, e quanti in su o in giù.
 
-Il punto $P(3; -2)$ si raggiunge partendo da $O$, facendo $3$ passi verso destra e poi $2$ verso il basso. I due numeri sono le **coordinate** di $P$: $3$ è l'ascissa, $-2$ l'ordinata.
+Le due direzioni sono due rette perpendicolari che passano per $O$. Quella orizzontale è l'asse delle ascisse, o **asse $x$**. Quella verticale è l'asse delle ordinate, o **asse $y$**.
 
->* Le coordinate si scrivono sempre nell'ordine (ascissa; ordinata). $P(3; -2)$ e $Q(-2; 3)$ sono due punti diversi, anche se contengono gli stessi numeri.
+Per arrivare a $P(3; -2)$ parti da $O$, fai $3$ passi a destra e poi $2$ in giù. I due numeri sono le **coordinate** di $P$: $3$ è l'ascissa, $-2$ l'ordinata.
 
-I due assi dividono il piano in quattro regioni, i **quadranti**, numerati in senso antiorario a partire da quello in alto a destra:
+>* Le coordinate si scrivono sempre nell'ordine (ascissa; ordinata). $P(3; -2)$ e $Q(-2; 3)$ sono due punti diversi.
+
+I due assi dividono il piano in quattro **quadranti**. Si contano in senso antiorario, partendo da quello in alto a destra.
 
 | Quadrante | segno di $x$ | segno di $y$ |
 |---|---|---|
@@ -35,19 +75,19 @@ I due assi dividono il piano in quattro regioni, i **quadranti**, numerati in se
 | III | − | − |
 | IV | + | − |
 
-Per esempio, $A(2; 5)$ sta nel primo quadrante, $B(-4; 1)$ nel secondo, $C(-3; -3)$ nel terzo e $D(6; -2)$ nel quarto. Contano solo i segni: anche $(-100; 5)$ sta nel secondo.
+Contano solo i segni: $(-4; 1)$ e $(-100; 5)$ stanno tutti e due nel secondo quadrante.
 
-Un punto con $x = 0$ non si sposta né a destra né a sinistra, quindi sta **sull'asse $y$**. Un punto con $y = 0$ sta **sull'asse $x$**. I punti sugli assi non appartengono a nessun quadrante; l'origine $O(0; 0)$ sta su tutti e due gli assi.
+Un punto con $y = 0$ sta **sull'asse $x$**, uno con $x = 0$ sta **sull'asse $y$**. I punti sugli assi non stanno in nessun quadrante.
 
 ?? In quale quadrante sta il punto $(0; -3)$?
 [x] in nessuno: sta sull'asse $y$
 [ ] nel terzo
 [ ] nel quarto
-=> L'ascissa è $0$: partendo dall'origine non ci si sposta di lato, si scende soltanto di $3$. Il punto sta sull'asse $y$, al confine fra terzo e quarto quadrante, e non appartiene a nessuno dei due.
+=> L'ascissa è $0$: non ti sposti di lato, scendi soltanto di $3$. Il punto sta sull'asse $y$, quindi non appartiene a nessun quadrante.
 
->! Si scambiano spesso gli assi: «$x = 0$» fa pensare all'asse $x$, invece descrive i punti dell'asse $y$. Pensa ai passi: $x = 0$ vuol dire zero passi di lato.` },
+>! «$x = 0$» fa pensare all'asse $x$, invece descrive l'asse $y$. Pensa ai passi: $x = 0$ vuol dire zero passi di lato.` },
 
-    { id: 'distanza-punto-medio', titolo: 'Distanza fra due punti, punto medio e baricentro', testo: R`Quanto dista $A(1; -2)$ da $B(5; 1)$? Per andare da $A$ a $B$ lungo la griglia fai $4$ passi a destra e $3$ in su. Questi due spostamenti sono i cateti di un triangolo rettangolo che ha per ipotenusa proprio il segmento $AB$, e la sua lunghezza la dà il teorema di Pitagora.
+    { id: 'distanza-punto-medio', titolo: 'Distanza fra due punti, punto medio e baricentro', testo: R`Quanto dista $A(1; -2)$ da $B(5; 1)$? Da $A$ a $B$ fai $4$ passi a destra e $3$ in su. Sono i cateti di un triangolo rettangolo con ipotenusa $AB$: usa Pitagora.
 
 ~ A(1; -2),\quad B(5; 1) :: i due punti
 ~ \Delta x = 5 - 1 = \evid{4}, \quad \Delta y = 1 - (-2) = \evid{3} :: spostamento orizzontale e verticale: sempre «arrivo meno partenza»
@@ -56,7 +96,9 @@ Un punto con $x = 0$ non si sposta né a destra né a sinistra, quindi sta **sul
 
 >* **Distanza fra due punti.** $$\overline{AB} = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$$ Il quadrato rende positivo ogni cateto, quindi l'ordine dei punti non conta.
 
-Il **punto medio** $M$ del segmento $AB$ sta a metà strada sia in orizzontale sia in verticale. Le sue coordinate sono la media delle ascisse e la media delle ordinate degli estremi.
+>! Le differenze vanno al quadrato **prima** di sommarle: $\sqrt{4^2 + 3^2} = 5$. Invece $4 + 3 = 7$ è la strada lungo la griglia, non la distanza.
+
+Il **punto medio** $M$ di $AB$ ha per coordinate la media delle ascisse e la media delle ordinate.
 
 >* **Punto medio.** $$M\left(\dfrac{x_A + x_B}{2};\ \dfrac{y_A + y_B}{2}\right)$$
 
@@ -64,60 +106,58 @@ Il **punto medio** $M$ del segmento $AB$ sta a metà strada sia in orizzontale s
 [x] $(2; 2)$
 [ ] $(4; -2)$
 [ ] $(4; 4)$
-=> Media delle ascisse $\dfrac{-2 + 6}{2} = 2$, media delle ordinate $\dfrac{4 + 0}{2} = 2$. Chi trova $(4; -2)$ ha diviso per $2$ la **differenza** delle coordinate, che serve per la distanza ma non per il punto medio: nella formula del punto medio c'è una somma.
+=> Media delle ascisse $\dfrac{-2 + 6}{2} = 2$, media delle ordinate $\dfrac{4 + 0}{2} = 2$. Chi trova $(4; -2)$ ha diviso per $2$ la **differenza** delle coordinate. Nel punto medio invece c'è una somma.
 
-La stessa idea con tre punti dà il **baricentro** $G$ di un triangolo $ABC$. È il punto in cui si incontrano le tre **mediane**, cioè i segmenti che uniscono ogni vertice al punto medio del lato opposto. Le sue coordinate sono la media di quelle dei tre vertici.
+Con tre punti la stessa idea dà il **baricentro** $G$ di un triangolo $ABC$. È il punto dove si incontrano le tre **mediane**. Una mediana unisce un vertice al punto medio del lato opposto.
 
 >* **Baricentro.** $$G\left(\dfrac{x_A + x_B + x_C}{3};\ \dfrac{y_A + y_B + y_C}{3}\right)$$ Su ogni mediana il baricentro sta a due terzi della strada dal vertice.
 
-Per esempio, con $A(-4; -2)$, $B(4; -2)$ e $C(0; 4)$: $G\left(\dfrac{-4 + 4 + 0}{3}; \dfrac{-2 - 2 + 4}{3}\right) = G(0; 0)$.
+Per esempio, con $A(-4; -2)$, $B(4; -2)$ e $C(0; 4)$: $G\left(\dfrac{-4 + 4 + 0}{3}; \dfrac{-2 - 2 + 4}{3}\right) = G(0; 0)$.` },
 
->! Nella distanza le differenze si elevano al quadrato **prima** di sommarle: $\sqrt{4^2 + 3^2} = 5$, mentre $4 + 3 = 7$ è la strada fatta lungo la griglia, non la distanza in linea d'aria.` },
+    { id: 'equazione-retta', titolo: 'L\'equazione della retta', testo: R`Prendi $y = 2x + 1$ e dai a $x$ i valori $0$, $1$ e $2$. Trovi i punti $(0; 1)$, $(1; 3)$ e $(2; 5)$, che sono allineati.
 
-    { id: 'equazione-retta', titolo: 'L\'equazione della retta', testo: R`Prendi l'equazione $y = 2x + 1$ e dai a $x$ qualche valore: $x = 0$ dà $y = 1$, $x = 1$ dà $y = 3$, $x = 2$ dà $y = 5$. I punti $(0; 1)$, $(1; 3)$, $(2; 5)$ sono allineati, e ogni altra coppia che soddisfa l'equazione sta sulla stessa retta. Vale sempre: un'equazione di primo grado in $x$ e $y$ rappresenta una retta, e un punto sta sulla retta se e solo se le sue coordinate soddisfano l'equazione.
+Vale sempre: un'equazione di primo grado in $x$ e $y$ è una retta. Un punto sta sulla retta quando le sue coordinate rendono vera l'equazione.
 
-La scrittura più comoda è la **forma esplicita**, con la $y$ da sola:
-
->* **Forma esplicita.** $$y = mx + q$$ $q$ è l'**ordinata all'origine**: il valore di $y$ per $x = 0$, cioè il punto $(0; q)$ dove la retta taglia l'asse $y$. $m$ è il **coefficiente angolare**: di quanto cresce $y$ quando $x$ aumenta di $1$.
+>* **Forma esplicita.** $$y = mx + q$$ $q$ è l'**ordinata all'origine**: la retta taglia l'asse $y$ nel punto $(0; q)$. $m$ è il **coefficiente angolare**: di quanto cresce $y$ quando $x$ aumenta di $1$.
 
 [[grafico:esplicita]]
 
-La **forma implicita** mette tutto a sinistra: $ax + by + c = 0$, con $a$ e $b$ non entrambi nulli. Per passare alla forma esplicita si isola la $y$, come in un'equazione:
+La **forma implicita** mette tutto a sinistra: $ax + by + c = 0$. I numeri $a$ e $b$ non possono essere tutti e due zero. Per passare alla forma esplicita isola la $y$:
 
 ~ 2x + 3y - 6 = 0 :: forma implicita, con $a = 2$, $b = 3$, $c = -6$
 ~ 3y = \evid{-2x + 6} :: porto a destra tutto quello che non contiene $y$, cambiando segno
 ~ y = \evid{-\tfrac{2}{3}}x + \evidb{2} :: divido per $3$ entrambi i membri: $m = -\tfrac{2}{3}$ e $q = 2$
 
-In generale, se $b \ne 0$, si ottiene $m = -\dfrac{a}{b}$ e $q = -\dfrac{c}{b}$.
+In generale, se $b \ne 0$, viene $m = -\dfrac{a}{b}$ e $q = -\dfrac{c}{b}$.
 
 ?? Qual è il coefficiente angolare della retta $2x + y - 4 = 0$?
 [x] $-2$
 [ ] $2$
 [ ] $4$
-=> Isolando la $y$: $y = -2x + 4$, quindi $m = -2$. Il $2$ davanti alla $x$ cambia segno quando passa a destra. Il coefficiente angolare si legge solo nella forma esplicita; letto direttamente nella forma implicita ha il segno sbagliato.
+=> Isola la $y$: $y = -2x + 4$, quindi $m = -2$. Il $2$ cambia segno quando passa a destra, per questo $m$ si legge solo nella forma esplicita.
 
-Ci sono due casi particolari:
+Due casi particolari:
 
-- se $b = 0$ l'equazione diventa $x = k$: è una retta **verticale**, parallela all'asse $y$, fatta di tutti i punti con la stessa ascissa. Non si può isolare la $y$ e non c'è coefficiente angolare;
-- se $a = 0$ l'equazione diventa $y = k$: è una retta **orizzontale**, parallela all'asse $x$, con $m = 0$.
+- $x = k$ è una retta **verticale**: non si può isolare la $y$, quindi non c'è $m$.
+- $y = k$ è una retta **orizzontale**, con $m = 0$.
 
-Una retta passa per l'**origine** quando $q = 0$, cioè $y = mx$ (nella forma implicita, $c = 0$): con $x = 0$ viene $y = 0$.
+Una retta passa per l'**origine** quando $q = 0$, cioè $y = mx$. Nella forma implicita vuol dire $c = 0$.
 
->! Non tutte le rette si scrivono come $y = mx + q$: le verticali restano $x = k$. La forma implicita invece va bene per tutte.` },
+>! Le rette verticali non si scrivono come $y = mx + q$: restano $x = k$. La forma implicita invece va bene per tutte.` },
 
-    { id: 'coefficiente-angolare', titolo: 'Il coefficiente angolare', testo: R`Un cartello stradale dice «pendenza $10\%$»: la strada sale di $10$ metri ogni $100$ in orizzontale. Il **coefficiente angolare** $m$ è la stessa idea per una retta: quanto sale, diviso quanto si va avanti. Presi due punti della retta, $A(x_A; y_A)$ e $B(x_B; y_B)$ con $x_A \ne x_B$:
+    { id: 'coefficiente-angolare', titolo: 'Il coefficiente angolare', testo: R`Un cartello stradale dice «pendenza $10\%$»: la strada sale di $10$ metri ogni $100$ in orizzontale. Il **coefficiente angolare** $m$ è la stessa idea. Dice quanto sale la retta, diviso quanto va avanti.
 
->* **Coefficiente angolare.** $$m = \dfrac{\Delta y}{\Delta x} = \dfrac{y_B - y_A}{x_B - x_A}$$ Sopra la differenza delle **ordinate** (quanto si sale), sotto quella delle **ascisse** (quanto si va avanti). Su una retta il rapporto viene uguale con qualunque coppia di punti.
+>* **Coefficiente angolare.** Prendi due punti $A$ e $B$ della retta, con $x_A \ne x_B$: $$m = \dfrac{\Delta y}{\Delta x} = \dfrac{y_B - y_A}{x_B - x_A}$$ Sopra la differenza delle **ordinate**, sotto quella delle **ascisse**. Qualunque coppia di punti della retta dà lo stesso rapporto.
 
 [[animazione:pendenza-retta]]
 
-Per esempio, con $A(1; 2)$ e $B(4; 8)$: $m = \dfrac{8 - 2}{4 - 1} = \dfrac{6}{3} = 2$. Per ogni passo verso destra la retta sale di $2$.
+Per esempio, con $A(1; 2)$ e $B(4; 8)$ viene $m = \dfrac{8 - 2}{4 - 1} = \dfrac{6}{3} = 2$. A ogni passo verso destra la retta sale di $2$.
 
 ?? Qual è il coefficiente angolare della retta per $A(1; 5)$ e $B(3; 1)$?
 [x] $-2$
 [ ] $-\dfrac{1}{2}$
 [ ] $2$
-=> $m = \dfrac{1 - 5}{3 - 1} = \dfrac{-4}{2} = -2$: andando verso destra la retta scende, quindi $m$ è negativo. $-\dfrac{1}{2}$ viene mettendo le $x$ sopra e le $y$ sotto, cioè il rapporto capovolto. $2$ viene sottraendo in ordine diverso sopra e sotto ($5 - 1$ sopra, $3 - 1$ sotto): se sopra parti da $B$, anche sotto devi partire da $B$.
+=> $m = \dfrac{1 - 5}{3 - 1} = \dfrac{-4}{2} = -2$. La retta scende, quindi $m$ è negativo. $-\dfrac{1}{2}$ è il rapporto capovolto, con le $x$ sopra. $2$ viene facendo $5 - 1$ sopra e $3 - 1$ sotto. Se sopra parti da $B$, anche sotto devi partire da $B$.
 
 Il segno e la grandezza di $m$ dicono come è fatta la retta:
 
@@ -128,53 +168,49 @@ Il segno e la grandezza di $m$ dicono come è fatta la retta:
 | $m = 0$ | è **orizzontale** |
 | $m$ lontano da $0$ | è ripida |
 
-Una retta **verticale** non ha coefficiente angolare: fra due suoi punti $\Delta x = 0$, e non si può dividere per zero.
+Una retta **verticale** non ha coefficiente angolare. Fra due suoi punti $\Delta x = 0$, e per zero non si divide.
 
->! Il rapporto è $\dfrac{\Delta y}{\Delta x}$, non $\dfrac{\Delta x}{\Delta y}$. Capovolgerlo dà il reciproco della pendenza: una retta ripida sembrerebbe quasi piatta.` },
+>! Il rapporto è $\dfrac{\Delta y}{\Delta x}$. Se lo capovolgi, una retta ripida sembra quasi piatta.` },
 
-    { id: 'retta-punto-e-due-punti', titolo: 'Scrivere l\'equazione di una retta', testo: R`Se di una retta conosci un punto $P_0(x_0; y_0)$ e la pendenza $m$, la retta è una sola. La sua equazione dice che, fra $P_0$ e un punto qualunque $(x; y)$ della retta, il rapporto $\dfrac{y - y_0}{x - x_0}$ vale $m$. Moltiplicando per $x - x_0$:
+    { id: 'retta-punto-e-due-punti', titolo: 'Scrivere l\'equazione di una retta', testo: R`Se di una retta conosci un punto $P_0(x_0; y_0)$ e la pendenza $m$, la retta è una sola. Parti da $\dfrac{y - y_0}{x - x_0} = m$ e moltiplica per $x - x_0$: ottieni la sua equazione.
 
 >* **Retta per un punto, con $m$ noto.** $$y - y_0 = m(x - x_0)$$
 
-Per esempio, per $P_0(2; -1)$ con $m = 3$: $y + 1 = 3(x - 2)$, cioè $y = 3x - 7$.
+Per esempio, per $P_0(2; -1)$ con $m = 3$ scrivi $y + 1 = 3(x - 2)$. Sviluppando viene $y = 3x - 7$.
 
-Anche per **due punti** passa una sola retta. Si calcola prima la pendenza con i due punti, poi si usa la formula di prima con uno dei due.
+Anche per **due punti** passa una sola retta. Prima calcola $m$ con i due punti, poi usa la formula di prima con uno dei due.
 
 ~ A(-3; 1),\quad B(1; 5) :: i due punti per cui deve passare la retta
 ~ m = \dfrac{5 - 1}{1 - (-3)} = \dfrac{4}{4} = \evid{1} :: pendenza: differenza delle ordinate diviso differenza delle ascisse
 ~ y - \evid{1} = 1 \cdot (x - (\evid{-3})) :: uso $y - y_A = m(x - x_A)$ con il punto $A$
 ~ y - 1 = x + 3 :: $x - (-3)$ diventa $x + 3$
 ~ y = \evidb{x + 4} :: isolo la $y$
-~ 5 = 1 + 4 :: controllo con $B(1; 5)$: le sue coordinate soddisfano l'equazione
-
-Muovi i due punti e guarda come cambiano $\Delta x$, $\Delta y$ e il loro rapporto.
+~ 5 = 1 + 4 :: controllo con $B(1; 5)$: le sue coordinate rendono vera l'equazione
 
 [[grafico:duePunti]]
 
 ?? Qual è la retta che passa per $A(2; 1)$ e $B(2; 5)$?
-=> I due punti hanno la stessa ascissa, quindi $\Delta x = 0$ e $m$ non si può calcolare: la retta è verticale, $x = 2$. Tutti i suoi punti hanno ascissa $2$, qualunque sia l'ordinata.
+=> I due punti hanno la stessa ascissa, quindi $\Delta x = 0$ e $m$ non esiste. La retta è verticale: $x = 2$.
 
-Se invece i due punti hanno la stessa ordinata, la retta è orizzontale, $y = y_A$, con $m = 0$.
+Se i due punti hanno la stessa ordinata, la retta è orizzontale: $y = y_A$.
 
-Sul libro trovi anche la formula della retta per due punti scritta tutta insieme, $\dfrac{y - y_A}{y_B - y_A} = \dfrac{x - x_A}{x_B - x_A}$. Dà lo stesso risultato, ma si può usare solo se $x_A \ne x_B$ e $y_A \ne y_B$, altrimenti c'è uno zero al denominatore. Calcolare prima $m$ funziona anche con le rette orizzontali.
+> Il libro dà anche la formula $\dfrac{y - y_A}{y_B - y_A} = \dfrac{x - x_A}{x_B - x_A}$. Con le rette orizzontali e verticali non funziona: ha uno zero al denominatore.
 
-Nella scheda **Laboratorio** c'è *Tiro a segno*: sposti due maniglie finché la retta non passa sopra i bersagli, e ne leggi l'equazione.
+Nella scheda **Laboratorio** c'è *Tiro a segno*: sposta due maniglie finché la retta passa sui bersagli.
 
->! Quando sostituisci il punto in $y - y_A = m(x - x_A)$, attento ai segni: con $x_A = -3$ si scrive $x - (-3)$, cioè $x + 3$. Scrivere $x - 3$ sposta la retta dall'altra parte.` },
+>! Attento ai segni: con $x_A = -3$ scrivi $x - (-3)$, cioè $x + 3$. Con $x - 3$ la retta finisce dall'altra parte.` },
 
-    { id: 'parallele-perpendicolari', titolo: 'Rette parallele e perpendicolari', testo: R`Due rette con la stessa pendenza salgono allo stesso modo: se tagliano l'asse $y$ in punti diversi non si incontrano mai, e sono **parallele**. Se hanno anche la stessa $q$, sono la stessa retta scritta due volte (si dice **coincidenti**).
+    { id: 'parallele-perpendicolari', titolo: 'Rette parallele e perpendicolari', testo: R`Due rette con la stessa pendenza salgono allo stesso modo. Se tagliano l'asse $y$ in punti diversi, non si incontrano mai: sono **parallele**. Se hanno anche lo stesso $q$, sono la stessa retta: si dicono **coincidenti**.
 
->* **Parallelismo.** Due rette non verticali sono parallele se e solo se $$m_1 = m_2$$
+>* **Parallele.** Due rette non verticali sono parallele quando $$m_1 = m_2$$
 
-Per le **perpendicolari** la regola è meno intuitiva. Una retta con pendenza $2$ fa un passo a destra e due in su; girandola di un angolo retto, i passi si scambiano e uno cambia verso: due a sinistra e uno in su, cioè pendenza $-\dfrac{1}{2}$.
+Per le **perpendicolari** guarda i passi. Una retta con pendenza $2$ fa un passo a destra e due in su. Girala di un angolo retto: ora fa due passi a sinistra e uno in su. La sua pendenza è $-\dfrac{1}{2}$.
 
->* **Perpendicolarità.** Due rette non verticali sono perpendicolari se e solo se $$m_1 \cdot m_2 = -1$$ cioè $m_2 = -\dfrac{1}{m_1}$: il coefficiente della perpendicolare è l'**opposto del reciproco**.
-
-Trascina il punto su $r$ per farla ruotare: $s$ la segue restando perpendicolare. Tieni d'occhio il prodotto dei due coefficienti.
+>* **Perpendicolari.** Due rette non verticali sono perpendicolari quando $$m_1 \cdot m_2 = -1$$ Quindi $m_2 = -\dfrac{1}{m_1}$: capovolgi $m_1$ e cambia il segno. Si dice **opposto del reciproco**.
 
 [[grafico:perpendicolari]]
 
-Per scrivere la perpendicolare a una retta data, passante per un punto, si usano insieme questa regola e la retta per un punto:
+Per esempio, cerca la perpendicolare a una retta $r$ che passa per un punto $P$:
 
 ~ r:\ y = \tfrac{1}{2}x + 1,\quad P(2; 3) :: cerco la perpendicolare a $r$ che passa per $P$
 ~ m_1 = \tfrac{1}{2} \ \Rightarrow\ m_2 = \evid{-2} :: opposto del reciproco: il reciproco di $\tfrac12$ è $2$, l'opposto è $-2$
@@ -185,15 +221,13 @@ Per scrivere la perpendicolare a una retta data, passante per un punto, si usano
 [x] $\dfrac{1}{3}$
 [ ] $-\dfrac{1}{3}$
 [ ] $3$
-=> Il reciproco di $-3$ è $-\dfrac{1}{3}$, e l'opposto è $\dfrac{1}{3}$. Controllo: $-3 \cdot \dfrac{1}{3} = -1$. Con $-\dfrac{1}{3}$ si è fatto solo il reciproco, con $3$ solo l'opposto: servono tutte e due le operazioni.
+=> Il reciproco di $-3$ è $-\dfrac{1}{3}$, e l'opposto è $\dfrac{1}{3}$. Controllo: $-3 \cdot \dfrac{1}{3} = -1$. Con $-\dfrac{1}{3}$ hai fatto solo il reciproco, con $3$ solo l'opposto. Servono tutte e due le operazioni.
 
-Le rette verticali non hanno $m$, quindi seguono regole a parte: due verticali sono sempre parallele, e una verticale è sempre perpendicolare a qualunque orizzontale.
+>! Una retta verticale non ha $m$, quindi $m_1 \cdot m_2 = -1$ non si usa. Due verticali sono sempre parallele. Una verticale e un'orizzontale sono sempre perpendicolari.` },
 
->! $m_1 \cdot m_2 = -1$ si usa solo quando **tutte e due** le rette hanno un coefficiente angolare. Con una retta verticale la formula non ha senso.` },
+    { id: 'intersezione-rette', titolo: 'Intersezione fra due rette', testo: R`Il punto dove due rette si incontrano sta su tutte e due. Quindi le sue coordinate rendono vere tutte e due le equazioni. Per trovarlo risolvi il **sistema** fra le due equazioni.
 
-    { id: 'intersezione-rette', titolo: 'Intersezione fra due rette', testo: R`Il punto dove due rette si incontrano sta su tutte e due, quindi le sue coordinate soddisfano entrambe le equazioni. Trovarlo vuol dire risolvere il **sistema** fra le due equazioni.
-
->* Con le rette in forma esplicita, $y = m_1 x + q_1$ e $y = m_2 x + q_2$, nel punto d'incontro le due $y$ sono uguali: si risolve $$m_1 x + q_1 = m_2 x + q_2$$ e poi si trova la $y$ sostituendo in una delle due.
+>* Con $y = m_1 x + q_1$ e $y = m_2 x + q_2$, nel punto d'incontro le due $y$ sono uguali. Risolvi $$m_1 x + q_1 = m_2 x + q_2$$ poi trova la $y$ con una delle due equazioni.
 
 ~ y = 2x - 3,\quad y = -x + 3 :: le due rette $r$ e $s$
 ~ 2x - 3 = -x + 3 :: nel punto comune le due $y$ coincidono
@@ -210,44 +244,40 @@ Il numero di soluzioni del sistema dice come stanno le due rette:
 | infinite | **coincidenti** | $m_1 = m_2$, $q_1 = q_2$ |
 
 ?? Dove si incontrano $y = 2x + 1$ e $y = 2x - 5$?
-=> Da nessuna parte. Uguagliando viene $2x + 1 = 2x - 5$, cioè $1 = -5$: impossibile. Le due rette hanno la stessa pendenza e un diverso $q$, quindi sono parallele. Guardare $m$ prima di fare conti lo dice subito.
+=> Da nessuna parte. Uguagliando viene $2x + 1 = 2x - 5$, cioè $1 = -5$: impossibile. Le due rette hanno la stessa pendenza e $q$ diversi, quindi sono parallele.
 
->! Se una retta è verticale, $x = k$, non c'è una $y$ da uguagliare: si sostituisce $x = k$ nell'altra equazione e si trova subito la $y$.` },
+>! Con una retta verticale $x = k$ non c'è una $y$ da uguagliare. Metti $x = k$ nell'altra equazione e trovi subito la $y$.` },
 
-    { id: 'distanza-punto-retta', titolo: 'Distanza di un punto da una retta', testo: R`Da un punto $P$ a una retta $r$ si possono tracciare tanti segmenti, tutti di lunghezza diversa. Il più corto è quello **perpendicolare** a $r$, e la sua lunghezza si chiama distanza di $P$ da $r$. Non serve disegnarlo: c'è una formula che usa la retta in forma implicita.
+    { id: 'distanza-punto-retta', titolo: 'Distanza di un punto da una retta', testo: R`Da un punto $P$ a una retta $r$ puoi tracciare tanti segmenti. Il più corto è quello **perpendicolare** a $r$. La sua lunghezza è la **distanza** di $P$ da $r$. Per calcolarla c'è una formula, con la retta in forma implicita.
 
->* **Distanza di $P(x_0; y_0)$ da $r: ax + by + c = 0$.** $$d(P, r) = \dfrac{|ax_0 + by_0 + c|}{\sqrt{a^2 + b^2}}$$ Sopra si mettono le coordinate di $P$ nel primo membro dell'equazione della retta; il valore assoluto rende il risultato positivo.
+>* **Distanza di $P(x_0; y_0)$ da $r: ax + by + c = 0$.** $$d(P, r) = \dfrac{|ax_0 + by_0 + c|}{\sqrt{a^2 + b^2}}$$ Sopra metti le coordinate di $P$ nel primo membro dell'equazione. Il valore assoluto rende il risultato positivo.
 
 ~ P(1; 5),\quad r:\ 3x - 4y + 1 = 0 :: $a = 3$, $b = -4$, $c = 1$
 ~ |3 \cdot \evid{1} - 4 \cdot \evid{5} + 1| = |-16| = 16 :: numeratore: metto $x_0 = 1$ e $y_0 = 5$ al posto di $x$ e $y$
 ~ \sqrt{3^2 + (-4)^2} = \sqrt{25} = 5 :: denominatore: dipende solo dalla retta
 ~ d = \evidb{\tfrac{16}{5}} = 3{,}2 :: divido
 
-Se $P$ sta sulla retta, le sue coordinate soddisfano l'equazione, il numeratore vale $0$ e anche la distanza.
-
-Se la retta è data in forma esplicita, prima va portata in forma implicita: $y = mx + q$ diventa $mx - y + q = 0$, quindi $a = m$, $b = -1$, $c = q$.
+Se la retta è in forma esplicita, portala prima in forma implicita. $y = mx + q$ diventa $mx - y + q = 0$: quindi $a = m$, $b = -1$, $c = q$.
 
 ?? Quanto dista $P(0; 1)$ dalla retta $y = 2x + 5$?
 [x] $\dfrac{4}{\sqrt{5}}$
 [ ] $\dfrac{6}{\sqrt{5}}$
 [ ] $\dfrac{5}{\sqrt{29}}$
-=> Prima la forma implicita: $2x - y + 5 = 0$. Poi $d = \dfrac{|2 \cdot 0 - 1 + 5|}{\sqrt{4 + 1}} = \dfrac{4}{\sqrt{5}}$. Chi trova $\dfrac{5}{\sqrt{29}}$ ha usato $m = 2$ e $q = 5$ come se fossero $a$ e $b$; chi trova $\dfrac{6}{\sqrt{5}}$ ha scritto $+y$ invece di $-y$ passando alla forma implicita.
+=> Prima la forma implicita: $2x - y + 5 = 0$. Poi $d = \dfrac{|2 \cdot 0 - 1 + 5|}{\sqrt{4 + 1}} = \dfrac{4}{\sqrt{5}}$. Chi trova $\dfrac{5}{\sqrt{29}}$ ha usato $m = 2$ e $q = 5$ al posto di $a$ e $b$. Chi trova $\dfrac{6}{\sqrt{5}}$ ha scritto $+y$ invece di $-y$.
 
->! La formula vuole la retta nella forma $ax + by + c = 0$, con **zero** a destra. Usare $m$ e $q$ direttamente, o dimenticare il segno meno davanti a $y$, dà un numero sbagliato.` },
+>! La formula vuole la retta con **zero** a destra. Non usare $m$ e $q$ al posto di $a$ e $b$. Attento anche al meno davanti a $y$.` },
 
-    { id: 'fasci-di-rette', titolo: 'Fasci di rette (cenni)', testo: R`Nell'equazione $y - 2 = m(x - 1)$ il numero $m$ non è fissato. Per ogni valore di $m$ si ottiene una retta diversa, e tutte passano per $(1; 2)$. Un insieme di infinite rette che hanno in comune una proprietà si chiama **fascio di rette**. Se ne studiano due tipi.
+    { id: 'fasci-di-rette', titolo: 'Fasci di rette (cenni)', testo: R`Guarda l'equazione $y - 2 = m(x - 1)$, con $m$ libero. Con $m = 0$ viene $y = 2$, con $m = 1$ viene $y = x + 1$. Ogni valore di $m$ dà una retta diversa, e tutte passano per $(1; 2)$.
 
-Il **fascio proprio** è l'insieme di tutte le rette che passano per uno stesso punto $P_0(x_0; y_0)$, il **centro** del fascio:
+Un insieme di infinite rette con una proprietà in comune si chiama **fascio di rette**.
 
->* **Fascio proprio di centro $P_0(x_0; y_0)$:** $$y - y_0 = m(x - x_0), \qquad m \in \mathbb{R}$$ Al variare di $m$ si ottengono tutte le rette per $P_0$, tranne una: manca la retta **verticale** $x = x_0$, che non ha coefficiente angolare e va aggiunta a parte.
+Il **fascio proprio** raccoglie tutte le rette che passano per uno stesso punto, il **centro**.
 
-Il **fascio improprio** è l'insieme di tutte le rette **parallele** a una direzione data, cioè con lo stesso coefficiente angolare $m$ fissato:
+>* **Fascio proprio di centro $P_0(x_0; y_0)$:** $$y - y_0 = m(x - x_0), \qquad m \in \mathbb{R}$$ Manca solo la retta verticale $x = x_0$, che non ha $m$: va aggiunta a parte.
 
->* **Fascio improprio di direzione $m$:** $$y = mx + k, \qquad k \in \mathbb{R}$$ Al variare di $k$ la retta scorre su e giù restando parallela a sé stessa. Il nome «improprio» viene da un modo di dire dei geometri: le parallele si incontrerebbero in un punto «all'infinito», che non è un punto vero.
+Il **fascio improprio** raccoglie tutte le rette parallele fra loro, cioè con lo stesso $m$.
 
-Per esempio, l'equazione $y - 2 = m(x - 1)$ rappresenta tutte le rette per $(1; 2)$: con $m = 0$ si ha la retta orizzontale $y = 2$, con $m = 1$ la retta $y = x + 1$, e così via, tranne la verticale $x = 1$.
-
-> A questo livello basta riconoscere i due fasci e scrivere la loro equazione: il loro uso per trovare rette con condizioni particolari si approfondisce più avanti.` }
+>* **Fascio improprio:** $$y = mx + k, \qquad k \in \mathbb{R}$$ Al variare di $k$ la retta scorre su e giù, sempre parallela a sé stessa.` }
   ],
 
   grafici: {
@@ -384,17 +414,38 @@ Per esempio, l'equazione $y - 2 = m(x - 1)$ rappresenta tutte le rette per $(1; 
   ],
 
   esercizi: [
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Trova il punto medio di $A(2; 4)$ e $B(6; 8)$. Scrivi le coordinate come *x; y*.`, suggerimenti: [R`Fai la media delle ascisse e la media delle ordinate.`], risposta: cop(4, 6), soluzione: [R`Ascissa: $\dfrac{2 + 6}{2} = 4$.`, R`Ordinata: $\dfrac{4 + 8}{2} = 6$.`, R`$M(4; 6)$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Calcola la distanza fra $A(0; 0)$ e $B(3; 4)$.`, suggerimenti: [R`I cateti sono $\Delta x = 3$ e $\Delta y = 4$: usa Pitagora.`], risposta: num(5, 'es. 5 o √2'), soluzione: [R`$\Delta x = 3$, $\Delta y = 4$.`, R`$\overline{AB} = \sqrt{9 + 16} = \sqrt{25} = 5$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Calcola il coefficiente angolare della retta per $A(1; 2)$ e $B(3; 6)$.`, suggerimenti: [R`$m = \dfrac{y_B - y_A}{x_B - x_A}$: sopra le ordinate, sotto le ascisse.`], risposta: num(2), soluzione: [R`$m = \dfrac{6 - 2}{3 - 1} = \dfrac{4}{2}$.`, R`$m = 2$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Scrivi l'equazione della retta con $m = 2$ e $q = -3$.`, suggerimenti: [R`Metti $m$ e $q$ al loro posto in $y = mx + q$.`], risposta: retta(2, -1, -3), soluzione: [R`In $y = mx + q$ metto $m = 2$ e $q = -3$.`, R`$y = 2x - 3$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Il punto $P(2; 7)$ sta sulla retta $y = 3x + 1$? Scrivi *sì* o *no*.`, suggerimenti: [R`Metti $x = 2$ nell'equazione e guarda se viene $y = 7$.`], risposta: { tipo: 'testo', accettate: ['sì', 'si', 'sì, ci sta', 'si, ci sta', 'ci sta', 'appartiene', 'sì, appartiene', 'sì appartiene', 'sta sulla retta'], segnaposto: 'sì o no', simboli: [] }, soluzione: [R`Con $x = 2$: $y = 3 \cdot 2 + 1 = 7$.`, R`Viene proprio l'ordinata di $P$: sì, $P$ sta sulla retta.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Trova il punto medio di $A(-2; 5)$ e $B(4; -1)$. Scrivi le coordinate come *x; y*.`, suggerimenti: [R`Fai la media delle ascisse e la media delle ordinate. Attento ai segni.`], risposta: cop(1, 2), soluzione: [R`Ascissa: $\dfrac{-2 + 4}{2} = \dfrac{2}{2} = 1$.`, R`Ordinata: $\dfrac{5 + (-1)}{2} = \dfrac{4}{2} = 2$.`, R`$M(1; 2)$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Calcola la distanza fra $A(-2; 3)$ e $B(1; -1)$.`, suggerimenti: [R`Calcola $\Delta x$ e $\Delta y$ come «arrivo meno partenza».`, R`Il segno di $\Delta y$ non conta: va al quadrato.`], risposta: num(5, 'es. 5 o √2'), soluzione: [R`$\Delta x = 1 - (-2) = 3$, $\Delta y = -1 - 3 = -4$.`, R`$\overline{AB} = \sqrt{3^2 + (-4)^2} = \sqrt{9 + 16} = \sqrt{25} = 5$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Calcola il coefficiente angolare della retta per $A(-1; 4)$ e $B(2; -2)$.`, suggerimenti: [R`$m = \dfrac{y_B - y_A}{x_B - x_A}$. Sopra e sotto parti dallo stesso punto.`], risposta: num(-2), soluzione: [R`$m = \dfrac{-2 - 4}{2 - (-1)} = \dfrac{-6}{3}$.`, R`$m = -2$: la retta scende.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Qual è il coefficiente angolare della retta $3x + y - 2 = 0$?`, suggerimenti: [R`Isola la $y$: porta a destra tutto il resto, cambiando segno.`], risposta: num(-3), soluzione: [R`Isolo la $y$: $y = -3x + 2$.`, R`$m = -3$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Qual è il coefficiente angolare di una retta perpendicolare a $y = 4x - 1$?`, suggerimenti: [R`Capovolgi $4$ e cambia il segno.`], risposta: num(-0.25), soluzione: [R`La retta data ha $m_1 = 4$.`, R`La perpendicolare ha $m_2 = -\dfrac{1}{4}$. Controllo: $4 \cdot \left(-\dfrac{1}{4}\right) = -1$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Le rette $y = 2x + 1$ e $y = -\dfrac{1}{2}x + 3$ sono parallele, perpendicolari o nessuna delle due?`, suggerimenti: [R`Confronta i coefficienti angolari: sono uguali? Il loro prodotto fa $-1$?`], risposta: { tipo: 'testo', accettate: ['perpendicolari', 'perpendicolare', 'sono perpendicolari'], segnaposto: 'parallele, perpendicolari o nessuna', simboli: [] }, soluzione: [R`I coefficienti angolari sono $2$ e $-\dfrac{1}{2}$: non sono uguali.`, R`Il prodotto è $2 \cdot \left(-\dfrac{1}{2}\right) = -1$: le rette sono perpendicolari.`] },
+    { id: 'b-12', livello: 'base', difficolta: 2, testo: R`Calcola la distanza fra $A(1; 2)$ e $B(3; 3)$. Scrivi la radice con il tasto √.`, suggerimenti: [R`$\Delta x = 2$ e $\Delta y = 1$.`, R`La somma dei quadrati non è un quadrato perfetto: lascia la radice.`], risposta: num(Math.sqrt(5), 'es. 5 o √2'), soluzione: [R`$\Delta x = 3 - 1 = 2$, $\Delta y = 3 - 2 = 1$.`, R`$\overline{AB} = \sqrt{4 + 1} = \sqrt{5}$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Scrivi l'equazione della retta per $P(1; 3)$ con $m = 2$, nella forma $y = mx + q$.`, suggerimenti: [R`Usa $y - y_0 = m(x - x_0)$.`, R`Togli la parentesi e isola la $y$.`], risposta: retta(2, -1, 1), soluzione: [R`$y - 3 = 2(x - 1)$.`, R`$y - 3 = 2x - 2$.`, R`$y = 2x + 1$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Scrivi l'equazione della retta per $P(-2; 1)$ con $m = -3$, nella forma $y = mx + q$.`, suggerimenti: [R`Usa $y - y_0 = m(x - x_0)$. Con $x_0 = -2$ la parentesi diventa $x + 2$.`], risposta: retta(3, 1, 5), soluzione: [R`$y - 1 = -3(x - (-2)) = -3(x + 2)$.`, R`$y - 1 = -3x - 6$.`, R`$y = -3x - 5$.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Scrivi l'equazione della retta per $A(1; 1)$ e $B(3; 5)$, nella forma $y = mx + q$.`, suggerimenti: [R`Prima calcola $m$ con i due punti.`, R`Poi usa $y - y_A = m(x - x_A)$.`], risposta: retta(2, -1, -1), soluzione: [R`$m = \dfrac{5 - 1}{3 - 1} = \dfrac{4}{2} = 2$.`, R`$y - 1 = 2(x - 1)$, cioè $y = 2x - 1$.`, R`Controllo con $B$: $2 \cdot 3 - 1 = 5$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Scrivi l'equazione della retta per $A(0; 3)$ e $B(2; -1)$, nella forma $y = mx + q$.`, suggerimenti: [R`Prima calcola $m$.`, R`$A$ sta sull'asse $y$: ti dà subito $q$.`], risposta: retta(2, 1, -3), soluzione: [R`$m = \dfrac{-1 - 3}{2 - 0} = \dfrac{-4}{2} = -2$.`, R`$A(0; 3)$ sta sull'asse $y$, quindi $q = 3$.`, R`$y = -2x + 3$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Scrivi l'equazione della retta per $A(2; 1)$ e $B(2; 6)$.`, suggerimenti: [R`Guarda le ascisse dei due punti.`, R`Se $\Delta x = 0$ la retta è verticale.`], risposta: retta(1, 0, -2), soluzione: [R`I due punti hanno la stessa ascissa: $\Delta x = 0$ e $m$ non esiste.`, R`La retta è verticale: $x = 2$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Scrivi la retta parallela a $y = 3x + 2$ che passa per $P(1; 1)$, nella forma $y = mx + q$.`, suggerimenti: [R`Una parallela ha lo stesso $m$.`, R`Poi usa $y - y_0 = m(x - x_0)$.`], risposta: retta(3, -1, -2), soluzione: [R`Parallela: $m = 3$.`, R`$y - 1 = 3(x - 1)$, cioè $y - 1 = 3x - 3$.`, R`$y = 3x - 2$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Scrivi la retta perpendicolare a $y = -x + 4$ che passa per $P(1; 2)$, nella forma $y = mx + q$.`, suggerimenti: [R`La retta data ha $m_1 = -1$: capovolgi e cambia il segno.`, R`Poi usa $y - y_0 = m(x - x_0)$.`], risposta: retta(1, -1, 1), soluzione: [R`$m_1 = -1$, quindi $m_2 = -\dfrac{1}{-1} = 1$.`, R`$y - 2 = 1 \cdot (x - 1)$.`, R`$y = x + 1$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Scrivi la retta perpendicolare a $y = 2x + 1$ che passa per $P(2; 0)$, nella forma $y = mx + q$.`, suggerimenti: [R`La perpendicolare ha $m = -\dfrac{1}{2}$.`, R`Poi usa $y - y_0 = m(x - x_0)$ e togli la parentesi.`], risposta: retta(1, 2, -2), soluzione: [R`$m_1 = 2$, quindi $m_2 = -\dfrac{1}{2}$.`, R`$y - 0 = -\dfrac{1}{2}(x - 2)$.`, R`$y = -\dfrac{1}{2}x + 1$.`] },
+
     { id: 'es-01', difficolta: 1, testo: R`Calcola la distanza fra i punti $A(-2; 3)$ e $B(4; -5)$.`, suggerimenti: [R`Applica il teorema di Pitagora ai cateti $\Delta x$ e $\Delta y$.`, R`$\Delta x = 4-(-2)=6$, $\Delta y=-5-3=-8$.`], risposta: { tipo: 'numero', valore: 10, tolleranza: 0.01 }, soluzione: [R`$\Delta x = 4-(-2)=6$, $\Delta y=-5-3=-8$.`, R`$\overline{AB}=\sqrt{6^2+(-8)^2}=\sqrt{36+64}=\sqrt{100}=10$.`] },
 
     { id: 'es-02', difficolta: 1, testo: R`Trova il punto medio del segmento di estremi $A(1; -3)$ e $B(5; 7)$. Scrivi le sue coordinate nella forma x; y.`, suggerimenti: [R`Il punto medio ha per coordinate la media delle coordinate degli estremi.`, R`Calcola separatamente la media delle ascisse e quella delle ordinate.`], risposta: { tipo: 'numeri', ordinati: true, valori: [3, 2] }, soluzione: [R`$x_M=\dfrac{1+5}{2}=3$.`, R`$y_M=\dfrac{-3+7}{2}=2$.`, R`$M(3; 2)$.`] },
 
     { id: 'es-03', difficolta: 1, testo: R`Trova il baricentro del triangolo di vertici $A(-3; 0)$, $B(3; 0)$, $C(0; 9)$. Scrivi le sue coordinate nella forma x; y.`, suggerimenti: [R`Il baricentro è la media delle coordinate dei tre vertici.`, R`Somma le tre ascisse e dividi per 3; fai lo stesso con le ordinate.`], risposta: { tipo: 'numeri', ordinati: true, valori: [0, 3] }, soluzione: [R`$x_G=\dfrac{-3+3+0}{3}=0$.`, R`$y_G=\dfrac{0+0+9}{3}=3$.`, R`$G(0; 3)$.`] },
 
-    { id: 'es-04', difficolta: 1, testo: R`Scrivi l'equazione della retta passante per l'origine con coefficiente angolare $m=3$.`, suggerimenti: [R`Una retta per l'origine ha $q=0$.`, R`Usa $y=mx$.`], risposta: { tipo: 'testo', accettate: ['y=3x', 'y = 3x', '3x-y=0'] }, soluzione: [R`Passando per l'origine, $q=0$: $y=mx+0=mx$.`, R`Con $m=3$: $y=3x$.`] },
+    { id: 'es-04', difficolta: 1, testo: R`Scrivi l'equazione della retta passante per l'origine con coefficiente angolare $m=3$.`, suggerimenti: [R`Una retta per l'origine ha $q=0$.`, R`Usa $y=mx$.`], risposta: retta(3, -1, 0), soluzione: [R`Passando per l'origine, $q=0$: $y=mx+0=mx$.`, R`Con $m=3$: $y=3x$.`] },
 
-    { id: 'es-05', difficolta: 2, testo: R`Scrivi l'equazione della retta passante per $P(2; -1)$ con coefficiente angolare $m=-2$.`, suggerimenti: [R`Usa $y-y_0=m(x-x_0)$ con $P_0=P$.`, R`Sviluppa e isola $y$.`], risposta: { tipo: 'testo', accettate: ['y=-2x+3', 'y = -2x + 3', 'y = −2x + 3', '2x+y-3=0'] }, soluzione: [R`$y-(-1)=-2(x-2)$.`, R`$y+1=-2x+4$.`, R`$y=-2x+3$.`] },
+    { id: 'es-05', difficolta: 2, testo: R`Scrivi l'equazione della retta passante per $P(2; -1)$ con coefficiente angolare $m=-2$.`, suggerimenti: [R`Usa $y-y_0=m(x-x_0)$ con $P_0=P$.`, R`Sviluppa e isola $y$.`], risposta: retta(2, 1, -3), soluzione: [R`$y-(-1)=-2(x-2)$.`, R`$y+1=-2x+4$.`, R`$y=-2x+3$.`] },
 
-    { id: 'es-06', difficolta: 2, testo: R`Scrivi l'equazione della retta passante per $A(1; 2)$ e $B(3; 8)$.`, suggerimenti: [R`Calcola prima $m$ con la formula del coefficiente angolare.`, R`Poi usa $y-y_A=m(x-x_A)$.`], risposta: { tipo: 'testo', accettate: ['y=3x-1', 'y = 3x - 1', 'y = 3x − 1', '3x-y-1=0'] }, soluzione: [R`$m=\dfrac{8-2}{3-1}=\dfrac{6}{2}=3$.`, R`$y-2=3(x-1)$.`, R`$y=3x-1$.`] },
+    { id: 'es-06', difficolta: 2, testo: R`Scrivi l'equazione della retta passante per $A(1; 2)$ e $B(3; 8)$.`, suggerimenti: [R`Calcola prima $m$ con la formula del coefficiente angolare.`, R`Poi usa $y-y_A=m(x-x_A)$.`], risposta: retta(3, -1, -1), soluzione: [R`$m=\dfrac{8-2}{3-1}=\dfrac{6}{2}=3$.`, R`$y-2=3(x-1)$.`, R`$y=3x-1$.`] },
 
     { id: 'es-07', difficolta: 2, testo: R`Trova il coefficiente angolare della retta perpendicolare a $y=\dfrac{2}{3}x-1$.`, suggerimenti: [R`Usa $m_2=-\dfrac{1}{m_1}$.`, R`$m_1=\dfrac{2}{3}$: il suo reciproco è $\dfrac{3}{2}$.`], risposta: { tipo: 'numero', valore: -1.5, tolleranza: 0.01 }, soluzione: [R`$m_1=\dfrac{2}{3}$.`, R`$m_2=-\dfrac{1}{m_1}=-\dfrac{3}{2}=-1{,}5$.`] },
 

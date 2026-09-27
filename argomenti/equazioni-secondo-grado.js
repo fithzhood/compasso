@@ -1,53 +1,60 @@
 (function () {
 const R = String.raw;
+/* allenamento: stesse istruzioni in tutte le caselle, così la casella non suggerisce il caso */
+const SEGNA = 'es. -1; 3 o nessuna';
+const nessuna = { tipo: 'testo', accettate: ['nessuna', 'nessuna soluzione', 'nessuna soluzione reale', 'impossibile', 'non ha soluzioni', '∅', 'ø', '{}', 'insieme vuoto'], segnaposto: SEGNA };
+const doppia = v => ({ tipo: 'testo', accettate: [v, v + ';' + v, v + ',' + v, v + ' e ' + v, v + ' doppia', v + ' (doppia)', v + ' soluzione doppia', 'x1=x2=' + v, 'x₁=x₂=' + v], segnaposto: SEGNA });
+const sol = (...v) => ({ tipo: 'numeri', valori: v, segnaposto: SEGNA });
 COMPASSO.registra({
   id: 'equazioni-secondo-grado',
   titolo: 'Equazioni di secondo grado',
 
-  introduzione: R`Un rettangolo ha un lato più lungo dell'altro di $3\ \text{cm}$ e un'area di $40\ \text{cm}^2$. Se chiami $x$ il lato corto, l'area è $x(x+3)=40$, cioè $x^2+3x-40=0$. L'incognita compare al quadrato, e spostando termini da una parte all'altra come nel primo grado non si riesce più a isolarla.
+  introduzione: R`Un rettangolo ha un lato più lungo dell'altro di $3\ \text{cm}$ e un'area di $40\ \text{cm}^2$. Chiama $x$ il lato corto: l'area è $x(x+3)=40$, cioè $x^2+3x-40=0$.
 
-Un'equazione così si chiama **di secondo grado**. Si incontra ogni volta che due grandezze incognite si moltiplicano fra loro: aree, prodotti, traiettorie di oggetti lanciati. Per risolverla ci sono due strade: scomporre il polinomio in fattori, quando ci si riesce, oppure usare la **formula risolutiva**, che funziona sempre.
+L'incognita compare al quadrato: è un'equazione **di secondo grado**. Spostare i termini non basta più per isolare $x$.
 
-Serve saper risolvere le equazioni di primo grado, scomporre un polinomio (raccoglimento, prodotti notevoli) e fare i conti con le radici quadrate.`,
+Puoi scomporre il polinomio in fattori, quando ci riesci. Oppure usi la formula risolutiva, che funziona sempre.
+
+Ti servono le equazioni di primo grado, le scomposizioni e le radici quadrate.`,
 
   inBreve: [
-    R`Prima di tutto si porta l'equazione nella forma $ax^2+bx+c=0$ e si leggono $a$, $b$, $c$ **con il loro segno**.`,
-    R`Se manca $b$ o manca $c$ la formula non serve: si isola $x^2$ oppure si raccoglie $x$. Nella spuria non si divide mai per $x$, altrimenti si perde la soluzione $x=0$.`,
+    R`Prima porta l'equazione nella forma $ax^2+bx+c=0$. Poi leggi $a$, $b$, $c$ **con il loro segno**.`,
+    R`Se manca $b$ o manca $c$, la formula non serve. Nella spuria non dividere per $x$: perderesti la soluzione $x=0$.`,
     R`La formula risolutiva è $x_{1,2}=\dfrac{-b\pm\sqrt{\Delta}}{2a}$, con $\Delta=b^2-4ac$. Il segno di $\Delta$ dice quante soluzioni ci sono: due, una (doppia) o nessuna.`,
-    R`Somma e prodotto delle soluzioni sono $-\dfrac{b}{a}$ e $\dfrac{c}{a}$: servono per controllare i conti e per trovare le soluzioni a mente.`,
+    R`La somma delle soluzioni è $-\dfrac{b}{a}$. Il prodotto è $\dfrac{c}{a}$. Ti servono per controllare i conti.`,
     R`Le soluzioni sono i punti in cui la parabola $y=ax^2+bx+c$ incontra l'asse $x$.`,
-    R`Nelle equazioni fratte e nei problemi le soluzioni trovate si confrontano sempre con le condizioni: alcune vanno scartate.`
+    R`Nelle equazioni fratte e nei problemi controlla sempre le soluzioni: alcune vanno scartate.`
   ],
 
   sezioni: [
-    { id: 'forma-normale', titolo: 'La forma normale', testo: R`L'equazione $(x-1)(x+2)=4$ è di secondo grado? A prima vista non si capisce. Bisogna svilupparla, portare tutto a sinistra e ridurre i termini simili: solo allora si vede qual è l'esponente più alto della $x$.
+    { id: 'forma-normale', titolo: 'La forma normale', testo: R`Guarda $(x-1)(x+2)=4$. Per sapere se è di secondo grado, sviluppa i calcoli e porta tutto a sinistra.
 
 ~ (x-1)(x+2)=4 :: così com'è non si legge niente
 ~ \evid{x^2+2x-x-2}=4 :: sviluppo il prodotto
 ~ x^2+x-2\evid{-4}=0 :: porto il $4$ a sinistra, cambiando segno
 ~ \evidb{x^2+x-6=0} :: riduco: è di secondo grado, con $a=1$, $b=1$, $c=-6$
 
->* **Forma normale:** $ax^2+bx+c=0$, con $a\ne 0$. Il numero $a$ è il coefficiente di $x^2$, $b$ è il coefficiente di $x$, $c$ è il **termine noto** (quello senza $x$).
+>* **Forma normale:** $ax^2+bx+c=0$, con $a\ne 0$. $a$ è il coefficiente di $x^2$, $b$ quello di $x$. $c$ è il **termine noto**, il numero senza $x$.
 
-La condizione $a\ne 0$ serve perché con $a=0$ il termine $x^2$ sparisce e l'equazione torna di primo grado.
+Serve $a\ne 0$: con $a=0$ sparisce $x^2$ e l'equazione torna di primo grado.
 
-I coefficienti si leggono **con il loro segno**, ed è qui che nasce la maggior parte degli errori nella formula.
+Leggi i coefficienti **con il loro segno**: qui nasce la maggior parte degli errori.
 
 ?? In $3x^2-5x+2=0$, quanto vale $b$?
 [ ] $5$
 [x] $-5$
 [ ] $2$
-=> $b$ è il coefficiente di $x$, segno compreso: $b=-5$. Scrivere $b=5$ sembra una svista da niente, ma nella formula cambia il segno di tutte e due le soluzioni. $2$ è il termine noto $c$.
+=> $b$ è il coefficiente di $x$, con il suo segno: $b=-5$. Con $b=5$ le due soluzioni cambiano segno. $2$ è il termine noto $c$.
 
-Se $b$ e $c$ sono tutti e due diversi da zero l'equazione si dice **completa**; se ne manca almeno uno si dice **incompleta**, e si risolve senza formula (sezione seguente).
+Se ci sono sia $b$ sia $c$ l'equazione è **completa**, altrimenti è incompleta.
 
-Un'equazione di secondo grado ha **al massimo due soluzioni** reali, chiamate anche **radici**. Possono essere due, una sola (si dice doppia, o coincidente) oppure nessuna.` },
+Le soluzioni si chiamano anche **radici**. Possono essere due, una sola (detta doppia) oppure nessuna.` },
 
-    { id: 'incomplete', titolo: 'Le equazioni incomplete', testo: R`Quando nella forma normale manca $b$ o manca $c$, la formula non serve: bastano una radice quadrata o un raccoglimento.
+    { id: 'incomplete', titolo: 'Le equazioni incomplete', testo: R`Se manca $b$ o manca $c$, la formula non serve.
 
-- **pura**, $ax^2+c=0$ (manca $b$): si isola $x^2$. Due soluzioni opposte, oppure nessuna.
-- **spuria**, $ax^2+bx=0$ (manca $c$): si raccoglie $x$. Soluzioni $0$ e $-\frac{b}{a}$.
-- **monomia**, $ax^2=0$ (mancano tutti e due): l'unica soluzione è $0$, doppia.
+- **pura**: $ax^2+c=0$, manca $b$. Isoli $x^2$.
+- **spuria**: $ax^2+bx=0$, manca $c$. Raccogli $x$.
+- **monomia**: $ax^2=0$, mancano tutti e due. La soluzione è $0$, doppia.
 
 ### Equazione pura: manca $b$
 
@@ -56,7 +63,7 @@ Un'equazione di secondo grado ha **al massimo due soluzioni** reali, chiamate an
 ~ x^2=\evid{9} :: divido per $2$
 ~ x=\evidb{\pm 3} :: i numeri che al quadrato danno $9$ sono due: $3$ e $-3$
 
-Se dopo aver isolato $x^2$ a destra resta un numero negativo, l'equazione è **impossibile**: $x^2+4=0$ porta a $x^2=-4$, e nessun numero reale al quadrato dà un risultato negativo.
+A volte a destra resta un numero negativo: allora l'equazione è **impossibile**. Per esempio $x^2+4=0$ diventa $x^2=-4$, e nessun quadrato è negativo.
 
 ### Equazione spuria: manca $c$
 
@@ -65,21 +72,23 @@ Se dopo aver isolato $x^2$ a destra resta un numero negativo, l'equazione è **i
 ~ \evid{3x=0}\ \lor\ \evid{x-4=0} :: un prodotto vale zero quando vale zero almeno uno dei fattori
 ~ \evidb{x=0}\ \lor\ \evidb{x=4} :: risolvo le due equazioni di primo grado
 
-Il terzo passo usa la **legge di annullamento del prodotto**: un prodotto è zero se, e solo se, almeno uno dei fattori è zero.
+Il terzo passo usa la **legge di annullamento del prodotto**: un prodotto vale zero solo se almeno un fattore vale zero.
 
-?? Uno studente risolve $3x^2=12x$ dividendo tutto per $3x$ e trova $x=4$. Che cosa gli è sfuggito?
+?? Uno studente divide $3x^2=12x$ per $3x$ e trova $x=4$. Che cosa gli è sfuggito?
 [x] la soluzione $x=0$
 [ ] niente: $x=4$ è l'unica soluzione
 [ ] la soluzione $x=-4$
-=> Dividere per $3x$ si può fare solo se $3x\ne 0$, ma $x=0$ è proprio una soluzione: $3\cdot 0=12\cdot 0$. Con il raccoglimento, $3x(x-4)=0$, escono tutte e due. Il $-4$ è l'errore di chi pensa che le soluzioni vengano sempre in coppia opposte, come nelle pure.
+=> Puoi dividere per $3x$ solo se $x\ne 0$. Ma $x=0$ è proprio una soluzione: $3\cdot 0=12\cdot 0$. Raccogliendo, $3x(x-4)=0$, trovi tutte e due le soluzioni. Il $-4$ viene dall'idea che le soluzioni siano sempre opposte, come nelle pure.
 
->* Una spuria ha sempre fra le soluzioni $x=0$. Una pura ha due soluzioni opposte, oppure nessuna.` },
+>* Una spuria ha sempre la soluzione $x=0$. Una pura ha due soluzioni opposte, oppure nessuna.` },
 
-    { id: 'formula-risolutiva', titolo: 'La formula risolutiva e il discriminante', testo: R`Come si risolve un'equazione completa, come $x^2+6x-7=0$, che non si sa scomporre a colpo d'occhio? L'idea è trasformare il primo membro in un **quadrato perfetto**: poi basta estrarre la radice. Per $x^2+6x$ il pezzo che manca è $9$, perché $x^2+6x+9=(x+3)^2$. Guarda l'animazione.
+    { id: 'formula-risolutiva', titolo: 'La formula risolutiva e il discriminante', testo: R`Prendi $x^2+6x-7=0$: non si scompone a colpo d'occhio. L'idea è rendere il primo membro un **quadrato perfetto**, e poi estrarre la radice.
+
+Per $x^2+6x$ manca $9$: infatti $x^2+6x+9=(x+3)^2$. Guarda l'animazione.
 
 [[animazione:completamento-quadrato]]
 
-Questo metodo si chiama **completamento del quadrato**. Fatto una volta per tutte con le lettere $a$, $b$, $c$, dà una formula che vale per ogni equazione.
+Questo metodo si chiama completamento del quadrato: con le lettere $a$, $b$, $c$ dà una formula valida per ogni equazione.
 
 ~ ax^2+bx+c=0 :: si parte dalla forma normale, con $a\ne 0$
 ~ \evid{4a^2x^2+4abx+4ac}=0 :: moltiplico tutto per $4a$ (si può, perché $4a\ne 0$): così non compariranno frazioni
@@ -89,17 +98,17 @@ Questo metodo si chiama **completamento del quadrato**. Fatto una volta per tutt
 ~ 2ax+b=\evid{\pm}\sqrt{b^2-4ac} :: se il secondo membro non è negativo, i numeri con quel quadrato sono due, opposti
 ~ x_{1,2}=\evidb{\frac{-b\pm\sqrt{b^2-4ac}}{2a}} :: porto $b$ a destra e divido per $2a$
 
->* **Formula risolutiva:** $$x_{1,2}=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$$ Il numero sotto radice si chiama **discriminante** e si indica con $\Delta=b^2-4ac$.
+>* **Formula risolutiva:** $$x_{1,2}=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$$ Il numero sotto radice si chiama **discriminante**: $\Delta=b^2-4ac$.
 
-Si chiama così perché *discrimina*, cioè distingue, i tre casi possibili.
+Il segno di $\Delta$ distingue tre casi.
 
 | $\Delta$ | soluzioni reali |
 |---|---|
 | positivo | due, distinte |
-| zero | due coincidenti: $x_1=x_2=-\frac{b}{2a}$ |
+| zero | una sola, doppia: $x_1=x_2=-\frac{b}{2a}$ |
 | negativo | nessuna: non esiste la radice di un negativo |
 
-Ecco la formula al lavoro su $2x^2-5x+2=0$.
+Applica la formula a $2x^2-5x+2=0$.
 
 ~ a=2,\quad b=-5,\quad c=2 :: prima leggo i coefficienti, con il loro segno
 ~ \Delta=(\evid{-5})^2-4\cdot 2\cdot 2=9 :: calcolo a parte il discriminante, con $b$ fra parentesi: $25-16=9$
@@ -111,90 +120,90 @@ Ecco la formula al lavoro su $2x^2-5x+2=0$.
 [x] $-4\pm\sqrt{36}$
 [ ] $4\pm\sqrt{36}$
 [ ] $-4\pm\sqrt{-4}$
-=> Qui $a=1$, $b=4$, $c=-5$, e $\Delta=16-4\cdot 1\cdot(-5)=16+20=36$. Il numeratore è $-b\pm\sqrt{\Delta}=-4\pm 6$, e le soluzioni sono $1$ e $-5$. Chi scrive $\sqrt{-4}$ ha dimenticato il segno di $c$ (ha fatto $16-20$); chi scrive $4\pm$ ha dimenticato il meno davanti a $b$.
+=> Qui $a=1$, $b=4$, $c=-5$. Allora $\Delta=16+20=36$ e il numeratore è $-4\pm\sqrt{36}$. Le soluzioni sono $1$ e $-5$. Con $\sqrt{-4}$ hai perso il segno di $c$: hai fatto $16-20$. Con $4\pm$ hai perso il meno davanti a $b$.
 
->! La frazione è una sola: il $2a$ sta sotto a **tutto** il numeratore, $-b$ compreso. $\dfrac{-b\pm\sqrt{\Delta}}{2a}$ non è $-b\pm\dfrac{\sqrt{\Delta}}{2a}$.` },
+>! Il $2a$ divide **tutto** il numeratore, anche $-b$. $\dfrac{-b\pm\sqrt{\Delta}}{2a}$ è diverso da $-b\pm\dfrac{\sqrt{\Delta}}{2a}$.` },
 
-    { id: 'formula-ridotta', titolo: 'La formula ridotta', testo: R`Quando $b$ è un numero **pari**, nella formula tutto si può dividere per $2$ e i conti si accorciano. Ecco da dove viene la versione corta.
+    { id: 'formula-ridotta', titolo: 'La formula ridotta', testo: R`Se $b$ è un numero **pari**, nella formula puoi dividere tutto per $2$ e i conti si accorciano.
 
 ~ x_{1,2}=\frac{-b\pm\sqrt{b^2-4ac}}{2a} :: la formula solita, con $b$ pari
 ~ x_{1,2}=\frac{-\evid{2k}\pm\sqrt{\evid{4k^2}-4ac}}{2a} :: scrivo $b=2k$, cioè $k=\frac{b}{2}$
 ~ x_{1,2}=\frac{-2k\pm\evid{2}\sqrt{k^2-ac}}{2a} :: sotto radice raccolgo $4$, e $\sqrt{4}=2$ esce
 ~ x_{1,2}=\evidb{\frac{-k\pm\sqrt{k^2-ac}}{a}} :: divido numeratore e denominatore per $2$
 
->* **Formula ridotta**, con $\frac{b}{2}$ al posto di $k$: $$x_{1,2}=\frac{-\frac{b}{2}\pm\sqrt{\left(\frac{b}{2}\right)^2-ac}}{a}$$ Il numero sotto radice, $\dfrac{\Delta}{4}=\left(\dfrac{b}{2}\right)^2-ac$, è un quarto di $\Delta$: ha lo stesso segno, e dice anche lui quante soluzioni ci sono.
+>* **Formula ridotta**, con $\frac{b}{2}$ al posto di $k$: $$x_{1,2}=\frac{-\frac{b}{2}\pm\sqrt{\left(\frac{b}{2}\right)^2-ac}}{a}$$ Sotto radice c'è $\dfrac{\Delta}{4}=\left(\dfrac{b}{2}\right)^2-ac$, che ha lo stesso segno di $\Delta$.
 
-Esempio: $x^2-6x+5=0$. Qui $\dfrac{b}{2}=-3$ e $\dfrac{\Delta}{4}=(-3)^2-1\cdot 5=4$, quindi
+Esempio: $x^2-6x+5=0$, con $\dfrac{b}{2}=-3$ e $\dfrac{\Delta}{4}=9-5=4$. Quindi
 $$x_{1,2}=\frac{3\pm 2}{1}\quad\Rightarrow\quad x_1=5,\ x_2=1.$$
 
-Con la formula intera si arriva allo stesso punto, passando per $\sqrt{16}=4$ e per la frazione $\dfrac{6\pm 4}{2}$: numeri più grandi, stesse soluzioni.
+Con la formula intera trovi le stesse soluzioni, ma con numeri più grandi.
 
 ?? Per $x^2+10x+21=0$ con la formula ridotta, quanto vale $\dfrac{\Delta}{4}$?
 [x] $4$
 [ ] $16$
 [ ] $79$
-=> $\dfrac{b}{2}=5$, quindi $\dfrac{\Delta}{4}=5^2-21=4$ e le soluzioni sono $-5\pm 2$, cioè $-3$ e $-7$. $16$ è il $\Delta$ intero ($100-84$), che nella ridotta non si usa; $79$ viene dal non dividere $b$ per $2$ ($100-21$).
+=> $\dfrac{b}{2}=5$, quindi $\dfrac{\Delta}{4}=25-21=4$. Le soluzioni sono $-5\pm 2$: $-3$ e $-7$. $16$ è il $\Delta$ intero. $79$ viene da $100-21$: hai usato $b$ invece di $\dfrac{b}{2}$.
 
-> La ridotta è una scorciatoia, non un obbligo: se hai un dubbio, la formula intera funziona sempre.` },
+> Se hai un dubbio, usa la formula intera: funziona sempre.` },
 
-    { id: 'somma-prodotto', titolo: 'Somma e prodotto delle radici', testo: R`Risolvi $x^2-5x+6=0$: le soluzioni sono $2$ e $3$. Ora guarda i coefficienti: la somma delle soluzioni è $5$, cioè $-b$, e il prodotto è $6$, cioè $c$. Non è una coincidenza, e vale per ogni equazione con $\Delta\ge 0$.
+    { id: 'somma-prodotto', titolo: 'Somma e prodotto delle radici', testo: R`Risolvi $x^2-5x+6=0$: le soluzioni sono $2$ e $3$. La loro somma è $5$, cioè $-b$, e il prodotto è $6$, cioè $c$. Qui $a=1$. Se $a$ non è $1$, somma e prodotto vanno divisi per $a$:
 
 >* Se $x_1$ e $x_2$ sono le soluzioni di $ax^2+bx+c=0$: $$x_1+x_2=-\frac{b}{a}\qquad\qquad x_1\cdot x_2=\frac{c}{a}$$
 
-Si ricavano dalla formula risolutiva. Per la somma:
+Ricavi la somma dalla formula risolutiva:
 
 ~ x_1+x_2=\frac{-b+\sqrt{\Delta}}{2a}+\frac{-b-\sqrt{\Delta}}{2a} :: sommo le due soluzioni
 ~ =\frac{-2b\,\evid{+\sqrt{\Delta}-\sqrt{\Delta}}}{2a} :: stesso denominatore: le due radici si cancellano
 ~ =\evidb{-\frac{b}{a}} :: semplifico il $2$
 
-Per il prodotto:
+Poi il prodotto:
 
 ~ x_1\cdot x_2=\frac{(-b+\sqrt{\Delta})(-b-\sqrt{\Delta})}{4a^2} :: moltiplico le due frazioni
 ~ =\frac{\evid{b^2-\Delta}}{4a^2} :: al numeratore c'è una somma per una differenza
 ~ =\frac{b^2-\evid{(b^2-4ac)}}{4a^2}=\frac{4ac}{4a^2} :: sostituisco $\Delta=b^2-4ac$
 ~ =\evidb{\frac{c}{a}} :: semplifico $4a$
 
-Queste relazioni servono in due direzioni.
+**Dall'equazione alle soluzioni.** Con $a=1$ cerca due numeri con somma $-b$ e prodotto $c$. In $x^2-5x+6=0$ cerchi somma $5$ e prodotto $6$: sono $2$ e $3$.
 
-**Dall'equazione alle soluzioni, a mente.** Con $a=1$ si cercano due numeri che abbiano somma $-b$ e prodotto $c$. In $x^2-5x+6=0$: somma $5$, prodotto $6$, sono $2$ e $3$. Funziona bene quando le soluzioni sono intere.
-
-**Dalle soluzioni all'equazione.** Un'equazione con soluzioni $x_1$ e $x_2$ è $x^2-sx+p=0$, dove $s$ è la somma e $p$ il prodotto.
+**Dalle soluzioni all'equazione.** Due numeri con somma $s$ e prodotto $p$ sono le soluzioni di $x^2-sx+p=0$.
 
 ?? Quale equazione ha come soluzioni $3$ e $-2$?
 [x] $x^2-x-6=0$
 [ ] $x^2+x-6=0$
 [ ] $x^2-x+6=0$
-=> Somma $s=3+(-2)=1$ e prodotto $p=3\cdot(-2)=-6$, quindi $x^2-1\cdot x+(-6)=x^2-x-6$. In $x^2+x-6$ è sbagliato il segno della somma: nell'equazione compare $-s$. In $x^2-x+6$ il prodotto ha perso il segno meno.
+=> La somma è $s=1$ e il prodotto è $p=-6$. Quindi $x^2-x-6=0$. In $x^2+x-6$ è sbagliato il segno della somma: nell'equazione c'è $-s$. In $x^2-x+6$ il prodotto ha perso il meno.
 
-Dal prodotto si legge anche il segno delle soluzioni. Trascina le due radici e guarda il prodotto quando stanno da parti opposte rispetto allo zero, e quando stanno dalla stessa parte.
+Il prodotto dice anche il segno delle soluzioni. Trascina le due radici e guarda il segno di $p$.
 
 [[grafico:radici]]
 
 - se $\frac{c}{a}<0$ le soluzioni sono **discordi**: una positiva e una negativa;
-- se $\frac{c}{a}>0$ sono **concordi**, e il segno della somma $-\frac{b}{a}$ dice se sono tutte e due positive o tutte e due negative.
+- se $\frac{c}{a}>0$ sono **concordi**: hanno lo stesso segno, quello della somma $-\frac{b}{a}$.
 
->! Le relazioni valgono solo se le soluzioni esistono, cioè se $\Delta\ge 0$. In $x^2+x+1=0$ si leggerebbe "somma $-1$, prodotto $1$", ma $\Delta=-3$ e le soluzioni non ci sono.` },
+>! Queste formule valgono solo se $\Delta\ge 0$. In $x^2+x+1=0$ leggeresti somma $-1$ e prodotto $1$, ma $\Delta=-3$ e le soluzioni non esistono.` },
 
-    { id: 'scomposizione-trinomio', titolo: 'Scomporre il trinomio di secondo grado', testo: R`Se conosci le soluzioni di $ax^2+bx+c=0$, puoi scomporre in fattori il trinomio $ax^2+bx+c$ anche quando nessun metodo di scomposizione sembra funzionare.
+    { id: 'scomposizione-trinomio', titolo: 'Scomporre il trinomio di secondo grado', testo: R`Se conosci le soluzioni di $ax^2+bx+c=0$, sai scomporre il trinomio $ax^2+bx+c$. Funziona anche quando gli altri metodi non bastano.
 
->* Se $\Delta\ge 0$ e $x_1$, $x_2$ sono le soluzioni: $$ax^2+bx+c=a(x-x_1)(x-x_2)$$ Se $\Delta=0$ i due fattori coincidono: $a(x-x_1)^2$. Se $\Delta<0$ il trinomio non si scompone in $\mathbb{R}$: si dice **irriducibile**.
+>* Se $\Delta\ge 0$ e $x_1$, $x_2$ sono le soluzioni: $$ax^2+bx+c=a(x-x_1)(x-x_2)$$ Se $\Delta=0$ i due fattori sono uguali: $a(x-x_1)^2$. Se $\Delta<0$ il trinomio non si scompone: è **irriducibile**.
 
 ~ 2x^2-5x+2 :: le soluzioni di $2x^2-5x+2=0$ sono $2$ e $\frac12$ (le abbiamo trovate con la formula)
 ~ \evid{2}(x-2)\left(x-\frac12\right) :: davanti va $a$, poi un fattore $(x-x_1)$ per ogni soluzione
 ~ (x-2)\cdot\evid{2\left(x-\frac12\right)} :: porto il $2$ dentro la parentesi con la frazione
 ~ \evidb{(x-2)(2x-1)} :: $2\left(x-\frac12\right)=2x-1$: è la forma che si trova sui libri
 
-Vale anche al contrario: se un trinomio si scompone facilmente, le soluzioni si leggono dai fattori senza formula. Per esempio $x^2-6x+9=(x-3)^2$, quindi $x^2-6x+9=0$ ha la soluzione doppia $x=3$.
+Vale anche al contrario: se il trinomio si scompone facilmente, leggi le soluzioni dai fattori. Per esempio $x^2-6x+9=(x-3)^2$, quindi $x^2-6x+9=0$ ha la soluzione doppia $x=3$.
 
 ?? Le soluzioni di $3x^2-3x-6=0$ sono $2$ e $-1$. Come si scompone $3x^2-3x-6$?
 [x] $3(x-2)(x+1)$
 [ ] $(x-2)(x+1)$
 [ ] $3(x+2)(x-1)$
-=> $a(x-x_1)(x-x_2)=3(x-2)(x-(-1))=3(x-2)(x+1)$. Senza il $3$ davanti il prodotto avrebbe $x^2$ invece di $3x^2$. In $3(x+2)(x-1)$ sono sbagliati i segni: il fattore è $x$ **meno** la soluzione.` },
+=> $a(x-x_1)(x-x_2)=3(x-2)(x-(-1))=3(x-2)(x+1)$. Senza il $3$ davanti otterresti $x^2$ invece di $3x^2$. In $3(x+2)(x-1)$ i segni sono sbagliati: il fattore è $x$ **meno** la soluzione.` },
 
-    { id: 'parabola-legame', titolo: 'Il significato grafico', testo: R`La funzione $y=ax^2+bx+c$ ha per grafico una **parabola**. Risolvere $ax^2+bx+c=0$ vuol dire cercare i punti in cui $y$ vale zero, cioè i punti in cui la parabola incontra l'asse $x$. Le soluzioni dell'equazione sono le ascisse di quei punti, e si chiamano anche **zeri**.
+    { id: 'parabola-legame', titolo: 'Il significato grafico', testo: R`La funzione $y=ax^2+bx+c$ ha per grafico una **parabola**.
 
-Muovi i cursori e tieni d'occhio il valore di $\Delta$ scritto in alto.
+Risolvere $ax^2+bx+c=0$ vuol dire cercare dove $y$ vale zero, cioè dove la parabola incontra l'asse $x$. Le soluzioni sono le ascisse di quei punti, dette anche **zeri**.
+
+Muovi i cursori e guarda il valore di $\Delta$ scritto in alto.
 
 [[grafico:parabola]]
 
@@ -204,17 +213,22 @@ Muovi i cursori e tieni d'occhio il valore di $\Delta$ scritto in alto.
 | zero | si toccano in un punto solo, il vertice |
 | negativo | non si incontrano: la parabola sta tutta sopra ($a>0$) o tutta sotto ($a<0$) |
 
-Il vertice ha ascissa $x_V=-\dfrac{b}{2a}$. Sta esattamente a metà fra le due soluzioni, perché la parabola è simmetrica rispetto alla retta verticale che passa per il vertice. Quando $\Delta=0$ la soluzione doppia coincide con $x_V$.
+Il vertice ha ascissa $x_V=-\dfrac{b}{2a}$. Sta a metà fra le due soluzioni, perché la parabola è simmetrica. Con $\Delta=0$ la soluzione doppia è proprio $x_V$.
 
-?? In un'equazione $ax^2+bx+c=0$, $a$ e $c$ hanno segni opposti. Che cosa puoi dire delle soluzioni, senza fare conti?
-[x] sono sempre due, distinte
+?? In $ax^2+bx+c=0$, $a$ e $c$ hanno segni opposti. Che cosa sai delle soluzioni, senza fare conti?
+[x] sono due, distinte
 [ ] dipende da $b$
-[ ] non ce ne sono
-=> Se $a$ e $c$ sono discordi, $-4ac$ è positivo, quindi $\Delta=b^2-4ac$ è un numero $\ge 0$ più un numero positivo: $\Delta>0$ qualunque sia $b$. Nel grafico: con $a>0$ e $c<0$ la parabola è rivolta verso l'alto e taglia l'asse $y$ sotto lo zero, quindi deve per forza attraversare l'asse $x$ due volte.
+[ ] nessuna
+=> Con $a$ e $c$ di segno opposto, $-4ac$ è positivo. Allora $\Delta=b^2-4ac$ è positivo per ogni $b$. Nel grafico, con $a>0$ e $c<0$ la parabola è aperta verso l'alto e taglia l'asse $y$ sotto lo zero. Per questo attraversa due volte l'asse $x$.
 
-> Questo legame è la chiave delle disequazioni di secondo grado: chiedersi dove $ax^2+bx+c>0$ vuol dire chiedersi dove la parabola sta sopra l'asse $x$.` },
+> Questo legame serve nelle disequazioni: $ax^2+bx+c$ è positivo dove la parabola sta sopra l'asse $x$.` },
 
-    { id: 'fratte', titolo: 'Equazioni fratte di secondo grado', testo: R`Un'equazione **fratta** ha l'incognita in almeno un denominatore. Si procede come nel primo grado: prima le **condizioni di esistenza** (c.e.), cioè i valori che annullano un denominatore e vanno esclusi; poi si riduce tutto allo stesso denominatore, lo si toglie, e si risolve l'equazione che resta. Alla fine si confrontano le soluzioni con le c.e.
+    { id: 'fratte', titolo: 'Equazioni fratte di secondo grado', testo: R`Un'equazione **fratta** ha l'incognita in un denominatore. Si risolve così:
+
+1. Scrivi le condizioni di esistenza (c.e.): escludi i valori che annullano un denominatore.
+2. Riduci tutto allo stesso denominatore.
+3. Togli il denominatore e risolvi.
+4. Confronta le soluzioni con le c.e.
 
 ~ \frac{1}{x-1}+\frac{1}{x+1}=\frac34 :: c.e.: $x\ne 1$ e $x\ne -1$, altrimenti un denominatore vale zero
 ~ \frac{\evid{4(x+1)+4(x-1)}}{4(x^2-1)}=\frac{\evid{3(x^2-1)}}{4(x^2-1)} :: riduco tutto al denominatore comune $4(x-1)(x+1)=4(x^2-1)$
@@ -223,21 +237,26 @@ Il vertice ha ascissa $x_V=-\dfrac{b}{2a}$. Sta esattamente a metà fra le due s
 ~ x_{1,2}=\frac{8\pm 10}{6} :: $\Delta=64+36=100$, e $\sqrt{100}=10$
 ~ x_1=\evidb{3},\quad x_2=\evidb{-\frac13} :: tutte e due rispettano le c.e.: sono accettabili
 
-Qui è andata bene, ma non sempre è così.
+Qui le due soluzioni vanno bene, ma non sempre succede.
 
 ?? Quali sono le soluzioni di $\dfrac{x^2}{x-2}=\dfrac{4}{x-2}$?
 [x] solo $x=-2$
 [ ] $x=2$ e $x=-2$
 [ ] nessuna
-=> C.e.: $x\ne 2$. Togliendo il denominatore si ha $x^2=4$, cioè $x=\pm 2$. Ma $x=2$ annulla il denominatore, quindi va scartato: resta solo $x=-2$. Dimenticare il confronto con le c.e. è l'errore tipico; dire "nessuna" invece butta via anche la soluzione buona.
+=> C.e.: $x\ne 2$. Senza denominatore resta $x^2=4$, cioè $x=\pm 2$. Ma $x=2$ annulla il denominatore: va scartato. Resta $x=-2$. Chi risponde «nessuna» butta via anche la soluzione buona.
 
->! Una soluzione dell'equazione senza denominatori che coincide con un valore escluso dalle c.e. **non** è soluzione dell'equazione di partenza, e si scarta. Per questo un'equazione fratta di secondo grado può finire con una sola soluzione, o con nessuna.` },
+>! Una soluzione esclusa dalle c.e. si **scarta**. Per questo una fratta può avere una sola soluzione, o nessuna.` },
 
     { id: 'problemi', titolo: 'Problemi ed equazioni parametriche', testo: R`### Problemi
 
-Molti problemi di geometria e sui numeri portano a un'equazione di secondo grado. Lo schema è sempre lo stesso: si sceglie l'incognita, si traducono le condizioni in un'equazione, si risolve, e poi si **controlla che le soluzioni abbiano senso** nel problema.
+Molti problemi portano a un'equazione di secondo grado. Si risolvono così:
 
-Riprendiamo il rettangolo dell'introduzione: un lato è più lungo dell'altro di $3\ \text{cm}$ e l'area è $40\ \text{cm}^2$.
+1. Scegli l'incognita.
+2. Scrivi l'equazione.
+3. Risolvila.
+4. Controlla che le soluzioni abbiano senso nel problema.
+
+Riprendi il rettangolo dell'introduzione: un lato supera l'altro di $3\ \text{cm}$ e l'area è $40\ \text{cm}^2$.
 
 ~ x(x+3)=40 :: $x$ è il lato corto, $x+3$ il lato lungo; con $x>0$
 ~ x^2+3x-40=0 :: sviluppo e porto tutto a sinistra
@@ -245,21 +264,21 @@ Riprendiamo il rettangolo dell'introduzione: un lato è più lungo dell'altro di
 ~ x_1=5,\quad x_2=-8 :: calcolo le due soluzioni
 ~ \evidb{x=5} :: $-8$ non può essere una lunghezza e si scarta: i lati misurano $5$ e $8\ \text{cm}$
 
-Una soluzione negativa non è un errore di calcolo: è una soluzione dell'equazione che il problema non accetta, e va scartata dicendo perché.
+La soluzione $-8$ risolve l'equazione, ma non il problema. Scartala e scrivi il motivo.
 
 ### Equazioni parametriche
 
-In un'equazione **parametrica** alcuni coefficienti dipendono da una lettera, il **parametro** (di solito $k$ o $m$). La domanda è: per quali valori del parametro l'equazione ha una certa proprietà? Gli strumenti sono quelli di questo capitolo: il discriminante e le relazioni fra soluzioni e coefficienti.
+In un'equazione **parametrica** compare una seconda lettera, per esempio $k$, detta parametro. Ti chiedono per quali valori di $k$ l'equazione ha una certa proprietà. Usi $\Delta$, la somma e il prodotto delle soluzioni.
 
-Prendiamo $x^2-2kx+k+2=0$, con $a=1$, $b=-2k$, $c=k+2$.
+Prendi $x^2-2kx+k+2=0$, con $a=1$, $b=-2k$, $c=k+2$.
 
-- **Soluzioni coincidenti:** serve $\Delta=0$. Con la ridotta, $\frac{\Delta}{4}=k^2-(k+2)=k^2-k-2$, che si annulla per $k=2$ oppure $k=-1$.
-- **Soluzioni opposte:** serve somma nulla, $-\frac{b}{a}=2k=0$, cioè $k=0$. Ma con $k=0$ l'equazione è $x^2+2=0$, che non ha soluzioni: la richiesta non si può soddisfare.
+- **Soluzioni coincidenti:** serve $\Delta=0$. Con la ridotta $\frac{\Delta}{4}=k^2-(k+2)=k^2-k-2$, che vale zero per $k=2$ oppure $k=-1$.
+- **Soluzioni opposte:** serve somma zero. La somma è $2k$, quindi $k=0$. Ma con $k=0$ l'equazione è $x^2+2=0$, senza soluzioni: nessun $k$ va bene.
 
 ?? Per quale valore di $k$ l'equazione $x^2-2kx+k+2=0$ ha fra le soluzioni $x=1$?
-=> Se $x=1$ è soluzione, sostituendolo l'uguaglianza deve essere vera: $1-2k+k+2=0$, cioè $3-k=0$, quindi $k=3$. Controllo: con $k=3$ l'equazione è $x^2-6x+5=0$, che ha soluzioni $1$ e $5$.
+=> Sostituisci $x=1$: $1-2k+k+2=0$, cioè $3-k=0$. Quindi $k=3$. Controllo: con $k=3$ l'equazione è $x^2-6x+5=0$, con soluzioni $1$ e $5$.
 
->* Prima ci si chiede **se** le soluzioni esistono ($\Delta\ge 0$); solo dopo si impongono le condizioni su somma, prodotto o segno.` }
+>* Prima controlla che le soluzioni esistano: $\Delta\ge 0$. Poi imponi le condizioni su somma, prodotto o segno.` }
   ],
 
   grafici: {
@@ -344,7 +363,7 @@ Prendiamo $x^2-2kx+k+2=0$, con $a=1$, $b=-2k$, $c=k+2$.
 
   formulario: [
     { nome: 'Forma normale', formula: R`ax^2 + bx + c = 0, \quad a \ne 0` },
-    { nome: 'Discriminante', formula: R`\Delta = b^2 - 4ac`, nota: R`$\Delta > 0$: due soluzioni distinte; $\Delta = 0$: due coincidenti; $\Delta < 0$: nessuna reale.` },
+    { nome: 'Discriminante', formula: R`\Delta = b^2 - 4ac`, nota: R`$\Delta > 0$: due soluzioni distinte; $\Delta = 0$: una doppia (due coincidenti); $\Delta < 0$: nessuna reale.` },
     { nome: 'Formula risolutiva', formula: R`x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}` },
     { nome: 'Formula ridotta', formula: R`x_{1,2} = \frac{-\frac{b}{2} \pm \sqrt{\left(\frac{b}{2}\right)^2 - ac}}{a}`, nota: R`Conviene quando $b$ è pari.` },
     { nome: 'Equazione pura', formula: R`ax^2 + c = 0 \ \Rightarrow\ x = \pm\sqrt{-\frac{c}{a}}`, nota: R`Solo se $-\dfrac{c}{a} \ge 0$.` },
@@ -365,7 +384,7 @@ Prendiamo $x^2-2kx+k+2=0$, con $a=1$, $b=-2k$, $c=k+2$.
     { id: 'fc-07', sezione: 'incomplete', tipo: 'concetto', fronte: R`Legge di annullamento del prodotto`, retro: R`Un prodotto è zero se e solo se almeno un fattore è zero.` },
     { id: 'fc-08', sezione: 'formula-risolutiva', tipo: 'formula', fronte: R`Formula risolutiva`, retro: R`$x_{1,2} = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}$` },
     { id: 'fc-09', sezione: 'formula-risolutiva', tipo: 'formula', fronte: R`Discriminante`, retro: R`$\Delta = b^2 - 4ac$` },
-    { id: 'fc-10', sezione: 'formula-risolutiva', tipo: 'concetto', fronte: R`Cosa dice il segno di $\Delta$?`, retro: R`$\Delta > 0$: due soluzioni distinte. $\Delta = 0$: due coincidenti. $\Delta < 0$: nessuna soluzione reale.` },
+    { id: 'fc-10', sezione: 'formula-risolutiva', tipo: 'concetto', fronte: R`Cosa dice il segno di $\Delta$?`, retro: R`$\Delta > 0$: due soluzioni distinte. $\Delta = 0$: una doppia (due coincidenti). $\Delta < 0$: nessuna soluzione reale.` },
     { id: 'fc-11', sezione: 'formula-risolutiva', tipo: 'formula', fronte: R`Soluzione quando $\Delta = 0$`, retro: R`$x_1 = x_2 = -\dfrac{b}{2a}$` },
     { id: 'fc-12', sezione: 'formula-risolutiva', tipo: 'procedura', fronte: R`Come si ricava la formula risolutiva?`, retro: R`Completando il quadrato: si moltiplica per $4a$ e si scrive $(2ax + b)^2 = b^2 - 4ac$.` },
     { id: 'fc-13', sezione: 'formula-ridotta', tipo: 'formula', fronte: R`Formula ridotta`, retro: R`$x_{1,2} = \dfrac{-\frac{b}{2} \pm \sqrt{\left(\frac{b}{2}\right)^2 - ac}}{a}$, quando $b$ è pari.` },
@@ -383,6 +402,28 @@ Prendiamo $x^2-2kx+k+2=0$, con $a=1$, $b=-2k$, $c=k+2$.
   ],
 
   esercizi: [
+    /* allenamento: venti equazioni intere, numeri piccoli, niente frazioni né sistemi */
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Risolvi $x^2=25$. Scrivi le soluzioni separate da punto e virgola. Se non ce ne sono, scrivi *nessuna*.`, suggerimenti: [R`Cerca i numeri che al quadrato danno $25$.`, R`Sono due, opposti.`], risposta: sol(5, -5), soluzione: [R`È un'equazione pura: $x^2$ è già isolato.`, R`I numeri con quadrato $25$ sono $5$ e $-5$: $x=\pm 5$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Risolvi $x^2-16=0$.`, suggerimenti: [R`Porta $16$ a destra.`], risposta: sol(4, -4), soluzione: [R`Porto il termine noto a destra: $x^2=16$.`, R`$x=\pm 4$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Risolvi $x^2-3x=0$.`, suggerimenti: [R`Manca il termine noto: raccogli $x$.`, R`Un prodotto vale zero se vale zero uno dei fattori.`], risposta: sol(0, 3), soluzione: [R`Raccolgo $x$: $x(x-3)=0$.`, R`$x=0$ oppure $x-3=0$.`, R`Soluzioni: $x=0$ e $x=3$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Risolvi $(x-1)(x+5)=0$.`, suggerimenti: [R`Non sviluppare: il prodotto è già pronto.`, R`Poni uguale a zero ogni fattore.`], risposta: sol(1, -5), soluzione: [R`Legge di annullamento del prodotto: $x-1=0$ oppure $x+5=0$.`, R`Soluzioni: $x=1$ e $x=-5$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Risolvi $x^2+9=0$.`, suggerimenti: [R`Isola $x^2$ e guarda il segno del numero a destra.`], risposta: nessuna, soluzione: [R`Porto $9$ a destra: $x^2=-9$.`, R`Nessun numero al quadrato dà un negativo: l'equazione è impossibile.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Risolvi $2x^2-18=0$.`, suggerimenti: [R`Manca $b$: è pura. Isola $x^2$.`, R`Porta $18$ a destra, poi dividi per $2$.`], risposta: sol(3, -3), soluzione: [R`Porto $18$ a destra: $2x^2=18$.`, R`Divido per $2$: $x^2=9$.`, R`$x=\pm 3$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Risolvi $3x^2+6x=0$.`, suggerimenti: [R`Manca $c$: è spuria. Non dividere per $x$, raccogli.`, R`Raccogli $3x$.`], risposta: sol(0, -2), soluzione: [R`Raccolgo $3x$: $3x(x+2)=0$.`, R`$3x=0$ oppure $x+2=0$.`, R`Soluzioni: $x=0$ e $x=-2$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Risolvi $x^2-5x+6=0$.`, suggerimenti: [R`È completa: scrivi $a$, $b$, $c$ e calcola $\Delta$.`, R`$\Delta=25-24=1$.`], risposta: sol(2, 3), soluzione: [R`$a=1$, $b=-5$, $c=6$.`, R`$\Delta=(-5)^2-4\cdot 1\cdot 6=1$.`, R`$x_{1,2}=\dfrac{5\pm 1}{2}$: $x_1=3$, $x_2=2$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Risolvi $x^2+2x-8=0$.`, suggerimenti: [R`Attento al segno: $c=-8$.`, R`$\Delta=4+32=36$.`], risposta: sol(2, -4), soluzione: [R`$a=1$, $b=2$, $c=-8$.`, R`$\Delta=2^2-4\cdot 1\cdot(-8)=4+32=36$.`, R`$x_{1,2}=\dfrac{-2\pm 6}{2}$: $x_1=2$, $x_2=-4$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Risolvi $x^2-6x+9=0$.`, suggerimenti: [R`Calcola $\Delta$ e guarda quanto vale.`, R`Oppure riconosci il quadrato di un binomio.`], risposta: doppia('3'), soluzione: [R`$\Delta=36-36=0$: c'è una sola soluzione, doppia.`, R`$x=\dfrac{6}{2}=3$.`, R`Infatti $x^2-6x+9=(x-3)^2$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Risolvi $5x^2=20x$.`, suggerimenti: [R`Porta tutto a sinistra.`, R`Poi raccogli $5x$: non dividere per $x$.`], risposta: sol(0, 4), soluzione: [R`Porto tutto a sinistra: $5x^2-20x=0$.`, R`Raccolgo $5x$: $5x(x-4)=0$.`, R`Soluzioni: $x=0$ e $x=4$.`] },
+    { id: 'b-12', livello: 'base', difficolta: 1, testo: R`Risolvi $x^2+x+1=0$.`, suggerimenti: [R`Calcola $\Delta$ prima di tutto.`], risposta: nessuna, soluzione: [R`$a=1$, $b=1$, $c=1$.`, R`$\Delta=1-4=-3$.`, R`$\Delta<0$: nessuna soluzione.`] },
+    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Risolvi $x^2-7x+10=0$.`, suggerimenti: [R`Qui $a=1$, $b=-7$, $c=10$.`, R`Oppure cerca due numeri con somma $7$ e prodotto $10$.`], risposta: sol(2, 5), soluzione: [R`$\Delta=49-40=9$.`, R`$x_{1,2}=\dfrac{7\pm 3}{2}$: $x_1=5$, $x_2=2$.`, R`Controllo: $5+2=7$ e $5\cdot 2=10$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Risolvi $x^2+4x+4=0$.`, suggerimenti: [R`Calcola $\Delta$.`, R`Oppure riconosci il quadrato di un binomio.`], risposta: doppia('-2'), soluzione: [R`$\Delta=16-16=0$: c'è una sola soluzione, doppia.`, R`$x=\dfrac{-4}{2}=-2$.`, R`Infatti $x^2+4x+4=(x+2)^2$.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Risolvi $2x^2-8x+6=0$.`, suggerimenti: [R`Tutti i coefficienti sono pari: dividi tutto per $2$.`, R`Ottieni $x^2-4x+3=0$.`], risposta: sol(1, 3), soluzione: [R`Divido tutto per $2$: $x^2-4x+3=0$.`, R`$\Delta=16-12=4$.`, R`$x_{1,2}=\dfrac{4\pm 2}{2}$: $x_1=3$, $x_2=1$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Risolvi $x^2=4x+5$.`, suggerimenti: [R`Prima porta tutto a sinistra.`, R`Ottieni $x^2-4x-5=0$.`], risposta: sol(5, -1), soluzione: [R`Porto tutto a sinistra: $x^2-4x-5=0$.`, R`$\Delta=16+20=36$.`, R`$x_{1,2}=\dfrac{4\pm 6}{2}$: $x_1=5$, $x_2=-1$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Risolvi $x(x+1)=12$.`, suggerimenti: [R`A destra c'è $12$, non zero: sviluppa e porta tutto a sinistra.`, R`Ottieni $x^2+x-12=0$.`], risposta: sol(3, -4), soluzione: [R`Sviluppo: $x^2+x=12$.`, R`Porto $12$ a sinistra: $x^2+x-12=0$.`, R`$\Delta=1+48=49$.`, R`$x_{1,2}=\dfrac{-1\pm 7}{2}$: $x_1=3$, $x_2=-4$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Risolvi $(x-1)^2=9$.`, suggerimenti: [R`Il quadrato di $x-1$ vale $9$: allora $x-1$ vale $3$ oppure $-3$.`], risposta: sol(4, -2), soluzione: [R`$x-1=3$ oppure $x-1=-3$.`, R`Soluzioni: $x=4$ e $x=-2$.`, R`Con la formula, da $x^2-2x-8=0$, trovi gli stessi valori.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Risolvi $x^2+3=2x$.`, suggerimenti: [R`Porta tutto a sinistra e calcola $\Delta$.`], risposta: nessuna, soluzione: [R`Porto tutto a sinistra: $x^2-2x+3=0$.`, R`$\Delta=4-12=-8$.`, R`$\Delta<0$: nessuna soluzione.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Risolvi $(x+2)(x-3)=6$.`, suggerimenti: [R`A destra c'è $6$, non zero: sviluppa e porta tutto a sinistra.`, R`Ottieni $x^2-x-12=0$.`], risposta: sol(4, -3), soluzione: [R`Sviluppo: $x^2-3x+2x-6=6$, cioè $x^2-x-6=6$.`, R`Porto $6$ a sinistra: $x^2-x-12=0$.`, R`$\Delta=1+48=49$.`, R`$x_{1,2}=\dfrac{1\pm 7}{2}$: $x_1=4$, $x_2=-3$.`] },
+
     { id: 'es-01', difficolta: 1, testo: R`Risolvi $x^2 - 7x + 12 = 0$.`, suggerimenti: [R`Calcola prima il discriminante.`, R`$\Delta = 49 - 48 = 1$: due soluzioni vicine.`], risposta: { tipo: 'numeri', valori: [3, 4] }, soluzione: [R`$a = 1$, $b = -7$, $c = 12$; $\Delta = 49 - 48 = 1$.`, R`$x_{1,2} = \dfrac{7 \pm 1}{2}$, cioè $x_1 = 4$ e $x_2 = 3$.`, R`Controllo: somma $7 = -b/a$, prodotto $12 = c/a$. ✓`] },
     { id: 'es-02', difficolta: 1, testo: R`Risolvi $3x^2 - 12 = 0$.`, suggerimenti: [R`Manca il termine in $x$: è un'equazione pura.`, R`Isola $x^2$ e ricorda che le soluzioni sono due, opposte.`], risposta: { tipo: 'numeri', valori: [-2, 2] }, soluzione: [R`$3x^2 = 12 \Rightarrow x^2 = 4$.`, R`$x = \pm 2$.`] },
     { id: 'es-03', difficolta: 1, testo: R`Risolvi $5x^2 + 10x = 0$.`, suggerimenti: [R`Manca il termine noto: è spuria. Non dividere per $x$!`, R`Raccogli $5x$.`], risposta: { tipo: 'numeri', valori: [0, -2] }, soluzione: [R`$5x(x + 2) = 0$.`, R`$x = 0$ oppure $x + 2 = 0$, cioè $x = -2$.`] },

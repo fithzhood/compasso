@@ -3,11 +3,12 @@
    Rifacimento di BaloonZ. Modello di riferimento: laboratori/bilancia.js (vedi SCHEMA-LAB.md). */
 (function () {
   const STILE = `
-    .lab-mongolfiera .lab-scena { position: relative; overflow: hidden; border-radius: 12px; background: var(--sup2); }
+    /* --- scena: cielo in tutto lo spazio, tavolozza in colonna sul bordo sinistro, quota in alto --- */
+    .lab-mongolfiera .lab-scena { overflow: hidden; background: var(--sup2); }
     .lab-mongolfiera .cielo { position: absolute; inset: 0; background: url('laboratori/immagini/cielo.jpg') center / cover no-repeat; }
     :root[data-tema="scuro"] .lab-mongolfiera .cielo { filter: brightness(.6) saturate(.85); }
-    .lab-mongolfiera .lab-scena svg { position: relative; z-index: 1; }
-    .lab-mongolfiera .obiettivo { position: absolute; z-index: 2; left: 10px; right: 10px; top: 8px; text-align: center; font-size: .92rem; font-weight: 600; line-height: 1.35; color: var(--testo); background: var(--sup); border: 1px solid var(--bordo); border-radius: 10px; padding: 7px 10px; opacity: .94; }
+    .lab-mongolfiera .lab-scena > svg { position: relative; z-index: 1; }
+    .lab-mongolfiera .obiettivo { text-align: center; font-size: clamp(.95rem, 2.2cqmin, 1.12rem); font-weight: 600; line-height: 1.4; }
     .lab-mongolfiera .corpo { animation: lab-mong-onda 4.6s ease-in-out infinite alternate; }
     @keyframes lab-mong-onda { from { transform: translateY(-2px) } to { transform: translateY(3px) } }
     .lab-mongolfiera .ogg { cursor: pointer; }
@@ -19,36 +20,40 @@
     .lab-mongolfiera .num { fill: #fff; paint-order: stroke; stroke: rgba(0,0,0,.5); stroke-width: 3px; font-family: var(--font); font-weight: 700; }
     .lab-mongolfiera .tacca { stroke: var(--testo2); stroke-width: 1.3; }
     .lab-mongolfiera .tacca.forte { stroke: var(--testo); stroke-width: 2; }
-    .lab-mongolfiera .etichetta { font-family: var(--font); font-size: 10px; font-weight: 600; fill: var(--testo2); dominant-baseline: middle; }
-    .lab-mongolfiera .etichetta.forte { fill: var(--testo); font-weight: 700; font-size: 12.5px; }
+    .lab-mongolfiera .etichetta { font-family: var(--font); font-weight: 600; fill: var(--testo2); dominant-baseline: middle; }
+    .lab-mongolfiera .etichetta.forte { fill: var(--testo); font-weight: 700; }
     .lab-mongolfiera .mira line { stroke: var(--accento); stroke-width: 1.6; stroke-dasharray: 5 5; opacity: .85; }
     .lab-mongolfiera .mira polygon { fill: var(--accento); }
     .lab-mongolfiera .nuvola { cursor: default; }
     .lab-mongolfiera .nuvola.via { animation: lab-mong-via .62s ease forwards; }
     @keyframes lab-mong-via { to { opacity: 0; transform: translate(-46px, -14px) } }
-    .lab-mongolfiera .conto { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 2px 7px; padding: 10px 12px 0; font-size: 1.15rem; min-height: 2em; }
-    .lab-mongolfiera .conto .vuoto { font-size: .92rem; color: var(--testo2); }
-    .lab-mongolfiera .riga-quota { text-align: center; font-size: .95rem; color: var(--testo2); padding: 4px 12px 0; }
+    .lab-mongolfiera .riga-quota { position: absolute; z-index: 2; top: 8px; left: 8px; padding: 4px 10px; border-radius: 10px; background: var(--sup); border: 1px solid var(--bordo); opacity: .94; font-size: .95rem; color: var(--testo2); white-space: nowrap; }
     .lab-mongolfiera .riga-quota b { color: var(--testo); font-size: 1.15rem; }
     .lab-mongolfiera .riga-quota b.su { color: var(--ok); } .lab-mongolfiera .riga-quota b.giu { color: var(--no); }
-    .lab-mongolfiera .tavolozza { display: flex; gap: 6px; flex-wrap: wrap; }
-    .lab-mongolfiera .tv { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 3px; min-width: 58px; min-height: 62px; padding: 5px 7px 6px; border: 1px solid var(--bordo2); border-radius: 11px; background: var(--sup); color: var(--testo); font-family: var(--font); font-size: .9rem; font-weight: 700; cursor: pointer; touch-action: manipulation; }
-    .lab-mongolfiera .tv img { height: 30px; width: auto; display: block; pointer-events: none; }
-    .lab-mongolfiera .tv img.grande { height: 34px; }
+    /* la tavolozza: una colonna di quattro tasti appoggiata al bordo sinistro del cielo */
+    .lab-mongolfiera .tavolozza { position: absolute; z-index: 2; left: 8px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: clamp(5px, 1.2cqh, 10px); }
+    .lab-mongolfiera .tv { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 2px; width: clamp(54px, 7cqmin, 70px); min-height: clamp(50px, 8cqh, 66px); padding: 4px 4px 5px; border: 1px solid var(--bordo2); border-radius: 11px; background: color-mix(in srgb, var(--sup) 92%, transparent); color: var(--testo); font-family: var(--font); font-size: .9rem; font-weight: 700; cursor: pointer; touch-action: manipulation; box-shadow: var(--ombra); }
+    .lab-mongolfiera .tv img { height: clamp(24px, 4cqh, 32px); width: auto; display: block; pointer-events: none; }
+    .lab-mongolfiera .tv img.grande { height: clamp(28px, 4.6cqh, 36px); }
     .lab-mongolfiera .tv .et.su { color: var(--ok); } .lab-mongolfiera .tv .et.giu { color: var(--no); }
     .lab-mongolfiera .tv:active { transform: scale(.94); }
-    .lab-mongolfiera .tv:disabled { opacity: .4; cursor: default; }
+    .lab-mongolfiera .tv:disabled { opacity: .45; cursor: default; }
+    /* --- pannello --- */
+    .lab-mongolfiera .conto { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 2px 7px; font-size: clamp(1.02rem, 2.4cqmin, 1.25rem); min-height: 1.6em; }
+    .lab-mongolfiera .conto .vuoto { font-size: .92rem; color: var(--testo2); }
+    .lab-mongolfiera .lab-messaggio { padding: 0 4px; min-height: 1.5em; font-size: clamp(.9rem, 2.1cqmin, 1.05rem); text-align: center; line-height: 1.45; }
+    .lab-mongolfiera .lab-barra { padding: 0; border: 0; gap: 8px; justify-content: center; }
+    .lab-mongolfiera .lab-barra .btn { min-height: 40px; }
     .lab-mongolfiera .gruppo-indovina { display: flex; align-items: center; gap: 6px; }
     .lab-mongolfiera .gruppo-indovina[hidden] { display: none; }
-    .lab-mongolfiera .risposta { width: 78px; padding: 8px 10px; min-height: 40px; border-radius: 9px; border: 1px solid var(--bordo2); background: var(--sup); color: var(--testo); font-family: var(--font); font-size: 1.05rem; font-weight: 700; text-align: center; }
+    .lab-mongolfiera .risposta { width: 74px; padding: 8px 8px; min-height: 40px; border-radius: 9px; border: 1px solid var(--bordo2); background: var(--sup); color: var(--testo); font-family: var(--font); font-size: 1.05rem; font-weight: 700; text-align: center; }
     .lab-mongolfiera .risposta.sbagliata { border-color: var(--no); animation: lab-mong-scuoti .4s; }
     @keyframes lab-mong-scuoti { 25% { transform: translateX(-5px) } 75% { transform: translateX(5px) } }
-    .lab-mongolfiera .lab-barra .btn[disabled] { opacity: .35; cursor: default; }
-    @media (max-width: 620px) {
-      .lab-mongolfiera .tavolozza { flex: 1 1 100%; justify-content: center; }
-      .lab-mongolfiera .conto { font-size: 1.05rem; }
-      .lab-mongolfiera .obiettivo { font-size: .86rem; }
-    }
+    .lab-mongolfiera .btn[disabled] { opacity: .35; cursor: default; }
+    .lab-mongolfiera .lab-parametri { max-width: 460px; grid-template-columns: 1fr auto; }
+    .lab-mongolfiera .lab-param .nome { font-size: .9rem; color: var(--testo2); text-align: right; }
+    .lab-mongolfiera .lab-param .btn.b-nuvola { font-size: .9rem; padding: 0 12px; }
+    .lab-mongolfiera .b-nuvola[aria-pressed="true"] { background: var(--accento); border-color: var(--accento); color: #fff; }
   `;
 
   const DIR = 'laboratori/immagini/';
@@ -96,31 +101,48 @@
       if (!document.getElementById('stile-lab-mongolfiera')) { const s = document.createElement('style'); s.id = 'stile-lab-mongolfiera'; s.textContent = STILE; document.head.appendChild(s); }
       radice.classList.add('lab-mongolfiera');
       radice.innerHTML = `
-        <div class="lab-scena"><div class="cielo"></div><div class="obiettivo"></div></div>
-        <div class="conto"></div>
-        <div class="riga-quota"></div>
-        <div class="lab-messaggio"></div>
-        <div class="lab-barra">
-          <div class="tavolozza">
-            <button type="button" class="tv" data-v="1" title="Palloncino +1"><img src="${IMG.p1}" alt=""><span class="et su">+1</span></button>
-            <button type="button" class="tv" data-v="3" title="Palloncino +3"><img src="${IMG.p3}" class="grande" alt=""><span class="et su">+3</span></button>
-            <button type="button" class="tv" data-v="-1" title="Zavorra −1"><img src="${IMG.z}" alt=""><span class="et giu">−1</span></button>
-            <button type="button" class="tv" data-v="-3" title="Zavorra −3"><img src="${IMG.z}" class="grande" alt=""><span class="et giu">−3</span></button>
+        <div class="lab-layout">
+          <div class="lab-scena">
+            <div class="cielo"></div>
+            <div class="riga-quota"></div>
+            <div class="tavolozza" role="group" aria-label="Palloncini e zavorre da attaccare">
+              <button type="button" class="tv" data-v="1" title="Palloncino +1"><img src="${IMG.p1}" alt=""><span class="et su">+1</span></button>
+              <button type="button" class="tv" data-v="3" title="Palloncino grande"><img src="${IMG.p3}" class="grande" alt=""><span class="et su">+3</span></button>
+              <button type="button" class="tv" data-v="-1" title="Zavorra −1"><img src="${IMG.z}" alt=""><span class="et giu">−1</span></button>
+              <button type="button" class="tv" data-v="-3" title="Zavorra grande"><img src="${IMG.z}" class="grande" alt=""><span class="et giu">−3</span></button>
+            </div>
+            <div class="lab-aiuto" hidden data-scorre><p></p><button type="button" class="btn piccolo m-chiudi">Ho capito</button></div>
           </div>
-          <span class="gruppo-indovina" hidden><input type="number" class="risposta" inputmode="numeric" step="1" min="-10" max="10" aria-label="La quota che hai calcolato"><button type="button" class="btn primario b-controlla">Controlla</button></span>
-          <button type="button" class="btn piccolo b-semplifica">Semplifica</button>
-          <button type="button" class="btn piccolo b-ric">Ricomincia</button>
-          <button type="button" class="btn piccolo b-aiuto">?</button>
-          <span class="lab-livello"></span>
+          <div class="lab-lato">
+            <div class="lab-livelli" role="group" aria-label="Livelli"><button type="button" class="btn piccolo lab-libero" aria-pressed="false" title="Modalità libera: nessuna quota da raggiungere">Libero</button></div>
+            <div class="obiettivo"></div>
+            <div class="lab-parametri" hidden>
+              <div class="lab-param" data-p="g"><span class="nome">pezzi grandi ±</span><button type="button" class="btn piccolo" data-d="-1" aria-label="pezzi grandi più leggeri">−</button><output></output><button type="button" class="btn piccolo" data-d="1" aria-label="pezzi grandi più pesanti">+</button></div>
+              <div class="lab-param"><button type="button" class="btn piccolo b-nuvola" aria-pressed="false" title="Copri la mongolfiera: prima il conto, poi guardi">☁ Nuvola</button></div>
+            </div>
+            <div class="conto"></div>
+            <div class="lab-messaggio" aria-live="polite"></div>
+            <div class="lab-barra">
+              <span class="gruppo-indovina" hidden><input type="number" class="risposta" inputmode="numeric" step="1" min="-10" max="10" aria-label="La quota che hai calcolato"><button type="button" class="btn primario b-controlla">Controlla</button></span>
+              <button type="button" class="btn piccolo b-semplifica">Semplifica</button>
+              <button type="button" class="btn piccolo b-ric">Ricomincia</button>
+              <button type="button" class="btn piccolo b-casuale" hidden>Casuale</button>
+              <button type="button" class="btn piccolo b-aiuto" aria-label="Come si gioca">?</button>
+            </div>
+          </div>
         </div>`;
 
-      const scena = radice.querySelector('.lab-scena'), obEl = radice.querySelector('.obiettivo');
-      const contoEl = radice.querySelector('.conto'), quotaEl = radice.querySelector('.riga-quota'), msg = radice.querySelector('.lab-messaggio'), livEl = radice.querySelector('.lab-livello');
-      const tavolozza = radice.querySelector('.tavolozza'), gruppoInd = radice.querySelector('.gruppo-indovina'), risposta = radice.querySelector('.risposta');
-      const b = { controlla: radice.querySelector('.b-controlla'), semplifica: radice.querySelector('.b-semplifica'), ric: radice.querySelector('.b-ric'), aiuto: radice.querySelector('.b-aiuto') };
+      const q = sel => radice.querySelector(sel);
+      const scena = q('.lab-scena'), obEl = q('.obiettivo'), rigaQuota = q('.riga-quota');
+      const contoEl = q('.conto'), quotaEl = rigaQuota, msg = q('.lab-messaggio');
+      const tavolozza = q('.tavolozza'), gruppoInd = q('.gruppo-indovina'), risposta = q('.risposta');
+      const livelliEl = q('.lab-livelli'), parametriEl = q('.lab-parametri'), aiutoEl = q('.lab-aiuto');
+      const b = { controlla: q('.b-controlla'), semplifica: q('.b-semplifica'), ric: q('.b-ric'), aiuto: q('.b-aiuto'), casuale: q('.b-casuale'), libero: q('.lab-libero'), nuvola: q('.b-nuvola') };
 
       /* ---------- stato ---------- */
       let livello = 0, liv = LIVELLI[0], oggetti = [], contatore = 0, esito = null, occupato = false, scoperto = true, spiegatoSemplifica = false;
+      let libero = false, salvato = null, grande = 3, nuvolaLibera = false;   /* modalità libera: pezzi grandi da ±grande, nuvola a richiesta */
+      const LIBERO = { testo: 'Nessuna quota da raggiungere: attacca quello che vuoi e guarda dove si ferma.' };
       const timer = new Set();
       function attesa(fn, ms) { const t = setTimeout(() => { timer.delete(t); fn(); }, ms); timer.add(t); return t; }
       function fermaTimer() { timer.forEach(clearTimeout); timer.clear(); }
@@ -130,15 +152,17 @@
       livello = completati.length ? Math.max(...completati) + 1 : 0;
       if (livello >= LIVELLI.length || livello < 0) livello = 0;
 
-      /* ---------- geometria ---------- */
+      /* ---------- geometria ----------
+         L'altezza del viewBox è fissa (520), la larghezza segue la forma della scena: niente bande vuote.
+         Se la scena è piccola (telefono) gli oggetti crescono un po' (G.s) per restare toccabili. */
       const G = {};
       function misura() {
-        const larghezza = radice.clientWidth || 400;
-        const largo = larghezza >= 620;
-        const s = largo ? 0.95 : 1;
-        G.largo = largo; G.s = s;
-        G.W = largo ? 760 : 400;
-        G.H = largo ? 470 : 520;
+        const rw = scena.clientWidth || 400, rh = scena.clientHeight || 520;
+        G.H = 520;
+        G.W = Math.max(320, Math.round(G.H * rw / rh));
+        const pxu = rh / G.H;                              /* pixel per unità del viewBox */
+        const s = Math.max(1.15, Math.min(1.3, 0.87 / pxu));
+        G.s = s; G.pxu = pxu; G.forma = rw + 'x' + rh;
         G.mongW = 60 * s; G.mongH = 60 * s * 300 / 237;
         G.p1W = 18 * s; G.p1H = 18 * s * 180 / 101;
         G.p3W = 25 * s; G.p3H = 25 * s * 180 / 130;
@@ -146,16 +170,20 @@
         G.z3W = 27 * s; G.z3H = 27 * s * 150 / 126;
         G.passoP = 22 * s; G.rigaP = 24 * s;      /* passo orizzontale e verticale dei palloncini */
         G.passoZ = 25 * s; G.rigaZ = 28 * s;
-        /* spazio da lasciare in alto: la fascia dell'obiettivo, poi la mongolfiera e una fila di palloncini */
-        const testata = Math.min(96, (obEl.offsetHeight || 34) * (G.W / larghezza) + 14);
-        const sopra = testata + G.mongH + G.p3H + 6;
+        /* spazio da lasciare in alto: la mongolfiera e una fila di palloncini (la seconda fila sfora nel margine) */
+        const sopra = 16 + G.mongH + G.p3H + 6;
         const sotto = 12 * s + G.z3H + G.rigaZ + 6;
         G.top = arrotonda(sopra + 6);
         G.bot = arrotonda(G.H - sotto - 6);
         G.unita = (G.bot - G.top) / (2 * LIMITE);
         G.zero = (G.top + G.bot) / 2;
-        G.assex = G.W - (largo ? 54 : 44);
-        G.xm = arrotonda(largo ? G.assex * 0.44 : G.assex * 0.47);
+        /* scala: numeri mai sotto gli 11 px veri; se le tacche sono fitte, si scrivono solo i pari */
+        G.fs = Math.max(10, 11 / pxu); G.fsF = G.fs * 1.22;
+        G.tutte = G.unita * pxu >= 12;
+        G.assex = G.W - Math.round(G.fsF * 2.1 + 14);
+        /* la mongolfiera sta a metà fra la tavolozza (a sinistra) e la scala (a destra) */
+        const tav = (tavolozza.offsetWidth || 60) + 16;
+        G.xm = arrotonda((tav / pxu + G.assex) / 2);
       }
       const yDi = q => G.zero - q * G.unita;
 
@@ -163,7 +191,7 @@
       let svg = null, volo = null, corpo = null, mira = null, nuvola = null;
       function costruisciScena() {
         if (svg) svg.remove();
-        svg = el('svg', { viewBox: '0 0 ' + G.W + ' ' + G.H, role: 'img', 'aria-label': 'Una mongolfiera sopra il mare, con una scala delle quote' });
+        svg = el('svg', { viewBox: '0 0 ' + G.W + ' ' + G.H, preserveAspectRatio: 'xMidYMid meet', role: 'img', 'aria-label': 'Una mongolfiera sopra il mare, con una scala delle quote' });
         const defs = el('defs');
         const gr = el('linearGradient', { id: 'lab-mong-acqua', x1: 0, y1: 0, x2: 0, y2: 1 });
         gr.appendChild(el('stop', { offset: '0%', 'stop-color': '#2f7fc4', 'stop-opacity': '.42' }));
@@ -176,7 +204,7 @@
         const acqua = el('g', { class: 'acqua' });
         acqua.appendChild(el('rect', { x: 0, y: G.zero, width: G.W, height: G.H - G.zero, fill: 'url(#lab-mong-acqua)' }));
         let d = 'M0 ' + arrotonda(G.zero);
-        for (let x = 0; x < G.W; x += 28) d += ' q 7 -5 14 0 t 14 0';
+        for (let x = 0; x + 28 <= G.W; x += 28) d += ' q 7 -5 14 0 t 14 0';   /* l'onda non esce dal bordo */
         acqua.appendChild(el('path', { d: d, fill: 'none', stroke: '#eaf4ff', 'stroke-width': 2.2, opacity: .75 }));
         acqua.appendChild(el('line', { x1: 0, y1: G.zero, x2: G.W, y2: G.zero, stroke: '#0d3560', 'stroke-width': 1, opacity: .35 }));
         svg.appendChild(acqua);
@@ -189,7 +217,7 @@
         svg.appendChild(mira);
 
         nuvola = disegnaNuvola(); svg.appendChild(nuvola);
-        scena.insertBefore(svg, obEl);
+        scena.insertBefore(svg, rigaQuota);
       }
 
       function disegnaScala() {
@@ -199,17 +227,17 @@
         for (let q = LIMITE; q >= -LIMITE; q--) {
           const y = arrotonda(yDi(q)), forte = q % 5 === 0;
           g.appendChild(el('line', { x1: G.assex - (forte ? 11 : 6), y1: y, x2: G.assex, y2: y, class: 'tacca' + (forte ? ' forte' : '') }));
-          g.appendChild(el('text', { x: G.assex + 5, y: y, class: 'etichetta' + (forte ? ' forte' : '') }, q > 0 ? '+' + q : String(q).replace('-', '−')));
+          if (G.tutte || q % 2 === 0) g.appendChild(el('text', { x: G.assex + 5, y: y, class: 'etichetta' + (forte ? ' forte' : ''), 'font-size': arrotonda(forte ? G.fsF : G.fs) }, q > 0 ? '+' + q : String(q).replace('-', '−')));
         }
         return g;
       }
 
       function disegnaNuvola() {
-        const g = el('g', { class: 'nuvola' }), cx = G.xm, cy = G.zero - G.unita * 1.5, k = G.largo ? 1.15 : 1;
+        const g = el('g', { class: 'nuvola' }), cx = G.xm, cy = G.zero - G.unita * 1.5, k = G.s;
         const bolle = [[-52, 6, 34], [-16, -14, 44], [26, -4, 38], [58, 12, 28], [4, 20, 34], [-40, 26, 26]];
         bolle.forEach(p => g.appendChild(el('ellipse', { cx: cx + p[0] * k, cy: cy + p[1] * k, rx: p[2] * k, ry: p[2] * k * 0.78, fill: '#f4f7fb', opacity: .97 })));
         bolle.forEach(p => g.appendChild(el('ellipse', { cx: cx + p[0] * k, cy: cy + p[1] * k + 6, rx: p[2] * k * .82, ry: p[2] * k * .5, fill: '#dbe4ef', opacity: .5 })));
-        g.appendChild(el('text', { x: cx, y: cy + 4, 'text-anchor': 'middle', fill: '#5d6376', 'font-family': 'var(--font)', 'font-size': 15, 'font-weight': 700 }, 'quanto?'));
+        g.appendChild(el('text', { x: cx, y: cy + 4, 'text-anchor': 'middle', fill: '#5d6376', 'font-family': 'var(--font)', 'font-size': arrotonda(15 * k), 'font-weight': 700 }, 'quanto?'));
         return g;
       }
       function immagine(src, a) {
@@ -233,18 +261,20 @@
         const g = el('g', { class: 'ogg', 'data-id': o.id, role: 'button', 'aria-label': (o.v > 0 ? 'palloncino ' : 'zavorra ') + segno(o.v) });
         let x, y, w, h;
         if (tipo === 'su') {
-          w = o.v === 3 ? G.p3W : G.p1W; h = o.v === 3 ? G.p3H : G.p1H;
+          const gr = o.v > 1;
+          w = gr ? G.p3W : G.p1W; h = gr ? G.p3H : G.p1H;
           x = p.x; y = p.yb - h;
           const ax = p.x * 0.18, ay = -G.mongH * 0.66;
           g.appendChild(el('path', { d: 'M' + arrotonda(x) + ' ' + arrotonda(p.yb) + ' Q ' + arrotonda(x * 0.55) + ' ' + arrotonda((p.yb + ay) / 2 + 7) + ' ' + arrotonda(ax) + ' ' + arrotonda(ay), fill: 'none', stroke: 'rgba(255,255,255,.85)', 'stroke-width': 1.2 }));
-          g.appendChild(immagine(o.v === 3 ? IMG.p3 : IMG.p1, { x: arrotonda(x - w / 2), y: arrotonda(y), width: arrotonda(w), height: arrotonda(h) }));
-          if (o.v === 3) g.appendChild(el('text', { x: arrotonda(x), y: arrotonda(y + h * 0.44), 'text-anchor': 'middle', 'dominant-baseline': 'middle', class: 'num', 'font-size': arrotonda(14 * G.s) }, '3'));
+          g.appendChild(immagine(gr ? IMG.p3 : IMG.p1, { x: arrotonda(x - w / 2), y: arrotonda(y), width: arrotonda(w), height: arrotonda(h) }));
+          if (gr) g.appendChild(el('text', { x: arrotonda(x), y: arrotonda(y + h * 0.44), 'text-anchor': 'middle', 'dominant-baseline': 'middle', class: 'num', 'font-size': arrotonda(14 * G.s) }, String(o.v)));
         } else {
-          w = o.v === -3 ? G.z3W : G.z1W; h = o.v === -3 ? G.z3H : G.z1H;
+          const gr = o.v < -1;
+          w = gr ? G.z3W : G.z1W; h = gr ? G.z3H : G.z1H;
           x = p.x; y = p.yt;
           g.appendChild(el('path', { d: 'M0 -2 Q ' + arrotonda(x * 0.4) + ' ' + arrotonda(y * 0.5) + ' ' + arrotonda(x) + ' ' + arrotonda(y + 2), fill: 'none', stroke: 'rgba(40,40,40,.75)', 'stroke-width': 1.2 }));
           g.appendChild(immagine(IMG.z, { x: arrotonda(x - w / 2), y: arrotonda(y), width: arrotonda(w), height: arrotonda(h) }));
-          if (o.v === -3) g.appendChild(el('text', { x: arrotonda(x), y: arrotonda(y + h * 0.62), 'text-anchor': 'middle', 'dominant-baseline': 'middle', class: 'num', 'font-size': arrotonda(14 * G.s) }, '3'));
+          if (gr) g.appendChild(el('text', { x: arrotonda(x), y: arrotonda(y + h * 0.62), 'text-anchor': 'middle', 'dominant-baseline': 'middle', class: 'num', 'font-size': arrotonda(14 * G.s) }, String(-o.v)));
         }
         g.appendChild(el('rect', { x: arrotonda(x - w / 2 - 5), y: arrotonda(y - 5), width: arrotonda(w + 10), height: arrotonda(h + 10), fill: 'transparent', 'pointer-events': 'all' }));
         return g;
@@ -280,12 +310,13 @@
 
       /* ---------- conti ---------- */
       const quota = () => oggetti.reduce((s, o) => s + o.v, 0);
-      const quotaVista = () => (liv.indovina && !scoperto ? 0 : quota());
+      const coperta = () => libero ? nuvolaLibera : (!!liv.indovina && !scoperto);   /* la nuvola nasconde la mongolfiera */
+      const quotaVista = () => (coperta() ? 0 : quota());
       function messaggio(t, cl) { msg.textContent = t || ''; msg.className = 'lab-messaggio' + (cl ? ' ' + cl : ''); }
 
       function coppie() {
         const via = [];
-        [1, 3].forEach(k => {
+        [1, grande].forEach(k => {
           const pos = [], neg = [];
           oggetti.forEach((o, i) => { if (o.v === k) pos.push(o.id); else if (o.v === -k) neg.push(o.id); });
           const n = Math.min(pos.length, neg.length);
@@ -295,8 +326,8 @@
       }
 
       function scriviConto() {
-        const mostra = !liv.indovina || scoperto, q = quota();
-        if (!oggetti.length) contoEl.innerHTML = '<span class="vuoto">Tocca un palloncino o una zavorra qui sotto per attaccarlo.</span>';
+        const mostra = !coperta(), q = quota();
+        if (!oggetti.length) contoEl.innerHTML = '<span class="vuoto">Tocca un palloncino o una zavorra per attaccarlo.</span>';
         else {
           const pezzi = [];
           oggetti.forEach((o, i) => { if (i) pezzi.push(ctx.tex('+')); pezzi.push(ctx.tex('(' + segnoTex(o.v) + ')')); });
@@ -313,9 +344,20 @@
         tavolozza.querySelectorAll('.tv').forEach(t => { t.disabled = bloccato; });
         b.semplifica.disabled = bloccato || coppie().length === 0;
         gruppoInd.hidden = !liv.indovina;
+        b.semplifica.hidden = !!liv.indovina;   /* nei livelli «prima il conto» non serve, e così la riga ci sta */
         b.controlla.disabled = scoperto;
         risposta.disabled = scoperto;
-        livEl.textContent = 'Livello ' + (livello + 1) + ' di ' + LIVELLI.length;
+        aggiornaLivelli();
+      }
+      function aggiornaLivelli() {
+        const fatti = ctx.stato().livelli, sblocco = fatti.length ? Math.max(...fatti) + 1 : 0;
+        [...livelliEl.querySelectorAll('.lab-pallino')].forEach((p, k) => {
+          p.classList.toggle('fatto', fatti.includes(k));
+          p.classList.toggle('attivo', !libero && k === livello);
+          p.disabled = k > sblocco && k !== livello;
+          p.setAttribute('aria-current', !libero && k === livello ? 'step' : 'false');
+        });
+        b.libero.setAttribute('aria-pressed', libero);
       }
 
       /* ---------- mosse ---------- */
@@ -341,17 +383,17 @@
       function semplifica() {
         if (occupato || esito === 'vinto' || liv.indovina) return;
         const ids = coppie();
-        if (!ids.length) { messaggio('Non c\'è nessuna coppia che si annulla: ne serve una fatta di un +1 e un −1, oppure di un +3 e un −3.'); return; }
+        if (!ids.length) { messaggio('Non c\'è nessuna coppia che si annulla: ne serve una fatta di un +1 e un −1, oppure di un +' + grande + ' e un −' + grande + '.'); return; }
         occupato = true; aggiornaPulsanti();
         ids.forEach(id => { const n = corpo.querySelector('.ogg[data-id="' + id + '"]'); if (n) n.classList.add('svanisce'); });
         attesa(function () {
           oggetti = oggetti.filter(o => ids.indexOf(o.id) < 0);
           occupato = false;
           messaggio('La mongolfiera non si è mossa: quelle coppie valevano zero.');
-          aggiorna();
+          aggiorna(); if (libero) osserva(true);
           if (!spiegatoSemplifica) {
             spiegatoSemplifica = true;
-            ctx.zenone('Togliere un +1 e un −1 insieme non sposta la mongolfiera: è per questo che si annullano. Lo stesso vale per un +3 con un −3.', { tipo: 'suggerimento', espressione: 'pensa', durata: 8000 });
+            ctx.zenone('Togliere un +1 e un −1 insieme non sposta la mongolfiera: è per questo che si annullano. Lo stesso vale per un +' + grande + ' con un −' + grande + '.', { tipo: 'suggerimento', espressione: 'pensa', durata: 8000 });
           }
         }, 440);
       }
@@ -374,13 +416,14 @@
         esito = 'vinto';
         clearTimeout(tVinci); tVinci = null;
         messaggio('Quota ' + segno(quota()) + ': ci sei.', 'ok');
-        ctx.completato(livello);
+        ctx.completato(livello); aggiornaLivelli();
         b.ric.textContent = livello < LIVELLI.length - 1 ? 'Prossimo livello ▶' : 'Ricomincia dal primo';
         aggiornaPulsanti();
         ctx.zenone(APPLAUSI[livello] || 'Quota raggiunta.', { espressione: 'orgoglioso', durata: 7000 });
       }
       function controllaVittoria() {
         clearTimeout(tVinci); tVinci = null;
+        if (libero) { osserva(); return; }   /* in modalità libera niente verdetto */
         if (esito || liv.indovina || occupato || !oggetti.length) return;
         if (quota() !== liv.obiettivo) return;
         if (liv.vincolo && !liv.vincolo(oggetti)) { messaggio(liv.avviso, 'no'); return; }
@@ -416,7 +459,7 @@
           messaggio('No: la mongolfiera si ferma a ' + segno(q) + '. Leggila sulla scala.', 'no');
           b.ric.textContent = 'Riprova ↺';
           aggiornaPulsanti();
-          ctx.zenone('Conta prima quanto tira su e quanto tira giù, poi fai la differenza: i palloncini danno ' + segno(su) + ', le zavorre ' + segno(-giu) + ', e ' + su + ' − ' + giu + ' = ' + segno(q) + '.', { tipo: 'errore', espressione: 'pensa', durata: 9000 });
+          ctx.zenone('I palloncini danno ' + segno(su) + ', le zavorre ' + segno(-giu) + ': ' + su + ' − ' + giu + ' = ' + segno(q) + '. Conta sempre prima quanto tira su e quanto tira giù, poi fai la differenza.', { tipo: 'errore', espressione: 'pensa', durata: 9000 });
         }
       }
 
@@ -424,15 +467,17 @@
       function rifaiScena() {
         misura();
         costruisciScena();
-        const coperta = !!liv.indovina && !scoperto;
-        nuvola.style.display = coperta ? '' : 'none';
-        volo.style.opacity = coperta ? '0' : '1';
-        mira.style.display = coperta ? 'none' : '';
+        const cop = coperta();
+        nuvola.style.display = cop ? '' : 'none';
+        volo.style.opacity = cop ? '0' : '1';
+        mira.style.display = cop ? 'none' : '';
         disegnaVolo();
         vaiA(quotaVista(), false);
       }
       function avviaLivello(n) {
         fermaTimer(); clearTimeout(tVinci); tVinci = null;
+        if (libero) { libero = false; salvato = null; grande = 3; nuvolaLibera = false; mostraLibero(); }
+        aiutoEl.hidden = true;
         livello = n; liv = LIVELLI[n];
         esito = null; occupato = false; oggetti = []; contatore = 0;
         scoperto = !liv.indovina;
@@ -451,7 +496,8 @@
       tavolozza.addEventListener('click', e => {
         const t = e.target.closest('.tv');
         if (!t || t.disabled) return;
-        attacca(parseInt(t.dataset.v, 10));
+        const v = parseInt(t.dataset.v, 10);
+        attacca(Math.abs(v) === 1 ? v : Math.sign(v) * grande);
       });
       scena.addEventListener('pointerdown', e => {
         const g = e.target.closest ? e.target.closest('.ogg') : null;
@@ -462,16 +508,105 @@
       b.semplifica.addEventListener('click', semplifica);
       b.controlla.addEventListener('click', controlla);
       risposta.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); controlla(); } });
-      b.ric.addEventListener('click', () => avviaLivello(esito === 'vinto' ? (livello + 1) % LIVELLI.length : livello));
-      b.aiuto.addEventListener('click', () => ctx.zenone('I palloncini tirano su, le zavorre tirano giù: la quota dove si ferma la mongolfiera è la somma di tutto quello che le hai attaccato. Un +1 e un −1 insieme non fanno niente, si annullano: «Semplifica» li toglie e la mongolfiera non si muove. Sotto lo zero si finisce in acqua, e i numeri hanno il segno −.', { tipo: 'suggerimento', espressione: 'pensa', durata: 11000 }));
+      b.ric.addEventListener('click', () => {
+        if (libero) { if (occupato) return; fermaTimer(); oggetti = []; messaggio(''); aggiorna(); return; }
+        avviaLivello(esito === 'vinto' ? (livello + 1) % LIVELLI.length : livello);
+      });
+      const AIUTO = 'I palloncini tirano su, le zavorre tirano giù: la quota dove si ferma la mongolfiera è la somma di tutto quello che le hai attaccato. Per staccare un oggetto, toccalo. Un +1 e un −1 insieme non fanno niente, si annullano: «Semplifica» li toglie e la mongolfiera non si muove. Sotto lo zero si finisce in acqua, e i numeri hanno il segno −.';
+      const AIUTO_LIBERO = 'In modalità libera non c\'è una quota da raggiungere: attacca e stacca quello che vuoi. Con − e + scegli quanto valgono i pezzi grandi (da 2 a 5). «Nuvola» copre la mongolfiera: fai il conto, poi toglila e guarda se torna. «Casuale» attacca qualche pezzo a caso, «Svuota» stacca tutto.';
+      b.aiuto.addEventListener('click', () => {
+        if (!aiutoEl.hidden) { aiutoEl.hidden = true; return; }
+        aiutoEl.querySelector('p').textContent = libero ? AIUTO_LIBERO : AIUTO;
+        aiutoEl.hidden = false;
+      });
+      aiutoEl.querySelector('.m-chiudi').addEventListener('click', () => { aiutoEl.hidden = true; });
 
+      /* ---------- modalità libera: nessuna quota da raggiungere, i pezzi li sceglie lo studente ---------- */
+      function osserva(tieni) {   /* osservazioni neutre, mai valutazioni */
+        if (tieni || coperta()) return;
+        if (oggetti.length > 1 && quota() === 0) messaggio('Quota 0: quello che tira su pareggia quello che tira giù.');
+        else if (/pareggia/.test(msg.textContent)) messaggio('');
+      }
+      function rivaluta(nuovo) { return oggetti.reduce((s, o) => s + (Math.abs(o.v) > 1 ? Math.sign(o.v) * nuovo : o.v), 0); }
+      function puoCambiare(d) { const n = grande + d; return libero && !occupato && n >= 2 && n <= 5 && Math.abs(rivaluta(n)) <= LIMITE; }
+      function scriviPezzi() {   /* le etichette della tavolozza seguono il valore dei pezzi grandi */
+        tavolozza.querySelector('[data-v="3"] .et').textContent = '+' + grande;
+        tavolozza.querySelector('[data-v="-3"] .et').textContent = '−' + grande;
+        tavolozza.querySelector('[data-v="3"]').title = 'Palloncino +' + grande;
+        tavolozza.querySelector('[data-v="-3"]').title = 'Zavorra −' + grande;
+        parametriEl.querySelector('output').textContent = grande;
+        parametriEl.querySelectorAll('[data-p="g"] button').forEach(bt => { bt.disabled = !puoCambiare(+bt.dataset.d); });
+        b.nuvola.setAttribute('aria-pressed', nuvolaLibera);
+      }
+      function mostraLibero() {
+        parametriEl.hidden = !libero; b.casuale.hidden = !libero;
+        radice.classList.toggle('in-libero', libero);
+        scriviPezzi();
+      }
+      function entraLibero() {
+        if (occupato) return;
+        fermaTimer(); clearTimeout(tVinci); tVinci = null;
+        salvato = { livello, oggetti: oggetti.map(o => Object.assign({}, o)), contatore, esito, scoperto, ris: risposta.value, msg: msg.textContent, cls: msg.className, ric: b.ric.textContent };
+        libero = true; grande = 3; nuvolaLibera = false; liv = LIBERO; aiutoEl.hidden = true;
+        oggetti = []; contatore = 0; esito = null; scoperto = true;
+        obEl.textContent = LIBERO.testo; b.ric.textContent = 'Svuota';
+        mostraLibero(); messaggio('');
+        rifaiScena(); scriviConto(); aggiornaPulsanti();
+      }
+      function esciLibero() {   /* si torna al livello com'era */
+        if (occupato) return;
+        const z = salvato; libero = false; salvato = null; grande = 3; nuvolaLibera = false; aiutoEl.hidden = true;
+        livello = z.livello; liv = LIVELLI[livello]; oggetti = z.oggetti; contatore = z.contatore; esito = z.esito; scoperto = z.scoperto;
+        risposta.value = z.ris; obEl.textContent = liv.testo; b.ric.textContent = z.ric;
+        mostraLibero();
+        rifaiScena(); scriviConto(); aggiornaPulsanti();
+        msg.textContent = z.msg; msg.className = z.cls;
+      }
+      function casuale() {
+        if (!libero || occupato) return;
+        const val = [1, grande, -1, -grande];
+        for (let t = 0; t < 400; t++) {
+          const n = 4 + Math.floor(Math.random() * 3), term = [];
+          for (let i = 0; i < n; i++) term.push(val[Math.floor(Math.random() * 4)]);
+          const sm = term.reduce((x, y) => x + y, 0);
+          if (Math.abs(sm) > 8 || !term.some(v => v > 0) || !term.some(v => v < 0)) continue;
+          oggetti = term.map(v => ({ v, id: ++contatore }));
+          messaggio(''); aggiorna(); return;
+        }
+      }
+      b.libero.addEventListener('click', () => { if (libero) esciLibero(); else entraLibero(); });
+      b.casuale.addEventListener('click', casuale);
+      b.nuvola.addEventListener('click', () => {
+        if (!libero || occupato) return;
+        nuvolaLibera = !nuvolaLibera; scriviPezzi();
+        if (nuvolaLibera) { nuvola.classList.remove('via'); nuvola.style.display = ''; volo.style.opacity = '0'; mira.style.display = 'none'; vaiA(0, false); messaggio(''); }
+        else { nuvola.classList.add('via'); volo.style.opacity = '1'; mira.style.display = ''; attesa(() => { if (!nuvolaLibera && nuvola) nuvola.style.display = 'none'; }, 640); vaiA(quota(), true); osserva(); }
+        scriviConto();
+      });
+      parametriEl.addEventListener('click', ev => {
+        const bt = ev.target.closest('[data-p="g"] button[data-d]'); if (!bt) return;
+        const d = +bt.dataset.d; if (!puoCambiare(d)) return;
+        grande += d;
+        oggetti.forEach(o => { if (Math.abs(o.v) > 1) o.v = Math.sign(o.v) * grande; });
+        scriviPezzi(); messaggio(''); aggiorna();
+      });
+
+      /* pallini dei livelli */
+      LIVELLI.forEach((_, k) => {
+        const p = document.createElement('button'); p.type = 'button'; p.className = 'lab-pallino';
+        p.setAttribute('aria-label', 'Livello ' + (k + 1)); p.innerHTML = '<span>' + (k + 1) + '</span>';
+        p.addEventListener('click', () => { if (!occupato) avviaLivello(k); });
+        livelliEl.insertBefore(p, b.libero);
+      });
+
+      /* la forma della scena decide il viewBox: si ricostruisce quando cambia */
       let ro = null;
       if (window.ResizeObserver) {
         ro = new ResizeObserver(() => {
-          const largo = (radice.clientWidth || 400) >= 620;
-          if (largo !== G.largo) rifaiScena();
+          const forma = scena.clientWidth + 'x' + scena.clientHeight;
+          if (forma !== G.forma && scena.clientWidth > 10 && scena.clientHeight > 10) rifaiScena();
         });
-        ro.observe(radice);
+        ro.observe(scena);
       }
 
       avviaLivello(livello);

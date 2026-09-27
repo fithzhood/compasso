@@ -4,33 +4,37 @@ COMPASSO.registra({
   id: 'insiemi-numerici',
   titolo: 'Insiemi numerici e potenze',
 
-  introduzione: R`Per contare le pecore di un gregge bastano $0, 1, 2, 3, \dots$ Per scrivere un debito servono i numeri negativi. Per dividere una pizza in tre servono le frazioni. E la diagonale di un quadrato di lato $1$ non è nemmeno una frazione. Ogni volta che i numeri che hai non bastano più, se ne aggiunge un tipo nuovo.
+  introduzione: R`Per contare bastano $0, 1, 2, 3, \dots$ Per scrivere un debito servono i numeri negativi. Per dividere una pizza in tre servono le frazioni.
 
-Così nasce una catena di insiemi, ognuno dentro il successivo: $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}$ (naturali, interi, razionali, reali). Il simbolo $\subset$ si legge «è contenuto in».
+Ogni volta che i numeri non bastano, se ne aggiunge un tipo nuovo. Nasce così una catena di insiemi, uno dentro l'altro:
 
-Nello stesso argomento trovi gli strumenti per lavorare con questi numeri: le **potenze** (un modo corto di scrivere prodotti ripetuti), la **notazione scientifica** (per i numeri enormi o piccolissimi), il **valore assoluto** (la distanza da zero) e la scomposizione in **fattori primi**, con MCD e mcm. Bastano le operazioni delle medie; tutta l'algebra del liceo si appoggia su queste basi.`,
+$$\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}$$
+
+Sono i naturali, gli interi, i razionali e i reali. Il simbolo $\subset$ si legge «è contenuto in».
+
+Qui trovi anche gli strumenti per calcolare con questi numeri: le **potenze**, la **notazione scientifica**, il **valore assoluto**, i **numeri primi** con MCD e mcm.`,
 
   inBreve: [
-    R`Ogni insieme nuovo nasce perché nel precedente un'equazione non aveva soluzione: $x + 5 = 3$ chiede i negativi, $2x = 3$ chiede le frazioni.`,
-    R`Un numero si classifica nel **più piccolo** insieme che lo contiene: $\dfrac{6}{2} = 3$ è un intero, anche se è scritto come frazione.`,
-    R`I decimali limitati e periodici sono frazioni, quindi razionali; un decimale infinito senza periodo, come $\sqrt{2}$ o $\pi$, è irrazionale.`,
-    R`Nelle proprietà delle potenze serve la **stessa base**: nel prodotto gli esponenti si sommano, nella potenza di potenza si moltiplicano. E $a^{-n} = \dfrac{1}{a^n}$, con $a \ne 0$.`,
-    R`$|x|$ è la distanza di $x$ da zero, quindi non è mai negativo; $|a - b|$ è la distanza fra $a$ e $b$.`,
-    R`MCD: fattori primi comuni con l'esponente più piccolo. mcm: tutti i fattori con l'esponente più grande.`
+    R`Ogni insieme nuovo risolve un'equazione che prima non aveva soluzione: $x + 5 = 3$ chiede i negativi, $2x = 3$ chiede le frazioni.`,
+    R`Un numero sta nel **più piccolo** insieme che lo contiene. $\dfrac{6}{2} = 3$ è un intero, anche se è scritto come frazione.`,
+    R`Decimali limitati e periodici sono frazioni, quindi razionali. Un decimale infinito senza periodo, come $\sqrt{2}$ o $\pi$, è irrazionale.`,
+    R`Con la **stessa base**, nel prodotto gli esponenti si sommano. E $a^{-n} = \dfrac{1}{a^n}$: l'esponente negativo dà il reciproco, non un numero negativo.`,
+    R`$|x|$ è la distanza di $x$ da zero: non è mai negativo.`,
+    R`MCD: fattori primi comuni, con l'esponente più piccolo. mcm: tutti i fattori, con l'esponente più grande.`
   ],
 
   sezioni: [
-    { id: 'insiemi-n-z-q', titolo: 'Naturali, interi, razionali', testo: R`Quanto fa $3 - 5$? Con i numeri per contare non si può fare: non esiste un numero di pecore che, aggiunto a $5$, dia $3$.
+    { id: 'insiemi-n-z-q', titolo: 'Naturali, interi, razionali', testo: R`Quanto fa $3 - 5$? Con i numeri per contare non si può fare.
 
-I **numeri naturali** $\mathbb{N} = \{0, 1, 2, 3, \dots\}$ sono quelli con cui si conta. Non ci sono naturali negativi, né naturali «in mezzo» fra $3$ e $4$. Per questo l'equazione $x + 5 = 3$ in $\mathbb{N}$ non ha soluzione.
+I **numeri naturali** sono i numeri per contare: $\mathbb{N} = \{0, 1, 2, 3, \dots\}$. Non ci sono naturali negativi. Per questo in $\mathbb{N}$ l'equazione $x + 5 = 3$ non ha soluzione.
 
-Si aggiungono allora gli opposti dei naturali e si ottengono i **numeri interi** $\mathbb{Z} = \{\dots, -2, -1, 0, 1, 2, \dots\}$. Con gli interi la sottrazione si fa sempre: $3 - 5 = -2$.
+Aggiungi i numeri negativi e ottieni i **numeri interi**: $\mathbb{Z} = \{\dots, -2, -1, 0, 1, 2, \dots\}$. Con gli interi la sottrazione si fa sempre: $3 - 5 = -2$.
 
-Anche gli interi hanno un limite: $2x = 3$ non ha soluzione, perché nessun intero moltiplicato per $2$ dà $3$. Servono i **numeri razionali**, cioè le frazioni:
+Ora prova con $2x = 3$. Nessun intero moltiplicato per $2$ dà $3$. Servono le frazioni, cioè i **numeri razionali**:
 
 $$\mathbb{Q} = \left\{ \frac{m}{n} \ \middle|\ m, n \in \mathbb{Z},\ n \ne 0 \right\}$$
 
-Si legge: tutti i numeri $\dfrac{m}{n}$ con $m$ e $n$ interi e $n$ diverso da zero. Con i razionali si può sempre dividere, tranne per $0$.
+Si legge: le frazioni $\dfrac{m}{n}$ con $m$ e $n$ interi e $n$ diverso da zero. Con le frazioni puoi sempre dividere, tranne per $0$.
 
 | insieme | che cosa aggiunge | equazione che risolve |
 |---|---|---|
@@ -38,59 +42,70 @@ Si legge: tutti i numeri $\dfrac{m}{n}$ con $m$ e $n$ interi e $n$ diverso da ze
 | $\mathbb{Z}$ | i negativi | $x + 5 = 3$ |
 | $\mathbb{Q}$ | le frazioni | $2x = 3$ |
 
-Ogni intero è anche razionale: $5 = \dfrac{5}{1}$. Per questo si scrive $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q}$.
+Ogni intero è anche una frazione: $5 = \dfrac{5}{1}$. Quindi $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q}$.
 
->* Un numero si classifica nel **più piccolo** insieme che lo contiene, guardando il numero e non come è scritto: $\dfrac{6}{2}$ è scritto come frazione, ma vale $3$, quindi è un intero.
+>* Un numero si classifica nel **più piccolo** insieme che lo contiene. Prima semplifica, poi guarda: $\dfrac{6}{2} = 3$ è un intero.
 
 ?? Qual è il più piccolo insieme che contiene $-\dfrac{12}{4}$?
 [ ] $\mathbb{N}$
 [x] $\mathbb{Z}$
 [ ] $\mathbb{Q}$
 [ ] $\mathbb{R}$
-=> $-\dfrac{12}{4} = -3$: è un intero negativo, quindi sta in $\mathbb{Z}$ (e di conseguenza anche in $\mathbb{Q}$ e $\mathbb{R}$). Rispondere $\mathbb{Q}$ perché «c'è una frazione» è l'errore tipico: prima si semplifica, poi si classifica. Non è in $\mathbb{N}$ perché è negativo.
+=> $-\dfrac{12}{4} = -3$: è un intero negativo, quindi sta in $\mathbb{Z}$. La trappola è dire $\mathbb{Q}$ perché «c'è una frazione»: prima si semplifica.
 
->! «Intero» non vuol dire «positivo»: $-8$ è un intero a tutti gli effetti. Sono i **naturali** a escludere i negativi.` },
+>! «Intero» non vuol dire «positivo»: anche $-8$ è un intero. Sono i **naturali** a non avere i negativi.` },
 
-    { id: 'numeri-reali', titolo: 'I numeri reali e la retta', testo: R`Disegna un quadrato di lato $1$. La sua diagonale ha una lunghezza precisa: per il teorema di Pitagora è il numero che al quadrato fa $2$, cioè $\sqrt{2}$. Eppure nessuna frazione, elevata al quadrato, dà esattamente $2$ (la dimostrazione è nella sezione sui numeri irrazionali).
+    { id: 'numeri-reali', titolo: 'I numeri reali e la retta', testo: R`Disegna un quadrato di lato $1$. Per il teorema di Pitagora la diagonale misura $\sqrt{2}$: il numero che al quadrato fa $2$.
 
-I numeri come $\sqrt{2}$, che non si possono scrivere come frazione, si chiamano **irrazionali**. Razionali e irrazionali, messi insieme, formano i **numeri reali** $\mathbb{R}$.
+Nessuna frazione al quadrato fa esattamente $2$: lo dimostriamo nella sezione sui numeri irrazionali.
 
->* $\mathbb{R}$ = razionali + irrazionali. La catena completa è $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}$.
+I numeri che non si scrivono come frazione si chiamano **irrazionali**.
 
-Su una retta fissi un punto $O$ (l'origine, che corrisponde a $0$), un verso e un'unità di misura. A ogni numero reale corrisponde allora uno e un solo punto, e a ogni punto un solo numero: per questo si parla di **retta reale**. I negativi stanno a sinistra di $O$, i positivi a destra.
+>* Razionali e irrazionali insieme formano i **numeri reali** $\mathbb{R}$. La catena completa è $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}$.
 
-Sulla retta razionali e irrazionali sono mescolati fittissimi: fra due numeri qualsiasi ce ne sono infiniti dell'uno e dell'altro tipo.
+Su una retta fissa lo $0$, un verso e un'unità di misura. Ogni numero reale ha il suo punto, e ogni punto il suo numero. Questa è la **retta reale**.
 
 ?? Quale di questi numeri **non** è razionale?
 [ ] $0{,}\overline{3}$
 [ ] $\sqrt{9}$
 [x] $\sqrt{8}$
 [ ] $-\dfrac{5}{7}$
-=> $8$ non è un quadrato perfetto ($2^2 = 4$, $3^2 = 9$), quindi $\sqrt{8}$ è irrazionale. Attenzione a $\sqrt{9}$: il simbolo di radice non basta a renderlo irrazionale, perché $\sqrt{9} = 3$. E $0{,}\overline{3} = \dfrac{1}{3}$ è una frazione.
+=> $8$ non è un quadrato perfetto, quindi $\sqrt{8}$ è irrazionale. Attento a $\sqrt{9}$: vale $3$. E $0{,}\overline{3} = \dfrac{1}{3}$ è una frazione.
 
-Più avanti, per risolvere $x^2 = -1$ (nessun reale al quadrato dà un negativo), si userà un insieme ancora più grande, i **numeri complessi** $\mathbb{C}$.
+> Nessun numero reale al quadrato dà un negativo. Per risolvere $x^2 = -1$ servirà un insieme più grande: i **numeri complessi** $\mathbb{C}$.
 
->! «Reale» non vuol dire «razionale». $\pi$ e $\sqrt{2}$ sono numeri reali a pieno titolo: semplicemente non sono frazioni.` },
+>! «Reale» non vuol dire «razionale». $\pi$ e $\sqrt{2}$ sono numeri reali, ma non sono frazioni.` },
 
-    { id: 'frazioni-decimali', titolo: 'Frazioni e numeri decimali', testo: R`Se dividi il numeratore per il denominatore, una frazione diventa un numero decimale. Può succedere una di due cose.
+    { id: 'frazioni-decimali', titolo: 'Frazioni e numeri decimali', testo: R`Dividi il numeratore per il denominatore: la frazione diventa un numero decimale. Ci sono due casi.
 
-- Il decimale è **limitato**: ha un numero finito di cifre dopo la virgola, come $\dfrac{3}{8} = 0{,}375$.
-- Il decimale è **periodico**: da un certo punto in poi un blocco di cifre, il **periodo**, si ripete per sempre. Si scrive con una lineetta sopra: $\dfrac{1}{3} = 0{,}333\dots = 0{,}\overline{3}$.
+- **Limitato**: finisce dopo qualche cifra. Per esempio $\dfrac{3}{8} = 0{,}375$.
+- **Periodico**: un gruppo di cifre, il **periodo**, si ripete per sempre. Ha una lineetta sopra: $\dfrac{1}{3} = 0{,}333\dots = 0{,}\overline{3}$.
 
-Un periodico è **semplice** se il periodo parte subito dopo la virgola ($0{,}\overline{3}$), **misto** se prima c'è qualche cifra che non si ripete, l'**antiperiodo**: in $\dfrac{1}{6} = 0{,}1\overline{6}$ l'antiperiodo è $1$ e il periodo è $6$.
+Un periodico può essere semplice o misto:
 
-Come fai a sapere in anticipo quale dei due casi ti capita? Riduci la frazione ai minimi termini e scomponi il denominatore: se contiene **solo** i fattori primi $2$ e $5$ (quelli di $10$), il decimale è limitato; altrimenti è periodico.
+| periodico | com'è fatto | esempio |
+|---|---|---|
+| semplice | il periodo parte subito dopo la virgola | $0{,}\overline{3}$ |
+| misto | prima del periodo ci sono cifre che non si ripetono: l'**antiperiodo** | $0{,}1\overline{6}$: antiperiodo $1$, periodo $6$ |
+
+Che decimale otterrai?
+
+1. Riduci la frazione ai minimi termini.
+2. Scomponi il denominatore in fattori primi.
+3. Se ci sono **solo** i fattori $2$ e $5$, il decimale è limitato. Altrimenti è periodico.
 
 ?? Quale di queste frazioni dà un decimale limitato?
 [x] $\dfrac{9}{30}$
 [ ] $\dfrac{1}{6}$
 [ ] $\dfrac{5}{12}$
 [ ] $\dfrac{2}{15}$
-=> $\dfrac{9}{30}$ ridotta è $\dfrac{3}{10}$, e $10 = 2 \cdot 5$: fa $0{,}3$. La trappola è guardare il $30$ prima di ridurre, vedere il fattore $3$ e scartarla. Le altre, ridotte, hanno un $3$ al denominatore e sono periodiche.
+=> $\dfrac{9}{30} = \dfrac{3}{10}$ e $10 = 2 \cdot 5$: fa $0{,}3$. La trappola è guardare il $30$ prima di ridurre. Le altre, ridotte, hanno un $3$ al denominatore.
 
 ### Dal decimale alla frazione
 
-Anche il percorso inverso si può fare: ogni decimale periodico viene da una frazione, la sua **frazione generatrice**. Il trucco è far sparire il periodo con una sottrazione. Prova con $x = 0{,}41\overline{6}$:
+Un decimale limitato è facile: $0{,}25 = \dfrac{25}{100} = \dfrac{1}{4}$. Sotto metti un $1$ con tanti zeri quante le cifre dopo la virgola. Poi semplifica.
+
+Anche un periodico viene da una frazione: la sua **frazione generatrice**. Per trovarla, fai sparire il periodo con una sottrazione:
 
 ~ x = 0{,}41666\dots :: il numero di partenza: antiperiodo $41$, periodo $6$
 ~ \evid{1000}x = 416{,}666\dots :: sposto la virgola dopo il primo periodo
@@ -99,34 +114,37 @@ Anche il percorso inverso si può fare: ogni decimale periodico viene da una fra
 ~ \evid{900}x = \evid{375} :: faccio le due sottrazioni
 ~ x = \dfrac{375}{900} = \evidb{\dfrac{5}{12}} :: divido per $900$ e semplifico per $75$
 
-Da qui viene la regola del formulario: al numeratore il numero scritto fino al primo periodo meno l'antiperiodo ($416 - 41$), al denominatore tanti $9$ quante le cifre del periodo e tanti $0$ quante quelle dell'antiperiodo ($900$).
+Da qui viene la regola del formulario.
 
->* Ogni decimale limitato o periodico è una frazione, quindi è razionale. Un decimale con infinite cifre **senza** periodo non lo è.
+- **Numeratore**: le cifre fino al primo periodo, senza virgola ($416$), meno l'antiperiodo ($41$).
+- **Denominatore**: un $9$ per ogni cifra del periodo, poi uno $0$ per ogni cifra dell'antiperiodo ($900$).
 
->! $0{,}\overline{9}$ non è «quasi $1$»: con la regola del periodico semplice $0{,}\overline{9} = \dfrac{9}{9} = 1$. Sono lo stesso numero scritto in due modi.` },
+>* Ogni decimale limitato o periodico è una frazione, quindi è razionale. Un decimale infinito **senza** periodo non lo è.
 
-    { id: 'densita-completezza', titolo: 'Densità di Q e non completezza', testo: R`Fra i naturali $3$ e $4$ non c'è nessun altro naturale: dopo il $3$ viene subito il $4$. Con le frazioni non succede mai. Fra due razionali diversi, per quanto vicini, ce n'è sempre un altro: la loro **media**.
+>! $0{,}\overline{9}$ non è «quasi $1$». Con la regola, $0{,}\overline{9} = \dfrac{9}{9} = 1$: è lo stesso numero scritto in due modi.` },
+
+    { id: 'densita-completezza', titolo: 'Densità di Q e non completezza', testo: R`Fra i naturali $3$ e $4$ non c'è nessun altro naturale. Con le frazioni è diverso. Fra due frazioni diverse ce n'è sempre un'altra: la loro **media**.
 
 ~ \dfrac{1}{2} \text{ e } 1 :: due razionali qualsiasi
 ~ \dfrac{1}{2}\left(\dfrac{1}{2} + 1\right) = \evid{\dfrac{3}{4}} :: la media sta a metà strada, quindi in mezzo
 ~ \dfrac{1}{2}\left(\dfrac{1}{2} + \dfrac{3}{4}\right) = \evid{\dfrac{5}{8}} :: ripeto fra $\dfrac{1}{2}$ e $\dfrac{3}{4}$
 ~ \dfrac{1}{2}\left(\dfrac{1}{2} + \dfrac{5}{8}\right) = \evid{\dfrac{9}{16}} :: e si può andare avanti senza fine
 
-La media di due frazioni è ancora una frazione, e il procedimento non si ferma mai. Questa proprietà si chiama **densità**.
+La media di due frazioni è ancora una frazione, e puoi continuare senza fine.
 
->* **Densità di $\mathbb{Q}$:** fra due numeri razionali diversi ci sono sempre infiniti altri razionali.
+>* **Densità di $\mathbb{Q}$:** fra due razionali diversi ci sono sempre infiniti altri razionali.
 
-Sembrerebbe che le frazioni riempiano tutta la retta. Invece no: ci sono punti della retta che non corrispondono a nessuna frazione. Uno è il punto $\sqrt{2}$. Puoi avvicinarti quanto vuoi con frazioni, $1{,}4$, $1{,}41$, $1{,}414$, $1{,}4142$, ma nessuna arriva proprio lì, perché $\sqrt{2}$ non è una frazione. Con i soli razionali, in quel punto la retta avrebbe un buco.
+Allora le frazioni riempiono tutta la retta? No. Il punto $\sqrt{2}$ non corrisponde a nessuna frazione. Le frazioni $1{,}4$, $1{,}41$, $1{,}414$ gli vanno sempre più vicino, ma nessuna ci arriva. Lì la retta dei razionali ha un buco.
 
-I numeri reali tappano tutti questi buchi: a ogni punto della retta corrisponde un numero reale. Questa proprietà si chiama **completezza**, ed è quella che $\mathbb{Q}$ non ha.
+I numeri reali tappano tutti i buchi: ogni punto della retta ha il suo numero. Questa proprietà si chiama **completezza**.
 
->! Densità e completezza sono due cose diverse. **Denso**: fra due razionali ce n'è sempre un altro. **Completo**: ogni punto della retta ha il suo numero. $\mathbb{Q}$ è denso ma non completo; $\mathbb{R}$ è tutte e due le cose.` },
+>! Non confondere le due parole. $\mathbb{Q}$ è denso ma non completo: ha dei buchi. $\mathbb{R}$ è denso e completo.` },
 
-    { id: 'irrazionali', titolo: 'I numeri irrazionali', testo: R`>* Un numero **irrazionale** è un numero reale che non si può scrivere come frazione $\dfrac{m}{n}$ con $m$ e $n$ interi. Scritto con la virgola, ha infinite cifre e nessun periodo.
+    { id: 'irrazionali', titolo: 'I numeri irrazionali', testo: R`>* Un numero **irrazionale** è un numero reale che non si scrive come frazione. Con la virgola ha infinite cifre, senza periodo.
 
-Come si fa a essere sicuri che $\sqrt{2}$ non sia una frazione? Provare tutte le frazioni è impossibile: sono infinite. Si ragiona **per assurdo**: si suppone che lo sia e si arriva a una contraddizione.
+Come sai che $\sqrt{2}$ non è una frazione? Non puoi provarle tutte: sono infinite. Si ragiona **per assurdo**: supponi che lo sia e arrivi a una contraddizione.
 
-Serve un fatto sui numeri pari: il quadrato di un numero dispari è dispari. Quindi, se un quadrato $p^2$ è pari, anche $p$ deve essere pari.
+Serve un fatto: il quadrato di un dispari è dispari. Quindi, se $p^2$ è pari, anche $p$ è pari.
 
 ~ \sqrt{2} = \dfrac{p}{q} :: supponiamo che sia una frazione, già ridotta ai minimi termini ($p$ e $q$ senza fattori comuni)
 ~ 2 = \dfrac{\evid{p^2}}{\evid{q^2}} :: elevo al quadrato entrambi i membri
@@ -135,21 +153,23 @@ Serve un fatto sui numeri pari: il quadrato di un numero dispari è dispari. Qui
 ~ 4k^2 = 2q^2 \;\Rightarrow\; \evid{q^2 = 2k^2} :: divido per $2$: ora è $q^2$ a essere pari, quindi anche $q$ è pari
 ~ \evidb{p \text{ e } q \text{ entrambi pari}} :: ma allora hanno il fattore $2$ in comune, contro l'ipotesi: assurdo
 
-L'unica ipotesi fatta era che $\sqrt{2}$ fosse una frazione, quindi è quella a essere falsa: $\sqrt{2}$ è irrazionale.
+L'unica ipotesi era «$\sqrt{2}$ è una frazione». Quindi è falsa: $\sqrt{2}$ è irrazionale.
 
-Allo stesso modo sono irrazionali $\sqrt{3}$, $\sqrt{5}$ e la radice quadrata di ogni naturale che non sia un quadrato perfetto. Sono irrazionali anche $\pi$ (il rapporto fra circonferenza e diametro) ed $e$, che incontrerai con i logaritmi, anche se per loro la dimostrazione è molto più difficile.
+Allo stesso modo è irrazionale la radice quadrata di ogni naturale che non è un quadrato perfetto: $\sqrt{3}$, $\sqrt{5}$, $\sqrt{8}$ e così via. Sono irrazionali anche $\pi$ ed $e$.
 
->! Non basta guardare le prime cifre e «non vedere un periodo». $0{,}101001000100001\dots$ (con blocchi di zeri sempre più lunghi) è irrazionale perché si può dimostrare che nessun blocco si ripete mai, non perché a occhio il periodo non si vede. Un periodo potrebbe anche essere lunghissimo.` },
+>! Guardare le prime cifre non basta: un periodo potrebbe essere lunghissimo. $0{,}101001000100001\dots$ è irrazionale perché i blocchi di zeri si allungano sempre. Così nessun gruppo di cifre si ripete uguale.` },
 
-    { id: 'potenze', titolo: 'Potenze ed esponenti', testo: R`$2^5$ vuol dire $2 \cdot 2 \cdot 2 \cdot 2 \cdot 2$. In generale, per un esponente naturale $n \ge 1$, la **potenza** $a^n$ è il prodotto di $n$ fattori uguali ad $a$: $a$ si chiama **base**, $n$ **esponente**.
+    { id: 'potenze', titolo: 'Potenze ed esponenti', testo: R`$2^5$ è una **potenza**: vuol dire $2 \cdot 2 \cdot 2 \cdot 2 \cdot 2$.
 
-Le proprietà delle potenze vengono tutte da qui: basta contare i fattori. Per esempio, perché $2^3 \cdot 2^2 = 2^5$?
+In $a^n$ il numero $a$ è la **base**. Il numero $n$ è l'**esponente**: dice quanti fattori uguali ad $a$ moltiplichi.
+
+Le proprietà vengono da qui: basta contare i fattori. Perché $2^3 \cdot 2^2 = 2^5$?
 
 ~ 2^3 \cdot 2^2 :: stessa base, $2$
 ~ (\evid{2 \cdot 2 \cdot 2}) \cdot (\evid{2 \cdot 2}) :: scrivo i fattori: tre da una parte, due dall'altra
 ~ 2^{\evid{3 + 2}} = 2^5 :: in tutto sono $3 + 2 = 5$ fattori uguali a $2$
 
-Ecco le cinque proprietà, che si usano per calcolare senza scrivere tutti i fattori:
+Le cinque proprietà delle potenze:
 
 | proprietà | regola |
 |---|---|
@@ -159,54 +179,62 @@ Ecco le cinque proprietà, che si usano per calcolare senza scrivere tutti i fat
 | potenza di un prodotto | $(a \cdot b)^n = a^n \cdot b^n$ |
 | potenza di un quoziente ($b \ne 0$) | $(a : b)^n = a^n : b^n$ |
 
->! Le proprietà del prodotto e del quoziente valgono solo con la **stessa base**: $2^3 \cdot 3^2$ **non** fa $6^5$ (fa $8 \cdot 9 = 72$). Con basi diverse si possono unire le potenze solo se hanno lo stesso esponente: $2^3 \cdot 5^3 = (2 \cdot 5)^3 = 10^3$.
+>! Prodotto e quoziente vogliono la **stessa base**. $2^3 \cdot 3^2$ non fa $6^5$: fa $8 \cdot 9 = 72$. Con basi diverse unisci le potenze solo se l'esponente è lo stesso: $2^3 \cdot 5^3 = (2 \cdot 5)^3 = 10^3$.
 
 ### Esponente zero ed esponente negativo
 
-Che cosa vuol dire $2^0$, o $2^{-2}$? «Moltiplicare $2$ per sé stesso zero volte» non ha senso. Si sceglie allora il significato che fa funzionare ancora la proprietà del quoziente.
+Che cosa vuol dire $2^0$? E $2^{-2}$? Non puoi moltiplicare $2$ «zero volte». Allora scegli il significato che fa funzionare la proprietà del quoziente.
 
 ~ \dfrac{2^3}{2^3} = 2^{3 - 3} = \evid{2^0} :: con la proprietà del quoziente
 ~ \dfrac{2^3}{2^3} = \dfrac{8}{8} = \evid{1} :: facendo il conto: un numero diviso per sé stesso
 ~ \evidb{2^0 = 1} :: le due strade devono dare lo stesso risultato
 
-Con lo stesso ragionamento si trova il significato dell'esponente negativo:
+Lo stesso ragionamento spiega l'esponente negativo:
 
 ~ \dfrac{2^3}{2^5} = 2^{3 - 5} = \evid{2^{-2}} :: con la proprietà del quoziente
 ~ \dfrac{2^3}{2^5} = \dfrac{\cancel{2 \cdot 2 \cdot 2}}{\cancel{2 \cdot 2 \cdot 2} \cdot 2 \cdot 2} = \evid{\dfrac{1}{2^2}} :: semplificando i fattori uguali
 ~ \evidb{2^{-2} = \dfrac{1}{2^2} = \dfrac{1}{4}} :: di nuovo, le due strade devono coincidere
 
->* Per ogni $a \ne 0$: $a^0 = 1$ e $a^{-n} = \dfrac{1}{a^n}$. L'esponente negativo **non** rende negativo il numero: indica il reciproco. Con queste definizioni le cinque proprietà valgono anche per gli esponenti negativi. Il caso $0^0$ non si definisce.
+>* Per ogni $a \ne 0$: $a^0 = 1$ e $a^{-n} = \dfrac{1}{a^n}$. L'esponente negativo **non** rende negativo il numero: indica il reciproco. Le cinque proprietà valgono anche così. $0^0$ non si definisce.
 
 ?? Quanto vale $2^{-3}$?
 [ ] $-8$
 [ ] $-6$
 [x] $\dfrac{1}{8}$
 [ ] $\dfrac{1}{6}$
-=> $2^{-3} = \dfrac{1}{2^3} = \dfrac{1}{8}$. L'errore più comune è $-8$: il meno nell'esponente non passa davanti al numero, dice di prendere il reciproco. $-6$ e $\dfrac{1}{6}$ vengono dal moltiplicare base ed esponente, che non ha niente a che fare con le potenze.
+=> $2^{-3} = \dfrac{1}{2^3} = \dfrac{1}{8}$. L'errore più comune è $-8$: il meno nell'esponente indica il reciproco. $-6$ e $\dfrac{1}{6}$ vengono da $2 \cdot 3$, ma base ed esponente non si moltiplicano.
+
+Con una frazione, l'esponente negativo la capovolge: $\left(\dfrac{2}{3}\right)^{-2} = \left(\dfrac{3}{2}\right)^2 = \dfrac{9}{4}$.
 
 ### Il segno meno e le parentesi
 
-In $-3^2$ la potenza si calcola prima del meno, quindi $-3^2 = -(3 \cdot 3) = -9$. Per elevare al quadrato anche il segno serve la parentesi: $(-3)^2 = (-3) \cdot (-3) = 9$.
+In $-3^2$ la potenza viene prima del meno: $-3^2 = -(3 \cdot 3) = -9$. Per elevare al quadrato anche il segno serve la parentesi: $(-3)^2 = (-3) \cdot (-3) = 9$.
+
+Con una base negativa guarda l'esponente. Se è pari, il risultato è positivo: $(-2)^4 = 16$. Se è dispari, è negativo: $(-2)^3 = -8$.
 
 ### Perché si dice «al quadrato»
 
-$n^2$ si legge «$n$ al quadrato» perché $n^2$ puntini si dispongono esattamente in un quadrato di lato $n$. Guarda l'animazione: aggiungendo ogni volta una «L» di puntini, con $1, 3, 5, 7, \dots$ puntini, il quadrato cresce di un lato alla volta. Quindi la somma dei primi $n$ numeri dispari è sempre $n^2$.
+$n^2$ puntini formano un quadrato di lato $n$. Guarda come cresce: ogni «L» aggiunge $1, 3, 5, 7, \dots$ puntini. Così la somma dei primi $n$ dispari fa $n^2$.
 
 [[animazione:somma-dispari]]` },
 
-    { id: 'notazione-scientifica', titolo: 'Notazione scientifica e ordine di grandezza', testo: R`La distanza fra la Terra e il Sole è circa $150\,000\,000$ km; il raggio di un atomo di idrogeno è circa $0{,}00000005$ mm. Scritti così, per leggerli devi contare gli zeri. Con le potenze di $10$ diventano $1{,}5 \times 10^8$ km e $5 \times 10^{-8}$ mm.
+    { id: 'notazione-scientifica', titolo: 'Notazione scientifica e ordine di grandezza', testo: R`Il Sole è lontano circa $150\,000\,000$ km. Un atomo misura circa $0{,}00000005$ mm. Con le potenze di $10$ li scrivi senza contare gli zeri: $1{,}5 \times 10^8$ km e $5 \times 10^{-8}$ mm.
 
->* **Notazione scientifica:** un numero scritto come $a \times 10^n$, con $n$ intero e $1 \le |a| < 10$, cioè con **una sola cifra diversa da zero prima della virgola**. $a$ si chiama coefficiente, $n$ esponente.
+>* **Notazione scientifica:** un numero scritto come $a \times 10^n$, con $n$ intero e $1 \le |a| < 10$. Vuol dire: prima della virgola c'è **una sola cifra**, diversa da zero. $a$ si chiama coefficiente.
 
-Per passare alla notazione scientifica sposti la virgola finché davanti resta una sola cifra diversa da zero, e conti di quanti posti l'hai spostata.
+Per passare alla notazione scientifica:
+
+1. Sposta la virgola finché davanti resta una sola cifra diversa da zero.
+2. Conta di quanti posti l'hai spostata: è l'esponente.
+3. Metti il segno: virgola verso destra, esponente negativo; verso sinistra, positivo.
 
 ~ 0{,}00068 :: numero minore di $1$
 ~ 0{,}00068 \to \evid{6{,}8} :: sposto la virgola di $4$ posti verso destra, fin dopo il $6$
 ~ 6{,}8 \times 10^{\evid{-4}} :: verso destra il numero diventa più grande, quindi compenso con esponente negativo, $-4$
 
-Con i numeri grandi la virgola va verso sinistra e l'esponente è positivo: $346\,000 = 3{,}46 \times 10^5$.
+Con i numeri grandi la virgola va verso sinistra: $346\,000 = 3{,}46 \times 10^5$.
 
-La notazione scientifica rende facili i prodotti: moltiplichi i coefficienti fra loro e le potenze di $10$ fra loro.
+Nei prodotti moltiplica i coefficienti fra loro e le potenze di $10$ fra loro.
 
 ~ (3 \times 10^4) \cdot (5 \times 10^{-7}) :: il prodotto da calcolare
 ~ (\evid{3 \cdot 5}) \times 10^{\evid{4 + (-7)}} :: coefficienti con coefficienti, potenze con potenze (si sommano gli esponenti)
@@ -215,48 +243,52 @@ La notazione scientifica rende facili i prodotti: moltiplichi i coefficienti fra
 
 ### Ordine di grandezza
 
-L'**ordine di grandezza** è la potenza di $10$ più vicina al numero: serve per le stime veloci e per confrontare numeri molto diversi. Scritto il numero come $a \times 10^n$, guardi il coefficiente:
+L'**ordine di grandezza** è la potenza di $10$ più vicina al numero. Serve per le stime veloci. Scrivi il numero come $a \times 10^n$ e guarda il coefficiente $a$:
 
 | coefficiente | ordine di grandezza | esempio |
 |---|---|---|
 | $a < 5$ | $10^n$ | $3{,}46 \times 10^5 \to 10^5$ |
 | $a \ge 5$ | $10^{n+1}$ | $6{,}8 \times 10^{-4} \to 10^{-3}$ |
 
-Nel secondo esempio si sale da $10^{-4}$ a $10^{-3}$: è la potenza successiva, anche se l'esponente in valore assoluto diminuisce.
+Attento al secondo esempio: dopo $10^{-4}$ viene $10^{-3}$, perché $-3$ è più grande di $-4$.
 
->! $34{,}6 \times 10^4$ vale proprio $346\,000$, ma non è notazione scientifica: davanti alla virgola ci sono due cifre. La forma corretta è $3{,}46 \times 10^5$.` },
+>! $34{,}6 \times 10^4$ vale $346\,000$, ma non è notazione scientifica: prima della virgola ci sono due cifre. La forma giusta è $3{,}46 \times 10^5$.` },
 
-    { id: 'valore-assoluto', titolo: 'Il valore assoluto', testo: R`Quanto è lontano $-5$ da zero? Cinque passi, verso sinistra. E $5$? Cinque passi, verso destra. La distanza è la stessa: cambia solo il verso.
+    { id: 'valore-assoluto', titolo: 'Il valore assoluto', testo: R`Quanto è lontano $-5$ da zero? Cinque passi a sinistra. E $5$? Cinque passi a destra. La distanza è la stessa.
 
->* Il **valore assoluto** (o modulo) di $x$, scritto $|x|$, è la distanza di $x$ da $0$ sulla retta. Una distanza non è mai negativa: $|5| = 5$, $|-5| = 5$, $|0| = 0$.
+>* Il **valore assoluto** di $x$, scritto $|x|$, è la distanza di $x$ da $0$. Una distanza non è mai negativa: $|5| = 5$, $|-5| = 5$, $|0| = 0$.
 
-In pratica: se il numero è positivo o zero lo lasci com'è, se è negativo gli togli il segno meno. Con una lettera al posto del numero questa regola si scrive così:
+Il valore assoluto si chiama anche modulo. In pratica: un numero positivo o zero resta com'è. A un numero negativo togli il segno meno. Con le lettere si scrive così:
 
 $$|x| = \begin{cases} x & \text{se } x \ge 0 \\ -x & \text{se } x < 0 \end{cases}$$
 
-La seconda riga spaventa: sembra dire che il valore assoluto può essere negativo. Invece se $x$ è negativo, $-x$ è positivo. Per esempio con $x = -5$ si ottiene $-x = -(-5) = 5$.
+La seconda riga sembra dare un numero negativo. Ma se $x$ è negativo, $-x$ è positivo. Con $x = -5$ ottieni $-x = -(-5) = 5$.
 
 ?? Se $x = -4$, quanto vale $-x$?
 [ ] $-4$
 [x] $4$
 [ ] non si può dire
-=> $-x$ vuol dire «l'opposto di $x$», e l'opposto di $-4$ è $4$. Pensare che $-x$ sia sempre negativo è l'errore tipico: il meno davanti a una lettera cambia il segno del numero che la lettera rappresenta, qualunque esso sia.
+=> $-x$ è l'opposto di $x$, e l'opposto di $-4$ è $4$. Il meno davanti a una lettera cambia il segno: non vuol dire «numero negativo».
 
 ### Distanza fra due numeri
 
-Con il valore assoluto si misura anche la distanza fra due numeri $a$ e $b$: è $|a - b|$. Trascina i punti $A$ e $B$ e confronta le due sottrazioni: $a - b$ e $b - a$ sono opposte, ma il loro valore assoluto è lo stesso ed è sempre la lunghezza del tratteggio.
+La distanza fra due numeri $a$ e $b$ è $|a - b|$. Trascina $A$ e $B$. Le due sottrazioni $a - b$ e $b - a$ sono opposte, ma il valore assoluto è lo stesso: è la lunghezza del tratteggio.
 
 [[grafico:distanza]]
 
-Per esempio la distanza fra $3$ e $7$ è $|7 - 3| = |3 - 7| = 4$, e quella fra $-2$ e $3$ è $|3 - (-2)| = 5$.
+La distanza fra $3$ e $7$ è $|3 - 7| = 4$. Quella fra $-2$ e $3$ è $|3 - (-2)| = 5$.
 
->! $|a + b|$ non è sempre $|a| + |b|$: con $a = 3$ e $b = -5$ si ha $|3 + (-5)| = |-2| = 2$, mentre $|3| + |-5| = 8$. Il valore assoluto di una somma si calcola **dopo** aver fatto la somma.` },
+>! $|a + b|$ non è sempre $|a| + |b|$. Con $a = 3$ e $b = -5$: $|3 + (-5)| = |-2| = 2$, ma $|3| + |-5| = 8$. Prima fai la somma, **poi** il valore assoluto.` },
 
-    { id: 'numeri-primi-scomposizione', titolo: 'Numeri primi, scomposizione, MCD e mcm', testo: R`Il $12$ si può scrivere come $3 \cdot 4$, oppure $2 \cdot 6$. Il $7$ invece si può dividere solo per $1$ e per sé stesso: non si spezza in numeri più piccoli.
+    { id: 'numeri-primi-scomposizione', titolo: 'Numeri primi, scomposizione, MCD e mcm', testo: R`Il $12$ si può scrivere come $3 \cdot 4$ o come $2 \cdot 6$. Il $7$ invece si divide solo per $1$ e per $7$.
 
->* Un naturale maggiore di $1$ è **primo** se ha esattamente due divisori: $1$ e sé stesso. Gli altri naturali maggiori di $1$ si dicono **composti**. Il numero $1$ non è primo: ha un solo divisore.
+>* Un naturale maggiore di $1$ è **primo** se ha esattamente due divisori: $1$ e sé stesso. Gli altri si dicono **composti**. Il numero $1$ non è primo: ha un solo divisore.
 
-Per trovare tutti i primi fino a un certo numero c'è un metodo antico, il **crivello di Eratostene**: parti dal $2$, cancelli tutti i suoi multipli, passi al primo numero non cancellato e ripeti. Quelli che restano sono i primi.
+Per trovare i primi c'è il **crivello di Eratostene**.
+
+1. Parti dal $2$ e cancella tutti i suoi multipli.
+2. Passa al primo numero non cancellato e cancella i suoi multipli.
+3. Ripeti. I numeri che restano sono i primi.
 
 [[animazione:crivello]]
 
@@ -265,11 +297,11 @@ Per trovare tutti i primi fino a un certo numero c'è un metodo antico, il **cri
 [ ] $57$
 [x] $59$
 [ ] $91$
-=> $59$ non è divisibile né per $2$, né per $3$, né per $5$, né per $7$ (e $8^2 = 64$ supera già $59$, quindi non serve provare oltre). Gli altri sembrano primi ma non lo sono: $51 = 3 \cdot 17$, $57 = 3 \cdot 19$, $91 = 7 \cdot 13$. Il trucco per $51$ e $57$: la somma delle cifre è divisibile per $3$.
+=> $59$ non si divide per $2$, $3$, $5$, $7$. Non serve provare oltre: $8^2 = 64$ supera già $59$. Gli altri sembrano primi ma non lo sono: $51 = 3 \cdot 17$, $57 = 3 \cdot 19$, $91 = 7 \cdot 13$.
 
 ### Scomporre in fattori primi
 
-Ogni numero composto si scrive come prodotto di numeri primi in **un solo modo** (a parte l'ordine dei fattori): è il **teorema fondamentale dell'aritmetica**. Per trovare i fattori si divide ripetutamente per i primi, partendo dal più piccolo.
+Ogni numero composto è un prodotto di primi in **un solo modo**, a parte l'ordine. È il **teorema fondamentale dell'aritmetica**. Per trovare i fattori dividi per i primi, dal più piccolo.
 
 ~ 360 :: il numero da scomporre
 ~ 2 \cdot 180 :: $360$ è pari: divido per $2$
@@ -279,7 +311,7 @@ Ogni numero composto si scrive come prodotto di numeri primi in **un solo modo**
 
 ### MCD e mcm
 
-Il **massimo comun divisore** (MCD) di due numeri è il più grande numero che li divide entrambi. Il **minimo comune multiplo** (mcm) è il più piccolo numero che è multiplo di entrambi. Con la scomposizione si trovano senza tentativi:
+Il **massimo comun divisore** (MCD) è il numero più grande che divide tutti e due. Il **minimo comune multiplo** (mcm) è il numero più piccolo che è multiplo di tutti e due. Con la scomposizione li trovi senza tentativi:
 
 ~ 36 = 2^2 \cdot 3^2 \qquad 60 = 2^2 \cdot 3 \cdot 5 :: scompongo tutti e due
 ~ \text{MCD} = 2^{\evid{2}} \cdot 3^{\evid{1}} = 12 :: solo i fattori **comuni** ($2$ e $3$), con l'esponente **più piccolo**
@@ -287,7 +319,7 @@ Il **massimo comun divisore** (MCD) di due numeri è il più grande numero che l
 
 >* MCD: fattori comuni, esponente minimo. mcm: fattori comuni e non comuni, esponente massimo.
 
->! Scambiare le due regole è l'errore tipico. Un controllo rapido: il MCD non può superare il più piccolo dei numeri (qui $12 \le 36$); il mcm non può essere minore del più grande ($180 \ge 60$).` }
+>! Scambiare le due regole è l'errore tipico. Controlla così: il MCD non supera il numero più piccolo ($12 \le 36$). Il mcm non è minore del più grande ($180 \ge 60$).` }
   ],
 
   grafici: {
@@ -395,6 +427,27 @@ Il **massimo comun divisore** (MCD) di due numeri è il più grande numero che l
   ],
 
   esercizi: [
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Scrivi come una sola potenza: $2^3 \cdot 2^4$. Per l'esponente usa ^: $3^2$ si scrive *3^2*.`, suggerimenti: [R`Stessa base: nel prodotto gli esponenti si sommano.`], risposta: { tipo: 'testo', accettate: ['2^7', '128'], segnaposto: 'es. 2^5' }, soluzione: [R`La base è la stessa, $2$: sommo gli esponenti.`, R`$2^{3 + 4} = 2^7$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Scrivi come una sola potenza: $5^6 : 5^2$. Per l'esponente usa ^.`, suggerimenti: [R`Stessa base: nel quoziente gli esponenti si sottraggono.`], risposta: { tipo: 'testo', accettate: ['5^4', '625'], segnaposto: 'es. 5^3' }, soluzione: [R`La base è la stessa, $5$: sottraggo gli esponenti.`, R`$5^{6 - 2} = 5^4$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Scrivi come una sola potenza: $(3^2)^3$. Per l'esponente usa ^.`, suggerimenti: [R`Potenza di potenza: gli esponenti si moltiplicano.`], risposta: { tipo: 'testo', accettate: ['3^6', '729'], segnaposto: 'es. 3^4' }, soluzione: [R`È una potenza di potenza: moltiplico gli esponenti.`, R`$3^{2 \cdot 3} = 3^6$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Quanto vale $7^0$?`, suggerimenti: [R`Ogni numero diverso da zero, elevato a $0$, fa sempre lo stesso risultato.`], risposta: { tipo: 'numero', valore: 1 }, soluzione: [R`Per ogni $a \ne 0$ vale $a^0 = 1$.`, R`Quindi $7^0 = 1$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Quanto vale $2^{-1}$? Scrivi una frazione o un decimale.`, suggerimenti: [R`L'esponente negativo indica il reciproco.`], risposta: { tipo: 'numero', valore: 0.5 }, soluzione: [R`$2^{-1} = \dfrac{1}{2^1}$.`, R`Quindi $2^{-1} = \dfrac{1}{2}$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Scrivi $0{,}75$ come frazione ridotta ai minimi termini, nella forma *a/b*.`, suggerimenti: [R`Due cifre dopo la virgola: metti $100$ sotto.`, R`$\dfrac{75}{100}$ si semplifica per $25$.`], risposta: { tipo: 'testo', accettate: ['3/4'], segnaposto: 'es. 2/5' }, soluzione: [R`$0{,}75 = \dfrac{75}{100}$.`, R`Divido sopra e sotto per $25$: $\dfrac{3}{4}$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Scrivi $\dfrac{3}{5}$ come numero decimale.`, suggerimenti: [R`Dividi il numeratore per il denominatore: $3 : 5$.`], risposta: { tipo: 'testo', accettate: ['0.6', '0,6', '0.60', '.6'], segnaposto: 'es. 0,4' }, soluzione: [R`$3 : 5 = 0{,}6$.`, R`Il decimale è limitato: il denominatore $5$ ha solo il fattore $5$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Calcola $(-2)^3$.`, suggerimenti: [R`Scrivi i tre fattori: $(-2) \cdot (-2) \cdot (-2)$.`, R`Base negativa ed esponente dispari: il risultato è negativo.`], risposta: { tipo: 'numero', valore: -8 }, soluzione: [R`$(-2) \cdot (-2) = 4$.`, R`$4 \cdot (-2) = -8$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Calcola $-3^2$.`, suggerimenti: [R`Senza parentesi, il meno non è elevato al quadrato.`], risposta: { tipo: 'numero', valore: -9 }, soluzione: [R`La potenza viene prima del meno: $3^2 = 9$.`, R`Poi il meno: $-3^2 = -9$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Quanto vale $3^{-2}$? Scrivi una frazione.`, suggerimenti: [R`$a^{-n} = \dfrac{1}{a^n}$.`], risposta: { tipo: 'numero', valore: 0.111111, tolleranza: 0.0005, segnaposto: 'es. 1/4' }, soluzione: [R`$3^{-2} = \dfrac{1}{3^2}$.`, R`$3^2 = 9$, quindi $3^{-2} = \dfrac{1}{9}$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Calcola $2^3 \cdot 5^3$ senza calcolare le due potenze.`, suggerimenti: [R`Le basi sono diverse, ma l'esponente è lo stesso.`, R`$2^3 \cdot 5^3 = (2 \cdot 5)^3$.`], risposta: { tipo: 'numero', valore: 1000 }, soluzione: [R`Stesso esponente: $2^3 \cdot 5^3 = (2 \cdot 5)^3$.`, R`$(2 \cdot 5)^3 = 10^3 = 1000$.`] },
+    { id: 'b-12', livello: 'base', difficolta: 1, testo: R`$\dfrac{7}{20}$ dà un decimale limitato o periodico? Scrivi *limitato* oppure *periodico*.`, suggerimenti: [R`La frazione è già ridotta. Scomponi il denominatore.`, R`$20 = 2^2 \cdot 5$.`], risposta: { tipo: 'testo', accettate: ['limitato', 'decimale limitato', 'limitata'], segnaposto: 'limitato o periodico' }, soluzione: [R`$\dfrac{7}{20}$ è ridotta: $7$ e $20$ non hanno fattori comuni.`, R`$20 = 2^2 \cdot 5$: solo i fattori $2$ e $5$, quindi il decimale è limitato.`, R`Infatti $7 : 20 = 0{,}35$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 1, testo: R`Trova la frazione generatrice di $0{,}\overline{7}$. Scrivila nella forma *a/b*.`, suggerimenti: [R`È un periodico semplice: il periodo è $7$, una cifra.`, R`Sopra il periodo, sotto un $9$ per ogni cifra del periodo.`], risposta: { tipo: 'testo', accettate: ['7/9'], segnaposto: 'es. 2/3' }, soluzione: [R`Periodo $7$, una cifra, nessun antiperiodo.`, R`Numeratore $7$, denominatore $9$: $0{,}\overline{7} = \dfrac{7}{9}$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Calcola $\left(\dfrac{1}{2}\right)^{-3}$.`, suggerimenti: [R`L'esponente negativo capovolge la frazione.`, R`$\left(\dfrac{1}{2}\right)^{-3} = 2^3$.`], risposta: { tipo: 'numero', valore: 8 }, soluzione: [R`Capovolgo la frazione e cambio segno all'esponente: $\left(\dfrac{1}{2}\right)^{-3} = \left(\dfrac{2}{1}\right)^3$.`, R`$2^3 = 8$.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Scrivi $0{,}125$ come frazione ridotta ai minimi termini, nella forma *a/b*.`, suggerimenti: [R`Tre cifre dopo la virgola: metti $1000$ sotto.`, R`$125 \cdot 8 = 1000$.`], risposta: { tipo: 'testo', accettate: ['1/8'], segnaposto: 'es. 2/5' }, soluzione: [R`$0{,}125 = \dfrac{125}{1000}$.`, R`Divido sopra e sotto per $125$: $\dfrac{1}{8}$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Calcola $5^{-2} \cdot 5^3$.`, suggerimenti: [R`Stessa base: somma gli esponenti, anche se uno è negativo.`], risposta: { tipo: 'numero', valore: 5 }, soluzione: [R`Sommo gli esponenti: $-2 + 3 = 1$.`, R`$5^{-2} \cdot 5^3 = 5^1 = 5$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}\overline{12}$, ridotta ai minimi termini. Scrivila nella forma *a/b*.`, suggerimenti: [R`Il periodo è $12$: due cifre, quindi due $9$ sotto.`, R`$\dfrac{12}{99}$ si semplifica per $3$.`], risposta: { tipo: 'testo', accettate: ['4/33'], segnaposto: 'es. 2/3' }, soluzione: [R`Periodo $12$, due cifre: $0{,}\overline{12} = \dfrac{12}{99}$.`, R`Divido sopra e sotto per $3$: $\dfrac{4}{33}$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}1\overline{6}$, ridotta ai minimi termini. Scrivila nella forma *a/b*.`, suggerimenti: [R`Antiperiodo $1$, periodo $6$: sotto va $90$.`, R`Sopra: $16 - 1$.`], risposta: { tipo: 'testo', accettate: ['1/6'], segnaposto: 'es. 2/3' }, soluzione: [R`Numeratore: le cifre fino al periodo meno l'antiperiodo, $16 - 1 = 15$.`, R`Denominatore: un $9$ per il periodo e uno $0$ per l'antiperiodo, $90$.`, R`$\dfrac{15}{90}$ si semplifica per $15$: $\dfrac{1}{6}$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Calcola $\dfrac{2^5 \cdot 2^{-2}}{2^3}$.`, suggerimenti: [R`Prima il numeratore: stessa base, somma gli esponenti.`, R`Poi il quoziente: sottrai gli esponenti.`], risposta: { tipo: 'numero', valore: 1 }, soluzione: [R`Numeratore: $2^5 \cdot 2^{-2} = 2^{5 - 2} = 2^3$.`, R`Quoziente: $\dfrac{2^3}{2^3} = 2^{3 - 3} = 2^0$.`, R`$2^0 = 1$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Calcola $(2^{-1})^3 \cdot 2^5$.`, suggerimenti: [R`Prima la potenza di potenza: moltiplica gli esponenti.`, R`$(2^{-1})^3 = 2^{-3}$. Poi somma gli esponenti.`], risposta: { tipo: 'numero', valore: 4 }, soluzione: [R`Potenza di potenza: $(2^{-1})^3 = 2^{-1 \cdot 3} = 2^{-3}$.`, R`Prodotto con la stessa base: $2^{-3} \cdot 2^5 = 2^{-3 + 5} = 2^2$.`, R`$2^2 = 4$.`] },
+
     { id: 'es-01', difficolta: 1, testo: R`Qual è il più piccolo fra gli insiemi $\mathbb{N}$, $\mathbb{Z}$, $\mathbb{Q}$ che contiene $-\dfrac{9}{3}$? Rispondi con una lettera: N, Z oppure Q.`, suggerimenti: [R`Prima semplifica la frazione.`, R`$-\dfrac{9}{3} = -3$: è un numero negativo, quindi non può essere naturale.`], risposta: { tipo: 'testo', accettate: ['z', 'zeta', 'interi'] }, soluzione: [R`$-\dfrac{9}{3} = -3$, un numero intero negativo.`, R`Non è naturale (è negativo), ma è intero: il più piccolo insieme che lo contiene è $\mathbb{Z}$.`] },
     { id: 'es-02', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}\overline{45}$, ridotta ai minimi termini.`, suggerimenti: [R`È un periodico semplice: niente antiperiodo.`, R`Numeratore = il periodo $45$; denominatore = tanti $9$ quante le cifre del periodo.`], risposta: { tipo: 'numero', valore: 0.454545, tolleranza: 0.0005 }, soluzione: [R`$0{,}\overline{45} = \dfrac{45}{99}$.`, R`Dividendo per $9$: $\dfrac{5}{11}$.`] },
     { id: 'es-03', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}2\overline{3}$, ridotta ai minimi termini.`, suggerimenti: [R`Antiperiodo: $2$. Periodo: $3$.`, R`Numeratore: $23 - 2$. Denominatore: un $9$ (una cifra di periodo) e uno $0$ (una cifra di antiperiodo).`], risposta: { tipo: 'numero', valore: 0.233333, tolleranza: 0.0005 }, soluzione: [R`$0{,}2\overline{3} = \dfrac{23 - 2}{90} = \dfrac{21}{90}$.`, R`Dividendo per $3$: $\dfrac{7}{30}$.`] },

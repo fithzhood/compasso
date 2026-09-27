@@ -9,11 +9,13 @@
   const STILE = `
     .lab-regolo { --legno: #f5ead0; --legno2: #eadbb3; --legno3: #dcc899; --mobile: #fffaec; --mobile2: #f3e8c8;
       --legno-bordo: #c4ad7c; --inchiostro: #2b2317; --inchiostro2: #6c5b3d; --vetro: rgba(255,255,255,.30);
-      --vetro-bordo: rgba(70,55,30,.30); --filo: #d2382b; }
+      --vetro-bordo: rgba(70,55,30,.30); --filo: #d2382b; -webkit-user-select: none; user-select: none; }
     :root[data-tema="scuro"] .lab-regolo { --legno: #4b402d; --legno2: #3e3525; --legno3: #30291d; --mobile: #5b4f38; --mobile2: #4c422f;
       --legno-bordo: #6f5f40; --inchiostro: #f4ecd8; --inchiostro2: #cdbd96; --vetro: rgba(255,255,255,.07);
       --vetro-bordo: rgba(255,240,210,.32); --filo: #ff6f5e; }
-    .lab-regolo .lab-scena { background: radial-gradient(130% 100% at 50% 0%, var(--sup), var(--sup2)); overflow: hidden; }
+    /* --- scena: il regolo e sotto le due righe della formula; il gruppo sta in mezzo (l'altezza dell'svg la decide adatta()) --- */
+    .lab-regolo .lab-scena { flex-direction: column; align-items: stretch; justify-content: safe center; background: radial-gradient(130% 100% at 50% 0%, var(--sup), var(--sup2)); overflow: hidden; }
+    .lab-regolo .lab-scena > svg { flex: none; min-height: 0; width: 100%; touch-action: none; }
     .lab-regolo .corpo { filter: drop-shadow(0 1px 1px rgba(40,30,10,.14)) drop-shadow(0 7px 12px rgba(40,30,10,.16)); }
     :root[data-tema="scuro"] .lab-regolo .corpo { filter: drop-shadow(0 1px 2px rgba(0,0,0,.45)) drop-shadow(0 8px 16px rgba(0,0,0,.5)); }
     .lab-regolo .mobile { cursor: grab; outline: none; transition: opacity .35s; }
@@ -21,31 +23,45 @@
     .lab-regolo .cursore { cursor: ew-resize; outline: none; }
     .lab-regolo .mobile:focus-visible .corpo-mobile, .lab-regolo .cursore:focus-visible .linguetta { stroke: var(--accento); stroke-width: 2.5; }
     .lab-regolo .linguetta { filter: drop-shadow(0 3px 6px rgba(30,30,50,.18)); }
-    .lab-regolo .obiettivo { padding: 12px 16px 2px; font-size: 1rem; line-height: 1.55; color: var(--testo); }
-    .lab-regolo .obiettivo p { margin: 0; }
-    .lab-regolo .obiettivo b, .lab-regolo .obiettivo strong { color: var(--accento-testo); }
-    .lab-regolo .aiuto { margin: 8px 16px 0; padding: 10px 14px; border-radius: 12px; background: var(--accento-tenue); color: var(--testo); font-size: .92rem; line-height: 1.5; animation: lab-regolo-pop .3s var(--morbido); }
-    .lab-regolo .formula { display: grid; gap: 2px; padding: 8px 16px 2px; }
-    .lab-regolo .f-riga { display: flex; align-items: baseline; gap: 4px 10px; flex-wrap: wrap; min-height: 1.95em; }
-    .lab-regolo .f-et { font-size: .68rem; letter-spacing: .05em; text-transform: uppercase; color: var(--testo2); min-width: 6.6em; }
-    .lab-regolo .f-tex { font-size: 1.08rem; color: var(--testo); }
+    .lab-regolo .formula { flex: none; display: grid; gap: 2px; justify-items: center; padding: 4px 12px clamp(8px, 2cqh, 20px); }
+    .lab-regolo .f-riga { display: flex; align-items: baseline; justify-content: center; gap: 2px 10px; flex-wrap: wrap; max-width: 100%; min-height: 1.9em; }
+    .lab-regolo .f-et { font-size: 12px; letter-spacing: .05em; text-transform: uppercase; color: var(--testo2); min-width: 7.5em; text-align: right; }
+    .lab-regolo .f-tex { font-size: clamp(1rem, 2.6cqmin, 1.6rem); color: var(--testo); white-space: nowrap; }
     .lab-regolo .f-tex .katex { white-space: nowrap; }
-    @media (max-width: 600px) { .lab-regolo .f-tex { font-size: .98rem; } .lab-regolo .f-et { min-width: 5.6em; } }
-    .lab-regolo .risposta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding: 10px 16px 0; margin: 0; }
+    @container lab (max-width: 520px) { .lab-regolo .f-et { min-width: 0; text-align: center; } }
+    /* --- pannello --- */
+    .lab-regolo .obiettivo { font-size: clamp(.92rem, 2.1cqmin, 1.05rem); line-height: 1.45; text-align: center; color: var(--testo); }
+    .lab-regolo .obiettivo p { margin: 0; display: inline; }
+    .lab-regolo .obiettivo b, .lab-regolo .obiettivo strong { color: var(--accento-testo); }
+    .lab-regolo .obiettivo .katex { font-size: 1.22em; }   /* gli esponenti KaTeX sono al 70%: così restano sopra i 12 px */
+    .lab-regolo .obiettivo .c-breve { display: none; }
+    @container lab (max-aspect-ratio: 5 / 4) and (max-width: 599px) { .lab-regolo .obiettivo .c-breve { display: inline; } .lab-regolo .obiettivo .c-breve + .c-lungo { display: none; } }
+    .lab-regolo .lab-aiuto .consegna { color: var(--testo2); margin-bottom: 10px; }
+    .lab-regolo .lab-aiuto .consegna p { margin: 0; }
+    .lab-regolo .risposta { display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; margin: 0; }
+    .lab-regolo .risposta[hidden] { display: none; }
     .lab-regolo .risposta label { font-size: .92rem; color: var(--testo2); }
-    .lab-regolo .risposta input { font: 600 1.1rem var(--font); width: 6.5em; min-height: 44px; padding: 6px 12px; border-radius: 12px;
+    .lab-regolo .risposta input { font: 600 1.1rem var(--font); width: 6.2em; min-height: 42px; padding: 6px 12px; border-radius: 12px;
       border: 1.5px solid var(--bordo2); background: var(--sup); color: var(--testo); user-select: text; -webkit-user-select: text;
       transition: border-color .2s, box-shadow .2s; }
     .lab-regolo .risposta input:focus { outline: none; border-color: var(--accento); box-shadow: 0 0 0 3px var(--accento-tenue); }
     .lab-regolo .risposta input.sbagliata { border-color: var(--no); }
     .lab-regolo .risposta input.giusta { border-color: var(--ok); background: var(--ok-tenue); }
-    .lab-regolo .livelli { display: flex; gap: 6px; flex-wrap: wrap; }
-    .lab-regolo .pill { width: 40px; height: 40px; border-radius: 12px; border: 1.5px solid var(--bordo2); background: var(--sup);
-      color: var(--testo2); font: 700 .95rem var(--font); cursor: pointer; padding: 0; transition: transform .3s var(--molla), background .2s, color .2s; }
-    .lab-regolo .pill.fatto { background: var(--ok-tenue); color: var(--ok); border-color: color-mix(in srgb, var(--ok) 45%, var(--bordo)); }
-    .lab-regolo .pill.qui { background: var(--accento); color: #fff; border-color: var(--accento); transform: scale(1.07); }
-    .lab-regolo .pill[disabled] { opacity: .35; cursor: default; }
+    .lab-regolo .risposta .btn { min-height: 42px; }
+    .lab-regolo .lab-messaggio { padding: 0 4px; min-height: 1.45em; font-size: clamp(.88rem, 2cqmin, 1.02rem); text-align: center; line-height: 1.45; }
+    .lab-regolo .lab-messaggio:empty { display: none; }
+    .lab-regolo .lab-messaggio .katex { font-size: 1em; }
+    .lab-regolo .lab-barra { padding: 0; border: 0; gap: 8px; justify-content: center; }
+    .lab-regolo .lab-barra .btn { min-height: 40px; }
     .lab-regolo .lab-barra .btn[disabled] { opacity: .38; cursor: default; }
+    /* modalità libera: l'operazione e i due numeri */
+    .lab-regolo .lab-parametri { grid-template-columns: 1fr; max-width: 460px; }
+    .lab-regolo .lab-param.op { gap: 6px; }
+    .lab-regolo .lab-param.op .btn { min-width: 52px; font-size: 1.2rem; }
+    .lab-regolo .lab-param.op .btn[aria-pressed="true"] { background: var(--accento); border-color: var(--accento); color: #fff; }
+    .lab-regolo .lab-param .nome { min-width: 1.4em; font-weight: 700; }
+    .lab-regolo .lab-param output { min-width: 3.2em; }
+    .lab-regolo .lab-param input[type=range] { min-height: 38px; }
     .lab-regolo .vinto { display: inline-block; animation: lab-regolo-pop .45s cubic-bezier(.34,1.56,.64,1); }
     @keyframes lab-regolo-pop { from { transform: scale(.75); opacity: 0 } to { transform: none; opacity: 1 } }
     .lab-regolo .scuoti { animation: lab-regolo-no .38s ease; }
@@ -123,6 +139,17 @@
       finale: '\\log\\left(1{,}5^3\\right) = 3\\log 1{,}5 \\approx \\log 3{,}38' }
   ];
 
+  /* le consegne brevi, per il telefono in verticale (quella intera si legge nel «?») */
+  const BREVI = [
+    'Trascina il filo rosso: dove sta il 4? E quale numero sta al **triplo** della distanza del 2?',
+    'Calcola $2 \\times 3$: l\'**1** di sotto sotto il **2**, poi leggi sopra il **3** di sotto.',
+    'Calcola $2{,}5 \\times 3$: l\'1 va sotto un numero che non è scritto.',
+    'Calcola $8 : 2$: qui le lunghezze si **tolgono**.',
+    null,
+    'Calcola $1{,}5^3$: **tre volte** la lunghezza dell\'1,5.'
+  ];
+  const AIUTO_LIBERO = 'In modalità libera non ci sono domande: il regolo è tuo. Scegli × o : e i due numeri con i cursori, e il regolo si mette in posizione da solo; oppure muovi tu righello e filo, e i numeri seguono. Per moltiplicare l\'1 del righello di sotto va sotto il primo numero e il risultato si legge sopra il secondo; per dividere il secondo numero va sotto il primo, e il risultato sta sopra l\'1. «Casuale» propone un conto a caso.';
+
   const NS = 'http://www.w3.org/2000/svg';
   const el = (n, a, testo) => { const e = document.createElementNS(NS, n); for (const k in a || {}) if (a[k] != null) e.setAttribute(k, a[k]); if (testo != null) e.textContent = testo; return e; };
   const vuota = n => { while (n.firstChild) n.removeChild(n.firstChild); };
@@ -149,11 +176,15 @@
   }
 
   /* geometria in pixel veri: il viewBox è largo quanto la scena, così i caratteri hanno la loro misura */
-  function geometria(W) {
+  function geometria(W, Hd) {
     const largo = W >= 560;
-    const k = largo ? Math.min(1.3, .95 + W / 2400) : 1;
     const M = largo ? Math.round(Math.max(64, W * .085)) : 26;
     const L = W - 2 * M;
+    /* k: quanto è spesso il regolo e quanto sono grandi le scritte. Dalla larghezza, e se lo spazio è
+       alto anche di più, ma senza che i numeri 9 e 10 (i più vicini) si pestino */
+    const kMax = Math.max(1, Math.min(2.6, (.0458 * L - 4) / 17));
+    const kW = Math.min(1.3, .95 + W / 2400, kMax), kH = ((Hd || 0) - 66) / 210;
+    const k = largo ? Math.max(kW, Math.min(kH, kMax)) : 1;
     const yR = Math.round(32 * k);             /* corsia della freccia verde, sopra il regolo */
     const yS = Math.round(50 * k);             /* bordo alto del righello fisso */
     const yA = yS + Math.round(46 * k);        /* corsia della freccia blu, dentro il righello fisso */
@@ -170,34 +201,46 @@
     monta(radice, ctx) {
       if (!document.getElementById('stile-lab-regolo')) { const st = document.createElement('style'); st.id = 'stile-lab-regolo'; st.textContent = STILE; document.head.appendChild(st); }
       radice.classList.add('lab-regolo');
+      const cursoreNum = (n, et) => `<div class="lab-param" data-p="${n}"><span class="nome">${n}</span><input type="range" min="0" max="1" step="0.001" aria-label="${et}"><output></output></div>`;
       radice.innerHTML = `
-        <div class="lab-scena"></div>
-        <div class="obiettivo"></div>
-        <div class="aiuto" hidden></div>
-        <div class="formula">
-          <div class="f-riga"><span class="f-et f-et1"></span><span class="f-tex f-1"></span></div>
-          <div class="f-riga"><span class="f-et f-et2"></span><span class="f-tex f-2"></span></div>
-        </div>
-        <form class="risposta" autocomplete="off">
-          <label for="lab-regolo-in" class="domanda"></label>
-          <input id="lab-regolo-in" type="text" inputmode="decimal" enterkeyhint="done" spellcheck="false" placeholder="risultato">
-          <button type="submit" class="btn primario b-controlla">Controlla</button>
-        </form>
-        <div class="lab-messaggio"></div>
-        <div class="lab-barra">
-          <div class="livelli" role="group" aria-label="Livelli"></div>
-          <button type="button" class="btn piccolo b-aiuto" title="Come si usa">?</button>
-          <button type="button" class="btn piccolo b-ric">Ricomincia</button>
-          <span class="lab-livello"></span>
+        <div class="lab-layout">
+          <div class="lab-scena">
+            <div class="formula">
+              <div class="f-riga"><span class="f-et f-et1"></span><span class="f-tex f-1"></span></div>
+              <div class="f-riga"><span class="f-et f-et2"></span><span class="f-tex f-2"></span></div>
+            </div>
+            <div class="lab-aiuto" hidden data-scorre><div class="consegna" hidden></div><p class="testo-aiuto"></p><button type="button" class="btn piccolo m-chiudi">Ho capito</button></div>
+          </div>
+          <div class="lab-lato">
+            <div class="lab-livelli" role="group" aria-label="Livelli"><button type="button" class="btn piccolo lab-libero" aria-pressed="false" title="Modalità libera: il regolo senza domande">Libero</button></div>
+            <div class="obiettivo"></div>
+            <div class="lab-parametri" hidden>
+              <div class="lab-param op" role="group" aria-label="Operazione"><button type="button" class="btn piccolo" data-op="per" aria-pressed="true" aria-label="moltiplica">×</button><button type="button" class="btn piccolo" data-op="diviso" aria-pressed="false" aria-label="dividi">:</button></div>
+              ${cursoreNum('a', 'il primo numero')}
+              ${cursoreNum('b', 'il secondo numero')}
+            </div>
+            <form class="risposta" autocomplete="off">
+              <label for="lab-regolo-in" class="domanda"></label>
+              <input id="lab-regolo-in" type="text" inputmode="decimal" enterkeyhint="done" spellcheck="false" placeholder="risultato">
+              <button type="submit" class="btn primario b-controlla">Controlla</button>
+            </form>
+            <div class="lab-messaggio" aria-live="polite"></div>
+            <div class="lab-barra">
+              <button type="button" class="btn piccolo b-ric">Ricomincia</button>
+              <button type="button" class="btn piccolo b-casuale" hidden>Casuale</button>
+              <button type="button" class="btn piccolo b-aiuto" aria-label="Come si usa">?</button>
+            </div>
+          </div>
         </div>`;
 
       const scena = radice.querySelector('.lab-scena');
       const objEl = radice.querySelector('.obiettivo'), f1 = radice.querySelector('.f-1'), f2 = radice.querySelector('.f-2');
-      const et1 = radice.querySelector('.f-et1'), et2 = radice.querySelector('.f-et2');
-      const form = radice.querySelector('.risposta'), input = radice.querySelector('input'), domEl = radice.querySelector('.domanda');
-      const msg = radice.querySelector('.lab-messaggio'), livEl = radice.querySelector('.lab-livello'), pillEl = radice.querySelector('.livelli');
-      const bRic = radice.querySelector('.b-ric'), bAiuto = radice.querySelector('.b-aiuto'), aiutoEl = radice.querySelector('.aiuto');
-      const bControlla = radice.querySelector('.b-controlla');
+      const et1 = radice.querySelector('.f-et1'), et2 = radice.querySelector('.f-et2'), formulaEl = radice.querySelector('.formula');
+      const form = radice.querySelector('.risposta'), input = radice.querySelector('#lab-regolo-in'), domEl = radice.querySelector('.domanda');
+      const msg = radice.querySelector('.lab-messaggio'), livelliEl = radice.querySelector('.lab-livelli');
+      const bRic = radice.querySelector('.b-ric'), bAiuto = radice.querySelector('.b-aiuto'), aiutoEl = radice.querySelector('.lab-aiuto');
+      const bControlla = radice.querySelector('.b-controlla'), bLibero = radice.querySelector('.lab-libero'), bCasuale = radice.querySelector('.b-casuale');
+      const parametriEl = radice.querySelector('.lab-parametri');
 
       /* ---------------- stato ---------------- */
       const completati = ctx.stato().livelli;
@@ -205,17 +248,21 @@
       if (livello >= LIVELLI.length) livello = LIVELLI.length - 1;
       let s = 0, h = .1, G = null, presa = null, off = 0, raf = 0, rafDisegno = 0, rafFesta = 0;
       let vinto = false, animando = false, segno = null, pCatena = 0, uscitaDetta = false, cache1 = '', cache2 = '';
-      const liv = () => LIVELLI[livello];
+      let libero = false, salvato = null;           /* modalità libera, e il livello da cui ci si è entrati */
+      const lib = { modo: 'per', a: 2, b: 3 };      /* in modalità libera: l'operazione e i due numeri */
+      const LIBERO = { libero: true, get modo() { return lib.modo; } };
+      const liv = () => libero ? LIBERO : LIVELLI[livello];
       const conMobile = () => liv().modo !== 'misura';
 
       /* ---------------- scena SVG ---------------- */
       const svg = el('svg', { role: 'img', 'aria-label': 'Regolo calcolatore: righello fisso in alto, righello mobile in basso, cursore con il filo' });
-      scena.appendChild(svg);
+      svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+      scena.insertBefore(svg, formulaEl);
       let gFisso, gMobile, gFrecce, gFesta, gCursore;
 
-      function costruisci() {
-        const W = Math.max(300, Math.round(scena.clientWidth || 360));
-        G = geometria(W);
+      function costruisci(Wd, Hd) {
+        const W = Math.max(300, Math.round(Wd || scena.clientWidth || 360));
+        G = geometria(W, Hd);
         const { H, M, L, k, X, yS, yB, yC, yT } = G;
         vuota(svg);
         svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
@@ -249,10 +296,9 @@
           const lung = (Math.abs(c % 5) < 1e-6 ? 12 : Math.abs(c % 1) < 1e-6 ? 8 : Math.abs(c % .5) < 1e-6 ? 5.5 : 3.5) * k;
           gFisso.appendChild(el('line', { x1: x, y1: yS + 1, x2: x, y2: yS + 1 + lung, stroke: 'var(--inchiostro2)', 'stroke-width': .9 }));
         }
-        for (let c = 0; c <= CM; c += 5) T(gFisso, X(c / CM), yS + 24 * k, c === CM && !G.largo ? '25 cm' : String(c), fs(`500 ${Math.round(10 * k)}px`), c === CM && !G.largo ? 'end' : 'middle', 'var(--inchiostro2)');
-        if (G.largo) T(gFisso, xb - 3, yS + 24 * k, 'cm', fs(`500 ${Math.round(9 * k)}px`), 'end', 'var(--inchiostro2)');
+        for (let c = 0; c <= CM; c += 5) T(gFisso, X(c / CM), yS + 24 * k, c === CM ? '25 cm' : String(c), fs(`500 ${Math.round(Math.max(12, 10 * k))}px`), c === CM ? 'end' : 'middle', 'var(--inchiostro2)');
         /* scritta nel binario, visibile solo finché il righello mobile non c'è */
-        gFisso.appendChild(el('text', { class: 'binario-vuoto', x: X(.5), y: (yB + yC) / 2 + 4, 'text-anchor': 'middle', fill: 'var(--inchiostro2)', opacity: .7, style: fs(`500 ${Math.round(11.5 * k)}px`) }, 'qui arriva il righello mobile, dal livello 2'));
+        gFisso.appendChild(el('text', { class: 'binario-vuoto', x: X(.5), y: (yB + yC) / 2 + 4, 'text-anchor': 'middle', fill: 'var(--inchiostro2)', opacity: .7, style: fs(`500 ${Math.round(Math.max(12, 11.5 * k))}px`) }, 'qui arriva il righello mobile, dal livello 2'));
 
         /* scala D: tacche che salgono dalla linea di contatto */
         const LT = [16, 11, 7, 4.5].map(v => v * k), elenco = tacche(L);
@@ -266,19 +312,20 @@
             const px = G.largo ? (n === 1 || n === 10 ? 15 : 14) : (n === 10 ? 13 : n >= 7 ? 12.5 : 14);
             T(g, x0 + LOG(n) * L + (n === 10 && !G.largo ? 1.5 : 0), yN, String(n), fs(`600 ${Math.round(px * k)}px`));
           }
-          T(g, x0 + LOG(1.5) * L, verso < 0 ? y0 - 19 * k : y0 + 29 * k, '1,5', fs(`500 ${Math.round(9.5 * k)}px`), 'middle', 'var(--inchiostro2)');
+          T(g, x0 + LOG(1.5) * L, verso < 0 ? y0 - 19 * k : y0 + 29 * k, '1,5', fs(`500 ${Math.round(Math.max(12, 9.5 * k))}px`), 'middle', 'var(--inchiostro2)');
         };
         scala(gFisso, M, yB, -1);
-        if (G.largo) T(gFisso, xa + 5 * k, yB - 5 * k, 'D', fs(`700 ${Math.round(9 * k)}px`), 'start', 'var(--inchiostro2)');
+        if (G.largo) T(gFisso, xa + 5 * k, yB - 5 * k, 'D', fs(`700 ${Math.round(Math.max(12, 9 * k))}px`), 'start', 'var(--inchiostro2)');
 
         /* righello mobile (disegnato con s = 0, poi spostato) */
-        gMobile = el('g', { class: 'mobile', tabindex: 0, role: 'slider', 'aria-label': 'Righello mobile: frecce per spostarlo' }); svg.appendChild(gMobile);
+        /* il righello mobile, quando scorre molto, esce di proposito dalla scena (l'svg lo taglia): data-scorre lo dice al misuratore */
+        gMobile = el('g', { class: 'mobile', tabindex: 0, role: 'slider', 'aria-label': 'Righello mobile: frecce per spostarlo', 'data-scorre': '' }); svg.appendChild(gMobile);
         const cm = el('g', { class: 'corpo' }); gMobile.appendChild(cm);
         const ma = X(-.035), mb = X(1.035);
         cm.appendChild(el('rect', { class: 'corpo-mobile', x: ma, y: yB + 2, width: mb - ma, height: yC - yB - 2, rx: 6, fill: 'url(#lab-regolo-mobile)', stroke: 'var(--legno-bordo)', 'stroke-width': 1 }));
         [ma + 7, mb - 7].forEach(x => { for (let i = -1; i <= 1; i++) gMobile.appendChild(el('line', { x1: x + i * 3.5, y1: yC - 18 * k, x2: x + i * 3.5, y2: yC - 6 * k, stroke: 'var(--inchiostro2)', 'stroke-width': 1.2, opacity: .35, 'stroke-linecap': 'round' })); });
         scala(gMobile, M, yB + 2, 1);
-        if (G.largo) T(gMobile, ma + 5 * k, yB + 14 * k, 'C', fs(`700 ${Math.round(9 * k)}px`), 'start', 'var(--inchiostro2)');
+        if (G.largo) T(gMobile, ma + 5 * k, yB + 14 * k, 'C', fs(`700 ${Math.round(Math.max(12, 9 * k))}px`), 'start', 'var(--inchiostro2)');
 
         gFrecce = el('g'); svg.appendChild(gFrecce);
         gFesta = el('g', { 'pointer-events': 'none' }); svg.appendChild(gFesta);
@@ -294,7 +341,6 @@
         gCursore.appendChild(el('path', { d: `M-6 ${yT + 1} L0 ${yT - 6} L6 ${yT + 1} Z`, fill: 'var(--filo)' }));
         for (let i = -1; i <= 1; i++) gCursore.appendChild(el('line', { x1: i * 6, y1: yT + 13, x2: i * 6, y2: yT + 29, stroke: 'var(--testo2)', 'stroke-width': 2, 'stroke-linecap': 'round', opacity: .55 }));
 
-        svg.setAttribute('height', H);
         gMobile.addEventListener('keydown', ev => tasto(ev, 'mobile'));
         gCursore.addEventListener('keydown', ev => tasto(ev, 'cursore'));
         disegna(true);
@@ -307,7 +353,7 @@
       const dopo = (fn, ms) => { const t = setTimeout(fn, ms); timers.push(t); return t; };
 
       function etichetta(g, x0, x1, y, testo, col) {
-        const f = Math.round(11.5 * G.k), w = testo.length * f * .57 + 14, hh = f + 8, len = Math.abs(x1 - x0);
+        const f = Math.round(Math.max(12, 11.5 * G.k)), w = testo.length * f * .57 + 14, hh = f + 8, len = Math.abs(x1 - x0);
         let cx = (x0 + x1) / 2;
         if (len < w + 18) {                         /* freccia corta: l'etichetta va di fianco */
           const dx = Math.max(x0, x1) + 8 + w / 2;
@@ -375,7 +421,7 @@
             const x = X(u), g = el('g', { class: 'segno' }); gFrecce.appendChild(g);
             g.appendChild(el('line', { x1: x, y1: 20 * G.k, x2: x, y2: G.yB, stroke: 'var(--no)', 'stroke-width': 2, 'stroke-dasharray': '4 4' }));
             g.appendChild(el('path', { d: `M${x - 6} ${G.yB - 12} L${x + 6} ${G.yB - 12} L${x} ${G.yB - 2} Z`, fill: 'var(--no)' }));
-            const f = Math.round(11.5 * G.k), testo = 'tu: ' + String(v).replace('.', ','), w = testo.length * f * .57 + 14, cx = morsa(x, w / 2 + 2, G.W - w / 2 - 2), yy = 11 * G.k;
+            const f = Math.round(Math.max(12, 11.5 * G.k)), testo = 'tu: ' + String(v).replace('.', ','), w = testo.length * f * .57 + 14, cx = morsa(x, w / 2 + 2, G.W - w / 2 - 2), yy = 11 * G.k;
             g.appendChild(el('rect', { x: cx - w / 2, y: yy - (f + 8) / 2, width: w, height: f + 8, rx: (f + 8) / 2, fill: 'var(--no)' }));
             g.appendChild(el('text', { x: cx, y: yy + f * .36, 'text-anchor': 'middle', fill: '#fff', style: `font: 700 ${f}px var(--font)` }, testo));
           }
@@ -406,8 +452,10 @@
           }
         }
         et1.textContent = e1; et2.textContent = e2;
-        if (t1 !== cache1) { f1.innerHTML = ctx.tex(t1); cache1 = t1; }
-        if (t2 !== cache2) { f2.innerHTML = ctx.tex(t2); cache2 = t2; }
+        let nuove = false;
+        if (t1 !== cache1) { f1.innerHTML = ctx.tex(t1); cache1 = t1; nuove = true; }
+        if (t2 !== cache2) { f2.innerHTML = ctx.tex(t2); cache2 = t2; nuove = true; }
+        if (nuove) stringi();
       }
 
       function disegna() {
@@ -420,11 +468,13 @@
         const vuoto = svg.querySelector('.binario-vuoto'); if (vuoto) vuoto.style.display = vis ? 'none' : '';
         gCursore.setAttribute('transform', `translate(${G.X(h).toFixed(2)} 0)`);
         frecce(); formula();
+        if (libero && !animando) lettura();
       }
       function pianifica() { if (!rafDisegno) rafDisegno = requestAnimationFrame(() => { rafDisegno = 0; disegna(); }); }
       function cambiato() {
         if (segno) segno = null;
         if (!vinto && input.className) input.className = '';
+        if (libero) daRegolo();
         pianifica();
       }
 
@@ -480,10 +530,12 @@
       }
 
       /* ---------------- dito, mouse e tastiera ---------------- */
+      /* dal dito alle coordinate del regolo con la matrice dello schermo, mai col rettangolo dell'svg */
       function punto(ev) {
-        const r = svg.getBoundingClientRect();
-        const x = (ev.clientX - r.left) * (G.W / (r.width || 1)), y = (ev.clientY - r.top) * (G.H / (r.height || 1));
-        return { x, y, u: (x - G.M) / G.L };
+        const m = svg.getScreenCTM();
+        if (!m) return { x: -1e4, y: -1e4, u: -1 };
+        const p = new DOMPoint(ev.clientX, ev.clientY).matrixTransform(m.inverse());
+        return { x: p.x, y: p.y, u: (p.x - G.M) / G.L };
       }
       function giu(ev) {
         if (animando || !G) return;
@@ -510,6 +562,7 @@
         if (!presa) return;
         presa = null; gMobile.classList.remove('presa');
         controllaUscita();
+        if (rimandato) { rimandato = false; adatta(); }
       }
       /* livello 5: il numero del righello di sotto finisce oltre il 10 di sopra */
       function controllaUscita() {
@@ -536,30 +589,32 @@
       window.addEventListener('pointercancel', molla);
 
       /* ---------------- livelli ---------------- */
-      function pillole() {
-        vuota(pillEl);
-        const max = completati.length ? Math.max(...completati) : -1;
-        LIVELLI.forEach((_, i) => {
-          const b = document.createElement('button');
-          b.type = 'button'; b.className = 'pill' + (completati.includes(i) ? ' fatto' : '') + (i === livello ? ' qui' : '');
-          b.textContent = String(i + 1); b.title = 'Livello ' + (i + 1);
-          b.disabled = i > max + 1;
-          b.addEventListener('click', () => { if (i !== livello || vinto) avviaLivello(i); });
-          pillEl.appendChild(b);
+      function aggiornaLivelli() {
+        const fatti = ctx.stato().livelli, sblocco = fatti.length ? Math.max(...fatti) + 1 : 0;
+        [...livelliEl.querySelectorAll('.lab-pallino')].forEach((p, i) => {
+          p.classList.toggle('fatto', fatti.includes(i));
+          p.classList.toggle('attivo', !libero && i === livello);
+          p.disabled = i > sblocco && i !== livello;
+          p.setAttribute('aria-current', !libero && i === livello ? 'step' : 'false');
         });
+        bLibero.setAttribute('aria-pressed', libero);
+      }
+      const pillole = aggiornaLivelli;
+      function consegna(n) {
+        const breve = BREVI[n];
+        return (breve ? '<span class="c-breve">' + ctx.md(breve) + '</span>' : '') + '<span class="c-lungo">' + ctx.md(LIVELLI[n].testo) + '</span>';
       }
       let mobileVisto = false;
       function avviaLivello(n) {
         cancelAnimationFrame(rafFesta); rafFesta = 0; vuota(gFesta || el('g'));
+        libero = false; salvato = null; mostraLibero(); aiutoEl.hidden = true;
         livello = n; vinto = false; segno = null; pCatena = 0; uscitaDetta = false; presa = null;
         const L = liv();
-        objEl.innerHTML = ctx.md(L.testo);
-        aiutoEl.hidden = true; aiutoEl.textContent = L.aiuto;
+        objEl.innerHTML = consegna(n);
         domEl.textContent = L.domanda;
         input.value = ''; input.className = ''; input.disabled = false; bControlla.disabled = false;
         msg.textContent = ''; msg.className = 'lab-messaggio';
         bRic.textContent = 'Ricomincia'; bRic.classList.remove('primario');
-        livEl.textContent = 'Livello ' + (n + 1) + ' di ' + LIVELLI.length;
         pillole();
         if (conMobile() && !mobileVisto) s = -1.15;          /* il righello mobile entra da sinistra */
         mobileVisto = conMobile();
@@ -594,22 +649,155 @@
       }
       form.addEventListener('submit', ev => {
         ev.preventDefault();
-        if (vinto || animando) return;
+        if (vinto || animando || libero) return;
         const testo = input.value.replace(/\s/g, '').replace(',', '.');
         if (!/^\d*\.?\d+$/.test(testo)) { msg.textContent = 'Scrivi un numero, per esempio 7,5.'; msg.className = 'lab-messaggio no'; input.focus(); return; }
         const v = parseFloat(testo), L = liv();
         if (Math.abs(v - L.ris) <= L.ris * L.tol) vittoria(); else sbaglio(v);
       });
       bRic.addEventListener('click', () => avviaLivello(vinto ? (livello + 1) % LIVELLI.length : livello));
-      bAiuto.addEventListener('click', () => { aiutoEl.hidden = !aiutoEl.hidden; });
+      bAiuto.addEventListener('click', () => {
+        if (!aiutoEl.hidden) { aiutoEl.hidden = true; return; }
+        /* se nel pannello c'è la consegna breve, quella intera si legge qui */
+        const breve = objEl.querySelector('.c-breve'), cEl = aiutoEl.querySelector('.consegna');
+        cEl.hidden = libero || !breve || getComputedStyle(breve).display === 'none';
+        if (!cEl.hidden) cEl.innerHTML = ctx.md(LIVELLI[livello].testo);
+        aiutoEl.querySelector('.testo-aiuto').textContent = libero ? AIUTO_LIBERO : LIVELLI[livello].aiuto;
+        aiutoEl.hidden = false;
+      });
+      aiutoEl.querySelector('.m-chiudi').addEventListener('click', () => { aiutoEl.hidden = true; });
 
-      /* la scena si ridisegna quando cambia larghezza (telefono girato, schermo intero) */
-      let largo0 = 0;
-      const ro = new ResizeObserver(() => { const w = Math.round(scena.clientWidth); if (w && Math.abs(w - largo0) > 2) { largo0 = w; costruisci(); } });
-      ro.observe(scena);
-      largo0 = Math.round(scena.clientWidth);
+      /* ---------------- modalità libera: il regolo senza domande, per moltiplicare e dividere a piacere ---------------- */
+      const cursori = { a: parametriEl.querySelector('[data-p="a"] input'), b: parametriEl.querySelector('[data-p="b"] input') };
+      const uscite = { a: parametriEl.querySelector('[data-p="a"] output'), b: parametriEl.querySelector('[data-p="b"] output') };
+      const tre = v => { const r = Math.round(v * 100) / 100; return num(r, 2).replace(/,?0+$/, ''); };   /* 2,50 → 2,5 */
+      /* dove devono stare righello e filo per fare a × b oppure a : b (con il 10 di sotto, se si esce) */
+      function posizione() {
+        const la = LOG(lib.a), lb = LOG(lib.b);
+        if (lib.modo === 'per') { const sp = la + lb > 1 + 1e-9 ? la - 1 : la; return { s: sp, h: sp + lb }; }
+        return { s: la - lb, h: la };
+      }
+      /* i cursori seguono il regolo quando lo si muove a mano */
+      function daRegolo() {
+        const idx10 = s < 0, uI = idx10 ? s + 1 : s, t = h - s;
+        if (t < -1e-9 || t > 1 + 1e-9) return;                 /* il filo non sta sul righello di sotto */
+        if (lib.modo === 'per') { lib.a = Math.pow(10, uI); lib.b = Math.pow(10, t); }
+        else { lib.a = Math.pow(10, h); lib.b = Math.pow(10, t); }
+        aggiornaParametri(true);
+      }
+      function aggiornaParametri(soloNumeri) {
+        ['a', 'b'].forEach(n => {
+          if (!soloNumeri || document.activeElement !== cursori[n]) cursori[n].value = String(LOG(lib[n]));
+          uscite[n].textContent = tre(lib[n]);
+        });
+        parametriEl.querySelectorAll('[data-op]').forEach(b => b.setAttribute('aria-pressed', b.dataset.op === lib.modo));
+      }
+      /* lettura neutra, su una riga: il conto che il regolo sta facendo */
+      function lettura() {
+        const idx10 = s < 0, uI = idx10 ? s + 1 : s, t = h - s;
+        let testo;
+        if (t < -1e-9 || t > 1 + 1e-9) testo = 'Porta il filo su un numero del righello di sotto.';
+        else if (lib.modo === 'per') { const a = Math.pow(10, uI), b = Math.pow(10, t); testo = tre(a) + ' × ' + tre(b) + ' ≈ ' + tre(a * b); }
+        else { const a = Math.pow(10, h), b = Math.pow(10, t); testo = tre(a) + ' : ' + tre(b) + ' ≈ ' + tre(a / b); }
+        if (msg.textContent !== testo) msg.textContent = testo;
+      }
+      function mettiInPosizione(dur) {
+        const p = posizione();
+        segno = null;
+        if (dur) vaiA(p.s, p.h, dur); else { cancelAnimationFrame(raf); animando = false; s = p.s; h = p.h; pianifica(); }
+      }
+      function mostraLibero() {
+        parametriEl.hidden = !libero; objEl.hidden = libero; form.hidden = libero;
+        bRic.hidden = libero; bCasuale.hidden = !libero;
+        radice.classList.toggle('in-libero', libero);
+        aggiornaLivelli();
+      }
+      function entraLibero() {
+        if (animando) return;
+        cancelAnimationFrame(rafFesta); rafFesta = 0; vuota(gFesta);
+        salvato = { livello, s, h, vinto, segno, pCatena, uscitaDetta, val: input.value, cls: input.className, dis: input.disabled,
+          msg: msg.innerHTML, mcls: msg.className, ric: bRic.textContent, ricP: bRic.classList.contains('primario') };
+        libero = true; vinto = false; segno = null; pCatena = 0; aiutoEl.hidden = true;
+        mostraLibero();
+        msg.className = 'lab-messaggio';
+        aggiornaParametri();
+        if (!mobileVisto) s = -1.15;
+        mobileVisto = true;
+        mettiInPosizione(480);
+      }
+      function esciLibero() {   /* si torna al livello com'era */
+        if (animando) return;
+        const z = salvato; libero = false; salvato = null; aiutoEl.hidden = true;
+        livello = z.livello; s = z.s; h = z.h; vinto = z.vinto; segno = z.segno; pCatena = z.pCatena; uscitaDetta = z.uscitaDetta;
+        mostraLibero();
+        input.value = z.val; input.className = z.cls; input.disabled = z.dis; bControlla.disabled = z.dis;
+        bRic.textContent = z.ric; bRic.classList.toggle('primario', z.ricP);
+        mobileVisto = conMobile();
+        disegna();
+        msg.innerHTML = z.msg; msg.className = z.mcls;
+      }
+      function casuale() {
+        if (animando) return;
+        const r = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
+        lib.modo = Math.random() < .5 ? 'per' : 'diviso';
+        let a, b, g = 0;
+        do { a = r(11, 95) / 10; b = r(11, 95) / 10; g++; } while (g < 30 && (lib.modo === 'diviso' ? a < b : false));
+        lib.a = a; lib.b = b;
+        aggiornaParametri();
+        mettiInPosizione(420);
+      }
+      bLibero.addEventListener('click', () => { if (libero) esciLibero(); else entraLibero(); });
+      bCasuale.addEventListener('click', casuale);
+      parametriEl.addEventListener('click', ev => {
+        const b = ev.target.closest('button[data-op]'); if (!b || !libero || animando) return;
+        lib.modo = b.dataset.op;
+        aggiornaParametri();
+        mettiInPosizione(380);
+      });
+      ['a', 'b'].forEach(n => cursori[n].addEventListener('input', () => {
+        if (!libero) return;
+        lib[n] = Math.round(Math.pow(10, +cursori[n].value) * 20) / 20;   /* a passi di 0,05 */
+        uscite[n].textContent = tre(lib[n]);
+        mettiInPosizione(0);
+      }));
+
+      /* pallini dei livelli */
+      LIVELLI.forEach((_, i) => {
+        const p = document.createElement('button'); p.type = 'button'; p.className = 'lab-pallino';
+        p.setAttribute('aria-label', 'Livello ' + (i + 1)); p.innerHTML = '<span>' + (i + 1) + '</span>';
+        p.addEventListener('click', () => { if (animando) return; if (libero || i !== livello || vinto) avviaLivello(i); });
+        livelliEl.insertBefore(p, bLibero);
+      });
+
+      /* le formule stanno su una riga: se non ci stanno, il carattere si stringe (mai sotto i 12 px) */
+      function stringi() {
+        [f1, f2].forEach(e => {
+          e.style.fontSize = '';
+          const riga = e.parentNode;
+          let f = parseFloat(getComputedStyle(e).fontSize);
+          while (e.scrollWidth > riga.clientWidth + 1 && f > 12) { f = Math.max(12, f - 1); e.style.fontSize = f + 'px'; }
+        });
+      }
+      /* la scena si ridisegna quando cambia la forma dello spazio (telefono girato, schermo intero);
+         mentre si trascina si aspetta che il dito si stacchi */
+      let misura = '', rimandato = false;
+      function adatta() {
+        if (presa) { rimandato = true; return; }
+        const W = scena.clientWidth, H = scena.clientHeight;
+        if (W < 10 || H < 10) return;
+        const Hd = Math.max(80, Math.round(H - formulaEl.offsetHeight - 8));
+        const m = Math.round(W) + 'x' + Hd;
+        if (m === misura) return;
+        misura = m;
+        costruisci(W, Hd);
+        svg.style.height = Math.min(G.H, Hd) + 'px';
+        stringi();
+      }
       costruisci();
       avviaLivello(livello);
+      adatta();
+      const ro = new ResizeObserver(adatta);
+      ro.observe(radice); ro.observe(scena); ro.observe(formulaEl);
 
       return function smonta() {
         cancelAnimationFrame(raf); cancelAnimationFrame(rafDisegno); cancelAnimationFrame(rafFesta);

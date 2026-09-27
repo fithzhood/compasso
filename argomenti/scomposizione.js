@@ -1,94 +1,133 @@
 (function () {
 const R = String.raw;
+/* allenamento: tutte le scritture ragionevoli di una scomposizione.
+   scomp('3', 'x+3', 'x-3') → 3(x+3)(x-3). Accetta: fattori in qualunque ordine, termini scambiati dentro
+   la parentesi ((3+x)), segni scritti in modo diverso ((5-x) = -(x-5)), fattori uguali come ^2 o ripetuti,
+   il numero o monomio davanti anche in fondo, con o senza *. Non accetta scomposizioni incomplete. */
+const termini = f => f.replace(/^(?=[^+-])/, '+').match(/[+-][^+-]+/g);
+const scrivi = t => t.join('').replace(/^\+/, '');
+const opposti = t => t.map(s => (s[0] === '+' ? '-' : '+') + s.slice(1));
+const ordini = t => t.length < 2 ? [t] : t.flatMap((s, i) => ordini(t.filter((_, j) => j !== i)).map(r => [s].concat(r)));
+const permuta = a => a.length < 2 ? [a] : [...new Set(a)].flatMap(s => { const i = a.indexOf(s); return permuta(a.filter((_, j) => j !== i)).map(r => [s].concat(r)); });
+function scomp(k, ...fattori) {
+  const basi = [...new Set(fattori)].map(f => ({ t: termini(f), m: fattori.filter(g => g === f).length }));
+  const forme = new Set();
+  const giro = (i, segno, pezzi) => {
+    if (i === basi.length) {
+      pezzi.reduce((acc, p) => acc.flatMap(a => p.map(q => a.concat([q]))), [[]]).forEach(lista => {
+        const gettoni = lista.flat();
+        permuta(gettoni).forEach(ord => ['', '*'].forEach(sep => {
+          const prod = ord.join(sep);
+          const kk = segno > 0 ? k : (k === '' ? '-' : k[0] === '-' ? k.slice(1) : '-' + k);
+          forme.add(kk + prod);
+          if (kk && kk !== '-') forme.add(kk + '*' + prod);
+          if (segno > 0 && k) { if (!/\d$/.test(prod)) forme.add(prod + k); forme.add(prod + '*' + k); }
+        }));
+      });
+      return;
+    }
+    const b = basi[i];
+    [b.t, opposti(b.t)].forEach((t, giraSegno) => {
+      const s2 = giraSegno && b.m % 2 ? -segno : segno;
+      const scritture = ordini(t).map(scrivi).flatMap(s => b.m === 1 ? [['(' + s + ')']] : [['(' + s + ')^' + b.m], Array(b.m).fill('(' + s + ')')]);
+      giro(i + 1, s2, pezzi.concat([scritture]));
+    });
+  };
+  giro(0, 1, []);
+  return { tipo: 'testo', accettate: [...forme], segnaposto: 'es. 2(x+1)(x-3)' };
+}
 COMPASSO.registra({
   id: 'scomposizione',
   titolo: 'Scomposizione in fattori',
 
-  introduzione: R`Con i prodotti notevoli hai imparato ad andare da $(x - 2)(x - 3)$ a $x^2 - 5x + 6$. Scomporre è fare la strada al contrario: partire da $x^2 - 5x + 6$ e ritrovare il prodotto $(x - 2)(x - 3)$. È come scrivere $12 = 2^2 \cdot 3$, ma con i polinomi.
+  introduzione: R`Con i prodotti notevoli vai da $(x - 2)(x - 3)$ a $x^2 - 5x + 6$. **Scomporre** è fare la strada al contrario: parti da $x^2 - 5x + 6$ e ritrovi $(x - 2)(x - 3)$.
 
-Perché fare la fatica? Perché la forma a prodotto dice cose che l'altra nasconde: per esempio che il polinomio vale zero per $x = 2$ e per $x = 3$. Ti servirà per risolvere le equazioni di grado superiore al primo, per semplificare le frazioni algebriche e per trovare il denominatore comune.
+La forma a prodotto dice subito una cosa che l'altra nasconde: il polinomio vale zero per $x = 2$ e per $x = 3$. Ti servirà nelle equazioni e nelle frazioni algebriche.
 
-I metodi sono pochi: il raccoglimento, i prodotti notevoli letti al contrario, il trinomio speciale e la regola di Ruffini. La parte difficile è capire quale usare, e per questo c'è uno schema. Prima di cominciare ripassa i prodotti notevoli e la regola di Ruffini.`,
+I metodi sono pochi. La parte difficile è scegliere quello giusto, e per questo c'è uno schema. Prima ripassa i prodotti notevoli e la regola di Ruffini.`,
 
   inBreve: [
-    R`Scomporre vuol dire scrivere un polinomio come **prodotto**: se alla fine hai una somma, non hai scomposto.`,
-    R`Prima si prova **sempre** il raccoglimento totale; poi si contano i termini per scegliere il metodo; se nient'altro funziona, Ruffini.`,
-    R`$A^2 - B^2 = (A + B)(A - B)$, mentre la somma di quadrati $A^2 + B^2$ non si scompone.`,
-    R`Per un quadrato di binomio controlla il **doppio prodotto**; per il trinomio $x^2 + sx + p$ cerca due numeri con somma $s$ e prodotto $p$.`,
-    R`La scomposizione è finita solo quando nessun fattore si scompone più. Controllo finale: rimoltiplica e devi ritrovare il polinomio di partenza.`,
-    R`Nelle frazioni algebriche si semplificano i **fattori**, mai gli addendi, e le condizioni di esistenza si scrivono prima di semplificare.`
+    R`Scomporre vuol dire scrivere un polinomio come **prodotto**. Se alla fine hai una somma, non hai scomposto.`,
+    R`Prova **sempre** per primo il raccoglimento totale. Poi conta i termini per scegliere il metodo. Se niente funziona, usa Ruffini.`,
+    R`$A^2 - B^2 = (A + B)(A - B)$. La somma di quadrati $A^2 + B^2$ non si scompone.`,
+    R`Nel quadrato di binomio controlla il **doppio prodotto**. Nel trinomio $x^2 + sx + p$ cerca due numeri con somma $s$ e prodotto $p$.`,
+    R`Hai finito quando nessun fattore si scompone più. Poi rimoltiplica: deve tornare il polinomio di partenza.`,
+    R`Nelle frazioni algebriche semplifichi i **fattori**, mai gli addendi. Le condizioni di esistenza si scrivono prima di semplificare.`
   ],
 
   sezioni: [
-    { id: 'perche-scomporre', titolo: 'Che cosa vuol dire scomporre, e perché', testo: R`Un numero si scompone in fattori primi: $60 = 2^2 \cdot 3 \cdot 5$. Con i polinomi si fa la stessa cosa.
+    { id: 'perche-scomporre', titolo: 'Che cosa vuol dire scomporre, e perché', testo: R`Un numero si scompone in fattori primi: $60 = 2^2 \cdot 3 \cdot 5$. Con i polinomi fai la stessa cosa.
 
->* **Scomporre** (o *fattorizzare*) un polinomio significa scriverlo come **prodotto** di polinomi di grado più basso. Un polinomio che non si può scomporre si dice **irriducibile**: è l'equivalente di un numero primo. La scomposizione è **completa** quando tutti i fattori sono irriducibili.
+>* **Scomporre** un polinomio vuol dire scriverlo come **prodotto** di polinomi di grado più basso. Un polinomio che non si scompone si dice **irriducibile**, come un numero primo.
 
-Per esempio $x^2 - 5x + 6 = (x - 2)(x - 3)$. Come fai a esserne sicuro? Rifai il prodotto e controlla che torni il polinomio di partenza:
+Per esempio $x^2 - 5x + 6 = (x - 2)(x - 3)$. Per esserne sicuro, rifai il prodotto:
 
 ~ (x - 2)(x - 3) :: la scomposizione da controllare
 ~ x^2 \evid{- 3x - 2x} + 6 :: ogni termine per ogni termine
 ~ \evidb{x^2 - 5x + 6} :: torna il polinomio di partenza: la scomposizione è giusta
 
-Questo controllo va fatto **sempre**, alla fine di ogni esercizio: è il modo più sicuro per accorgersi di un segno sbagliato.
+Fai questo controllo alla fine di **ogni** esercizio.
 
-Una scomposizione può essere giusta ma incompleta: $x^4 - 16 = (x^2 + 4)(x^2 - 4)$ è vera, però $x^2 - 4$ si scompone ancora in $(x + 2)(x - 2)$. Bisogna andare avanti finché nessun fattore si scompone più.
+La scomposizione è **completa** quando nessun fattore si scompone più. $x^4 - 16 = (x^2 + 4)(x^2 - 4)$ è giusta, ma non è completa: $x^2 - 4$ diventa ancora $(x + 2)(x - 2)$.
 
 ?? Quale di queste è una scomposizione di $x^2 + 3x + 2$?
 [ ] $x(x + 3) + 2$
 [x] $(x + 1)(x + 2)$
 [ ] $x^2 + 3(x + 1) - 1$
 [ ] $(x + 3)(x + 2)$
-=> $(x + 1)(x + 2)$ è un prodotto, e sviluppato dà $x^2 + 2x + x + 2 = x^2 + 3x + 2$. $x(x + 3) + 2$ è uguale al polinomio, ma è una **somma** (c'è quel $+ 2$ fuori): non è una scomposizione. $(x + 3)(x + 2)$ è un prodotto, ma sviluppato dà $x^2 + 5x + 6$.
+=> $(x + 1)(x + 2)$ è un prodotto, e sviluppato dà $x^2 + 3x + 2$. $x(x + 3) + 2$ vale lo stesso, ma è una **somma**: quel $+ 2$ sta fuori, e il risultato deve essere un prodotto. $(x + 3)(x + 2)$ sviluppato dà $x^2 + 5x + 6$.
 
 ### A che cosa serve
 
-1. **Equazioni.** Un prodotto vale zero solo se almeno un fattore vale zero (è la **legge di annullamento del prodotto**). Da $(x - 2)(x - 3) = 0$ leggi subito $x = 2$ oppure $x = 3$; da $x^2 - 5x + 6 = 0$ no.
-2. **Frazioni algebriche.** Si semplificano dividendo sopra e sotto per uno stesso *fattore*: senza scomporre non vedi che cosa si può semplificare.
-3. **MCD e mcm** di polinomi, che servono per il denominatore comune.
-
->! Scomporre è il contrario di sviluppare: il risultato deve essere un prodotto di parentesi (ed eventualmente un numero o un monomio davanti), senza niente sommato fuori.` },
+1. **Equazioni.** Un prodotto vale zero solo se vale zero un fattore: è la *legge di annullamento del prodotto*. Da $(x - 2)(x - 3) = 0$ leggi subito $x = 2$ oppure $x = 3$.
+2. **Frazioni algebriche.** Per semplificarle devi vedere i fattori comuni.
+3. **MCD e mcm** di polinomi.` },
 
     { id: 'raccoglimento', titolo: 'Raccoglimento totale e parziale', testo: R`### Raccoglimento totale
 
-In $6x^3 - 4x^2 + 2x$ ogni termine contiene un $2$ e almeno una $x$. Quel pezzo comune, $2x$, si può «tirare fuori» davanti a una parentesi: è la proprietà distributiva letta al contrario, $AB + AC = A(B + C)$.
+Guarda $6x^3 - 4x^2 + 2x$. Ogni termine contiene un $2$ e almeno una $x$. Questo pezzo comune, $2x$, si porta fuori davanti a una parentesi.
 
->* **Raccoglimento totale:** si raccoglie il **MCD dei termini** (il MCD dei coefficienti, per le lettere comuni a tutti i termini con l'esponente più piccolo). Nella parentesi resta ciascun termine diviso per il fattore raccolto.
+>* **Raccoglimento totale:** porta fuori il **fattore comune** a tutti i termini. Nella parentesi scrivi ogni termine diviso per quel fattore.
+
+Per trovarlo:
+
+1. Calcola il MCD dei coefficienti.
+2. Prendi le lettere presenti in tutti i termini, con l'esponente più piccolo.
 
 ~ 6x^3 - 4x^2 + 2x :: il polinomio
 ~ \evid{2x} \cdot 3x^2 - \evid{2x} \cdot 2x + \evid{2x} \cdot 1 :: MCD di $6, 4, 2$ è $2$; la $x$ è in tutti con esponente minimo $1$: il fattore comune è $2x$
 ~ \evid{2x}(3x^2 - 2x + 1) :: lo porto fuori; nella parentesi resta ogni termine diviso per $2x$
 
-Il fattore comune può anche essere una parentesi intera: $2a(x - 1) + 5(x - 1) = (x - 1)(2a + 5)$.
+Il fattore comune può essere anche una parentesi: $2a(x - 1) + 5(x - 1) = (x - 1)(2a + 5)$.
 
 ?? Completa: $2x^2 + 2x = 2x(\ldots)$
 [ ] $x$
 [ ] $x + 0$
 [x] $x + 1$
 [ ] $x + 2x$
-=> $2x : 2x = 1$, quindi nella parentesi resta $x + 1$. Mettere $0$, o dimenticare il termine, è l'errore tipico: quando un termine coincide con il fattore raccolto al suo posto resta $1$. Controllo: $2x(x + 1) = 2x^2 + 2x$ ✓.
+=> $2x : 2x = 1$, quindi nella parentesi resta $x + 1$. L'errore tipico è scrivere $0$ o dimenticare quel termine. Controllo: $2x(x + 1) = 2x^2 + 2x$ ✓.
 
-Se il primo termine è negativo conviene raccogliere anche il segno: $-x^2 - 3x = -x(x + 3)$. Dentro la parentesi i segni cambiano tutti.
+Se il primo termine è negativo, raccogli anche il segno meno: $-x^2 - 3x = -x(x + 3)$. Nella parentesi cambiano tutti i segni.
 
 ### Raccoglimento parziale
 
-A volte un fattore comune a **tutti** i termini non c'è, ma c'è **a gruppi**. Si raccoglie in ogni gruppo e, se le parentesi che restano sono uguali, si raccoglie una seconda volta.
+A volte non c'è un fattore comune a **tutti** i termini, ma c'è **a gruppi**. Raccogli in ogni gruppo. Se le parentesi che restano sono uguali, raccogli ancora.
 
 ~ x^3 - 2x^2 + 3x - 6 :: quattro termini, nessun fattore comune a tutti
 ~ \evid{x^2}(x - 2) + \evid{3}(x - 2) :: raccolgo $x^2$ dai primi due e $3$ dagli ultimi due
 ~ \evid{(x - 2)}(x^2 + 3) :: le parentesi sono uguali: le raccolgo
 
-Se dopo il primo passo le parentesi non coincidono, prova a raggruppare in un altro modo (primo con terzo, secondo con quarto).
+Se le parentesi non sono uguali, prova a fare i gruppi in un altro modo.
 
->! Attenzione al segno meno davanti al secondo gruppo. In $x^3 + x^2 - x - 1$ il secondo gruppo è $-x - 1 = -(x + 1)$: si ottiene $x^2(x + 1) - (x + 1) = (x + 1)(x^2 - 1)$. Scrivere $x^2(x + 1) - (x - 1)$ fa perdere tutto. E poi si continua: $x^2 - 1 = (x + 1)(x - 1)$, quindi il risultato è $(x + 1)^2(x - 1)$.
+>! Attenzione al meno davanti al secondo gruppo. In $x^3 + x^2 - x - 1$ il secondo gruppo è $-x - 1 = -(x + 1)$. Ottieni $x^2(x + 1) - (x + 1) = (x + 1)(x^2 - 1)$, e alla fine $(x + 1)^2(x - 1)$.
 
->* Il raccoglimento totale è **sempre** la prima cosa da provare: rende più piccoli i numeri e fa comparire i prodotti notevoli che altrimenti restano nascosti.` },
+>* Prova **sempre** per primo il raccoglimento totale.` },
 
-    { id: 'differenza-quadrati', titolo: 'Differenza di quadrati', testo: R`Sai già che $(A + B)(A - B) = A^2 - B^2$ (somma per differenza). Letta da destra a sinistra, questa uguaglianza scompone.
+    { id: 'differenza-quadrati', titolo: 'Differenza di quadrati', testo: R`Sai già che $(A + B)(A - B) = A^2 - B^2$. Letta al contrario, questa uguaglianza scompone.
 
->* **Differenza di quadrati:** $$A^2 - B^2 = (A + B)(A - B)$$ Si riconosce da tre indizi: **due** termini, tutti e due **quadrati**, separati da un **meno**.
+>* **Differenza di quadrati:** $$A^2 - B^2 = (A + B)(A - B)$$ La riconosci così: **due** termini, tutti e due **quadrati**, con un **meno** in mezzo.
 
-Il lavoro vero è trovare le **basi** $A$ e $B$, cioè ciò che è elevato al quadrato:
+Per prima cosa trova le **basi** $A$ e $B$. Sono ciò che è elevato al quadrato.
 
 ~ 4a^2 - 25b^2 :: due termini, un meno in mezzo
 ~ (\evid{2a})^2 - (\evid{5b})^2 :: $4a^2 = (2a)^2$ e $25b^2 = (5b)^2$: le basi sono $2a$ e $5b$
@@ -96,12 +135,11 @@ Il lavoro vero è trovare le **basi** $A$ e $B$, cioè ciò che è elevato al qu
 
 Altri esempi:
 
-- $x^2 - 9 = (x + 3)(x - 3)$, con basi $x$ e $3$;
-- $x^2 - \dfrac{1}{4} = \left(x + \dfrac{1}{2}\right)\left(x - \dfrac{1}{2}\right)$, con basi $x$ e $\dfrac{1}{2}$;
-- $(x + 1)^2 - 4 = (x + 1 + 2)(x + 1 - 2) = (x + 3)(x - 1)$: una base può essere un polinomio intero;
-- $x^4 - 1 = (x^2 + 1)(x^2 - 1) = (x^2 + 1)(x + 1)(x - 1)$: il fattore $x^2 - 1$ è a sua volta una differenza di quadrati, e si va avanti.
+- $x^2 - 9 = (x + 3)(x - 3)$: le basi sono $x$ e $3$.
+- $(x + 1)^2 - 4 = (x + 1 + 2)(x + 1 - 2) = (x + 3)(x - 1)$: una base può essere una parentesi.
+- $x^4 - 1 = (x^2 + 1)(x^2 - 1) = (x^2 + 1)(x + 1)(x - 1)$: il fattore $x^2 - 1$ si scompone ancora.
 
-Perché la formula funziona? Guarda la figura: a sinistra, da un quadrato di lato $a$ è stato tolto l'angolo $b^2$; i due rettangoli colorati che restano, rimessi in fila a destra, formano un rettangolo alto $a - b$ e lungo $a + b$. Stessa area, scritta in due modi.
+Nella figura, a sinistra, un quadrato di lato $a$ ha perso l'angolo $b^2$. I due rettangoli colorati, messi in fila, formano un rettangolo di lati $a + b$ e $a - b$. L'area è la stessa.
 
 [[grafico:differenza-quadrati]]
 
@@ -110,52 +148,52 @@ Perché la formula funziona? Guarda la figura: a sinistra, da un quadrato di lat
 [x] $(x + 3)(x - 3)$
 [ ] $(x + 9)(x - 9)$
 [ ] non si scompone
-=> Le basi sono $x$ e $3$ (perché $9 = 3^2$): somma per differenza, $(x + 3)(x - 3)$. $(x - 3)^2$ sviluppato fa $x^2 - 6x + 9$, un altro polinomio. $(x + 9)(x - 9)$ usa $9$ come base, ma la base è la radice di $9$.
+=> $9 = 3^2$, quindi le basi sono $x$ e $3$: $(x + 3)(x - 3)$. $(x - 3)^2$ sviluppato dà $x^2 - 6x + 9$. In $(x + 9)(x - 9)$ la base è $9$, ma la base giusta è $3$.
 
->! La **somma** di quadrati non si scompone: $x^2 + 9$ è irriducibile. Non vale mai zero, quindi non può avere un fattore come $(x - a)$.
+>! La **somma** di quadrati non si scompone: $x^2 + 9$ è irriducibile.
 
-Prima di tutto, come sempre, si raccoglie: $3x^2 - 12 = 3(x^2 - 4) = 3(x + 2)(x - 2)$. Senza il raccoglimento $3x^2$ non sembra un quadrato e si rischia di fermarsi.` },
+Come sempre, prima raccogli: $3x^2 - 12 = 3(x^2 - 4) = 3(x + 2)(x - 2)$. Senza raccogliere, $3x^2$ non sembra un quadrato.` },
 
     { id: 'quadrati', titolo: 'Quadrato di binomio e di trinomio', testo: R`### Quadrato di binomio
 
 $$\begin{gathered} A^2 + 2AB + B^2 = (A + B)^2 \\ A^2 - 2AB + B^2 = (A - B)^2 \end{gathered}$$
 
->* **Quadrato di binomio.** Si riconosce da **tre** termini: due sono quadrati (con il segno più), il terzo è il **doppio prodotto** delle basi, con il segno più o meno.
+>* **Quadrato di binomio:** **tre** termini. Due sono quadrati con il segno più. Il terzo è il **doppio prodotto** delle basi, con il più o con il meno.
 
-Tre termini con due quadrati non bastano: il controllo decisivo è sul **doppio prodotto**.
+Il controllo decisivo è sul doppio prodotto.
 
 ~ 4x^2 - 12x + 9 :: tre termini
 ~ (\evid{2x})^2 \ldots (\evid{3})^2 :: i quadrati sono $4x^2 = (2x)^2$ e $9 = 3^2$: le basi sono $2x$ e $3$
 ~ 2 \cdot 2x \cdot 3 = \evid{12x} :: calcolo il doppio prodotto delle basi: coincide con il termine di mezzo
 ~ \evidb{(2x - 3)^2} :: il termine di mezzo è negativo, quindi fra le basi va il meno
 
-In $x^2 + 5x + 9$, invece, le basi sarebbero $x$ e $3$ e il doppio prodotto dovrebbe essere $6x$, non $5x$: **non** è un quadrato.
+Prendi invece $x^2 + 5x + 9$. Le basi sarebbero $x$ e $3$, e il doppio prodotto $6x$. Ma c'è $5x$: **non** è un quadrato.
 
 ?? Quale di questi trinomi è il quadrato di un binomio?
 [ ] $x^2 + 4x + 16$
 [x] $x^2 + 8x + 16$
 [ ] $x^2 + 16x + 16$
 [ ] $x^2 - 8x - 16$
-=> Le basi sono $x$ e $4$, il doppio prodotto è $2 \cdot x \cdot 4 = 8x$: $x^2 + 8x + 16 = (x + 4)^2$. In $x^2 + 4x + 16$ il termine di mezzo è il prodotto semplice, non il doppio. In $x^2 - 8x - 16$ il $16$ è negativo, e un quadrato non è mai negativo.
+=> Le basi sono $x$ e $4$. Il doppio prodotto è $2 \cdot x \cdot 4 = 8x$, quindi $x^2 + 8x + 16 = (x + 4)^2$. In $x^2 + 4x + 16$ c'è il prodotto semplice, non il doppio. In $x^2 - 8x - 16$ il $16$ è negativo: un quadrato non lo è mai.
 
-L'animazione costruisce il quadrato di lato $x + 3$ con i pezzi: un quadrato $x^2$, due rettangoli $3x$ e un quadratino $9$. Scomporre $x^2 + 6x + 9$ vuol dire rimettere insieme i pezzi e riconoscere il quadrato.
+L'animazione monta $x^2 + 6x + 9$ con i pezzi: un quadrato $x^2$, due rettangoli $3x$, un quadratino $9$. Insieme fanno il quadrato di lato $x + 3$.
 
 [[animazione:completamento-quadrato]]
 
->! I quadrati sono sempre positivi: $-x^2 - 6x - 9$ non è un quadrato di binomio, ma lo diventa raccogliendo il segno: $-(x^2 + 6x + 9) = -(x + 3)^2$.
+>! In $-x^2 - 6x - 9$ i quadrati sono negativi. Raccogli il meno: $-(x^2 + 6x + 9) = -(x + 3)^2$.
 
 ### Quadrato di trinomio
 
 $$\begin{gathered} A^2 + B^2 + C^2 + 2AB + 2AC + 2BC \\ = (A + B + C)^2 \end{gathered}$$
 
->* **Quadrato di trinomio.** **Sei** termini: tre quadrati e tre doppi prodotti, uno per ogni coppia di basi.
+>* **Quadrato di trinomio:** **sei** termini. Tre quadrati e tre doppi prodotti, uno per ogni coppia di basi.
 
 ~ x^2 + 4y^2 + 1 + 4xy + 2x + 4y :: sei termini
 ~ (\evid{x})^2 + (\evid{2y})^2 + (\evid{1})^2 + \ldots :: tre quadrati: le basi sono $x$, $2y$, $1$
 ~ \ldots + \evid{4xy} + \evid{2x} + \evid{4y} :: controllo i tre doppi prodotti: $2 \cdot x \cdot 2y = 4xy$, $2 \cdot x \cdot 1 = 2x$, $2 \cdot 2y \cdot 1 = 4y$. Ci sono tutti
 ~ \evidb{(x + 2y + 1)^2} :: tutti i doppi prodotti sono positivi, quindi le basi hanno lo stesso segno
 
-Con i segni misti ogni doppio prodotto dice qualcosa: $x^2 + y^2 + 4 - 2xy + 4x - 4y = (x - y + 2)^2$, perché $-2xy$ dice che $x$ e $y$ hanno segni opposti e $+4x$ che $x$ e $2$ hanno lo stesso segno.` },
+Con segni diversi, guarda i doppi prodotti: $x^2 + y^2 + 4 - 2xy + 4x - 4y = (x - y + 2)^2$. Il $-2xy$ dice che $x$ e $y$ hanno segni opposti. Il $+4x$ dice che $x$ e $2$ hanno lo stesso segno.` },
 
     { id: 'cubi', titolo: 'Cubo di binomio, somma e differenza di cubi', testo: R`### Cubo di binomio
 
@@ -163,14 +201,14 @@ $$\begin{gathered} A^3 + 3A^2B + 3AB^2 + B^3 \\ = (A + B)^3 \end{gathered}$$
 
 $$\begin{gathered} A^3 - 3A^2B + 3AB^2 - B^3 \\ = (A - B)^3 \end{gathered}$$
 
->* **Cubo di binomio.** **Quattro** termini: due cubi e due **tripli prodotti**. Nel cubo di una differenza i segni si alternano.
+>* **Cubo di binomio:** **quattro** termini, cioè due cubi e due **tripli prodotti**. Nel cubo di una differenza i segni si alternano.
 
 ~ 8x^3 - 12x^2 + 6x - 1 :: quattro termini
 ~ (\evid{2x})^3 \ldots (\evid{1})^3 :: i cubi sono $8x^3 = (2x)^3$ e $1 = 1^3$: le basi sono $2x$ e $1$
 ~ \ldots \evid{12x^2} \ldots \evid{6x} \ldots :: controllo i due tripli prodotti: $3 \cdot (2x)^2 \cdot 1 = 12x^2$ e $3 \cdot 2x \cdot 1^2 = 6x$. Ci sono
 ~ \evidb{(2x - 1)^3} :: i segni si alternano $+ - + -$: è il cubo di una differenza
 
-Allo stesso modo $x^3 + 6x^2 + 12x + 8 = (x + 2)^3$: basi $x$ e $2$, tripli prodotti $3 \cdot x^2 \cdot 2 = 6x^2$ e $3 \cdot x \cdot 2^2 = 12x$, tutti i segni più.
+Allo stesso modo $x^3 + 6x^2 + 12x + 8 = (x + 2)^3$. Le basi sono $x$ e $2$, e i segni sono tutti più.
 
 ### Somma e differenza di cubi
 
@@ -178,7 +216,7 @@ $$\begin{gathered} A^3 + B^3 \\ = (A + B)(A^2 - AB + B^2) \end{gathered}$$
 
 $$\begin{gathered} A^3 - B^3 \\ = (A - B)(A^2 + AB + B^2) \end{gathered}$$
 
->* **Somma e differenza di cubi.** **Due** termini, entrambi cubi. Il secondo fattore si chiama **falso quadrato**: somiglia a un quadrato di binomio ma ha $AB$ al posto di $2AB$, ed è irriducibile.
+>* **Somma e differenza di cubi:** **due** termini, tutti e due cubi. Il secondo fattore si chiama **falso quadrato**. Ha $AB$ al posto di $2AB$, e non si scompone.
 
 ~ 27a^3 - b^3 :: due termini, un meno
 ~ (\evid{3a})^3 - (\evid{b})^3 :: le basi sono $3a$ e $b$
@@ -190,22 +228,23 @@ $$\begin{gathered} A^3 - B^3 \\ = (A - B)(A^2 + AB + B^2) \end{gathered}$$
 [ ] $(x + 2)(x^2 + 2x + 4)$
 [x] $(x + 2)(x^2 - 2x + 4)$
 [ ] non si scompone, è una somma
-=> È una somma di cubi con basi $x$ e $2$: $(x + 2)(x^2 - 2x + 4)$, con il segno opposto nel termine di mezzo del falso quadrato. $(x + 2)^3$ sviluppato ha quattro termini. E a differenza della somma di quadrati, la somma di cubi **si scompone**: $x^3 + 8$ vale zero per $x = -2$, quindi ha il fattore $(x + 2)$.
+=> Somma di cubi con basi $x$ e $2$. Nel falso quadrato il termine di mezzo ha il segno opposto: $(x + 2)(x^2 - 2x + 4)$. $(x + 2)^3$ sviluppato ha quattro termini. La somma di cubi **si scompone**, la somma di quadrati no.
 
->! Il falso quadrato non va «scomposto» come se fosse un quadrato: $x^2 - 2x + 4$ non è $(x - 2)^2$, che sviluppato fa $x^2 - 4x + 4$.` },
+>! $x^2 - 2x + 4$ non è $(x - 2)^2$: quello fa $x^2 - 4x + 4$.` },
 
     { id: 'trinomio-speciale', titolo: 'Il trinomio speciale', testo: R`### Il caso $x^2 + sx + p$
 
-Sviluppando $(x + m)(x + n)$ si ottiene $x^2 + (m + n)x + mn$: il coefficiente di $x$ è la **somma** dei due numeri, il termine noto è il loro **prodotto**. Letto al contrario:
+Sviluppa $(x + 3)(x + 4)$: ottieni $x^2 + 7x + 12$. Il $7$ è la **somma** di $3$ e $4$. Il $12$ è il loro **prodotto**.
 
->* **Trinomio speciale:** $x^2 + sx + p = (x + m)(x + n)$, dove $m$ e $n$ sono due numeri con $m + n = s$ e $m \cdot n = p$. Si parte dal prodotto, che ha meno possibilità, e si controlla la somma.
+>* **Trinomio speciale:** $x^2 + sx + p = (x + m)(x + n)$, con $m + n = s$ e $m \cdot n = p$. Parti dal prodotto, che ha meno possibilità. Poi controlla la somma.
 
-- $x^2 + 7x + 12$: prodotto $12$, somma $7$: sono $3$ e $4$, quindi $(x + 3)(x + 4)$;
-- $x^2 - 5x + 6$: prodotto $6$, somma $-5$: sono $-2$ e $-3$, quindi $(x - 2)(x - 3)$;
-- $x^2 + 2x - 15$: prodotto $-15$, somma $2$: sono $5$ e $-3$, quindi $(x + 5)(x - 3)$;
-- $x^2 - x - 6$: prodotto $-6$, somma $-1$: sono $-3$ e $2$, quindi $(x - 3)(x + 2)$.
+- $x^2 - 5x + 6$: prodotto $6$, somma $-5$. Sono $-2$ e $-3$: $(x - 2)(x - 3)$.
+- $x^2 - x - 6$: prodotto $-6$, somma $-1$. Sono $-3$ e $2$: $(x - 3)(x + 2)$.
 
-I segni si leggono dal prodotto: se $p > 0$ i due numeri sono **concordi** (stesso segno), e il segno è quello di $s$; se $p < 0$ sono **discordi**, e quello più grande in valore assoluto ha il segno di $s$. Vediamo come si ragiona su $x^2 + 2x - 15$:
+I segni li leggi dal prodotto:
+
+- se $p > 0$, i due numeri hanno lo **stesso segno**, quello di $s$;
+- se $p < 0$, hanno **segni opposti**. Il più grande in valore assoluto prende il segno di $s$.
 
 ~ x^2 + 2x - 15 :: somma $s = 2$, prodotto $p = -15$
 ~ p < 0 \;\Rightarrow\; \text{segni opposti} :: un prodotto negativo viene da un positivo e un negativo
@@ -218,11 +257,11 @@ I segni si leggono dal prodotto: se $p > 0$ i due numeri sono **concordi** (stes
 [x] $(x - 2)(x - 5)$
 [ ] $(x - 2)(x + 5)$
 [ ] $(x - 1)(x - 10)$
-=> Prodotto $+10$: segni uguali; somma $-7$: tutti e due negativi. $-2$ e $-5$ danno somma $-7$ e prodotto $10$. $(x + 2)(x + 5)$ è l'errore tipico: numeri giusti, segni sbagliati (sviluppato dà $x^2 + 7x + 10$). $(x - 1)(x - 10)$ ha il prodotto giusto ma la somma è $-11$.
+=> Il prodotto $+10$ dice: segni uguali. La somma $-7$ dice: tutti e due negativi. Sono $-2$ e $-5$. $(x + 2)(x + 5)$ è l'errore tipico: numeri giusti, segni sbagliati. $(x - 1)(x - 10)$ ha il prodotto giusto, ma la somma è $-11$.
 
 ### Il caso $ax^2 + bx + c$
 
-Se il coefficiente di $x^2$ non è $1$, si cercano due numeri con somma $b$ e prodotto $a \cdot c$ (non solo $c$). Con essi si **spezza** il termine di primo grado in due pezzi e si finisce con un raccoglimento parziale.
+Ora davanti a $x^2$ c'è un numero $a \ne 1$. Cerca due numeri con somma $b$ e prodotto $a \cdot c$. Con questi **spezza** il termine in $x$. Poi raccogli a coppie.
 
 ~ 3x^2 - 5x - 2 :: $a = 3$, $b = -5$, $c = -2$
 ~ a \cdot c = \evid{-6} \qquad b = \evid{-5} :: cerco due numeri con prodotto $-6$ e somma $-5$: sono $-6$ e $1$
@@ -230,19 +269,19 @@ Se il coefficiente di $x^2$ non è $1$, si cercano due numeri con somma $b$ e pr
 ~ \evid{3x}(x - 2) + \evid{1}(x - 2) :: raccolgo a coppie: $3x$ dai primi due, $1$ dagli ultimi due
 ~ \evidb{(x - 2)(3x + 1)} :: le parentesi sono uguali: le raccolgo
 
-Allo stesso modo $2x^2 + 7x + 3$: $a \cdot c = 6$ e $b = 7$, quindi $6$ e $1$, e $2x^2 + 6x + x + 3 = 2x(x + 3) + (x + 3) = (x + 3)(2x + 1)$.
+> Se non trovi due numeri interi adatti, questo metodo non basta. Il trinomio si riprende con le equazioni di secondo grado.` },
 
->! Se non esistono due interi con quella somma e quel prodotto, il trinomio può essere irriducibile oppure avere fattori con coefficienti non interi: se ne riparla con le equazioni di secondo grado.` },
+    { id: 'ruffini', titolo: 'Scomporre con Ruffini', testo: R`Se gli altri metodi non funzionano, resta Ruffini. L'idea: se un numero $a$ annulla il polinomio, allora $(x - a)$ è un fattore.
 
-    { id: 'ruffini', titolo: 'Scomporre con Ruffini', testo: R`Quando i metodi precedenti non funzionano, per un polinomio in una sola lettera resta la strada di Ruffini. L'idea: se trovi un numero $a$ che annulla il polinomio, allora $(x - a)$ è uno dei suoi fattori.
+>* **Teorema di Ruffini:** $P(x)$ è divisibile per $(x - a)$ se e solo se $P(a) = 0$. Un numero $a$ con $P(a) = 0$ si chiama **zero** del polinomio.
 
->* **Teorema di Ruffini:** $P(x)$ è divisibile per $(x - a)$ se e solo se $P(a) = 0$, cioè se $a$ è uno **zero** del polinomio. (Viene dal **teorema del resto**: il resto della divisione di $P(x)$ per $(x - a)$ è proprio $P(a)$.)
+> Viene dal **teorema del resto**: dividendo $P(x)$ per $(x - a)$, il resto è $P(a)$.
 
-Trovato uno zero $a$, dividi con la regola di Ruffini e ottieni $P(x) = (x - a) \cdot Q(x)$, dove il quoziente $Q(x)$ ha un grado in meno. Poi continui a scomporre $Q(x)$.
+Trovato uno zero $a$, dividi con la regola di Ruffini. Ottieni $P(x) = (x - a) \cdot Q(x)$. Il quoziente $Q(x)$ ha un grado in meno: continua a scomporre lui.
 
 ### Dove cercare gli zeri
 
-Non si prova a caso. Se $P(x)$ ha coefficienti interi, gli **zeri interi** stanno fra i **divisori del termine noto**, positivi e negativi. Se il primo coefficiente non è $1$, ci possono essere anche zeri frazionari $\dfrac{p}{q}$, con $p$ divisore del termine noto e $q$ divisore del primo coefficiente.
+Se i coefficienti sono interi, gli zeri interi stanno fra i **divisori del termine noto**. Prendili con il più e con il meno.
 
 ~ P(x) = x^3 - 2x^2 - 5x + 6 :: il polinomio da scomporre
 ~ \pm 1,\ \pm 2,\ \pm 3,\ \pm 6 :: i candidati: i divisori del termine noto $6$, con tutti e due i segni
@@ -253,26 +292,37 @@ Non si prova a caso. Se $P(x)$ ha coefficienti interi, gli **zeri interi** stann
 [ ] $1, 2, 3, 6$
 [x] $\pm 1, \pm 2, \pm 3, \pm 6$
 [ ] $\pm 1, \pm 6$
-=> Si cercano fra i divisori del termine noto, $-6$, presi con tutti e due i segni: $\pm 1, \pm 2, \pm 3, \pm 6$. Dimenticare i negativi è l'errore tipico (qui due zeri su tre sono negativi: $-2$ e $-3$). Il $4$ è il coefficiente di $x^2$, che non c'entra.
+=> Sono i divisori del termine noto $-6$, con tutti e due i segni. L'errore tipico è dimenticare i negativi: qui due zeri su tre sono negativi.
 
-Tornando a $x^3 - 2x^2 - 5x + 6$ con lo zero $a = 1$, ecco la tabella di Ruffini:
+Ecco la tabella di Ruffini per $x^3 - 2x^2 - 5x + 6$, con lo zero $1$:
 
 | | $1$ | $-2$ | $-5$ | $6$ |
 |---|---|---|---|---|
 | $1$ | | $1$ | $-1$ | $-6$ |
 | | $1$ | $-1$ | $-6$ | $0$ |
 
-L'ultima riga dà il quoziente $Q(x) = x^2 - x - 6$ e il resto $0$, come deve essere. $Q(x)$ è un trinomio speciale: due numeri con somma $-1$ e prodotto $-6$ sono $-3$ e $2$, quindi $Q(x) = (x - 3)(x + 2)$ e
+L'ultima riga dà il quoziente $Q(x) = x^2 - x - 6$ e il resto $0$. $Q(x)$ è un trinomio speciale: $-3$ e $2$.
 
-$$x^3 - 2x^2 - 5x + 6 = (x - 1)(x - 3)(x + 2).$$
+$$x^3 - 2x^2 - 5x + 6 = (x - 1)(x - 3)(x + 2)$$
 
-Due scorciatoie. Se la **somma dei coefficienti** è zero, allora $P(1) = 0$ e $(x - 1)$ è un fattore. Se la somma dei coefficienti di grado pari è uguale a quella dei coefficienti di grado dispari, allora $P(-1) = 0$ e $(x + 1)$ è un fattore. Nell'esempio, $1 - 2 - 5 + 6 = 0$: si vedeva senza calcoli.
+Due scorciatoie:
 
->! Nella tabella vanno scritti **tutti** i coefficienti, in ordine di grado decrescente, compresi gli zeri dei termini mancanti: per $x^3 - 7x + 6$ la prima riga è $1$, $0$, $-7$, $6$. E un candidato che non funziona non vuol dire che il metodo fallisce: si prova il successivo.` },
+- se la **somma dei coefficienti** è zero, $(x - 1)$ è un fattore;
+- se i coefficienti di grado pari e quelli di grado dispari hanno la stessa somma, $(x + 1)$ è un fattore.
 
-    { id: 'schema-decisione', titolo: 'In che ordine provare i metodi', testo: R`Davanti a un polinomio nuovo conviene chiedersi in che ordine provare i metodi, prima ancora di scegliere una formula. Lo schema che segue basta per quasi tutti gli esercizi del biennio.
+> Se il primo coefficiente non è $1$, cerca anche zeri a frazione $\dfrac{p}{q}$. Qui $p$ divide il termine noto e $q$ divide il primo coefficiente.
 
->* Prima il **raccoglimento totale**; poi si **contano i termini** e si prova il metodo adatto; se niente funziona, **Ruffini**. Ottenuto un prodotto, si ricomincia da **ogni fattore** finché sono tutti irriducibili, e si chiude con il **controllo**: moltiplicando i fattori deve tornare il polinomio di partenza.
+>! Nella tabella scrivi **tutti** i coefficienti, anche gli zeri dei termini che mancano. Per $x^3 - 7x + 6$ la prima riga è $1$, $0$, $-7$, $6$.` },
+
+    { id: 'schema-decisione', titolo: 'In che ordine provare i metodi', testo: R`Davanti a un polinomio nuovo, segui sempre questo ordine:
+
+1. **Raccogli** il fattore comune, se c'è.
+2. **Conta i termini** e prova il metodo della tabella.
+3. Se niente funziona, usa **Ruffini**.
+4. Ricomincia da **ogni fattore** che hai ottenuto.
+5. **Controlla**: rimoltiplica e ritrova il polinomio di partenza.
+
+>* Hai finito solo quando **nessun fattore** si scompone più.
 
 | Termini | Che cosa provare |
 |---|---|
@@ -282,7 +332,7 @@ Due scorciatoie. Se la **somma dei coefficienti** è zero, allora $P(1) = 0$ e $
 | 6 | quadrato di trinomio; raccoglimento parziale (3 + 3 oppure 2 + 2 + 2) |
 | qualunque | Ruffini, se c'è una sola lettera e il resto non funziona |
 
-Ecco lo schema all'opera su $2x^4 - 32$:
+Lo schema all'opera su $2x^4 - 32$:
 
 ~ 2x^4 - 32 :: primo passo, sempre: c'è un fattore comune?
 ~ \evid{2}(x^4 - 16) :: sì, il $2$. Nella parentesi restano due termini: provo la differenza di quadrati
@@ -290,36 +340,36 @@ Ecco lo schema all'opera su $2x^4 - 32$:
 ~ 2(x^2 + 4)(\evid{x + 2})(\evid{x - 2}) :: ricomincio da ogni fattore: $x^2 - 4$ è ancora una differenza di quadrati
 ~ \evidb{2(x^2 + 4)(x + 2)(x - 2)} :: $x^2 + 4$ è una somma di quadrati, irriducibile: ho finito
 
-Altri due casi in cui lo schema evita di bloccarsi:
+Altri due casi:
 
-- $3x^2 + 6x + 3$: tre termini, ma $3x^2$ non sembra un quadrato. Raccolgo $3$: $3(x^2 + 2x + 1) = 3(x + 1)^2$. Senza il raccoglimento il quadrato non si vedeva.
-- $x^3 - x^2 - 4x + 4$: quattro termini; non è un cubo di binomio (i cubi non ci sono), quindi raccoglimento parziale: $x^2(x - 1) - 4(x - 1) = (x - 1)(x^2 - 4) = (x - 1)(x + 2)(x - 2)$.
+- $3x^2 + 6x + 3$: raccogli $3$ e trovi un quadrato. $3(x^2 + 2x + 1) = 3(x + 1)^2$.
+- $x^3 - x^2 - 4x + 4$: quattro termini, ma i cubi non ci sono. Raccogli a coppie: $x^2(x - 1) - 4(x - 1) = (x - 1)(x^2 - 4)$. Poi $x^2 - 4 = (x + 2)(x - 2)$.
 
 ?? Qual è la scomposizione completa di $x^3 - 9x$?
 [ ] $x(x^2 - 9)$
 [x] $x(x + 3)(x - 3)$
 [ ] $(x + 3)(x - 3)$
 [ ] $x(x - 3)^2$
-=> Raccolgo $x$: $x(x^2 - 9)$, poi $x^2 - 9$ è una differenza di quadrati: $x(x + 3)(x - 3)$. $x(x^2 - 9)$ è giusta ma **non completa**: è l'errore di chi si ferma troppo presto. $(x + 3)(x - 3)$ ha perso la $x$ raccolta.
+=> Raccogli $x$: $x(x^2 - 9)$. Poi $x^2 - 9$ è una differenza di quadrati: $x(x + 3)(x - 3)$. $x(x^2 - 9)$ è giusta ma **non completa**. $(x + 3)(x - 3)$ ha perso la $x$ raccolta.
 
->! L'errore più comune è fermarsi troppo presto: $(x^2 - 4)$ dentro un prodotto è una scomposizione a metà. Il secondo è saltare il raccoglimento e concludere che "non è un prodotto notevole".` },
+>! L'errore più comune è fermarsi troppo presto. Un $(x^2 - 4)$ dentro un prodotto vuol dire che non hai finito.` },
 
     { id: 'mcd-mcm-frazioni', titolo: 'MCD, mcm e frazioni algebriche', testo: R`### MCD e mcm di polinomi
 
-Come per i numeri, prima si scompongono tutti i polinomi.
+Come con i numeri, prima scomponi tutti i polinomi.
 
->* Il **MCD** di più polinomi è il prodotto dei fattori **comuni**, presi con l'esponente **minimo**. Il **mcm** è il prodotto dei fattori **comuni e non comuni**, presi con l'esponente **massimo**. Per i coefficienti numerici si prendono, rispettivamente, il MCD e il mcm dei numeri.
+>* **MCD:** i fattori **comuni**, con l'esponente **più piccolo**. **mcm:** tutti i fattori, **comuni e non comuni**, con l'esponente **più grande**.
 
-Esempio: $A = x^2 - 1 = (x + 1)(x - 1)$, $B = x^2 + 2x + 1 = (x + 1)^2$, $C = 2x^2 - 2x = 2x(x - 1)$.
+Esempio: $A = x^2 - 1 = (x + 1)(x - 1)$ e $B = x^2 + 2x + 1 = (x + 1)^2$.
 
-- $\text{MCD}(A, B) = x + 1$ e $\text{mcm}(A, B) = (x + 1)^2(x - 1)$;
-- $\text{MCD}(A, B, C) = 1$, perché nessun fattore è comune a tutti e tre, e $\text{mcm}(A, B, C) = 2x(x + 1)^2(x - 1)$.
+- $\text{MCD}(A, B) = x + 1$
+- $\text{mcm}(A, B) = (x + 1)^2(x - 1)$
 
 ### Frazioni algebriche
 
-Una **frazione algebrica** è il quoziente di due polinomi, come $\dfrac{x^2 - 4}{x^2 + 4x + 4}$. Siccome non si divide per zero, ha senso solo dove il denominatore non vale zero: queste sono le **condizioni di esistenza** (c.e.). Si trovano scomponendo il denominatore e chiedendo che ogni fattore sia diverso da zero.
+Una **frazione algebrica** ha un polinomio sopra e uno sotto, come $\dfrac{x^2 - 4}{x^2 + 4x + 4}$. Il denominatore non può valere zero. Le **condizioni di esistenza** (c.e.) dicono quali valori di $x$ sono permessi. Per trovarle, scomponi il denominatore e poni ogni fattore diverso da zero.
 
-Per **semplificare** si scompongono numeratore e denominatore e si dividono tutti e due per i fattori comuni:
+Per **semplificare**, scomponi sopra e sotto. Poi dividi per i fattori comuni.
 
 ~ \dfrac{x^2 - 4}{x^2 + 4x + 4} :: la frazione da semplificare
 ~ \dfrac{x^2 - 4}{\evid{(x + 2)^2}} \qquad x \ne -2 :: scompongo il denominatore (quadrato di binomio) e scrivo **subito** le c.e.
@@ -332,16 +382,16 @@ Per **semplificare** si scompongono numeratore e denominatore e si dividono tutt
 [ ] $\dfrac{x^2 + 4}{x^2} = 4$
 [x] $\dfrac{3x + 6}{3} = x + 2$
 [ ] $\dfrac{x + 6}{2} = x + 3$
-=> $3x + 6 = 3(x + 2)$: il $3$ è un **fattore** di tutto il numeratore e si semplifica con il $3$ sotto. Nelle altre si cancellano **addendi**, che non si può fare: con $x = 1$, $\dfrac{1 + 3}{1} = 4$, non $3$. In $\dfrac{x + 6}{2}$ il $2$ dividerebbe solo il $6$ e non la $x$.
+=> $3x + 6 = 3(x + 2)$: il $3$ è un **fattore** di tutto il numeratore, e si semplifica con il $3$ sotto. Nelle altre si cancellano **addendi**, e non si può. Prova con $x = 1$: $\dfrac{1 + 3}{1} = 4$, non $3$.
 
-Per sommare frazioni con denominatori diversi, il denominatore comune è il **mcm** dei denominatori:
+Per sommare, usa come denominatore comune il **mcm** dei denominatori:
 
 ~ \dfrac{1}{x - 1} + \dfrac{1}{x^2 - 1} :: denominatori diversi
 ~ \dfrac{1}{x - 1} + \dfrac{1}{\evid{(x + 1)(x - 1)}} :: scompongo: c.e. $x \ne 1$ e $x \ne -1$
 ~ \dfrac{\evid{(x + 1)} + 1}{(x + 1)(x - 1)} :: il mcm è $(x + 1)(x - 1)$; alla prima frazione manca il fattore $(x + 1)$
 ~ \evidb{\dfrac{x + 2}{(x + 1)(x - 1)}} :: sommo i numeratori
 
->! Le c.e. vanno scritte **prima** di semplificare: $\dfrac{x^2 - 1}{x - 1}$ si semplifica in $x + 1$, che sembra definito ovunque, ma per $x = 1$ la frazione di partenza non esiste. Il risultato va scritto con $x \ne 1$.` }
+>! Scrivi le c.e. **prima** di semplificare. $\dfrac{x^2 - 1}{x - 1}$ diventa $x + 1$, ma per $x = 1$ la frazione di partenza non esiste. Il risultato vale per $x \ne 1$.` }
   ],
 
   grafici: {
@@ -467,6 +517,26 @@ Per sommare frazioni con denominatori diversi, il denominatore comune è il **mc
   ],
 
   esercizi: [
+    { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Scomponi $4x + 12$. Scrivi i fattori uno accanto all'altro, come *2(x+1)*.`, suggerimenti: [R`Quale numero divide sia $4$ sia $12$?`], risposta: scomp('4', 'x+3'), soluzione: [R`Il $4$ divide tutti e due i termini: è il fattore comune.`, R`$4x : 4 = x$ e $12 : 4 = 3$. Risultato: $4(x + 3)$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Scomponi $x^2 + 5x$.`, suggerimenti: [R`La $x$ compare in tutti e due i termini.`], risposta: scomp('x', 'x+5'), soluzione: [R`Il fattore comune è $x$.`, R`$x^2 : x = x$ e $5x : x = 5$. Risultato: $x(x + 5)$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Scomponi $x^2 - 25$.`, suggerimenti: [R`Due termini, un meno in mezzo, tutti e due quadrati: $25 = 5^2$.`], risposta: scomp('', 'x+5', 'x-5'), soluzione: [R`È una differenza di quadrati con basi $x$ e $5$.`, R`Somma delle basi per differenza delle basi: $(x + 5)(x - 5)$.`] },
+    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Scomponi $x^2 + 6x + 9$. Per il quadrato usa ^, come *(x+1)^2*.`, suggerimenti: [R`$x^2$ e $9$ sono quadrati: controlla il doppio prodotto.`, R`$2 \cdot x \cdot 3 = 6x$.`], risposta: scomp('', 'x+3', 'x+3'), soluzione: [R`I quadrati sono $x^2$ e $9 = 3^2$: le basi sono $x$ e $3$.`, R`Il doppio prodotto $2 \cdot x \cdot 3 = 6x$ c'è, con il più.`, R`Risultato: $(x + 3)^2$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Scomponi $x^2 + 5x + 6$.`, suggerimenti: [R`Cerca due numeri con somma $5$ e prodotto $6$.`], risposta: scomp('', 'x+2', 'x+3'), soluzione: [R`Due numeri con prodotto $6$ e somma $5$: sono $2$ e $3$.`, R`Risultato: $(x + 2)(x + 3)$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Scomponi $3x^2 - 6x$.`, suggerimenti: [R`Raccogli il MCD dei coefficienti e la $x$.`], risposta: scomp('3x', 'x-2'), soluzione: [R`Il MCD di $3$ e $6$ è $3$. La $x$ è in tutti e due i termini.`, R`Fattore comune $3x$: $3x^2 : 3x = x$ e $-6x : 3x = -2$.`, R`Risultato: $3x(x - 2)$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Scomponi $4x^2 - 1$.`, suggerimenti: [R`$4x^2 = (2x)^2$ e $1 = 1^2$.`], risposta: scomp('', '2x+1', '2x-1'), soluzione: [R`È una differenza di quadrati con basi $2x$ e $1$.`, R`Risultato: $(2x + 1)(2x - 1)$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Scomponi $x^2 - 10x + 25$. Per il quadrato usa ^.`, suggerimenti: [R`Le basi sono $x$ e $5$. Il termine di mezzo è negativo.`], risposta: scomp('', 'x-5', 'x-5'), soluzione: [R`I quadrati sono $x^2$ e $25 = 5^2$. Il doppio prodotto è $2 \cdot x \cdot 5 = 10x$.`, R`Il termine di mezzo ha il meno: $(x - 5)^2$.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Scomponi $x^2 - 7x + 12$.`, suggerimenti: [R`Prodotto $12$, somma $-7$: i due numeri hanno lo stesso segno.`, R`Sono tutti e due negativi.`], risposta: scomp('', 'x-3', 'x-4'), soluzione: [R`Prodotto positivo e somma negativa: due numeri negativi.`, R`$-3$ e $-4$ hanno prodotto $12$ e somma $-7$.`, R`Risultato: $(x - 3)(x - 4)$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Scomponi $6x^3 + 9x^2$. Per gli esponenti usa ^.`, suggerimenti: [R`MCD di $6$ e $9$, poi la $x$ con l'esponente più piccolo.`], risposta: scomp('3x^2', '2x+3'), soluzione: [R`Il MCD di $6$ e $9$ è $3$. La $x$ con l'esponente più piccolo è $x^2$.`, R`Fattore comune $3x^2$: $6x^3 : 3x^2 = 2x$ e $9x^2 : 3x^2 = 3$.`, R`Risultato: $3x^2(2x + 3)$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 2, testo: R`Scomponi $x^2 + 2x - 8$.`, suggerimenti: [R`Prodotto $-8$: i due numeri hanno segni opposti. La somma è $2$.`], risposta: scomp('', 'x+4', 'x-2'), soluzione: [R`Prodotto negativo: un numero positivo e uno negativo.`, R`$4$ e $-2$ hanno prodotto $-8$ e somma $2$.`, R`Risultato: $(x + 4)(x - 2)$.`] },
+    { id: 'b-12', livello: 'base', difficolta: 2, testo: R`Scomponi $9x^2 - 16$.`, suggerimenti: [R`$9x^2 = (3x)^2$ e $16 = 4^2$.`], risposta: scomp('', '3x+4', '3x-4'), soluzione: [R`È una differenza di quadrati con basi $3x$ e $4$.`, R`Risultato: $(3x + 4)(3x - 4)$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Scomponi $4x^2 + 4x + 1$. Per il quadrato usa ^.`, suggerimenti: [R`$4x^2 = (2x)^2$ e $1 = 1^2$. Controlla il doppio prodotto.`], risposta: scomp('', '2x+1', '2x+1'), soluzione: [R`Le basi sono $2x$ e $1$.`, R`Il doppio prodotto $2 \cdot 2x \cdot 1 = 4x$ c'è, con il più.`, R`Risultato: $(2x + 1)^2$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Scomponi $x^2 - x - 12$.`, suggerimenti: [R`Prodotto $-12$, somma $-1$.`, R`Il numero più grande in valore assoluto è negativo.`], risposta: scomp('', 'x-4', 'x+3'), soluzione: [R`Prodotto negativo: i due numeri hanno segni opposti.`, R`$-4$ e $3$ hanno prodotto $-12$ e somma $-1$.`, R`Risultato: $(x - 4)(x + 3)$.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Scomponi $25 - x^2$.`, suggerimenti: [R`Due quadrati con un meno in mezzo. Qui il primo quadrato è $25$.`], risposta: scomp('', '5+x', '5-x'), soluzione: [R`È una differenza di quadrati: $5^2 - x^2$, con basi $5$ e $x$.`, R`Risultato: $(5 + x)(5 - x)$. Va bene anche $-(x + 5)(x - 5)$.`] },
+    { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Scomponi $2x^2 - 18$.`, suggerimenti: [R`Prima raccogli il fattore comune.`, R`Dopo il raccoglimento resta una differenza di quadrati.`], risposta: scomp('2', 'x+3', 'x-3'), soluzione: [R`Raccolgo $2$: $2(x^2 - 9)$.`, R`$x^2 - 9$ è una differenza di quadrati: $(x + 3)(x - 3)$.`, R`Risultato: $2(x + 3)(x - 3)$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Scomponi $3x^2 + 6x + 3$. Per il quadrato usa ^.`, suggerimenti: [R`Raccogli $3$.`, R`Nella parentesi c'è un quadrato di binomio.`], risposta: scomp('3', 'x+1', 'x+1'), soluzione: [R`Raccolgo $3$: $3(x^2 + 2x + 1)$.`, R`$x^2 + 2x + 1 = (x + 1)^2$: il doppio prodotto è $2 \cdot x \cdot 1 = 2x$.`, R`Risultato: $3(x + 1)^2$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Scomponi $x^3 - 4x$.`, suggerimenti: [R`Raccogli $x$.`, R`Poi $x^2 - 4$ si scompone ancora.`], risposta: scomp('x', 'x+2', 'x-2'), soluzione: [R`Raccolgo $x$: $x(x^2 - 4)$.`, R`$x^2 - 4$ è una differenza di quadrati: $(x + 2)(x - 2)$.`, R`Risultato: $x(x + 2)(x - 2)$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Scomponi $2x^2 + 10x + 12$.`, suggerimenti: [R`Raccogli $2$.`, R`Poi cerca due numeri con somma $5$ e prodotto $6$.`], risposta: scomp('2', 'x+2', 'x+3'), soluzione: [R`Raccolgo $2$: $2(x^2 + 5x + 6)$.`, R`Trinomio speciale: $2$ e $3$ hanno somma $5$ e prodotto $6$.`, R`Risultato: $2(x + 2)(x + 3)$.`] },
+    { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Scomponi $x^3 - 6x^2 + 9x$. Per il quadrato usa ^.`, suggerimenti: [R`Raccogli $x$.`, R`Nella parentesi c'è un quadrato di binomio.`], risposta: scomp('x', 'x-3', 'x-3'), soluzione: [R`Raccolgo $x$: $x(x^2 - 6x + 9)$.`, R`$x^2 - 6x + 9 = (x - 3)^2$: il doppio prodotto è $6x$, con il meno.`, R`Risultato: $x(x - 3)^2$.`] },
     { id: 'es-01', difficolta: 1, testo: R`Scomponi $3x^2 - 27$.`, suggerimenti: [R`Prima di tutto: c'è un fattore comune?`, R`Dopo aver raccolto $3$ resta una differenza di quadrati.`], risposta: { tipo: 'testo', accettate: ['3(x+3)(x-3)', '3(x-3)(x+3)', '3(x+3)(x−3)', '3(x−3)(x+3)', '(x+3)(x-3)3', '(x-3)(x+3)3', '3*(x+3)(x-3)', '3*(x-3)(x+3)'] }, soluzione: [R`Raccoglimento totale: $3x^2 - 27 = 3(x^2 - 9)$.`, R`$x^2 - 9$ è una differenza di quadrati con basi $x$ e $3$: $(x + 3)(x - 3)$.`, R`Scomposizione completa: $3(x + 3)(x - 3)$.`] },
     { id: 'es-02', difficolta: 1, testo: R`Scomponi $x^2 - 8x + 16$.`, suggerimenti: [R`Tre termini, due dei quali sono quadrati: che cosa potrebbe essere?`, R`Controlla il doppio prodotto: $2 \cdot x \cdot 4 = 8x$.`], risposta: { tipo: 'testo', accettate: ['(x-4)^2', '(x-4)²', '(x−4)^2', '(x−4)²', '(x-4)(x-4)', '(x−4)(x−4)'] }, soluzione: [R`I quadrati sono $x^2$ e $16 = 4^2$; il doppio prodotto delle basi è $2 \cdot x \cdot 4 = 8x$, presente con il segno meno.`, R`È il quadrato di una differenza: $x^2 - 8x + 16 = (x - 4)^2$.`, R`Controllo: $(x - 4)^2 = x^2 - 8x + 16$. ✓`] },
     { id: 'es-03', difficolta: 1, testo: R`Scomponi $x^2 + 3x - 10$.`, suggerimenti: [R`Non è un quadrato: il doppio prodotto non torna. Prova il trinomio speciale.`, R`Cerca due numeri con prodotto $-10$ e somma $3$.`], risposta: { tipo: 'testo', accettate: ['(x+5)(x-2)', '(x-2)(x+5)', '(x+5)(x−2)', '(x−2)(x+5)'] }, soluzione: [R`Prodotto $-10$: i numeri sono discordi. Le coppie sono $(10, -1)$, $(5, -2)$ e le opposte.`, R`La somma $3$ la dà $5$ e $-2$: $x^2 + 3x - 10 = (x + 5)(x - 2)$.`, R`Controllo: $(x + 5)(x - 2) = x^2 - 2x + 5x - 10 = x^2 + 3x - 10$. ✓`] },
