@@ -556,6 +556,11 @@
     </section>`);
     app.appendChild(schermo);
     const stage = schermo.querySelector('.lab-stage');
+    /* il fumetto di Ada si chiude quando si cambia livello (pallini, «Prossimo livello», «Ricomincia», «Libero») */
+    stage.addEventListener('click', ev => {
+      const b = ev.target.closest('button, [role=button], a'); if (!b || !CMASC.aperta()) return;
+      if (b.closest('.lab-livelli') || b.classList.contains('lab-pallino') || b.classList.contains('lab-libero') || /prossim|livello|ricomincia|avanti|libero|svuota/i.test(b.textContent)) CMASC.chiudi();
+    }, true);
     schermo.querySelector('.sl-schermo').addEventListener('click', () => { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {}); });
     const p = progresso(v.id); p.lab = p.lab || {}; const st = p.lab[meta.id] = p.lab[meta.id] || { livelli: [] };
     const ctx = {

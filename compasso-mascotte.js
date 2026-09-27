@@ -113,6 +113,7 @@
     testoEl = radice.querySelector('.mascotte-bolla-testo');
     azioniEl = radice.querySelector('.mascotte-bolla-azioni');
     bolla.addEventListener('pointerdown', () => clearTimeout(timerChiusura));
+    bolla.addEventListener('click', ev => { if (document.body.classList.contains('in-lab') && !ev.target.closest('.mascotte-azione')) chiudiBolla(); });
     svgEl = radice.querySelector('svg');
     viso = svgEl.querySelector('.ada-viso');
     disegna('neutro');
@@ -187,8 +188,10 @@
     espressione(opz.espressione || 'neutro');
     muoviBocca(Math.min(3, 1 + Math.round(lunghezza(pagine[0]) / 60)));
     /* chi parla da solo non resta lì a occupare lo schermo: si chiude, a meno che lo studente non lo tocchi */
+    /* nei laboratori il fumetto resta finché non lo si tocca o non si cambia livello */
+    if (document.body.classList.contains('in-lab')) return;
     const durata = opz.durata || (!chiesto ? 3500 + 45 * lunghezza(pagine[0]) : 0);
-    if (durata && !chiesto) timerChiusura = setTimeout(chiudiBolla, document.body.classList.contains('in-lab') ? Math.min(durata, 6000) : durata);
+    if (durata && !chiesto) timerChiusura = setTimeout(chiudiBolla, durata);
     else if (opz.durata) timerChiusura = setTimeout(chiudiBolla, opz.durata);
   }
 
