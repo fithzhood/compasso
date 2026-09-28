@@ -904,3 +904,37 @@ body.in-lab .mascotte-bolla { border-radius: 18px 4px 18px 18px; }
 body.in-lab .mascotte-bolla { max-width: min(260px, calc(100vw - 80px)); width: auto; font-size: .88rem; margin-right: 2px; }
 body.in-lab .mascotte-bolla:not(.compatta) { max-width: min(320px, calc(100vw - 24px)); }
 @media (max-width: 440px) { .es-simboli { gap: 4px; } .es-simbolo { min-width: 33px; padding: 0 5px; height: 36px; } }
+
+/* ---------- pagina dei matematici: comandi, gruppi, schede ---------- */
+.mat-comandi { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin: 4px 0 18px; }
+.mat-cerca { margin: 0; flex: 1 1 220px; max-width: 320px; }
+.mat-cerca input { padding: 10px 14px 10px 42px; font-size: .95rem; }
+.mat-scelta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.mat-scelta > span { font-size: .78rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--testo3); margin-right: 4px; }
+.mat-scelta .btn[aria-pressed="true"] { background: var(--accento-tenue); border-color: var(--accento); color: var(--accento-testo); }
+.mat-conta { font-size: .84rem; color: var(--testo3); margin-left: auto; }
+.mat-gruppo { margin-bottom: 26px; }
+.mat-gruppo-testa { display: flex; align-items: baseline; gap: 10px; margin: 6px 0 10px; }
+.mat-gruppo-testa h2 { font-size: 1.3rem; display: flex; align-items: center; gap: 8px; }
+.mat-gruppo-testa h2 a { color: inherit; text-decoration: none; }
+.mat-gruppo-testa h2 a:hover { color: var(--accento-testo); }
+.mat-gruppo-testa > span { color: var(--testo3); font-size: .85rem; }
+.mat-gruppo-n { margin-left: auto; font-variant-numeric: tabular-nums; }
+.simbolo-mini { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 9px; color: #fff; font-size: .95rem; }
+.mat .ritratto { flex: none; }
+.mat h3 { line-height: 1.25; }
+.mat-aree { display: flex; gap: 4px; margin-top: 5px; }
+.mat-aree i { width: 9px; height: 9px; border-radius: 50%; }
+.mat.collettivo .ritratto { background: var(--sup3) !important; color: var(--testo2); }
+.mat-dett-testa { display: flex; gap: 14px; align-items: center; margin-bottom: 6px; }
+.mat-dett-testa .ritratto { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-family: var(--font-titoli); font-weight: 700; font-size: 1.3rem; flex: none; }
+.mat-dett-testa .mat-chiudi { margin-left: auto; align-self: flex-start; }
+.linea-tempo .tacca.spenta { opacity: .15; }
+@media (max-width: 640px) { .mat-cerca { max-width: none; flex-basis: 100%; } .mat-conta { margin-left: 0; flex-basis: 100%; } }
+@media (max-width: 640px) {
+  .griglia-mat { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .griglia-mat .mat { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px; }
+  .griglia-mat .mat .ritratto { width: 40px; height: 40px; font-size: .95rem; }
+  .griglia-mat .mat h3 { font-size: .95rem; }
+  .griglia-mat .mat small { font-size: .78rem; }
+}

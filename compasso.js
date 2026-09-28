@@ -1120,33 +1120,61 @@
     return ALIAS[ultimo] || ultimo;
   }
   function annoDa(anni) {
+    /* «I secolo d.C.», «V secolo a.C.»: metà del secolo */
+    const r = String(anni).match(/\b([IVX]+)\s+sec/);
+    if (r && !/\d{3,4}/.test(anni)) { const v = { I: 1, V: 5, X: 10 }; let n = 0; const c = r[1]; for (let i = 0; i < c.length; i++) { const a = v[c[i]], b = v[c[i + 1]] || 0; n += a < b ? -a : a; } const y = (n - 1) * 100 + 50; return /a\.\s?C/i.test(anni) ? -y : y; }
     const m = String(anni).match(/(\d{3,4})/); if (!m) return null;
     let a = parseInt(m[1], 10); if (/a\.\s?C/i.test(anni)) a = -a; return a;
   }
   const coloreDa = s => 'var(--a' + ((slug(s).split('').reduce((x, c) => x + c.charCodeAt(0), 0) % 6) + 1) + ')';
+  /* ---------- chi compare in un aneddoto: le coppie («Newton e Leibniz») diventano due persone ---------- */
+  const ANNI_NOTI = { khayyam: '1048–1131', hui: 'circa 1238–1298', erone: 'I secolo d.C.', ippaso: 'V secolo a.C.', diofanto: 'III secolo d.C.' };
+  const OMONIMI = new Set(['bernoulli', 'thomson']);   /* stessa famiglia, persone diverse: la chiave usa nome e cognome */
+  const COLLETTIVO = /^(gli|i|la|le|il)\s|leggenda|capitoli|bourbaki/i;
+  function personeDi(an) {
+    const nome = String(an.matematico), anni = String(an.anni || '');
+    if (COLLETTIVO.test(nome)) {
+      const scacchiera = /scacchier|sessa/i.test(nome);
+      return [{ chiave: scacchiera ? 'leggenda-scacchiera' : slug(nome.replace(/\([^)]*\)/g, '')), nome: scacchiera ? 'La leggenda della scacchiera' : nome.replace(/\s*\(pseudonimo[^)]*\)/, ''), anni: scacchiera ? 'leggenda, origine incerta' : anni, collettivo: true }];
+    }
+    const parti = nome.replace(/\([^)]*\)/g, '').trim().split(/,\s+|\s+e\s+/).map(x => x.trim()).filter(Boolean);
+    const anniParti = anni.split(/\s+e\s+/);
+    return parti.map((p, i) => {
+      let k = chiaveMatematico(p); if (OMONIMI.has(k)) k = slug(p);
+      const lord = /kelvin/i.test(nome) && /william/i.test(p) ? ' (Lord Kelvin)' : '';
+      return { chiave: k, nome: p + lord, anni: ANNI_NOTI[k] || (anniParti.length === parti.length ? anniParti[i] : anni) };
+    });
+  }
+  const cognome = p => { const t = slug(p.nome.replace(/\([^)]*\)/g, '')).split('-').filter(x => x && !FERMI.has(x)); return p.collettivo ? 'zzz' + p.nome : (t[t.length - 1] || p.nome); };
+  const EPOCHE = [[-9999, 'Antichità', 'fino al V secolo'], [500, 'Medioevo', 'dal VI al XV secolo'], [1450, 'Rinascimento', 'dal 1450 al 1600'], [1600, 'Seicento', ''], [1700, 'Settecento', ''], [1800, 'Ottocento', ''], [1900, 'Novecento', '']];
+  const epocaDi = p => { if (p.collettivo || p.anno == null) return null; let e = EPOCHE[0]; EPOCHE.forEach(x => { if (p.anno >= x[0]) e = x; }); return e; };
+
   function paginaMatematici(sel) {
     paginaCorrente = 'matematici'; document.title = 'I matematici — Compasso';
     svuota();
-    app.appendChild(h('<div><h1 class="titolo-pagina">Le persone dietro le formule</h1><p class="sotto-pagina">Tutti gli aneddoti che Ada racconta, raccolti per matematico. Tocca un nome per leggere le storie e vedere in quali argomenti compare.</p></div>'));
+    app.appendChild(h('<div><h1 class="titolo-pagina">Le persone dietro le formule</h1><p class="sotto-pagina">Tutti gli aneddoti che Ada racconta, raccolti per persona. Tocca un nome per leggere le storie e vedere in quali argomenti compare.</p></div>'));
     const cont = h('<div class="fc-vuoto">Sto raccogliendo le storie da tutti gli argomenti…</div>'); app.appendChild(cont);
     Promise.all(IND.argomenti.map(a => caricaArgomento(a.id).catch(() => null))).then(argomenti => {
       const persone = {};
-      argomenti.forEach(arg => { if (!arg) return; (arg.aneddoti || []).forEach(an => {
-        const k = chiaveMatematico(an.matematico);
-        const p = persone[k] || (persone[k] = { chiave: k, nome: an.matematico, anni: an.anni, anno: annoDa(an.anni), storie: [] });
-        const pulito = String(an.matematico).replace(/\([^)]*\)/g, '').trim();
-        if (pulito.length < p.nome.length && !/^(gli|i|le|la)\s/i.test(pulito)) p.nome = pulito;   /* la forma più corta è di solito la più pulita */
-        if (p.anno == null && annoDa(an.anni) != null) { p.anno = annoDa(an.anni); p.anni = an.anni; }
-        p.storie.push({ an, arg });
-      }); });
-      const lista = Object.values(persone).sort((a, b) => (a.anno == null ? 9999 : a.anno) - (b.anno == null ? 9999 : b.anno));
+      argomenti.forEach(arg => { if (!arg) return; (arg.aneddoti || []).forEach(an => personeDi(an).forEach(q => {
+        const p = persone[q.chiave] || (persone[q.chiave] = { chiave: q.chiave, nome: q.nome, anni: q.anni, anno: annoDa(q.anni), collettivo: !!q.collettivo, storie: [], argomenti: [] });
+        if (q.nome.length < p.nome.length && !q.collettivo) p.nome = q.nome;   /* la forma più corta è di solito la più pulita */
+        /* le date con i numeri vincono su quelle a secoli («570–495 a.C.» meglio di «VI secolo a.C.») */
+        if ((p.anno == null && annoDa(q.anni) != null) || (!/\d{3,4}/.test(p.anni) && /\d{3,4}/.test(q.anni))) { p.anno = annoDa(q.anni); p.anni = q.anni; }
+        if (!p.storie.some(s => s.an === an)) p.storie.push({ an, arg });
+        if (!p.argomenti.includes(arg.id)) p.argomenti.push(arg.id);
+      })); });
+      const tutte = Object.values(persone);
       cont.innerHTML = '';
-      if (!lista.length) { cont.textContent = 'Nessun aneddoto disponibile.'; return; }
+      if (!tutte.length) { cont.textContent = 'Nessun aneddoto disponibile.'; return; }
+      const imp = stato.impostazioni; const scelta = { ordina: imp.matOrdina || 'epoca', gruppi: imp.matGruppi || 'no', cerca: '' };
+
       /* dettaglio */
-      const det = document.createElement('div'); cont.appendChild(det);
+      const det = document.createElement('div');
       function mostraDettaglio(p) {
         det.innerHTML = '';
-        const d = h(`<section class="scheda mat-dettaglio"><div style="display:flex;gap:14px;align-items:center;margin-bottom:6px"><span class="ritratto" style="background:${coloreDa(p.nome)};width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--font-titoli);font-weight:700;font-size:1.3rem;flex:none">${esc(iniziali(p.nome))}</span><div><h2>${esc(p.nome)}</h2><div style="color:var(--testo2)">${esc(p.anni)}</div></div></div></section>`);
+        const d = h(`<section class="scheda mat-dettaglio"><div class="mat-dett-testa"><span class="ritratto" style="background:${coloreDa(p.nome)}">${esc(iniziali(p.nome))}</span><div><h2>${esc(p.nome)}</h2><div style="color:var(--testo2)">${esc(p.anni)}</div></div><button type="button" class="btn piccolo fantasma mat-chiudi" aria-label="Chiudi">✕</button></div></section>`);
+        d.querySelector('.mat-chiudi').addEventListener('click', () => { det.innerHTML = ''; history.replaceState(null, '', '#/matematici'); });
         p.storie.forEach(({ an, arg }) => {
           const a = h(`<article class="aneddoto"><h3>${esc(an.titolo)}</h3><div class="prosa"></div><div class="legame"></div></article>`);
           a.querySelector('.prosa').innerHTML = md(an.testo);
@@ -1156,8 +1184,9 @@
         det.appendChild(d);
         det.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
+
       /* linea del tempo */
-      const conAnno = lista.filter(p => p.anno != null);
+      const conAnno = tutte.filter(p => p.anno != null && !p.collettivo);
       if (conAnno.length > 1) {
         const min = Math.min(...conAnno.map(p => p.anno)), max = Math.max(...conAnno.map(p => p.anno));
         /* scala a tratti: l'antichità è lunga e vuota, gli ultimi cinque secoli sono pieni */
@@ -1165,23 +1194,71 @@
         const posTempo = anno => { for (let i = 1; i < nodi.length; i++) if (anno <= nodi[i][0]) return (nodi[i - 1][1] + (anno - nodi[i - 1][0]) / (nodi[i][0] - nodi[i - 1][0]) * (nodi[i][1] - nodi[i - 1][1])) * 100; return 100; };
         const lt = h('<div class="linea-tempo"><div class="asse"></div></div>'); const asse = lt.querySelector('.asse');
         conAnno.forEach(p => {
-          const x = posTempo(p.anno);
-          const t = h(`<span class="tacca" style="left:${x}%;background:${coloreDa(p.nome)}" title="${esc(p.nome)} (${esc(p.anni)})"></span>`);
+          const t = h(`<span class="tacca" data-chiave="${esc(p.chiave)}" style="left:${posTempo(p.anno)}%;background:${coloreDa(p.nome)}" title="${esc(p.nome)} (${esc(p.anni)})"></span>`);
           t.addEventListener('click', () => mostraDettaglio(p));
           asse.appendChild(t);
         });
         [-1800, -500, 0, 500, 1000, 1500, 1650, 1800, 1950].filter(a => a >= min - 100 && a <= Math.max(max, 1950)).forEach((a, i) => asse.appendChild(h(`<span class="anno ${i % 2 ? 'sopra' : ''}" style="left:${posTempo(a)}%">${a < 0 ? -a + ' a.C.' : a}</span>`)));
         cont.appendChild(lt);
       }
-      const griglia = h('<div class="griglia-mat"></div>');
-      lista.forEach(p => {
-        const c = h(`<div class="scheda mat" role="button" tabindex="0"><span class="ritratto" style="background:${coloreDa(p.nome)}">${esc(iniziali(p.nome))}</span><div><h3>${esc(p.nome)}</h3><small>${esc(p.anni)} · ${p.storie.length} ${p.storie.length === 1 ? 'storia' : 'storie'}</small></div></div>`);
+
+      /* comandi: cerca, ordina, raggruppa */
+      const bottoni = (nome, voci) => `<div class="mat-scelta" role="group" aria-label="${nome}"><span>${nome}</span>${voci.map(([v, t]) => `<button type="button" class="btn piccolo" data-v="${v}">${t}</button>`).join('')}</div>`;
+      const comandi = h(`<div class="mat-comandi">
+        <div class="cerca mat-cerca">${ICONE.cerca}<input type="search" placeholder="Cerca un nome…" autocomplete="off"></div>
+        ${bottoni('Ordina', [['epoca', 'per epoca'], ['nome', 'per nome'], ['storie', 'per numero di storie']])}
+        ${bottoni('Raggruppa', [['no', 'niente'], ['epoca', 'per epoca'], ['area', 'per area'], ['argomento', 'per argomento']])}
+        <div class="mat-conta"></div>
+      </div>`);
+      cont.appendChild(comandi);
+      cont.appendChild(det);
+      const zona = document.createElement('div'); cont.appendChild(zona);
+      const [selOrd, selGr] = comandi.querySelectorAll('.mat-scelta');
+      const aggiornaBottoni = () => { selOrd.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === scelta.ordina)); selGr.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === scelta.gruppi)); };
+      selOrd.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; scelta.ordina = imp.matOrdina = b.dataset.v; salva(); disegna(); });
+      selGr.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; scelta.gruppi = imp.matGruppi = b.dataset.v; salva(); disegna(); });
+      comandi.querySelector('input').addEventListener('input', e => { scelta.cerca = e.target.value.trim().toLowerCase(); disegna(); });
+
+      const ordinatore = {
+        epoca: (a, b) => (a.collettivo - b.collettivo) || ((a.anno == null ? 9999 : a.anno) - (b.anno == null ? 9999 : b.anno)),
+        nome: (a, b) => (a.collettivo - b.collettivo) || cognome(a).localeCompare(cognome(b), 'it'),
+        storie: (a, b) => (b.storie.length - a.storie.length) || ((a.anno == null ? 9999 : a.anno) - (b.anno == null ? 9999 : b.anno))
+      };
+      function carta(p) {
+        const areeP = [...new Set(p.argomenti.map(id => (voce(id) || {}).area))].map(area).filter(Boolean);
+        const c = h(`<div class="scheda mat${p.collettivo ? ' collettivo' : ''}" role="button" tabindex="0"><span class="ritratto" style="background:${coloreDa(p.nome)}">${esc(p.collettivo ? '✦' : iniziali(p.nome))}</span><div><h3>${esc(p.nome)}</h3><small>${esc(p.anni)} · ${p.storie.length} ${p.storie.length === 1 ? 'storia' : 'storie'}</small><span class="mat-aree">${areeP.map(a => `<i style="background:var(--${a.colore})" title="${esc(a.nome)}"></i>`).join('')}</span></div></div>`);
         c.addEventListener('click', () => { history.replaceState(null, '', '#/matematici/' + p.chiave); mostraDettaglio(p); });
         c.addEventListener('keydown', e => { if (e.key === 'Enter') c.click(); });
-        griglia.appendChild(c);
-      });
-      cont.appendChild(griglia);
-      if (sel) { const p = persone[sel] || persone[chiaveMatematico(sel.replace(/-/g, ' '))]; if (p) mostraDettaglio(p); }
+        return c;
+      }
+      function griglia(lista, titolo, sotto) {
+        const g = h('<section class="mat-gruppo"></section>');
+        if (titolo) g.appendChild(h(`<div class="mat-gruppo-testa"><h2>${titolo}</h2>${sotto ? `<span>${sotto}</span>` : ''}<span class="mat-gruppo-n">${lista.length}</span></div>`));
+        const gr = h('<div class="griglia-mat"></div>'); lista.forEach(p => gr.appendChild(carta(p))); g.appendChild(gr);
+        zona.appendChild(g);
+      }
+      function disegna() {
+        aggiornaBottoni();
+        zona.innerHTML = '';
+        const q = scelta.cerca;
+        const lista = tutte.filter(p => !q || slug(p.nome).includes(slug(q)) || p.nome.toLowerCase().includes(q)).sort(ordinatore[scelta.ordina]);
+        comandi.querySelector('.mat-conta').textContent = lista.length === tutte.length ? tutte.filter(p => !p.collettivo).length + ' persone e ' + tutte.filter(p => p.collettivo).length + ' storie senza un autore' : lista.length + ' su ' + tutte.length;
+        cont.querySelectorAll('.linea-tempo .tacca').forEach(t => t.classList.toggle('spenta', !!q && !lista.some(p => p.chiave === t.dataset.chiave)));
+        if (!lista.length) { zona.appendChild(h('<div class="fc-vuoto">Nessuno con questo nome.</div>')); return; }
+        if (scelta.gruppi === 'no') { griglia(lista); return; }
+        if (scelta.gruppi === 'epoca') {
+          EPOCHE.forEach(e => { const l = lista.filter(p => epocaDi(p) === e); if (l.length) griglia(l, e[1], e[2]); });
+          const senza = lista.filter(p => !epocaDi(p)); if (senza.length) griglia(senza, 'Leggende e opere senza un autore');
+          return;
+        }
+        if (scelta.gruppi === 'area') {
+          IND.aree.forEach(ar => { const l = lista.filter(p => p.argomenti.some(id => (voce(id) || {}).area === ar.id)); if (l.length) griglia(l, `<span class="simbolo-mini" style="background:var(--${ar.colore})">${esc(ar.simbolo)}</span>${esc(ar.nome)}`); });
+          return;
+        }
+        IND.argomenti.forEach(a => { const l = lista.filter(p => p.argomenti.includes(a.id)); if (l.length) griglia(l, `<a href="#/argomento/${a.id}">${esc(a.titolo)}</a>`, esc((area(a.area) || {}).nome || '')); });
+      }
+      disegna();
+      if (sel) { const p = persone[sel] || persone[chiaveMatematico(sel.replace(/-/g, ' '))] || tutte.find(x => slug(x.nome).includes(sel)); if (p) mostraDettaglio(p); }
     });
   }
   function iniziali(nome) { const parti = nome.replace(/^(gli|i|le|la|il)\s+/i, '').split(/\s+e\s+|\s+/).filter(w => /^[A-ZÀ-Ý]/.test(w)); return (parti[0] || nome)[0] + (parti.length > 1 ? parti[parti.length - 1][0] : ''); }
@@ -1226,7 +1303,7 @@
   function raccontaAneddoto(arg) {
     const an = scegli(arg.aneddoti);
     const html = `<p><span class="chi">${esc(an.matematico)}</span> <small class="anni">${esc(an.anni)}</small><br><b>${esc(an.titolo)}</b></p>${md(an.testo)}${an.legame ? '<p style="color:var(--testo2);font-size:.88rem">' + md(an.legame).replace(/^<p>|<\/p>$/g, '') + '</p>' : ''}`;
-    CMASC.dici(html, { tipo: 'aneddoto', html: true, chiesto: true, espressione: 'felice', azioni: [{ testo: 'Un altro', fn: () => raccontaAneddoto(arg) }, { testo: 'Tutti i matematici', fn: () => naviga('#/matematici/' + chiaveMatematico(an.matematico)) }] });
+    CMASC.dici(html, { tipo: 'aneddoto', html: true, chiesto: true, espressione: 'felice', azioni: [{ testo: 'Un altro', fn: () => raccontaAneddoto(arg) }, { testo: 'Tutti i matematici', fn: () => naviga('#/matematici/' + personeDi(an)[0].chiave) }] });
   }
   function menuMascotte() {
     if (CMASC.aperta()) { CMASC.chiudi(); return; }
