@@ -601,6 +601,8 @@ a.stat:hover, .stat.riprendi:hover { transform: translateY(-2px); border-color: 
 .mascotte-svg { width: 100%; height: 100%; overflow: visible; }
 .mascotte-svg .ada-corpo { transform-origin: 60px 100px; }
 .ada-viso { transition: transform .25s var(--morbido); }
+.ada-viso .ada-occhio { translate: var(--ox, 0) var(--oy, 0); transition: translate .18s var(--morbido); }
+.ada-viso path.ada-ciglio { stroke-width: 2.3; opacity: .85; translate: calc(var(--ox, 0px) * .7) calc(var(--oy, 0px) * .8); transition: translate .2s var(--morbido); }
 .ada-viso path, .ada-viso .ada-occhio, .ada-viso .ada-pieno, .ada-viso .ada-testo { stroke: #7ef0c6; fill: none; stroke-width: 3.2; }
 .ada-viso .ada-occhio, .ada-viso .ada-pieno { fill: #7ef0c6; stroke: none; }
 .ada-viso .ada-testo { fill: #7ef0c6; stroke: none; font: 700 14px var(--font); }

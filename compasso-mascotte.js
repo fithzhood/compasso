@@ -31,19 +31,21 @@
   /* le facce: disegnate in coordinate dello schermo (centro circa 60, 44) */
   const O = (x, y, w, h) => `<rect class="ada-occhio" x="${x - w / 2}" y="${y - h / 2}" width="${w}" height="${h}" rx="${Math.min(w, h) / 2}"/>`;
   const L = d => `<path d="${d}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+  /* sopracciglia: sottili, dello stesso colore, seguono lo sguardo un po' meno degli occhi */
+  const S = (sx, dx) => `<path class="ada-ciglio" d="${sx}" fill="none" stroke-linecap="round"/><path class="ada-ciglio" d="${dx}" fill="none" stroke-linecap="round"/>`;
   const FACCE = {
-    neutro: () => O(47, 41, 9, 13) + O(73, 41, 9, 13) + L('M53 56 q7 5 14 0'),
-    felice: () => L('M42 43 q5 -8 10 0') + L('M68 43 q5 -8 10 0') + L('M49 52 q11 11 22 0') + '<ellipse class="ada-guancia" cx="40" cy="52" rx="4" ry="2.2"/><ellipse class="ada-guancia" cx="80" cy="52" rx="4" ry="2.2"/>',
-    occhiolino: () => O(47, 41, 9, 13) + L('M68 42 q5 -5 10 0') + L('M50 53 q10 9 20 0'),
-    pensa: () => O(50, 38, 9, 12) + O(76, 38, 9, 12) + L('M53 57 h11') + '<g class="ada-puntini"><circle cx="80" cy="60" r="1.8"/><circle cx="86" cy="60" r="1.8"/><circle cx="92" cy="60" r="1.8"/></g>',
-    sorpreso: () => O(47, 40, 11, 15) + O(73, 40, 11, 15) + '<ellipse class="ada-pieno" cx="60" cy="58" rx="4.5" ry="5.5"/>',
+    neutro: () => S('M42 29 q5 -2 10 0', 'M68 29 q5 -2 10 0') + O(47, 41, 9, 13) + O(73, 41, 9, 13) + L('M53 56 q7 5 14 0'),
+    felice: () => S('M41 31 q6 -5 12 0', 'M67 31 q6 -5 12 0') + L('M42 43 q5 -8 10 0') + L('M68 43 q5 -8 10 0') + L('M49 52 q11 11 22 0') + '<ellipse class="ada-guancia" cx="40" cy="52" rx="4" ry="2.2"/><ellipse class="ada-guancia" cx="80" cy="52" rx="4" ry="2.2"/>',
+    occhiolino: () => S('M42 28 q5 -3 10 0', 'M67 36 q6 -1 11 1') + O(47, 41, 9, 13) + L('M68 42 q5 -5 10 0') + L('M50 53 q10 9 20 0'),
+    pensa: () => S('M45 29 l9 2', 'M71 25 q5 -4 10 -1') + O(50, 38, 9, 12) + O(76, 38, 9, 12) + '<g class="ada-puntini"><circle cx="51" cy="57" r="2.8"/><circle cx="60" cy="57" r="2.8"/><circle cx="69" cy="57" r="2.8"/></g>',
+    sorpreso: () => S('M40 26 q7 -5 14 0', 'M66 26 q7 -5 14 0') + O(47, 40, 11, 15) + O(73, 40, 11, 15) + '<ellipse class="ada-pieno" cx="60" cy="58" rx="4.5" ry="5.5"/>',
     triste: () => O(47, 43, 9, 10) + O(73, 43, 9, 10) + L('M40 36 l10 -4') + L('M80 36 l-10 -4') + L('M52 61 q8 -6 16 0') + '<path class="ada-pieno ada-lacrima" d="M79 50 q3 5 0 7 q-3 -2 0 -7z"/>',
-    confuso: () => O(47, 40, 11, 14) + O(73, 42, 7, 8) + L('M50 58 l5 -3 l5 3 l5 -3 l5 3') + '<text class="ada-testo" x="90" y="34">?</text>',
+    confuso: () => S('M40 26 q7 -5 14 0', 'M68 35 l10 -2') + O(47, 40, 11, 14) + O(73, 42, 7, 8) + L('M50 58 l5 -3 l5 3 l5 -3 l5 3') + '<text class="ada-testo" x="90" y="34">?</text>',
     ops: () => L('M42 36 l9 5 l-9 5') + L('M78 36 l-9 5 l9 5') + L('M50 58 q5 -4 10 0 q5 4 10 0'),
-    festa: () => '<path class="ada-pieno" d="M47 33 l2.6 5.4 5.9 .8 -4.3 4.1 1 5.8 -5.2 -2.8 -5.2 2.8 1 -5.8 -4.3 -4.1 5.9 -.8z"/><path class="ada-pieno" d="M73 33 l2.6 5.4 5.9 .8 -4.3 4.1 1 5.8 -5.2 -2.8 -5.2 2.8 1 -5.8 -4.3 -4.1 5.9 -.8z"/>' + '<path class="ada-pieno" d="M48 52 h24 q0 11 -12 11 q-12 0 -12 -11z"/>',
+    festa: () => S('M40 29 q7 -6 14 0', 'M66 29 q7 -6 14 0') + '<path class="ada-pieno" d="M47 33 l2.6 5.4 5.9 .8 -4.3 4.1 1 5.8 -5.2 -2.8 -5.2 2.8 1 -5.8 -4.3 -4.1 5.9 -.8z"/><path class="ada-pieno" d="M73 33 l2.6 5.4 5.9 .8 -4.3 4.1 1 5.8 -5.2 -2.8 -5.2 2.8 1 -5.8 -4.3 -4.1 5.9 -.8z"/>' + '<path class="ada-pieno" d="M48 52 h24 q0 11 -12 11 q-12 0 -12 -11z"/>',
     orgoglioso: () => L('M42 42 q5 -7 10 0') + L('M68 42 q5 -7 10 0') + L('M49 53 q11 9 22 0') + '<rect class="ada-pieno" x="37" y="38" width="18" height="5" rx="2" opacity=".85"/><rect class="ada-pieno" x="65" y="38" width="18" height="5" rx="2" opacity=".85"/><path d="M55 40 h10" fill="none"/>',
-    dorme: () => L('M42 43 q5 4 10 0') + L('M68 43 q5 4 10 0') + L('M56 58 q4 2 8 0') + '<text class="ada-testo ada-zeta" x="84" y="32">z</text>',
-    parla: () => O(47, 41, 9, 13) + O(73, 41, 9, 13) + '<ellipse class="ada-pieno" cx="60" cy="57" rx="6" ry="4"/>'
+    dorme: () => S('M42 37 q5 1 10 0', 'M68 37 q5 1 10 0') + L('M42 43 q5 4 10 0') + L('M68 43 q5 4 10 0') + L('M56 58 q4 2 8 0') + '<text class="ada-testo ada-zeta" x="84" y="32">z</text>',
+    parla: () => S('M42 29 q5 -2 10 0', 'M68 29 q5 -2 10 0') + O(47, 41, 9, 13) + O(73, 41, 9, 13) + '<ellipse class="ada-pieno" cx="60" cy="57" rx="6" ry="4"/>'
   };
   /* nomi vecchi (dall'epoca della tartaruga) → facce nuove */
   const ALIAS = { felice: 'felice', pensa: 'pensa', sorpreso: 'sorpreso', triste: 'triste', orgoglioso: 'orgoglioso', neutro: 'neutro' };
@@ -92,8 +94,10 @@
     if (!svgEl || ev.pointerType === 'touch' || dorme) return;
     const r = svgEl.getBoundingClientRect(); if (!r.width) return;
     const cx = r.left + r.width / 2, cy = r.top + r.height * 0.4;
-    const dx = Math.max(-1, Math.min(1, (ev.clientX - cx) / 500)), dy = Math.max(-1, Math.min(1, (ev.clientY - cy) / 400));
-    viso.style.transform = `translate(${(dx * 3.5).toFixed(2)}px, ${(dy * 2.5).toFixed(2)}px)`;
+    const dx = Math.max(-1, Math.min(1, (ev.clientX - cx) / 260)), dy = Math.max(-1, Math.min(1, (ev.clientY - cy) / 220));
+    viso.style.transform = `translate(${(dx * 2.5).toFixed(2)}px, ${(dy * 1.8).toFixed(2)}px)`;
+    viso.style.setProperty('--ox', (dx * 5.5).toFixed(2) + 'px');
+    viso.style.setProperty('--oy', (dy * 4).toFixed(2) + 'px');
   }
 
   function sveglia() {
