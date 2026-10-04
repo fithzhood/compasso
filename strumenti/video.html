@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="it" data-tema="chiaro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-store">
+<title>Video di Compasso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Lexend:wght@300..700&display=swap">
+<link rel="stylesheet" href="../lib/katex/katex.min.css">
+<link rel="stylesheet" href="../compasso.css">
+<style>
+  body { padding: 20px 16px 60px; }
+  .pagina { max-width: 1000px; margin: 0 auto; }
+  .pagina h1 { font-family: var(--font-titoli); font-weight: 600; margin: 0 0 14px; }
+  .pagina nav { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 18px 0; font-size: .9rem; }
+  .pagina nav a { color: var(--accento-testo); }
+  body.render { padding: 0; margin: 0; }
+  body.render .pagina { display: none; }
+  #cv { display: none; }
+  body.render #cv { display: block; }
+</style>
+</head>
+<body>
+<!-- Anteprima dei video (?id=derivate/derivata&tema=scuro) ed esportazione (&render: tela fissa 1920×1080,
+     window.drawAt(t), usata da strumenti/esporta-video.js). Non è una pagina del sito. -->
+<div class="pagina">
+  <h1 id="titolo">Video</h1>
+  <div id="slot"></div>
+  <nav id="elenco"></nav>
+</div>
+<canvas id="cv" width="1920" height="1080"></canvas>
+<script src="../compasso-video.js"></script>
+<script src="video-elenco.js"></script>
+<script>
+  const q = new URLSearchParams(location.search);
+  const id = q.get('id') || (window.VIDEO_ELENCO && VIDEO_ELENCO[0]) || 'derivate/derivata';
+  const tema = q.get('tema') === 'scuro' ? 'scuro' : 'chiaro';
+  document.documentElement.dataset.tema = tema;
+  if (q.has('render')) {
+    document.body.classList.add('render');
+    const ctx = document.getElementById('cv').getContext('2d');
+    Promise.all([CVIDEO.caricaFont(), CVIDEO.carica(id)]).then(() => {
+      const V = CVIDEO.costruisci(id);
+      window.DUR = V.durata;
+      window.drawAt = t => CVIDEO.dipingi(ctx, V, t, 1, tema);
+      drawAt(0);
+      window.__ready = true;
+    }).catch(e => { window.__errore = e.message; });
+  } else {
+    CVIDEO.monta(document.getElementById('slot'), id);
+    CVIDEO.carica(id).then(() => { document.getElementById('titolo').textContent = CVIDEO.costruisci(id).titolo; });
+    const nav = document.getElementById('elenco');
+    (window.VIDEO_ELENCO || []).forEach(v => {
+      const a = document.createElement('a'); a.href = '?id=' + v + '&tema=' + tema; a.textContent = v; nav.appendChild(a);
+    });
+    const altro = document.createElement('a'); altro.href = '?id=' + id + '&tema=' + (tema === 'scuro' ? 'chiaro' : 'scuro');
+    altro.textContent = tema === 'scuro' ? '☀ tema chiaro' : '☾ tema scuro'; nav.appendChild(altro);
+  }
+</script>
+</body>
+</html>

@@ -63,6 +63,8 @@ La parabola l'hai già studiata a parte. Qui studi ellisse e iperbole.
 
 >* I due punti fissi $F_1$ e $F_2$ sono i **fuochi**. L'**ellisse** è l'insieme dei punti $P$ con la stessa somma delle distanze dai fuochi: $$PF_1+PF_2=2a$$ con $2a>F_1F_2$. Il punto medio di $F_1F_2$ è il **centro**.
 
+[[video:ellisse-iperbole/ellisse-giardiniere]]
+
 La costante si chiama $2a$ perché così $a$ è metà della larghezza dell'ellisse.
 
 Esempio: fuochi $F_1(-4;0)$ e $F_2(4;0)$, spago lungo $2a=10$. Il punto $P(0;3)$ sta sull'ellisse? $PF_1=\sqrt{4^2+3^2}=5$ e anche $PF_2=5$. La somma è $10$, quindi sì.
@@ -121,6 +123,8 @@ Esempio: in $\frac{x^2}{25}+\frac{y^2}{9}=1$ il denominatore più grande è sott
 
     { id: 'eccentricita', titolo: "L'eccentricità", testo: R`Con lo stesso spago, più allontani i picchetti e più l'aiuola viene lunga e stretta. L'**eccentricità** misura questo schiacciamento.
 
+[[video:ellisse-iperbole/eccentricita]]
+
 >* **Eccentricità dell'ellisse:** $e$ è la semidistanza focale divisa per il semiasse su cui stanno i fuochi. Con $a>b$: $$e=\frac ca$$ Con $b>a$: $e=\frac cb$. Vale sempre $0\le e<1$.
 
 | $e$ | com'è l'ellisse |
@@ -175,6 +179,8 @@ Esempio: la tangente a $\frac{x^2}{25}+\frac{y^2}{9}=1$ nel vertice $P_0(5;0)$ �
 >! Lo sdoppiamento funziona solo se $P_0$ **sta** sull'ellisse. Prima sostituisci le coordinate e controlla.` },
 
     { id: 'iperbole-definizione', titolo: "L'iperbole: definizione ed equazione", testo: R`Nell'ellisse era costante la somma delle distanze dai fuochi. Nell'iperbole è costante la **differenza**.
+
+[[video:ellisse-iperbole/iperbole]]
 
 >* L'**iperbole** è l'insieme dei punti $P$ con la stessa differenza delle distanze dai fuochi $F_1$ e $F_2$. La differenza si prende in valore assoluto: $$|PF_1-PF_2|=2a$$ con $2a<F_1F_2$.
 

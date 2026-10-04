@@ -89,6 +89,8 @@ Nelle equazioni servono soprattutto a due cose. La prima è **portare tutto alla
 
 La **funzione esponenziale** di base $a$ è $y = a^x$, con $a > 0$ e $a \ne 1$. La base $1$ si esclude perché $1^x = 1$ sempre.
 
+[[video:esponenziali/grafico]]
+
 Trascina il punto sopra $x = 1$: la sua altezza è la base $a$. Guarda quale punto resta fermo, e che cosa succede con $a$ sotto $1$.
 
 [[grafico:famigliaEsponenziali]]
@@ -190,6 +192,8 @@ Con base minore di $1$:
 >! Prima di togliere la base chiediti: è maggiore o minore di $1$? Se hai trasformato le basi, guarda quella finale. Per esempio $\left(\frac14\right)^x = 4^{-x}$: con base $4$ il verso resta, ma l'esponente è $-x$.` },
 
     { id: 'modelli-crescita-decadimento', titolo: 'Modelli di crescita e decadimento', testo: R`Un capitale cresce del $5\%$ all'anno, cioè si moltiplica per $1{,}05$. Dopo un anno è $C_0 \cdot 1{,}05$, dopo due $C_0 \cdot 1{,}05^2$, dopo $t$ anni $C_0 \cdot 1{,}05^t$. Una grandezza che cambia della **stessa percentuale** a ogni passo segue un'esponenziale.
+
+[[video:esponenziali/raddoppio]]
 
 >* **Modello esponenziale:** $$y(t) = y_0 \cdot a^t$$ $y_0$ è il valore iniziale, per $t = 0$. $a$ è il fattore che moltiplica a ogni unità di tempo. Crescita del $p\%$: $a = 1 + \frac{p}{100}$. Calo del $p\%$: $a = 1 - \frac{p}{100}$.
 

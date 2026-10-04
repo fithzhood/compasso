@@ -128,6 +128,8 @@ Nell'aerogramma l'angolo di un settore è $\alpha_i = f_i \cdot 360^\circ$. Se i
 
     { id: 'indici-posizione', titolo: 'Media, mediana e moda', testo: R`«Com'è andata la verifica?» Nessuno risponde leggendo venticinque voti. Si dice un numero solo, per esempio «la media è 6,36». Un numero così si chiama **indice di posizione**. I più usati sono media, mediana e moda.
 
+[[video:statistica/media-mediana-moda]]
+
 I voti $4, 6, 8$ hanno media $\dfrac{4 + 6 + 8}{3} = 6$: sommi i dati e dividi per quanti sono.
 
 >* **Media aritmetica**: $$\overline{x} = \frac{x_1 + x_2 + \dots + x_N}{N}$$
@@ -158,6 +160,8 @@ Con $N$ pari, per esempio $2, 4, 6, 10$, i centrali sono $4$ e $6$. La mediana �
 
 Un **valore anomalo** è un dato molto lontano dagli altri. La media lo sente molto, la mediana quasi per niente. Prendi cinque stipendi annui, in migliaia di euro: 20, 24, 28, 32 e 200. La media è $60{,}8$, ma nessuno prende quella cifra. La mediana è $28$ e descrive meglio l'azienda.
 
+[[video:statistica/valore-anomalo]]
+
 Nel grafico trascina il quinto stipendio (il punto arancione) e guarda le due linee.
 
 [[grafico:outlier]]
@@ -167,6 +171,8 @@ La mediana si muove solo quando il quinto stipendio sta fra 24 e 28. La media in
 >! Per un carattere qualitativo, come il colore degli occhi, la media non esiste: usi la moda.` },
 
     { id: 'variabilita', titolo: 'Indici di variabilità', testo: R`Due classi hanno entrambe media $6$. Nella prima i voti sono $5, 6, 6, 6, 7$: tutti vicini. Nella seconda sono $1, 2, 6, 10, 11$: molto sparpagliati. La media non vede la differenza, quindi serve un altro numero.
+
+[[video:statistica/varianza]]
 
 Lavoriamo sui dati $3, 5, 6, 7, 9$, che hanno media $6$.
 
@@ -239,6 +245,8 @@ Trascina l'ottavo studente (il punto arancione) in basso a destra. Un solo punto
 >! Due grandezze possono crescere insieme senza che una causi l'altra. I gelati venduti e gli annegamenti crescono insieme, ma per una terza causa: il caldo.` },
 
     { id: 'normale', titolo: 'La distribuzione normale', testo: R`Misura l'altezza di migliaia di persone e disegna l'istogramma. Viene una **campana**: simmetrica, alta al centro e bassa ai lati. Si chiama **distribuzione normale**, o gaussiana. La stessa forma esce per il peso dei neonati e per gli errori di misura.
+
+[[video:statistica/campana]]
 
 Queste grandezze nascono da tanti piccoli effetti a caso che si sommano. Lo vedi nella macchina di Galton: ogni pallina riceve tanti urti a caso, e le palline si ammucchiano a campana.
 

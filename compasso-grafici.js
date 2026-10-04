@@ -595,8 +595,8 @@
     const ar = 34; const grande = Math.abs(t) > Math.PI ? 1 : 0; const verso = t >= 0 ? 0 : 1;
     svg.appendChild(el('path', { d: 'M' + (cx + ar) + ',' + cy + ' A' + ar + ',' + ar + ' 0 ' + grande + ',' + verso + ' ' + (cx + ar * Math.cos(t)) + ',' + (cy - ar * Math.sin(t)), fill: 'none', stroke: 'var(--s4)', 'stroke-width': 2 }));
     svg.appendChild(el('text', { x: cx + 48 * Math.cos(t / 2), y: cy - 48 * Math.sin(t / 2) + 4, class: 'cg-etichetta', fill: 'var(--s4)', 'text-anchor': 'middle' }, 'α'));
-    if (mostra.includes('cos')) { svg.appendChild(el('line', { x1: cx, y1: cy, x2: px, y2: cy, stroke: 'var(--s2)', 'stroke-width': 5, 'stroke-linecap': 'round', opacity: .9 })); svg.appendChild(el('line', { x1: px, y1: cy, x2: px, y2: py, class: 'cg-griglia', 'stroke-dasharray': '4 3' })); }
-    if (mostra.includes('sin')) { svg.appendChild(el('line', { x1: px, y1: cy, x2: px, y2: py, stroke: 'var(--s1)', 'stroke-width': 5, 'stroke-linecap': 'round', opacity: .9 })); }
+    if (mostra.includes('cos')) { svg.appendChild(el('line', { x1: cx, y1: cy, x2: px, y2: cy, stroke: 'var(--s1)', 'stroke-width': 5, 'stroke-linecap': 'round', opacity: .9 })); svg.appendChild(el('line', { x1: px, y1: cy, x2: px, y2: py, class: 'cg-griglia', 'stroke-dasharray': '4 3' })); }
+    if (mostra.includes('sin')) { svg.appendChild(el('line', { x1: px, y1: cy, x2: px, y2: py, stroke: 'var(--s2)', 'stroke-width': 5, 'stroke-linecap': 'round', opacity: .9 })); }
     if (mostra.includes('tan') && Math.abs(Math.cos(t)) > 1e-6) {
       const tanv = Math.tan(t); const ty = cy - R * tanv;
       const tyc = Math.max(cy - R - 25, Math.min(cy + R + 25, ty));
@@ -628,8 +628,8 @@
     /* pannello valori */
     const gV = el('g', { transform: 'translate(400,60)', class: 'cg-valori' });
     const righe = [['α', gradi + '°', 'var(--s4)'], ['α', fmt(t, 3) + ' rad', 'var(--s4)']];
-    if (mostra.includes('sin')) righe.push(['sin α', fmt(Math.sin(t), 3), 'var(--s1)']);
-    if (mostra.includes('cos')) righe.push(['cos α', fmt(Math.cos(t), 3), 'var(--s2)']);
+    if (mostra.includes('sin')) righe.push(['sin α', fmt(Math.sin(t), 3), 'var(--s2)']);
+    if (mostra.includes('cos')) righe.push(['cos α', fmt(Math.cos(t), 3), 'var(--s1)']);
     if (mostra.includes('tan')) righe.push(['tan α', Math.abs(Math.cos(t)) < 1e-6 ? 'non esiste' : fmt(Math.tan(t), 3), 'var(--s3)']);
     righe.forEach((r, i) => { gV.appendChild(el('rect', { x: 0, y: i * 34, width: 12, height: 12, rx: 3, fill: r[2] })); gV.appendChild(el('text', { x: 20, y: i * 34 + 11, class: 'cg-etichetta' }, r[0] + ' = ' + r[1])); });
     svg.appendChild(gV);

@@ -31,6 +31,8 @@ Il metodo è quasi sempre lo stesso. Trasformi l'equazione finché diventa una d
   sezioni: [
     { id: 'elementari-seno-coseno', titolo: 'Le equazioni elementari: seno e coseno', testo: R`Per quali angoli il seno vale $\frac12$? Il seno di un angolo è l'**ordinata** del suo punto sulla circonferenza goniometrica.
 
+[[video:equazioni-goniometriche/infinite-soluzioni]]
+
 Traccia la retta orizzontale $y = \frac12$. Taglia la circonferenza in due punti, simmetrici rispetto all'asse $y$. Sono gli angoli $\frac{\pi}{6}$ e $\frac{5\pi}{6}$.
 
 [[grafico:senoCirconferenza]]

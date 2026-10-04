@@ -107,6 +107,8 @@ Quindi $\sqrt{2}<\sqrt[3]{3}$. Con la calcolatrice: $\sqrt{2}\approx 1{,}414$ e 
 
     { id: 'moltiplicazione-divisione', titolo: 'Moltiplicazione e divisione di radicali', testo: R`Quanto fa $\sqrt{3}\cdot\sqrt{12}$? I due fattori sono scomodi, ma il prodotto no. Con lo stesso indice, metti i radicandi sotto un'unica radice.
 
+[[video:radicali/prodotto]]
+
 >* Con lo stesso indice: $$\sqrt[n]{a}\cdot\sqrt[n]{b}=\sqrt[n]{a\cdot b}$$ $$\frac{\sqrt[n]{a}}{\sqrt[n]{b}}=\sqrt[n]{\frac{a}{b}}$$ Se $n$ è pari servono $a,b\ge 0$; nella divisione $b\ne 0$.
 
 Così $\sqrt{3}\cdot\sqrt{12}=\sqrt{36}=6$ e $\dfrac{\sqrt{18}}{\sqrt{2}}=\sqrt{9}=3$. Dopo il prodotto guarda il nuovo radicando: se è un quadrato perfetto, la radice sparisce.
@@ -215,6 +217,8 @@ Radicali diversi si comportano come lettere diverse: $\sqrt{2}+\sqrt{3}-4\sqrt{2
 
     { id: 'razionalizzazione', titolo: 'Razionalizzazione del denominatore', testo: R`Un risultato come $\dfrac{1}{\sqrt{2}}$ è corretto. Però per convenzione non si lasciano radici al denominatore. **Razionalizzare** vuol dire riscrivere la frazione senza radici sotto, con lo stesso valore.
 
+[[video:radicali/razionalizzare]]
+
 Moltiplica numeratore e denominatore per lo stesso fattore. È come moltiplicare per $1$: il valore non cambia. Scegli il fattore che fa sparire la radice sotto.
 
 | sotto c'è | moltiplico sopra e sotto per |
@@ -261,6 +265,8 @@ Con due radici è uguale: il razionalizzante di $\sqrt{a}+\sqrt{b}$ è $\sqrt{a}
 >! Si moltiplica **sia** il numeratore **sia** il denominatore. Moltiplicare solo il denominatore cambia il valore della frazione.` },
 
     { id: 'esponente-frazionario', titolo: 'Potenze con esponente frazionario', testo: R`Che senso ha $8^{\frac{1}{3}}$? Se valgono ancora le proprietà delle potenze, $\left(8^{\frac13}\right)^3=8^{\frac13\cdot 3}=8^1=8$. Quindi $8^{\frac13}$ è il numero che al cubo dà $8$: $\sqrt[3]{8}=2$.
+
+[[video:radicali/radice-come-potenza]]
 
 >* **Potenza con esponente frazionario:** $$a^{\frac{m}{n}}=\sqrt[n]{a^m}\qquad(a>0)$$ Il denominatore dell'esponente diventa l'indice. Il numeratore diventa l'esponente del radicando.
 

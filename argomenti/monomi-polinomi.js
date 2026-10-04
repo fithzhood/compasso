@@ -201,6 +201,8 @@ Da dove viene $a^2 - b^2$? Fai il prodotto e guarda i termini in mezzo:
 
 >* **Somma per differenza:** $(a + b)(a - b) = a^2 - b^2$. Quadrato del primo meno quadrato del secondo: $(3x - 2)(3x + 2) = (3x)^2 - 2^2 = 9x^2 - 4$.
 
+[[video:monomi-polinomi/somma-per-differenza]]
+
 ### Quadrato di binomio
 
 Un quadrato è un prodotto per sé stesso: $(a + b)^2 = (a + b)(a + b)$. Questa volta i termini in mezzo si sommano.
@@ -210,6 +212,8 @@ Un quadrato è un prodotto per sé stesso: $(a + b)^2 = (a + b)(a + b)$. Questa 
 ~ a^2 + \evid{2ab} + b^2 :: $ab$ e $ba$ sono uguali: sommati fanno $2ab$, il **doppio prodotto**
 
 >* **Quadrato di binomio:** $(a + b)^2 = a^2 + 2ab + b^2$ e $(a - b)^2 = a^2 - 2ab + b^2$. Quadrato del primo, doppio prodotto, quadrato del secondo.
+
+[[video:monomi-polinomi/quadrato-di-binomio]]
 
 Guarda le aree: un quadrato di lato $a + b$ si divide in un quadrato $a^2$, un quadrato $b^2$ e **due** rettangoli $ab$.
 
@@ -271,6 +275,8 @@ Se il dividendo ha già grado minore del divisore, il quoziente è $0$ e il rest
 >! Quando sottrai, cambia segno a **tutti** i termini: togliere $2x^3 + 2x$ vuol dire scrivere $-2x^3 - 2x$. Tieni il dividendo **ordinato**, dal grado più alto. Se un grado manca, scrivi $0$ al suo posto.` },
 
     { id: 'ruffini', titolo: 'La regola di Ruffini', testo: R`Se il divisore è della forma $(x - a)$, come $(x - 1)$ o $(x + 2)$, c'è uno schema più veloce: la **regola di Ruffini**. Usi solo i coefficienti, senza le lettere.
+
+[[video:monomi-polinomi/ruffini]]
 
 Per trovare $a$ cambia segno al numero. In $(x - 1)$ è $a = 1$. In $(x + 2)$ è $a = -2$.
 

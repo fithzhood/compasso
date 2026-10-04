@@ -58,6 +58,8 @@ Ti servono le equazioni di secondo grado e le disequazioni di primo grado.`,
   sezioni: [
     { id: 'segno-trinomio', titolo: 'Il segno del trinomio sulla parabola', testo: R`Per quali $x$ il trinomio $x^2-2x-3$ è positivo? Pensalo come la $y$ della parabola $y=x^2-2x-3$.
 
+[[video:disequazioni-secondo-grado/segno-parabola]]
+
 Dove la parabola sta sopra l'asse $x$, la $y$ è positiva. Dove sta sotto, è negativa.
 
 Quindi ti servono due cose: **dove** la parabola incontra l'asse $x$, e **verso dove** è rivolta.
@@ -111,6 +113,8 @@ Se $a<0$, prima moltiplica tutto per $-1$ e **cambia il verso**, come nel primo 
 >! Scrivi sempre prima lo zero più piccolo. $3<x<-1$ non ha senso: nessun numero è maggiore di $3$ e minore di $-1$.` },
 
     { id: 'delta-non-positivo', titolo: 'Quando Δ non è positivo: sempre vere, mai vere, un punto escluso', testo: R`Se $\Delta\le 0$ non ci sono due zeri diversi. Quindi non ci sono valori esterni o interni. Guarda il segno di $a$ e il verso.
+
+[[video:disequazioni-secondo-grado/delta-non-positivo]]
 
 **Con $\Delta=0$** il trinomio è un quadrato, a parte il fattore $a$. Per esempio $x^2-6x+9=(x-3)^2$. Un quadrato non è mai negativo, e vale zero solo in $x=3$. Così i quattro versi danno quattro risposte diverse:
 

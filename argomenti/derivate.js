@@ -65,6 +65,8 @@ Ti servono i limiti, soprattutto quelli della forma $\frac{0}{0}$.`,
   sezioni: [
     { id: 'tangente-velocita', titolo: 'Il problema della tangente e della velocità istantanea', testo: R`Due domande, una di geometria e una di fisica, portano allo stesso calcolo.
 
+[[video:derivate/derivata]]
+
 **Geometria.** Qual è la **retta tangente** a una curva in un punto? È la retta che segue la direzione della curva proprio lì. Per una parabola non è chiaro come trovarla.
 
 **Fisica.** Un corpo si muove secondo una **legge oraria** $s(t)$: la posizione all'istante $t$. Fra $t_0$ e $t_0 + h$ la velocità media è $\dfrac{s(t_0 + h) - s(t_0)}{h}$. Ma quanto vale la velocità in un istante preciso? Un istante non dura niente, e per zero non si divide.
@@ -185,6 +187,8 @@ Eppure in $0$ la funzione $|x|$ è continua.
 
     { id: 'punti-non-derivabili', titolo: 'Punti di non derivabilità', testo: R`Una funzione continua può non essere derivabile in $x_0$. Per capire che cosa succede, guarda la derivata destra e la sinistra. I casi sono tre.
 
+[[video:derivate/non-derivabile]]
+
 | tipo | derivate destra e sinistra | esempio in $0$ |
 |---|---|---|
 | **punto angoloso** | finite e diverse | $\lvert x \rvert$ |
@@ -239,9 +243,13 @@ La regola della potenza vale anche con esponenti negativi o frazionari. Per esem
 
     { id: 'regole-derivazione', titolo: 'Le regole di derivazione', testo: R`Con la tabella e quattro regole derivi qualunque funzione costruita da quelle elementari.
 
+[[video:derivate/somma]]
+
 >* **Somma**: $(f + g)' = f' + g'$. **Prodotto**: $(fg)' = f'g + fg'$. **Quoziente**: $\left(\dfrac{f}{g}\right)' = \dfrac{f'g - fg'}{g^2}$, dove $g \ne 0$.
 
 Il prodotto **non** si deriva come la somma. Se prendi $f(x) = g(x) = x$, il prodotto è $x^2$ e ha derivata $2x$. Invece $f' \cdot g'$ vale $1$.
+
+[[video:derivate/prodotto]]
 
 **Prodotto.** $f(x) = x^2 \sin x$:
 
@@ -254,6 +262,8 @@ Il prodotto **non** si deriva come la somma. Se prendi $f(x) = g(x) = x$, il pro
 ~ = \frac{\evid{\cos x} \cdot \cos x - \sin x \cdot (\evid{-\sin x})}{\cos^2 x} :: $\frac{f'g - fg'}{g^2}$, con $f' = \cos x$ e $g' = -\sin x$
 ~ = \frac{\evid{\cos^2 x + \sin^2 x}}{\cos^2 x} :: meno per meno fa più
 ~ = \evidb{\frac{1}{\cos^2 x}} :: identità fondamentale: $\sin^2 x + \cos^2 x = 1$
+
+[[video:derivate/catena]]
 
 >* **Funzione composta (regola della catena)**: $$[f(g(x))]' = f'(g(x)) \cdot g'(x).$$ Derivi la funzione **esterna** $f$, con dentro la funzione **interna** $g(x)$ com'è. Poi moltiplichi per la derivata dell'interna.
 

@@ -33,6 +33,8 @@ Ti servono le proprietà delle potenze e il grafico di $y = a^x$.`,
   sezioni: [
     { id: 'definizione', titolo: 'Definizione di logaritmo', testo: R`A quale numero devi elevare $2$ per ottenere $8$? A $3$. Questo $3$ è il **logaritmo in base $2$ di $8$** e si scrive $\log_2 8 = 3$. Il $2$ in basso è la **base**, l'$8$ è l'**argomento**.
 
+[[video:logaritmi/che-cos-e]]
+
 >* **Definizione:** $$\log_a b = x \iff a^x = b$$ con $a > 0$, $a \ne 1$, $b > 0$. Il logaritmo è l'esponente da dare alla base per ottenere l'argomento.
 
 Per calcolare un logaritmo, scrivi l'argomento come potenza della base:
@@ -81,6 +83,8 @@ Il **logaritmo decimale** conta gli zeri: $\log 1000 = 3$, $\log 0{,}01 = -2$. I
 
     { id: 'proprieta', titolo: 'Le proprietà dei logaritmi', testo: R`Guarda: $8 \cdot 4 = 32$, cioè $2^3 \cdot 2^2 = 2^5$. Moltiplicando le potenze, gli esponenti si **sommano**.
 
+[[video:logaritmi/proprieta]]
+
 I logaritmi sono esponenti, quindi il logaritmo di un prodotto è la somma dei logaritmi: $\log_2 32 = \log_2 8 + \log_2 4 = 3 + 2$. Con le lettere:
 
 ~ \log_a b = x,\quad \log_a c = y :: do un nome ai due logaritmi
@@ -108,6 +112,8 @@ Le proprietà servono anche al contrario, per riunire più logaritmi in uno solo
 
 Nella scheda **Laboratorio** c'è *Il regolo calcolatore*: moltiplica i numeri sommando lunghezze.
 
+[[video:logaritmi/regolo]]
+
 >! Non c'è nessuna regola per una somma **dentro** l'argomento: $\log_a(b + c)$ non si spezza. Prova con $b = c = 1$: $\log(1 + 1) = \log 2 \approx 0{,}301$, ma $\log 1 + \log 1 = 0$.` },
 
     { id: 'cambiamento-base', titolo: 'Il cambiamento di base', testo: R`Quanto vale $\log_2 5$? Sta fra $2$ e $3$, perché $2^2 = 4$ e $2^3 = 8$. Sulla calcolatrice però ci sono solo log e ln, quindi serve una formula per cambiare base.
@@ -134,6 +140,8 @@ Controllo: $2^{2{,}32} \approx 4{,}99$, quasi $5$.
 >! Il $\ln$ non si semplifica: $\frac{\ln 5}{\ln 2}$ non è $\ln\frac52$.` },
 
     { id: 'inversa-esponenziale', titolo: 'Logaritmo ed esponenziale: funzioni inverse', testo: R`La funzione $y = 2^x$ prende un esponente e dà una potenza: $3 \mapsto 8$. Il logaritmo in base $2$ fa il viaggio opposto, $8 \mapsto 3$: è la **funzione inversa** di $y = 2^x$.
+
+[[video:logaritmi/specchio]]
 
 Il punto $(3;8)$ del primo grafico diventa il punto $(8;3)$ del secondo. Scambiare le coordinate vuol dire ribaltare il punto rispetto alla retta $y = x$: trascina $P$ e guarda dove finisce $Q$.
 

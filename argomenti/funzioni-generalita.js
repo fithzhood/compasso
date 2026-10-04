@@ -76,6 +76,8 @@ Ti serve saper risolvere equazioni e disequazioni, perché il dominio si trova c
   sezioni: [
     { id: 'definizione', titolo: 'Che cos\'è una funzione', testo: R`«A ogni persona associa il suo codice fiscale» è una funzione, perché ciascuno ne ha uno solo. «A ogni persona associa i suoi fratelli» non lo è: c'è chi non ne ha e chi ne ha tre.
 
+[[video:funzioni-generalita/funzione]]
+
 >* Una **funzione** $f: A \to B$ associa a **ogni** elemento $x$ di $A$ **uno e un solo** elemento $f(x)$ di $B$.
 
 $f(x)$ si legge «$f$ di $x$»: è il valore che la funzione associa a $x$.
@@ -146,6 +148,8 @@ La circonferenza $x^2 + y^2 = 1$ non passa il test. La retta $x = 0{,}5$ la tagl
 | una radice di indice pari, $\sqrt{A(x)}$, $\sqrt[4]{A(x)}$, … | $A(x) \ge 0$ |
 | una radice di indice dispari, $\sqrt[3]{A(x)}$, … | nessuna condizione |
 | un logaritmo $\log A(x)$ | $A(x) > 0$ |
+
+[[video:funzioni-generalita/dominio]]
 
 Se i pezzi delicati sono più di uno, le condizioni devono valere **tutte insieme**: mettile a sistema.
 
@@ -263,6 +267,8 @@ Una funzione è **periodica** di periodo $T > 0$ se $f(x + T) = f(x)$ per ogni $
 
     { id: 'funzione-composta', titolo: 'La funzione composta', testo: R`Un negozio fa lo sconto di $10$ euro e poi aggiunge l'IVA, un altro fa il contrario: il prezzo finale è diverso. Fare due funzioni una dopo l'altra si chiama **comporle**, e l'ordine conta.
 
+[[video:funzioni-generalita/composta]]
+
 >* La **funzione composta** $g \circ f$ applica **prima $f$, poi $g$**: $$(g \circ f)(x) = g\big(f(x)\big).$$ Si legge «$g$ composto $f$», ma si esegue da destra a sinistra.
 
 Con $f(x) = x - 1$ e $g(x) = \sqrt{x}$:
@@ -283,6 +289,8 @@ Nell'altro ordine: $(f \circ g)(x) = f(\sqrt{x}) = \sqrt{x} - 1$, definita per $
 => Prima $f$: $f(1) = 3$. Poi $g$: $g(3) = 9$. Il $3$ esce con l'ordine sbagliato: è $f(g(1)) = f(1) = 3$.` },
 
     { id: 'funzione-inversa', titolo: 'La funzione inversa', testo: R`La funzione del taxi trasforma i chilometri nel prezzo. L'**inversa** fa il viaggio al contrario: dal prezzo ricava i chilometri. Per tornare indietro senza dubbi, $f$ deve essere biunivoca.
+
+[[video:funzioni-generalita/inversa]]
 
 >* Se $f: A \to B$ è **biunivoca**, la **funzione inversa** $f^{-1}: B \to A$ disfa quello che fa $f$: $f^{-1}(f(x)) = x$. Per trovarla scambia $x$ e $y$ in $y = f(x)$ e ricava $y$. Il grafico di $f^{-1}$ è il simmetrico di quello di $f$ rispetto alla retta $y = x$.
 
@@ -322,6 +330,8 @@ Il vertice va dove lo porti, e l'equazione diventa $y = a(x - h)^2 + k$. Con $a 
 | $a \cdot f(x)$, $a > 0$ | si allunga in verticale se $a > 1$, si schiaccia se $a < 1$ |
 | $-f(x)$ | si ribalta rispetto all'asse $x$ |
 | $f(-x)$ | si ribalta rispetto all'asse $y$ |
+
+[[video:funzioni-generalita/trasformazioni]]
 
 >* $y = f(x - h) + k$ è il grafico di $f$ spostato di $h$ verso **destra** e di $k$ verso l'**alto**. Il meno davanti ad $h$ inganna: guarda dove si annulla la parentesi, $x - h = 0$, cioè $x = h$.
 

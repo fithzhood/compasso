@@ -53,6 +53,8 @@ Due eventi sono **incompatibili** se non possono succedere insieme, cioè se $A 
 
     { id: 'definizione-classica', titolo: 'La definizione classica', testo: R`Lanci un dado regolare. Quanto è probabile che esca un numero pari? Le facce sono $6$ e hanno tutte la stessa possibilità di uscire. Di queste, $3$ sono pari. Quindi la probabilità è $\dfrac{3}{6} = \dfrac{1}{2}$.
 
+[[video:probabilita/casi-favorevoli]]
+
 >* **Definizione classica.** Se i casi possibili sono in numero **finito** e ugualmente possibili, $$P(E) = \frac{\text{casi favorevoli}}{\text{casi possibili}}$$
 
 I **casi favorevoli** sono i risultati in cui l'evento $E$ succede.
@@ -147,6 +149,8 @@ Estrai una carta da un mazzo di $40$ carte napoletane. Qual è la probabilità c
 
 Adesso i casi possibili sono solo $2$, $4$ e $6$. Il $2$ è uno di tre, quindi la probabilità è $\dfrac{1}{3}$. L'informazione ha ristretto i casi.
 
+[[video:probabilita/condizionata]]
+
 >* La **probabilità condizionata** di $A$ sapendo $B$ è $$P(A \mid B) = \frac{P(A \cap B)}{P(B)}$$ con $P(B) \ne 0$.
 
 $B$ diventa il nuovo spazio campionario. Con $A = \{2\}$ e $B = \{2, 4, 6\}$ ritrovi il risultato del dado: $P(A \mid B) = \dfrac{1/6}{1/2} = \dfrac{1}{3}$.
@@ -203,6 +207,8 @@ Nel grafico trascina il punto e guarda quando la curva supera il 50%. Con «1 ca
 
     { id: 'totale-bayes', titolo: 'Probabilità totale e teorema di Bayes', testo: R`Una malattia colpisce l'$1\%$ delle persone. Un test è positivo sul $99\%$ dei malati. Però è positivo anche sul $5\%$ dei sani. Fai il test e sei positivo: quanto è probabile che tu sia malato?
 
+[[video:probabilita/bayes]]
+
 ### Probabilità totale
 
 Un positivo può essere malato ($M$) o sano ($S$). Lo mostra un **diagramma ad albero**: prima le cause, $M$ o $S$, poi il test, $T^+$ o $T^-$.
@@ -225,6 +231,8 @@ Bayes percorre l'albero al contrario. Vedi l'effetto, il test positivo, e cerchi
 >* **Teorema di Bayes:** $$P(H_i \mid E) = \frac{P(H_i) \cdot P(E \mid H_i)}{P(E)}$$
 
 Sopra c'è il ramo che ti interessa. Sotto ci sono tutti i rami che portano a $E$. $P(H_i)$ si chiama probabilità **a priori**: è quella che conosci prima del test.
+
+[[video:probabilita/probabilita-totale]]
 
 Per il test il conto è questo.
 

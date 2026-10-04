@@ -43,6 +43,8 @@ Ti serve saper derivare bene: ogni integrale si controlla derivando il risultato
   sezioni: [
     { id: 'primitive', titolo: 'Primitive e integrale indefinito', testo: R`Quale funzione ha per derivata $3x^2$? La risposta è $x^3$, perché $D(x^3) = 3x^2$.
 
+[[video:integrali/primitive]]
+
 >* $F$ è una **primitiva** di $f$ in un intervallo se $F'(x) = f(x)$ in ogni punto dell'intervallo.
 
 Vanno bene anche $x^3 + 5$ e $x^3 - 2$. La derivata di una costante è zero, quindi aggiungere un numero non cambia la derivata.
@@ -255,6 +257,8 @@ Se al numeratore c'è anche un termine in $x$, separi due pezzi. La parte multip
 
     { id: 'definito', titolo: 'L\'integrale definito e le somme di Riemann', testo: R`Torniamo alle aree. La regione fra il grafico di $f$, l'asse $x$ e le rette $x=a$ e $x=b$ ha un lato curvo. Quanto vale la sua area?
 
+[[video:integrali/area]]
+
 L'idea è riempirla di rettangoli.
 
 1. Dividi $[a;b]$ in $n$ parti uguali, larghe $\Delta x = \dfrac{b-a}{n}$.
@@ -289,6 +293,10 @@ Le proprietà si capiscono pensando alle aree:
 >! Se nel risultato di un integrale definito compare la $x$, c'è un errore. La variabile di integrazione è **muta**: $\int_a^b f(x)\,dx$ e $\int_a^b f(t)\,dt$ sono lo stesso numero.` },
 
     { id: 'teorema-fondamentale', titolo: 'Funzione integrale e teorema fondamentale', testo: R`Calcolare un integrale con i rettangoli sarebbe lunghissimo. C'è una strada corta, e passa per le primitive.
+
+[[video:integrali/teorema-fondamentale]]
+
+[[video:integrali/calcolo]]
 
 Fissa l'estremo sinistro $a$ e lascia muovere quello destro. A ogni $x$ associ l'area accumulata da $a$ fino a $x$.
 

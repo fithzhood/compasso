@@ -167,6 +167,7 @@
       }
       if ((m = r.match(/^\[\[grafico:([^\]]+)\]\]$/))) { chiudiTutto(); out.push('<div class="grafico-slot" data-grafico="' + esc(m[1]) + '"></div>'); continue; }
       if ((m = r.match(/^\[\[animazione:([^\]]+)\]\]$/))) { chiudiTutto(); out.push('<div class="grafico-slot" data-animazione="' + esc(m[1]) + '"></div>'); continue; }
+      if ((m = r.match(/^\[\[video:([^\]]+)\]\]$/))) { chiudiTutto(); out.push('<div class="video-slot" data-video="' + esc(m[1]) + '"></div>'); continue; }
       if ((m = r.match(/^###\s+(.+)$/))) { chiudiTutto(); out.push('<h4>' + inline(m[1]) + '</h4>'); continue; }
       if ((m = r.match(/^-\s+(.+)$/))) { chiudiPar(); chiudiQuote(); chiudiTab(); if (lista && tipoLista !== 'ul') chiudiLista(); tipoLista = 'ul'; (lista = lista || []).push(m[1]); continue; }
       if ((m = r.match(/^\d+[.)]\s+(.+)$/))) { chiudiPar(); chiudiQuote(); chiudiTab(); if (lista && tipoLista !== 'ol') chiudiLista(); tipoLista = 'ol'; (lista = lista || []).push(m[1]); continue; }
@@ -186,6 +187,7 @@
       if (spec) { try { CGRAF.render(spec, slot); } catch (e) { slot.textContent = 'Grafico non disponibile (' + e.message + ')'; } }
       else slot.textContent = 'Grafico "' + slot.dataset.grafico + '" mancante';
     });
+    radice.querySelectorAll('.video-slot').forEach(slot => { if (window.CVIDEO) CVIDEO.monta(slot, slot.dataset.video); else slot.textContent = 'Video non disponibile'; });
     radice.querySelectorAll('.derivazione').forEach(montaDerivazione);
     radice.querySelectorAll('.prova').forEach(montaProva);
   }

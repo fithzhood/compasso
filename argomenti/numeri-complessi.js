@@ -53,6 +53,8 @@ Il problema vero arrivò nel Cinquecento con le equazioni di terzo grado. L'equa
 
     { id: 'unita-immaginaria', titolo: "L'unità immaginaria e le potenze di i", testo: R`>* L'**unità immaginaria** è il numero $i$ tale che $$i^2 = -1.$$ Non è un numero reale.
 
+[[video:numeri-complessi/potenze-di-i]]
+
 Con $i$ scrivi la radice quadrata di un numero negativo: separa il segno meno e portalo fuori come $i$. Per esempio $\sqrt{-9} = \sqrt{9}\cdot\sqrt{-1} = 3i$.
 
 Ora moltiplica $i$ per sé stesso più volte, e ogni volta che compare $i^2$ scrivi $-1$.
@@ -215,6 +217,8 @@ Dalla forma trigonometrica a quella algebrica basta fare i conti: $2(\cos 30^\ci
 >! La tangente da sola non basta per trovare $\theta$, perché si ripete ogni $180^\circ$. Prima disegna il punto e guarda in che quadrante sta.` },
 
     { id: 'de-moivre', titolo: 'Prodotto, quoziente e De Moivre', testo: R`Moltiplica $z = 2 + i$ per $i$: $\;i(2 + i) = 2i + i^2 = -1 + 2i$. Il punto $(2; 1)$ è finito in $(-1; 2)$, alla stessa distanza dall'origine ma girato di $90^\circ$.
+
+[[video:numeri-complessi/moltiplicare-e-ruotare]]
 
 La forma trigonometrica spiega il perché. Moltiplica $z_1=\rho_1(\cos\theta_1+i\sin\theta_1)$ per $z_2=\rho_2(\cos\theta_2+i\sin\theta_2)$ e usa le formule di addizione:
 

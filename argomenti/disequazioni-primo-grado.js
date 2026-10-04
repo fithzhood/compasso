@@ -71,6 +71,8 @@ La soluzione è $x > 3$. Il $3$ è escluso: lì viene $0 > 0$, che è falso.
 
 In tutti e tre conta una domanda: l'estremo è incluso o no?
 
+[[video:disequazioni-primo-grado/intervalli]]
+
 | disuguaglianza | intervallo | sulla retta reale |
 |---|---|---|
 | $a < x < b$ | $(a, b)$ | pallini vuoti in $a$ e $b$ |
@@ -94,6 +96,8 @@ Molti libri scrivono $]a, b[$ invece di $(a, b)$. Il significato è lo stesso.
 >! $(2, 5)$ può essere un intervallo o un punto del piano. In questo capitolo è un intervallo.` },
 
     { id: 'principi-equivalenza', titolo: 'I principi di equivalenza e il cambio di verso', testo: R`Come per le equazioni, ci sono due principi. Semplificano la disequazione senza cambiarne le soluzioni.
+
+[[video:disequazioni-primo-grado/cambio-verso]]
 
 >* **Primo principio.** Se sommi o togli lo stesso numero ai due membri, il verso non cambia. Da $x - 5 > 2$, sommando $5$, ottieni $x > 7$.
 
@@ -165,6 +169,8 @@ Qui la prima dà $2x > -4$, cioè $x > -2$. La seconda dà $-x \ge -8$. Dividi p
 [[grafico:sistemaIntersezione]]
 
 La parte comune va da $-2$ escluso a $8$ incluso: $-2 < x \le 8$.
+
+[[video:disequazioni-primo-grado/sistema]]
 
 >* La soluzione di un sistema è l'**intersezione** delle soluzioni. Un numero va bene solo se rende vere **tutte** le disequazioni.
 

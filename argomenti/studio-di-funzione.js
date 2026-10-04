@@ -88,6 +88,8 @@ Servono tutte e tre le ipotesi. La tabella mostra che cosa succede se ne manca u
 
     { id: 'lagrange', titolo: 'Il teorema di Lagrange', testo: R`In due ore percorri $180$ km, quindi la media è $90$ km/h. Allora in almeno un istante il tachimetro ha segnato proprio $90$. Il teorema di Lagrange dice la stessa cosa per una funzione.
 
+[[video:studio-di-funzione/lagrange]]
+
 Chiama **corda** il segmento che unisce il primo e l'ultimo punto del grafico. La sua pendenza è la «media».
 
 >* **Teorema di Lagrange** (o del valor medio). Se $f$ è continua in $[a; b]$ e derivabile in $(a; b)$, esiste almeno un punto $c \in (a; b)$ tale che $$f'(c) = \frac{f(b) - f(a)}{b - a}.$$ In $c$ la tangente è parallela alla corda.
@@ -112,6 +114,8 @@ Esempio: $f(x) = x^2$ su $[0; 3]$.
 > Scritta come $f(b) = f(a) + f'(c)\,(b - a)$, la tesi si chiama **formula degli incrementi finiti**.` },
 
     { id: 'conseguenze', titolo: 'Segno della derivata e monotonia', testo: R`Da Lagrange si ricava il legame fra il segno di $f'$ e l'andamento di $f$.
+
+[[video:studio-di-funzione/monotonia]]
 
 Prendi due punti $x_1 < x_2$. Lagrange dice che $f(x_2) - f(x_1) = f'(c)(x_2 - x_1)$. Il fattore $x_2 - x_1$ è positivo. Quindi la differenza ha il segno di $f'(c)$.
 
@@ -227,6 +231,8 @@ Nell'esempio $f''(x) = 6x$. Quindi $f''(-1) = -6 < 0$ (massimo) e $f''(1) = 6 > 
 
     { id: 'concavita-flessi', titolo: 'Concavità e flessi', testo: R`La derivata seconda è la derivata di $f'$. Dice come **cambia la pendenza**, cioè da che parte si piega il grafico.
 
+[[video:studio-di-funzione/concavita]]
+
 >* Se $f''(x) > 0$, la funzione ha la **concavità verso l'alto**, come una tazza. Se $f''(x) < 0$, ha la **concavità verso il basso**. Un **punto di flesso** è un punto in cui la concavità cambia verso.
 
 Nel flesso $f''(x_0) = 0$, ma questo non basta: $f''$ deve anche cambiare segno. Per $y = x^4$ hai $f''(0) = 0$, ma $f''(x) = 12x^2$ resta positiva. In $0$ c'è un minimo, non un flesso.
@@ -259,6 +265,8 @@ Nel grafico ci sono $f$, $f'$ e $f''$. Trascina $P$ e confronta:
 >! A un massimo di $f$ corrisponde uno **zero** di $f'$, non un massimo di $f'$. Lì $f'$ passa da $+$ a $-$.` },
 
     { id: 'ottimizzazione', titolo: 'Problemi di ottimizzazione', testo: R`Molti problemi chiedono l'area più grande o il costo più basso. Lo schema è sempre lo stesso.
+
+[[video:studio-di-funzione/ottimizzazione]]
 
 1. Scegli la variabile e dalle un nome.
 2. Scrivi la grandezza da ottimizzare in funzione di **quella sola variabile**.

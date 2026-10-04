@@ -26,6 +26,8 @@ Qui trovi anche gli strumenti per calcolare con questi numeri: le **potenze**, l
   sezioni: [
     { id: 'insiemi-n-z-q', titolo: 'Naturali, interi, razionali', testo: R`Quanto fa $3 - 5$? Con i numeri per contare non si può fare.
 
+[[video:insiemi-numerici/da-n-a-r]]
+
 I **numeri naturali** sono i numeri per contare: $\mathbb{N} = \{0, 1, 2, 3, \dots\}$. Non ci sono naturali negativi. Per questo in $\mathbb{N}$ l'equazione $x + 5 = 3$ non ha soluzione.
 
 Aggiungi i numeri negativi e ottieni i **numeri interi**: $\mathbb{Z} = \{\dots, -2, -1, 0, 1, 2, \dots\}$. Con gli interi la sottrazione si fa sempre: $3 - 5 = -2$.
@@ -125,6 +127,8 @@ Da qui viene la regola del formulario.
 
     { id: 'densita-completezza', titolo: 'Densità di Q e non completezza', testo: R`Fra i naturali $3$ e $4$ non c'è nessun altro naturale. Con le frazioni è diverso. Fra due frazioni diverse ce n'è sempre un'altra: la loro **media**.
 
+[[video:insiemi-numerici/densita]]
+
 ~ \dfrac{1}{2} \text{ e } 1 :: due razionali qualsiasi
 ~ \dfrac{1}{2}\left(\dfrac{1}{2} + 1\right) = \evid{\dfrac{3}{4}} :: la media sta a metà strada, quindi in mezzo
 ~ \dfrac{1}{2}\left(\dfrac{1}{2} + \dfrac{3}{4}\right) = \evid{\dfrac{5}{8}} :: ripeto fra $\dfrac{1}{2}$ e $\dfrac{3}{4}$
@@ -141,6 +145,8 @@ I numeri reali tappano tutti i buchi: ogni punto della retta ha il suo numero. Q
 >! Non confondere le due parole. $\mathbb{Q}$ è denso ma non completo: ha dei buchi. $\mathbb{R}$ è denso e completo.` },
 
     { id: 'irrazionali', titolo: 'I numeri irrazionali', testo: R`>* Un numero **irrazionale** è un numero reale che non si scrive come frazione. Con la virgola ha infinite cifre, senza periodo.
+
+[[video:insiemi-numerici/radice-di-due]]
 
 Come sai che $\sqrt{2}$ non è una frazione? Non puoi provarle tutte: sono infinite. Si ragiona **per assurdo**: supponi che lo sia e arrivi a una contraddizione.
 
@@ -160,6 +166,8 @@ Allo stesso modo è irrazionale la radice quadrata di ogni naturale che non è u
 >! Guardare le prime cifre non basta: un periodo potrebbe essere lunghissimo. $0{,}101001000100001\dots$ è irrazionale perché i blocchi di zeri si allungano sempre. Così nessun gruppo di cifre si ripete uguale.` },
 
     { id: 'potenze', titolo: 'Potenze ed esponenti', testo: R`$2^5$ è una **potenza**: vuol dire $2 \cdot 2 \cdot 2 \cdot 2 \cdot 2$.
+
+[[video:insiemi-numerici/potenze]]
 
 In $a^n$ il numero $a$ è la **base**. Il numero $n$ è l'**esponente**: dice quanti fattori uguali ad $a$ moltiplichi.
 

@@ -125,6 +125,10 @@ function verificaFile(file) {
     const ra = /\[\[animazione:([^\]]+)\]\]/g;
     while ((m = ra.exec(s))) { if (!ANIMAZIONI.includes(m[1])) E(`${dove}: animazione "${m[1]}" inesistente (disponibili: ${ANIMAZIONI.join(', ')})`); }
     s.split('\n').forEach(riga => { if (/\[\[animazione:/.test(riga) && riga.trim() !== riga.trim().match(/\[\[animazione:[^\]]+\]\]/)[0]) E(`${dove}: [[animazione:...]] deve stare da solo sulla riga`); });
+    // i video: video/<argomento>/<nome>.js deve esistere (contratto in SCHEMA-VIDEO.md)
+    const rv = /\[\[video:([^\]]+)\]\]/g;
+    while ((m = rv.exec(s))) { if (!/^[a-z0-9-]+\/[a-z0-9-]+$/.test(m[1]) || !fs.existsSync(path.join(radice, 'video', m[1] + '.js'))) E(`${dove}: video "${m[1]}" inesistente (atteso video/${m[1]}.js)`); }
+    s.split('\n').forEach(riga => { if (/\[\[video:/.test(riga) && riga.trim() !== riga.trim().match(/\[\[video:[^\]]+\]\]/)[0]) E(`${dove}: [[video:...]] deve stare da solo sulla riga`); });
   });
   for (const nome in grafici) if (!usati.has(nome)) A(`grafici.${nome}: definito ma mai usato con [[grafico:${nome}]]`);
 

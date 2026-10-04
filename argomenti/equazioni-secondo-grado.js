@@ -88,7 +88,11 @@ Per $x^2+6x$ manca $9$: infatti $x^2+6x+9=(x+3)^2$. Guarda l'animazione.
 
 [[animazione:completamento-quadrato]]
 
+[[video:equazioni-secondo-grado/completare-il-quadrato]]
+
 Questo metodo si chiama completamento del quadrato: con le lettere $a$, $b$, $c$ dà una formula valida per ogni equazione.
+
+[[video:equazioni-secondo-grado/formula-risolutiva]]
 
 ~ ax^2+bx+c=0 :: si parte dalla forma normale, con $a\ne 0$
 ~ \evid{4a^2x^2+4abx+4ac}=0 :: moltiplico tutto per $4a$ (si può, perché $4a\ne 0$): così non compariranno frazioni
@@ -202,6 +206,8 @@ Vale anche al contrario: se il trinomio si scompone facilmente, leggi le soluzio
     { id: 'parabola-legame', titolo: 'Il significato grafico', testo: R`La funzione $y=ax^2+bx+c$ ha per grafico una **parabola**.
 
 Risolvere $ax^2+bx+c=0$ vuol dire cercare dove $y$ vale zero, cioè dove la parabola incontra l'asse $x$. Le soluzioni sono le ascisse di quei punti, dette anche **zeri**.
+
+[[video:equazioni-secondo-grado/discriminante]]
 
 Muovi i cursori e guarda il valore di $\Delta$ scritto in alto.
 

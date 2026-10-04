@@ -61,6 +61,8 @@ Le parole per classificare le equazioni:
 
 Pensa a una bilancia in equilibrio: i due piatti sono i due membri. Se aggiungi lo stesso peso a tutti e due, l'equilibrio resta. Se raddoppi il contenuto di tutti e due, anche.
 
+[[video:equazioni-primo-grado/bilancia]]
+
 >* **Primo principio.** Puoi aggiungere o togliere la stessa cosa a tutti e due i membri. Ottieni un'equazione equivalente.
 
 >* **Secondo principio.** Puoi moltiplicare o dividere tutti e due i membri per lo stesso numero **diverso da zero**. Ottieni un'equazione equivalente.
@@ -266,6 +268,8 @@ In quale riga $y$ vale zero? In quella con $x = 2$. È la soluzione di $2x - 4 =
 [[grafico:zeroRetta]]
 
 >* Risolvere $ax = b$ vuol dire cercare dove la retta $y = ax - b$ taglia l'asse $x$. Se $a \ne 0$, la retta è inclinata e lo taglia in un punto. Se $a = 0$, la retta è orizzontale: o non tocca l'asse (impossibile) o ci sta sopra (indeterminata).
+
+[[video:equazioni-primo-grado/tre-casi]]
 
 ?? La retta $y = 3x + 6$ taglia l'asse $x$ in…
 [ ] $x = 6$

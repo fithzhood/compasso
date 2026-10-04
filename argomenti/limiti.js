@@ -53,6 +53,8 @@ Il limite per $x \to x_0$ ha senso solo se $x_0$ è di accumulazione per il domi
 
 Da tutte e due le parti i valori si stringono attorno a $2$. Su $x = 1$ il punto sparisce e resta un buco. Il limite dice dove **va** la funzione mentre ti avvicini.
 
+[[video:limiti/limite]]
+
 >* $\lim\limits_{x \to x_0} f(x) = L$ vuol dire: se prendi $x$ abbastanza vicino a $x_0$, e diverso da $x_0$, $f(x)$ è vicino a $L$ quanto vuoi. Il valore $f(x_0)$ non conta: può non esistere, o essere diverso da $L$.
 
 Nel laboratorio «Il microscopio» puoi ingrandire la zona attorno al punto.
@@ -89,6 +91,8 @@ Il pezzo $0 < |x - x_0|$ esclude $x = x_0$, perché il valore nel punto non cont
 [[grafico:iperbole]]
 
 Vicino a $0$, da destra, $f(x)$ diventa enorme e positiva: $\frac{1}{0{,}01} = 100$. Da sinistra diventa enorme e negativa. Lontano da $0$, invece, $f(x)$ si avvicina a $0$.
+
+[[video:limiti/infinito]]
 
 >* $\lim\limits_{x \to x_0} f(x) = +\infty$ vuol dire: $f(x)$ supera qualunque numero $M$, se prendi $x$ abbastanza vicino a $x_0$. In simboli: $\forall M > 0\ \exists\, \delta > 0 : 0 < |x - x_0| < \delta \Rightarrow f(x) > M$. Per $-\infty$ si chiede $f(x) < -M$.
 
@@ -147,6 +151,8 @@ Con l'infinito, molti casi si capiscono pensando a numeri enormi o minuscoli:
 Altre combinazioni non hanno un risultato fisso, perché dipende dalle funzioni. Si chiamano **forme indeterminate**.
 
 >* Le sette **forme indeterminate** sono $\infty - \infty$, $\ 0 \cdot \infty$, $\ \dfrac{\infty}{\infty}$, $\ \dfrac00$, $\ 1^{\infty}$, $\ 0^0$, $\ \infty^0$. Se sostituendo ne esce una, devi riscrivere l'espressione.
+
+[[video:limiti/forme-indeterminate]]
 
 Guarda tre limiti che danno tutti $\frac00$:
 - $\lim\limits_{x \to 0} \frac{2x}{x} = 2$;
@@ -219,6 +225,8 @@ Un polinomio da solo, per $x \to \pm\infty$, va come il suo termine più alto. P
 >* **Limiti notevoli:** per $x \to 0$ si ha $\dfrac{\sin x}{x} \to 1$, $\ \dfrac{1 - \cos x}{x^2} \to \dfrac12$, $\ \dfrac{e^x - 1}{x} \to 1$, $\ \dfrac{\ln(1 + x)}{x} \to 1$. Per $x \to \infty$ si ha $\left(1 + \dfrac1x\right)^x \to e$.
 
 ### Perché $\frac{\sin x}{x} \to 1$
+
+[[video:limiti/seno-su-x]]
 
 Sulla circonferenza goniometrica prendi un angolo $x$ in radianti, fra $0$ e $\frac{\pi}{2}$. Ci sono tre figure, una dentro l'altra:
 - il triangolo $OAB$, di area $\frac12 \sin x$;

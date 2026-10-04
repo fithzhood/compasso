@@ -23,6 +23,8 @@ Bastano potenze e frazioni. La parte difficile è capire dal testo **se conta l'
   sezioni: [
     { id: 'principio-conteggio', titolo: 'Il principio fondamentale del conteggio', testo: R`Hai 2 magliette e 3 paia di pantaloni: quanti completi puoi fare? Con ognuna delle 2 magliette puoi mettere uno qualunque dei 3 pantaloni, quindi i completi sono $2 \cdot 3 = 6$.
 
+[[video:calcolo-combinatorio/conteggio]]
+
 >* **Principio fondamentale del conteggio (regola del prodotto).** Una scelta si fa in più passi, uno dopo l'altro. Il primo passo si fa in $n_1$ modi, il secondo in $n_2$ modi, e così via. I modi in tutto sono $$n_1 \cdot n_2 \cdot \ldots \cdot n_k.$$
 
 Puoi disegnare il conto con un **diagramma ad albero**, come nel laboratorio «L'albero delle scelte». Ogni percorso dall'inizio a una punta è un completo.
@@ -121,6 +123,8 @@ I numeri $n_1, n_2, \ldots$ si chiamano **molteplicità**: dicono quante volte c
 
     { id: 'combinazioni', titolo: 'Le combinazioni e il coefficiente binomiale', testo: R`Fra 8 studenti scegli una commissione di 3. Qui l'ordine **non** conta, perché Anna, Bruno e Carla sono la stessa commissione in qualunque ordine. Il trucco è contare come se l'ordine contasse, e poi correggere.
 
+[[video:calcolo-combinatorio/disposizioni-combinazioni]]
+
 ~ 8 \cdot 7 \cdot 6 = 336 :: se l'ordine contasse (presidente, vice, segretario) sarebbero disposizioni
 ~ \dfrac{336}{\evid{3!}} :: ma ogni terzetto, come Anna-Bruno-Carla, compare nel conto $3! = 6$ volte, una per ogni ordine possibile
 ~ \dfrac{336}{6} = \evidb{56} :: le commissioni sono 56
@@ -161,6 +165,8 @@ La **formula di Stifel** vale per $1 \le k \le n-1$. Per capirla, fissa una pers
 
 Con la formula di Stifel costruisci il **triangolo di Tartaglia**. Ogni riga comincia e finisce con 1, e ogni altro numero è la somma dei due che gli stanno sopra.
 
+[[video:calcolo-combinatorio/tartaglia]]
+
 $$\begin{array}{c} 1 \\ 1 \quad 1 \\ 1 \quad 2 \quad 1 \\ 1 \quad 3 \quad 3 \quad 1 \\ 1 \quad 4 \quad 6 \quad 4 \quad 1 \\ 1 \quad 5 \quad 10 \quad 10 \quad 5 \quad 1 \\ 1 \quad 6 \quad 15 \quad 20 \quad 15 \quad 6 \quad 1 \end{array}$$
 
 La riga $n$, contando da 0, contiene $\binom{n}{0}, \binom{n}{1}, \ldots, \binom{n}{n}$. Nella riga 6, per esempio, $\binom{6}{2} = 15$ è il terzo numero, e la somma della riga è $64 = 2^6$.
@@ -172,6 +178,8 @@ I numeri di una riga crescono verso il centro e poi calano, come una campana. Ne
 >! $\binom{n}{k}$ è sempre un numero **intero**: se ti viene un numero con la virgola, hai sbagliato un conto.` },
 
     { id: 'binomio-newton', titolo: 'Il binomio di Newton', testo: R`Conosci già $(a+b)^2 = a^2 + 2ab + b^2$ e $(a+b)^3 = a^3 + 3a^2b + 3ab^2 + b^3$. Guarda i coefficienti: $1, 2, 1$ e $1, 3, 3, 1$. Sono le righe 2 e 3 del triangolo di Tartaglia, e per questo i $\binom{n}{k}$ si chiamano coefficienti *binomiali*.
+
+[[video:calcolo-combinatorio/binomio-newton]]
 
 Scrivi $(a+b)^3 = (a+b)(a+b)(a+b)$. Da ogni parentesi prendi $a$ oppure $b$, e moltiplichi. Ottieni $a^2b$ quando prendi $b$ da una parentesi sola. Quella parentesi si sceglie in $\binom{3}{1} = 3$ modi, quindi il coefficiente è $3$.
 

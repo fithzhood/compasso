@@ -88,6 +88,8 @@ Altri punti, con lo stesso centro e raggio:
 
 >* **Equazione canonica** (o *centro-raggio*): $$(x-\alpha)^2+(y-\beta)^2=r^2$$ Centro $C(\alpha;\beta)$, raggio $r$. Un punto sta sulla circonferenza quando le sue coordinate rendono vera l'uguaglianza.
 
+[[video:circonferenza/equazione]]
+
 Esempio: centro $C(3;-1)$ e raggio $4$ danno $(x-3)^2+(y+1)^2=16$.
 
 Occhio ai segni. Nella formula c'è $x-\alpha$: con $\alpha=-2$ viene $x-(-2)=x+2$. Nel grafico trascina $C$ dove le coordinate sono negative, e $P$ per cambiare il raggio.
@@ -167,6 +169,8 @@ Esempio: $x^2+y^2+6x-8y=0$. Manca il termine noto, quindi passa per l'origine. I
 
 Calcola la distanza $d$ del centro dalla retta e confrontala con il raggio $r$. Se la retta passa vicino al centro taglia la circonferenza, se passa lontano non la tocca.
 
+[[video:circonferenza/retta-e-circonferenza]]
+
 | distanza | punti comuni | la retta è |
 |---|---|---|
 | $d<r$ | 2 | secante |
@@ -180,6 +184,8 @@ Trascina $Q$ e guarda $d$: i due punti comuni si fondono quando $d=5$, poi spari
 ### Con il $\Delta$
 
 Se sostituisci la retta nella circonferenza resta un'equazione di secondo grado. Quante soluzioni ha, tanti sono i punti comuni.
+
+[[video:circonferenza/equazione-risolvente]]
 
 >* $\Delta>0$: secante (due punti). $\Delta=0$: tangente (un punto). $\Delta<0$: esterna (nessun punto).
 

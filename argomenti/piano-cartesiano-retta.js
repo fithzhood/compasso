@@ -89,6 +89,8 @@ Un punto con $y = 0$ sta **sull'asse $x$**, uno con $x = 0$ sta **sull'asse $y$*
 
     { id: 'distanza-punto-medio', titolo: 'Distanza fra due punti, punto medio e baricentro', testo: R`Quanto dista $A(1; -2)$ da $B(5; 1)$? Da $A$ a $B$ fai $4$ passi a destra e $3$ in su. Sono i cateti di un triangolo rettangolo con ipotenusa $AB$: usa Pitagora.
 
+[[video:piano-cartesiano-retta/distanza]]
+
 ~ A(1; -2),\quad B(5; 1) :: i due punti
 ~ \Delta x = 5 - 1 = \evid{4}, \quad \Delta y = 1 - (-2) = \evid{3} :: spostamento orizzontale e verticale: sempre «arrivo meno partenza»
 ~ \overline{AB} = \sqrt{\evid{4^2 + 3^2}} :: Pitagora: l'ipotenusa è la radice della somma dei quadrati dei cateti
@@ -99,6 +101,8 @@ Un punto con $y = 0$ sta **sull'asse $x$**, uno con $x = 0$ sta **sull'asse $y$*
 >! Le differenze vanno al quadrato **prima** di sommarle: $\sqrt{4^2 + 3^2} = 5$. Invece $4 + 3 = 7$ è la strada lungo la griglia, non la distanza.
 
 Il **punto medio** $M$ di $AB$ ha per coordinate la media delle ascisse e la media delle ordinate.
+
+[[video:piano-cartesiano-retta/punto-medio]]
 
 >* **Punto medio.** $$M\left(\dfrac{x_A + x_B}{2};\ \dfrac{y_A + y_B}{2}\right)$$
 
@@ -146,6 +150,8 @@ Una retta passa per l'**origine** quando $q = 0$, cioè $y = mx$. Nella forma im
 >! Le rette verticali non si scrivono come $y = mx + q$: restano $x = k$. La forma implicita invece va bene per tutte.` },
 
     { id: 'coefficiente-angolare', titolo: 'Il coefficiente angolare', testo: R`Un cartello stradale dice «pendenza $10\%$»: la strada sale di $10$ metri ogni $100$ in orizzontale. Il **coefficiente angolare** $m$ è la stessa idea. Dice quanto sale la retta, diviso quanto va avanti.
+
+[[video:piano-cartesiano-retta/coefficiente-angolare]]
 
 >* **Coefficiente angolare.** Prendi due punti $A$ e $B$ della retta, con $x_A \ne x_B$: $$m = \dfrac{\Delta y}{\Delta x} = \dfrac{y_B - y_A}{x_B - x_A}$$ Sopra la differenza delle **ordinate**, sotto quella delle **ascisse**. Qualunque coppia di punti della retta dà lo stesso rapporto.
 
@@ -201,6 +207,8 @@ Nella scheda **Laboratorio** c'è *Tiro a segno*: sposta due maniglie finché la
 >! Attento ai segni: con $x_A = -3$ scrivi $x - (-3)$, cioè $x + 3$. Con $x - 3$ la retta finisce dall'altra parte.` },
 
     { id: 'parallele-perpendicolari', titolo: 'Rette parallele e perpendicolari', testo: R`Due rette con la stessa pendenza salgono allo stesso modo. Se tagliano l'asse $y$ in punti diversi, non si incontrano mai: sono **parallele**. Se hanno anche lo stesso $q$, sono la stessa retta: si dicono **coincidenti**.
+
+[[video:piano-cartesiano-retta/parallele-perpendicolari]]
 
 >* **Parallele.** Due rette non verticali sono parallele quando $$m_1 = m_2$$
 

@@ -35,6 +35,8 @@ Queste funzioni descrivono le cose che oscillano o girano, come un pendolo o la 
   sezioni: [
     { id: 'gradi-radianti', titolo: 'Gradi e radianti', testo: R`Il **radiante** è un'unità per gli angoli che nasce dalla circonferenza stessa. Con i radianti molte formule diventano più semplici.
 
+[[video:funzioni-goniometriche/radianti]]
+
 >* **Radiante:** l'angolo al centro che stacca un arco lungo quanto il raggio. La misura in radianti di un angolo è $\dfrac{\text{arco}}{\text{raggio}}$.
 
 La circonferenza è lunga $2\pi r$, cioè $2\pi$ raggi. Quindi il giro completo misura $2\pi$ radianti, e un radiante è circa $57^\circ$.
@@ -95,6 +97,8 @@ I quattro **quadranti** si contano in verso antiorario, partendo da quello in al
 >! Un angolo può essere più grande di $360^\circ$ o negativo. Per sapere dove cade, togli o aggiungi giri interi. Per esempio $780^\circ - 2 \cdot 360^\circ = 60^\circ$, nel primo quadrante. E $-120^\circ + 360^\circ = 240^\circ$, nel terzo.` },
 
     { id: 'seno-coseno', titolo: 'Seno e coseno', testo: R`Con un angolo acuto, il raggio $OP$ è l'ipotenusa di un triangolo rettangolo e vale $1$. Il seno è il cateto opposto, cioè l'ordinata di $P$. Il coseno è il cateto adiacente, cioè l'ascissa di $P$.
+
+[[video:funzioni-goniometriche/seno-coseno]]
 
 Questa lettura funziona per ogni angolo, e diventa la definizione.
 
@@ -207,6 +211,8 @@ Gli altri angoli, come $120^\circ$ o $210^\circ$, si ricavano da questi con gli 
 
     { id: 'relazioni-fondamentali', titolo: 'Le relazioni fondamentali', testo: R`Se conosci il seno di un angolo, conosci anche il coseno? Quasi: ti manca solo il segno.
 
+[[video:funzioni-goniometriche/relazione-fondamentale]]
+
 >* **Relazione fondamentale:** $$\sin^2\alpha + \cos^2\alpha = 1 \qquad \text{per ogni } \alpha$$ $\sin^2\alpha$ vuol dire $(\sin\alpha)^2$.
 
 È il teorema di Pitagora. Guarda il triangolo con vertici $O$, $P$ e la proiezione di $P$ sull'asse $x$. L'ipotenusa è il raggio, che vale $1$. I cateti sono lunghi $|\cos\alpha|$ e $|\sin\alpha|$.
@@ -274,6 +280,8 @@ Pensi $\alpha$ acuto solo per trovare il segno. Le uguaglianze che ottieni valgo
 - a mezzo giro vale $0$;
 - a tre quarti vale $-1$;
 - dopo un giro torna a $0$, e ricomincia.
+
+[[video:funzioni-goniometriche/sinusoide]]
 
 L'animazione riporta quell'altezza su un asse orizzontale. L'onda che si disegna è la **sinusoide**.
 
@@ -371,7 +379,7 @@ Nella scheda **Laboratorio** c'è *Sintonizza l'onda*: muovi le creste finché l
     },
     circonferenzaGoniometrica: {
       tipo: 'circonferenza-goniometrica', angolo: 60, mostra: ['sin', 'cos', 'tan'],
-      didascalia: 'Porta P in ciascuno dei quattro quadranti e guarda i segni: il seno (blu, verticale) è negativo sotto l\'asse x, il coseno (arancio, orizzontale) a sinistra dell\'asse y. Il segmento verde-acqua è la tangente: che cosa succede quando ti avvicini a 90°?'
+      didascalia: 'Porta P in ciascuno dei quattro quadranti e guarda i segni: il seno (arancio, verticale) è negativo sotto l\'asse x, il coseno (blu, orizzontale) a sinistra dell\'asse y. Il segmento verde-acqua è la tangente: che cosa succede quando ti avvicini a 90°?'
     },
     senoCoseno: {
       tipo: 'piano', x: [-7, 7.6], y: [-1.5, 2.2], passo: [1, 1], altezza: 330,

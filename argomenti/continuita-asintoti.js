@@ -107,6 +107,8 @@ Le discontinuità stanno in pochi posti:
 
     { id: 'discontinuita', titolo: 'I punti di discontinuità e la loro classificazione', testo: R`Dove $f$ non è continua, il grafico ha un buco, un salto o una fuga verso l'infinito. Per sapere quale, calcola i due **limiti laterali**: $$l^- = \lim_{x \to x_0^-} f(x), \qquad l^+ = \lim_{x \to x_0^+} f(x).$$
 
+[[video:continuita-asintoti/discontinuita]]
+
 Un **punto di discontinuità** può stare nel dominio, oppure esserne escluso. Esempio: $x_0 = 0$ per $\frac{1}{x}$.
 
 | specie | limiti laterali | come appare il grafico |
@@ -154,6 +156,8 @@ $\frac{1}{x^2}$ in $x = 0$ ha i due limiti laterali uguali a $+\infty$. La retta
 
     { id: 'teoremi', titolo: 'I teoremi sulle funzioni continue', testo: R`Questi tre teoremi sembrano ovvi, ma valgono solo con le loro ipotesi. Tutti chiedono $f$ continua su un intervallo **chiuso e limitato** $[a, b]$.
 
+[[video:continuita-asintoti/teorema-degli-zeri]]
+
 >* **Teorema di Weierstrass.** Se $f$ è continua in $[a, b]$, in $[a, b]$ ha un **massimo assoluto** e un **minimo assoluto**.
 
 >* **Teorema degli zeri** (di Bolzano). Sia $f$ continua in $[a, b]$, con segni opposti agli estremi: $f(a) \cdot f(b) < 0$. Allora esiste almeno un $c \in (a, b)$ con $f(c) = 0$.
@@ -186,6 +190,8 @@ Trascina $A$ e $B$ sulla curva e guarda il segno di $f(a) \cdot f(b)$.
 
     { id: 'bisezione', titolo: 'Il metodo di bisezione', testo: R`Il teorema degli zeri dice che una soluzione **c'è**, ma non dove. Il **metodo di bisezione** la chiude in un intervallo sempre più piccolo.
 
+[[video:continuita-asintoti/bisezione]]
+
 Parti da $[a, b]$, con $f$ continua e $f(a) \cdot f(b) < 0$. Poi:
 
 1. Calcola il punto medio $m = \frac{a + b}{2}$ e il valore $f(m)$.
@@ -215,6 +221,8 @@ Ogni passo dimezza l'intervallo. Dopo $n$ passi è lungo $\frac{b - a}{2^n}$. Se
 >! Se in $[a, b]$ ci sono più zeri, la bisezione ne trova **uno**, e non sai quale. Prima separali con lo studio del segno.` },
 
     { id: 'asintoti-verticali-orizzontali', titolo: 'Asintoti verticali e orizzontali', testo: R`Un **asintoto** è una retta a cui il grafico si avvicina sempre di più, senza fine. Succede vicino a un punto escluso dal dominio, oppure all'infinito.
+
+[[video:continuita-asintoti/asintoti]]
 
 >* **Asintoto verticale.** La retta $x = c$ è asintoto verticale se in $c$ almeno un limite laterale è infinito.
 
@@ -251,6 +259,8 @@ Per $\frac{3x - 1}{x + 2}$ i gradi sono uguali. L'asintoto è $y = \frac{3}{1} =
 >! Un asintoto orizzontale si può **attraversare**. $\frac{\sin x}{x}$ ha l'asintoto $y = 0$ e lo taglia in ogni $x = k\pi$, con $k \ne 0$.` },
 
     { id: 'asintoto-obliquo', titolo: 'L\'asintoto obliquo', testo: R`Certe funzioni, all'infinito, si stendono lungo una retta inclinata. Quella retta è un asintoto **obliquo**.
+
+[[video:continuita-asintoti/asintoto-obliquo]]
 
 >* **Asintoto obliquo.** La retta $y = mx + q$ è asintoto obliquo per $x \to +\infty$ se questi due limiti sono finiti: $$\begin{aligned} m &= \lim_{x \to +\infty} \frac{f(x)}{x} \quad (\text{con } m \ne 0) \\ q &= \lim_{x \to +\infty} \big(f(x) - mx\big) \end{aligned}$$ Lo stesso vale per $x \to -\infty$.
 

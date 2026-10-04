@@ -123,6 +123,8 @@ Nel triangolo rettangolo i lati che formano l'angolo retto sono i **cateti**, il
 
 Due angoli di un triangolo misurano $50^\circ$ e $60^\circ$. Il terzo misura $180^\circ-50^\circ-60^\circ=70^\circ$, perché gli angoli di qualunque triangolo sommano $180^\circ$.
 
+[[video:geometria-euclidea/centottanta-gradi]]
+
 Guarda l'animazione, poi la dimostrazione. Chiama $\alpha$, $\beta$, $\gamma$ gli angoli in $A$, $B$, $C$. Poi traccia per $C$ la parallela $r$ ad $AB$.
 
 [[animazione:somma-angoli]]
@@ -188,6 +190,8 @@ Per trovare l'altezza $h$ scrivi $3^2+h^2=5^2$, quindi $h^2=25-9=16$ e $h=4$ met
 
 >* **Teorema di Pitagora:** $$c^2=a^2+b^2$$ con $c$ ipotenusa e $a$, $b$ cateti.
 
+[[video:geometria-euclidea/pitagora]]
+
 [[animazione:pitagora]]
 
 ?? Un triangolo rettangolo ha ipotenusa $13$ e un cateto $5$. Quanto misura l'altro cateto?
@@ -236,7 +240,11 @@ Esempio: cateti $12$ e $16$. Trova ipotenusa, proiezioni e altezza.
 
 I raggi del sole arrivano paralleli, quindi i due triangoli hanno la stessa forma. L'ombra dell'albero è $5$ volte quella del palo. Allora anche l'albero è alto $5$ volte il palo: $15$ metri.
 
+[[video:geometria-euclidea/piramide]]
+
 >* **Teorema di Talete:** un fascio di rette parallele taglia due trasversali in segmenti proporzionali.
+
+[[video:geometria-euclidea/talete]]
 
 [[animazione:talete]]
 

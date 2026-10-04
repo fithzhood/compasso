@@ -26,6 +26,8 @@ Ti servono seno, coseno e tangente, con i loro valori negli angoli notevoli, e i
   sezioni: [
     { id: 'teoremi-triangoli-rettangoli', titolo: 'I teoremi sui triangoli rettangoli', testo: R`Una scala lunga $5\ \text{m}$ è appoggiata a un muro e forma con il pavimento un angolo di $60^\circ$. A che altezza tocca il muro? La scala è l'ipotenusa di un triangolo rettangolo, e l'altezza è un cateto.
 
+[[video:trigonometria/triangolo-rettangolo]]
+
 Guarda un angolo acuto $\alpha$. Il cateto **opposto** sta di fronte ad $\alpha$ e non lo tocca. Il cateto **adiacente** forma $\alpha$ insieme all'ipotenusa.
 
 [[grafico:rettangoloAlpha]]
@@ -84,6 +86,8 @@ Conosci la tangente e ti serve l'angolo? Usa la funzione inversa della calcolatr
 >! Controlla che la calcolatrice sia in gradi (DEG), non in radianti (RAD). In radianti $\arctan 0{,}75$ dà $0{,}6435$, che non è un angolo in gradi.` },
 
     { id: 'applicazioni', titolo: 'Applicazioni: altezze, angoli di elevazione, pendenze', testo: R`Sei a $40\ \text{m}$ dalla base di un campanile e guardi la cima. La linea dei tuoi occhi forma con l'orizzontale un angolo di $35^\circ$. I tuoi occhi, la cima e il punto del campanile all'altezza degli occhi formano un triangolo rettangolo.
+
+[[video:trigonometria/torre]]
 
 >* **Angolo di elevazione:** l'angolo fra l'orizzontale e la linea verso un oggetto più in alto di te. **Angolo di depressione:** lo stesso, verso un oggetto più in basso. La depressione da $A$ verso $B$ è uguale all'elevazione da $B$ verso $A$, perché sono angoli alterni interni.
 
@@ -157,6 +161,8 @@ Esempio: raggio $7{,}5\ \text{cm}$ e corda di $10\ \text{cm}$. Allora $\sin\gamm
 
 >* **Teorema dei seni:** in ogni triangolo il rapporto fra un lato e il seno dell'angolo opposto è sempre lo stesso: $$\frac{a}{\sin\alpha} = \frac{b}{\sin\beta} = \frac{c}{\sin\gamma} = 2R$$
 
+[[video:trigonometria/seni]]
+
 Per usarlo ti serve una **coppia completa**: un lato e l'angolo di fronte. Da quella coppia ricavi il rapporto. Con il rapporto trovi gli altri lati, o gli altri angoli.
 
 ### Il caso ambiguo
@@ -190,6 +196,8 @@ Esempio: $a = 5$, $b = 8$, $\alpha = 30^\circ$. Qui $b\sin\alpha = 4$ e $4 < 5 <
 => Da $\sin\beta = \frac{8\cdot 0{,}5}{10} = 0{,}4$ vengono $\beta \approx 23{,}58^\circ$ e $156{,}42^\circ$. Ma $30^\circ + 156{,}42^\circ$ supera $180^\circ$, quindi il secondo non va bene.` },
 
     { id: 'teorema-del-coseno', titolo: 'Il teorema del coseno (di Carnot)', testo: R`Di un triangolo conosci due lati e l'angolo **fra** loro. Nessun lato ha di fronte un angolo noto, quindi il teorema dei seni non parte. Serve il teorema di Pitagora, corretto.
+
+[[video:trigonometria/carnot]]
 
 Pitagora vale solo se l'angolo fra $a$ e $b$ è retto. Se l'angolo si chiude, il lato di fronte si accorcia. Se si apre, si allunga. Prova nel grafico.
 

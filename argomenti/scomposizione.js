@@ -236,6 +236,8 @@ $$\begin{gathered} A^3 - B^3 \\ = (A - B)(A^2 + AB + B^2) \end{gathered}$$
 
 Sviluppa $(x + 3)(x + 4)$: ottieni $x^2 + 7x + 12$. Il $7$ è la **somma** di $3$ e $4$. Il $12$ è il loro **prodotto**.
 
+[[video:scomposizione/rettangolo]]
+
 >* **Trinomio speciale:** $x^2 + sx + p = (x + m)(x + n)$, con $m + n = s$ e $m \cdot n = p$. Parti dal prodotto, che ha meno possibilità. Poi controlla la somma.
 
 - $x^2 - 5x + 6$: prodotto $6$, somma $-5$. Sono $-2$ e $-3$: $(x - 2)(x - 3)$.
@@ -323,6 +325,8 @@ Due scorciatoie:
 5. **Controlla**: rimoltiplica e ritrova il polinomio di partenza.
 
 >* Hai finito solo quando **nessun fattore** si scompone più.
+
+[[video:scomposizione/in-che-ordine]]
 
 | Termini | Che cosa provare |
 |---|---|

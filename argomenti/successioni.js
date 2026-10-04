@@ -67,6 +67,8 @@ Per dimostrare che una successione cresce, studia il segno di $a_{n+1} - a_n$. C
 
     { id: 'progressioni-aritmetiche', titolo: 'Le progressioni aritmetiche', testo: R`Una palestra costa $30$ euro di iscrizione più $20$ euro al mese. Dopo $1, 2, 3, \dots$ mesi hai speso $50, 70, 90, \dots$ euro. Ogni volta aggiungi $20$.
 
+[[video:successioni/aritmetiche]]
+
 >* Una **progressione aritmetica** è una successione in cui ogni termine è il precedente **più** un numero fisso $d$. Il numero $d$ si chiama **ragione**: $a_{n+1} = a_n + d$. Il termine generale è $$a_n = a_1 + (n-1)d.$$
 
 Perché $n - 1$? Da $a_1$ ad $a_n$ ci sono $n - 1$ passi, e ogni passo aggiunge $d$. Per la palestra, dopo un anno: $a_{12} = 50 + 11 \cdot 20 = 270$ euro.
@@ -86,6 +88,8 @@ Gli altri termini li seguono e restano in fila su una retta, che ha pendenza $d$
 => Da $a_3$ ad $a_7$ ci sono $7 - 3 = 4$ passi. In tutto sali di $22 - 10 = 12$, quindi $d = \frac{12}{4} = 3$. Il $12$ è la salita totale, non quella di un passo. Il $2{,}4$ viene dal dividere per $5$: hai contato i termini invece dei passi.` },
 
     { id: 'somma-aritmetica', titolo: 'La somma di una progressione aritmetica', testo: R`Quanto fa $1 + 2 + 3 + \dots + 100$? Si racconta che Gauss, da bambino, sommò i numeri a coppie: il primo con l'ultimo, il secondo con il penultimo, e così via.
+
+[[video:successioni/somma-di-gauss]]
 
 [[animazione:gauss]]
 
@@ -120,6 +124,8 @@ Inserire $k$ **medi aritmetici** fra $a$ e $b$ vuol dire mettere $k$ numeri in m
 Esempio: $3$ medi fra $2$ e $14$. Hai $d = \dfrac{14 - 2}{4} = 3$, e la fila è $2, 5, 8, 11, 14$.` },
 
     { id: 'progressioni-geometriche', titolo: 'Le progressioni geometriche', testo: R`Una colonia di batteri raddoppia ogni ora: $100$, $200$, $400$, $800$, … Qui a ogni passo **moltiplichi** sempre per lo stesso numero.
+
+[[video:successioni/geometriche]]
 
 >* Una **progressione geometrica** è una successione in cui ogni termine è il precedente **per** un numero fisso $q \ne 0$. Anche $q$ si chiama **ragione**: $a_{n+1} = a_n \cdot q$, con $a_1 \ne 0$. Il termine generale è $$a_n = a_1 \cdot q^{\,n-1}.$$
 
@@ -169,6 +175,8 @@ Infiniti numeri positivi possono dare una somma finita? Zenone pensava di no, e 
 Se $|q| < 1$, la potenza $q^n$ diventa piccolissima al crescere di $n$. Allora $1 - q^n$ si avvicina a $1$, e la somma si avvicina a un numero preciso.
 
 >* Se $|q| < 1$, la somma di **tutti** gli infiniti termini vale $$S = \frac{a_1}{1 - q}.$$ Per esempio $\frac12 + \frac14 + \frac18 + \dots = \dfrac{1/2}{1 - 1/2} = 1$.
+
+[[video:successioni/somma-infinita]]
 
 Nel grafico vedi le **somme parziali** $S_1, S_2, \dots, S_{15}$ con $a_1 = 1$: la somma del primo termine, dei primi due, e così via. Muovi $q$ e guarda come si avvicinano alla linea tratteggiata, che vale $\frac{1}{1-q}$.
 

@@ -35,6 +35,8 @@ Servono le equazioni di secondo grado e il piano cartesiano.`,
   sezioni: [
     { id: 'definizione-luogo', titolo: 'La parabola come luogo geometrico', testo: R`Prendi un punto $F$ e una retta $d$ che non passa per $F$. Cerca i punti che distano da $F$ quanto distano da $d$. Il punto a metà strada fra $F$ e $d$ è uno di questi. Spostandoti di lato ne trovi altri, e insieme formano la parabola.
 
+[[video:parabola/fuoco-direttrice]]
+
 >* **Definizione.** La parabola di **fuoco** $F$ e **direttrice** $d$ è l'insieme dei punti $P$ con $$PF = PH$$ dove $H$ è il piede della perpendicolare da $P$ a $d$. Ogni punto della parabola ha la stessa distanza dal fuoco e dalla direttrice.
 
 La retta per $F$ perpendicolare a $d$ è l'**asse** della parabola, e la curva è simmetrica rispetto all'asse. Sull'asse, a metà strada fra fuoco e direttrice, c'è il **vertice** $V$.
@@ -73,6 +75,8 @@ Se il vertice non sta nell'origine, la curva si sposta. Sviluppando i conti arri
 >! Con $a = 0$ sparisce il termine $x^2$ e resta $y = bx + c$, che è una retta. Per questo serve $a \ne 0$.` },
 
     { id: 'significato-a-b-c', titolo: 'Il significato di a, b e c', testo: R`Nel grafico cambia un coefficiente alla volta e guarda la parabola $y = ax^2 + bx + c$.
+
+[[video:parabola/a-b-c]]
 
 [[grafico:coefficienti]]
 

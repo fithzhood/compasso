@@ -53,6 +53,8 @@ Ti servono le equazioni e le disequazioni di secondo grado.`,
   sezioni: [
     { id: 'definizione-valore-assoluto', titolo: 'Il valore assoluto: definizione e proprietà', testo: R`Quanto dista $-7$ da zero? Sette passi, proprio come $7$. Questa distanza si chiama **valore assoluto**, o **modulo**, e si scrive fra due sbarre: $|7| = 7$ e $|{-7}| = 7$.
 
+[[video:valore-assoluto-irrazionali/distanza]]
+
 Per calcolarlo guarda il segno. Un numero positivo resta com'è, mentre a un numero negativo cambi segno.
 
 >* **Definizione.** $$|a| = \begin{cases} a & \text{se } a \ge 0 \\ -a & \text{se } a < 0 \end{cases}$$ Se $a$ è negativo, $-a$ è positivo: per $a = -7$ si ha $-a = 7$. Il risultato non è mai negativo.
@@ -114,6 +116,8 @@ Le forme sono tre, e cambia solo il controllo finale:
 >! In $|A(x)| = B(x)$ il controllo del segno di $B(x)$ è obbligatorio.` },
 
     { id: 'grafico-modulo', titolo: 'Il grafico di y = |f(x)|', testo: R`Dal grafico di $y = f(x)$ ottieni quello di $y = |f(x)|$ senza conti. Dove la $y$ è positiva, resta com'è. Dove è negativa, cambia segno: il punto va nel suo simmetrico rispetto all'asse $x$.
+
+[[video:valore-assoluto-irrazionali/grafico-modulo]]
 
 >* **Regola.** Dove il grafico di $f$ sta sopra l'asse $x$, o sull'asse, non cambia. Dove sta sotto, si **ribalta verso l'alto**, come in uno specchio.
 
@@ -191,6 +195,8 @@ Con il «maggiore» a volte un pezzo non dà niente. In $|x - 3| > x - 1$ il pri
     { id: 'equazioni-irrazionali-una-radice', titolo: 'Equazioni irrazionali con una radice', testo: R`Un'equazione è **irrazionale** se l'incognita sta sotto una radice. Per esempio $\sqrt{x + 10} = x - 2$.
 
 Per togliere la radice elevi al quadrato i due membri. Ma il quadrato cancella il segno: $3^2$ e $(-3)^2$ fanno tutti e due $9$. Così possono comparire soluzioni in più, dette **soluzioni estranee**.
+
+[[video:valore-assoluto-irrazionali/soluzioni-in-piu]]
 
 Una radice quadrata non è mai negativa. Quindi $\sqrt{A} = B$ può essere vera solo dove $B \ge 0$. Questa condizione scarta le estranee.
 

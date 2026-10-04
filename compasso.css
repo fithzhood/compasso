@@ -397,6 +397,23 @@ a.stat:hover, .stat.riprendi:hover { transform: translateY(-2px); border-color: 
 .cg-anim-ctrl button { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--bordo2); background: var(--sup); font-size: .85rem; flex: none; color: var(--testo); transition: transform .25s var(--molla), border-color .2s; }
 .cg-anim-ctrl button:hover { border-color: var(--accento); color: var(--accento-testo); transform: scale(1.08); }
 .cg-anim-ctrl input[type=range] { flex: 1; min-width: 90px; accent-color: var(--accento); min-height: 28px; }
+/* --------- video (compasso-video.js) --------- */
+.video-slot { margin: 1.4em 0; width: 100%; }
+.cv-schermo { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: var(--raggio); overflow: hidden; border: 1px solid var(--bordo); box-shadow: var(--ombra); background: var(--bg); }
+.cv-tela { display: block; width: 100%; height: 100%; cursor: pointer; }
+.cv-grande { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 78px; height: 78px; border-radius: 50%; border: 0; background: var(--accento); color: #fff; font-size: 1.7rem; padding-left: 6px; box-shadow: var(--ombra-alta); transition: transform .25s var(--molla); }
+.cv-grande:hover { transform: scale(1.08); }
+.cv-ctrl { display: flex; align-items: center; gap: 8px; padding: 8px 4px 2px; }
+.cv-ctrl button { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--bordo2); background: var(--sup); font-size: .85rem; flex: none; color: var(--testo); transition: transform .25s var(--molla), border-color .2s; }
+.cv-ctrl button:hover { border-color: var(--accento); color: var(--accento-testo); transform: scale(1.08); }
+.cv-ctrl input[type=range] { flex: 1; min-width: 80px; accent-color: var(--accento); min-height: 28px; }
+.cv-tempo { font-size: .85rem; color: var(--testo2); font-variant-numeric: tabular-nums; flex: none; }
+.cv:fullscreen { background: #000; display: flex; flex-direction: column; justify-content: center; padding: 0 12px; }
+.cv:fullscreen .cv-schermo { width: min(100%, calc((100vh - 64px) * 16 / 9)); margin: 0 auto; border-radius: 0; border: 0; }
+.cv:fullscreen .cv-ctrl { width: 100%; max-width: 1400px; margin: 0 auto; }
+.cv:fullscreen .cv-ctrl button { background: #20292c; color: #e9ece6; border-color: #37424a; }
+.cv:fullscreen .cv-tempo { color: #a8b1ad; }
+@media print { .video-slot { display: none; } }
 .cg-anim-fase { flex-basis: 100%; font-size: .9rem; color: var(--testo2); padding: 2px 6px 0; min-height: 2.4em; line-height: 1.4; }
 
 /* ---------- laboratori ---------- */

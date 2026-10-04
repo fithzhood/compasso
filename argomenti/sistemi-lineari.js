@@ -54,6 +54,8 @@ I coefficienti della prima equazione si chiamano $a_1$, $b_1$, $c_1$. Quelli del
 
     { id: 'sostituzione', titolo: 'Il metodo di sostituzione', testo: R`Da $x + y = 5$ ricavi $y = 5 - x$. Ora puoi scrivere $5 - x$ al posto di $y$ nell'altra equazione. Resta un'equazione con la sola $x$.
 
+[[video:sistemi-lineari/sostituzione]]
+
 >* **Metodo di sostituzione.** Ricavi un'incognita da un'equazione e la sostituisci nell'**altra**.
 
 1. Ricava un'incognita da un'equazione.
@@ -78,6 +80,8 @@ La soluzione è $(3;\,2)$. La sostituzione conviene quando un'incognita ha coeff
 >! Sostituisci nell'**altra** equazione. Nella stessa ottieni un'uguaglianza come $5 = 5$, che non serve.` },
 
     { id: 'riduzione', titolo: 'Il metodo di riduzione (addizione e sottrazione)', testo: R`Guarda $\begin{cases} 4x + y = 7 \\ 2x - y = 5 \end{cases}$. La $y$ compare una volta come $+y$ e una come $-y$.
+
+[[video:sistemi-lineari/riduzione]]
 
 Somma le due equazioni membro a membro: sinistra con sinistra, destra con destra. La $y$ sparisce: $6x = 12$, quindi $x = 2$. Dalla prima, $y = 7 - 8 = -1$.
 
@@ -188,6 +192,8 @@ In un sistema indeterminato, un'equazione è un multiplo dell'altra. In pratica 
 >! «Impossibile» non vuol dire che hai sbagliato i conti. Vuol dire che nessuna coppia rende vere le due equazioni insieme.` },
 
     { id: 'interpretazione-grafica', titolo: 'Interpretazione grafica: rette incidenti, parallele, coincidenti', testo: R`L'equazione $x + y = 5$ da sola ha infinite soluzioni: $(5;\,0)$, $(4;\,1)$, $(3;\,2)$… Nel piano cartesiano stanno tutte su una **retta**.
+
+[[video:sistemi-lineari/due-rette]]
 
 Ogni equazione di primo grado in $x$ e $y$ è una retta. La soluzione del sistema è il punto in cui le due rette si incontrano.
 

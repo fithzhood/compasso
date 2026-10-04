@@ -25,6 +25,8 @@ Servono a calcolare valori esatti, a semplificare espressioni e a risolvere le e
   sezioni: [
     { id: 'addizione-sottrazione', titolo: 'Le formule di addizione e sottrazione', testo: R`Le formule di **addizione** danno seno, coseno e tangente di una somma di angoli. Quelle di **sottrazione** fanno lo stesso con una differenza.
 
+[[video:formule-goniometriche/addizione]]
+
 >* **Addizione e sottrazione:** $$\begin{array}{rl}\sin(\alpha\pm\beta) &= \sin\alpha\cos\beta \\ &\quad {}\pm \cos\alpha\sin\beta\end{array}$$ $$\begin{array}{rl}\cos(\alpha\pm\beta) &= \cos\alpha\cos\beta \\ &\quad {}\mp \sin\alpha\sin\beta\end{array}$$ $$\tan(\alpha\pm\beta) = \frac{\tan\alpha\pm\tan\beta}{1\mp\tan\alpha\tan\beta}$$ Il simbolo $\mp$ vuol dire «il segno opposto»: nel coseno, con la somma c'è il meno.
 
 Esempio: calcola $\sin75°$.
@@ -90,6 +92,8 @@ Nel grafico hai trovato due casi speciali.
 ~ \sin2\alpha = \sin(\evid{\alpha + \alpha}) :: l'angolo doppio è una somma
 ~ = \sin\alpha\cos\alpha + \cos\alpha\sin\alpha :: formula di addizione del seno
 ~ = \evidb{2\sin\alpha\cos\alpha} :: i due termini sono uguali
+
+[[video:formule-goniometriche/duplicazione]]
 
 Lo stesso vale per il coseno, che poi riscrivi in tre forme grazie a $\sin^2\alpha + \cos^2\alpha = 1$:
 
