@@ -193,8 +193,26 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): ogni taglio, ogni pezzo colorato un po' più alto; il ding di «Torna!» lo mette la faccia «festa»
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.6, 8.2], ['pop', 8.4, .4],                        // il quadrato di area 1
+    ['traccia', 11.3, 11.85], ['pop', 11.9, .5],                                      // 1/2
+    ['soffio', 12.6],
+    ['traccia', 16.5, 16.95], ['pop', 17.0, .55],                                     // 1/4
+    ['traccia', 21.8, 22.25], ['pop', 22.3, .6],                                      // 1/8
+    ['traccia', 26.6, 27.05], ['pop', 27.1, .65],                                     // 1/16
+    ['pop', 31.5, .7], ['pop', 32.0, .75], ['pop', 32.5, .8], ['pop', 33.0, .85],     // i pezzi sempre più piccoli
+    ['pop', 33.5, .2],                                                                // quello che manca
+    ['pop', 38.0, .4], ['tono', 42.5, 43.35, [.5, .75, .88, .94]],                    // S₁ … S₄: 0,5 0,75 0,875 0,9375
+    ['traccia', 46.3, 46.7], ['ding', 50.7], ['ding', 55.5],                          // manca sempre; il limite è 1
+    ['soffio', 59.3], ['pop', 59.5, .4], ['pop', 63.9, .5],                           // a₁ = 1/2, q = 1/2
+    ['pop', 67.3, .6], ['traccia', 67.9, 68.4],                                       // S = a₁/(1 − q)
+    ['tono', 74.6, 75.1, [.1, .2, .4, .8]],                                           // 1 + 2 + 4 + 8 + …
+    ['soffio', 78.8], ['pop', 80.6, .5], ['pop', 81.1, .6], ['pop', 81.6, .7],
+  ];
   return {
-    titolo: 'Una somma infinita che fa 1', durata: DUR, copertina: 4.2,
+    titolo: 'Una somma infinita che fa 1', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 37.8, 'il quadrato'], [37.8, 59.3, 'le somme parziali'], [59.3, FINE, 'la serie geometrica']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneQuadrato(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

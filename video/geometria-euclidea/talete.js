@@ -169,8 +169,23 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): i punti suonano all'altezza della loro parallela
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 8.1, 9.1], ['traccia', 8.5, 9.5], ['traccia', 8.9, 9.9],   // le tre parallele
+    ['traccia', 12.1, 12.9], ['traccia', 12.7, 13.5],                                     // le due trasversali
+    ['pop', 15.8, .1], ['pop', 16.3, .45], ['pop', 16.8, .7],                             // A, B, C
+    ['pop', 18.2, .1], ['pop', 18.7, .45], ['pop', 19.2, .7],                             // A′, B′, C′
+    ['soffio', 20.5], ['pop', 20.8, .4], ['pop', 24.9, .5],                               // le misure
+    ['pop', 29.0, .5], ['pop', 33.0, .6], ['ding', 33.5],                                 // due terzi, e ancora due terzi
+    ['ding', 37.2],                                                                       // proporzionali
+    ['tono', 41.2, 43.2, [.6, .45]], ['pop', 44.8, .5], ['ding', 45.3],                   // la trasversale si inclina
+    ['tono', 49.0, 51.0, [.6, .75]], ['pop', 52.9, .55], ['ding', 53.4],                  // la terza parallela sale
+    ['soffio', 57.4], ['pop', 62.0, .7],                                                  // l'enunciato, la formula
+    ['soffio', 66.8], ['pop', 69.4, .5], ['pop', 69.9, .6], ['pop', 70.4, .7],
+  ];
   return {
-    titolo: 'Il teorema di Talete', durata: DUR, copertina: 4.2,
+    titolo: 'Il teorema di Talete', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 20.3, 'il fascio e le trasversali'], [20.3, 40.8, 'i segmenti'], [40.8, 57.1, 'cambio la figura'], [57.1, 66.1, 'il teorema']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneFascio(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

@@ -218,8 +218,28 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza della punta libera del raggio che si muove
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.5], ['pop', 8.0, .5], ['traccia', 8.3, 8.8],   // circonferenza, centro, raggio
+    ['pop', 12.4, .5], ['tono', 12.9, 14.3, [.5, .53, .75, .85, .85]],                 // la copia si alza in piedi
+    ['tono', 16.8, 19.6, [.85, .82, .79]],                                             // e si avvolge
+    ['soffio', 20.6], ['traccia', 25.3, 26.5], ['ding', 30.2], ['pop', 34.9, .6],      // l'angolo: 1 radiante, 1 rad
+    ['soffio', 38.3], ['pop', 38.5, .6],                                               // la tabella
+    ['pop', 42.2, .5], ['tono', 42.4, 43.4, [.5, .52, .67, .78, .79]],                 // il secondo raggio gira fin lì
+    ['tono', 43.4, 44.2, [.5, .52, .72, .95, .98]], ['tono', 44.2, 45.8, [.98, .86, .82]],   // si alza, si avvolge
+    ['pop', 46.3, .75],                                                                // 2 rad
+    ['pop', 49.3, .5], ['tono', 49.5, 50.7, [.5, .54, .79, .83, .82]],                 // il terzo
+    ['tono', 50.7, 51.5, [.5, .49, .49, .64, .67]], ['tono', 51.5, 53.2, [.67, .57, .55]],
+    ['pop', 53.9, .55],                                                                // 3 rad
+    ['pop', 57.1, .6], ['tono', 61.3, 62.1, [.5, .32, .15, .32, .5]], ['pop', 61.9, .8],   // 2πr, poi la metà: πr
+    ['traccia', 65.8, 66.8], ['traccia', 67.0, 68.2],                                  // il pezzetto, mezzo giro
+    ['tono', 74.5, 75.9, [.5, .32, .15, .32, .5]], ['pop', 75.9, .6],                  // il giro intero: 2π
+    ['pop', 78.7, .5], ['ding', 80.0],                                                 // 1 rad ≈ 57,3°
+    ['soffio', FINE + .4], ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],
+  ];
   return {
-    titolo: 'Gradi e radianti', durata: Math.round((FINE + 10.8) * 10) / 10, copertina: 4.2,
+    titolo: 'Gradi e radianti', durata: Math.round((FINE + 10.8) * 10) / 10, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 38.2, 'un raggio sulla circonferenza'], [38.2, FINE, 'quanti radianti in mezzo giro?']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneCerchio(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

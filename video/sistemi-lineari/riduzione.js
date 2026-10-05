@@ -189,8 +189,23 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.9], ['traccia', 8.2, 8.8], ['pop', 8.5, .5], ['pop', 8.9, .55],     // la scheda, il sistema
+    ['pop', 12.4, .4],                                                                // i coefficienti di y
+    ['pop', 16.6, .5], ['pop', 21.3, .55],                                            // la seconda per 2, svolta
+    ['pop', 24.7, .65],                                                               // +2 e −2: opposti
+    ['traccia', 28.6, 29.0], ['pop', 28.9, .5], ['pop', 29.2, .55], ['pop', 29.5, .6], // le due righe in colonna
+    ['traccia', 29.6, 30.2],                                                          // la riga della somma
+    ['traccia', 33.0, 33.5], ['tono', 33.0, 33.5, [.6, .2]],                          // +2y e −2y si cancellano
+    ['pop', 36.6, .5], ['pop', 37.5, .55], ['ding', 40.9],                            // 7x = 21, x = 3
+    ['pop', 43.6, .5], ['pop', 46.6, .55], ['ding', 49.8],                            // nella prima, y = 2
+    ['ding', 52.4],                                                                   // la coppia (3; 2)
+    ['pop', 56.0, .5], ['pop', 56.6, .55], ['ding', 57.0],                            // la verifica torna
+    ['soffio', 59.9], ['pop', 62.4, .5], ['pop', 62.9, .6], ['pop', 63.4, .7],
+  ];
   return {
-    titolo: 'Il metodo di riduzione', durata: FINE + 10.6, copertina: 4.2,
+    titolo: 'Il metodo di riduzione', durata: FINE + 10.6, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 28.5, 'coefficienti opposti'], [28.5, 52.1, 'la somma membro a membro'], [52.1, FINE, 'la soluzione e la verifica']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneRiduzione(ctx, t); sceneFine(ctx, t); },

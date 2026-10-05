@@ -237,8 +237,24 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                           // il piano
+    ['traccia', 8.4, 9.6], ['tono', 8.4, 9.6, [0, .6, .85, 1]],                       // la retta y = 2x + 1 sale
+    ['pop', 12.6, .45], ['pop', 19.0, .45],                                           // (0; 1), poi q
+    ['tono', 23.5, 25.0, [.45, .7]], ['tono', 28.0, 30.0, [.7, .08]],                 // q: su a 3, giù a −2
+    ['pop', 32.1, .4], ['tono', 36.8, 38.0, [.08, .45]],                              // le rette parallele, q torna 1
+    ['pop', 38.3, .5],                                                                // m, il coefficiente angolare
+    ['tono', 42.7, 44.2, [.85, .92]], ['tono', 47.4, 49.0, [.92, .5]],                // m: più ripida, orizzontale
+    ['tono', 51.6, 53.0, [.5, .19]], ['pop', 56.2, .45],                              // negativa; il perno (0; 1)
+    ['tono', 60.6, 61.8, [.19, .85]],                                                 // torna m = 2
+    ['soffio', 61.8], ['traccia', 62.4, 63.2], ['pop', 63.0, .45],                    // Δx = 1
+    ['traccia', 68.6, 69.4], ['tono', 68.6, 69.4, [.45, .7]], ['ding', 69.6],         // Δy = 2, come m
+    ['tono', 74.6, 76.0, [.7, .95]], ['pop', 75.6, .5], ['pop', 80.2, .6],            // due passi: 4 / 2, m = Δy / Δx
+    ['soffio', 86.0], ['pop', 88.4, .5], ['pop', 88.9, .6], ['pop', 89.4, .7],
+  ];
   return {
-    titolo: 'm e q', durata: 96.0, copertina: 4.2,
+    titolo: 'm e q', durata: 96.0, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 37.4, 'q: dove taglia l\'asse y'], [37.4, 61.8, 'm: quanto è ripida'], [61.8, FINE, 'm è Δy / Δx']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); scenePannello(ctx, t); sceneFine(ctx, t); },

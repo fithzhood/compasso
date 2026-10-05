@@ -320,8 +320,28 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue la curva, il bordo dell'area che avanza, i rettangoli
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                            // gli assi
+    ['tono', 7.7, 8.5, [.19, .19, .19, .24, .37, .59, .79, .93, .98]], ['pop', 8.8, .6],   // la curva, f(x)
+    ['tono', 13.2, 14.4, [.19, .2, .25, .35, .5]], ['pop', 13.4, .5],                   // F(x): l'area da 0 a x avanza
+    ['ding', 19.2],                                                                     // F′ = f
+    ['soffio', 24.3], ['pop', 25.0, .6], ['pop', 30.1, .4],                             // F(b), F(a)
+    ['ding', 35.2],                                                                     // resta F(b) − F(a)
+    ['pop', 39.7, .55], ['traccia', 46.4, 46.9], ['pop', 47.3, .5],                     // G = F + c, la c si cancella
+    ['ding', 50.0],                                                                     // G(b) − G(a)
+    ['soffio', 54.5], ['pop', 54.9, .6], ['traccia', 55.6, 56.1],                       // il calcolo, termine per termine
+    ['tono', 59.1, 59.5, [.6, .4]], ['pop', 59.7, .5],                                  // le frecce, G(x)
+    ['pop', 64.2, .5], ['ding', 66.4],                                                  // G′ = f: torna
+    ['traccia', 69.0, 69.5], ['pop', 69.2, .7], ['pop', 73.5, .3],                      // G(4) = 28/3, G(0) = 0
+    ['soffio', 81.0], ['tono', 80.9, 81.8, [.19, .25, .37, .6, .9]], ['pop', 81.8, .4], // 64 rettangoli sotto: 9,21
+    ['tono', 85.6, 86.5, [.2, .27, .4, .63, .93]], ['pop', 86.5, .5],                   // 64 sopra: 9,46
+    ['pop', 91.7, .6],                                                                  // 9,21 < 9,333… < 9,46
+    ['soffio', 95.9], ['pop', 98.5, .5], ['pop', 99.0, .6], ['pop', 99.5, .7],
+  ];
   return {
-    titolo: 'Calcolare un integrale', durata: DUR, copertina: 4.2,
+    titolo: 'Calcolare un integrale', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 24.2, 'la funzione integrale'], [24.2, 54.4, 'la formula'], [54.4, 80.9, 'il calcolo'], [80.9, FINE, 'il controllo']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); scenePannello(ctx, t); sceneFine(ctx, t); },

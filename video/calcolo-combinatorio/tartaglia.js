@@ -262,8 +262,30 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il triangolo si riempie dall'alto, il tono scende con le righe
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.2, .95],                                                          // l'1 in cima
+    ['tono', 12.0, 13.5, [.85, .2]],                                                             // gli 1 sui due lati, riga per riga
+    ['soffio', 15.8], ['pop', 16.6, .75],                                                      // 1 + 1 = 2
+    ['pop', 20.7, .6], ['pop', 21.3, .6],                                                          // 1 + 2 = 3, 2 + 1 = 3
+    ['pop', 24.5, .45], ['pop', 24.75, .55], ['pop', 25.0, .45],        // la riga 4
+    ['tono', 29.2, 30.6, [.3, .1]],                                                              // le righe 5 e 6
+    ['tono', 32.9, 33.9, [.9, .1]],                                                              // i nomi delle righe, da 0
+    ['soffio', 37.4], ['tono', 37.9, 38.9, [.3, .55, .7, .55, .3]], // (4 su 0) … (4 su 4)
+    ['traccia', 43.1, 43.4], ['ding', 43.4],                                                     // (4 su 2) = 6
+    ['pop', 48.4, .5],                                                                           // la riga n
+    ['soffio', 52.7], ['pop', 53.0, .5], ['pop', 57.0, .4], ['pop', 57.3, .5], ['pop', 57.6, .6], // le 4 persone, le 6 coppie
+    ['traccia', 61.2, 61.5], ['pop', 62.0, .5],                                                  // con Anna: (3 su 1)
+    ['traccia', 66.2, 66.5], ['pop', 67.4, .5],                                                  // senza Anna: (3 su 2)
+    ['pop', 71.8, .5], ['ding', 73.4],                                                           // 3 + 3 = 6
+    ['traccia', 75.7, 76.0], ['pop', 76.0, .6],                                                  // il 6 sotto i due 3
+    ['soffio', 80.4], ['pop', 81.2, .5], ['pop', 86.2, .55], ['pop', 87.6, .6], // la formula di Stifel
+    ['pop', 91.3, .5],                                                                           // 1 ≤ k ≤ n − 1
+    ['soffio', FINE + .4], ['pop', FINE + 2.2, .5], ['pop', FINE + 2.7, .6], ['pop', FINE + 3.2, .7],
+  ];
   return {
-    titolo: 'Il triangolo di Tartaglia', durata: DUR, copertina: 4.2,
+    titolo: 'Il triangolo di Tartaglia', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 32.7, 'le regole'], [32.7, 52.8, 'la riga {mink:n}'], [52.8, FINE, 'perché si somma']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneTriangolo(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

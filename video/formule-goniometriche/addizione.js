@@ -263,8 +263,28 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza della punta del raggio e dei cateti
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7], ['pop', 8.0, .05],                        // gli assi, O
+    ['tono', 7.9, 9.0, [0, .38, .71, .92, 1]],                                        // il quarto di circonferenza
+    ['tono', 9.2, 11.2, [0, .04, .34, .61, .64]],                                     // il raggio gira di α
+    ['soffio', 11.0], ['pop', 11.2, .5],                                              // la scheda, α = 40°
+    ['tono', 13.0, 15.0, [.64, .67, .82, .93, .94]], ['pop', 15.0, .94],              // poi di β, fino a P
+    ['traccia', 17.2, 17.8], ['tono', 17.6, 18.4, [0, .06, .47, .88, .94]], ['pop', 18.3, .5], // sin(α + β)
+    ['traccia', 21.9, 22.7], ['pop', 22.8, .56],                                      // la perpendicolare, Q
+    ['pop', 26.6, .5], ['pop', 31.3, .45], ['pop', 32.3, .6],                         // 1, cos β, sin β
+    ['traccia', 35.6, 36.2], ['pop', 36.2, 0],                                        // H
+    ['tono', 39.8, 40.4, [0, .3, .56]], ['ding', 45.8],                               // QH, sin α cos β
+    ['traccia', 49.4, 50.0], ['pop', 50.0, .56],                                      // R
+    ['tono', 54.0, 54.6, [.56, .75, .94]],                                            // PR
+    ['pop', 58.5, .8], ['traccia', 59.4, 59.8], ['ding', 65.4],                       // α in P, cos α sin β
+    ['traccia', 68.8, 70.4],                                                          // il pezzo verde scorre sotto R
+    ['pop', 77.6, .55], ['pop', 78.2, .4], ['ding', 78.6],                            // 0,56 + 0,38 = 0,94
+    ['soffio', 86.8], ['pop', 89.4, .5], ['pop', 89.9, .6], ['pop', 90.4, .7],
+  ];
   return {
-    titolo: 'Il seno di una somma', durata: Math.round((FINE + 10.8) * 10) / 10, copertina: 4.2,
+    titolo: 'Il seno di una somma', durata: Math.round((FINE + 10.8) * 10) / 10, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 21.4, 'due angoli in fila'], [21.4, 35.1, 'il triangolo di β'], [35.1, 48.9, 'il primo pezzo'],
       [48.9, 68.3, 'il secondo pezzo'], [68.3, FINE, 'la formula']],

@@ -209,8 +209,24 @@ function sceneIntro(ctx, t) {
   conFont(TITOLI, () => drawRich(ctx, 'Il prodotto di due radici', W / 2, 180, { size: 116, weight: 600, local: t - 1.6, stagger: .15, alpha: al }));
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.0, .5],                                                // la scheda; √3 · √12
+    ['pop', 8.3, .4], ['pop', 8.5, .45],                                              // i due decimali
+    ['pop', 12.7, .55],                                                               // tutto sotto un'unica radice
+    ['pop', 17.6, .6], ['pop', 18.4, .7], ['ding', 18.6],                             // √36, e il 6
+    ['pop', 21.9, .5], ['ding', 22.4],                                                // con la calcolatrice: torna
+    ['soffio', 26.5], ['pop', 26.9, .5], ['pop', 27.2, .3],                           // √a · √b, con a e b non negativi
+    ['pop', 31.7, .55], ['pop', 32.2, .6],                                            // al quadrato, fattore per fattore
+    ['ding', 36.6],                                                                   // resta a · b
+    ['pop', 41.3, .5],                                                                // al quadrato fa a · b
+    ['pop', 46.3, .45],                                                               // ≥ 0
+    ['ding', 51.3],                                                                   // √a · √b = √(a · b)
+    ['soffio', FINE],
+    ['pop', FINE + 2.6, .55], ['pop', FINE + 3.1, .65],                              // le due pillole
+  ];
   return {
-    titolo: 'Il prodotto di due radici', durata: DURATA, copertina: 4.2,
+    titolo: 'Il prodotto di due radici', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: CAPITOLI,
     scena(ctx, t) { sceneIntro(ctx, t); card(ctx, 80, 110, 1760, 690, life(t, 7.5, FINE + .3, .6, .6)); sceneEsempio(ctx, t); scenePerche(ctx, t); sceneFine(ctx, t); },

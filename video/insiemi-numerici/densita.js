@@ -212,8 +212,26 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): le medie suonano all'altezza del loro valore,
+  // le cifre di √2 una per una
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.1, .5],                                                // la retta, 1/2 e 1
+    ['pop', 9.7, .55], ['pop', 13.0, .43], ['pop', 17.2, .36],                        // 3/4, 5/8, 9/16
+    ['tono', 18.6, 20.3, [.34, .3]], ['ding', 21.6],                                  // e così via: densità
+    ['soffio', 26.4], ['traccia', 26.6, 27.2], ['pop', 31.1, .5], ['pop', 31.7, .6],  // fra 1,4 e 1,5
+    ['traccia', 35.4, 36.0], ['pop', 36.3, .6],                                       // fra 1,41 e 1,42
+    ['traccia', 39.6, 40.2], ['pop', 40.5, .6],                                       // fra 1,414 e 1,415
+    ['pop', 43.8, .5],                                                                // la tacca 1,414
+    ['pop', 53.2, .2],                                                                // √2 diventa un buco
+    ['soffio', 57.3], ['pop', 57.8, .55], ['pop', 58.5, .45], ['pop', 62.1, .6],     // 3/8, 1/3, la doppia freccia
+    ['traccia', 66.6, 67.0],
+    ['tono', 66.8, 69.4, [.46, .19, .46, .28, .19, .37, .54, .63, .28, .37, .72, .37, .1, .9, .54, .1, .46, .81, .81, .1]],   // le cifre di √2
+    ['pop', 69.7, .4],
+    ['soffio', 71.9], ['pop', 74.5, .5], ['pop', 75.0, .6], ['pop', 75.5, .7],
+  ];
   return {
-    titolo: 'Fitte, ma con un buco', durata: DURATA, copertina: 4.2,
+    titolo: 'Fitte, ma con un buco', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: CAPITOLI,
     scena(ctx, t) { sceneIntro(ctx, t); sceneMedia(ctx, t); sceneZoom(ctx, t); sceneCifre(ctx, t); sceneFine(ctx, t); },

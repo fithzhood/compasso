@@ -241,8 +241,30 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                           // l'asse reale
+    ['soffio', 12.2], ['pop', 12.7, .5], ['pop', 14.2, .3],                           // x² = −1, nessuna soluzione
+    ['pop', 17.3, .6], ['pop', 21.0, .6],                                             // i, poi i² = −1
+    ['traccia', 25.3, 26.3], ['pop', 25.9, .79],                                      // l'asse immaginario
+    ['tono', 29.8, 30.6, [.46, .88]],                                                 // la definizione sale in cima
+    ['traccia', 30.2, 30.8], ['pop', 31.0, .49],                                      // il cerchio, il punto in 1
+    ['tono', 38.0, 39.2, [.49, .54, .70, .79, .79]], ['pop', 39.3, .79],              // i quarti di giro: i
+    ['tono', 44.0, 45.2, [.79, .79, .70, .54, .49]], ['pop', 45.4, .49],              // −1
+    ['tono', 49.8, 51.0, [.49, .44, .28, .19, .19]], ['pop', 51.2, .19],              // −i
+    ['tono', 55.3, 56.5, [.19, .19, .28, .44, .49]],                                  // 1, giro completo
+    ['tono', 60.9, 62.1, [.49, .54, .70, .79, .79]], ['pop', 62.3, .79],              // i⁵ = i
+    ['ding', 66.3],                                                                   // periodo 4
+    ['soffio', 71.2], ['pop', 72.1, .5], ['pop', 73.4, .5],                           // i²³, 23 = 4 · 5 + 3
+    ['tono', 75.8, 79.6, [.49, .49, .49, .51, .53, .56, .61, .68, .74, .79, .77, .64, .42, .21, .26, .59, .78, .42, .22, .73,
+      .49, .25, .76, .56, .2, .39, .72, .77, .56, .34, .21, .19, .24, .3, .37, .42, .45, .47, .49, .49, .49]], // cinque giri
+    ['pop', 79.6, .5],
+    ['tono', 80.1, 80.6, [.49, .79]], ['tono', 80.75, 81.25, [.79, .49]], ['tono', 81.4, 81.9, [.49, .19]], // tre quarti
+    ['ding', 82.1], ['pop', 85.7, .3],                                                // −i, conta il resto
+    ['soffio', 90.6], ['pop', 93.0, .5], ['pop', 93.5, .6], ['pop', 94.0, .7],
+  ];
   return {
-    titolo: 'i e le sue potenze', durata: Math.round((FINE + 10.7) * 10) / 10, copertina: 4.2,
+    titolo: 'i e le sue potenze', durata: Math.round((FINE + 10.7) * 10) / 10, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 29.8, 'il numero i'], [29.8, 71.4, 'le potenze di i'], [71.4, FINE, 'esponenti grandi']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

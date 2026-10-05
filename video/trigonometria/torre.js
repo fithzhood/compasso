@@ -188,8 +188,26 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.4], ['pop', 8.3, .5], ['pop', T.torre + .7, .7], // terreno, torre, quota h
+    ['pop', T.dist + .2, .3], ['soffio', T.dist + .3], ['traccia', T.dist + .4, T.dist + .9], // l'osservatore, i dati, d = 45 m
+    ['traccia', T.guardo + .2, T.guardo + .9],                                        // l'orizzontale degli occhi
+    ['tono', T.guardo + .9, T.guardo + 1.9, [.15, .38, .62, .85]],                    // lo sguardo sale alla cima
+    ['pop', T.elev + .3, .6],                                                         // α = 40°
+    ['pop', T.occhi + .4, .3],                                                        // gli occhi a 1,6 m
+    ['pop', T.tri + .5, .5],                                                          // il triangolo rettangolo
+    ['traccia', T.adi + .2, T.adi + .6],                                              // il cateto adiacente
+    ['tono', T.x + .2, T.x + .8, [.25, .5, .9]],                                      // il cateto x sale lungo la torre
+    ['traccia', T.tan, T.tan + .4], ['pop', T.tan + .4, .6],                          // x = d · tan α
+    ['pop', T.conto + .4, .6],                                                        // ≈ 37,8 m
+    ['pop', T.somma + .4, .8],                                                        // h ≈ 39,4 m
+    ['tono', T.senza - 1.6, T.senza - .2, [.3, .27, .15, .03, 0]],                   // l'occhio scende a terra
+    ['pop', T.senza + .5, .4],                                                        // h = x
+    ['soffio', FINE], ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],
+  ];
   return {
-    titolo: 'L’altezza di una torre', durata: DUR, copertina: 4.2,
+    titolo: 'L’altezza di una torre', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, T.occhi - .1, 'l’angolo di elevazione'], [T.occhi - .1, T.tan - .1, 'il triangolo rettangolo'],
       [T.tan - .1, FINE, 'il conto']],

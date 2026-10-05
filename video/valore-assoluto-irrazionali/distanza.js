@@ -224,8 +224,26 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.5], ['pop', 8.2, .4],                         // la retta, lo zero
+    ['tono', 11.6, 13.0, [.3, .5, .35, .55, .4, .6, .45]], ['pop', 12.9, .6],         // tre passi a destra, fino a 3
+    ['tono', 18.0, 19.4, [.45, .6, .4, .55, .35, .5, .3]], ['pop', 19.3, .5],         // tre passi a sinistra, fino a −3
+    ['soffio', 23.4], ['pop', 27.5, .5], ['pop', 28.3, .6],                           // |3| = 3, |−3| = 3
+    ['traccia', 31.5, 32.0], ['pop', 31.9, .6], ['pop', 35.8, .4],                    // la definizione: x, −x
+    ['pop', 39.8, .5], ['ding', 40.4],                                                // −(−3) = 3
+    ['soffio', 44.5], ['pop', 45.8, .6],                                              // |x − 3|
+    ['tono', 49.8, 51.2, [.45, .65, .5, .7, .55, .75, .6]], ['pop', 51.3, .7],        // da 3 a 6
+    ['tono', 55.9, 57.1, [.6, .75, .55, .7, .5, .65, .45]], ['pop', 57.2, .3],         // da 3 a 0
+    ['pop', 62.7, .6],                                                                // |x − 3| < 2
+    ['traccia', 67.1, 68.4], ['pop', 68.5, .5],                                       // due passi per parte: 1 e 5
+    ['traccia', 73.5, 74.5], ['ding', 74.6],                                          // il tratto fra 1 e 5
+    ['pop', 79.7, .4],                                                                // i pallini vuoti
+    ['pop', 84.1, .6], ['pop', 85.0, .7], ['pop', 87.9, .3],                          // 1 < x < 5, (1, 5), le tonde
+    ['soffio', FINE], ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],
+  ];
   return {
-    titolo: 'Il valore assoluto è una distanza', durata: DURATA, copertina: 4.2,
+    titolo: 'Il valore assoluto è una distanza', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 44.3, 'la distanza da zero'], [44.3, 62.2, 'la distanza da 3'], [62.2, FINE, '{mink:|}{mx:x}{mink: − 3| < 2}']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneRetta(ctx, t); sceneTop(ctx, t); sceneFine(ctx, t); },

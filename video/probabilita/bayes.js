@@ -184,8 +184,22 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.1, .3], ['pop', 12.1, .7], ['pop', 16.3, .5],          // i dati: 1%, 99%, 5%
+    ['soffio', 24.8], ['pop', 25.1, .5],                                              // l'albero: 10 000 persone
+    ['traccia', 29.1, 29.7], ['pop', 29.6, .7],                                       // M: 100
+    ['traccia', 33.7, 34.3], ['pop', 34.2, .3],                                       // S: 9900
+    ['pop', 38.0, .5],                                                                // T⁺ e T⁻
+    ['traccia', 42.5, 43.25], ['pop', 43.0, .7],                                      // i rami dei malati
+    ['traccia', 47.5, 48.25], ['pop', 48.0, .4],                                      // i rami dei sani
+    ['soffio', 51.9], ['pop', 52.3, .6], ['pop', 56.9, .5],                           // 594 positivi, 99 malati
+    ['pop', 61.1, .4], ['pop', 65.7, .5], ['pop', 66.3, .7], ['ding', 67.2],          // P(M | T⁺) = 99/594 = 1/6
+    ['pop', 70.4, .3],                                                                // i sani, che sono tanti
+    ['soffio', 75.2], ['pop', 77.2, .5], ['pop', 77.7, .6], ['pop', 78.2, .7],
+  ];
   return {
-    titolo: 'Il test e la malattia rara', durata: DUR, copertina: 4.2,
+    titolo: 'Il test e la malattia rara', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 24.8, 'i dati'], [24.8, 51.9, 'l’albero'], [51.9, FINE, 'i positivi']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneDati(ctx, t); sceneAlbero(ctx, t); sceneConti(ctx, t); sceneFine(ctx, t); },

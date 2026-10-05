@@ -224,8 +224,25 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): i lembi che si alzano, l'altezza della scatola, poi il grafico del volume
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.6, .4],                                                // il foglio, 12 cm
+    ['pop', 12.7, .5], ['traccia', 13.4, 13.9],                                       // gli angoli in rosso, le pieghe
+    ['pop', 17.6, .3], ['tono', 18.0, 20.4, [.1, .3, .45, .55, .6]],                  // via gli angoli, i bordi si alzano
+    ['soffio', 22.0], ['pop', 22.4, .4], ['pop', 22.7, .5], ['ding', 23.0],           // base, altezza, volume 100
+    ['tono', 28.0, 30.0, [.17, .42, .67]],                                            // x = 4: la scatola si alza
+    ['pop', 41.0, .5], ['pop', 46.7, .6],                                             // le misure, V(x)
+    ['traccia', 52.0, 52.8], ['pop', 52.0, .4],                                       // gli assi, il dominio
+    ['tono', 57.3, 58.4, [.67, .35, .04]],                                            // la scatola torna bassa
+    ['tono', 58.5, 62.4, [0, .57, .83, .87, .74, .52, .28, .08, 0]],                  // il grafico del volume
+    ['tono', 66.7, 67.7, [.01, .48, .88]], ['traccia', 67.9, 68.4],                   // in cima, la tangente piatta
+    ['pop', 72.5, .5], ['pop', 76.5, .55], ['pop', 79.9, .6],                         // la derivata, raccolta, scomposta
+    ['traccia', 84.8, 85.8], ['ding', 90.2],                                          // salita e discesa, V(2) = 128
+    ['soffio', 96.4], ['pop', 98.8, .5], ['pop', 99.3, .6], ['pop', 99.8, .7],
+  ];
   return {
-    titolo: 'La scatola più grande', durata: FINE + 11.6, copertina: 4.2,
+    titolo: 'La scatola più grande', durata: FINE + 11.6, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 40.6, 'la scatola'], [40.6, 72.3, 'il volume è una funzione'], [72.3, FINE, 'la derivata']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneScatola(ctx, t); sceneDestra(ctx, t); sceneFine(ctx, t); },

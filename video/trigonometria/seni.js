@@ -232,8 +232,23 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.9, 9.3], ['pop', 9.0, .4],                         // il triangolo ABC e i vertici
+    ['pop', T.altri + .3, .5], ['pop', T.altri + .9, .6],                             // β e γ, b e c
+    ['traccia', T.circ + .2, T.circ + 1.5],                                           // la circonferenza circoscritta
+    ['pop', T.R + .2, .4], ['traccia', T.R + .3, T.R + .8], ['pop', T.R + .7, .5],     // O, il raggio R
+    ['tono', T.sposto + .5, T.sposto + 2.9, [.98, .97, .87, .68, .64]],              // A scorre sull'arco fino ad A′
+    ['traccia', T.diam + .4, T.diam + 1.2], ['pop', T.diam + 1.1, .6],               // il diametro BA′ = 2R
+    ['pop', T.retto + .4, .5],                                                        // l'angolo retto in C
+    ['soffio', T.cat - .1], ['pop', T.cat + .6, .6],                                  // a = 2R · sin α
+    ['pop', T.div + .3, .7],                                                          // a / sin α = 2R
+    ['soffio', T.bc], ['pop', T.bc + .4, .6], ['pop', T.bc + 1.2, .7],                // b / sin β, c / sin γ
+    ['traccia', T.teo + .3, T.teo + .8], ['pop', T.teo + .5, .8],                     // il teorema nel riquadro
+    ['soffio', FINE], ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],
+  ];
   return {
-    titolo: 'Il teorema dei seni', durata: DUR, copertina: 4.2,
+    titolo: 'Il teorema dei seni', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, T.circ - .1, 'lati e angoli opposti'], [T.circ - .1, T.cat - .1, 'la circonferenza circoscritta'],
       [T.cat - .1, FINE, 'il rapporto è {mink:2R}']],

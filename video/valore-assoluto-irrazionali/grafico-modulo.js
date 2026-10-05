@@ -194,8 +194,22 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                           // gli assi
+    ['tono', 8.4, 9.9, [1, .97, .78, .37, .05, .37, .78, .97, 1]],                    // la parabola: scende e risale
+    ['pop', 12.1, .8], ['pop', 16.7, .6], ['ding', 17.6],                             // (3; 5), |5| = 5: resta
+    ['pop', 21.2, .2],                                                                // (1; −3), sotto l'asse
+    ['tono', 25.7, 27.1, [.15, .19, .45, .71, .75]], ['pop', 27.4, .7],               // sale al simmetrico: |−3| = 3
+    ['pop', 32.2, .2],                                                                // il tratto fra −2 e 2
+    ['tono', 37.0, 38.9, [.05, .1, .45, .8, .85]], ['pop', 39.2, .5],                 // si ribalta sopra
+    ['pop', 43.0, .6],                                                                // i tratti fuori restano
+    ['pop', 47.3, .7], ['ding', 47.8],                                                // y = |f(x)|
+    ['pop', 51.3, .4], ['pop', 55.4, .5],                                             // le punte, punti angolosi
+    ['soffio', FINE], ['pop', FINE + 2.4, .5], ['pop', FINE + 2.9, .6], ['pop', FINE + 3.4, .7],
+  ];
   return {
-    titolo: 'Il grafico di |f(x)|', durata: DURATA, copertina: 4.2,
+    titolo: 'Il grafico di |f(x)|', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 31.9, 'un punto alla volta'], [31.9, FINE, 'il tratto sotto l\'asse si ribalta']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

@@ -168,8 +168,26 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue quanto è grande ciò che cresce o si assottiglia
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['tono', 8.2, 9.2, [.2, .45, .55, .6]], ['pop', 9.2, .5],          // il rettangolo fg
+    ['pop', 14.5, .5], ['tono', 14.8, 16.4, [.55, .8]],                                 // x → x + h: crescono le strisce
+    ['soffio', 20.0], ['pop', 20.8, .4], ['pop', 25.8, .55], ['pop', 30.3, .3],         // Δf g, f Δg, Δf Δg
+    ['tono', 35.0, 37.4, [.7, .35]],                                                    // strisce e quadratino si assottigliano
+    ['pop', 41.0, .5], ['pop', 41.6, .5], ['pop', 43.0, .55],                           // diviso h: f′g, fg′
+    ['pop', 47.5, .1],                                                                  // il quadratino tende a 0
+    ['traccia', 52.0, 52.5], ['ding', 52.1],                                            // (fg)′ = f′g + fg′
+    ['soffio', 57.8], ['tono', 58.0, 58.6, [.7, .5]], ['pop', 59.2, .5],                // le strisce spariscono, il quadrato
+    ['pop', 60.4, .5],                                                                  // fg = x²
+    ['tono', 63.8, 65.0, [.45, .65]],                                                   // ricrescono le due strisce
+    ['pop', 65.6, .55], ['ding', 66.6],                                                 // (x²)′ = 2x
+    ['pop', 72.0, .55], ['ding', 73.8],                                                 // con la regola: torna
+    ['pop', 78.4, .3], ['traccia', 79.4, 80.2],                                         // f′g′ = 1: croce
+    ['soffio', 84.0], ['pop', 86.6, .5], ['pop', 87.1, .6], ['pop', 87.6, .7],
+  ];
   return {
-    titolo: 'Derivare un prodotto', durata: 95, copertina: 4.2,
+    titolo: 'Derivare un prodotto', durata: 95, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 20.0, 'un rettangolo'], [20.0, 57.6, 'l\'area nuova'], [57.6, FINE, 'la prova con un quadrato']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneProdotto(ctx, t); sceneFine(ctx, t); },

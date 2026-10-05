@@ -232,8 +232,29 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.3, .5],                                                // la scheda, il polinomio
+    ['pop', 11.8, .3], ['pop', 17.1, .45], ['pop', 22.8, .6],                         // quadrato, rettangoli, quadratini
+    ['pop', 26.9, .55],                                                               // = (?)(?)
+    ['tono', 32.1, 33.1, [.2, .2]],                                                   // il quadrato scivola nell'angolo
+    ['soffio', 35.8], ['tono', 35.7, 37.05, [.2, 1, 1, 1, 1, .7]],                    // i quadratini: su, a sinistra, giù
+    ['pop', 37.1, .5], ['traccia', 41.4, 41.9], ['pop', 42.0, .6],                    // 6 · 1, i posti, 6 + 1 = 7
+    ['tono', 46.4, 47.7, [.2, .2]], ['pop', 47.8, .1],                                // i cinque rettangoli: non bastano
+    ['tono', 51.2, 52.3, [.2, .2]],                                                   // tornano nel mucchio
+    ['tono', 53.9, 54.95, [.7, .85]],                                                 // tre quadratini salgono di una fila
+    ['pop', 55.4, .5], ['traccia', 57.2, 57.7], ['pop', 57.8, .6],                    // 3 · 2, i posti, 3 + 2 = 5
+    ['tono', 61.2, 61.9, [.2, .2]], ['tono', 61.9, 63.95, [.2, .2, 1, 1, .8]],       // in piedi, poi i due sdraiati
+    ['ding', 64.6],                                                                   // il rettangolo è pieno
+    ['traccia', 68.9, 69.8],                                                          // le misure dei lati
+    ['ding', 73.4],                                                                   // = (x + 2)(x + 3)
+    ['pop', 78.1, .5], ['pop', 82.9, .6],                                             // somma, prodotto
+    ['pop', 88.3, .5], ['ding', 89.4],                                                // il controllo torna
+    ['pop', 93.0, .6], ['pop', 93.4, .5],                                             // il caso generale
+    ['soffio', 98.3], ['pop', 100.8, .5], ['pop', 101.3, .6], ['pop', 101.8, .7],
+  ];
   return {
-    titolo: 'Scomporre è trovare i lati', durata: 108.9, copertina: 4.2,
+    titolo: 'Scomporre è trovare i lati', durata: 108.9, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 31.8, 'le tessere'], [31.8, 68.6, 'il rettangolo'], [68.6, FINE - .2, 'somma e prodotto']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneTessere(ctx, t); sceneConti(ctx, t); sceneFine(ctx, t); },

@@ -245,8 +245,25 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                           // il piano di Gauss
+    ['soffio', 12.6], ['pop', 13.6, .79], ['pop', 17.4, .5],                          // z₁ = 2i, modulo 2
+    ['tono', 21.8, 23.0, [.3, .5, .7]], ['pop', 25.9, .6],                            // l'arco fino a 90°
+    ['pop', 29.4, .63], ['traccia', 33.0, 33.9], ['pop', 33.3, .5],                   // z₂ = 1 + i, Pitagora
+    ['tono', 36.9, 37.6, [.3, .5]],                                                   // l'arco di 45°
+    ['pop', 40.5, .5], ['pop', 41.7, .45], ['pop', 42.8, .4],                         // i conti del prodotto
+    ['ding', 44.9], ['traccia', 48.4, 49.3], ['pop', 48.5, .6],                       // −2 + 2i, modulo 2√2
+    ['tono', 52.1, 53.0, [.3, .6, .85]], ['pop', 56.0, .5],                           // l'arco di 135°, i moduli
+    ['tono', 59.5, 60.5, [.5, .75]],                                                  // l'arco di 45° in coda a 90°
+    ['tono', 65.6, 66.9, [.79, .74, .69]], ['tono', 69.0, 70.3, [.69, .79]],          // z₁ gira, poi si allunga
+    ['soffio', 76.1], ['pop', 76.8, .63], ['pop', 77.6, .5], ['pop', 78.0, .6],       // i: modulo 1, 90°
+    ['tono', 81.2, 82.6, [.79, .64, .46, .29, .14]],                                  // il prodotto gira di 90°
+    ['pop', 84.9, .4], ['pop', 85.3, .3], ['ding', 85.8],                             // −2 − 2i, 225°
+    ['soffio', 89.4], ['pop', 91.8, .5], ['pop', 92.3, .6], ['pop', 92.8, .7],
+  ];
   return {
-    titolo: 'Moltiplicare è ruotare', durata: Math.round((FINE + 10.7) * 10) / 10, copertina: 4.2,
+    titolo: 'Moltiplicare è ruotare', durata: Math.round((FINE + 10.7) * 10) / 10, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 29.1, 'modulo e argomento'], [29.1, 64.6, 'il prodotto'], [64.6, 76.4, 'girare e allungare'], [76.4, FINE, 'per i']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

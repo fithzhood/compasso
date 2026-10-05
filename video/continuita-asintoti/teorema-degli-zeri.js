@@ -180,8 +180,26 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza della curva mentre si disegna
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.2], ['traccia', 7.4, 8.2], ['pop', 8.6, .5],                         // assi, a e b
+    ['traccia', 14.0, 14.5], ['pop', 14.6, .17],                                      // A sotto l'asse
+    ['traccia', 21.2, 21.7], ['pop', 21.8, .85],                                      // B sopra l'asse
+    ['tono', 27.2, 28.4, [.17, .28, .51, .74, .85]],                                  // da A a B senza staccare
+    ['pop', 33.2, .51], ['ding', 33.5],                                               // lo zero c
+    ['tono', 40.2, 41.2, [.17, .46, .55, .45, .3, .28, .45, .7, .89, .92, .85]],      // l'altra strada
+    ['pop', 41.0, .51], ['pop', 41.12, .53], ['pop', 41.24, .55],                     // tre zeri
+    ['soffio', 50.5], ['pop', 50.8, .3],                                              // il teorema: f(a)·f(b) < 0
+    ['pop', 56.7, .55], ['pop', 62.5, .6],                                            // f continua, allora f(c) = 0
+    ['soffio', 69.7],
+    ['tono', 74.2, 74.9, [.17, .2, .28, .36, .39]], ['pop', 74.9, .39],               // il pezzo sinistro, il buco
+    ['pop', 75.2, .65], ['tono', 75.2, 75.8, [.65, .68, .75, .82, .85]],              // il salto, il pezzo destro
+    ['traccia', 80.0, 80.6],                                                          // si cancella la continuità
+    ['soffio', 85.3], ['pop', 87.7, .5], ['pop', 88.2, .6], ['pop', 88.7, .7],
+  ];
   return {
-    titolo: 'Il teorema degli zeri', durata: 95.4, copertina: 4.2,
+    titolo: 'Il teorema degli zeri', durata: 95.4, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.2, 50.2, 'da sotto a sopra'], [50.2, 69.6, 'il teorema'], [69.6, FINE, 'se la matita si stacca']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneGrafico(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

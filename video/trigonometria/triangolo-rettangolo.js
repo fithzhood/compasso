@@ -259,8 +259,25 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.9, 9.6], ['pop', 9.5, .3], ['pop', T.tri + 1.0, .5], // il triangolo, il retto, c
+    ['pop', T.alfa + .3, .5], ['pop', T.opp + .3, .6], ['pop', T.adi + .3, .4],       // α, cateto opposto, adiacente
+    ['traccia', T.uno + .2, T.uno + 1.4], ['pop', T.uno + 1.4, .5],                   // il triangolo con ipotenusa 1
+    ['soffio', T.sin], ['pop', T.sin + .4, .7], ['pop', T.cos + .3, .4],              // sin α, cos α
+    ['tono', T.ingr + .6, T.ingr + 2.6, [.3, .33, .55, .77, .8]],                    // si ingrandisce c volte
+    ['pop', T.aopp + .3, .7], ['pop', T.badi + .3, .5],                               // a = c · sin α, b = c · cos α
+    ['pop', T.div + .3, .4], ['pop', T.div + 1.0, .5], ['pop', T.div + 1.7, .6],      // a / b, la c si semplifica
+    ['pop', T.tan + .4, .7], ['pop', T.per + .5, .7],                                 // tan α, a = b · tan α
+    ['pop', T.beta + .3, .5], ['pop', T.bad + .4, .6],                                // β, a = c · cos β
+    ['soffio', TS], ['tono', TS + .4, TS + 1.8, [.35, .4, .6, .8, .85]],             // il triangolo si alza a 60°
+    ['pop', TS + 2.0, .5],                                                            // muro, pavimento, scala
+    ['pop', T.alt + .3, .7], ['ding', T.alt + .6],                                    // h ≈ 4,33 m
+    ['pop', T.piede + .3, .3], ['ding', T.piede + .6],                                // il piede, 2,5 m
+    ['soffio', FINE], ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],
+  ];
   return {
-    titolo: 'Seno, coseno e tangente nel triangolo', durata: DUR, copertina: 4.2,
+    titolo: 'Seno, coseno e tangente nel triangolo', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, T.uno - .1, 'cateto opposto e adiacente'], [T.uno - .1, T.ingr - .1, 'ipotenusa 1'],
       [T.ingr - .1, T.div - .1, 'ingrandito {mink:c} volte'], [T.div - .1, T.beta - .1, 'la tangente'],

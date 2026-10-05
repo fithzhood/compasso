@@ -187,8 +187,28 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py)
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.6, 8.4], ['pop', 8.5, .7],                          // terreno e piramide
+    ['traccia', 9.4, 10.2], ['tono', 9.4, 10.2, [.67, 0]], ['pop', 9.9, .6],          // l'altezza h, dall'alto in giù
+    ['tono', 12.8, 13.7, [1, 0]], ['tono', 13.3, 14.2, [.7, .47]],                    // tre raggi che scendono
+    ['tono', 13.8, 14.7, [.46, .31]],
+    ['traccia', 16.7, 17.5], ['pop', 17.3, .3],                                       // l'ombra fuori, 104 m
+    ['pop', 21.0, .4],                                                                // l'angolo retto al centro
+    ['pop', 25.1, .5],                                                                // il lato di base
+    ['traccia', 27.0, 27.8], ['pop', 27.7, .35],                                      // l'ombra nascosta, 115 m
+    ['traccia', 30.3, 31.0], ['pop', 30.9, .5],                                       // in tutto 219 m
+    ['soffio', 33.9], ['traccia', 34.1, 34.6], ['tono', 34.4, 34.9, [0, .6]],        // il bastone cresce
+    ['traccia', 35.0, 35.6], ['tono', 35.4, 36.1, [.8, 0]],                           // la sua ombra, il raggio
+    ['pop', 39.1, .5],                                                                // i due triangoli
+    ['pop', 43.2, .4], ['pop', 43.4, .45],                                            // gli angoli del sole
+    ['soffio', 47.1], ['ding', 47.6],                                                 // simili
+    ['pop', 52.0, .6], ['pop', 56.5, .65], ['pop', 60.4, .8],                         // la proporzione, h = 146 m
+    ['soffio', 64.0], ['pop', 66.6, .5], ['pop', 67.1, .6], ['pop', 67.6, .7],
+  ];
   return {
-    titolo: 'L’ombra della piramide', durata: DUR, copertina: 4.2,
+    titolo: 'L’ombra della piramide', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 33.6, 'l’ombra della piramide'], [33.6, 51.5, 'il bastone'], [51.5, 63.3, 'la proporzione']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiramide(ctx, t); sceneBastone(ctx, t); sceneFine(ctx, t); },

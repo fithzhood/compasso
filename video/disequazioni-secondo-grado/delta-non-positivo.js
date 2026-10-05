@@ -256,8 +256,28 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza della parabola
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                             // la scheda e gli assi
+    ['tono', 8.4, 9.9, [.95, .6, .39, .31, .37, .56, .88, 1, 1, 1]],                    // la parabola si disegna
+    ['pop', 10.0, .5], ['pop', 13.3, .2],                                               // a, b, c; Δ = −16
+    ['pop', 22.9, .31],                                                                 // il vertice (−1; 4)
+    ['ding', 28.3],                                                                     // sempre positivo
+    ['pop', 32.5, .6], ['traccia', 32.6, 33.6], ['ding', 33.6],                         // > 0: tutti i numeri reali
+    ['pop', 38.0, .3], ['pop', 43.0, .15],                                              // < 0: mai, S = ∅
+    ['soffio', 47.4], ['tono', 47.5, 49.3, [.31, .25, .15, .09]],                       // la parabola scivola su 3
+    ['pop', 49.6, .1],                                                                  // tocca l'asse in 3
+    ['ding', 54.8], ['pop', 55.4, .55],                                                 // Δ = 0, è un quadrato
+    ['pop', 60.2, .1],                                                                  // vale 0 solo in 3
+    ['pop', 65.5, .6], ['traccia', 65.5, 66.5], ['ding', 66.5],                         // ≥ 0: tutti
+    ['pop', 70.3, .45],                                                                 // > 0: pallino vuoto in 3
+    ['pop', 75.8, .4],                                                                  // ≤ 0: solo 3
+    ['pop', 80.9, .2],                                                                  // < 0: S = ∅
+    ['soffio', 86.4], ['pop', 88.6, .5], ['pop', 89.1, .6], ['pop', 89.6, .7],
+  ];
   return {
-    titolo: 'Quando Δ non è positivo', durata: DURATA, copertina: 4.2,
+    titolo: 'Quando Δ non è positivo', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 47.5, '{mink:Δ} negativo'], [47.5, FINE, '{mink:Δ} uguale a zero']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); scenePannello(ctx, t); sceneFine(ctx, t); },

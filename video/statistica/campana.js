@@ -236,8 +236,26 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.4],                                           // la macchina di Galton
+    ['tono', 8.4, 12.75, [1, .92, .84, .76, .68, .6, .52, .44, .36, .28, .2, .12, .02]], // la prima pallina scende fra i chiodi
+    ['pop', 12.8, .1],                                                                // e cade in una casella
+    ['tono', 17.6, 25.1, [.05, .07, .12, .2, .3, .45, .6, .75]],                      // tante palline: il mucchio cresce
+    ['traccia', 26.0, 26.4], ['pop', 26.2, .15],                                      // le caselle ai lati
+    ['traccia', 31.2, 32.6], ['tono', 31.2, 32.6, [.05, .15, .5, .95, .5, .15, .05]], // il profilo: una campana
+    ['soffio', 36.6], ['traccia', 37.0, 37.5],                                        // le altezze, l'asse
+    ['traccia', 37.2, 38.8], ['tono', 37.2, 38.8, [.05, .15, .5, .95, .5, .15, .05]], // la curva delle altezze
+    ['pop', 45.7, .5],                                                                // μ
+    ['tono', 50.2, 51.6, [.4, .7]], ['tono', 53.8, 55.0, [.7, .4]],                   // μ va a 182 e torna
+    ['pop', 57.1, .55],                                                               // σ
+    ['tono', 62.0, 63.4, [.8, .45]], ['tono', 66.0, 67.2, [.45, .8]],                 // σ = 14: si abbassa, poi torna
+    ['pop', 69.3, .6],                                                                // il 68%
+    ['ding', 74.4],                                                                   // 162 e 178
+    ['soffio', 80.0], ['pop', 82.3, .5], ['pop', 82.8, .6], ['pop', 83.3, .7],
+  ];
   return {
-    titolo: 'La curva a campana', durata: DUR, copertina: 4.2,
+    titolo: 'La curva a campana', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 36.6, 'la macchina di Galton'], [36.6, 68.8, 'la normale: centro e larghezza'], [68.8, FINE, 'il 68%']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneGalton(ctx, t); sceneNormale(ctx, t); sceneFine(ctx, t); },

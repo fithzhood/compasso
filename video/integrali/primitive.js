@@ -288,8 +288,27 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 7.9, .4], ['traccia', 8.4, 9.0], ['pop', 9.1, .55],      // x³ → derivo → 3x²
+    ['pop', 12.9, .45], ['traccia', 13.4, 14.0],                                      // x³/3 → derivo
+    ['pop', 18.2, .6], ['ding', 18.7],                                                // ridà x²: una primitiva
+    ['pop', 23.7, .5], ['traccia', 24.2, 24.8], ['pop', 24.9, .6], ['pop', 28.5, .3], // x³/3 + 1 → x² + 0
+    ['soffio', 34.0], ['traccia', 34.1, 35.0], ['pop', 35.0, .5],                     // il piano; y = x³/3 + c
+    ['traccia', 34.8, 37.4],                                                          // le cinque curve
+    ['tono', 39.9, 41.4, [.3, .7]],                                                   // la copia sale di 2
+    ['pop', 39.9, .15], ['pop', 40.14, .5], ['pop', 40.38, .85],                      // dove tagliano l'asse y: c
+    ['traccia', 45.3, 46.4], ['pop', 46.4, .6],                                       // le tangenti in x = 1
+    ['pop', 50.5, .4], ['ding', 51.0],                                                // pendenza 1² = 1
+    ['pop', 55.9, .6],                                                                // differiscono per una costante
+    ['soffio', 62.2], ['pop', 62.4, .5], ['pop', 62.9, .65],                          // ∫ x² dx = x³/3 + c
+    ['traccia', 67.8, 68.2], ['pop', 68.3, .5],                                       // dx, integrale indefinito
+    ['traccia', 73.6, 74.2], ['pop', 74.2, .6],                                       // costante di integrazione
+    ['pop', 78.1, .3],                                                                // senza + c: una curva sola
+    ['soffio', 82.9], ['pop', 85.3, .5], ['pop', 85.8, .6], ['pop', 86.3, .7],        // in una frase
+  ];
   return {
-    titolo: 'Le primitive', durata: DUR, copertina: 4.2,
+    titolo: 'Le primitive', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 34.0, 'la derivata al contrario'], [34.0, 62.0, 'una famiglia di curve'], [62.0, FINE, 'il {mink:+ c}']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneRighe(ctx, t); sceneFamiglia(ctx, t); scenePannello(ctx, t); sceneFine(ctx, t); },

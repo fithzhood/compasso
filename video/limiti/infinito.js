@@ -187,8 +187,24 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 7.6], ['traccia', 7.8, 8.8],                                            // la scheda, gli assi
+    ['traccia', 8.8, 10.6], ['tono', 8.8, 10.6, [.97, .88, .69, .35, .06, .02, .02, .01, .01]],   // 1/x scende e si appiattisce
+    ['soffio', 12.4], ['pop', 12.7, .6],                                               // la tabella; x = 1
+    ['tono', 13.0, 14.4, [.3, .1, .06, .04, .03]],                                     // il punto corre a destra e si abbassa
+    ['pop', 14.3, .45], ['pop', 15.2, .35], ['pop', 16.2, .25],                        // 10, 100, 1000
+    ['ding', 17.9],                                                                    // 1/x → 0
+    ['pop', 22.9, .5],                                                                 // il limite per x → +∞
+    ['soffio', 28.8],                                                                  // il piano stretto
+    ['pop', 32.8, .3], ['tono', 33.9, 34.9, [.08, .1, .15, .25, .8]],                  // x = 1, poi 0,1: il punto sale
+    ['pop', 34.8, .5], ['tono', 35.6, 36.4, [.8, 1]], ['pop', 36.3, .7], ['pop', 37.3, .9],   // esce dall'alto: 100, 1000
+    ['ding', 38.8],                                                                    // 1/x → +∞
+    ['pop', 43.0, .7],                                                                 // il limite per x → 0⁺
+    ['soffio', 48.8], ['pop', 49.1, .2], ['pop', 49.3, .8],                            // i due asintoti
+    ['soffio', 55.0], ['pop', 57.9, .45], ['pop', 58.4, .6], ['pop', 58.9, .75],       // chiusura e pillole
+  ];
   return {
-    titolo: "Verso l'infinito", durata: 68, copertina: 4.2,
+    titolo: "Verso l'infinito", durata: 68, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI, spegnimento: [66.1, 67.0] },
     capitoli: [[7.5, 28.6, '{mx:x} sempre più grande'], [28.6, 48.6, '{mx:x} vicino a 0'], [48.6, 54.3, 'due asintoti']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneCurva(ctx, t); sceneFine(ctx, t); },

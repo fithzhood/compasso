@@ -221,8 +221,32 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): mentre il punto gira il tono segue il suo seno
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                             // la scheda e gli assi
+    ['tono', 7.9, 9.0, [.5, .85, 1, .85, .5, .15, 0, .15, .5]],                         // la circonferenza, da destra in giro
+    ['pop', 9.4, .88], ['tono', 10.4, 11.0, [.5, .88]],                                 // un angolo x e la sua ordinata
+    ['traccia', 13.4, 14.4], ['pop', 13.6, .5],                                         // la retta y = 1/2, sin x = 1/2
+    ['pop', 17.8, .75], ['pop', 18.1, .75],                                             // i due punti
+    ['traccia', 21.8, 22.3], ['pop', 22.4, .6],                                         // π/6
+    ['traccia', 26.4, 27.8],                                                            // il raggio si ribalta sull'asse y
+    ['traccia', 29.9, 30.9], ['pop', 31.0, .6],                                         // 5π/6
+    ['tono', 34.4, 37.4, [.75, .76, .8, .9, 1, .86, .25, .02, .3, .57, .7, .74, .75]],  // un giro intero
+    ['ding', 38.4],                                                                     // π/6 + 2π: stesso punto
+    ['tono', 43.0, 47.0, [.75, .75, .75, .76, .78, .81, .85, .9, .95, .99, 1, .93,      // tre giri
+      .77, .51, .21, .01, .1, .51, .95, .87, .25, .02, .47, .93, .96, .65, .29, .06, 0, .07,
+      .2, .34, .46, .56, .63, .68, .72, .74, .75, .75, .75]],
+    ['pop', 45.7, .6], ['pop', 47.0, .65],                                              // π/6 + 4π, π/6 + 6π
+    ['tono', 47.8, 50.6, [.75, .74, .7, .57, .3, .02, .25, .86, 1, .9, .8, .76, .75]],  // un giro all'indietro
+    ['pop', 50.8, .45],                                                                 // π/6 − 2π
+    ['pop', 52.3, .5], ['pop', 52.65, .6], ['pop', 53.0, .7], ['pop', 53.35, .8], ['pop', 53.7, .3],   // n = 0, 1, 2, 3, −1
+    ['ding', 57.6],                                                                     // x = π/6 + 2nπ
+    ['pop', 62.6, .6], ['pop', 62.8, .45],                                              // x = 5π/6 + 2nπ, n ∈ ℤ
+    ['soffio', 71.8], ['pop', 74.0, .5], ['pop', 74.5, .6], ['pop', 75.0, .7],
+  ];
   return {
-    titolo: 'sin x = 1/2', durata: Math.round((FINE + 10.8) * 10) / 10, copertina: 4.2,
+    titolo: 'sin x = 1/2', durata: Math.round((FINE + 10.8) * 10) / 10, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 33.7, 'la retta y = 1/2'], [33.7, 57.2, 'girando si ritorna'], [57.2, FINE, 'tutte le soluzioni']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

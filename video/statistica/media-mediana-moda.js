@@ -224,8 +224,24 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.8, 8.8], ['pop', 8.3, .5], ['pop', 8.7, .6],      // la tavola, i cinque voti
+    ['pop', 9.5, .55], ['pop', 9.8, .35], ['pop', 10.1, .9], ['pop', 10.4, .4], ['pop', 10.7, .45], // i voti sulla tavola
+    ['soffio', 12.3], ['pop', 12.7, .5], ['pop', 17.7, .5], ['ding', 18.9],          // la media: x̄ = 6
+    ['pop', 21.9, .3], ['tono', 22.6, 23.6, [.5, .2]],                                // il fulcro sul 5: pende
+    ['tono', 26.0, 27.2, [.2, .5]], ['ding', 27.3],                                   // sul 6: equilibrio
+    ['traccia', 30.8, 31.2], ['traccia', 31.0, 32.7],                                 // gli scarti, freccia per freccia
+    ['ding', 36.3],                                                                   // la somma degli scarti è 0
+    ['soffio', 41.8], ['tono', 42.2, 43.8, [.5, .65, .5]],                            // i voti si mettono in ordine
+    ['pop', 46.1, .5], ['ding', 46.3],                                                // il centro: mediana = 5
+    ['traccia', 50.0, 50.4], ['pop', 50.6, .5], ['pop', 51.7, .6],                   // N pari
+    ['traccia', 55.4, 55.8], ['pop', 55.7, .4],                                       // la moda: i due 4
+    ['pop', 61.1, .6],                                                                // la media sotto la tavola
+    ['soffio', 65.8], ['pop', 68.1, .5], ['pop', 68.6, .6], ['pop', 69.1, .7],
+  ];
   return {
-    titolo: 'Media, mediana, moda', durata: DUR, copertina: 4.2,
+    titolo: 'Media, mediana, moda', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 41.4, 'la media'], [41.4, 65.6, 'la mediana e la moda']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneTavola(ctx, t); scenePannello(ctx, t); sceneFine(ctx, t); },

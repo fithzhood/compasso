@@ -204,8 +204,25 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue la freccia delle soluzioni che corre a destra
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 7.8, .4], ['pop', 8.2, .5], ['pop', 12.8, .6],            // le tre righe della risoluzione
+    ['soffio', 17.3], ['traccia', 17.5, 18.3], ['pop', 18.0, .5],                       // la retta, il 4
+    ['pop', 21.9, .6], ['ding', 22.6],                                                  // x = 6: vera
+    ['pop', 26.5, .4], ['traccia', 26.9, 27.6],                                         // x = 2: falsa
+    ['pop', 30.9, .5], ['traccia', 31.2, 31.9],                                         // x = 4: falsa
+    ['pop', 35.5, .5],                                                                  // pallino vuoto
+    ['tono', 40.0, 41.6, [.35, .4, .65, .9, .95]],                                      // la freccia: tutti i numeri a destra di 4
+    ['soffio', 47.2], ['pop', 47.7, .6],                                                // (4, +∞)
+    ['pop', 52.6, .4], ['pop', 57.2, .55],                                              // la tonda del 4, la tonda di +∞
+    ['pop', 62.0, .6],                                                                  // > diventa ≥
+    ['pop', 66.4, .5], ['ding', 66.8], ['pop', 67.4, .6],                               // 5 ≥ 5 vera; pallino pieno, [4, +∞)
+    ['pop', 71.6, .5], ['pop', 75.8, .55],                                              // la quadra, la tonda resta
+    ['soffio', 80.2], ['pop', 82.8, .5], ['pop', 83.3, .6], ['pop', 83.8, .7],
+  ];
   return {
-    titolo: 'Le soluzioni sono intervalli', durata: DURATA, copertina: 4.2,
+    titolo: 'Le soluzioni sono intervalli', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 21.6, 'si risolve'], [21.6, 47.3, 'proviamo dei numeri'], [47.3, 61.6, 'come si scrive'], [61.6, FINE, 'e con ≥?']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneRetta(ctx, t); scenePannello(ctx, t); sceneFine(ctx, t); },

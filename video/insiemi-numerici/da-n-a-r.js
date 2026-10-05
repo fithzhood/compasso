@@ -278,8 +278,29 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py), in tempo del video: la scena va in tempo interno (TK),
+  // quindi dopo 29,1 s gli istanti della scena sono spostati di +0,7, dopo 32,4 di +1,6, dopo 60 di −2,8
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.5], ['tono', 8.0, 9.6, [.4, .75]],          // la retta, i naturali 0…5
+    ['pop', 12.8, .5],                                                                // 3 − 5 = ?
+    ['tono', 17.0, 18.5, [.6, .45, .3]], ['tono', 18.5, 19.0, [.3, .15]], ['pop', 19.1, .2],   // indietro: dopo lo 0 non c'è niente
+    ['tono', 22.1, 23.2, [.35, .15]],                                                 // i negativi
+    ['tono', 26.4, 28.4, [.6, .5, .4, .3, .2, .1]], ['ding', 29.3],                   // cinque passi: −2
+    ['pop', 32.8, .5], ['traccia', 33.2, 34.2], ['pop', 35.1, .5],                    // 3 : 2, il tratto, la metà
+    ['traccia', 37.8, 38.4], ['pop', 38.1, .25],                                      // il buco con il punto di domanda
+    ['pop', 43.1, .6], ['ding', 43.4],                                                // 3/2
+    ['tono', 46.8, 48.4, [.4, .6]],                                                   // le frazioni sulla retta
+    ['soffio', 55.6], ['traccia', 55.5, 56.1], ['tono', 56.1, 56.7, [.2, .6]], ['pop', 56.8, .6],   // il quadrato, la diagonale √2
+    ['tono', 60.1, 61.9, [.6, .47, .33, .17, .05]], ['pop', 61.9, .55],              // il compasso la porta sulla retta
+    ['pop', 63.7, .5],                                                                // non è una frazione
+    ['traccia', 68.1, 69.5], ['ding', 69.6],                                          // la retta piena: i reali
+    ['soffio', 76.9], ['pop', 77.2, .4], ['pop', 77.5, .5], ['pop', 77.9, .6], ['pop', 78.2, .7],   // la catena N ⊂ Z ⊂ Q ⊂ R
+    ['pop', 81.0, .5],
+    ['soffio', 84.6], ['pop', 87.2, .5], ['pop', 87.7, .6], ['pop', 88.2, .7],
+  ];
   return {
-    titolo: 'Dai naturali ai reali', durata: DURATA, copertina: 4.2,
+    titolo: 'Dai naturali ai reali', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: CAPITOLI,
     scena(ctx, t) { const u = interno(t); sceneIntro(ctx, t); sceneRetta(ctx, u); scenePannelli(ctx, u); sceneFine(ctx, t); },

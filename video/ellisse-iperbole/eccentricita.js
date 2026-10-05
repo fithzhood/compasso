@@ -180,8 +180,24 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): mentre i picchetti si muovono il tono segue e = c/a
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                             // la scheda e gli assi
+    ['tono', 8.0, 9.6, [.77, .69, .49, .29, .21, .29, .49, .69, .77]],                  // l'ellisse, dalla cima in giro
+    ['pop', 8.4, .49],                                                                  // i picchetti
+    ['pop', 8.8, .5], ['pop', 10.4, .5],                                                // 2a = 10, a = 5
+    ['traccia', 12.4, 12.9], ['pop', 14.4, .5],                                         // la distanza 2c, c = 4
+    ['pop', 17.0, .55], ['ding', 18.5],                                                 // e = c/a = 0,80
+    ['tono', 21.4, 25.0, [.8, .6, .4, .2]],                                             // picchetti più vicini: e scende
+    ['tono', 29.4, 32.0, [.2, .1, 0]],                                                  // coincidono: e = 0
+    ['tono', 37.0, 40.2, [0, .3, .6, .9]],                                              // li allontano: e sale a 0,90
+    ['pop', 45.2, .5],                                                                  // 2a > 2c
+    ['pop', 49.9, .6], ['ding', 50.3],                                                  // c < a, quindi e < 1
+    ['soffio', 54.7], ['pop', 56.7, .5], ['pop', 57.2, .6], ['pop', 57.7, .7],
+  ];
   return {
-    titolo: 'L’eccentricità', durata: FINE + 11, copertina: 4.2,
+    titolo: 'L’eccentricità', durata: FINE + 11, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 44.8, 'stesso spago, picchetti diversi'], [44.8, 54.1, 'perché resta sotto 1']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

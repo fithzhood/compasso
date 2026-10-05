@@ -107,8 +107,19 @@ function sceneFine(ctx, t) {
   });
 }
 
+  const SUONI = [
+    ['soffio', 7.6], ['pop', 7.9, .45], ['pop', 8.3, .55],                            // le due macchine
+    ['pop', 12.85, .35], ['tono', 14.1, 14.73, [.35, .5]], ['pop', 14.73, .5],         // il 2 entra in f, esce 3
+    ['tono', 18.4, 19.03, [.5, .85]], ['pop', 19.03, .85],                             // g fa 3 → 9
+    ['soffio', 21.2], ['ding', 21.9],                                                  // la scheda: (g ∘ f)(2) = 9
+    ['tono', 26.7, 27.25, [.6, .15]], ['tono', 27.3, 27.9, [.15, .6]],                // le macchine si scambiano
+    ['pop', 30.55, .35], ['tono', 31.8, 32.43, [.35, .6]], ['pop', 32.43, .6],         // il 2 entra in g, esce 4
+    ['tono', 36.1, 36.73, [.6, .7]], ['pop', 36.73, .7], ['ding', 37.4],               // f fa 4 → 5
+    ['pop', 39.0, .3],                                                                 // 9 ≠ 5
+    ['soffio', 44.2], ['pop', 46.0, .5], ['pop', 46.5, .65],                           // chiusura e pillole
+  ];
   return {
-    titolo: 'La funzione composta', durata: 53.7, copertina: 4.2,
+    titolo: 'La funzione composta', durata: 53.7, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI, spegnimento: [51.6, 52.6] },
     capitoli: [[7.5, 26.2, 'prima {mink:f}, poi {mink:g}'], [26.2, 43.9, 'nell\'altro ordine']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneFila(ctx, t); sceneFine(ctx, t); },

@@ -108,8 +108,20 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 7.6],                                                                   // la scheda
+    ['tono', 8.2, 9.0, [.3, .55]], ['tono', 8.8, 9.6, [.4, .6]],                       // le sbarre di f e di g si allungano
+    ['pop', 10.0, .5],                                                                 // in tutto f + g
+    ['pop', 13.9, .4], ['tono', 14.4, 16.0, [.45, .75]],                               // x → x + h: le sbarre crescono
+    ['pop', 15.6, .55], ['pop', 15.8, .65],                                            // Δf, Δg
+    ['pop', 20.5, .5], ['ding', 20.8],                                                 // Δ(f + g) = Δf + Δg
+    ['pop', 26.3, .5],                                                                 // diviso h
+    ['pop', 32.0, .6],                                                                 // i limiti
+    ['traccia', 37.9, 38.4], ['ding', 38.4],                                           // (f + g)′ = f′ + g′
+    ['soffio', 44.0], ['pop', 46.3, .5], ['pop', 46.8, .65],                           // chiusura e pillole
+  ];
   return {
-    titolo: 'Derivare una somma', durata: 54, copertina: 4.2,
+    titolo: 'Derivare una somma', durata: 54, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 20.0, 'due pezzi in fila'], [20.0, FINE, 'dall\'aumento alla derivata']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneSomma(ctx, t); sceneFine(ctx, t); },

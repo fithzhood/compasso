@@ -223,8 +223,30 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py), in tempo vero (capitoli 2 e 3: locale + D);
+  // il tono segue i numeri che passano e le barre che si allungano
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.2, .5],                                                  // y = (x² + 1)³
+    ['traccia', 10.2, 12.5], ['pop', 10.6, .45], ['pop', 11.8, .55],                    // frecce, interna, esterna
+    ['pop', 14.4, .45], ['pop', 20.5, .6],                                              // si accendono interna ed esterna
+    ['pop', 25.5, .3], ['tono', 25.9, 27.5, [.3, .3, .45, .45]], ['pop', 27.4, .45],    // 1 entra, esce 2
+    ['tono', 32.5, 34.1, [.45, .45, .8, .8]], ['pop', 34.0, .8],                        // 2 entra, esce 8
+    ['soffio', 38.5], ['traccia', 38.7, 39.9],                                          // la lente: tre righelli
+    ['tono', 40.3, 41.1, [.3, .4]], ['pop', 41.1, .4],                                  // Δx = 0,01
+    ['tono', 44.4, 45.3, [.4, .55]], ['pop', 45.3, .55],                                // Δu ≈ 0,02
+    ['pop', 47.3, .5], ['ding', 50.7],                                                  // 2 volte = g′(1)
+    ['tono', 55.7, 57.5, [.55, .95]], ['pop', 57.5, .95],                               // Δy ≈ 0,24
+    ['pop', 58.7, .6], ['ding', 61.7],                                                  // 12 volte = f′(2)
+    ['ding', 68.3],                                                                     // 2 · 12 = 24
+    ['soffio', 73.3], ['pop', 73.9, .5], ['pop', 75.3, .45],                            // la regola, esterna e interna
+    ['traccia', 79.1, 79.6],                                                            // si sottolinea g(x)
+    ['traccia', 85.5, 86.0], ['pop', 85.7, .5], ['ding', 89.2],                         // l'esempio: in 1 fa 24
+    ['pop', 92.1, .3], ['traccia', 93.3, 94.1],                                         // senza 2x verrebbe 12: croce
+    ['soffio', 97.7], ['pop', 100.3, .5], ['pop', 100.9, .6],
+  ];
   return {
-    titolo: 'La regola della catena', durata: FINE + 11, copertina: 4.2,
+    titolo: 'La regola della catena', durata: FINE + 11, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 38.3, 'una dentro l\'altra'], [38.3, 60.6 + D, 'da vicino'], [60.6 + D, FINE, 'la regola']],
     scena(ctx, t) {

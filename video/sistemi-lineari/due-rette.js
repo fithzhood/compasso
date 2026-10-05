@@ -250,8 +250,26 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7], ['traccia', 8.2, 8.8],                   // il piano, la graffa
+    ['pop', 8.6, .5], ['pop', 9.0, .55],                                              // le due equazioni
+    ['pop', 12.5, .1], ['pop', 12.9, .3], ['pop', 13.3, .5],                          // (5; 0), (4; 1), (3; 2)
+    ['traccia', 17.1, 18.1], ['tono', 17.1, 18.1, [.9, .1]],                          // r scende
+    ['traccia', 22.0, 23.0], ['tono', 22.0, 23.0, [.1, .9]],                          // s sale
+    ['pop', 25.9, .5],                                                                // P
+    ['pop', 30.0, .5], ['pop', 30.2, .6], ['ding', 30.7],                             // (3; 2) torna in tutte e due
+    ['pop', 34.1, .5], ['ding', 38.2],                                                // incidenti, determinato
+    ['soffio', 42.7], ['traccia', 43.2, 44.0], ['tono', 43.2, 44.0, [.6, .1]],        // la nuova s, parallela
+    ['pop', 46.4, .5], ['pop', 50.7, .5], ['pop', 55.3, .1],                          // parallele, 5 e 2, impossibile
+    ['tono', 59.6, 61.2, [.3, .8]], ['pop', 61.3, .55],                               // s scivola su r
+    ['pop', 63.4, .5],                                                                // divisa per 2
+    ['pop', 67.4, .9], ['pop', 67.7, .6], ['pop', 68.0, .3],                          // tutti i punti in comune
+    ['ding', 71.7],                                                                   // indeterminato
+    ['soffio', 75.6], ['pop', 78.1, .5], ['pop', 78.6, .6], ['pop', 79.1, .7],
+  ];
   return {
-    titolo: 'Un sistema, due rette', durata: FINE + 10.6, copertina: 4.2,
+    titolo: 'Un sistema, due rette', durata: FINE + 10.6, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 25.5, 'ogni equazione è una retta'], [25.5, 42.3, 'rette incidenti'], [42.3, 58.6, 'rette parallele'], [58.6, FINE, 'rette coincidenti']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

@@ -197,8 +197,26 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.8, 8.6], ['pop', 8.5, .4], ['pop', 8.9, .5], ['pop', 9.3, .55], // prima classe: vicini
+    ['traccia', 12.0, 12.8], ['pop', 12.7, .1], ['pop', 13.2, .5], ['pop', 13.7, .9],  // seconda classe: sparsi
+    ['traccia', 17.0, 17.5], ['pop', 17.2, .5],                                       // x̄ = 6 per tutte e due
+    ['soffio', 25.9], ['pop', 26.5, .3], ['pop', 26.9, .5], ['pop', 27.3, .7],       // 3, 5, 6, 7, 9
+    ['pop', 31.1, .3], ['pop', 31.6, .5], ['pop', 32.1, .7],                          // gli scarti
+    ['pop', 35.9, .2],                                                                // la somma è 0
+    ['tono', 40.6, 41.6, [.1, .9]], ['tono', 41.65, 42.65, [.1, .35]],               // i quadrati crescono: grandi, poi piccoli
+    ['pop', 45.5, .8], ['pop', 46.1, .4],                                             // le aree
+    ['tono', 50.2, 54.4, [.6, .85, .6, .85, .6, .85, .6]],                            // i quadrati grandi pulsano
+    ['traccia', 54.7, 55.0], ['pop', 54.9, .5], ['ding', 56.2],                       // σ² = 4
+    ['pop', 59.9, .55], ['ding', 60.8],                                               // σ = 2
+    ['traccia', 64.8, 65.6],                                                          // σ dalla media, per parte
+    ['soffio', 69.4], ['traccia', 70.0, 70.8], ['pop', 70.6, .3],                     // σ della prima classe
+    ['traccia', 71.2, 72.0], ['pop', 71.8, .8],                                       // σ della seconda
+    ['soffio', 79.6], ['pop', 81.9, .5], ['pop', 82.4, .6], ['pop', 82.9, .7],
+  ];
   return {
-    titolo: 'Quanto sono sparsi i dati', durata: DUR, copertina: 4.2,
+    titolo: 'Quanto sono sparsi i dati', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 25.8, 'due classi, stessa media'], [25.8, 54.6, 'scarti e quadrati'], [54.6, 69.4, 'varianza e deviazione standard'], [69.4, FINE, 'di nuovo le due classi']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneClassi(ctx, t); sceneScarti(ctx, t); sceneFine(ctx, t); },

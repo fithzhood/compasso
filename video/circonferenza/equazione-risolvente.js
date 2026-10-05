@@ -239,8 +239,27 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py), in tempo vero: dopo la pausa di 43,7 s gli istanti delle scene + 3,6;
+  // il tono segue l'altezza della circonferenza mentre si disegna e della retta mentre scende
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7], ['pop', 8.4, .5],                                   // assi e centro O
+    ['tono', 8.2, 9.6, [.85, .5, .15, 0, .15, .5, .85, 1, .85]],                                 // la circonferenza
+    ['traccia', 9.6, 10.1], ['pop', 10.0, .6],                                                   // il raggio √5
+    ['tono', 12.3, 13.1, [.1, .9]],                                                              // la retta y = 2x − 3
+    ['traccia', 16.3, 16.8],                                                                     // la graffa del sistema
+    ['pop', 20.7, .5], ['pop', 25.3, .5], ['pop', 30.1, .55], ['pop', 34.3, .6],                 // sostituita, risolvente, Δ = 64
+    ['pop', 38.7, .5], ['pop', 38.8, .65], ['pop', 38.95, .3],                                   // le soluzioni, i due punti
+    ['pop', 43.9, .55], ['ding', 47.6],                                                          // le coordinate; secante
+    ['tono', 51.8, 53.4, [.6, .55, .45, .4]],                                                    // la retta scende: y = 2x − 5
+    ['pop', 55.3, .5], ['pop', 60.3, .45], ['pop', 60.4, .35], ['ding', 60.6],                   // Δ = 0: tangente
+    ['tono', 65.0, 66.6, [.4, .35, .25, .2]],                                                    // ancora giù: y = 2x − 7
+    ['pop', 68.3, .5], ['pop', 73.3, .15],                                                       // Δ = −96: nessun punto
+    ['soffio', 78.2], ['pop', 78.4, .7], ['pop', 78.7, .5], ['pop', 79.0, .3],                   // la tabella dei tre casi
+    ['soffio', FINE + .4], ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],
+  ];
   return {
-    titolo: 'Il Δ dell’equazione risolvente', durata: 95.6, copertina: 4.2,
+    titolo: 'Il Δ dell’equazione risolvente', durata: 95.6, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 51.5, 'la risolvente'], [51.5, FINE, 'la retta scende']],
     scena(ctx, t) { const s = tm(t); sceneIntro(ctx, s); scenePiano(ctx, s, t); scenePannello(ctx, s); sceneFine(ctx, s); },

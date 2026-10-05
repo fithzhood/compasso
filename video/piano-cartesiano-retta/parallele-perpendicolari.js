@@ -308,8 +308,31 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                           // la scheda e gli assi
+    ['tono', 8.3, 9.0, [.15, .5, .75]], ['tono', 9.1, 9.9, [.1, .4, .6]],             // r e s si disegnano salendo
+    ['pop', 12.2, .5], ['pop', 13.6, .5],                                             // m₁ = 2, m₂ = 2
+    ['traccia', 17.3, 17.8], ['tono', 17.7, 18.2, [.3, .7]],                          // i due passi: 1 a destra, 2 in su
+    ['traccia', 17.8, 18.3], ['tono', 18.2, 18.7, [.3, .7]],
+    ['traccia', 22.3, 22.7], ['pop', 22.5, .6], ['ding', 23.0],                       // m₁ = m₂: parallele
+    ['soffio', 27.6], ['tono', 28.0, 29.0, [.1, .5, .9]], ['pop', 28.6, .5],          // y = 2x
+    ['traccia', 34.2, 34.7], ['tono', 34.6, 35.1, [.3, .7]], ['pop', 34.8, .4],       // il passo di r
+    ['tono', 39.4, 41.6, [.3, .32, .45, .75, .88, .9]],                               // la copia gira di un angolo retto
+    ['pop', 43.9, .6], ['pop', 44.3, .4],                                             // l'angolo retto, la riga di s
+    ['pop', 48.3, .5], ['pop', 53.4, .3],                                             // il passo di s, Δx = −2
+    ['traccia', 58.9, 59.4],                                                          // le frecce dello scambio
+    ['pop', 64.5, .4], ['traccia', 70.0, 70.4],                                       // m₂ = −1/2, il prodotto
+    ['soffio', 75.0],
+    ['tono', 75.4, 76.6, [.7, .67, .5, .33, .3]],                                     // r gira: meno ripida...
+    ['tono', 77.3, 78.7, [.3, .33, .58, .82, .85]],                                   // ...poi più ripida
+    ['traccia', 79.7, 80.1], ['pop', 79.9, .5],                                       // m₂ = −1/m₁
+    ['tono', 85.1, 86.7, [.85, .86, .93, .99, 1]], ['pop', 88.5, .4],                // r verticale: m₁ non esiste
+    ['pop', 93.7, .6],                                                                // la pillola
+    ['soffio', 98.8], ['pop', 101.2, .5], ['pop', 101.7, .6], ['pop', 102.2, .7],
+  ];
   return {
-    titolo: 'Parallele e perpendicolari', durata: 109.3, copertina: 4.2,
+    titolo: 'Parallele e perpendicolari', durata: 109.3, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 27.4, 'parallele'], [27.4, 84.6, 'perpendicolari'], [84.6, FINE, 'e le verticali?']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneParallele(ctx, t); scenePerpendicolari(ctx, t);

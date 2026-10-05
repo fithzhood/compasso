@@ -254,8 +254,24 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): niente si muove, le cose compaiono
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.1, .45], ['pop', 8.4, .5], ['pop', 8.6, .55], ['pop', 8.8, .6],   // (a + b)³ e le tre parentesi
+    ['traccia', 16.4, 16.7], ['pop', 16.4, .5], ['pop', 20.8, .55], ['pop', 21.2, .6],           // le tre scelte che danno a²b
+    ['traccia', 25.2, 25.6], ['pop', 25.5, .55], ['ding', 25.8],                                 // (3 su 1) = 3
+    ['pop', 30.2, .6], ['traccia', 30.6, 31.0],                                                  // 3a²b nel riquadro
+    ['soffio', 33.7], ['pop', 34.0, .5], ['pop', 37.4, .6], ['pop', 42.8, .4], ['pop', 43.1, .7], // la tabella dei termini
+    ['pop', 48.2, .5], ['ding', 48.8],                                                           // lo sviluppo
+    ['pop', 52.3, .6],                                                                           // il triangolo fino alla riga 3
+    ['soffio', 57.0], ['pop', 57.3, .45], ['pop', 57.6, .5], ['traccia', 58.1, 58.5],            // (a + b)ⁿ: n parentesi
+    ['pop', 58.0, .55], ['pop', 59.3, .5], ['pop', 63.4, .6],                                    // il termine generale, pezzo per pezzo
+    ['pop', 67.4, .5], ['ding', 68.3],                                                           // la prova: 3a²b
+    ['pop', 71.9, .5], ['pop', 72.6, .55],                                                       // le regole dello sviluppo
+    ['soffio', FINE + .4], ['pop', FINE + 2.2, .5], ['pop', FINE + 2.7, .6], ['pop', FINE + 3.2, .7],
+  ];
   return {
-    titolo: 'Il binomio di Newton', durata: DUR, copertina: 4.2,
+    titolo: 'Il binomio di Newton', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 33.7, 'tre parentesi'], [33.7, 57.1, 'tutti i termini'], [57.1, FINE, 'in generale']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneScheda(ctx, t); sceneTre(ctx, t); sceneGenerale(ctx, t); sceneFine(ctx, t); },

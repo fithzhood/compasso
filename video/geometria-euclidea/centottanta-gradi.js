@@ -216,8 +216,24 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): quando una copia d'angolo gira, il tono segue l'altezza del suo vertice
+  const SUONI = [
+    ['soffio', 1.5],
+    ['traccia', 8.0, 9.6], ['pop', 9.4, .5],                                           // il triangolo e i suoi vertici
+    ['pop', 11.5, .3], ['pop', 12.5, .45], ['pop', 13.5, .7],                          // α, β, γ
+    ['traccia', 16.4, 17.6], ['soffio', 16.7],                                         // la parallela r; la scheda
+    ['pop', 24.4, .4], ['pop', 28.7, .75],                                             // la trasversale AC; α′
+    ['tono', 36.6, 38.6, [.1, .17, .76, .87, .82]], ['ding', 38.8],                    // α gira fino in C: α′ = α
+    ['pop', 41.0, .75],                                                                // β′
+    ['pop', 45.0, .4], ['tono', 45.6, 47.6, [.1, .15, .67, .85, .82]], ['ding', 47.8], // la trasversale BC; β gira: β′ = β
+    ['pop', 49.7, .6],                                                                 // tre angoli in C
+    ['traccia', 53.9, 54.9], ['pop', 54.6, .8], ['ding', 55.0],                        // l'angolo piatto: 180°
+    ['pop', 57.9, .5],                                                                 // la sostituzione
+    ['tono', 66.0, 69.0, [.82, .8, .76, .74]],                                         // C si sposta
+    ['soffio', FINE + .4], ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],
+  ];
   return {
-    titolo: 'Perché 180°', durata: DUR, copertina: 4.2,
+    titolo: 'Perché 180°', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 16.0, 'il triangolo'], [16.0, 49.3, 'la parallela per {mink:C}'], [49.3, 65.5, 'l’angolo piatto'], [65.5, 74.2, 'ogni triangolo']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneTriangolo(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

@@ -253,8 +253,26 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): l'albero cresce, il tono segue l'altezza dei rami
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.1, .5],                                                            // l'inizio
+    ['traccia', 12.1, 12.95], ['pop', 12.6, .75], ['pop', 12.75, .35],                           // primo passo: A e B
+    ['traccia', 16.6, 17.5], ['pop', 17.1, .8], ['pop', 17.25, .7], ['pop', 17.4, .6],           // i pantaloni di A
+    ['traccia', 21.1, 22.0], ['pop', 21.6, .4], ['pop', 21.75, .3], ['pop', 21.9, .2],           // i pantaloni di B
+    ['traccia', 25.5, 26.3], ['pop', 26.3, .7],                                                  // il percorso A2
+    ['tono', 30.2, 31.3, [.8, .55, .45, .35, .2]], ['ding', 31.4],                               // tutti i completi, dall'alto in basso
+    ['traccia', 34.1, 34.9], // le due graffe da 3
+    ['soffio', 38.2], ['pop', 38.6, .45], ['pop', 38.9, .55], ['traccia', 39.2, 39.6], ['pop', 39.6, .6], // 2 · 3 = 6
+    ['pop', 42.9, .5], ['pop', 46.5, .5], ['pop', 52.3, .6],                  // la regola del prodotto
+    ['soffio', 56.8], ['pop', 57.2, .5],                                                         // la condizione
+    ['traccia', 62.0, 62.9], // B3 non si può mettere
+    ['traccia', 66.1, 66.5], ['pop', 66.35, .4], ['ding', 67.2],             // 3 + 2 = 5
+    ['pop', 70.7, .4], ['traccia', 71.2, 71.7],                                                  // niente 2 · 3
+    ['soffio', FINE + .4], ['pop', FINE + 2.2, .5], ['pop', FINE + 2.7, .6], ['pop', FINE + 3.2, .7],
+  ];
   return {
-    titolo: 'Il principio del conteggio', durata: DUR, copertina: 4.2,
+    titolo: 'Il principio del conteggio', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 33.9, 'l’albero delle scelte'], [33.9, 56.5, 'perché si moltiplica'], [56.5, FINE, 'la condizione']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneAlbero(ctx, t); sceneConti(ctx, t); sceneFine(ctx, t); },

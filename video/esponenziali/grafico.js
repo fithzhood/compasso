@@ -201,8 +201,25 @@ function sceneFine(ctx, t) {
   });
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza dei punti, poi la base che cambia
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7], ['pop', 8.6, .5],                         // il piano, la tabella
+    ['pop', 12.6, .32], ['pop', 13.0, .53], ['pop', 13.4, .95],                       // 2, 4, 8
+    ['pop', 18.1, .21], ['pop', 21.8, .16], ['pop', 22.2, .13],                       // 1, poi 0,5 e 0,25
+    ['traccia', 27.1, 28.9], ['tono', 27.1, 28.9, [.1, .1, .11, .12, .13, .17, .27, .49, 1]], // la curva
+    ['pop', 29.0, .5], ['traccia', 33.6, 34.1],                                       // sale; verso −∞
+    ['traccia', 38.4, 38.9], ['pop', 38.6, .1], ['pop', 43.2, .4],                    // l'asintoto; sempre sopra
+    ['tono', 47.8, 49.2, [.6, .62, .8, .97, 1]],                                      // base 2 → 3
+    ['tono', 52.9, 54.3, [1, .96, .7, .44, .4]], ['pop', 54.7, .5],                   // base 3 → 1,5
+    ['ding', 57.8],                                                                   // passa per (0; 1)
+    ['tono', 62.4, 63.6, [.4, .39, .3, .21, .2]], ['pop', 63.6, .2], ['pop', 67.8, .5], // base 1: una retta
+    ['tono', 72.2, 73.6, [.2, .19, .1, .01, 0]], ['pop', 74.0, .3],                   // base 0,5: scende
+    ['traccia', 78.3, 78.8], ['pop', 78.5, .4], ['pop', 83.2, .21],                   // asintoto a destra, (0; 1)
+    ['soffio', 88.3], ['pop', 90.4, .5], ['pop', 90.9, .6], ['pop', 91.4, .7],
+  ];
   return {
-    titolo: 'Il grafico di aˣ', durata: DURATA, copertina: 4.2,
+    titolo: 'Il grafico di aˣ', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 47.7, 'la base 2'], [47.7, 72.1, 'cambio la base'], [72.1, FINE, 'base minore di 1']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

@@ -256,8 +256,22 @@ function sceneIntro(ctx, t) {
   conFont(TITOLI, () => drawRich(ctx, 'Razionalizzare', W / 2, 180, { size: 130, weight: 600, local: t - 1.6, stagger: .15, alpha: al }));
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.1, .5], ['traccia', 9.4, 9.9],                        // 1/√2, il denominatore cerchiato
+    ['pop', 12.9, .4], ['pop', 17.9, .5],                                             // razionalizzare; 0,7071…
+    ['soffio', 22.3], ['pop', 22.5, .4], ['pop', 22.8, .6], ['pop', 23.0, .4],        // · √2/√2
+    ['traccia', 27.6, 28.0], ['ding', 27.8],                                          // √2/√2 = 1
+    ['pop', 32.2, .5], ['pop', 36.9, .6],                                             // sopra per sopra; sotto 2
+    ['soffio', 46.6], ['pop', 46.9, .5],                                              // 1/(√3 − 1)
+    ['pop', 51.8, .4], ['pop', 52.6, .2],                                             // per √3 non basta
+    ['pop', 56.9, .6],                                                                // il razionalizzante
+    ['pop', 61.9, .5], ['pop', 62.1, .3], ['pop', 66.7, .5], ['ding', 71.4],          // somma per differenza, fino a 2
+    ['pop', 75.9, .5],                                                                // 1,3660… tutti e due
+    ['soffio', 82.2], ['pop', 84.6, .5], ['pop', 85.1, .6], ['pop', 85.6, .7],
+  ];
   return {
-    titolo: 'Razionalizzare', durata: DURATA, copertina: 4.2,
+    titolo: 'Razionalizzare', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: CAPITOLI,
     scena(ctx, t) { sceneIntro(ctx, t); card(ctx, 80, 110, 1760, 690, life(t, 7.5, FINE + .3, .6, .6)); scenePerche(ctx, t); sceneDue(ctx, t); sceneTre(ctx, t); sceneFine(ctx, t); },

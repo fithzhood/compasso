@@ -251,8 +251,27 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py), in tempo vero: dopo la pausa di 59,7 s gli istanti delle scene + 5,2;
+  // il tono segue l'altezza di P mentre gira e dei cateti verticali mentre salgono
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7], ['pop', 8.4, .5], ['pop', 12.0, .5],                // assi, il centro C, il raggio
+    ['traccia', 17.0, 17.6], ['ding', 17.3],                                                    // (7; 1): 5 a destra
+    ['tono', 21.0, 21.6, [.49, .93]], ['ding', 21.3],                                           // (2; 6): 5 sopra
+    ['pop', 24.8, .84],                                                                         // P(5; 5)
+    ['traccia', 29.4, 30.1], ['tono', 30.1, 30.8, [.49, .84]],                                  // i cateti 3 e 4
+    ['traccia', 33.9, 34.6], ['pop', 34.0, .55],                                                // il raggio CP, Pitagora
+    ['tono', 39.0, 44.6, [.84, .9, .91, .55, .14, .09, .46, .76, .84]], ['ding', 44.7],         // P gira: la circonferenza
+    ['tono', 50.1, 51.1, [.84, .89]], ['pop', 51.0, .85],                                       // il punto qualunque P(x; y)
+    ['traccia', 54.8, 55.4], ['tono', 55.4, 56.0, [.49, .89]],                                  // x − 2 e y − 1
+    ['pop', 65.2, .5], ['pop', 69.8, .55], ['pop', 74.8, .6],                                   // CP = 5, la radice, i quadrati
+    ['traccia', 79.7, 80.1], ['ding', 80.1],                                                    // l'equazione nel riquadro
+    ['traccia', 84.9, 85.3], ['pop', 85.0, .6], ['pop', 85.4, .5],                              // con centro C(α; β)
+    ['ding', 90.5],                                                                             // r² in verde
+    ['soffio', FINE + .4], ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],
+  ];
   return {
-    titolo: 'L’equazione della circonferenza', durata: 106.6, copertina: 4.2,
+    titolo: 'L’equazione della circonferenza', durata: 106.6, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 49.8, 'i punti a distanza 5'], [49.8, FINE, 'l’equazione']],
     scena(ctx, t) { const s = tm(t); sceneIntro(ctx, s); scenePiano(ctx, s); scenePannello(ctx, s); sceneFine(ctx, s); },

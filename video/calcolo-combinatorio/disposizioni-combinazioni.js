@@ -252,8 +252,26 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza dell'atleta che salta sul gradino
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['tono', 7.9, 8.9, [.3, .7]], ['pop', 8.6, .3],                             // gli otto atleti, il podio
+    ['tono', 12.1, 12.9, [.91, .88, .73, .46, .38]], ['pop', 12.8, .6],                          // A sull'oro: 8
+    ['tono', 16.2, 17.0, [.91, .87, .67, .34, .24]], ['pop', 16.9, .55],                         // B sull'argento: 7
+    ['tono', 21.4, 22.2, [.91, .86, .6, .22, .11]], ['pop', 22.1, .5],                           // C sul bronzo: 6
+    ['soffio', 24.6], ['pop', 24.8, .5], ['ding', 25.5],                                         // 8 · 7 · 6 = 336
+    ['pop', 28.5, .5], ['pop', 28.8, .55], ['pop', 29.2, .4],                                    // ABC ≠ BAC
+    ['pop', 33.1, .5], ['pop', 37.8, .55],                                                       // disposizione semplice, D₈,₃
+    ['soffio', 43.2], ['tono', 44.0, 45.1, [.32, .4, .3]],                                       // la commissione: i tre ci saltano dentro
+    ['pop', 48.7, .4], ['pop', 53.1, .4], ['pop', 53.4, .5], ['pop', 53.7, .6], ['pop', 54.2, .55], // i 6 podi con A, B, C
+    ['pop', 57.8, .5], ['ding', 58.4], ['pop', 62.4, .5],                                        // 3 · 2 · 1 = 6, 3!
+    ['pop', 67.3, .45],                                                                          // 336 / 6 = 56
+    ['pop', 72.0, .5], ['pop', 75.8, .45], ['pop', 76.4, .55], ['pop', 81.1, .5],                // combinazione, C₈,₃ = (8 su 3)
+    ['pop', 84.5, .5], ['pop', 85.7, .6],                                                        // C = D / k!
+    ['soffio', FINE + .4], ['pop', FINE + 2.2, .5], ['pop', FINE + 2.7, .6], ['pop', FINE + 3.2, .7],
+  ];
   return {
-    titolo: 'Conta l’ordine?', durata: DUR, copertina: 4.2,
+    titolo: 'Conta l’ordine?', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 43.4, 'il podio'], [43.4, FINE, 'la commissione']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneAtleti(ctx, t); sceneConti(ctx, t); sceneFine(ctx, t); },

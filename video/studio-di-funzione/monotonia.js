@@ -211,8 +211,25 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza del punto sulla cubica
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                           // la scheda, gli assi
+    ['tono', 8.4, 11.0, [.02, .63, .82, .73, .5, .27, .18, .37, .98]],                // la cubica: sale, scende, risale
+    ['pop', 10.6, .5], ['pop', 13.2, .4],                                             // f(x), il punto con la tangente
+    ['tono', 19.0, 20.8, [.61, .82, .74, .51, .28]],                                  // il punto scavalca la cima
+    ['traccia', 32.0, 33.0],                                                          // la riga dei segni
+    ['tono', 36.4, 37.8, [.31, .53, .68]], ['pop', 38.0, .6],                         // il tratto verde, +
+    ['tono', 43.0, 44.0, [.68, .79, .82]], ['pop', 44.2, .7],                         // in cima: f′(−1) = 0
+    ['tono', 49.0, 50.6, [.82, .72, .5]], ['pop', 50.8, .4],                          // il tratto rosso, −
+    ['tono', 55.6, 57.2, [.5, .28, .18]], ['pop', 57.4, .3],                          // in fondo: f′(1) = 0
+    ['tono', 62.2, 63.4, [.18, .23, .39]], ['pop', 63.6, .6],                         // risale, +
+    ['traccia', 68.6, 69.2], ['ding', 74.0],                                          // il massimo
+    ['traccia', 78.9, 79.5], ['ding', 84.2],                                          // il minimo
+    ['soffio', 89.4], ['pop', 91.8, .5], ['pop', 92.3, .6], ['pop', 92.8, .7],
+  ];
   return {
-    titolo: 'Crescere, decrescere, massimi e minimi', durata: FINE + 11.6, copertina: 4.2,
+    titolo: 'Crescere, decrescere, massimi e minimi', durata: FINE + 11.6, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 68.2, 'il segno della pendenza'], [68.2, FINE, 'massimi e minimi']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneGrafico(ctx, t); sceneFine(ctx, t); },

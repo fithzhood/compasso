@@ -175,8 +175,26 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue la curva e la lunghezza della morsa
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.2], ['traccia', 7.4, 8.2],                                            // l'asse x
+    ['tono', 8.0, 9.0, [0, .08, .2, .38, .61, 1]], ['pop', 8.8, .55],                  // la curva sale da −1 a 5, la formula
+    ['pop', 14.7, .1], ['pop', 15.0, .9],                                               // f(1) = −1, f(2) = 5
+    ['soffio', 21.8], ['pop', 22.2, .45],                                               // la scheda, la morsa [1; 2]
+    ['pop', 27.7, .5], ['traccia', 32.7, 33.3], ['pop', 33.1, .7],                     // 1,5 e f(1,5) positivo
+    ['tono', 44.5, 45.4, [.6, .35]], ['pop', 44.6, .5],                                 // la morsa si stringe a [1; 1,5]
+    ['pop', 50.0, .45], ['traccia', 50.6, 51.2], ['pop', 51.0, .2],                    // 1,25 e f(1,25) negativo
+    ['tono', 57.4, 58.0, [.35, .5]], ['pop', 57.5, .5],                                 // la morsa si stringe a [1,25; 1,5]
+    ['pop', 58.1, .55], ['traccia', 62.7, 63.3], ['pop', 63.1, .65],                   // 1,375 e f(1,375) positivo
+    ['tono', 68.9, 69.5, [.5, .4]],                                                     // la morsa si stringe a [1,25; 1,375]
+    ['pop', 69.2, .5], ['ding', 75.2],                                                  // le lunghezze, 1/8
+    ['pop', 81.0, .15], ['ding', 81.4],                                                 // lo zero vero
+    ['pop', 88.0, .5],                                                                  // quando fermarsi
+    ['soffio', 93.6], ['pop', 96.0, .5], ['pop', 96.5, .6], ['pop', 97.0, .7],
+  ];
   return {
-    titolo: 'Il metodo di bisezione', durata: 103.6, copertina: 4.2,
+    titolo: 'Il metodo di bisezione', durata: 103.6, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.2, 27.6, 'dove cercare'], [27.6, 68.8, 'dimezzare'], [68.8, FINE, 'quanto è stretta la morsa']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneGrafico(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

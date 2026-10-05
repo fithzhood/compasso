@@ -218,8 +218,23 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.0, .5],                                                // la divisione da fare
+    ['soffio', 11.4], ['pop', 11.9, .4], ['pop', 12.2, .45], ['pop', 12.5, .5], ['pop', 12.8, .55], // i coefficienti
+    ['pop', 16.4, .5],                                                                // ci sono tutti i gradi
+    ['soffio', 21.2], ['traccia', 21.3, 22.2], ['pop', 22.0, .4],                     // le righe dello schema, a = 1
+    ['ding', 26.6], ['traccia', 27.3, 27.9],                                          // 1 sì, −1 no
+    ['tono', 30.3, 31.1, [.7, .2]],                                                   // abbasso il primo
+    ['traccia', 34.2, 34.8], ['pop', 34.7, .5], ['pop', 39.2, .2],                    // per a, poi somma in colonna
+    ['traccia', 42.1, 42.7], ['pop', 42.6, .5], ['pop', 46.3, .2],
+    ['traccia', 49.1, 49.7], ['pop', 49.6, .5], ['ding', 52.7],                       // l'ultima somma: 0
+    ['pop', 55.4, .6], ['traccia', 59.3, 59.8], ['pop', 63.6, .5],                    // resto, quoziente, Q(x)
+    ['pop', 71.6, .5], ['ding', 72.4], ['pop', 75.7, .6],                             // P(1) = 0, resto = P(a)
+    ['soffio', 81.4], ['pop', 83.8, .5], ['pop', 84.3, .6], ['pop', 84.8, .7],
+  ];
   return {
-    titolo: 'La regola di Ruffini', durata: DUR, copertina: 4.2,
+    titolo: 'La regola di Ruffini', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 30.0, 'preparare lo schema'], [30.0, 55.0, 'abbassa, moltiplica, somma'], [55.0, FINE, 'leggere il risultato']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneTesta(ctx, t); sceneSchema(ctx, t); sceneDestra(ctx, t); sceneFine(ctx, t); },

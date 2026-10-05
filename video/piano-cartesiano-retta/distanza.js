@@ -145,8 +145,23 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                          // la scheda e gli assi
+    ['pop', 8.4, .1], ['pop', 9.2, .6],                                               // A in basso, B più in alto
+    ['traccia', 12.5, 13.5], ['soffio', 13.2], ['pop', 13.6, .45],                    // Δx: il cateto orizzontale; il riquadro
+    ['traccia', 18.8, 19.8], ['tono', 18.8, 19.8, [.1, .6]], ['pop', 19.9, .5],       // Δy: il cateto sale
+    ['traccia', 24.0, 25.0], ['tono', 24.0, 25.0, [.1, .6]], ['pop', 25.0, .35],      // l'ipotenusa da A a B; l'angolo retto
+    ['pop', 28.7, .55],                                                               // AB² = 25
+    ['pop', 34.0, .6], ['ding', 34.2],                                                // AB = 5, l'ipotenusa si fa verde
+    ['pop', 38.4, .3],                                                                // 4 + 3 = 7 in rosso
+    ['pop', 44.6, .65],                                                               // la formula generale
+    ['soffio', 49.3], ['pop', 49.7, .4],                                              // da B ad A: −4 e −3
+    ['soffio', FINE],
+    ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],     // le tre pillole
+  ];
   return {
-    titolo: 'La distanza fra due punti', durata: 65.6, copertina: 4.2,
+    titolo: 'La distanza fra due punti', durata: 65.6, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 28.4, 'il triangolo nascosto'], [28.4, FINE, 'Pitagora']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); scenePannello(ctx, t); sceneFine(ctx, t); },

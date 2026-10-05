@@ -260,8 +260,28 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza del triangolo che si muove
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 8.0, 9.4],                                            // il triangolo si disegna
+    ['pop', 12.2, .4], ['pop', 13.0, .5], ['traccia', 16.4, 17.0], ['pop', 16.7, .7],  // a, b, l'ipotenusa c
+    ['soffio', 20.2], ['pop', 20.8, .7],                                               // la scheda, c² = a² + b²
+    ['pop', 24.7, .7], ['pop', 25.5, .4], ['pop', 26.3, .55],                          // i quadrati di c, a, b
+    ['tono', 29.4, 30.9, [.6, .35]], ['traccia', 30.9, 32.1],                          // nell'angolo, il quadrato grande
+    ['tono', 34.0, 35.6, [.19, .08, .03, .05, .14]],                                   // le copie girano attorno al centro
+    ['tono', 37.6, 39.2, [.14, .29, .47, .65, .81]],
+    ['tono', 40.6, 42.2, [.81, .92, .97, .95, .86]], ['ding', 42.4],                   // quattro triangoli congruenti
+    ['pop', 43.7, .4], ['pop', 45.1, .6],                                              // angoli acuti, angoli retti
+    ['pop', 48.6, .5], ['pop', 49.0, .7],                                              // c, c²
+    ['soffio', 53.1],                                                                  // la figura in piccolo
+    ['tono', 57.5, 59.3, [.14, .71]], ['tono', 61.1, 62.6, [.19, .19]],               // gli spostamenti
+    ['tono', 63.9, 65.4, [.81, .38]],
+    ['pop', 66.8, .55], ['pop', 67.1, .75],                                            // b², a²
+    ['pop', 71.4, .5], ['pop', 76.5, .7],                                              // stesso quadrato, la formula cerchiata
+    ['soffio', 80.5], ['pop', 83.0, .5], ['pop', 83.5, .6], ['pop', 84.0, .7],
+  ];
   return {
-    titolo: 'Il teorema di Pitagora', durata: DUR, copertina: 4.2,
+    titolo: 'Il teorema di Pitagora', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 29.0, 'il triangolo rettangolo'], [29.0, 56.8, 'quattro triangoli in un quadrato'], [56.8, 79.8, 'li sposto']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneFigura(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

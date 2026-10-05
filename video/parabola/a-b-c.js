@@ -246,8 +246,22 @@ function sceneFine(ctx, t) {
   });
 }
 
+  const SUONI = [
+    ['soffio', 1.5], ['pop', 2.6, .5],                                                // y = ax² + bx + c
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                           // il piano
+    ['tono', 8.4, 9.6, [1, 1, 1, .78, .45, .78, 1, 1, 1]],                            // y = x² si disegna
+    ['tono', 14.1, 15.9, [.5, 1]], ['tono', 20.6, 22.6, [1, .33]],                    // a: 1 → 3 → 0,3
+    ['tono', 27.0, 28.8, [.33, 0]], ['tono', 34.1, 35.3, [0, .5]],                    // a negativo, poi di nuovo 1
+    ['tono', 37.4, 38.8, [.45, .15]], ['tono', 42.9, 44.7, [.15, .65]],               // c: giù a −3, su a 2
+    ['pop', 48.7, .65], ['pop', 54.7, .65],                                           // (0; 2), il vertice
+    ['tono', 58.4, 60.4, [.65, .65, .55, .3, .25]],                                   // b → −4: il vertice scende di lato
+    ['pop', 69.3, .65],                                                               // ancora (0; 2)
+    ['tono', 73.7, 76.1, [.25, .26, .34, .52, .65, .52, .34, .26, .25]],              // b → 4: sale e riscende dall'altra parte
+    ['traccia', 80.3, 81.2], ['pop', 80.4, .5],                                       // l'asse x = −b / (2a)
+    ['soffio', 91.0], ['pop', 93.3, .5], ['pop', 93.8, .6], ['pop', 94.3, .7],
+  ];
   return {
-    titolo: 'Che cosa fanno a, b e c', durata: 101.3, copertina: 4.2,
+    titolo: 'Che cosa fanno a, b e c', durata: 101.3, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 37.4, '{mink:a}: la forma'], [37.4, 54.6, '{mink:c}: su e giù'], [54.6, 90.8, '{mink:b}: il vertice']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

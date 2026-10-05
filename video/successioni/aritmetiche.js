@@ -247,8 +247,25 @@ function sceneColonne(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): ogni gradino che cade suona più alto, ogni taglio più basso
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['tono', 7.7, 8.3, [0, .1]],                                     // la prima colonna cresce
+    ['pop', 13.6, .25], ['pop', 18.5, .4],                                            // i gradini da 3 cadono sopra
+    ['pop', 22.7, .55], ['pop', 23.55, .7], ['pop', 24.4, .85],
+    ['soffio', 28.6], ['pop', 29.1, .6], ['pop', 33.1, .5],                           // la ragione d = 3, la differenza
+    ['pop', 37.4, .4], ['pop', 41.0, .6], ['traccia', 41.5, 41.9],                    // aₙ, aₙ₊₁ = aₙ + d
+    ['soffio', 44.8], ['pop', 44.9, .5],                                              // a₁₀ = ?
+    ['tono', 49.4, 50.2, [.1, .25, .4, .55, .7]],                                     // i 5 gradini contati
+    ['pop', 53.8, .4], ['pop', 58.2, .6], ['traccia', 58.8, 59.3], ['ding', 61.9],    // il termine generale, a₁₀ = 29
+    ['soffio', 65.0], ['tono', 65.5, 66.1, [0, .9]],                                  // la colonna da 20
+    ['pop', 67.1, .8], ['pop', 71.9, .7], ['pop', 72.55, .6],                         // ogni taglio toglie 3
+    ['pop', 73.2, .5], ['pop', 73.85, .4],
+    ['pop', 74.0, .3], ['pop', 77.5, .2],                                             // d = −3, d < 0
+    ['soffio', 82.2], ['pop', 84.0, .5], ['pop', 84.5, .6], ['pop', 85.0, .7],
+  ];
   return {
-    titolo: 'Progressioni aritmetiche', durata: DUR, copertina: 4.2,
+    titolo: 'Progressioni aritmetiche', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 44.6, 'la scala'], [44.6, 65.0, 'il termine generale'], [65.0, FINE, 'se {mv:d} è negativo']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneColonne(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

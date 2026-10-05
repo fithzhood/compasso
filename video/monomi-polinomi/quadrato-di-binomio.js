@@ -221,8 +221,22 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 8.0, 8.8], ['traccia', 11.1, 11.8],                 // il lato a, poi il pezzo b
+    ['tono', 15.7, 16.9, [0, .55, .85, 1]], ['pop', 18.9, .6],                        // il quadrato cresce, (a + b)²
+    ['traccia', 22.9, 23.7], ['traccia', 23.4, 24.2],                                 // le due linee del taglio
+    ['pop', 26.6, .3], ['pop', 31.1, .8], ['pop', 34.7, .55], ['pop', 35.0, .45],     // a², b², i due rettangoli
+    ['soffio', 38.9], ['pop', 39.6, .5],                                              // la scheda dei conti
+    ['pop', 47.6, .4], ['pop', 52.1, .5], ['ding', 52.8],                             // vale per tutti i numeri
+    ['soffio', 57.2], ['pop', 57.4, .5], ['traccia', 58.0, 58.8],                     // l'errore, barrato
+    ['pop', 61.2, .3],                                                                // manca 2ab
+    ['traccia', 65.6, 66.4], ['pop', 66.0, .5],                                       // la griglia, a = 3 e b = 2
+    ['pop', 70.2, .7], ['pop', 73.8, .4], ['pop', 77.8, .5], ['ding', 78.1],          // 25, 13, mancano 12
+    ['soffio', 82.2], ['pop', 84.6, .5], ['pop', 85.1, .6], ['pop', 85.6, .7],
+  ];
   return {
-    titolo: '(a + b)² con i quadrati', durata: DUR, copertina: 4.2,
+    titolo: '(a + b)² con i quadrati', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 39.0, 'il quadrato di lato {mink:a + b}'], [39.0, 56.8, 'la somma delle aree'], [56.8, FINE, 'l\'errore più comune']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneQuadrato(ctx, t); sceneConti(ctx, t); sceneFine(ctx, t); },

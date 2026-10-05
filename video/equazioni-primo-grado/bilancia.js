@@ -217,8 +217,27 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): ciò che si toglie sale e svanisce
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.9], ['pop', 8.4, .5],                                                  // la scheda, 3x + 2 = 11
+    ['soffio', 12.8], ['pop', 13.3, .5],                                                // la bilancia, sacchetti e cubetti
+    ['pop', 17.9, .6], ['pop', 19.6, .45],                                              // i sacchetti x, i cubetti 1
+    ['ding', 22.6],                                                                     // in equilibrio
+    ['tono', 27.6, 29.1, [.4, .55, .7]], ['pop', 27.8, .5],                             // tolgo due cubetti, − 2 e − 2
+    ['pop', 31.7, .5], ['ding', 31.8],                                                  // 3x = 9, l'equilibrio resta
+    ['soffio', 36.1],                                                                   // primo principio
+    ['pop', 41.8, .5],                                                                  // equazioni equivalenti
+    ['traccia', 47.0, 47.8],                                                            // le tre parti di ogni piatto
+    ['tono', 51.2, 52.7, [.4, .55, .7]], ['pop', 51.3, .5],                             // ne tengo una: 3x/3 = 9/3
+    ['soffio', 59.9],                                                                   // secondo principio
+    ['pop', 65.0, .3],                                                                  // diverso da zero
+    ['pop', 69.0, .3],                                                                  // 0 = 0
+    ['pop', 72.8, .5], ['ding', 74.0],                                                  // la verifica
+    ['soffio', 78.8], ['pop', 81.0, .5], ['pop', 81.5, .6], ['pop', 82.0, .7],
+  ];
   return {
-    titolo: 'L\'equazione è una bilancia', durata: 89.0, copertina: 4.2,
+    titolo: 'L\'equazione è una bilancia', durata: 89.0, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 27.1, 'la bilancia'], [27.1, 46.4, 'il primo principio'], [46.4, 72.6, 'il secondo principio'], [72.6, FINE, 'la verifica']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneBilancia(ctx, t); sceneConti(ctx, t); sceneFine(ctx, t); },

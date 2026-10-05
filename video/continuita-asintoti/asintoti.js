@@ -193,8 +193,24 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza del punto sulla curva
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.2], ['traccia', 7.4, 8.2], ['traccia', 8.0, 9.0], ['pop', 8.8, .55],   // assi, i due rami, la formula
+    ['tono', 14.6, 15.7, [.64, .64, .65, .7, .94, 1, 1]], ['pop', 15.5, .95],           // da sinistra sale a +∞
+    ['tono', 21.1, 22.2, [.47, .47, .45, .38, .1, 0, 0]], ['pop', 22.0, .05],           // da destra scende a −∞
+    ['traccia', 26.4, 27.2], ['pop', 27.0, .5], ['ding', 27.2],                         // l'asintoto verticale
+    ['soffio', 38.5],
+    ['tono', 38.9, 39.8, [.4, .42, .5, .52, .52]],                                      // il punto corre a destra
+    ['pop', 39.0, .45], ['pop', 39.3, .5], ['pop', 39.6, .52],                          // 10, 100, 1000
+    ['ding', 44.6],                                                                     // y → 3
+    ['traccia', 51.1, 52.0], ['pop', 51.8, .5], ['ding', 52.0],                         // l'asintoto orizzontale
+    ['soffio', 57.3], ['tono', 57.2, 58.2, [.82, .78, .66, .63, .63]],                 // a sinistra: scende verso 3
+    ['pop', 57.5, .6], ['pop', 57.75, .56], ['pop', 58.0, .54],                         // −10, −100, −1000
+    ['soffio', 64.0], ['pop', 66.4, .5], ['pop', 66.9, .6],
+  ];
   return {
-    titolo: 'Gli asintoti', durata: 74.2, copertina: 4.2,
+    titolo: 'Gli asintoti', durata: 74.2, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.2, 38.4, 'l\'asintoto verticale'], [38.4, FINE, 'l\'asintoto orizzontale']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneGrafico(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

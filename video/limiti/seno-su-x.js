@@ -328,8 +328,30 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // tempi del video (la scena + le pause di T): +0,6 da 27,25, +5,8 da 78,6, +6,4 da 83,75
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 7.9, .5], ['pop', 9.2, .2],                              // il limite; sostituendo: 0/0
+    ['soffio', 12.8], ['pop', 13.2, .55], ['pop', 16.8, .75],                         // la tabella: da 1 a 0,01
+    ['ding', 18.0],                                                                   // sin x / x → 1
+    ['soffio', 22.2], ['traccia', 22.4, 23.4], ['traccia', 23.4, 24.2],               // il quarto di circonferenza, il raggio
+    ['traccia', 28.1, 29.2], ['pop', 28.3, .5],                                       // l'arco AB
+    ['tono', 32.9, 33.8, [.2, .6]], ['pop', 33.0, .55],                               // il seno sale da H a B
+    ['traccia', 38.0, 39.0], ['pop', 38.1, .7],                                       // la tangente AT
+    ['soffio', 43.0], ['pop', 43.4, .3], ['pop', 44.2, .5], ['pop', 45.0, .7],        // triangolo, spicchio, triangolo
+    ['pop', 49.5, .5], ['pop', 51.4, .6],                                             // le aree; · 2
+    ['tono', 54.5, 57.2, [.8, .3]], ['ding', 57.3],                                   // l'angolo si chiude: quasi uguali
+    ['pop', 59.6, .5], ['pop', 64.2, .7],                                             // divido per sin x; i reciproci
+    ['soffio', 68.3], ['traccia', 68.5, 69.4],                                        // il grafico
+    ['tono', 69.0, 71.0, [.16, .41, .71, .85, .71, .41, .16]], ['pop', 70.6, .2],     // sin x / x; il buco
+    ['traccia', 73.2, 74.2], ['pop', 74.0, .7],                                       // i due carabinieri
+    ['tono', 84.5, 88.9, [.35, .83]], ['tono', 84.5, 88.9, [.67, .84]],               // i punti scortano verso 0
+    ['pop', 84.5, .6], ['pop', 87.8, .7], ['ding', 89.0],                             // cos x → 1; il limite è 1
+    ['pop', 90.4, .2],                                                                // il buco pulsa
+    ['soffio', 96.8], ['pop', 99.2, .6], ['pop', 100.0, .5], ['pop', 100.5, .6], ['pop', 101.0, .7],   // in una frase
+  ];
   return {
-    titolo: 'Il limite di sin x / x', durata: 110, copertina: 4.2,
+    titolo: 'Il limite di sin x / x', durata: 110, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI, spegnimento: [107.9, 108.9] },
     capitoli: [[7.5, 22.2, 'con i numeri'], [22.2, 68.3, 'sulla circonferenza'], [68.3, 96.4, 'i due carabinieri']],
     scena(ctx, tn) { const t = T(tn); sceneIntro(ctx, t); sceneNumeri(ctx, t); sceneCerchio(ctx, t); sceneGrafico(ctx, t); sceneFine(ctx, t); },

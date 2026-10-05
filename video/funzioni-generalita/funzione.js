@@ -354,8 +354,31 @@ function sceneRecap(ctx, t) {
   });
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue il numero che passa nella macchina, o l'altezza del punto
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.6], ['pop', 7.9, .45],                                                // la macchina
+    ['pop', 12.35, .4], ['tono', 13.7, 14.4, [.4, .6]], ['pop', 14.4, .6],             // entra 3, esce 7
+    ['pop', 21.6, .5], ['ding', 23.3],                                                 // f(x) = 2x + 1, vale per ogni numero
+    ['soffio', 26.4],                                                                  // la regola d'oro
+    ['pop', 31.4, .45], ['tono', 32.95, 33.48, [.3, .6]], ['tono', 34.25, 34.78, [.5, .6]],   // −2 → 4, 2 → 4
+    ['ding', 36.9],                                                                    // stessa uscita: va bene
+    ['pop', 41.15, .6], ['tono', 42.4, 43.03, [.6, .45, .3]],                          // entra 4 in ±√x…
+    ['pop', 43.03, .7], ['pop', 43.15, .3],                                            // …escono 2 e −2
+    ['soffio', 49.8], ['traccia', 49.9, 51.0], ['pop', 51.1, .5],                      // i due insiemi e i loro elementi
+    // le cinque frecce, una dopo l'altra: dall'altezza dell'elemento di A a quella del suo quadrato in B
+    ['tono', 54.7, 58.2, [.8, .6, .2, .65, .75, .65, .5, .75, .8, .35, .55, .65, .2, .3, .2]],
+    ['soffio', 68.9], ['traccia', 69.0, 70.1],                                         // il piano
+    ['pop', 70.1, .75], ['pop', 70.72, .24], ['pop', 71.34, .08], ['pop', 71.96, .24], ['pop', 72.58, .75],   // i cinque punti
+    ['tono', 74.3, 76.0, [.92, .91, .8, .53, .08, .54, .81, .92, .93]],                // la parabola
+    ['tono', 78.3, 82.0, [.62, .56, .23, .18, .61, .75, .72, .47, .09, .11, .14, .13, .08, .18, .33, .36]],   // x scorre: f(x)
+    ['tono', 83.1, 86.3, [.89, .86, .7, .35, .08, .35, .7, .86, .89]], ['ding', 86.4], // la retta verticale: un punto
+    ['traccia', 88.0, 89.3],                                                           // la circonferenza
+    ['pop', 91.1, .75], ['pop', 91.15, .25],                                           // due punti
+    ['soffio', 95.9], ['pop', 97.8, .5], ['pop', 98.5, .7],
+  ];
   return {
-    titolo: "Che cos'è una funzione", durata: 106.5, copertina: 4.2,
+    titolo: "Che cos'è una funzione", durata: 106.5, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI, spegnimento: [104.4, 105.4] },
     capitoli: [[7.5, 26.2, 'la macchina'], [26.2, 49.8, "la regola d'oro"], [49.8, 68.9, 'insiemi e frecce'],
       [68.9, 82.6, 'il grafico'], [82.6, 95.6, 'la retta verticale']],

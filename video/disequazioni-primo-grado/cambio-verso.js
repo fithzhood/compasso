@@ -244,8 +244,27 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue il numero che si muove (−10 basso, 10 alto)
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.5], ['pop', 8.6, .6], ['pop', 8.9, .75],       // la retta, 2 e 5
+    ['soffio', 12.0], ['pop', 12.4, .5], ['pop', 16.8, .55],                            // 2 < 5, poi >
+    ['traccia', 25.4, 25.9], ['pop', 28.7, .6],                                         // + 4
+    ['tono', 29.0, 30.6, [.6, .62, .7, .78, .8]], ['ding', 30.9],                      // scivolano a destra: 6 < 9
+    ['pop', 40.0, .6],                                                                  // · (−1)
+    ['tono', 43.5, 45.9, [.75, .72, .5, .28, .25]], ['ding', 52.0],                    // la retta si ribalta: −2 > −5
+    ['pop', 61.0, .6],                                                                  // · (−2)
+    ['tono', 65.5, 67.1, [.75, .78, .88, .97, 1]], ['ding', 67.5],                     // per 2: 4 < 10
+    ['pop', 71.7, .5],
+    ['tono', 74.6, 77.0, [1, .95, .5, .05, 0]], ['ding', 77.4],                        // per −1: −4 > −10
+    ['soffio', 81.9], ['pop', 82.2, .6],                                                // −4 < 6, : (−2)
+    ['pop', 86.7, .5], ['tono', 86.8, 87.6, [.8, .65]], ['ding', 87.9],                // diviso 2: −2 < 3
+    ['pop', 91.8, .5],
+    ['tono', 94.7, 95.9, [.65, .63, .5, .37, .35]], ['ding', 96.1],                    // diviso −1: 2 > −3
+    ['soffio', 100.0], ['pop', 102.6, .5], ['pop', 103.1, .6], ['pop', 103.6, .7],
+  ];
   return {
-    titolo: 'Perché il verso si gira', durata: DURATA, copertina: 4.2,
+    titolo: 'Perché il verso si gira', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 25.2, 'minore e maggiore'], [25.2, 39.6, 'sommare'], [39.6, 60.6, 'moltiplicare per −1'], [60.6, 81.5, 'e con −2?'], [81.5, FINE, 'e dividendo?']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneRetta(ctx, t); scenePannello(ctx, t); sceneFine(ctx, t); },

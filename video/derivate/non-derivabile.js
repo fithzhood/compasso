@@ -205,8 +205,31 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): la curva segue l'altezza; le secanti seguono la pendenza
+  // (0 verticale in giù, ,5 piatta, 1 verticale in su)
+  const SUONI = [
+    ['soffio', 1.5],
+    // 1 · lo spigolo
+    ['soffio', 7.5], ['traccia', 7.7, 8.7], ['tono', 8.4, 9.6, [.98, .68, .38, .68, .98]], ['pop', 10.0, .38],   // assi, |x|, P
+    ['soffio', 13.9], ['pop', 14.0, .75], ['tono', 20.0, 23.9, [.75, .75]],                // da destra: pendenza sempre 1
+    ['pop', 25.2, .25], ['tono', 25.6, 29.6, [.25, .25]],                                  // da sinistra: sempre −1
+    ['pop', 36.3, .5], ['ding', 37.0],                                                     // punto angoloso
+    // 2 · la punta
+    ['soffio', 41.6], ['tono', 42.1, 43.3, [.82, .66, .38, .66, .82]], ['pop', 43.2, .38],
+    ['pop', 47.2, .71], ['tono', 47.5, 57.0, [.71, .84, .96, .99, 1]], ['pop', 52.9, .95],  // da destra verso +∞
+    ['traccia', 57.7, 58.5],                                                               // la verticale
+    ['pop', 61.6, .29], ['tono', 61.9, 66.4, [.29, .12, .04, .01, 0]], ['pop', 66.8, .05],  // da sinistra verso −∞
+    ['pop', 67.6, .5], ['ding', 68.3],                                                     // cuspide
+    // 3 · la tangente verticale
+    ['soffio', 72.2], ['tono', 72.7, 73.9, [.06, .12, .38, .64, .7]], ['pop', 73.8, .38],
+    ['pop', 78.1, .68], ['tono', 78.4, 82.6, [.68, .87, .96, .99, 1]], ['pop', 82.9, .95],  // da destra verso +∞
+    ['pop', 83.1, .68], ['tono', 83.4, 87.6, [.68, .87, .96, .99, 1]], ['pop', 87.9, .95],  // da sinistra anche
+    ['traccia', 88.7, 89.5],                                                               // la tangente verticale
+    ['ding', 93.8], ['pop', 94.4, .6],                                                     // flesso a tangente verticale
+    ['soffio', 99.4], ['pop', 102.0, .5], ['pop', 102.5, .6], ['pop', 103.0, .7],
+  ];
   return {
-    titolo: 'Dove la derivata non esiste', durata: FINE + 10, copertina: 4.2,
+    titolo: 'Dove la derivata non esiste', durata: FINE + 10, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 41.6, 'lo spigolo'], [41.6, 72.2, 'la punta'], [72.2, FINE, 'la tangente verticale']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneSchede(ctx, t); CASI.forEach(K => caso(ctx, t, K)); sceneFine(ctx, t); },

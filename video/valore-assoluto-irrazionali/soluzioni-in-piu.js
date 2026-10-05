@@ -214,8 +214,26 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.2, .5],                                                // √(x + 2) = x
+    ['pop', 12.3, .5], ['pop', 16.4, .55], ['pop', 19.9, .6],                         // al quadrato, a destra, scompongo
+    ['traccia', 23.1, 23.5], ['pop', 23.4, .7], ['pop', 24.0, .4],                    // x = 2 oppure x = −1
+    ['soffio', 26.7], ['pop', 30.8, .6], ['ding', 32.1],                              // la prova con 2: funziona
+    ['traccia', 34.9, 35.3], ['pop', 35.3, .4],                                       // la prova con −1
+    ['pop', 39.4, .3], ['traccia', 39.4, 40.0],                                       // 1 ≠ −1: −1 si cancella
+    ['soffio', 44.3], ['pop', 45.5, .6], ['pop', 46.1, .6],                           // 1² e (−1)²
+    ['traccia', 49.4, 49.8], ['pop', 49.7, .5],                                       // 1 ≠ −1
+    ['tono', 50.6, 51.2, [.6, .45, .3]], ['pop', 51.4, .5],                           // al quadrato: 1² = (−1)²
+    ['pop', 54.0, .4], ['pop', 54.5, .5],                                             // con x = −1 la riga torna
+    ['soffio', 58.6], ['pop', 59.1, .5],                                              // x + 2 ≥ 0
+    ['pop', 62.9, .5], ['pop', 63.8, .6],                                             // −1 passa lo stesso
+    ['traccia', 66.8, 67.2], ['pop', 67.0, .6],                                       // x ≥ 0
+    ['pop', 71.3, .3], ['pop', 72.1, .6], ['ding', 72.5],                             // scarta −1, tiene 2
+    ['soffio', FINE], ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],
+  ];
   return {
-    titolo: 'Perché si controlla', durata: DURATA, copertina: 4.2,
+    titolo: 'Perché si controlla', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 26.6, 'eleviamo al quadrato'], [26.6, 44.0, 'la prova'], [44.0, 58.2, 'perché succede'], [58.2, FINE, 'la condizione']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneConti(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

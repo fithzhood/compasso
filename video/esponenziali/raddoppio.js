@@ -261,8 +261,27 @@ function sceneFine(ctx, t) {
   });
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): ogni piega solleva un lembo; il tono segue l'altezza delle barre
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.5, .3],                                                // il foglio, piega 0
+    ['tono', 12.2, 13.1, [.2, .5, .25]], ['pop', 13.3, .35],                          // le pieghe: il lembo sale e ricade
+    ['tono', 17.6, 18.5, [.25, .55, .3]], ['pop', 18.7, .4],
+    ['tono', 22.2, 23.1, [.3, .6, .35]], ['pop', 23.3, .45],
+    ['traccia', 26.8, 28.1],                                                          // le frecce · 2
+    ['tono', 31.3, 32.05, [.35, .65, .4]], ['pop', 32.2, .5],
+    ['tono', 32.6, 33.35, [.4, .7, .45]], ['pop', 33.5, .55],
+    ['pop', 38.3, .5], ['pop', 43.0, .7], ['pop', 46.5, .4],                          // 0,1 · 2ⁿ, esponente, ruoli
+    ['pop', 51.0, .3], ['pop', 55.6, .5],                                             // foglio vero, esperimento mentale
+    ['soffio', 60.0], ['tono', 61.0, 62.15, [.02, .03, .05]], ['pop', 62.3, .05],     // le barre 0–5: quasi niente
+    ['tono', 66.7, 69.4, [.02, .06, .13, .26, .51, 1]], ['pop', 69.5, 1],             // le barre 6–10
+    ['pop', 74.1, .2], ['pop', 74.4, .4], ['pop', 74.7, .75],                         // · 2 fra le barre
+    ['soffio', 78.6], ['traccia', 79.0, 79.4],                                        // ogni 10 pieghe · 1024
+    ['pop', 83.4, .5], ['traccia', 87.0, 87.4], ['pop', 87.0, .7], ['ding', 91.1],    // 20, 30, 42 pieghe
+    ['soffio', 96.3], ['pop', 98.6, .5], ['pop', 99.1, .6], ['pop', 99.6, .7],
+  ];
   return {
-    titolo: 'La crescita esponenziale', durata: DURATA, copertina: 4.2,
+    titolo: 'La crescita esponenziale', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 59.6, 'il foglio piegato'], [59.6, FINE, 'poco, poi sempre più in fretta']],
     scena(ctx, t) { schede(ctx, t); sceneIntro(ctx, t); sceneFoglio(ctx, t); sceneGrafico(ctx, t); sceneTabella(ctx, t); sceneFine(ctx, t); },

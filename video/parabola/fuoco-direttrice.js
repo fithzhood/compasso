@@ -191,8 +191,27 @@ function sceneFine(ctx, t) {
   });
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                          // la scheda e la griglia
+    ['pop', 8.6, .36],                                                                // il fuoco F
+    ['traccia', 12.8, 13.7],                                                          // la direttrice
+    ['pop', 22.6, .64],                                                               // il punto P
+    ['soffio', 26.2], ['traccia', 26.3, 27.0],                                        // le distanze; il segmento PF
+    ['traccia', 30.9, 31.6], ['tono', 30.9, 31.6, [.64, .08]], ['pop', 31.3, .08],    // PH scende fino al piede H
+    ['pop', 36.8, .3],                                                                // P non va bene
+    ['tono', 41.9, 43.5, [.64, .22]], ['ding', 43.8],                                 // P scende a metà strada: uguali
+    ['tono', 49.1, 50.7, [.22, .36]], ['ding', 51.0],                                 // P sale in (2; 1): uguali
+    ['tono', 55.1, 56.7, [.36, .78]], ['ding', 57.0],                                 // P sale in (4; 4): uguali
+    ['traccia', 62.2, 68.6],                                                          // P scorre e disegna la parabola
+    ['tono', 62.2, 68.6, [.78, .77, .74, .64, .49, .31, .22, .36, .57, .74, .85, .89, .89]],
+    ['traccia', 68.8, 69.6], ['ding', 68.9],                                          // la parabola si chiude
+    ['pop', 73.9, .6],                                                                // PF = PH
+    ['soffio', 78.3],
+    ['pop', 80.6, .5], ['pop', 81.1, .6], ['pop', 81.6, .7],                          // le tre pillole
+  ];
   return {
-    titolo: 'Fuoco e direttrice', durata: 88.5, copertina: 4.2,
+    titolo: 'Fuoco e direttrice', durata: 88.5, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 22.4, 'fuoco e direttrice'], [22.4, 41.9, 'le due distanze'], [41.9, 78.0, 'i punti giusti']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

@@ -218,8 +218,23 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.0], ['pop', 1.8, .5],                                                // titolo; numeratore → 0 su denominatore → 0
+    ['soffio', 7.5], ['pop', 8.0, .3], ['pop', 8.35, .5], ['pop', 8.7, .7],           // le tre schede
+    ['pop', 13.5, .3],                                                                // sostituendo: 0/0
+    ['traccia', 17.3, 17.7], ['pop', 17.6, .5], ['pop', 18.0, .35], ['pop', 18.4, .2],   // la tabella: x sempre più vicino a 0
+    ['pop', 21.5, .5], ['pop', 22.1, .5], ['pop', 22.7, .5], ['ding', 23.6],          // 2x/x: sempre 2
+    ['tono', 26.9, 28.5, [.45, .25, .1]], ['ding', 29.0],                             // x²/x: scende a 0
+    ['tono', 32.0, 33.6, [.5, .75, 1]], ['ding', 34.2],                               // x/x²: sale a +∞
+    ['pop', 43.1, .4], ['pop', 43.4, .5], ['pop', 43.7, .6],                          // le tre semplificazioni
+    ['soffio', 54.6], ['pop', 54.8, .4], ['pop', 55.1, .5], ['pop', 55.4, .6],        // la serie ∞ − ∞
+    ['traccia', 60.4, 60.8], ['pop', 60.8, .3], ['pop', 61.6, .55], ['pop', 62.4, .8],    // x = 10, 100, 1000
+    ['pop', 65.0, .5], ['pop', 65.4, .9], ['pop', 65.8, .1],                          // 3, +∞, −∞
+    ['pop', 70.1, .4], ['pop', 70.4, .5], ['pop', 70.7, .6],                          // semplifico o raccolgo
+    ['soffio', 74.6], ['pop', 77.6, .5], ['pop', 78.1, .6], ['pop', 78.6, .7],        // in una frase
+  ];
   return {
-    titolo: 'Le forme indeterminate', durata: 88, copertina: 4.2,
+    titolo: 'Le forme indeterminate', durata: 88, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI, spegnimento: [86.2, 87.1] },
     capitoli: [[7.5, 21.2, 'stessa forma'], [21.2, 42.8, 'tre risultati diversi'], [42.8, 54.4, 'come si scioglie'],
       [54.4, 74.5, 'anche {mink:∞ − ∞}']],

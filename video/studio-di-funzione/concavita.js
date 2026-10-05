@@ -236,8 +236,27 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                           // le schede, gli assi
+    ['traccia', 8.2, 10.2], ['tono', 8.2, 10.2, [.08, .73, .92, .79, .5, .21, .08, .27, .92]], // la curva x³ − 3x
+    ['pop', 8.5, .5],                                                                 // f(x) = x³ − 3x
+    ['pop', 15.3, .26],                                                               // il punto e la tangente a destra
+    ['tono', 20.3, 24.5, [.12, .2, .6, .89, .94]],                                    // la tangente ruota: antiorario
+    ['pop', 25.4, .7], ['pop', 30.3, .5],                                             // cresce; f′(x)
+    ['pop', 40.2, .6], ['traccia', 40.2, 41.4], ['tono', 40.2, 41.4, [.5, .21, .08, .27, .92]], // f″ > 0: la destra si colora
+    ['pop', 46.1, .54],                                                               // la tangente a sinistra
+    ['tono', 50.8, 55.0, [.94, .89, .6, .2, .12]],                                    // ruota: orario
+    ['pop', 55.8, .3],                                                                // cala
+    ['pop', 60.5, .4], ['traccia', 60.5, 61.7], ['tono', 60.5, 61.7, [.5, .79, .92, .73, .08]], // f″ < 0: la sinistra si colora
+    ['soffio', 66.1], ['pop', 66.3, .5],                                              // la lente sul flesso
+    ['pop', 71.2, .5], ['traccia', 71.4, 71.9],                                       // flesso
+    ['pop', 76.5, .5], ['pop', 80.7, .6],                                             // f′ e f″
+    ['traccia', 85.0, 86.0], ['pop', 85.4, .2], ['pop', 85.8, .8],                    // il segno di f″: − poi +
+    ['soffio', 90.8], ['pop', 93.5, .5], ['pop', 94.0, .6], ['pop', 94.5, .7],
+  ];
   return {
-    titolo: 'Concavità e flessi', durata: FINE + 11.6, copertina: 4.2,
+    titolo: 'Concavità e flessi', durata: FINE + 11.6, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 45.8, 'verso l\'alto'], [45.8, 65.8, 'verso il basso'], [65.8, FINE, 'il flesso']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneGrafico(ctx, t); sceneFine(ctx, t); },

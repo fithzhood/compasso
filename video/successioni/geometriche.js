@@ -244,8 +244,25 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): l'altezza delle colonne, che raddoppia e poi si dimezza
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['tono', 7.7, 8.3, [0, .03]],                                    // la prima colonna, alta 3
+    ['pop', 13.6, .06], ['pop', 18.7, .13], ['pop', 23.3, .25],                       // ogni salto cade sopra: 6, 12, 24
+    ['pop', 23.95, .5], ['pop', 24.6, 1],                                             // 48, 96
+    ['soffio', 24.5], ['pop', 25.1, .5],                                              // i salti +3 +6 +12 …
+    ['pop', 29.3, .6], ['pop', 33.5, .5], ['pop', 37.9, .3],                          // q = 2, 6/3, q ≠ 0
+    ['pop', 42.0, .4], ['pop', 45.5, .6], ['traccia', 46.0, 46.4],                    // aₙ, aₙ₊₁ = aₙ · q
+    ['pop', 49.4, .5], ['ding', 53.6],                                                // a₆ = 3 · 2⁵ = 96
+    ['pop', 57.2, .4], ['pop', 61.6, .6], ['traccia', 62.2, 62.7],                    // il termine generale
+    ['soffio', 64.9], ['tono', 65.4, 66.0, [0, 1]],                                   // la colonna da 96
+    ['tono', 66.6, 67.1, [1, .5]], ['tono', 71.4, 71.7, [.5, .25]],                   // ogni copia scende alla metà
+    ['tono', 72.0, 72.3, [.25, .13]], ['tono', 72.6, 72.9, [.13, .06]], ['tono', 73.2, 73.5, [.06, .03]],
+    ['pop', 73.8, .5], ['pop', 77.4, .2], ['ding', 78.4],                             // q = 1/2, verso 0 ma mai 0
+    ['soffio', 82.9], ['pop', 84.7, .5], ['pop', 85.2, .6], ['pop', 85.7, .7],
+  ];
   return {
-    titolo: 'Progressioni geometriche', durata: DUR, copertina: 4.2,
+    titolo: 'Progressioni geometriche', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 49.1, 'i salti'], [49.1, 64.9, 'il termine generale'], [64.9, FINE, 'se {mv:q} sta fra 0 e 1']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneColonne(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

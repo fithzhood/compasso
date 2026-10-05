@@ -293,8 +293,30 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // PROVA effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza di ciò che si muove
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7], ['tono', 8.2, 9.0, [.15, .6]],          // la retta si disegna salendo
+    ['pop', 12.1, .4], ['traccia', 12.1, 12.9], ['tono', 12.6, 13.3, [.3, .55]], ['pop', 13.1, .6],   // Δx, poi Δy che sale
+    ['tono', 16.5, 17.9, [.35, .85]],                                                 // la retta si fa più ripida
+    ['tono', 20.3, 21.9, [1, .56, .25, .06, 0, .06, .25, .56, 1]],                   // la parabola: scende e risale
+    ['tono', 22.4, 24.6, [.82, .73, .5, .21, .04, 0, 0]],                             // il punto scivola in fondo
+    ['tono', 27.6, 28.8, [0, 0, .04, .21, .5, .73, .82]],                             // e risale dove è ripida
+    ['tono', 31.3, 32.5, [.82, .75, .55, .31, .19, .16]],                             // torna in x = 1
+    ['pop', 36.9, .5], ['pop', 37.6, .65],                                            // P e Q
+    ['traccia', 40.7, 41.3], ['soffio', 45.3],                                        // h, la secante
+    ['tono', 50.3, 51.2, [.7, .6]], ['tono', 51.5, 52.3, [.55, .45]],                // Q si avvicina a P, a scalini
+    ['tono', 52.6, 53.4, [.4, .3]], ['tono', 54.0, 55.0, [.25, .2]],
+    ['ding', 61.1],                                                                   // la secante diventa tangente
+    ['pop', 64.6, .5], ['ding', 66.4],                                                // f′(1) = 2
+    ['soffio', 77.0], ['traccia', 77.4, 78.4],
+    ['tono', 77.6, 78.6, [.7, .05]],                                                  // la pendenza: da 2 a −4,4
+    ['tono', 80.6, 83.6, [.05, .5]], ['tono', 87.6, 91.6, [.5, .95]],                 // la traccia verde sale
+    ['tono', 92.2, 93.2, [.05, .95]], ['pop', 95.7, .6],                              // tutta la retta, f′(x) = 2x
+    ['soffio', 99.5], ['pop', 101.5, .5], ['pop', 102.0, .6], ['pop', 102.5, .7],
+  ];
   return {
-    titolo: 'La derivata', durata: 110, copertina: 4.2,
+    titolo: 'La derivata', durata: 110, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 19.9, 'la pendenza di una retta'], [19.9, 36.7, 'e una curva?'], [36.7, 64.0, 'la secante'],
       [64.0, 77.0, 'la derivata in un punto'], [77.0, 99.0, 'la funzione derivata']],

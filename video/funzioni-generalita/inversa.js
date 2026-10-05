@@ -159,8 +159,22 @@ function sceneFine(ctx, t) {
   });
 }
 
+  const SUONI = [
+    ['pop', 8.0, .5], ['pop', 8.55, .35],                                              // la macchina f, il 3
+    ['tono', 9.9, 10.6, [.35, .75]], ['pop', 10.6, .75],                               // f fa 3 → 7
+    ['pop', 13.7, .5], ['tono', 14.6, 15.7, [.75, .4]],                                // la macchina inversa; il 7 scende
+    ['tono', 15.7, 16.47, [.75, .35]], ['ding', 16.5],                                 // f⁻¹ ridà il 3
+    ['soffio', 18.2], ['pop', 20.6, .6],                                               // i passi, la formula di f⁻¹
+    ['soffio', 28.9], ['traccia', 29.1, 30.1],                                         // il piano
+    ['traccia', 29.7, 30.9], ['tono', 29.7, 30.9, [.05, .95]], ['pop', 31.1, .5],      // f sale ripida, P
+    ['traccia', 34.1, 35.3], ['tono', 34.1, 35.3, [.05, .45]], ['pop', 35.5, .3],      // f⁻¹ sale piano, Q
+    ['traccia', 38.7, 39.7],                                                           // lo specchio y = x
+    ['tono', 39.9, 41.7, [.85, .6, .35]], ['ding', 41.8],                              // f si ribalta su f⁻¹
+    ['traccia', 43.4, 44.0],                                                           // P e Q simmetrici
+    ['soffio', 48.5], ['pop', 50.2, .5], ['pop', 50.7, .65],                           // chiusura e pillole
+  ];
   return {
-    titolo: 'La funzione inversa', durata: 58.1, copertina: 4.2,
+    titolo: 'La funzione inversa', durata: 58.1, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI, spegnimento: [56.0, 57.0] },
     capitoli: [[7.5, 28.9, 'tornare indietro'], [28.9, 48.2, 'lo specchio']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneIndietro(ctx, t); sceneSpecchio(ctx, t); sceneFine(ctx, t); },

@@ -200,8 +200,20 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.0, .5],                                                // il quadrato di lato a
+    ['pop', 12.2, .85], ['pop', 16.5, .4],                                            // l'angolo b, ciò che resta
+    ['traccia', 19.9, 20.7], ['pop', 23.9, .4], ['pop', 24.2, .7],                    // il taglio, le misure
+    ['tono', 28.5, 30.5, [.67, .75, .75, .62, .32]], ['pop', 30.6, .3],               // il pezzo sale, gira, scende
+    ['ding', 32.6], ['pop', 40.4, .7],                                                // il rettangolo, somma e differenza
+    ['soffio', 45.1], ['pop', 45.3, .5],                                              // la scheda: a > b > 0
+    ['pop', 48.8, .5], ['traccia', 49.9, 50.5], ['pop', 50.6, .4], ['ding', 51.0],    // −ab + ba si cancellano
+    ['soffio', 53.8], ['pop', 53.9, .5], ['pop', 54.4, .4],                           // 21 · 19
+    ['soffio', 61.7], ['pop', 64.1, .5], ['pop', 64.6, .6], ['pop', 65.1, .7],
+  ];
   return {
-    titolo: 'Somma per differenza', durata: DUR, copertina: 4.2,
+    titolo: 'Somma per differenza', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 32.4, 'il quadrato senza un angolo'], [32.4, 45.1, 'un rettangolo nuovo'], [45.1, FINE, 'vale sempre']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneAree(ctx, t); sceneConti(ctx, t); sceneFine(ctx, t); },

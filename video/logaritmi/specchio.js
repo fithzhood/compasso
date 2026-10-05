@@ -218,8 +218,23 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.5],                                           // le schede, gli assi
+    ['tono', 8.4, 9.6, [.33, .35, .4, .48, .65, 1]],                                  // 2ˣ si disegna e impenna
+    ['pop', 12.7, .8], ['pop', 17.1, .5], ['ding', 22.1],                             // (2; 4), log₂ 4 = 2, inverse
+    ['soffio', 27.0], ['pop', 27.2, .56],                                             // (4; 2)
+    ['traccia', 31.9, 32.9], ['tono', 31.9, 32.9, [0, 1]], ['traccia', 33.0, 33.6],   // y = x, e il ponte fra i punti
+    ['tono', 36.8, 39.3, [.8, .7, .62, .56]],                                         // il grafico si ribalta
+    ['pop', 41.9, .5],                                                                // simmetrici
+    ['pop', 46.3, .43], ['pop', 46.9, .31], ['traccia', 47.0, 47.5], ['ding', 50.9], // (0; 1) → (1; 0), log₂ 1 = 0
+    ['soffio', 55.6], ['traccia', 55.8, 56.3], ['pop', 60.5, .31],                    // l'asintoto orizzontale
+    ['tono', 64.9, 66.4, [.31, .15, 0]], ['pop', 64.9, .4],                           // si ribalta: verticale
+    ['ding', 70.0],                                                                   // il dominio x > 0
+    ['soffio', 75.4], ['pop', 77.8, .5], ['pop', 78.3, .6], ['pop', 78.8, .7],
+  ];
   return {
-    titolo: 'Logaritmo ed esponenziale', durata: DURATA, copertina: 4.2,
+    titolo: 'Logaritmo ed esponenziale', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: CAPITOLI,
     scena(ctx, t) { sceneIntro(ctx, t); sceneGrafico(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

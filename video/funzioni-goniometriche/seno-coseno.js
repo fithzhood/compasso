@@ -211,8 +211,23 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza di P, cioè il seno
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 9.0], ['pop', 8.0, .5],                          // assi e circonferenza
+    ['traccia', 12.0, 12.5], ['traccia', 16.2, 16.8],                                  // il raggio; il semiasse positivo
+    ['soffio', 20.2], ['tono', 20.8, 23.4, [.5, .53, .7, .83, .85]], ['pop', 24.9, .85],   // gira fino a 60°: P
+    ['traccia', 28.7, 29.7], ['pop', 29.8, .5],                                        // l'ascissa: cos α
+    ['traccia', 32.9, 33.4], ['tono', 33.4, 33.9, [.5, .85]], ['pop', 34.0, .6],       // l'ordinata: sin α
+    ['pop', 37.1, .5], ['ding', 37.4],                                                 // P = (cos α; sin α)
+    ['soffio', 41.8], ['pop', 46.3, .7],                                               // i quadranti: il primo
+    ['tono', 50.5, 53.0, [.85, .85, .88, .89, .77, .71, .7]], ['pop', 53.2, .7],       // fino a 150°: il secondo
+    ['tono', 57.9, 60.2, [.7, .69, .61, .4, .21, .16, .15]], ['pop', 60.4, .3],        // fino a 240°: il terzo
+    ['tono', 64.9, 67.0, [.15, .15, .13, .1, .13, .15, .15]], ['pop', 67.2, .3],       // fino a 300°: il quarto
+    ['soffio', FINE + .4], ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],
+  ];
   return {
-    titolo: 'Seno e coseno', durata: Math.round((FINE + 10.8) * 10) / 10, copertina: 4.2,
+    titolo: 'Seno e coseno', durata: Math.round((FINE + 10.8) * 10) / 10, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 28.4, 'la circonferenza goniometrica'], [28.4, FINE, 'coseno e seno']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

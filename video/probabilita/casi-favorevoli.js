@@ -222,8 +222,26 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.0, .3], ['pop', 8.36, .45], ['pop', 8.72, .6],         // le sei facce
+    ['pop', 12.8, .5], ['pop', 13.0, .6], ['pop', 13.2, .7],                          // 2, 4 e 6 si accendono
+    ['pop', 17.4, .5], ['ding', 18.2],                                                // P(pari) = 3/6 = 1/2
+    ['pop', 22.1, .5], ['traccia', 23.2, 23.7],                                       // la regola, nel riquadro
+    ['soffio', 26.8], ['pop', 27.3, .6], ['pop', 28.1, .4], ['traccia', 28.4, 29.2],  // i due dadi, la griglia
+    ['tono', 31.3, 34.0, [.2, .35, .5, .65, .8]],                                     // le somme riempiono le righe
+    ['soffio', 35.4], ['pop', 35.9, .6],                                              // 6 · 6 = 36
+    ['traccia', 40.3, 41.0], ['pop', 40.9, .7],                                       // la diagonale del 7
+    ['pop', 49.6, .4], ['pop', 50.0, .6],                                             // 1 + 6 e 6 + 1
+    ['traccia', 54.2, 54.6],
+    ['tono', 54.7, 57.9, [.15, .3, .45, .6, .75, .9, .75, .6, .45, .3, .15]],         // le barre: salgono fino al 7, poi scendono
+    ['pop', 59.1, .9],                                                                // il 7, la più alta
+    ['pop', 64.0, .5], ['pop', 68.4, .2],                                             // 1/11? la croce
+    ['pop', 73.0, .6], ['ding', 77.8],                                                // la condizione, la tabella si accende
+    ['soffio', 83.0], ['pop', 85.0, .5], ['pop', 85.5, .6], ['pop', 86.0, .7],
+  ];
   return {
-    titolo: 'Casi favorevoli su casi possibili', durata: DUR, copertina: 4.2,
+    titolo: 'Casi favorevoli su casi possibili', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 26.7, 'un dado'], [26.7, 63.2, 'due dadi'], [63.2, FINE, 'la condizione']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneDado(ctx, t); sceneTabella(ctx, t); sceneFine(ctx, t); },

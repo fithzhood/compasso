@@ -150,8 +150,21 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.5, 8.2],                                           // la scheda, l'asse
+    ['pop', 8.5, .3], ['pop', 8.8, .4], ['pop', 9.1, .5], ['pop', 9.4, .6],           // 20, 24, 28, 32
+    ['pop', 13.1, .1],                                                                // il quinto, a 0
+    ['soffio', 17.0], ['traccia', 17.1, 17.6], ['pop', 17.4, .5],                     // le linee e i conti
+    ['tono', 22.2, 25.4, [.1, .35, .6]],                                              // il quinto sale a 24
+    ['tono', 27.6, 30.4, [.6, .7]],                                                   // da 24 a 28: al centro
+    ['soffio', 32.8],                                                                 // l'asse si allarga fino a 200
+    ['tono', 36.8, 41.2, [.15, .4, .7, 1]],                                           // il quinto vola a 200
+    ['pop', 41.7, .9],                                                                // valore anomalo
+    ['soffio', 55.8], ['pop', 58.1, .5], ['pop', 58.6, .6], ['pop', 59.1, .7],
+  ];
   return {
-    titolo: 'Il valore anomalo', durata: DUR, copertina: 4.2,
+    titolo: 'Il valore anomalo', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 12.6, 'quattro stipendi'], [12.6, 21.7, 'il quinto stipendio a 0'], [21.7, 41.5, 'il quinto sale'], [41.5, FINE, 'il quinto a 200']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneStipendi(ctx, t); sceneFine(ctx, t); },

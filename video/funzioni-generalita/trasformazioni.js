@@ -175,8 +175,28 @@ function sceneFine(ctx, t) {
   });
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): in verticale il tono segue il vertice, in orizzontale segue h
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                            // il piano
+    ['tono', 8.4, 9.6, [1, 1, 1, .82, .5, .83, 1, 1, 1]], ['pop', 9.4, .5],            // la parabola e il vertice
+    ['tono', 13.6, 15.0, [.5, .72]], ['pop', 17.6, .7],                                // + 2: sale
+    ['tono', 21.6, 23.0, [.72, .17]], ['pop', 23.2, .2],                               // − 3: scende
+    ['ding', 26.3], ['tono', 30.2, 31.0, [.17, .5]],                                   // f(x) + k; torna al posto
+    ['tono', 32.7, 34.1, [.5, .71]], ['pop', 35.9, .6],                                // (x − 3)²: a destra
+    ['ding', 41.8],                                                                    // x − 3 = 0
+    ['tono', 46.3, 47.7, [.71, .36]], ['pop', 47.8, .4],                               // (x + 2)²: a sinistra
+    ['ding', 50.8], ['tono', 54.85, 55.4, [.36, .5]],                                  // f(x − h); torna al posto
+    ['tono', 56.8, 58.2, [.61, .72]], ['pop', 60.1, .7],                               // 2x²: si allunga
+    ['ding', 64.6], ['tono', 69.4, 70.1, [.72, .61]],                                  // a · f(x); torna
+    ['tono', 71.1, 72.5, [.75, .5, .25]], ['pop', 72.8, .25], ['ding', 73.3],          // −x²: si ribalta
+    ['soffio', 75.8],                                                                  // tutto insieme
+    ['tono', 77.4, 78.8, [.5, .71]], ['pop', 77.5, .6],                                // 3 a destra
+    ['tono', 81.9, 83.3, [.5, .72]], ['pop', 82.0, .7],                                // 2 su
+    ['soffio', 90.4], ['pop', 92.2, .5], ['pop', 92.7, .6], ['pop', 93.2, .7],
+  ];
   return {
-    titolo: 'Spostare un grafico', durata: 100.6, copertina: 4.2,
+    titolo: 'Spostare un grafico', durata: 100.6, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI, spegnimento: [98.5, 99.5] },
     capitoli: [[7.5, 30.5, 'su e giù'], [30.5, 54.8, 'a destra e a sinistra'], [54.8, 75.8, 'stirare e ribaltare'], [75.8, 90.1, 'tutto insieme']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

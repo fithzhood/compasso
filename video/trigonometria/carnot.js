@@ -185,8 +185,24 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue c² mentre l'angolo si apre e si chiude (13 → 25 → 37);
+  // i ding della formula e di «torna Pitagora» li mettono le facce «festa»
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.9, 8.9], ['pop', 8.4, .4], ['pop', 8.8, .5],      // i lati a e b, l'angolo γ
+    ['traccia', T.c + .2, T.c + .8], ['pop', T.c + .6, .6],                           // il terzo lato c
+    ['pop', T.pit + .3, .5], ['ding', T.pit + .8],                                    // 16 + 9 = 25
+    ['tono', T.chiudo + .3, T.chiudo + 2.3, [.63, .47, .33]],                         // chiudo: c² scende a 13
+    ['tono', T.apro + .3, T.apro + 3.0, [.33, .47, .63, .78, .93]],                   // apro: c² sale a 37
+    ['pop', T.corr + .3, .5], ['traccia', T.formula + .3, T.formula + .8],            // la differenza, la formula
+    ['pop', T.ab + .3, .5],                                                           // 2ab = 24
+    ['tono', T.va60 + .3, T.va60 + 2.3, [.93, .63, .33]], ['ding', T.c60 + .3],       // di nuovo a 60°: 13
+    ['tono', T.va120 + .3, T.va120 + 2.3, [.33, .63, .93]], ['ding', T.c120 + .3],    // a 120°: 37
+    ['tono', T.va90 + .3, T.va90 + 2.0, [.93, .78, .63]], ['pop', T.c90 + .3, .6],    // a 90°: 25
+    ['soffio', FINE + .4], ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],
+  ];
   return {
-    titolo: 'Il teorema di Carnot', durata: DUR, copertina: 4.2,
+    titolo: 'Il teorema di Carnot', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, T.chiudo - .1, 'quando vale Pitagora'], [T.chiudo - .1, T.formula - .1, 'se l’angolo cambia'],
       [T.formula - .1, FINE, 'la correzione']],

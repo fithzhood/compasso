@@ -176,8 +176,24 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                          // la scheda e gli assi
+    ['pop', 8.4, .25], ['pop', 9.0, .8],                                              // A in basso, B in alto
+    ['traccia', 9.4, 10.2], ['tono', 9.4, 10.2, [.25, .8]], ['soffio', 9.8],          // il segmento AB sale; il riquadro
+    ['traccia', 14.3, 15.0],                                                          // le ombre sull'asse x
+    ['traccia', 18.7, 19.9], ['pop', 19.3, .3],                                       // le due metà, e il 4
+    ['traccia', 24.2, 24.9],                                                          // le ombre sull'asse y
+    ['tono', 24.6, 25.8, [.25, .53, .8]], ['pop', 25.2, .53],                        // le metà salgono sull'asse y, e il 3
+    ['traccia', 29.3, 30.0], ['pop', 30.0, .53], ['ding', 30.4],                      // dalle medie a M(4; 3)
+    ['pop', 30.6, .45],                                                               // le due metà uguali
+    ['pop', 34.6, .2],                                                                // il 3 rosso: l'errore
+    ['pop', 40.3, .6],                                                                // si accende la somma
+    ['soffio', FINE],
+    ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],     // le tre pillole
+  ];
   return {
-    titolo: 'Il punto medio', durata: 55.6, copertina: 4.2,
+    titolo: 'Il punto medio', durata: 55.6, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 34.2, 'un asse alla volta'], [34.2, FINE, 'somma, non differenza']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); scenePannello(ctx, t); sceneFine(ctx, t); },

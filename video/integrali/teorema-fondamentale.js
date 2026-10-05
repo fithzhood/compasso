@@ -272,8 +272,31 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                           // la scheda, gli assi
+    ['tono', 7.9, 9.0, [.98, .54, .27, .18, .27, .54, .98]],                          // f: alta ai lati, bassa al centro
+    ['pop', 9.3, .3], ['tono', 9.4, 10.7, [0, .26, .42]],                             // x parte da 0: l'area cresce fino a 1,67
+    ['soffio', 14.0],                                                                 // la scheda dell'area
+    ['tono', 19.0, 20.4, [.42, .58, .75]], ['ding', 20.5],                            // x fino a 3: l'area vale 3
+    ['pop', 24.6, .6], ['pop', 25.2, .4],                                             // F(x), funzione integrale
+    ['tono', 29.7, 30.5, [.75, 0]], ['soffio', 29.9], ['traccia', 29.9, 30.7],        // x torna a 0; il piano di F
+    ['tono', 30.9, 32.1, [0, .26]],                                                   // F si disegna fino a 0,5
+    ['traccia', 36.2, 36.8], ['pop', 36.4, .6],                                       // la tangente; altezza e pendenza
+    ['tono', 41.9, 43.3, [.26, .42, .52, .58]],                                       // x fino a 2: F quasi piatta
+    ['tono', 47.6, 49.0, [.58, .7, .95]],                                             // x fino a 3,6: F torna ripida
+    ['ding', 52.3],                                                                   // uguali
+    ['tono', 58.2, 59.0, [.95, .42]], ['soffio', 58.8],                               // x torna a 1; la striscia
+    ['pop', 60.0, .5], ['traccia', 64.6, 65.2],                                       // h = 0,5; il rettangolo
+    ['pop', 70.0, .5],                                                                // F(x + h) − F(x) ≈ f(x) · h
+    ['pop', 75.4, .55], ['traccia', 75.8, 76.3], ['pop', 76.0, .4],                   // il rapporto; la tabella
+    ['tono', 80.5, 81.3, [.79, .95]], ['pop', 80.7, .6], ['pop', 81.0, .5],           // h = 0,1: il rapporto sale
+    ['tono', 81.8, 82.6, [.95, 1]], ['ding', 82.9],                                   // h = 0,01: 0,995
+    ['soffio', 86.2], ['pop', 86.6, .7],                                              // F′(x) = f(x)
+    ['soffio', 91.7], ['pop', 94.1, .5], ['pop', 94.6, .6], ['pop', 95.1, .7],        // in una frase
+  ];
   return {
-    titolo: 'Il teorema fondamentale', durata: DUR, copertina: 4.2,
+    titolo: 'Il teorema fondamentale', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 29.9, 'l\'area accumulata'], [29.9, 58.6, 'come cresce'], [58.6, FINE, 'perché']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiani(ctx, t); scenePannello(ctx, t); sceneFine(ctx, t); },

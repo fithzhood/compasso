@@ -269,8 +269,24 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): un pop per ogni passaggio che entra
+  const SUONI = [
+    ['soffio', 1.5], ['pop', 2.6, .5],                                                // la formula
+    ['soffio', 7.5], ['pop', 7.9, .5],                                                // la forma normale
+    ['soffio', 12.7], ['traccia', 12.8, 13.2], ['pop', 13.0, .5],                     // l'idea
+    ['pop', 17.1, .5], ['pop', 21.5, .45],                                            // per 4a, 4ac a destra
+    ['traccia', 25.4, 25.8], ['pop', 25.5, .55], ['pop', 26.3, .5], ['pop', 29.7, .7], // i pezzi del quadrato; b² manca
+    ['pop', 33.7, .7], ['ding', 37.5],                                                // + b², (2ax + b)²
+    ['pop', 41.5, .6], ['pop', 42.5, .4], ['pop', 46.1, .5],                          // le due possibilità, ±
+    ['pop', 50.6, .6], ['traccia', 55.3, 55.8], ['pop', 55.5, .6], ['pop', 56.0, .4], // la formula, x₁ e x₂
+    ['pop', 59.9, .5],                                                                // il discriminante
+    ['pop', 64.2, .7], ['pop', 68.7, .5], ['pop', 73.2, .3],                          // i tre casi
+    ['soffio', 77.3], ['pop', 77.4, .5], ['pop', 78.0, .5],                           // la prova
+    ['pop', 82.2, .5], ['pop', 82.8, .6], ['ding', 83.6], ['pop', 86.2, .5], ['pop', 86.6, .6],
+    ['soffio', 90.8], ['pop', 93.4, .5], ['pop', 93.9, .6], ['pop', 94.4, .7],
+  ];
   return {
-    titolo: 'Da dove viene la formula', durata: DUR, copertina: 4.2,
+    titolo: 'Da dove viene la formula', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 50.3, 'completare il quadrato'], [50.3, 77.0, 'la formula e il discriminante'], [77.0, FINE, 'una prova']],
     scena(ctx, t) { TNOW = t; sceneIntro(ctx, t); scenePassi(ctx, t); sceneLato(ctx, t); sceneFine(ctx, t); },

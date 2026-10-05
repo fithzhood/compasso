@@ -256,8 +256,28 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): i fattori contati salgono, i gradini della scala scendono
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.1, .6], ['pop', 8.7, .4], ['pop', 9.05, .5], ['pop', 9.4, .6],   // a³, tre tessere
+    ['pop', 18.3, .7], ['ding', 22.5],                                                          // altre due: a⁵
+    ['traccia', 23.1, 23.5], ['tono', 23.2, 23.6, [.3, .8]],                                    // la graffa, si contano 1…5
+    ['pop', 27.5, .6],                                                                          // a³⁺²
+    ['soffio', 31.8], ['tono', 32.0, 33.4, [.3, .8]],                                           // (a³)²: sei tessere
+    ['ding', 37.0], ['traccia', 37.5, 37.9], ['tono', 37.6, 38.0, [.3, .85]],                  // a⁶, si contano 1…6
+    ['soffio', 41.2], ['pop', 41.7, .7],                                                        // la scala, a³
+    ['tono', 42.4, 43.2, [.5, .8]], ['pop', 43.3, .6],                                          // via un fattore: a²
+    ['tono', 46.3, 47.1, [.5, .8]], ['pop', 47.2, .5],                                          // a¹
+    ['tono', 50.6, 51.4, [.5, .8]], ['pop', 51.5, .5],                                          // resta 1
+    ['pop', 55.2, .4], ['ding', 55.5],                                                          // a⁰ = 1
+    ['tono', 59.8, 60.8, [.5, .65]], ['traccia', 60.2, 60.8], ['pop', 61.1, .3],               // 1/a, a⁻¹
+    ['traccia', 64.8, 65.6], ['pop', 65.9, .2],                                                 // 1/a², a⁻²
+    ['pop', 69.9, .5], ['ding', 70.6],                                                          // con a = 2 fa 1/4
+    ['pop', 74.8, .3],                                                                          // a ≠ 0 cerchiato
+    ['soffio', 79.5], ['pop', 82.1, .5], ['pop', 82.6, .6], ['pop', 83.1, .7],
+  ];
   return {
-    titolo: 'Le regole delle potenze', durata: DURATA, copertina: 4.2,
+    titolo: 'Le regole delle potenze', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: CAPITOLI,
     scena(ctx, t) { sceneIntro(ctx, t); sceneFattori(ctx, t); sceneScala(ctx, t); sceneFine(ctx, t); },

@@ -216,8 +216,29 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza del punto P sulla curva
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.2], ['traccia', 7.4, 8.2],                                                     // gli assi
+    ['tono', 8.0, 8.7, [0, .06, .15, .22, .2, 0]], ['tono', 8.4, 9.1, [1, .63, .76, .89, 1]],   // i due rami
+    ['pop', 9.0, .5],                                                                           // la formula di f
+    ['tono', 14.3, 15.3, [0, 1]],                                                               // l'asintoto tratteggiato
+    ['soffio', 24.6], ['pop', 25.1, .5],                                                        // y = mx + q
+    ['pop', 33.0, .59], ['traccia', 33.0, 33.8],                                                // P e il segmento dall'origine
+    ['traccia', 39.4, 39.8], ['pop', 39.4, .5], ['traccia', 40.4, 41.0],                        // pendenza f(x)/x, i due cateti
+    ['tono', 46.5, 47.8, [.59, .66, .76, .86, .97]],                                            // P corre lontano
+    ['pop', 46.9, .5], ['pop', 47.2, .45], ['pop', 47.5, .4],                                   // 10, 100, 1000
+    ['ding', 54.2],                                                                             // m = 1
+    ['tono', 60.3, 61.3, [.05, .95]],                                                           // la retta y = x
+    ['pop', 67.3, .65], ['traccia', 67.3, 67.9], ['pop', 67.5, .5],                             // P torna, il tratto verde
+    ['tono', 73.6, 74.6, [.65, .72, .8, .89, .97]],                                             // P corre di nuovo lontano
+    ['pop', 73.7, .5], ['pop', 74.0, .45], ['pop', 74.3, .4],                                   // 10, 100, 1000
+    ['ding', 80.0],                                                                             // q = 1
+    ['tono', 86.4, 87.4, [.45, .52]], ['pop', 87.3, .6],                                        // la retta sale di 1: y = x + 1
+    ['soffio', FINE + .4], ['pop', FINE + 2.4, .5], ['pop', FINE + 2.9, .6], ['pop', FINE + 3.4, .7],
+  ];
   return {
-    titolo: 'L\'asintoto obliquo', durata: 104.6, copertina: 4.2,
+    titolo: 'L\'asintoto obliquo', durata: 104.6, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.2, 32.8, 'una retta inclinata'], [32.8, 60.2, 'la pendenza {mink:m}'], [60.2, FINE, 'il termine noto {mink:q}']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneGrafico(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

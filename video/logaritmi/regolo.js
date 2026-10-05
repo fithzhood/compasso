@@ -187,8 +187,25 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.8, 8.3],                                           // il righello
+    ['tono', 8.2, 10.05, [.1, .2, .3, .4, .5, .6, .7, .8]],                           // le tacche: 1, 2, 4, … 128
+    ['traccia', 12.9, 13.3], ['pop', 13.0, .6],                                       // 3 passi: log₂ 8 = 3
+    ['tono', 17.9, 18.9, [.1, .8]],                                                   // i passi da 1: 0 … 7
+    ['pop', 23.4, .5],                                                                // il righello di sopra
+    ['traccia', 27.7, 29.2], ['tono', 27.7, 29.2, [.3, .5]],                          // scorre di 2 passi
+    ['traccia', 32.4, 33.6],                                                          // 3 passi sopra
+    ['traccia', 36.9, 37.3], ['pop', 37.0, .7],                                       // sotto l'8 il 32: 4 · 8 = 32
+    ['traccia', 41.2, 41.6], ['pop', 41.4, .8],                                       // 5 passi: log₂ 4 + log₂ 8 = log₂ 32
+    ['soffio', 51.0],                                                                 // il regolo vero
+    ['traccia', 56.5, 56.9], ['traccia', 57.3, 57.8], ['pop', 57.5, .4],              // lunghezza 1; log₁₀ 2 ≈ 0,30
+    ['traccia', 62.0, 63.4], ['tono', 62.0, 63.4, [.3, .45]],                         // il righello di sopra scorre fino al 2
+    ['traccia', 66.3, 66.7], ['pop', 66.5, .7],                                       // sotto il 3 il 6: 2 · 3 = 6
+    ['soffio', 71.4], ['pop', 73.8, .5], ['pop', 74.3, .6], ['pop', 74.8, .7],        // in una frase
+  ];
   return {
-    titolo: 'Il regolo calcolatore', durata: DURATA, copertina: 4.2,
+    titolo: 'Il regolo calcolatore', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: CAPITOLI,
     scena(ctx, t) { sceneIntro(ctx, t); sceneScheda(ctx, t); sceneBase2(ctx, t); sceneBase10(ctx, t); sceneFine(ctx, t); },

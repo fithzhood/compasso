@@ -125,8 +125,24 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): ogni prova suona sopra o sotto il 2
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 8.0, 9.2], ['pop', 9.0, .45],                           // il quadrato e i lati 1
+    ['traccia', 10.0, 10.8], ['tono', 10.0, 10.8, [.15, .8]],                            // la diagonale sale
+    ['soffio', 12.0], ['pop', 12.6, .55],                                                // Pitagora
+    ['ding', 16.7], ['pop', 18.3, .55],                                                  // diagonale = √2, √2 · √2 = 2
+    ['soffio', 21.3],
+    ['pop', 26.0, .55], ['pop', 26.6, .85],                                              // 3/2: sopra il 2
+    ['pop', 30.6, .55], ['pop', 31.2, .25],                                              // 7/5: sotto il 2
+    ['pop', 35.0, .55], ['pop', 35.6, .65],                                              // 17/12: appena sopra
+    ['pop', 35.7, .55], ['pop', 36.3, .45],                                              // 41/29: appena sotto
+    ['pop', 40.1, .3],                                                                   // nessuna frazione
+    ['ding', 45.0],                                                                      // √2 è irrazionale
+    ['soffio', 49.6], ['pop', 52.2, .5], ['pop', 52.7, .6], ['pop', 53.2, .7],
+  ];
   return {
-    titolo: '√2 non è una frazione', durata: DURATA, copertina: 4.2,
+    titolo: '√2 non è una frazione', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: CAPITOLI,
     scena(ctx, t) { sceneIntro(ctx, t); sceneQuadrato(ctx, t); sceneFine(ctx, t); },

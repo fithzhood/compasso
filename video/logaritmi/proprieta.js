@@ -185,8 +185,23 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.1, .5], ['pop', 11.9, .55],                            // 8 · 4 = 32; 2³ · 2² = 2⁵
+    ['traccia', 16.7, 17.1], ['ding', 17.2],                                          // gli esponenti: 3 + 2 = 5
+    ['pop', 21.4, .6],                                                                // i tre logaritmi
+    ['pop', 26.6, .65], ['ding', 27.2],                                               // log₂(8 · 4) = log₂ 8 + log₂ 4
+    ['pop', 31.9, .6], ['pop', 32.6, .4],                                             // in generale; le condizioni
+    ['soffio', 36.8], ['pop', 37.2, .5], ['pop', 41.7, .55], ['pop', 46.7, .6],       // log₂ 8³, la somma, 3 · log₂ 8
+    ['pop', 50.9, .7], ['ding', 51.4],                                                // 3 · 3 = 9
+    ['pop', 53.9, .6],                                                                // controllo: 2⁹ = 512
+    ['traccia', 58.3, 58.8], ['pop', 58.8, .7],                                       // la regola della potenza
+    ['soffio', 63.3], ['pop', 63.8, .5], ['pop', 68.1, .6],                           // log₂(4 + 4) = 3; log₂ 4 + log₂ 4 = 4
+    ['traccia', 68.9, 69.4], ['pop', 69.2, .15],                                      // 3 ≠ 4
+    ['soffio', 73.6], ['pop', 76.0, .5], ['pop', 76.5, .6], ['pop', 77.0, .7],        // in una frase
+  ];
   return {
-    titolo: 'Le proprietà dei logaritmi', durata: DURATA, copertina: 4.2,
+    titolo: 'Le proprietà dei logaritmi', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: CAPITOLI,
     scena(ctx, t) { sceneIntro(ctx, t); sceneScheda(ctx, t); sceneProdotto(ctx, t); scenePotenza(ctx, t); sceneSomma(ctx, t); sceneFine(ctx, t); },

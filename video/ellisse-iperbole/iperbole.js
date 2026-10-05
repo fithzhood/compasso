@@ -314,8 +314,29 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza di P sui rami
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7], ['pop', 8.4, .5], ['pop', 8.9, .5],         // gli assi, i due fuochi
+    ['pop', 10.4, .5], ['pop', 17.8, .5],                                               // F₁F₂ = 10, 2a = 8
+    ['pop', 22.5, .79], ['traccia', 23.2, 23.8], ['traccia', 24.2, 24.8],               // P e le sue distanze
+    ['pop', 26.8, .55], ['ding', 27.5],                                                 // 12 − 4 = 8: va bene
+    ['tono', 30.8, 35.0, [.79, .75, .54, .22, .12, .12, .24, .48, .75, .91, .94]],      // P disegna il ramo destro
+    ['traccia', 35.2, 36.0],                                                            // il ramo si allunga
+    ['pop', 38.4, .79],                                                                 // P vicino a F₁
+    ['tono', 42.8, 46.8, [.79, .76, .57, .26, .12, .12, .21, .45, .73, .91, .94]],      // e il ramo sinistro
+    ['traccia', 47.0, 47.8],
+    ['pop', 49.9, .6], ['pop', 52.3, .6], ['pop', 55.0, .55],                           // 8 e −8, il valore assoluto, la definizione
+    ['soffio', 59.4], ['pop', 59.6, .53], ['traccia', 59.8, 60.5], ['traccia', 61.6, 62.3],   // i vertici, a e c
+    ['pop', 63.8, .55], ['tono', 65.0, 65.6, [.53, .74]], ['ding', 65.8],               // c² = a² + b², b = 3
+    ['soffio', 68.2], ['traccia', 68.4, 69.6], ['traccia', 70.2, 70.8],                 // il rettangolo, metà diagonale
+    ['tono', 71.2, 72.4, [.74, .53]],                                                   // il compasso porta c sul fuoco
+    ['traccia', 73.2, 74.6], ['pop', 73.4, .55], ['ding', 74.9],                        // gli asintoti, y = ±(3/4)x
+    ['soffio', 77.7], ['tono', 78.6, 81.6, [.65, .65, .68, .77, .9, .97, .98]],         // da lontano, il punto sale lungo il ramo
+    ['soffio', 83.2], ['pop', 85.2, .5], ['pop', 85.7, .6], ['pop', 86.2, .7],
+  ];
   return {
-    titolo: 'L’iperbole', durata: FINE + 11, copertina: 4.2,
+    titolo: 'L’iperbole', durata: FINE + 11, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 30.4, 'la differenza'], [30.4, 59.0, 'i due rami'], [59.0, 68.1, 'vertici e numeri'], [68.1, FINE - .2, 'gli asintoti']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

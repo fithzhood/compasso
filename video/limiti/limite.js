@@ -325,8 +325,33 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.0, .5], ['pop', 11.1, .4], ['pop', 14.6, .2],          // la funzione; f(1) = 0/0
+    ['soffio', 18.7], ['traccia', 19.1, 20.2], ['pop', 20.2, .5],                     // il piano; = x + 1
+    ['traccia', 20.8, 22.8], ['tono', 20.8, 22.8, [.06, 1]],                          // la retta sale
+    ['pop', 24.8, .5],                                                                // il buco
+    ['tono', 30.2, 31.2, [.09, .4]], ['pop', 33.6, .44],                              // da sinistra, fino a 0,999
+    ['tono', 34.7, 35.7, [.95, .53]], ['pop', 38.0, .46],                             // da destra, fino a 1,001
+    ['ding', 39.3],                                                                   // f(x) → 2
+    ['pop', 44.8, .6],                                                                // il limite scritto
+    ['tono', 50.5, 51.5, [.47, .7]],                                                  // la fascia ε si apre
+    ['traccia', 55.8, 56.5], ['ding', 56.5],                                          // la striscia δ: dentro
+    ['tono', 61.9, 63.0, [.7, .56]], ['pop', 63.0, .2],                               // stringo ε: il tratto esce
+    ['tono', 66.1, 67.2, [.6, .45]], ['ding', 67.2],                                  // stringo δ: torna dentro
+    ['pop', 70.0, .6],                                                                // per ogni ε c'è un δ
+    ['soffio', 75.6], ['traccia', 76.2, 78.0],                                        // tre funzioni, la stessa retta
+    ['pop', 81.1, .5], ['pop', 81.5, .7], ['pop', 81.9, .5],                          // buco, 3, 2
+    ['tono', 85.2, 87.0, [.2, .45]], ['tono', 85.2, 87.0, [.85, .55]], ['ding', 87.6],   // i punti convergono: limite 2
+    ['soffio', 91.3], ['traccia', 91.5, 92.5],                                        // il piano di g
+    ['tono', 92.3, 93.2, [0, .23]], ['tono', 93.0, 93.8, [.7, 1]], ['pop', 93.8, .7], // i due rami, il salto
+    ['tono', 95.7, 97.5, [0, .2]], ['pop', 97.7, .25],                                // da sinistra verso 1
+    ['tono', 99.6, 101.4, [.98, .73]], ['pop', 101.6, .7],                            // da destra verso 3
+    ['pop', 103.3, .5], ['pop', 103.8, .15],                                          // 1 ≠ 3: non esiste
+    ['soffio', 107.8], ['pop', 110.2, .6], ['pop', 111.0, .5], ['pop', 111.5, .6], ['pop', 112.0, .7],   // in una frase
+  ];
   return {
-    titolo: "Che cos'è un limite", durata: 120, copertina: 4.2,
+    titolo: "Che cos'è un limite", durata: 120, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI, spegnimento: [118.7, 119.6] },
     capitoli: [[7.5, 29.8, 'il buco'], [29.8, 50.1, 'avvicinarsi'], [50.1, 75.6, 'vicino quanto vuoi'],
       [75.6, 91.2, 'il valore in 1 non conta'], [91.2, 107.4, 'quando non esiste']],

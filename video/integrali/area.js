@@ -244,8 +244,28 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue la curva e le altezze dei rettangoli
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                            // gli assi
+    ['tono', 8.1, 9.4, [.19, .19, .19, .24, .37, .59, .79, .93, .98]], ['pop', 9.5, .6],   // la curva, f(x)
+    ['traccia', 9.8, 10.6],                                                             // la regione fino a 4
+    ['tono', 19.1, 20.2, [0, .2, .4, .6]],                                              // i rettangoli crescono
+    ['pop', 25.0, .19], ['pop', 25.2, .23], ['pop', 25.4, .37], ['pop', 25.6, .6],      // i vertici a sinistra
+    ['pop', 30.5, .4], ['pop', 36.5, .3],                                               // 7,5; i pezzetti fuori
+    ['tono', 41.9, 43.1, [.4, .55]],                                                    // li alzo fino al lato destro
+    ['pop', 43.1, .23], ['pop', 43.25, .37], ['pop', 43.4, .6], ['pop', 43.55, .93],    // i vertici a destra
+    ['pop', 48.1, .7], ['pop', 52.7, .5],                                               // 11,5; l'area sta in mezzo
+    ['pop', 58.0, .5], ['pop', 58.5, .55],                                              // n = 8
+    ['pop', 63.5, .6], ['pop', 64.0, .65],                                              // n = 64
+    ['soffio', 74.3], ['pop', 74.6, .7], ['pop', 75.2, .6],                             // l'integrale ≈ 9,33
+    ['pop', 79.4, .6],                                                                  // il segno ∫
+    ['pop', 84.8, .45], ['traccia', 84.7, 85.2],                                        // f(x) dx
+    ['ding', 90.4],                                                                     // è l'area
+    ['soffio', 96.0], ['pop', 98.6, .5], ['pop', 99.1, .6], ['pop', 99.6, .7],
+  ];
   return {
-    titolo: 'L\'integrale come area', durata: DUR, copertina: 4.2,
+    titolo: 'L\'integrale come area', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 57.6, 'i rettangoli'], [57.6, 74.0, 'più sottili'], [74.0, FINE, 'l\'integrale']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); scenePannello(ctx, t); sceneFine(ctx, t); },

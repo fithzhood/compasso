@@ -231,8 +231,26 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): la retta in basso parte D = 5,4 s dopo i suoi tempi
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.9, 8.4], ['pop', 8.0, .6], ['pop', 8.3, .45],      // la graffa e le due disequazioni
+    ['pop', 12.7, .5],                                                                  // il ≥ si accende
+    ['pop', 16.4, .6], ['pop', 17.4, .6],                                               // 2x > −4, x > −2
+    ['pop', 19.9, .45], ['pop', 23.3, .45],                                             // −x ≥ −8, x ≤ 8 (verso girato)
+    ['soffio', 26.4], ['traccia', 26.6, 27.4],                                          // la retta dei numeri
+    ['pop', 27.8, .6], ['traccia', 28.0, 29.2],                                         // x > −2: pallino vuoto e raggio
+    ['pop', 34.1, .4], ['traccia', 34.3, 35.5],                                         // x ≤ 8: pallino pieno e raggio
+    ['pop', 40.4, .55], ['pop', 44.8, .55], ['ding', 45.0],                             // la prova del 10, poi del 3
+    ['pop', 53.2, .5], ['traccia', 53.2, 54.7], ['ding', 54.5],                         // la parte comune
+    ['pop', 60.3, .5], ['pop', 61.6, .55],                                              // −2 < x ≤ 8 e (−2, 8]
+    ['soffio', 64.6], ['pop', 64.9, .6], ['pop', 65.2, .45],                            // x > 4 e x < 1
+    ['pop', 68.7, .6], ['pop', 68.8, .4], ['traccia', 68.9, 70.2],                      // i due raggi che non si incontrano
+    ['pop', 75.6, .2],                                                                  // S = ∅
+    ['soffio', 80.2], ['pop', 82.4, .5], ['pop', 82.9, .6], ['pop', 83.4, .7],
+  ];
   return {
-    titolo: 'Il sistema: la parte comune', durata: DURATA, copertina: 4.2,
+    titolo: 'Il sistema: la parte comune', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 28.0, 'il sistema'], [28.0, 40.25, 'una sotto l\'altra'], [40.25, 64.4, 'la parte comune'], [64.4, FINE, 'niente in comune']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneRetta(ctx, t - D); scenePannello(ctx, t); sceneFine(ctx, t); },

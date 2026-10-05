@@ -625,6 +625,34 @@ function caricaFont() {
 }
 const temaSito = () => document.documentElement.dataset.tema === 'scuro' ? 'scuro' : 'chiaro';
 
+// ---------- la voce di Ada ----------
+// voce/<id>.json: { durata, pause: [[t, d], …], parla: [[a, b], …] } (strumenti/voce-sito.js) e voce/<id>.m4a.
+// Dove la battuta è più lunga del fumetto il video resta fermo d secondi all'istante t: il «tempo lungo» del sonoro
+// è il tempo del video più le pause. Con il sonoro acceso l'orologio è l'audio, così voce e disegno non si scollano.
+const voci = {};
+function caricaVoce(id) {
+  if (!voci[id]) voci[id] = fetch(BASE + 'voce/' + id + '.json' + VER).then(r => r.ok ? r.json() : null).catch(() => null);
+  return voci[id];
+}
+const lungo = (vo, t) => t + vo.pause.filter(([p]) => p < t).reduce((s, [, d]) => s + d, 0);
+function corto(vo, tl) {
+  let acc = 0;
+  for (const [p, d] of vo.pause) {
+    if (tl < p + acc) return tl - acc;
+    if (tl < p + acc + d) return p;
+    acc += d;
+  }
+  return tl - acc;
+}
+// la voce è accesa di serie (scelta di Luca, 5/10); se la si spegne col tasto, resta spenta per tutti i video
+const CHIAVE_SONORO = 'compasso.video-sonoro';
+let sonoroScelto = true;
+try { sonoroScelto = localStorage.getItem(CHIAVE_SONORO) !== '0'; } catch (e) {}
+const ICONA_SONORO = on => '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" ' +
+  'stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" stroke-width="1.6"/>' +
+  (on ? '<path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18.2 6.5a7.5 7.5 0 0 1 0 11"/>' : '<path d="M16 9.5l5 5M21 9.5l-5 5"/>') + '</svg>';
+let inOnda = null;   // un solo video alla volta: quando ne parte uno, quello che andava si ferma
+
 // ---------- il lettore ----------
 const mmss = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
 function monta(slot, id) {
@@ -634,18 +662,30 @@ function monta(slot, id) {
     '<div class="cv-ctrl"><button type="button" class="cv-play" aria-label="Avvia">▶</button>' +
     '<input type="range" min="0" max="1000" value="0" aria-label="Avanzamento">' +
     '<span class="cv-tempo">0:00</span>' +
+    '<button type="button" class="cv-sonoro" hidden></button>' +
     '<button type="button" class="cv-intero" aria-label="Schermo intero" title="Schermo intero">⛶</button></div>';
   const schermo = slot.querySelector('.cv-schermo'), tela = slot.querySelector('canvas'), ctx = tela.getContext('2d');
   const grande = slot.querySelector('.cv-grande'), play = slot.querySelector('.cv-play');
-  const range = slot.querySelector('input'), tempo = slot.querySelector('.cv-tempo');
+  const range = slot.querySelector('input'), tempo = slot.querySelector('.cv-tempo'), bSonoro = slot.querySelector('.cv-sonoro');
   let V = null, t = 0, inCorso = false, ultimo = 0, k = 1;
+  // il sonoro: vo = dati della voce (null se il video non ce l'ha), tl = posizione sul tempo lungo
+  let vo = null, audio = null, sonoro = false, tl = 0;
+  const conVoce = () => sonoro && vo && audio;
+  const fine = () => conVoce() ? vo.durata : V.durata;
+  const ora = () => conVoce() ? tl : t;
   function disegna() {
     if (!V) return;
     dipingi(ctx, V, t, k, temaSito());
-    range.value = Math.round(t / V.durata * 1000);
-    tempo.textContent = `${mmss(t)} / ${mmss(V.durata)}`;
+    range.value = Math.round(ora() / fine() * 1000);
+    tempo.textContent = `${mmss(ora())} / ${mmss(fine())}`;
     play.textContent = inCorso ? '❚❚' : (t >= V.durata ? '↺' : '▶');
     grande.hidden = inCorso || (t > 0 && t < V.durata && t !== V.copertina);
+    if (vo) {
+      bSonoro.innerHTML = ICONA_SONORO(sonoro);
+      bSonoro.setAttribute('aria-label', sonoro ? 'Togli la voce' : 'Accendi la voce');
+      bSonoro.title = sonoro ? 'Voce accesa' : 'Voce spenta';
+      bSonoro.setAttribute('aria-pressed', sonoro ? 'true' : 'false');
+    }
   }
   function misura() {
     const w = schermo.clientWidth; if (!w) return;
@@ -655,15 +695,63 @@ function monta(slot, id) {
   }
   function ciclo(ts) {
     if (!inCorso) return;
-    if (!document.body.contains(slot)) { inCorso = false; return; }
-    t = Math.min(V.durata, t + Math.min(.25, (ts - ultimo) / 1000)); ultimo = ts;
-    if (t >= V.durata) inCorso = false;
+    if (!document.body.contains(slot)) { inCorso = false; if (audio) audio.pause(); return; }
+    if (conVoce()) {
+      // l'orologio è l'audio: se sta caricando, il disegno aspetta. La traccia finisce con l'ultimo suono,
+      // qualche secondo prima del video: da lì il video va avanti col suo orologio fino alla dissolvenza
+      if (audio.ended) tl = Math.min(vo.durata, Math.max(tl, audio.duration || 0) + Math.min(.25, (ts - ultimo) / 1000));
+      else if (!audio.paused && audio.readyState >= 2) tl = audio.currentTime;
+      if (tl >= vo.durata - .02) { tl = vo.durata; inCorso = false; }
+      t = Math.min(V.durata, corto(vo, tl));
+      if (!inCorso) t = V.durata;
+    } else {
+      t = Math.min(V.durata, t + Math.min(.25, (ts - ultimo) / 1000));
+      if (t >= V.durata) inCorso = false;
+    }
+    ultimo = ts;
     disegna();
     if (inCorso) requestAnimationFrame(ciclo);
   }
-  function avvia() { if (!V) return; if (t >= V.durata || t === V.copertina) t = 0; inCorso = true; ultimo = performance.now(); requestAnimationFrame(ciclo); disegna(); }
-  function ferma() { inCorso = false; disegna(); }
+  function suona() {
+    if (!conVoce()) return;
+    audio.currentTime = tl;
+    const p = audio.play();
+    // se il browser rifiuta l'audio, il video va avanti muto
+    if (p && p.catch) p.catch(() => { if (inCorso && sonoro) { sonoro = false; ultimo = performance.now(); disegna(); } });
+  }
+  function avvia() {
+    if (!V) return;
+    if (t >= V.durata || t === V.copertina) { t = 0; tl = 0; }
+    if (inOnda && inOnda !== ferma) inOnda();
+    inOnda = ferma;
+    inCorso = true; ultimo = performance.now();
+    suona();
+    requestAnimationFrame(ciclo); disegna();
+  }
+  function ferma() { inCorso = false; if (audio) audio.pause(); if (inOnda === ferma) inOnda = null; disegna(); }
   const alterna = () => inCorso ? ferma() : avvia();
+  function cambiaSonoro() {
+    if (!vo) return;
+    sonoro = sonoroScelto = !sonoro;
+    try { localStorage.setItem(CHIAVE_SONORO, sonoro ? '1' : '0'); } catch (e) {}
+    if (sonoro) {
+      if (!audio) preparaAudio();
+      tl = lungo(vo, t);
+      if (inCorso) suona();
+    } else {
+      if (audio) audio.pause();
+      ultimo = performance.now();
+    }
+    disegna();
+  }
+  function preparaAudio() {
+    audio = new Audio(BASE + 'voce/' + id + '.m4a' + VER);
+    audio.preload = 'metadata';
+    audio.addEventListener('error', () => {   // file che non arriva: niente voce per questo video
+      if (inCorso && sonoro) ultimo = performance.now();
+      audio = null; vo = null; sonoro = false; bSonoro.hidden = true; disegna();
+    });
+  }
   function schermoIntero() {
     if (document.fullscreenElement) { document.exitFullscreen().catch(() => {}); return Promise.resolve(); }
     return (slot.requestFullscreen ? slot.requestFullscreen() : Promise.reject()).then(() => {
@@ -671,19 +759,34 @@ function monta(slot, id) {
     }).catch(() => {});
   }
   play.addEventListener('click', alterna); tela.addEventListener('click', alterna);
+  bSonoro.addEventListener('click', cambiaSonoro);
   // su uno schermo stretto (telefono in verticale) le scritte sarebbero minuscole: si parte a schermo intero
   grande.addEventListener('click', () => {
     if (!document.fullscreenElement && schermo.clientWidth < 600) schermoIntero().then(avvia); else alterna();
   });
-  range.addEventListener('input', () => { if (!V) return; t = range.value / 1000 * V.durata; disegna(); });
+  range.addEventListener('input', () => {
+    if (!V) return;
+    if (conVoce()) {
+      tl = range.value / 1000 * vo.durata; t = Math.min(V.durata, corto(vo, tl));
+      if (inCorso) audio.currentTime = tl;
+    } else t = range.value / 1000 * V.durata;
+    disegna();
+  });
   slot.querySelector('.cv-intero').addEventListener('click', schermoIntero);
   slot.addEventListener('fullscreenchange', misura);
   if ('ResizeObserver' in window) new ResizeObserver(misura).observe(schermo); else addEventListener('resize', misura);
-  // fuori dallo schermo si ferma; col cambio di tema si ridisegna
+  // fuori dallo schermo, o con la pagina nascosta, si ferma; col cambio di tema si ridisegna
   if ('IntersectionObserver' in window) new IntersectionObserver(e => { if (!e[0].isIntersecting && inCorso) ferma(); }, { threshold: .2 }).observe(schermo);
+  document.addEventListener('visibilitychange', () => { if (document.hidden && inCorso) ferma(); });
   new MutationObserver(() => { if (!inCorso) disegna(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-tema'] });
-  Promise.all([caricaFont(), carica(id)]).then(() => {
+  Promise.all([caricaFont(), carica(id), caricaVoce(id)]).then(([, , dati]) => {
     V = costruisci(id); t = V.copertina;
+    if (dati && Array.isArray(dati.pause)) {
+      vo = dati; bSonoro.hidden = false;
+      sonoro = sonoroScelto;
+      if (sonoro) preparaAudio();
+      tl = lungo(vo, t);
+    }
     tela.setAttribute('aria-label', 'Video: ' + (V.titolo || id));
     misura();
   }).catch(e => { schermo.textContent = 'Video non disponibile (' + e.message + ')'; });

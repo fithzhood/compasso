@@ -231,8 +231,24 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza della retta
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.9], ['pop', 8.6, .5], ['pop', 12.4, .45],                            // la scheda, ax = b
+    ['pop', 17.6, .5], ['pop', 22.9, .45],                                            // 2x = 4, poi 2x − 4 = 0
+    ['soffio', 26.0], ['traccia', 26.9, 27.7],                                        // il piano
+    ['traccia', 27.7, 29.1], ['tono', 27.7, 29.1, [0, .58, .88, .98, 1]],             // la retta si disegna salendo
+    ['pop', 31.9, .63],                                                               // dove taglia l'asse x
+    ['pop', 36.8, .5], ['ding', 37.6],                                                // x = 4/2 = 2
+    ['tono', 47.2, 49.4, [.8, .75, .4, .05, 0]],                                      // a → 0: la retta si stende
+    ['pop', 49.5, .45], ['pop', 50.6, .1], ['pop', 55.8, .4],                         // 0·x = 4, y = −4
+    ['pop', 61.2, .3], ['pop', 61.7, .25],                                            // impossibile, S vuoto
+    ['tono', 66.3, 68.3, [.1, .13, .37, .6, .63]], ['pop', 68.2, .5],                 // b → 0: la retta sale sull'asse
+    ['ding', 70.0], ['pop', 75.0, .5],                                                // coincide; per ogni x
+    ['soffio', 83.6], ['pop', 86.2, .5], ['pop', 86.7, .6], ['pop', 87.2, .7],
+  ];
   return {
-    titolo: 'Una soluzione, nessuna, infinite', durata: 94.2, copertina: 4.2,
+    titolo: 'Una soluzione, nessuna, infinite', durata: 94.2, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 22.5, 'la forma normale'], [22.5, 46.6, 'una soluzione'], [46.6, 65.7, 'nessuna soluzione'], [65.7, FINE, 'infinite soluzioni']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

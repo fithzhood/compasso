@@ -265,8 +265,24 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza del vertice della parabola
+  const SUONI = [
+    ['soffio', 1.5], ['pop', 2.6, .5],                                                // Δ = b² − 4ac
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                           // il piano, la scheda
+    ['traccia', 8.6, 10.0], ['tono', 9.1, 9.5, [1, .4, .08, .4, 1]],                  // la parabola scende e risale
+    ['traccia', 12.8, 13.3],                                                          // y = 0: l'asse x
+    ['pop', 17.2, .48], ['pop', 17.5, .5], ['pop', 21.7, .5],                         // i due punti, x₁ e x₂
+    ['pop', 25.9, .5], ['ding', 26.4], ['pop', 30.5, .6],                             // Δ = 16, Δ > 0
+    ['tono', 35.0, 37.4, [.08, .1, .28, .46, .48]],                                   // c sale: la parabola sale
+    ['pop', 38.9, .5], ['ding', 39.4], ['pop', 43.2, .48], ['pop', 47.8, .5],         // Δ = 0, il vertice
+    ['tono', 52.5, 54.7, [.48, .5, .59, .67, .69]],                                   // c sale ancora
+    ['pop', 55.6, .5], ['pop', 56.1, .2], ['pop', 64.4, .3], ['pop', 64.5, .2],       // Δ = −8, S vuoto
+    ['soffio', 69.0],                                                                 // a diventa negativo
+    ['pop', 73.7, .5], ['pop', 74.2, .2], ['pop', 78.2, .3], ['pop', 78.3, .2],       // Δ = −8, S vuoto
+    ['soffio', 82.8], ['pop', 85.4, .7], ['pop', 85.9, .5], ['pop', 86.4, .3],
+  ];
   return {
-    titolo: 'Il discriminante e la parabola', durata: DUR, copertina: 4.2,
+    titolo: 'Il discriminante e la parabola', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 34.6, '{mink:Δ > 0}: due punti'], [34.6, 52.2, '{mink:Δ = 0}: un punto'], [52.2, FINE, '{mink:Δ < 0}: nessun punto']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

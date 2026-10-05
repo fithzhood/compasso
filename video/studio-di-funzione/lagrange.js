@@ -243,8 +243,29 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue la curva del viaggio, poi la lancetta del tachimetro
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                           // la scheda, gli assi
+    ['tono', 8.6, 10.8, [0, .04, .16, .32, .5, .68, .84, .96, 1]],                    // il viaggio: i km salgono
+    ['pop', 13.0, .3], ['pop', 13.2, .7], ['traccia', 13.4, 14.6],                    // partenza, arrivo, la corda
+    ['soffio', 18.8], ['pop', 19.4, .6],                                              // 180 : 2 = 90
+    ['pop', 24.2, .3],                                                                // il punto con la tangente
+    ['tono', 34.2, 36.4, [.25, .35, .45, .53, .6]], ['ding', 36.4],                   // la lancetta sale a 90
+    ['tono', 42.5, 45.0, [.6, .82, .9, .82, .6]], ['ding', 45.0],                     // passa 135 e ritorna a 90
+    ['pop', 50.9, .4], ['pop', 51.3, .6], ['traccia', 50.9, 51.7],                    // i due punti c
+    ['pop', 56.7, .5],                                                                // s′(c) = 90
+    ['pop', 62.5, .5], ['pop', 68.5, .6],                                             // il teorema di Lagrange
+    ['soffio', 74.6],
+    ['tono', 75.2, 77.0, [.32, .53, .71, .82, .86, .82, .71, .53, .32]],              // la curva di Rolle
+    ['pop', 76.8, .3], ['pop', 77.0, .3], ['traccia', 77.0, 77.6],                    // a e b, alla stessa altezza
+    ['traccia', 79.8, 80.8], ['pop', 80.2, .4],                                       // la corda orizzontale
+    ['traccia', 85.2, 86.0], ['ding', 85.4],                                          // la tangente orizzontale, f′(c) = 0
+    ['pop', 90.9, .5], ['pop', 91.3, .7],                                             // il teorema di Rolle
+    ['soffio', 96.4], ['pop', 98.8, .5], ['pop', 99.3, .6], ['pop', 99.8, .7],
+  ];
   return {
-    titolo: 'Rolle e Lagrange', durata: FINE + 11.6, copertina: 4.2,
+    titolo: 'Rolle e Lagrange', durata: FINE + 11.6, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 24.0, 'la media'], [24.0, 50.6, 'il tachimetro'], [50.6, 74.4, 'il teorema di Lagrange'], [74.4, FINE, 'il caso di Rolle']],
     scena(ctx, t) {

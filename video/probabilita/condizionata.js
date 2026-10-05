@@ -217,8 +217,28 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.0, .6],                                                // il dado nascosto
+    ['traccia', 8.6, 9.2], ['pop', 8.5, .3], ['pop', 8.8, .45], ['pop', 9.1, .6],     // la cornice e i sei dadi
+    ['pop', 12.6, .5], ['pop', 16.9, .6],                                             // il 2: 1/6; «pari»
+    ['tono', 21.2, 21.9, [.6, .3]],                                                   // i dispari si spengono
+    ['ding', 26.2],                                                                   // il 2: 1/3
+    ['tono', 30.4, 31.2, [.7, .68, .5, .32, .3]],                                     // la cornice si stringe sui pari
+    ['soffio', 35.0], ['pop', 35.2, .4], ['pop', 35.6, .6], ['pop', 39.7, .4],        // A, B, nuovo spazio campionario
+    ['pop', 44.4, .6],                                                                // P(A | B) = 1/3
+    ['traccia', 53.3, 53.7], ['pop', 53.4, .5],                                       // A ∩ B: il 2
+    ['tono', 57.9, 58.6, [.3, .32, .5, .68, .7]],                                     // la cornice torna su tutti
+    ['pop', 58.0, .4], ['pop', 59.4, .5],                                             // P(A ∩ B), P(B)
+    ['pop', 62.6, .6], ['traccia', 64.0, 64.5],                                       // la formula, nel riquadro
+    ['pop', 71.4, .3],                                                                // P(B) ≠ 0
+    ['soffio', 75.6], ['tono', 75.7, 76.5, [.7, .68, .45, .22, .2]],                  // la cornice si stringe sul 2
+    ['pop', 80.3, .4], ['ding', 84.7],                                                // P(B | A) = 1
+    ['pop', 88.8, .5], ['pop', 89.8, .6], ['traccia', 90.6, 91.1],                   // P(A | B) ≠ P(B | A)
+    ['soffio', 93.4], ['pop', 95.4, .5], ['pop', 95.9, .6], ['pop', 96.4, .7],
+  ];
   return {
-    titolo: 'La probabilità condizionata', durata: DUR, copertina: 4.2,
+    titolo: 'La probabilità condizionata', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 34.9, 'il dado nascosto'], [34.9, 75.5, '«{mink:A} sapendo {mink:B}»'], [75.5, FINE, 'al contrario']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneDado(ctx, t); sceneConti(ctx, t); sceneFine(ctx, t); },

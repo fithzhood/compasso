@@ -221,8 +221,24 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.1, .3], ['pop', 9.0, .7], ['pop', 10.0, .5],          // i dati: 1%, 99%, 5%
+    ['pop', 13.4, .4], ['pop', 13.9, .5],                                             // in decimali
+    ['soffio', 17.0], ['pop', 17.3, .5], ['traccia', 17.5, 18.25], ['pop', 18.0, .6], // la radice, M e S
+    ['traccia', 21.9, 22.3], ['pop', 26.9, .6],                                       // si escludono: una partizione
+    ['pop', 31.0, .5],                                                                // T⁺ e T⁻
+    ['traccia', 35.5, 36.25], ['pop', 36.0, .7],                                      // i rami dei malati
+    ['traccia', 40.1, 40.85], ['pop', 40.6, .4],                                      // i rami dei sani
+    ['traccia', 44.9, 45.8], ['pop', 45.9, .5],                                       // malato e positivo: 0,0099
+    ['traccia', 49.5, 50.4], ['pop', 50.4, .5],                                       // sano e positivo: 0,0495
+    ['pop', 54.0, .5], ['pop', 54.8, .7],                                             // P(T⁺) = 0,0594
+    ['soffio', 63.0], ['pop', 63.4, .5], ['pop', 68.0, .6],                           // P(M | T⁺), il ramo che interessa
+    ['traccia', 76.9, 77.3], ['pop', 77.3, .3],                                       // P(M) = 0,01, a priori
+    ['soffio', 81.8], ['pop', 83.8, .5], ['pop', 84.3, .6], ['pop', 84.8, .7],
+  ];
   return {
-    titolo: 'L’albero: probabilità totale e Bayes', durata: DUR, copertina: 4.2,
+    titolo: 'L’albero: probabilità totale e Bayes', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 17.0, 'i dati'], [17.0, 44.6, 'l’albero'], [44.6, 63.0, 'si moltiplica, si somma'], [63.0, FINE, 'il teorema di Bayes']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneDati(ctx, t); sceneAlbero(ctx, t); sceneConti(ctx, t); sceneFine(ctx, t); },

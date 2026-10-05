@@ -203,8 +203,26 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza della punta del raggio e dei seni
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7], ['pop', 8.0, .05],                        // gli assi, O
+    ['tono', 7.9, 9.0, [0, .38, .71, .92, 1]],                                        // il quarto di circonferenza
+    ['tono', 8.8, 10.4, [0, .03, .26, .47, .5]],                                      // il raggio gira di 30°
+    ['soffio', 12.6], ['tono', 12.8, 13.6, [0, .03, .25, .47, .5]], ['pop', 13.6, .5], // sin 30° = 1/2
+    ['tono', 17.2, 19.0, [.5, .53, .71, .85, .87]],                                   // il raggio arriva a 60°
+    ['tono', 21.6, 22.4, [0, .05, .43, .81, .87]], ['pop', 22.4, .87],                // sin 60°
+    ['pop', 23.4, .3], ['pop', 24.4, .3],                                             // non è il doppio
+    ['soffio', 26.0], ['pop', 26.8, .5], ['pop', 31.8, .5], ['ding', 36.4],           // sin 2α = 2 sin α cos α
+    ['traccia', 40.6, 41.1],                                                          // cos 30°, la prova
+    ['soffio', 45.0], ['tono', 45.2, 46.0, [.45, .5, .7, .9, .95]],                   // il riquadro sale
+    ['pop', 45.8, .5], ['pop', 50.0, .5], ['ding', 54.0],                             // cos 2α = cos² α − sin² α
+    ['pop', 58.2, .7], ['pop', 63.4, .45], ['pop', 68.0, .4],                         // sin² + cos² = 1, le altre due forme
+    ['traccia', 71.4, 72.0], ['pop', 71.8, .1],                                       // cos 60° = 1/2
+    ['soffio', 76.0], ['pop', 78.6, .5], ['pop', 79.1, .6], ['pop', 79.6, .7],
+  ];
   return {
-    titolo: 'Le formule di duplicazione', durata: Math.round((FINE + 10.8) * 10) / 10, copertina: 4.2,
+    titolo: 'Le formule di duplicazione', durata: Math.round((FINE + 10.8) * 10) / 10, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 26.1, 'il doppio dell’angolo'], [26.1, 44.9, 'il seno di 2α'], [44.9, FINE, 'il coseno di 2α']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

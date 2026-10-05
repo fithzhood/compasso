@@ -250,8 +250,21 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.0, .5], ['pop', 8.5, .4], ['pop', 8.8, .5],            // a² = a · a, le due tessere
+    ['pop', 12.7, .4],                                                                // a > 0
+    ['pop', 16.8, .5], ['pop', 17.4, .6],                                             // √a · √a = a
+    ['pop', 22.2, .5], ['pop', 26.9, .4], ['pop', 31.0, .5],                          // la potenza col ?, il promemoria
+    ['ding', 36.1],                                                                   // il ? è 1/2
+    ['ding', 41.0],                                                                   // a elevato a 1/2 = √a
+    ['pop', 45.4, .5], ['pop', 46.6, .4],                                             // con 9: √9 = 3
+    ['soffio', 50.5], ['pop', 50.7, .5],                                              // il cubo
+    ['ding', 55.5], ['pop', 60.7, .7],                                                // radice cubica; il 3 diventa l'indice
+    ['soffio', 65.5], ['pop', 68.0, .5], ['pop', 68.5, .6], ['pop', 69.0, .7], ['pop', 69.8, .3],
+  ];
   return {
-    titolo: 'La radice è una potenza', durata: DURATA, copertina: 4.2,
+    titolo: 'La radice è una potenza', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: CAPITOLI,
     scena(ctx, t) { sceneIntro(ctx, t); card(ctx, 80, 110, 1760, 690, life(t, 7.5, FINE + .3, .6, .6)); sceneEsponente(ctx, t); sceneFine(ctx, t); },

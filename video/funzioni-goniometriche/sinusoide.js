@@ -238,8 +238,27 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza di P, cioè il seno
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.6], ['pop', 8.0, .5],                          // la circonferenza
+    ['traccia', 8.4, 8.8], ['pop', 8.6, .77], ['tono', 12.1, 12.6, [.5, .77]],         // il raggio, P, la sua altezza
+    ['traccia', 16.3, 17.3], ['traccia', 21.0, 21.6],                                  // il grafico; l'arco blu
+    ['tono', 25.9, 27.3, [.64, .58, .5]],                                              // l'arco si srotola sull'asse x
+    ['traccia', 30.0, 30.6], ['pop', 30.8, .5], ['tono', 30.8, 31.3, [.5, .77]],       // l'altezza va sul grafico
+    ['tono', 34.3, 35.6, [.77, .76, .65, .52, .5]],                                    // torna a x = 0
+    ['tono', 38.6, 41.8, [.5, .53, .75, .85, .85]], ['pop', 41.8, .85],                // π/2: il massimo
+    ['tono', 47.0, 49.0, [.85, .85, .75, .53, .5]], ['pop', 49.0, .5],                 // π: zero
+    ['tono', 52.7, 54.7, [.5, .47, .25, .15, .15]], ['pop', 54.7, .15],                // 3π/2: il minimo
+    ['tono', 59.2, 61.2, [.15, .15, .25, .47, .5]], ['pop', 61.2, .5],                 // 2π: zero
+    ['soffio', 77.2],                                                                  // l'asse x si stringe
+    ['tono', 81.3, 85.4, [.5, .5, .51, .53, .57, .63, .72, .81, .85, .76, .5, .24, .15, .19, .28, .37, .43, .47, .49, .5, .5]],   // il secondo giro
+    ['traccia', 86.0, 86.5], ['pop', 86.4, .5], ['pop', 86.8, .6],                     // periodo 2π, due volte
+    ['pop', 90.2, .5], ['ding', 90.9],                                                 // sin(x + 2π) = sin x
+    ['soffio', FINE + .4], ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],
+  ];
   return {
-    titolo: 'Dalla circonferenza alla sinusoide', durata: Math.round((FINE + 10.8) * 10) / 10, copertina: 4.2,
+    titolo: 'Dalla circonferenza alla sinusoide', durata: Math.round((FINE + 10.8) * 10) / 10, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 38.1, 'il punto e la sua altezza'], [38.1, 73.1, 'un giro: la sinusoide'], [73.1, FINE, 'periodo 2π']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneFine(ctx, t); },

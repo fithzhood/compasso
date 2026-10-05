@@ -8,7 +8,8 @@
      node strumenti/esporta-video.js derivate/derivata --foto 4,30,52.5
                                                                     → video-mp4/_prove/derivate/derivata/t004.00.png …
    opzioni: --fps 30 (default 30) · --tema scuro · --da 20 --a 40 (solo un tratto) · --salta-esistenti
-            --uscita C:/Users/lfili/Videos/Compasso (cartella degli MP4, fuori da OneDrive; i fotogrammi restano in video-mp4/_prove)
+            --uscita C:/Users/lfili/Videos/Compasso/_muti (cartella degli MP4 muti, fuori da OneDrive; i fotogrammi restano in video-mp4/_prove)
+            --pause 16.1:1.75,72.9:1.0 (fermo immagine: all'istante 16,1 il video resta fermo 1,75 s; per dare tempo alla voce)
    La cartella video-mp4/ non si pubblica (è esclusa in pubblica.py). */
 'use strict';
 const http = require('http'), fs = require('fs'), path = require('path'), os = require('os');
@@ -18,7 +19,7 @@ const USCITA = path.join(RADICE, 'video-mp4');
 const CHROME = ['C:/Program Files/Google/Chrome/Application/chrome.exe', 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe'].find(f => fs.existsSync(f));
 
 const arg = process.argv.slice(2);
-const opz = { ids: [], fps: 30, tema: 'chiaro', foto: null, da: null, a: null, salta: false, uscita: USCITA };
+const opz = { ids: [], fps: 30, tema: 'chiaro', foto: null, da: null, a: null, salta: false, uscita: USCITA, pause: [] };
 for (let i = 0; i < arg.length; i++) {
   const a = arg[i];
   if (a === '--fps') opz.fps = +arg[++i]; else if (a === '--tema') opz.tema = arg[++i];
@@ -26,6 +27,7 @@ for (let i = 0; i < arg.length; i++) {
   else if (a === '--da') opz.da = +arg[++i]; else if (a === '--a') opz.a = +arg[++i];
   else if (a === '--salta-esistenti') opz.salta = true;
   else if (a === '--uscita') opz.uscita = path.resolve(arg[++i]);
+  else if (a === '--pause') opz.pause = arg[++i].split(',').map(x => x.split(':').map(Number)).sort((p, q) => p[0] - q[0]);
   else if (a === '--tutti') opz.ids.push(...require('./video-elenco.js'));
   else opz.ids.push(a);
 }
@@ -79,12 +81,15 @@ async function main() {
       continue;
     }
     fs.mkdirSync(path.dirname(mp4), { recursive: true });
-    const da = opz.da || 0, a = opz.a || dur, tot = Math.round((a - da) * opz.fps);
+    // fermo immagine: il tempo del video (t) resta fermo per d secondi all'istante p; T è il tempo dell'MP4
+    const extra = opz.pause.reduce((s, [, d]) => s + d, 0);
+    const tempo = T => { let t = T; for (const [p, d] of opz.pause) { if (t <= p) break; t = Math.max(p, t - d); } return t; };
+    const da = opz.da || 0, a = (opz.a || dur) + extra, tot = Math.round((a - da) * opz.fps);
     const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(opz.fps), '-c:v', 'png', '-i', '-',
       '-c:v', 'libx264', '-preset', 'slow', '-crf', '18', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', mp4], { stdio: ['pipe', 'inherit', 'inherit'] });
     const t0 = Date.now();
     for (let i = 0; i < tot; i++) {
-      const buf = Buffer.from(await foto(da + i / opz.fps), 'base64');
+      const buf = Buffer.from(await foto(tempo(da + i / opz.fps)), 'base64');
       if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r));
       if (i % (opz.fps * 10) === 0) process.stdout.write(`\r${id}: ${i}/${tot}`);
     }

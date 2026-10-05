@@ -288,8 +288,25 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza di P
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7], ['pop', 8.4, .5], ['pop', 8.9, .5],         // gli assi, i due picchetti
+    ['traccia', 12.4, 13.4], ['pop', 13.6, .5],                                         // lo spago che pende, 2a = 10
+    ['pop', 17.3, .5],                                                                  // F₁F₂ = 8
+    ['tono', 21.6, 23.1, [.33, .5, .73]], ['pop', 21.7, .73],                           // il bastoncino tende lo spago
+    ['pop', 26.0, .55], ['pop', 26.6, .45], ['ding', 30.9],                             // PF₁, PF₂, la somma 10
+    ['tono', 34.6, 42.2, [.73, .73, .74, .75, .77, .78, .79, .75, .63, .42, .23,        // il giro: P passa sotto e torna in cima
+      .27, .45, .61, .71, .76, .78, .79, .79, .79, .79]],
+    ['pop', 45.7, .55],                                                                 // PF₁ + PF₂ = 2a
+    ['soffio', 54.4], ['traccia', 54.6, 55.4], ['pop', 54.6, .5],                       // il semiasse a
+    ['tono', 59.2, 59.9, [.5, .79]], ['pop', 59.2, .6],                                 // b sale fino in cima
+    ['traccia', 63.0, 63.7], ['pop', 63.0, .45],                                        // c fino al fuoco
+    ['pop', 67.3, .6], ['ding', 69.1],                                                  // a² = b² + c², 25 = 9 + 16
+    ['soffio', 72.0], ['pop', 74.0, .5], ['pop', 74.5, .6], ['pop', 75.0, .7],
+  ];
   return {
-    titolo: 'L’ellisse del giardiniere', durata: FINE + 11, copertina: 4.2,
+    titolo: 'L’ellisse del giardiniere', durata: FINE + 11, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 34.2, 'picchetti e spago'], [34.2, 49.7, 'il giro'], [49.7, 71.4, 'i semiassi']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

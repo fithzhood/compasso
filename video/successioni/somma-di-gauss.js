@@ -204,8 +204,25 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): la fila al contrario scende col numero; il ding di 5050 lo mette la faccia «festa»
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 7.9, .4],                                                // la prima fila
+    ['tono', 12.3, 13.5, [1, .98, .96, .5, .04, .02, 0]],                             // la seconda: da 100 a 1
+    ['pop', 17.9, .4], ['traccia', 18.0, 18.4], ['ding', 18.4],                       // 1 + 100 = 101
+    ['pop', 22.5, .6], ['pop', 23.1, .65], ['pop', 27.4, .5],                         // 2 + 99, 3 + 98, +1 −1
+    ['traccia', 32.0, 33.5], ['pop', 33.8, .4],                                       // tutte le colonne, 100 colonne
+    ['pop', 38.4, .5], ['pop', 41.8, .6], ['traccia', 43.0, 43.5],                    // 2S, S = 5050
+    ['soffio', 45.3], ['pop', 46.0, .4],                                              // 5 + 8 + … + 32
+    ['tono', 50.6, 51.7, [1, .78, .56, .33, .11, 0]],                                 // al contrario: da 32 a 5
+    ['traccia', 51.6, 52.0], ['ding', 52.4], ['pop', 53.0, .3],                       // ogni colonna 37, 10 colonne
+    ['pop', 56.4, .5], ['pop', 60.1, .5], ['ding', 60.7],                             // +3 −3, 370, S = 185
+    ['pop', 63.8, .4], ['traccia', 67.7, 68.1], ['pop', 67.9, .5],                    // a₁, aₙ, n; (a₁ + aₙ) n
+    ['pop', 71.8, .6], ['traccia', 72.7, 73.2], ['ding', 73.2],                       // Sₙ
+    ['soffio', 76.6], ['pop', 78.4, .5], ['pop', 78.9, .6], ['pop', 79.4, .7],
+  ];
   return {
-    titolo: 'La somma di Gauss', durata: DUR, copertina: 4.2,
+    titolo: 'La somma di Gauss', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 45.4, 'le due file'], [45.4, FINE, 'la formula']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneFile(ctx, t); sceneFine(ctx, t); },

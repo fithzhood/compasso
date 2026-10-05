@@ -250,8 +250,26 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.4, .3], ['pop', 9.4, .55], ['pop', 10.4, .8],          // le tessere: 2, 4, 8
+    ['traccia', 12.7, 13.2],                                                          // la graffa: tre fattori
+    ['pop', 17.2, .7], ['traccia', 18.0, 18.4],                                       // 2³ = 8, l'esponente
+    ['soffio', 22.1], ['pop', 23.2, .6],                                              // 2³ = 8 scivola; log₂ 8 = 3
+    ['pop', 27.3, .2], ['pop', 28.3, .8], ['pop', 31.9, .5],                          // base, argomento, esponente
+    ['traccia', 36.7, 37.2], ['ding', 37.3],                                          // vuol dire
+    ['pop', 41.9, .5], ['pop', 45.7, .5], ['traccia', 45.9, 46.4],                    // log₃ 9 = ?, 3^? = 9
+    ['pop', 50.2, .6], ['pop', 50.8, .6],                                             // ? diventa 2
+    ['soffio', 54.8], ['pop', 55.1, .6],                                              // la definizione
+    ['pop', 55.5, .2], ['pop', 56.5, .8], ['pop', 59.7, .5],                          // base, argomento, esponente
+    ['pop', 64.7, .4], ['pop', 65.3, .5], ['pop', 65.9, .6],                          // le tre condizioni
+    ['traccia', 69.4, 69.9], ['pop', 69.9, .15],                                      // log₂(−4) non esiste
+    ['traccia', 74.3, 74.8], ['pop', 74.5, .3],                                       // 1ˣ = 1
+    ['traccia', 79.2, 79.7], ['pop', 79.7, .15],                                      // (−2) alla 1/2
+    ['soffio', 84.2], ['pop', 86.6, .5], ['pop', 87.1, .6], ['pop', 87.6, .7],        // in una frase
+  ];
   return {
-    titolo: 'Che cos’è un logaritmo', durata: DURATA, copertina: 4.2,
+    titolo: 'Che cos’è un logaritmo', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: CAPITOLI,
     scena(ctx, t) { sceneIntro(ctx, t); sceneScheda(ctx, t); sceneDomanda(ctx, t); sceneNome(ctx, t); sceneDefinizione(ctx, t); sceneFine(ctx, t); },

@@ -253,8 +253,28 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza della parabola e del punto
+  const SUONI = [
+    ['soffio', 1.5], ['pop', 2.7, .5],                                                  // il titolo e la domanda
+    ['soffio', 7.5], ['traccia', 7.7, 8.7],                                             // la scheda e gli assi
+    ['tono', 8.4, 9.9, [1, .7, .33, .11, .03, .11, .33, .7, 1]],                        // la parabola si disegna
+    ['pop', 12.6, .82],                                                                 // x = 4: il punto sta sopra
+    ['tono', 17.3, 18.8, [.82, .52, .29, .14, .05]], ['pop', 18.9, .05],                // scende fino a x = 1, sotto
+    ['pop', 23.6, .7], ['pop', 23.8, .3],                                               // y > 0, y < 0
+    ['pop', 28.3, .44],                                                                 // gli zeri sull'asse
+    ['ding', 33.2], ['pop', 37.7, .6],                                                  // −2 e 3; a = 1 > 0
+    ['pop', 43.1, .8],                                                                  // le zone verdi, fuori
+    ['pop', 48.7, .6],                                                                  // trinomio > 0
+    ['pop', 53.2, .55], ['traccia', 53.3, 54.3], ['ding', 54.3],                        // x < −2 ∨ x > 3, le semirette
+    ['pop', 58.6, .44],                                                                 // in −2 e 3 vale 0
+    ['pop', 64.0, .2],                                                                  // la zona rossa, fra gli zeri
+    ['pop', 68.8, .4], ['traccia', 68.9, 69.7], ['ding', 69.7],                         // trinomio < 0: −2 < x < 3
+    ['pop', 74.0, .5],                                                                  // con ≤ i pallini si riempiono
+    ['pop', 79.3, .55], ['ding', 79.7],                                                 // −2 ≤ x ≤ 3
+    ['soffio', 84.0], ['pop', 86.2, .5], ['pop', 86.7, .6], ['pop', 87.2, .7], ['pop', 88.0, .4],
+  ];
   return {
-    titolo: 'Il segno sulla parabola', durata: DURATA, copertina: 4.2,
+    titolo: 'Il segno sulla parabola', durata: DURATA, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 28.0, 'il trinomio è una {my:y}'], [28.0, 42.9, 'gli zeri'], [42.9, 63.8, 'valori esterni'], [63.8, FINE, 'valori interni']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); scenePannello(ctx, t); sceneFine(ctx, t); },

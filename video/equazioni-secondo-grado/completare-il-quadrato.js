@@ -241,8 +241,24 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza dei pezzi che si muovono
+  const SUONI = [
+    ['soffio', 1.5], ['pop', 2.6, .5],                                                // l'equazione
+    ['soffio', 7.5], ['pop', 7.7, .5], ['pop', 8.3, .5],                              // la scheda dei conti
+    ['soffio', 11.9], ['traccia', 12.3, 13.1],                                        // il lato x
+    ['tono', 16.7, 17.6, [.1, .4, .55, .6, .6]],                                      // il quadrato x² cresce
+    ['traccia', 20.7, 21.6], ['traccia', 24.9, 25.5], ['pop', 25.9, .4],              // il rettangolo 4x, il taglio
+    ['tono', 29.3, 31.7, [.3, .44, .94, .98, .98, .98, .98, .98, .89, .8]],           // la striscia sale e va sopra
+    ['pop', 32.6, .5],                                                                // area = 21
+    ['pop', 37.5, .8], ['pop', 41.9, .5], ['pop', 42.2, .8],                          // l'angolo che manca, + 4
+    ['ding', 45.9], ['pop', 50.7, .5],                                                // (x + 2)² = 25, x + 2 = 5
+    ['traccia', 59.5, 60.3], ['pop', 59.8, .5],                                       // la griglia dei quadretti
+    ['traccia', 64.2, 64.7], ['pop', 64.3, .3], ['pop', 68.7, .1], ['pop', 68.8, .15], // x + 2 = −5, x = −7
+    ['ding', 73.1], ['traccia', 77.8, 78.3],                                          // −7 torna; le due soluzioni
+    ['soffio', 81.6], ['pop', 84.2, .5], ['pop', 84.7, .6], ['pop', 85.2, .7],
+  ];
   return {
-    titolo: 'Completare il quadrato', durata: DUR, copertina: 4.2,
+    titolo: 'Completare il quadrato', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 36.9, 'l\'equazione come aree'], [36.9, 64.0, 'il pezzo che manca'], [64.0, FINE, 'e i numeri negativi?']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneFigura(ctx, t); sceneConti(ctx, t); sceneFine(ctx, t); },

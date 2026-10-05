@@ -219,8 +219,32 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue l'altezza dei rami e dei punti che si avvicinano
+  const SUONI = [
+    ['soffio', 1.5],
+    // 1 · il salto
+    ['soffio', 7.2], ['traccia', 7.4, 8.2],                                             // le schede, gli assi
+    ['tono', 8.0, 8.6, [.11, .82]], ['tono', 8.45, 9.05, [.29, .89]], ['pop', 8.9, .5],  // i due pezzi, buco e punto pieno
+    ['tono', 14.6, 15.5, [.18, .24, .49, .73, .79]], ['pop', 15.4, .82],                 // da sinistra arriva a 2
+    ['tono', 21.3, 22.2, [.84, .79, .58, .37, .31]], ['pop', 22.1, .29],                 // da destra arriva a −1
+    ['pop', 27.5, .5], ['ding', 27.9],                                                   // prima specie
+    // 2 · la fuga
+    ['soffio', 34.0], ['traccia', 34.2, 35.0],
+    ['tono', 35.4, 36.0, [.11, .13, .17, .3, 1]], ['tono', 35.85, 36.45, [1, .3, .17, .13, .11]],   // i due rami di 1/x²
+    ['tono', 41.7, 42.6, [.11, .12, .18, .63, 1]], ['pop', 42.6, .95],                  // da sinistra sale a +∞
+    ['tono', 48.1, 49.0, [.11, .12, .18, .63, 1]], ['pop', 49.0, .95],                  // anche da destra
+    ['pop', 53.4, .5], ['ding', 53.8],                                                   // seconda specie
+    // 3 · il buco
+    ['soffio', 59.8], ['traccia', 60.0, 60.8],
+    ['tono', 61.0, 61.6, [.18, .67]], ['tono', 61.45, 62.05, [.67, .99]], ['pop', 61.9, .67],      // la retta col buco
+    ['tono', 67.5, 68.4, [.22, .26, .43, .6, .65]], ['pop', 68.3, .67],                 // da sinistra arriva a 4
+    ['tono', 72.4, 73.3, [.96, .93, .82, .71, .69]], ['pop', 73.3, .67],                // da destra anche
+    ['pop', 77.7, .5], ['ding', 78.1],                                                   // terza specie
+    ['pop', 85.0, .67], ['ding', 85.3],                                                  // il punto (2; 4) chiude il buco
+    ['soffio', 91.6], ['pop', 94.0, .5], ['pop', 94.5, .6], ['pop', 95.0, .7],
+  ];
   return {
-    titolo: 'Tre modi di rompersi', durata: 102, copertina: 4.2,
+    titolo: 'Tre modi di rompersi', durata: 102, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.2, 34.1, 'il salto'], [34.1, 60.0, 'la fuga'], [60.0, FINE, 'il buco']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneSchede(ctx, t); CASI.forEach(K => caso(ctx, t, K)); sceneFine(ctx, t); },

@@ -242,8 +242,27 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py), nel tempo del VIDEO (le scene leggono il tempo stirato:
+  // fino a 11,8 coincidono, poi la rotazione si allunga e dopo 16,0 della scena il video è avanti di 3,6 s);
+  // il tono segue l'altezza di P, cioè il seno
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 9.0], ['pop', 8.0, .5],                         // assi e circonferenza
+    ['traccia', 11.9, 12.4], ['tono', 12.04, 14.6, [.5, .53, .7, .83, .85]],          // il raggio ruota fino a 60°
+    ['pop', 15.65, .85], ['traccia', 15.85, 16.55], ['tono', 16.35, 16.85, [.5, .85]],   // P, il coseno, il seno
+    ['traccia', 19.8, 20.8], ['pop', 20.4, .5], ['pop', 24.2, .6],                    // il triangolo, l'ipotenusa 1
+    ['soffio', 28.5], ['pop', 32.4, .5],                                              // la relazione; sin² α = (sin α)²
+    ['pop', 37.2, .6], ['pop', 38.2, .5],                                             // a 60°: sin e cos
+    ['pop', 41.2, .6], ['pop', 41.7, .5], ['ding', 42.6],                             // 3/4 + 1/4 = 1
+    ['tono', 47.2, 49.4, [.85, .86, .9, .86, .85]],                                   // fino a 120°
+    ['pop', 50.0, .4], ['ding', 54.8],                                                // valori assoluti; cos² = 1/4, ancora 1
+    ['tono', 59.4, 61.4, [.85, .84, .8, .75, .74]], ['pop', 61.8, .74],               // fino a sin α = 3/5
+    ['pop', 66.0, .5], ['pop', 67.4, .55], ['pop', 70.2, .5],                         // cos² = 16/25, cos = ±4/5
+    ['ding', 74.5],                                                                   // cos α = −4/5
+    ['soffio', FINE + .4], ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],
+  ];
   return {
-    titolo: 'sin² α + cos² α = 1', durata: Math.round((FINE + 10.8) * 10) / 10, copertina: 4.2,
+    titolo: 'sin² α + cos² α = 1', durata: Math.round((FINE + 10.8) * 10) / 10, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 45.3, 'dal teorema di Pitagora'], [45.3, 59.3, 'negli altri quadranti'], [59.3, FINE, 'dal seno al coseno']],
     scena(ctx, t) { const u = tempoScena(t); sceneIntro(ctx, u); scenePiano(ctx, u); sceneScheda(ctx, u); sceneFine(ctx, u); },

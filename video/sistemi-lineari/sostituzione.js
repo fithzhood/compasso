@@ -143,8 +143,21 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): ogni riga di conti che compare, più bassa man mano che scende
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.9], ['traccia', 8.2, 8.8], ['pop', 8.4, .7], ['pop', 8.8, .66],          // la graffa e le due equazioni
+    ['pop', 15.5, .62], ['pop', 19.6, .58],                                               // ricavo y, la sostituisco nella prima
+    ['pop', 23.6, .55], ['pop', 26.8, .52], ['pop', 29.8, .49],                           // i conti, riga per riga
+    ['ding', 32.8],                                                                       // x = 3
+    ['pop', 35.5, .45], ['ding', 36.2],                                                   // y = 2
+    ['ding', 38.8],                                                                       // la soluzione (3; 2)
+    ['pop', 42.2, .7], ['traccia', 42.6, 43.0], ['ding', 43.0],                           // verifica della prima
+    ['pop', 42.8, .66], ['traccia', 43.2, 43.6], ['ding', 43.6],                          // e della seconda
+    ['soffio', 46.0], ['pop', 48.6, .5], ['pop', 49.1, .6], ['pop', 49.6, .7],
+  ];
   return {
-    titolo: 'Il metodo di sostituzione', durata: FINE + 10.6, copertina: 4.2,
+    titolo: 'Il metodo di sostituzione', durata: FINE + 10.6, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 23.4, 'ricavo e sostituisco'], [23.4, FINE, 'risolvo e verifico']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneSostituzione(ctx, t); sceneFine(ctx, t); },

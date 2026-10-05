@@ -207,8 +207,25 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['pop', 8.3, .7], ['pop', 12.0, .5], ['pop', 17.0, .3],          // i tre gradini, dall'alto
+    ['soffio', 20.6], ['pop', 21.2, .5],                                              // esempio 1
+    ['pop', 25.0, .4], ['pop', 25.5, .6], ['ding', 30.3],                             // 2x(x − 4), finito
+    ['soffio', 33.8], ['pop', 34.2, .5], ['pop', 37.8, .4],                           // esempio 2, gradino 1
+    ['tono', 42.4, 42.8, [.7, .5]], ['pop', 43.0, .5],                                // la freccia scende al 2
+    ['pop', 47.7, .6], ['ding', 48.3],                                                // (x + 3)(x − 3), finito
+    ['soffio', 52.0], ['pop', 52.4, .5], ['pop', 56.2, .4],                           // esempio 3, gradino 1
+    ['tono', 59.6, 60.0, [.7, .5]], ['pop', 60.0, .4], ['pop', 65.2, .4],             // gradino 2: no, no
+    ['tono', 69.6, 70.0, [.5, .3]], ['pop', 70.0, .6],                                // gradino 3: Ruffini, viene 0
+    ['pop', 75.1, .5],                                                                // (x − 1)(x² + x − 6)
+    ['tono', 80.4, 80.9, [.3, .7]], ['pop', 80.7, .5],                                // da capo sul quoziente
+    ['tono', 84.0, 84.4, [.7, .5]], ['pop', 84.3, .5],                                // trinomio speciale
+    ['pop', 89.6, .6], ['pop', 93.9, .7],                                             // 3 e −2; i tre fattori
+    ['soffio', 98.7], ['pop', 101.1, .5], ['pop', 101.6, .6], ['pop', 102.1, .7],
+  ];
   return {
-    titolo: 'In che ordine provare', durata: 108.8, copertina: 4.2,
+    titolo: 'In che ordine provare', durata: 108.8, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 20.8, 'la scaletta'], [20.8, 33.8, 'primo esempio'], [33.8, 52.0, 'secondo esempio'], [52.0, FINE - .2, 'terzo esempio']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneScaletta(ctx, t); sceneEsempi(ctx, t); sceneFine(ctx, t); },

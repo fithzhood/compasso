@@ -254,8 +254,28 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue la circonferenza mentre si disegna
+  // e il piede della perpendicolare mentre la retta si allontana verso l'alto
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.5], ['traccia', 7.7, 8.7], ['pop', 8.4, .5],                                   // assi e centro C
+    ['tono', 8.2, 9.6, [.5, .15, 0, .15, .5, .85, 1, .85, .5]],                                  // la circonferenza
+    ['traccia', 9.6, 10.1], ['pop', 10.0, .55],                                                  // il raggio r = 3
+    ['soffio', 12.7], ['tono', 12.7, 13.5, [.1, .9]],                                            // la retta
+    ['traccia', 16.8, 17.5],                                                                     // la distanza d, in perpendicolare
+    ['pop', 21.8, .5], ['pop', 22.4, .55],                                                       // la formula della distanza
+    ['traccia', 26.9, 27.3], ['pop', 27.0, .5], ['pop', 28.2, .6],                               // d = 1
+    ['pop', 31.7, .5],                                                                           // d < r
+    ['pop', 36.2, .75], ['pop', 36.3, .4], ['ding', 36.6],                                       // due punti: secante
+    ['tono', 40.8, 43.0, [.59, .62, .68, .74, .77]], ['pop', 44.0, .5],                          // la retta si allontana: d = 3
+    ['pop', 48.9, .77], ['ding', 49.1],                                                          // un punto: tangente
+    ['tono', 53.4, 55.4, [.77, .8, .83, .85]], ['pop', 56.4, .5],                                // ancora più in là: d = 4
+    ['pop', 61.3, .2],                                                                           // nessun punto: esterna
+    ['soffio', 65.6], ['pop', 66.2, .7], ['pop', 66.5, .5], ['pop', 66.8, .3],                   // la tabella dei tre casi
+    ['soffio', FINE + .4], ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],
+  ];
   return {
-    titolo: 'Secante, tangente, esterna', durata: 82.8, copertina: 4.2,
+    titolo: 'Secante, tangente, esterna', durata: 82.8, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 40.5, 'la distanza dal centro'], [40.5, FINE, 'la retta si allontana']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); scenePannello(ctx, t); sceneFine(ctx, t); },

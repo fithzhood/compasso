@@ -406,6 +406,8 @@ a.stat:hover, .stat.riprendi:hover { transform: translateY(-2px); border-color: 
 .cv-ctrl { display: flex; align-items: center; gap: 8px; padding: 8px 4px 2px; }
 .cv-ctrl button { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--bordo2); background: var(--sup); font-size: .85rem; flex: none; color: var(--testo); transition: transform .25s var(--molla), border-color .2s; }
 .cv-ctrl button:hover { border-color: var(--accento); color: var(--accento-testo); transform: scale(1.08); }
+.cv-ctrl button svg { display: block; margin: auto; }
+.cv-sonoro[aria-pressed=true] { color: var(--accento-testo); border-color: var(--accento); }
 .cv-ctrl input[type=range] { flex: 1; min-width: 80px; accent-color: var(--accento); min-height: 28px; }
 .cv-tempo { font-size: .85rem; color: var(--testo2); font-variant-numeric: tabular-nums; flex: none; }
 .cv:fullscreen { background: #000; display: flex; flex-direction: column; justify-content: center; padding: 0 12px; }

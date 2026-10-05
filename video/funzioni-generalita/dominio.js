@@ -220,8 +220,32 @@ function sceneFine(ctx, t) {
   });
 }
 
+  // effetti sonori (strumenti/suoni-sintesi.py): il tono segue il numero che passa nella macchina, o l'altezza della curva
+  const SUONI = [
+    ['soffio', 1.5],
+    ['soffio', 7.6], ['pop', 7.9, .45],                                                // la macchina
+    ['pop', 12.55, .5], ['tono', 13.9, 14.6, [.6, .35]], ['pop', 14.6, .35],           // entra 5, esce 0,5
+    ['pop', 16.85, .45], ['tono', 18.3, 19.07, [.45, .2, .05]],                        // entra 3: si blocca
+    ['ding', 22.7],                                                                    // x ≠ 3
+    ['soffio', 26.6], ['traccia', 26.7, 27.6],                                         // il grafico
+    ['tono', 27.2, 28.2, [.46, .46, .45, .37, .11, 0, 0]],                             // il ramo sinistro scende
+    ['tono', 27.6, 28.6, [.98, .98, .87, .62, .54, .54, .53]],                         // il ramo destro
+    ['traccia', 28.4, 29.4], ['pop', 29.2, .5],                                        // la striscia del dominio, il buco in 3
+    ['soffio', 36.0],                                                                  // la radice
+    ['pop', 40.25, .55], ['tono', 41.6, 42.3, [.6, .45]], ['pop', 42.3, .45],          // entra 6, esce 2
+    ['pop', 44.65, .4], ['tono', 46.1, 46.87, [.45, .2, .05]],                         // entra 1: si blocca
+    ['tono', 49.3, 50.5, [.52, .52, .59, .71, .78, .81, .81]], ['ding', 49.9],         // la curva della radice, x ≥ 2
+    ['pop', 50.3, .5], ['traccia', 50.4, 51.2],                                        // il punto pieno, la striscia
+    ['soffio', 54.0],                                                                  // il logaritmo
+    ['pop', 57.75, .6], ['tono', 59.1, 59.8, [.65, .5]], ['pop', 59.8, .5],            // entra 8, esce 3
+    ['pop', 62.55, .3], ['tono', 64.0, 64.77, [.45, .2, .05]],                         // entra 0: si blocca
+    ['pop', 67.35, .25], ['tono', 68.8, 69.57, [.45, .2, .05]],                        // entra −2: si blocca
+    ['tono', 72.5, 73.7, [.04, .04, .23, .65, .84, .88, .89]], ['ding', 72.9],         // la curva del logaritmo, x > 0
+    ['pop', 73.5, .5],                                                                 // il buco in 0
+    ['soffio', 76.9], ['pop', 79.2, .5], ['pop', 79.7, .6], ['pop', 80.2, .7],
+  ];
   return {
-    titolo: 'Il dominio naturale', durata: 86.6, copertina: 4.2,
+    titolo: 'Il dominio naturale', durata: 86.6, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI, spegnimento: [84.5, 85.5] },
     capitoli: [[7.5, 35.8, 'dividere per zero'], [35.8, 53.8, 'la radice quadrata'], [53.8, 76.6, 'il logaritmo']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneMachine(ctx, t); sceneConto(ctx, t); sceneGrafico(ctx, t); sceneFine(ctx, t); },
