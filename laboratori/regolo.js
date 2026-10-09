@@ -640,7 +640,7 @@
         form.classList.remove('scuoti'); void form.offsetWidth; form.classList.add('scuoti');
         const e = L.errori.find(x => Math.abs(v - x.v) <= x.v * .02 + 1e-9);
         if (e) {
-          msg.textContent = e.zen.split(/(?<=\.)\s/)[0];
+          msg.textContent = e.zen.replace(/\.\s[\s\S]*$/, '.');
           ctx.zenone(e.zen, { tipo: 'errore', espressione: 'pensa', durata: 8000 });
         } else {
           msg.textContent = 'Non ancora: il segno rosso mostra dove sta il tuo ' + String(v).replace('.', ',') + ' sul regolo. Confrontalo con il filo.';

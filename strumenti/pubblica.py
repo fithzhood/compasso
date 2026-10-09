@@ -11,12 +11,18 @@ from pathlib import Path
 
 SORGENTE = Path(__file__).resolve().parent.parent
 REPO = Path(r'C:\Users\lfili\WebApps\compasso')
-ESCLUDI = {'.git', '__pycache__', 'HANDOFF.md', 'REVISIONE-2026-09.md', 'VIDEO.md', 'HANDOFF-VIDEO.md', 'video-mp4', 'voce-testi', 'VOCE.md'}  # gli MP4 restano solo qui
+ESCLUDI = {'.git', '__pycache__', 'HANDOFF.md', 'REVISIONE-2026-09.md', 'VIDEO.md', 'HANDOFF-VIDEO.md', 'video-mp4', 'voce-testi', 'VOCE.md', 'COPERTURA-PROGRAMMI.md', 'node_modules'}  # gli MP4 restano solo qui
 
 def main():
     if len(sys.argv) < 2 or not sys.argv[1].isdigit():
         print(__doc__); sys.exit(2)
     n = sys.argv[1]
+    # prima di tutto: niente sintassi che gli iPad vecchi non capiscono (un errore e il sito resta bianco)
+    import subprocess
+    r = subprocess.run(['node', str(SORGENTE / 'strumenti' / 'compatibilita.js')], capture_output=True, text=True, encoding='utf-8', cwd=str(SORGENTE))
+    print(r.stdout.strip())
+    if r.returncode != 0:
+        print('PUBBLICAZIONE FERMATA: sistemare i problemi di compatibilità qui sopra.'); sys.exit(1)
     html = SORGENTE / 'compasso.html'
     testo = io.open(html, encoding='utf-8').read()
     nuovo, k = re.subn(r'\?v=\d+', '?v=' + n, testo)

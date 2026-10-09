@@ -117,7 +117,7 @@ function pieces(ctx, str, size, weight) {
 }
 function drawRich(ctx, str, x, y, o = {}) {
   const size = o.size || 48, weight = o.weight || 500, align = o.align || 'center';
-  const alpha = o.alpha ?? 1, local = o.local ?? 99, st = o.stagger ?? 0.055, rise = o.rise ?? 18;
+  const alpha = (o.alpha != null ? o.alpha : 1), local = (o.local != null ? o.local : 99), st = (o.stagger != null ? o.stagger : 0.055), rise = (o.rise != null ? o.rise : 18);
   const lh = (o.lh || 1.3) * size;
   if (alpha <= 0.002) return;
   const lines = str.split('\n'); let wbase = 0;
@@ -186,7 +186,7 @@ function partial(ctx, pts, k) {
   return [end, ang];
 }
 function ball(ctx, x, y, label, color, o = {}) {
-  const r = o.r || 46, s = o.scale ?? 1, al = o.alpha ?? 1;
+  const r = o.r || 46, s = (o.scale != null ? o.scale : 1), al = (o.alpha != null ? o.alpha : 1);
   if (s <= 0.003 || al <= 0.003) return;
   ctx.save(); ctx.globalAlpha *= al; ctx.translate(x, y); ctx.scale(s, s);
   ctx.shadowColor = css(color, .7); ctx.shadowBlur = 34 * GLOW * SK;
@@ -207,7 +207,7 @@ function gear(ctx, x, y, r, n, ang, col) {
   ctx.restore();
 }
 function machine(ctx, cx, cy, o = {}) {
-  const w = o.w || 380, h = o.h || 280, col = rgb(o.color || C.v), sc = o.scale ?? 1, al = o.alpha ?? 1;
+  const w = o.w || 380, h = o.h || 280, col = rgb(o.color || C.v), sc = (o.scale != null ? o.scale : 1), al = (o.alpha != null ? o.alpha : 1);
   if (sc <= 0.003 || al <= 0.003) return;
   const t = o.t || 0, sh = o.shake || 0, glow = o.glow || 0, spin = o.spin || 0;
   ctx.save(); ctx.globalAlpha *= al;
@@ -230,8 +230,8 @@ function machine(ctx, cx, cy, o = {}) {
   ctx.fillStyle = g; ctx.beginPath(); ctx.roundRect(-w / 2, -h / 2, w, h, 34); ctx.fill(); ctx.restore();
   ctx.fillStyle = 'rgba(8,10,28,0.62)'; ctx.beginPath(); ctx.roundRect(-w / 2 + 28, -h / 2 + 28, w - 56, h - 100, 22); ctx.fill();
   const ly = -h / 2 + 28 + (h - 100) / 2;
-  if (o.label) drawRich(ctx, o.label, 0, ly, { size: o.labelSize || 104, alpha: o.labelAlpha ?? 1 });
-  if (o.label2) drawRich(ctx, o.label2, 0, ly, { size: o.labelSize || 104, alpha: o.label2Alpha ?? 0 });
+  if (o.label) drawRich(ctx, o.label, 0, ly, { size: o.labelSize || 104, alpha: (o.labelAlpha != null ? o.labelAlpha : 1) });
+  if (o.label2) drawRich(ctx, o.label2, 0, ly, { size: o.labelSize || 104, alpha: (o.label2Alpha != null ? o.label2Alpha : 0) });
   for (let i = 0; i < 3; i++) {
     const on = glow > .05 && ((Math.floor(t * 9) + i) % 3 === 0);
     ctx.fillStyle = on ? css(C.g) : css(shade(col, -.5));
@@ -289,7 +289,7 @@ function machineFx(t, runs) {
     const T = runTimes(R);
     spin += P(t, T.b, T.c, E.io) * TAU * .8;
     const q = clamp((t - T.b) / (T.c - T.b));
-    if (q > 0 && q < 1) { const b = Math.sin(q * Math.PI); glow = Math.max(glow, b); shake = Math.max(shake, b * (R.shake ?? .35)); }
+    if (q > 0 && q < 1) { const b = Math.sin(q * Math.PI); glow = Math.max(glow, b); shake = Math.max(shake, b * ((R.shake != null ? R.shake : .35))); }
   }
   return { spin, glow, shake };
 }
@@ -316,8 +316,8 @@ function dot(ctx, p, col, s = 1, r = 13) { ball(ctx, p[0], p[1], '', col, { r, s
 function richW(ctx, str, size, weight = 500) { return pieces(ctx, str, size, weight).reduce((s, p) => s + p.w, 0); }
 // sequenza in riga di testi, frazioni e lim, centrata in cx: items = ['{mink:f(x) = }', {num, den}, {lim: '{mx:h}{mink:→0}'}, ...]
 function drawSeq(ctx, items, cx, cy, size, o = {}) {
-  const al = o.alpha ?? 1; if (al <= 0.002) return;
-  const local = o.local ?? 99, gap = size * .12;
+  const al = (o.alpha != null ? o.alpha : 1); if (al <= 0.002) return;
+  const local = (o.local != null ? o.local : 99), gap = size * .12;
   const limW = () => { ctx.font = `${Math.round(size * 1.12)}px ${MATH}`; return ctx.measureText('lim').width; };
   const ws = items.map(it => typeof it === 'string' ? richW(ctx, it, size) : it.lim ? limW() + size * .4 : Math.max(richW(ctx, it.num, size), richW(ctx, it.den, size)) + size * .35);
   const total = ws.reduce((a, b) => a + b, 0) + gap * (items.length - 1);
@@ -345,8 +345,8 @@ function drawSeq(ctx, items, cx, cy, size, o = {}) {
 }
 // "lim" con il pedice sotto, poi il resto
 function drawLim(ctx, sub, body, x, y, o = {}) {
-  const size = o.size || 70, local = o.local ?? 99;
-  const k = P(local, 0, .6, E.out), al = (o.alpha ?? 1) * k;
+  const size = o.size || 70, local = (o.local != null ? o.local : 99);
+  const k = P(local, 0, .6, E.out), al = ((o.alpha != null ? o.alpha : 1)) * k;
   if (al <= 0.002) return;
   ctx.save(); ctx.globalAlpha *= al;
   const limFont = `${Math.round(size * 1.12)}px ${MATH}`;

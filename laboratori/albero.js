@@ -19,9 +19,9 @@
     /* --- scena: in alto la pista con il podio, sotto l'albero che prende tutto il resto (livello 6: le tre situazioni) --- */
     .lab-albero .lab-scena { flex-direction: column; align-items: stretch; justify-content: flex-start; overflow: hidden; container: abscena / size; background: var(--sup); }
     .lab-albero .ab-podio { flex: none; position: relative; min-height: 0; }
-    .lab-albero .ab-podio > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    .lab-albero .ab-podio > svg { position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%; display: block; }
     .lab-albero .ab-albero { flex: 1 1 0; min-height: 60px; position: relative; border-top: 1px solid var(--bordo); background: color-mix(in srgb, var(--s3) 5%, var(--sup)); }
-    .lab-albero .ab-albero > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    .lab-albero .ab-albero > svg { position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%; display: block; }
     .lab-albero .ab-tok { cursor: grab; outline: none; }
     .lab-albero .ab-tok.presa { cursor: grabbing; }
     .lab-albero .ab-tok.sul { cursor: pointer; }

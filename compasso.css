@@ -147,7 +147,7 @@ main > *:nth-child(2) { animation-delay: .05s; } main > *:nth-child(3) { animati
 
 /* --------- home --------- */
 .eroe { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 24px; align-items: center; padding: 34px 36px; margin-bottom: 26px; overflow: hidden; background: radial-gradient(120% 140% at 100% 0%, color-mix(in srgb, var(--accento) 10%, var(--sup)) 0%, var(--sup) 55%); }
-.eroe::after { content: ""; position: absolute; inset: auto -60px -90px auto; width: 300px; height: 300px; border-radius: 50%; border: 1px dashed color-mix(in srgb, var(--accento) 25%, transparent); pointer-events: none; animation: gira 60s linear infinite; }
+.eroe::after { content: ""; position: absolute; top: auto; right: -60px; bottom: -90px; left: auto; width: 300px; height: 300px; border-radius: 50%; border: 1px dashed color-mix(in srgb, var(--accento) 25%, transparent); pointer-events: none; animation: gira 60s linear infinite; }
 @keyframes gira { to { transform: rotate(360deg); } }
 .eroe-sopra { font-size: .78rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accento-testo); margin-bottom: 10px; display: inline-flex; align-items: center; gap: 8px; }
 .eroe-sopra::before { content: ""; width: 22px; height: 2px; background: currentColor; border-radius: 2px; }
@@ -208,7 +208,7 @@ a.stat:hover, .stat.riprendi:hover { transform: translateY(-2px); border-color: 
 .gruppo.aperto { border-color: color-mix(in srgb, var(--colore-area) 45%, var(--bordo)); box-shadow: var(--ombra-alta); }
 .gruppo-tasto { all: unset; box-sizing: border-box; position: relative; display: flex; align-items: center; gap: 16px; width: 100%; padding: 16px 18px; cursor: pointer; border-radius: 20px; overflow: hidden; -webkit-tap-highlight-color: transparent; }
 .gruppo-tasto:focus-visible { outline: 3px solid var(--accento); outline-offset: 2px; }
-.gruppo-tasto::before { content: ""; position: absolute; inset: 0; background: var(--colore-area); opacity: 0; transition: opacity .3s; pointer-events: none; }
+.gruppo-tasto::before { content: ""; position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: var(--colore-area); opacity: 0; transition: opacity .3s; pointer-events: none; }
 .gruppo-tasto:hover::before { opacity: .06; }
 .gruppo.aperto .gruppo-tasto::before { opacity: .09; }
 .gruppo-tasto .simbolo { font-family: var(--font-titoli); font-size: 1.5rem; width: 52px; height: 52px; border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; color: #fff; flex: none; box-shadow: 0 8px 18px -10px currentColor; transition: transform .5s var(--molla); }
@@ -444,7 +444,7 @@ a.stat:hover, .stat.riprendi:hover { transform: translateY(-2px); border-color: 
 .video-slot { margin: 1.4em 0; width: 100%; }
 .cv-schermo { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: var(--raggio); overflow: hidden; border: 1px solid var(--bordo); box-shadow: var(--ombra); background: var(--bg); }
 .cv-tela { display: block; width: 100%; height: 100%; cursor: pointer; }
-.cv-grande { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 78px; height: 78px; border-radius: 50%; border: 0; background: var(--accento); color: #fff; font-size: 1.7rem; padding-left: 6px; box-shadow: var(--ombra-alta); transition: transform .25s var(--molla); }
+.cv-grande { position: absolute; left: 50%; top: 50%; margin: -39px 0 0 -39px; width: 78px; height: 78px; border-radius: 50%; border: 0; background: var(--accento); color: #fff; font-size: 1.7rem; padding-left: 6px; box-shadow: var(--ombra-alta); transition: transform .25s var(--molla); }
 .cv-grande:hover { transform: scale(1.08); }
 .cv-ctrl { display: flex; align-items: center; gap: 8px; padding: 8px 4px 2px; }
 .cv-ctrl button { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--bordo2); background: var(--sup); font-size: .85rem; flex: none; color: var(--testo); transition: transform .25s var(--molla), border-color .2s; }
@@ -528,12 +528,12 @@ a.stat:hover, .stat.riprendi:hover { transform: translateY(-2px); border-color: 
 .fc-carta { position: relative; min-height: 290px; transform-style: preserve-3d; transition: transform .6s var(--molla); cursor: pointer; }
 .fc-carta:hover { transform: rotateX(3deg) rotateY(-3deg); }
 .fc-carta.girata { transform: rotateY(180deg); }
-.fc-faccia { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 34px 30px; border-radius: 22px; text-align: center; font-size: 1.22rem; box-shadow: var(--ombra-alta); }
+.fc-faccia { position: absolute; top: 0; right: 0; bottom: 0; left: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 34px 30px; border-radius: 22px; text-align: center; font-size: 1.22rem; box-shadow: var(--ombra-alta); }
 .fc-faccia .fc-tipo { position: absolute; top: 14px; left: 18px; font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; opacity: .8; font-weight: 600; }
 .fc-faccia .fc-sez { position: absolute; top: 14px; right: 18px; font-size: .72rem; opacity: .7; }
 .fc-faccia .fc-aiuto { position: absolute; bottom: 14px; font-size: .78rem; opacity: .65; }
 .fc-fronte { background: radial-gradient(120% 120% at 0% 0%, #4b6bf0 0%, var(--accento) 45%, #5a36c9 100%); color: #fff; overflow: hidden; }
-.fc-fronte::after { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255, 255, 255, .07) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .07) 1px, transparent 1px); background-size: 22px 22px; pointer-events: none; }
+.fc-fronte::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; left: 0; background-image: linear-gradient(rgba(255, 255, 255, .07) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .07) 1px, transparent 1px); background-size: 22px 22px; pointer-events: none; }
 .fc-fronte .katex { color: #fff; }
 .fc-retro { background: var(--sup); border: 2px solid var(--accento); transform: rotateY(180deg); }
 .fc-faccia.mia .fc-tipo::after { content: " · mia"; }
@@ -714,7 +714,7 @@ a.stat:hover, .stat.riprendi:hover { transform: translateY(-2px); border-color: 
 .versione { text-align: center; font-size: .62rem; opacity: .3; margin-top: 40px; }
 
 /* --------- modale --------- */
-.modale-sfondo { position: fixed; inset: 0; background: rgba(10, 12, 20, .5); backdrop-filter: blur(3px); z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; animation: appari .2s ease both; }
+.modale-sfondo { position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: rgba(10, 12, 20, .5); backdrop-filter: blur(3px); z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; animation: appari .2s ease both; }
 .modale { background: var(--sup); border-radius: 20px; max-width: 560px; width: 100%; max-height: 88vh; overflow: auto; padding: 24px 26px; box-shadow: var(--ombra-alta); animation: bolla .35s var(--molla) both; }
 .modale h2 { font-size: 1.35rem; margin-bottom: 10px; }
 
@@ -830,7 +830,7 @@ body.in-lab { overflow: hidden; }
 body.in-lab .testata, body.in-lab .lettura { display: none; }
 body.in-lab main { padding: 0; max-width: none; }
 body.in-lab main > * { animation: none; }
-.schermo-lab { position: fixed; inset: 0; z-index: 25; display: flex; flex-direction: column; background: var(--bg); background-image: linear-gradient(var(--quadretto) 1px, transparent 1px), linear-gradient(90deg, var(--quadretto) 1px, transparent 1px); background-size: 24px 24px; }
+.schermo-lab { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 25; display: flex; flex-direction: column; background: var(--bg); background-image: linear-gradient(var(--quadretto) 1px, transparent 1px), linear-gradient(90deg, var(--quadretto) 1px, transparent 1px); background-size: 24px 24px; }
 .sl-barra { flex: none; display: flex; align-items: center; gap: 10px; height: 54px; padding: 0 max(10px, env(safe-area-inset-right)) 0 max(10px, env(safe-area-inset-left)); background: color-mix(in srgb, var(--sup) 88%, transparent); border-bottom: 1px solid var(--bordo); backdrop-filter: blur(10px); }
 .sl-indietro svg { transform: rotate(180deg); }
 .sl-titolo { display: flex; align-items: center; gap: 9px; min-width: 0; flex: 1; }

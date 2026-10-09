@@ -2,6 +2,17 @@
 (function () {
   'use strict';
 
+  /* Safari < 13.1 (iPad vecchi) non ha ResizeObserver, che i laboratori usano per adattarsi allo schermo:
+     un sostituto che richiama al ridimensionamento della finestra e al cambio di orientamento */
+  if (!window.ResizeObserver) window.ResizeObserver = function (cb) {
+    const bersagli = [], ro = this;
+    const chiama = () => { if (bersagli.length) cb(bersagli.map(t => ({ target: t, contentRect: t.getBoundingClientRect() })), ro); };
+    let attesa = 0; const presto = () => { clearTimeout(attesa); attesa = setTimeout(chiama, 60); };
+    this.observe = t => { if (bersagli.indexOf(t) < 0) bersagli.push(t); if (bersagli.length === 1) { addEventListener('resize', presto); addEventListener('orientationchange', presto); } presto(); };
+    this.unobserve = t => { const i = bersagli.indexOf(t); if (i >= 0) bersagli.splice(i, 1); };
+    this.disconnect = () => { bersagli.length = 0; removeEventListener('resize', presto); removeEventListener('orientationchange', presto); clearTimeout(attesa); };
+  };
+
   const IND = window.COMPASSO_INDICE;
   const VER_TAG = ((document.currentScript && document.currentScript.src || '').match(/\?v=\d+/) || [''])[0];
   const VERSIONE = (VER_TAG.match(/\d+/) || ['dev'])[0];
@@ -32,7 +43,7 @@
   function applicaLettura() { const si = !!stato.impostazioni.letturaFacile; document.documentElement.classList.toggle('lettura-facile', si); const b = document.getElementById('btn-lettura'); if (b) b.setAttribute('aria-pressed', si); }
   applicaLettura();
   document.getElementById('btn-lettura').addEventListener('click', () => { stato.impostazioni.letturaFacile = !stato.impostazioni.letturaFacile; salva(); applicaLettura(); if (window.CMASC) CMASC.dici(stato.impostazioni.letturaFacile ? 'Lettura facilitata accesa: testo più grande e più spazio fra le righe. Si spegne con lo stesso pulsante.' : 'Lettura facilitata spenta.', { tipo: 'commento', espressione: 'occhiolino', durata: 3500 }); });
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applicaTema);
+  { const mq = window.matchMedia('(prefers-color-scheme: dark)'); if (mq.addEventListener) mq.addEventListener('change', applicaTema); else if (mq.addListener) mq.addListener(applicaTema); }   /* Safari < 14 conosce solo addListener */
   document.getElementById('btn-tema').addEventListener('click', (ev) => {
     const scuro = document.documentElement.dataset.tema === 'scuro';
     const cambia = () => { stato.impostazioni.tema = scuro ? 'chiaro' : 'scuro'; salva(); applicaTema(); };
@@ -829,13 +840,13 @@
      ESERCIZI
      ===================================================================== */
   function normalizza(s, tieniX) {
-    const n = String(s).toLowerCase().replace(/\s+/g, '').replace(/−/g, '-').replace(/×|·/g, '*').replace(/≤/g, '<=').replace(/≥/g, '>=').replace(/≠/g, '!=').replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+/g, a => '^' + [...a].map(c => ({ '⁰': 0, '¹': 1, '²': 2, '³': 3, '⁴': 4, '⁵': 5, '⁶': 6, '⁷': 7, '⁸': 8, '⁹': 9, '⁻': '-' })[c]).join('')).replace(/\+-/g, '±').replace(/,/g, '.').replace(/\.$/, '').replace(/\*\*/g, '^').replace(/\*(?=[a-zπ(√])|(?<=[a-zπ)])\*/g, '').replace(/[«»"'’‘“”]/g, '').replace(/ℝ/g, 'r').replace(/∀/g, 'perogni');
+    const n = String(s).toLowerCase().replace(/\s+/g, '').replace(/−/g, '-').replace(/×|·/g, '*').replace(/≤/g, '<=').replace(/≥/g, '>=').replace(/≠/g, '!=').replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+/g, a => '^' + [...a].map(c => ({ '⁰': 0, '¹': 1, '²': 2, '³': 3, '⁴': 4, '⁵': 5, '⁶': 6, '⁷': 7, '⁸': 8, '⁹': 9, '⁻': '-' })[c]).join('')).replace(/\+-/g, '±').replace(/,/g, '.').replace(/\.$/, '').replace(/\*\*/g, '^').replace(/\*/g, (m, i, t) => /[a-zπ(√]/.test(t.charAt(i + 1)) || /[a-zπ)]/.test(t.charAt(i - 1)) ? '' : m).replace(/[«»"'’‘“”]/g, '').replace(/ℝ/g, 'r').replace(/∀/g, 'perogni');
     return tieniX ? n : n.replace(/^x=/, '');
   }
   const APICI = { '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9', '⁻': '-' };
   function numeroDa(s) {
     /* esponenti in apice: 2⁵ → 2^5, e⁻¹ → e^(-1) */
-    s = String(s).replace(/(?<=[\d.πe)])[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+/g, a => '^(' + [...a].map(c => APICI[c]).join('') + ')');
+    s = String(s).replace(/([\d.πe)])([⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+)/g, (m, p, a) => p + '^(' + [...a].map(c => APICI[c]).join('') + ')');
     s = s.trim().replace(/(\d)\s+su\s+(\d)/gi, '$1/$2').replace(/(\d[²³]?)\s+(?!rad\b|sqrt|ln\b|log|pi\b|e\b|cm|m\b|mq|gradi|rad)[a-zà-ù]+(\s+[a-zà-ù]+)*\s*$/i, '$1').replace(/^[a-zA-Zα-ωΑ-Ω][a-zA-Z0-9₀-₉'’]{0,3}\s*=\s*/, '').replace(/−/g, '-').replace(/,/g, '.').replace(/\s+/g, '').replace(/pi|Π/gi, 'π').replace(/[·×]/g, '*').replace(/\*(?=π)/g, '');
     /* unità di misura in fondo: «36,87°», «20 cm²», «70 gradi», «1,2 rad» */
     s = s.replace(/(°|gradi|radianti|rad|[kcdm]?m(²|\^2|³|\^3)?|mq|u)$/i, '');
@@ -964,7 +975,7 @@
           leggi = () => box.querySelector('input').value;
           /* i simboli che sulla tastiera del telefono non ci sono: si inseriscono dove sta il cursore */
           const inpS = box.querySelector('input');
-          box.querySelectorAll('.es-simbolo').forEach(b => b.addEventListener('pointerdown', ev => { ev.preventDefault(); const c = b.dataset.c, a = inpS.selectionStart ?? inpS.value.length, z = inpS.selectionEnd ?? a; inpS.value = inpS.value.slice(0, a) + c + inpS.value.slice(z); inpS.focus(); inpS.setSelectionRange(a + c.length, a + c.length); }));
+          box.querySelectorAll('.es-simbolo').forEach(b => b.addEventListener('pointerdown', ev => { ev.preventDefault(); const c = b.dataset.c, a = (inpS.selectionStart != null ? inpS.selectionStart : inpS.value.length), z = (inpS.selectionEnd != null ? inpS.selectionEnd : a); inpS.value = inpS.value.slice(0, a) + c + inpS.value.slice(z); inpS.focus(); inpS.setSelectionRange(a + c.length, a + c.length); }));
           box.querySelector('input').addEventListener('keydown', ev => { if (ev.key === 'Enter') box.querySelector('.b-ok').click(); });
         }
         let tentativi = 0;

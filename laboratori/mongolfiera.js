@@ -5,7 +5,7 @@
   const STILE = `
     /* --- scena: cielo in tutto lo spazio, tavolozza in colonna sul bordo sinistro, quota in alto --- */
     .lab-mongolfiera .lab-scena { overflow: hidden; background: var(--sup2); }
-    .lab-mongolfiera .cielo { position: absolute; inset: 0; background: url('laboratori/immagini/cielo.jpg') center / cover no-repeat; }
+    .lab-mongolfiera .cielo { position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: url('laboratori/immagini/cielo.jpg') center / cover no-repeat; }
     :root[data-tema="scuro"] .lab-mongolfiera .cielo { filter: brightness(.6) saturate(.85); }
     .lab-mongolfiera .lab-scena > svg { position: relative; z-index: 1; }
     .lab-mongolfiera .obiettivo { text-align: center; font-size: clamp(.95rem, 2.2cqmin, 1.12rem); font-weight: 600; line-height: 1.4; }
