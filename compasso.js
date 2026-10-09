@@ -441,23 +441,54 @@
       });
     });
 
+    /* gli argomenti stanno chiusi nei gruppi (le aree): si apre un gruppo alla volta, e resta aperto tornando indietro */
+    const gruppi = h('<section class="gruppi" aria-label="Argomenti per area"></section>');
+    const apriGruppo = (id, scorri) => {
+      gruppi.querySelectorAll('.gruppo').forEach(g => {
+        const si = g.dataset.area === id, btn = g.querySelector('.gruppo-tasto');
+        if (si && !g.dataset.pieno) riempiGruppo(g);
+        g.classList.toggle('aperto', si); btn.setAttribute('aria-expanded', si);
+      });
+      try { id ? sessionStorage.setItem('compasso.gruppo', id) : sessionStorage.removeItem('compasso.gruppo'); } catch (e) { /* ignora */ }
+      if (id && scorri) { const g = gruppi.querySelector(`.gruppo[data-area="${id}"]`); setTimeout(() => { const r = g.getBoundingClientRect(); if (r.top < 70 || r.top > innerHeight * 0.45) window.scrollTo({ top: scrollY + r.top - 80, behavior: MOTO ? 'smooth' : 'auto' }); }, 60); }
+    };
+    const riempiGruppo = g => {
+      g.dataset.pieno = '1';
+      const ar = area(g.dataset.area), griglia = g.querySelector('.griglia-argomenti');
+      IND.argomenti.filter(a => a.area === ar.id).forEach((a, i) => {
+        const pc = percentuale(a.id);
+        griglia.appendChild(h(`<a class="scheda tessera esplode${stato.ultimo === a.id ? ' prossimo' : ''}" data-rivela="1" href="#/argomento/${a.id}" style="--colore-area:var(--${ar.colore});--i:${Math.min(i, 10)}">
+          <h3>${esc(a.titolo)}</h3><p>${esc(a.breve)}</p>
+          <div class="tessera-pie"><span class="etichetta livello-${a.livello}">${['', '1º–2º anno', '3º–4º anno', '5º anno'][a.livello]}</span><span class="progresso"><i style="width:${pc}%"></i></span><span class="progresso-testo">${pc ? pc + '%' : ''}</span></div>
+        </a>`));
+      });
+    };
+    IND.aree.forEach(ar => {
+      const args = IND.argomenti.filter(a => a.area === ar.id);
+      const media = args.length ? Math.round(args.reduce((t, a) => t + percentuale(a.id), 0) / args.length) : 0;
+      const aperti = args.filter(a => stato.progressi[a.id] && stato.progressi[a.id].visitato).length;
+      const g = h(`<div class="gruppo" data-area="${ar.id}" style="--colore-area:var(--${ar.colore})">
+        <button type="button" class="gruppo-tasto" aria-expanded="false" aria-controls="gruppo-${ar.id}">
+          <span class="simbolo" style="background:var(--${ar.colore})">${esc(ar.simbolo)}</span>
+          <span class="gruppo-testo"><b>${esc(ar.nome)}</b><small>${esc(ar.descrizione)}</small></span>
+          <span class="gruppo-conto"><b>${args.length}</b> argomenti${aperti ? `<small>${aperti} aperti</small>` : ''}</span>
+          <span class="gruppo-freccia" aria-hidden="true">${ICONE.destra}</span>
+          ${media ? `<span class="gruppo-progresso" aria-hidden="true"><i style="width:${media}%"></i></span>` : ''}
+        </button>
+        <div class="gruppo-corpo" id="gruppo-${ar.id}"><div class="gruppo-dentro"><div class="griglia-argomenti"></div></div></div>
+      </div>`);
+      g.querySelector('.gruppo-tasto').addEventListener('click', () => apriGruppo(g.classList.contains('aperto') ? null : ar.id, true));
+      gruppi.appendChild(g);
+    });
+    contenitoreAree.appendChild(gruppi);
+    let giaAperto = null; try { giaAperto = sessionStorage.getItem('compasso.gruppo'); } catch (e) { /* ignora */ }
+    if (giaAperto && area(giaAperto)) apriGruppo(giaAperto, false);
+
     if ((IND.laboratori || []).length) {
       const bl = h(`<section class="area-blocco lab-blocco"><div class="area-testa"><span class="simbolo simbolo-lab">🧪</span><div><h2>Laboratori</h2><p>Piccoli giochi con dentro un concetto: si impara con le mani, senza leggere niente prima. Sono ${IND.laboratori.length}, nell'ordine degli argomenti.</p></div></div><div class="griglia-lab"></div></section>`);
       const g = bl.querySelector('.griglia-lab'); const ordine = id => IND.argomenti.findIndex(a => a.id === id); IND.laboratori.slice().sort((x, y) => ordine(x.argomento) - ordine(y.argomento)).forEach(l => g.appendChild(tesseraLab(l, true)));
       contenitoreAree.appendChild(bl);
     }
-    IND.aree.forEach(ar => {
-      const blocco = h(`<section class="area-blocco"><div class="area-testa"><span class="simbolo" style="background:var(--${ar.colore})">${esc(ar.simbolo)}</span><div><h2>${esc(ar.nome)}</h2><p>${esc(ar.descrizione)}</p></div></div><div class="griglia-argomenti"></div></section>`);
-      const griglia = blocco.querySelector('.griglia-argomenti');
-      IND.argomenti.filter(a => a.area === ar.id).forEach(a => {
-        const pc = percentuale(a.id);
-        griglia.appendChild(h(`<a class="scheda tessera${stato.ultimo === a.id ? ' prossimo' : ''}" href="#/argomento/${a.id}" style="--colore-area:var(--${ar.colore})">
-          <h3>${esc(a.titolo)}</h3><p>${esc(a.breve)}</p>
-          <div class="tessera-pie"><span class="etichetta livello-${a.livello}">${['', '1º–2º anno', '3º–4º anno', '5º anno'][a.livello]}</span><span class="progresso"><i style="width:${pc}%"></i></span><span class="progresso-testo">${pc ? pc + '%' : ''}</span></div>
-        </a>`));
-      });
-      contenitoreAree.appendChild(blocco);
-    });
     app.appendChild(h(`<div class="versione">Compasso v${VERSIONE}</div>`));
     aggiornaBadge();
     if (stato.impostazioni.mascotte && !sessionStorage.getItem('compasso.salutato')) {
