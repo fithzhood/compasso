@@ -46,7 +46,7 @@
   { const mq = window.matchMedia('(prefers-color-scheme: dark)'); if (mq.addEventListener) mq.addEventListener('change', applicaTema); else if (mq.addListener) mq.addListener(applicaTema); }   /* Safari < 14 conosce solo addListener */
   document.getElementById('btn-tema').addEventListener('click', (ev) => {
     const scuro = document.documentElement.dataset.tema === 'scuro';
-    const cambia = () => { stato.impostazioni.tema = scuro ? 'chiaro' : 'scuro'; salva(); applicaTema(); };
+    const cambia = () => { stato.impostazioni.tema = scuro ? 'chiaro' : 'scuro'; salva(); applicaTema(); const sel = document.querySelector('.s-tema'); if (sel) sel.value = stato.impostazioni.tema; };
     if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) return cambia();
     const r = ev.currentTarget.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
     const raggio = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
@@ -362,14 +362,19 @@
      ===================================================================== */
   let paginaCorrente = null, argCorrente = null, labCorrente = null;
   function naviga(hash) { location.hash = hash; }
+  let schedaCorrente = null;
+  /* la sezione della teoria: si scorre senza ridisegnare la pagina (un video che va non si ferma, i «Prova tu» restano) */
+  function scorriA(ancora) { const t = document.getElementById('sez-' + ancora); if (t) t.scrollIntoView({ behavior: MOTO ? 'smooth' : 'auto', block: 'start' }); return !!t; }
   function route() {
     const parti = location.hash.replace(/^#\/?/, '').split('/').map(decodeURIComponent);
     const p = parti[0] || '';
+    if (p === 'argomento' && parti[1] && parti[1] === argCorrente && (parti[2] || 'teoria') === schedaCorrente && parti[3] && parti[2] !== 'lab' && app.querySelector('#pannello') && scorriA(parti[3])) return;
     CMASC.chiudi(); chiudiLab();
     const inLab = p === 'argomento' && parti[2] === 'lab' && !!parti[3];
     document.body.classList.toggle('in-lab', inLab);
     if (inLab) return paginaLab(parti[1], parti[3]);
-    document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('attiva', a.dataset.pagina === (p || 'home')));
+    const accesa = { '': 'home', argomento: 'home' }[p] || p;
+    document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('attiva', a.dataset.pagina === accesa));
     if (p === 'argomento' && parti[1]) return paginaArgomento(parti[1], parti[2] || 'teoria', parti[3]);
     argCorrente = null;
     if (p === 'ripasso') return paginaRipasso(parti[1]);
@@ -407,6 +412,37 @@
     'I grafici con i cursori si possono muovere: prova a cambiare i numeri e guarda cosa succede.',
     'Nella scheda Flashcard puoi scegliere quali carte studiare e aggiungerne di tue.'
   ];
+  /* ---------- la ricerca ----------
+     senza accenti e senza differenza fra maiuscole («parabola» trova Parabola, «modulo» trova «mòdulo»); le parole vuote
+     («di», «la», «teorema», «formula»…) e quelle di una o due lettere non contano; prima vengono gli argomenti che
+     contengono tutte le parole rimaste, poi quelli che ne hanno qualcuna; la frase intera trovata vale di più.
+     Una parola conta se un'altra comincia con lei («area» trova «area», non «Marea»). Si cercano anche i laboratori
+     e i nomi delle aree («goniometria»). */
+  const piano = t => String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/²/g, '2').replace(/³/g, '3').replace(/[’']/g, ' ');
+  const VUOTE = new Set(['di', 'del', 'dello', 'della', 'dei', 'degli', 'delle', 'da', 'dal', 'dalla', 'la', 'il', 'lo', 'le', 'gli', 'un', 'una', 'uno', 'e', 'ed', 'per', 'con', 'su', 'in', 'nel', 'nella', 'al', 'alla', 'che', 'come', 'cosa', 'cos', 'legge', 'leggi', 'principio', 'principi', 'teorema', 'teoremi', 'formula', 'formule', 'regola', 'regole', 'esercizi', 'esercizio']);
+  function cercaArgomenti(q) {
+    const qp = piano(q).trim(), tutteW = qp.split(/[\s,;]+/).filter(Boolean);
+    let w = tutteW.filter(x => !VUOTE.has(x) && (x.length >= 3 || /\d|=/.test(x)));
+    if (!w.length) w = tutteW.filter(x => !VUOTE.has(x));
+    if (!w.length) w = tutteW.filter(x => x.length >= 3);   /* solo parole vuote («teorema»): si cercano lo stesso */
+    if (!w.length) return [];
+    const frase = qp.replace(/\s+/g, ' ');
+    const inizia = (testo, x) => (' ' + testo.replace(/[^a-z0-9=]+/g, ' ')).indexOf(' ' + x) >= 0;
+    const conta = (titolo, testo, parole) => {
+      let punti = 0, prese = 0;
+      w.forEach(x => { let s = 0; if (inizia(piano(titolo), x)) s += 3; if (parole.some(p => inizia(piano(p), x))) s += 2; if (inizia(testo, x)) s += 1; if (s) prese++; punti += s; });
+      if (tutteW.length > 1 && (piano(titolo).indexOf(frase) >= 0 || parole.some(p => piano(p).indexOf(frase) >= 0))) punti += 8;
+      return { punti, tutte: prese === w.length };
+    };
+    const ris = [];
+    IND.argomenti.forEach(a => {
+      const parole = a.parole || [], nomeArea = (IND.aree.find(r => r.id === a.area) || {}).nome || '';
+      const c = conta(a.titolo, piano(a.titolo + ' ' + a.breve + ' ' + nomeArea + ' ' + parole.join(' ')), parole);
+      if (c.punti) ris.push({ arg: a, punti: c.punti, tutte: c.tutte, parole: parole.filter(p => w.some(x => inizia(piano(p), x))) });
+    });
+    (IND.laboratori || []).forEach(l => { const c = conta(l.titolo, piano(l.titolo + ' ' + l.sotto), []); if (c.punti) ris.push({ lab: l, punti: c.punti - 0.5, tutte: c.tutte }); });
+    return ris.sort((x, y) => (y.tutte - x.tutte) || (y.punti - x.punti));
+  }
   function paginaHome() {
     paginaCorrente = 'home'; document.title = 'Compasso — la matematica, un argomento alla volta';
     svuota();
@@ -436,19 +472,15 @@
     const contenitoreAree = document.createElement('div'); app.appendChild(contenitoreAree);
     const inp = cerca.querySelector('input');
     inp.addEventListener('input', () => {
-      const q = inp.value.trim().toLowerCase();
+      const q = inp.value.trim();
       risultati.innerHTML = ''; risultati.hidden = !q; contenitoreAree.hidden = !!q;
       if (!q) return;
-      const trovati = IND.argomenti.map(a => {
-        const testo = (a.titolo + ' ' + a.breve + ' ' + (a.parole || []).join(' ')).toLowerCase();
-        let punti = 0; q.split(/\s+/).forEach(w => { if (a.titolo.toLowerCase().includes(w)) punti += 3; if ((a.parole || []).some(p => p.toLowerCase().includes(w))) punti += 2; if (testo.includes(w)) punti += 1; });
-        return [punti, a];
-      }).filter(x => x[0] > 0).sort((x, y) => y[0] - x[0]);
+      const trovati = cercaArgomenti(q);
       if (!trovati.length) { risultati.innerHTML = '<div class="fc-vuoto">Niente con «' + esc(q) + '». Prova con un\'altra parola.</div>'; return; }
-      trovati.slice(0, 12).forEach(([, a]) => {
-        const ar = area(a.area);
-        const paroleOk = (a.parole || []).filter(p => q.split(/\s+/).some(w => p.toLowerCase().includes(w)));
-        risultati.appendChild(h(`<a class="risultato" href="#/argomento/${a.id}"><b>${esc(a.titolo)}</b> <span class="etichetta area" style="background:var(--${ar.colore})">${esc(ar.nome)}</span><small>${esc(a.breve)}${paroleOk.length ? ' · <mark>' + esc(paroleOk.join(', ')) + '</mark>' : ''}</small></a>`));
+      trovati.slice(0, 12).forEach(t => {
+        if (t.lab) { const va = voce(t.lab.argomento); risultati.appendChild(h(`<a class="risultato" href="#/argomento/${t.lab.argomento}/lab/${t.lab.id}"><b>${esc(t.lab.icona || '🧪')} ${esc(t.lab.titolo)}</b> <span class="etichetta">Laboratorio</span><small>${esc(t.lab.sotto)}${va ? ' · ' + esc(va.titolo) : ''}</small></a>`)); return; }
+        const a = t.arg, ar = area(a.area);
+        risultati.appendChild(h(`<a class="risultato" href="#/argomento/${a.id}"><b>${esc(a.titolo)}</b> <span class="etichetta area" style="background:var(--${ar.colore})">${esc(ar.nome)}</span><small>${esc(a.breve)}${t.parole.length ? ' · <mark>' + esc(t.parole.join(', ')) + '</mark>' : ''}</small></a>`));
       });
     });
 
@@ -482,7 +514,7 @@
         <button type="button" class="gruppo-tasto" aria-expanded="false" aria-controls="gruppo-${ar.id}">
           <span class="simbolo" style="background:var(--${ar.colore})">${esc(ar.simbolo)}</span>
           <span class="gruppo-testo"><b>${esc(ar.nome)}</b><small>${esc(ar.descrizione)}</small></span>
-          <span class="gruppo-conto"><b>${args.length}</b> argomenti${aperti ? `<small>${aperti} aperti</small>` : ''}</span>
+          <span class="gruppo-conto"><b>${args.length}</b> argomenti${aperti ? `<small>${aperti} ${aperti === 1 ? 'aperto' : 'aperti'}</small>` : ''}</span>
           <span class="gruppo-freccia" aria-hidden="true">${ICONE.destra}</span>
           ${media ? `<span class="gruppo-progresso" aria-hidden="true"><i style="width:${media}%"></i></span>` : ''}
         </button>
@@ -513,7 +545,10 @@
      ===================================================================== */
   function paginaArgomento(id, scheda, ancora) {
     const v = voce(id);
-    if (!v) { svuota(); app.appendChild(h('<div class="scheda fc-vuoto">Argomento sconosciuto. <a href="#/">Torna all\'elenco</a>.</div>')); return; }
+    if (!v) { argCorrente = null; document.title = 'Argomento sconosciuto — Compasso'; svuota(); app.appendChild(h('<div class="scheda fc-vuoto">Argomento sconosciuto. <a href="#/">Torna all\'elenco</a>.</div>')); return; }
+    /* una scheda che non esiste, o il laboratorio di un argomento che non ne ha: si va alla teoria */
+    const valide = SCHEDE.map(x => x[0]).concat(labsDi(id).length ? ['lab'] : []);
+    if (valide.indexOf(scheda) < 0) { scheda = 'teoria'; ancora = null; try { history.replaceState(null, '', '#/argomento/' + id + '/teoria'); } catch (e) { /* niente */ } }
     paginaCorrente = 'argomento'; document.title = v.titolo + ' — Compasso';
     if (argCorrente !== id) { svuota(); app.appendChild(h('<div class="fc-vuoto">Carico «' + esc(v.titolo) + '»…</div>')); }
     caricaArgomento(id).then(arg => {
@@ -563,6 +598,7 @@
     cursoreSchede(true);
     chiudiLab();
     const pannello = app.querySelector('#pannello'); pannello.innerHTML = ''; pannello.className = 'pannello';
+    schedaCorrente = scheda;
     const disegna = { teoria: schedaTeoria, esempi: schedaEsempi, flashcard: schedaFlashcard, esercizi: schedaEsercizi, quiz: schedaQuiz, formulario: schedaFormulario, lab: schedaLab }[scheda] || schedaTeoria;
     disegna(pannello, arg, v, ancora);
     if (!ancora) window.scrollTo(0, 0);
@@ -587,7 +623,7 @@
     const v = voce(argId), meta = (IND.laboratori || []).find(l => l.id === labId && l.argomento === argId);
     paginaCorrente = 'lab'; argCorrente = null; labCorrente = meta;
     svuota();
-    if (!v || !meta) { app.appendChild(h(`<div class="scheda fc-vuoto">Laboratorio sconosciuto. <a href="#/">Torna agli argomenti</a>.</div>`)); return; }
+    if (!v || !meta) { document.title = 'Laboratorio sconosciuto — Compasso'; app.appendChild(h(`<div class="scheda fc-vuoto">Laboratorio sconosciuto. <a href="#/">Torna agli argomenti</a>.</div>`)); return; }
     document.title = meta.titolo + ' — Compasso';
     const ar = area(v.area);
     const schermo = h(`<section class="schermo-lab" style="--colore-area:var(--${ar.colore})">
@@ -647,6 +683,7 @@
     pan.appendChild(wrap);
     /* evidenzia la sezione visibile */
     const link = [...som.querySelectorAll('a')];
+    link.forEach(a => a.addEventListener('click', ev => { const id = a.getAttribute('href').split('/').pop(); if (scorriA(id)) { ev.preventDefault(); try { history.replaceState(null, '', a.getAttribute('href')); } catch (e) { /* niente */ } } }));
     const oss = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) { const id = e.target.id.replace(/^sez-/, ''); link.forEach(a => a.classList.toggle('attiva', a.getAttribute('href').endsWith('/' + id))); } });
     }, { rootMargin: '-120px 0px -70% 0px' });
@@ -699,10 +736,18 @@
      FLASHCARD (Leitner a 4 scatole)
      ===================================================================== */
   const INTERVALLI = [0, 1, 3, 7, 14];   /* giorni per scatola 1..4 */
+  const fraGiorni = n => n <= 0 ? 'subito' : n === 1 ? 'domani' : 'fra ' + n + ' giorni';
+  const oggi = () => new Date().toDateString();
+  /* dove va la carta con ciascuna risposta: «sì» sale di una scatola (una carta nuova saputa subito va alla 2, così
+     «sì» e «così così» non fanno la stessa cosa), «così così» scende di una (almeno la 1), «no» torna alla 1 */
+  const scatolaDopo = (sc, esito) => esito === 'no' ? 1 : esito === 'quasi' ? Math.max(1, (sc || 0) - 1) : (sc ? Math.min(4, sc + 1) : 2);
   function statoCarta(argId, cId) { const a = stato.carte[argId] || (stato.carte[argId] = {}); return a[cId] || (a[cId] = { scatola: 0, prossima: 0, viste: 0 }); }
   function valutaCarta(argId, cId, esito) {
     const c = statoCarta(argId, cId); c.viste++;
-    if (esito === 'no') c.scatola = 1; else if (esito === 'quasi') c.scatola = Math.max(1, c.scatola); else c.scatola = Math.min(4, (c.scatola || 0) + 1);
+    /* una carta già promossa oggi non sale ancora: il metodo delle scatole vuole il tempo in mezzo */
+    if (esito === 'si' && c.promossa === oggi()) { salva(); return; }
+    c.scatola = scatolaDopo(c.scatola, esito);
+    if (esito === 'si') c.promossa = oggi(); else if (esito === 'no') c.promossa = null;
     c.prossima = Date.now() + INTERVALLI[c.scatola] * GIORNO * (esito === 'no' ? 0 : 1) + (esito === 'no' ? 600000 : 0);
     salva(); aggiornaBadge();
   }
@@ -719,6 +764,7 @@
     if (!mazzo.length) { pan.appendChild(h('<div class="scheda fc-vuoto">' + (opz.vuoto || 'Nessuna carta selezionata: scegline qualcuna qui sotto.') + '</div>')); return; }
     let ordine = stato.impostazioni.mescola ? mescola(mazzo) : mazzo.slice();
     let i = 0, girata = false, serie = 0;
+    const bilancio = { si: 0, quasi: 0, no: 0 }, viste = new Set();
     const box = h(`<div>
       <div class="fc-barra"><span class="fc-contatore"></span><span class="spazio"></span>
         <button class="btn piccolo b-mescola" type="button">${ICONE.mescola} Mescola</button>
@@ -733,7 +779,8 @@
         <button class="btn quasi" type="button" data-esito="quasi">Così così<small>domani</small></button>
         <button class="btn si" type="button" data-esito="si">La sapevo<small></small></button>
       </div>
-      <div class="fc-nav"><button class="btn b-prev" type="button">${ICONE.sinistra} Precedente</button><button class="btn b-gira" type="button">${ICONE.gira} Gira</button><button class="btn b-next" type="button">Successiva ${ICONE.destra}</button></div>
+      <div class="fc-nav"><button class="btn b-prev" type="button" aria-label="Carta precedente">${ICONE.sinistra}<span class="fc-nav-testo"> Precedente</span></button><button class="btn b-gira" type="button">${ICONE.gira} Gira</button><button class="btn b-next" type="button" aria-label="Carta successiva"><span class="fc-nav-testo">Successiva </span>${ICONE.destra}</button></div>
+      <div class="fc-fine scheda" hidden></div>
     </div>`);
     pan.appendChild(box);
     const carta = box.querySelector('.fc-carta'), cont = box.querySelector('.fc-contatore'), valuta = box.querySelector('.fc-valuta');
@@ -747,12 +794,24 @@
       const sez = arg.sezioni.find(s => s.id === c.sezione);
       box.querySelector('.fc-fronte .fc-sez').textContent = opz.multi ? arg.titolo : (sez ? sez.titolo : '');
       const sc = statoCarta(arg.id, c.id);
-      box.querySelector('.si small').textContent = 'fra ' + INTERVALLI[Math.min(4, (sc.scatola || 0) + 1)] + ' giorni';
-      cont.textContent = (i + 1) + ' / ' + ordine.length + (sc.scatola ? ' · scatola ' + sc.scatola : '');
+      box.querySelector('.si small').textContent = sc.promossa === oggi() ? 'già salita oggi' : fraGiorni(INTERVALLI[scatolaDopo(sc.scatola, 'si')]);
+      box.querySelector('.quasi small').textContent = fraGiorni(INTERVALLI[scatolaDopo(sc.scatola, 'quasi')]);
+      cont.textContent = (i + 1) + ' / ' + ordine.length + (viste.size ? ' · ' + viste.size + ' valutate' : '') + (sc.scatola ? ' · scatola ' + sc.scatola : '');
+    }
+    /* la fine della seduta: tutte le carte valutate (le «non la sapevo» tornano in coda finché non le sai) */
+    function fineSeduta() {
+      const fine = box.querySelector('.fc-fine');
+      [box.querySelector('.fc-scena'), valuta, box.querySelector('.fc-nav'), box.querySelector('.fc-barra')].forEach(x => { x.hidden = true; });
+      const pross = mazzo.map(x => statoCarta(x.arg.id, x.carta.id).prossima).filter(t => t > Date.now()).sort((a, b) => a - b)[0];
+      const fraQuando = pross ? fraGiorni(Math.round((pross - Date.now()) / GIORNO)) : '';
+      fine.innerHTML = `<h3>Seduta finita</h3><p>${viste.size} ${viste.size === 1 ? 'carta valutata' : 'carte valutate'}: ${bilancio.si} sapute, ${bilancio.quasi} così così${bilancio.no ? ', ' + bilancio.no + ' da rivedere (rifatte finché non le hai sapute)' : ''}.${fraQuando ? ' La prossima torna ' + fraQuando + '.' : ''}</p><div class="riga-btn"><button class="btn primario b-ancora" type="button">Ristudia tutto il mazzo</button></div>`;
+      fine.hidden = false; fine.scrollIntoView({ behavior: MOTO ? 'smooth' : 'auto', block: 'center' });
+      fine.querySelector('.b-ancora').addEventListener('click', () => { ordine = stato.impostazioni.mescola ? mescola(mazzo) : mazzo.slice(); i = 0; viste.clear(); bilancio.si = bilancio.quasi = bilancio.no = 0; fine.hidden = true; [box.querySelector('.fc-scena'), box.querySelector('.fc-nav'), box.querySelector('.fc-barra')].forEach(x => { x.hidden = false; }); mostra(); });
+      CMASC.reagisci('traguardo', bilancio.no ? 'Seduta finita. Le carte difficili tornano presto: è così che restano.' : 'Seduta finita, tutte sapute. Ci vediamo alla prossima scadenza.');
     }
     function gira() { girata = !girata; carta.classList.toggle('girata', girata); valuta.hidden = !girata; }
-    function avanti() { i = (i + 1) % ordine.length; mostra(); }
-    function indietro() { i = (i - 1 + ordine.length) % ordine.length; mostra(); }
+    function avanti() { if (!ordine.length) return; i = (i + 1) % ordine.length; mostra(); }
+    function indietro() { if (!ordine.length) return; i = (i - 1 + ordine.length) % ordine.length; mostra(); }
     carta.addEventListener('click', gira);
     carta.addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); gira(); } });
     box.querySelector('.b-gira').addEventListener('click', gira);
@@ -767,11 +826,17 @@
       i = 0; mostra();
     });
     valuta.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
-      const { arg, carta: c } = ordine[i];
-      valutaCarta(arg.id, c.id, b.dataset.esito); CMASC.reagisci({ si: 'giusto', quasi: 'pensa', no: 'ops' }[b.dataset.esito] || 'neutro');
-      if (b.dataset.esito === 'si') { serie++; if (serie === 5) CMASC.dici('Cinque di fila. Me lo salvo in memoria.', { tipo: 'commento', espressione: 'orgoglioso', durata: 3500 }); } else serie = 0;
-      if (b.dataset.esito === 'no' && !opz.multi) { /* la carta torna in coda */ ordine.push(ordine[i]); }
-      avanti();
+      const esito = b.dataset.esito, x = ordine[i], { arg, carta: c } = x;
+      valutaCarta(arg.id, c.id, esito); CMASC.reagisci({ si: 'giusto', quasi: 'pensa', no: 'ops' }[esito] || 'neutro');
+      if (esito === 'si') { serie++; if (serie === 5) CMASC.dici('Cinque di fila. Me lo salvo in memoria.', { tipo: 'commento', espressione: 'orgoglioso', durata: 3500 }); } else serie = 0;
+      /* la carta valutata esce dalla seduta; quella che non sapevi torna in fondo */
+      viste.add(arg.id + '/' + c.id); bilancio[esito]++;
+      ordine.splice(i, 1);
+      if (esito === 'no') ordine.push(x);
+      if (opz.dopoValuta) opz.dopoValuta();
+      if (!ordine.length) { fineSeduta(); return; }
+      if (i >= ordine.length) i = 0;
+      mostra();
     }));
     const tasti = e => { if (!document.body.contains(box)) { window.removeEventListener('keydown', tasti); return; } if (e.target.matches('input,textarea,select')) return; if (e.key === 'ArrowRight') avanti(); else if (e.key === 'ArrowLeft') indietro(); else if (girata && ['1', '2', '3'].includes(e.key)) valuta.querySelectorAll('button')[+e.key - 1].click(); };
     window.addEventListener('keydown', tasti);
@@ -988,7 +1053,8 @@
             segnaFatto(e.id, true); card.classList.add('fatto'); card.querySelector('.fatto-spunta input').checked = true;
             festa(box.querySelector('.b-ok')); CMASC.reagisci('giusto');
             if (alGiusto) alGiusto();
-          } else CMASC.reagisci(tentativi >= 2 ? 'sbagliato-ancora' : 'sbagliato');
+          } else if (tentativi >= 2) CMASC.espressione('confuso', 2600);   /* il consiglio è già nell'esito: un fumetto lo coprirebbe */
+          else CMASC.reagisci('sbagliato');
         });
       }
       montaGrafici(card, arg);
@@ -1104,7 +1170,9 @@
       esiti.forEach(e => { const x = h(`<div class="voce ${e.ok ? 'ok' : 'no'}"><span class="segno">${e.ok ? '✓' : '✕'}</span><div class="prosa"></div></div>`); x.querySelector('.prosa').innerHTML = md(e.q.domanda) + (e.ok ? '' : '<div class="quiz-spiega">' + md(e.q.spiegazione) + '</div>'); rie.appendChild(x); });
       card.querySelector('.b-rifai').addEventListener('click', () => avviaQuiz(pan, arg, v, n));
       const tab = app.querySelector('.scheda-tab[href$="/quiz"]'); if (tab) { let s = tab.querySelector('.spunta'); if (!s) { s = document.createElement('span'); s.className = 'spunta'; tab.appendChild(document.createTextNode(' ')); tab.appendChild(s); } s.textContent = p.quizMigliore + '/' + p.quizTot; }
-      CMASC.dici(commento, { tipo: 'commento', espressione: frazione >= 0.7 ? 'orgoglioso' : 'pensa', azioni: [{ testo: 'Raccontami un aneddoto', fn: () => raccontaAneddoto(arg) }] });
+      /* il commento sta già nel riquadro del risultato: Ada reagisce e, sugli schermi larghi, offre solo una storia */
+      if (innerWidth >= 640) CMASC.dici('Intanto, ti racconto una storia?', { tipo: 'commento', espressione: frazione >= 0.7 ? 'orgoglioso' : 'pensa', durata: 6000, azioni: [{ testo: 'Raccontami un aneddoto', fn: () => raccontaAneddoto(arg) }] });
+      else CMASC.reagisci(frazione >= 0.7 ? 'livello' : 'pensa');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     mostra();
@@ -1118,14 +1186,14 @@
     svuota();
     const ora = Date.now();
     const argomentiConCarte = IND.argomenti.filter(a => stato.progressi[a.id] && stato.progressi[a.id].visitato);
-    app.appendChild(h(`<h1 class="titolo-pagina">Ripasso</h1><p class="sotto-pagina">Le flashcard di tutti gli argomenti che hai aperto, con il metodo delle scatole: una carta che sai passa alla scatola successiva e torna dopo più tempo (1, 3, 7, 14 giorni); una che non sai torna nella prima scatola. Studia solo le carte che hai selezionato in ogni argomento.</p>`));
+    app.appendChild(h(`<div><h1 class="titolo-pagina">Ripasso</h1><p class="sotto-pagina">Le flashcard di tutti gli argomenti che hai aperto, con il metodo delle scatole: una carta che sai passa alla scatola successiva e torna dopo più tempo (1, 3, 7, 14 giorni); una che non sai torna nella prima scatola. Studia solo le carte che hai selezionato in ogni argomento.</p></div>`));
     if (!argomentiConCarte.length) { app.appendChild(h('<div class="scheda fc-vuoto">Non hai ancora aperto nessun argomento. <a href="#/">Comincia da uno</a>: le sue carte compariranno qui.</div>')); return; }
     const scelta = h('<div class="scheda" style="padding:16px 20px"><b>Argomenti da includere</b><div class="scelta-argomenti"></div><div class="riga-btn"><button class="btn primario b-dovute" type="button">Ripassa le carte in scadenza</button><button class="btn b-tutte" type="button">Studia tutte le selezionate</button></div></div>');
     const griglia = scelta.querySelector('.scelta-argomenti');
     const inclusi = new Set(JSON.parse(sessionStorage.getItem('compasso.ripasso') || 'null') || argomentiConCarte.map(a => a.id));
     argomentiConCarte.forEach(a => {
       const carte = stato.carte[a.id] || {}; const dovute = Object.values(carte).filter(c => c.prossima && c.prossima <= ora).length;
-      const l = h(`<label><input type="checkbox" ${inclusi.has(a.id) ? 'checked' : ''}> ${esc(a.titolo)} <small>${dovute ? dovute + ' in scadenza' : ''}</small></label>`);
+      const l = h(`<label data-arg="${a.id}"><input type="checkbox" ${inclusi.has(a.id) ? 'checked' : ''}> ${esc(a.titolo)} <small>${dovute ? dovute + ' in scadenza' : ''}</small></label>`);
       l.querySelector('input').addEventListener('change', e => { e.target.checked ? inclusi.add(a.id) : inclusi.delete(a.id); sessionStorage.setItem('compasso.ripasso', JSON.stringify([...inclusi])); });
       griglia.appendChild(l);
     });
@@ -1139,7 +1207,8 @@
       studio.innerHTML = '';
       if (soloDovute && !mazzo.length) { studio.appendChild(h('<div class="scheda fc-vuoto">Nessuna carta in scadenza oggi. Puoi studiare comunque tutte le selezionate.</div>')); CMASC.dici('Oggi niente da ripassare: le scatole sono in ordine. Torna domani, o studia tutto il mazzo.', { tipo: 'commento', espressione: 'felice', durata: 6000 }); return; }
       mazzo = mazzo.sort((x, y) => statoCarta(x.arg.id, x.carta.id).prossima - statoCarta(y.arg.id, y.carta.id).prossima);
-      studioFlashcard(studio, mazzo, { multi: true, vuoto: 'Nessuna carta selezionata negli argomenti scelti.' });
+      const ricontaScadenze = () => griglia.querySelectorAll('label[data-arg]').forEach(l => { const n = Object.values(stato.carte[l.dataset.arg] || {}).filter(c => c.prossima && c.prossima <= Date.now()).length; l.querySelector('small').textContent = n ? n + ' in scadenza' : ''; });
+      studioFlashcard(studio, mazzo, { multi: true, vuoto: 'Nessuna carta selezionata negli argomenti scelti.', dopoValuta: ricontaScadenze });
       studio.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     scelta.querySelector('.b-dovute').addEventListener('click', () => avvia(true));
@@ -1170,6 +1239,17 @@
     const m = String(anni).match(/(\d{3,4})/); if (!m) return null;
     let a = parseInt(m[1], 10); if (/a\.\s?C/i.test(anni)) a = -a; return a;
   }
+  /* l'anno dell'opera, non della nascita: nascita + 42 (senza superare la morte, né oggi). Eulero va nel Settecento,
+     Cartesio e Fermat nel Seicento, Gauss nell'Ottocento. Serve all'epoca, all'ordine e alla linea del tempo. */
+  function annoOpera(anni) {
+    const n = annoDa(anni); if (n == null) return null;
+    if (!/\d{3,4}/.test(anni)) return n;   /* «III secolo a.C.»: annoDa dà già la metà del secolo */
+    const numeri = String(anni).match(/\d{3,4}/g) || [], ac = /a\.\s?C/i.test(anni);
+    const morte = numeri.length > 1 ? parseInt(numeri[1], 10) * (ac ? -1 : 1) : new Date().getFullYear();
+    return Math.min(n + 42, morte);
+  }
+  /* il nome della scuola italiana per chi sui libri ha il nome italianizzato (le chiavi interne restano quelle) */
+  const NOME_SCUOLA = { cartesio: 'Cartesio (René Descartes)', eulero: 'Eulero (Leonhard Euler)', kepler: 'Keplero (Johannes Kepler)', napier: 'Nepero (John Napier)' };
   const coloreDa = s => 'var(--a' + ((slug(s).split('').reduce((x, c) => x + c.charCodeAt(0), 0) % 6) + 1) + ')';
   /* ---------- chi compare in un aneddoto: le coppie («Newton e Leibniz») diventano due persone ---------- */
   const ANNI_NOTI = { khayyam: '1048–1131', hui: 'circa 1238–1298', erone: 'I secolo d.C.', ippaso: 'V secolo a.C.', diofanto: 'III secolo d.C.' };
@@ -1183,14 +1263,16 @@
     }
     const parti = nome.replace(/\([^)]*\)/g, '').trim().split(/,\s+|\s+e\s+/).map(x => x.trim()).filter(Boolean);
     const anniParti = anni.split(/\s+e\s+/);
+    /* l'appellativo fra parentesi («il Fibonacci», «detto Tartaglia») resta nel nome mostrato di una persona sola */
+    const appellativo = parti.length === 1 ? (nome.match(/\(([^)]*)\)/) || [])[1] : null;
     return parti.map((p, i) => {
       let k = chiaveMatematico(p); if (OMONIMI.has(k)) k = slug(p);
-      const lord = /kelvin/i.test(nome) && /william/i.test(p) ? ' (Lord Kelvin)' : '';
-      return { chiave: k, nome: p + lord, anni: ANNI_NOTI[k] || (anniParti.length === parti.length ? anniParti[i] : anni) };
+      const lord = /kelvin/i.test(nome) && /william/i.test(p) ? ' (Lord Kelvin)' : appellativo && !/pseudonimo|^e\s|scuola/i.test(appellativo) ? ' (' + appellativo + ')' : '';
+      return { chiave: k, nome: NOME_SCUOLA[k] || (p + lord), anni: ANNI_NOTI[k] || (anniParti.length === parti.length ? anniParti[i] : anni), originale: parti.length === 1 ? nome : p };   /* nelle coppie solo la persona, non il compagno */
     });
   }
   const cognome = p => { const t = slug(p.nome.replace(/\([^)]*\)/g, '')).split('-').filter(x => x && !FERMI.has(x)); return p.collettivo ? 'zzz' + p.nome : (t[t.length - 1] || p.nome); };
-  const EPOCHE = [[-9999, 'Antichità', 'fino al V secolo'], [500, 'Medioevo', 'dal VI al XV secolo'], [1450, 'Rinascimento', 'dal 1450 al 1600'], [1600, 'Seicento', ''], [1700, 'Settecento', ''], [1800, 'Ottocento', ''], [1900, 'Novecento', '']];
+  const EPOCHE = [[-9999, 'Antichità', 'fino al V secolo'], [500, 'Medioevo', 'dal VI al XV secolo'], [1450, 'Rinascimento', 'dal 1450 al 1600'], [1600, 'Seicento', ''], [1700, 'Settecento', ''], [1800, 'Ottocento', ''], [1900, 'Novecento', ''], [1990, 'Oggi', '']];
   const epocaDi = p => { if (p.collettivo || p.anno == null) return null; let e = EPOCHE[0]; EPOCHE.forEach(x => { if (p.anno >= x[0]) e = x; }); return e; };
 
   function paginaMatematici(sel) {
@@ -1198,18 +1280,20 @@
     svuota();
     app.appendChild(h('<div><h1 class="titolo-pagina">Le persone dietro le formule</h1><p class="sotto-pagina">Tutti gli aneddoti che Ada racconta, raccolti per persona. Tocca un nome per leggere le storie e vedere in quali argomenti compare.</p></div>'));
     const cont = h('<div class="fc-vuoto">Sto raccogliendo le storie da tutti gli argomenti…</div>'); app.appendChild(cont);
+    cont.dataset.attesa = '1';
     Promise.all(IND.argomenti.map(a => caricaArgomento(a.id).catch(() => null))).then(argomenti => {
       const persone = {};
       argomenti.forEach(arg => { if (!arg) return; (arg.aneddoti || []).forEach(an => personeDi(an).forEach(q => {
-        const p = persone[q.chiave] || (persone[q.chiave] = { chiave: q.chiave, nome: q.nome, anni: q.anni, anno: annoDa(q.anni), collettivo: !!q.collettivo, storie: [], argomenti: [] });
-        if (q.nome.length < p.nome.length && !q.collettivo) p.nome = q.nome;   /* la forma più corta è di solito la più pulita */
+        const p = persone[q.chiave] || (persone[q.chiave] = { chiave: q.chiave, nome: q.nome, anni: q.anni, anno: annoOpera(q.anni), collettivo: !!q.collettivo, storie: [], argomenti: [], nomi: [] });
+        if (q.nome.length < p.nome.length && !q.collettivo && !NOME_SCUOLA[q.chiave]) p.nome = q.nome;   /* la forma più corta è di solito la più pulita */
+        if (q.originale && p.nomi.indexOf(q.originale) < 0) p.nomi.push(q.originale);   /* per la ricerca: anche il nome scritto per intero */
         /* le date con i numeri vincono su quelle a secoli («570–495 a.C.» meglio di «VI secolo a.C.») */
-        if ((p.anno == null && annoDa(q.anni) != null) || (!/\d{3,4}/.test(p.anni) && /\d{3,4}/.test(q.anni))) { p.anno = annoDa(q.anni); p.anni = q.anni; }
+        if ((p.anno == null && annoDa(q.anni) != null) || (!/\d{3,4}/.test(p.anni) && /\d{3,4}/.test(q.anni))) { p.anno = annoOpera(q.anni); p.anni = q.anni; }
         if (!p.storie.some(s => s.an === an)) p.storie.push({ an, arg });
         if (!p.argomenti.includes(arg.id)) p.argomenti.push(arg.id);
       })); });
       const tutte = Object.values(persone);
-      cont.innerHTML = '';
+      cont.innerHTML = ''; cont.className = ''; delete cont.dataset.attesa;   /* via lo stile dell'attesa (centrato, grigio) */
       if (!tutte.length) { cont.textContent = 'Nessun aneddoto disponibile.'; return; }
       const imp = stato.impostazioni; const scelta = { ordina: imp.matOrdina || 'epoca', gruppi: imp.matGruppi || 'no', cerca: '' };
 
@@ -1242,7 +1326,7 @@
           t.addEventListener('click', () => mostraDettaglio(p));
           asse.appendChild(t);
         });
-        [-1800, -500, 0, 500, 1000, 1500, 1650, 1800, 1950].filter(a => a >= min - 100 && a <= Math.max(max, 1950)).forEach((a, i) => asse.appendChild(h(`<span class="anno ${i % 2 ? 'sopra' : ''}" style="left:${posTempo(a)}%">${a < 0 ? -a + ' a.C.' : a}</span>`)));
+        (innerWidth < 500 ? [0, 1500, 1700, 1800, 1900] : [-1800, -500, 0, 500, 1000, 1500, 1650, 1800, 1950]).filter(a => a >= min - 100 && a <= Math.max(max, 1950)).forEach((a, i) => asse.appendChild(h(`<span class="anno ${i % 2 ? 'sopra' : ''}" style="left:${posTempo(a)}%">${a < 0 ? -a + ' a.C.' : a}</span>`)));
         cont.appendChild(lt);
       }
 
@@ -1285,8 +1369,8 @@
         aggiornaBottoni();
         zona.innerHTML = '';
         const q = scelta.cerca;
-        const lista = tutte.filter(p => !q || slug(p.nome).includes(slug(q)) || p.nome.toLowerCase().includes(q)).sort(ordinatore[scelta.ordina]);
-        comandi.querySelector('.mat-conta').textContent = lista.length === tutte.length ? tutte.filter(p => !p.collettivo).length + ' persone e ' + tutte.filter(p => p.collettivo).length + ' storie senza un autore' : lista.length + ' su ' + tutte.length;
+        const lista = tutte.filter(p => !q || slug(p.nome + ' ' + (p.nomi || []).join(' ')).includes(slug(q)) || p.nome.toLowerCase().includes(q)).sort(ordinatore[scelta.ordina]);
+        comandi.querySelector('.mat-conta').textContent = lista.length === tutte.length ? tutte.filter(p => !p.collettivo).length + ' persone' + (tutte.some(p => p.collettivo) ? ' e ' + tutte.filter(p => p.collettivo).length + ' storie senza un autore' : '') : lista.length + ' su ' + tutte.length;
         cont.querySelectorAll('.linea-tempo .tacca').forEach(t => t.classList.toggle('spenta', !!q && !lista.some(p => p.chiave === t.dataset.chiave)));
         if (!lista.length) { zona.appendChild(h('<div class="fc-vuoto">Nessuno con questo nome.</div>')); return; }
         if (scelta.gruppi === 'no') { griglia(lista); return; }
@@ -1305,11 +1389,17 @@
       if (sel) { const p = persone[sel] || persone[chiaveMatematico(sel.replace(/-/g, ' '))] || tutte.find(x => slug(x.nome).includes(sel)); if (p) mostraDettaglio(p); }
     });
   }
-  function iniziali(nome) { const parti = nome.replace(/^(gli|i|le|la|il)\s+/i, '').split(/\s+e\s+|\s+/).filter(w => /^[A-ZÀ-Ý]/.test(w)); return (parti[0] || nome)[0] + (parti.length > 1 ? parti[parti.length - 1][0] : ''); }
+  function iniziali(nome) {
+    /* «Al-Khwarizmi» → K: dopo un prefisso corto col trattino (al-, ibn-) conta la parte che segue; le parentesi no */
+    const parti = nome.replace(/\([^)]*\)/g, '').replace(/^(gli|i|le|la|il)\s+/i, '').split(/\s+e\s+|\s+/).map(w => /^[A-Za-z]{1,3}-[A-ZÀ-Ý]/.test(w) ? w.split('-').pop() : w).filter(w => /^[A-ZÀ-Ý]/.test(w));
+    return (parti[0] || nome)[0] + (parti.length > 1 ? parti[parti.length - 1][0] : '');
+  }
 
   /* =====================================================================
      IMPOSTAZIONI
      ===================================================================== */
+  /* dopo un import o un azzeramento: tema, lettura, mascotte e distintivo come dice lo stato nuovo */
+  function riapplicaStato() { applicaTema(); applicaLettura(); CMASC.visibile(stato.impostazioni.mascotte); aggiornaBadge(); }
   function paginaImpostazioni() {
     paginaCorrente = 'impostazioni'; document.title = 'Impostazioni — Compasso';
     svuota();
@@ -1336,9 +1426,9 @@
     });
     sez.querySelector('.s-imp').addEventListener('change', e => {
       const f = e.target.files[0]; if (!f) return;
-      f.text().then(t => { const d = JSON.parse(t); if (!d || typeof d !== 'object' || !d.progressi) throw new Error('formato'); stato = Object.assign(statoBase(), d); salva(); applicaTema(); route(); CMASC.dici('Progressi importati.', { tipo: 'commento', espressione: 'felice', durata: 3000 }); }).catch(() => alert('File non valido.'));
+      f.text().then(t => { const d = JSON.parse(t); if (!d || typeof d !== 'object' || !d.progressi) throw new Error('formato'); stato = Object.assign(statoBase(), d); salva(); riapplicaStato(); route(); CMASC.dici('Progressi importati.', { tipo: 'commento', espressione: 'felice', durata: 3000 }); }).catch(() => alert('File non valido.'));
     });
-    sez.querySelector('.s-azz').addEventListener('click', () => { if (confirm('Cancellare davvero tutti i progressi?')) { stato = statoBase(); salva(); applicaTema(); route(); } });
+    sez.querySelector('.s-azz').addEventListener('click', () => { if (confirm('Cancellare davvero tutti i progressi?')) { stato = statoBase(); salva(); riapplicaStato(); route(); } });
   }
 
   /* =====================================================================

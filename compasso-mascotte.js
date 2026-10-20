@@ -202,7 +202,8 @@
   /* reagisci(evento, testo?): la faccia cambia secondo quello che è successo; la bolla solo se serve */
   const FRASI = {
     giusto: null,
-    'sbagliato-ancora': ['Due tentativi: prova a chiedere un suggerimento.', 'Ci sei vicino. Un suggerimento può sbloccarti.', 'Rileggi il testo con calma: a volte il dettaglio è lì.'],
+    /* frasi che valgono qualunque sia l'errore (niente «ci sei vicino»: non lo sappiamo) */
+    'sbagliato-ancora': ['Due tentativi: prova a chiedere un suggerimento.', 'Un suggerimento può sbloccarti, senza svelarti la risposta.', 'Rileggi il testo con calma: a volte il dettaglio è lì.'],
     livello: null
   };
   function reagisci(evento, testo) {

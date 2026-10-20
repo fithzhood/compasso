@@ -669,15 +669,19 @@ function monta(slot, id) {
   const range = slot.querySelector('input'), tempo = slot.querySelector('.cv-tempo'), bSonoro = slot.querySelector('.cv-sonoro');
   let V = null, t = 0, inCorso = false, ultimo = 0, k = 1;
   // il sonoro: vo = dati della voce (null se il video non ce l'ha), tl = posizione sul tempo lungo
-  let vo = null, audio = null, sonoro = false, tl = 0;
+  let vo = null, audio = null, sonoro = false, tl = 0, partito = false;
   const conVoce = () => sonoro && vo && audio;
-  const fine = () => conVoce() ? vo.durata : V.durata;
-  const ora = () => conVoce() ? tl : t;
+  /* la durata e il tempo mostrati seguono la scelta della voce anche prima che l'audio sia scaricato */
+  const fine = () => (sonoro && vo) ? vo.durata : V.durata;
+  const ora = () => (sonoro && vo) ? tl : t;
   function disegna() {
     if (!V) return;
     dipingi(ctx, V, t, k, temaSito());
-    range.value = Math.round(ora() / fine() * 1000);
-    tempo.textContent = `${mmss(ora())} / ${mmss(fine())}`;
+    /* prima di partire si vede la copertina, ma il video ripartirà da zero: il tempo dice 0:00 */
+    const mostra = partito ? ora() : 0;
+    range.value = Math.round(mostra / fine() * 1000);
+    tempo.textContent = `${mmss(mostra)} / ${mmss(fine())}`;
+    tempo.title = vo ? 'Con la voce il video dura di più: si ferma mentre Ada parla.' : '';
     play.textContent = inCorso ? '❚❚' : (t >= V.durata ? '↺' : '▶');
     grande.hidden = inCorso || (t > 0 && t < V.durata && t !== V.copertina);
     if (vo) {
@@ -721,6 +725,8 @@ function monta(slot, id) {
   }
   function avvia() {
     if (!V) return;
+    partito = true;
+    if (sonoro && vo && !audio) preparaAudio();   /* l'audio si scarica al primo ▶, non all'apertura della pagina */
     if (t >= V.durata || t === V.copertina) { t = 0; tl = 0; }
     if (inOnda && inOnda !== ferma) inOnda();
     inOnda = ferma;
@@ -766,7 +772,8 @@ function monta(slot, id) {
   });
   range.addEventListener('input', () => {
     if (!V) return;
-    if (conVoce()) {
+    partito = true;
+    if (sonoro && vo) {
       tl = range.value / 1000 * vo.durata; t = Math.min(V.durata, corto(vo, tl));
       if (inCorso) audio.currentTime = tl;
     } else t = range.value / 1000 * V.durata;
@@ -784,7 +791,6 @@ function monta(slot, id) {
     if (dati && Array.isArray(dati.pause)) {
       vo = dati; bSonoro.hidden = false;
       sonoro = sonoroScelto;
-      if (sonoro) preparaAudio();
       tl = lungo(vo, t);
     }
     tela.setAttribute('aria-label', 'Video: ' + (V.titolo || id));
