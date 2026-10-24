@@ -280,6 +280,8 @@ Il prodotto **non** si deriva come la somma. Se prendi $f(x) = g(x) = x$, il pro
 [ ] $3(2x)^2$
 => L'esterna è $u^3$, con derivata $3u^2$, e l'interna $x^2 + 1$ ha derivata $2x$. Quindi viene $3(x^2 + 1)^2 \cdot 2x = 6x(x^2 + 1)^2$. La risposta $3(x^2 + 1)^2$ dimentica il fattore $2x$.
 
+[[video:derivate/inversa]]
+
 > **Funzione inversa.** Sia $y_0 = f(x_0)$, con $f$ invertibile e $f'(x_0) \ne 0$. Allora $(f^{-1})'(y_0) = \dfrac{1}{f'(x_0)}$.` },
 
     { id: 'derivate-successive-differenziale', titolo: 'Derivate di ordine superiore e il differenziale', testo: R`Anche $f'(x)$ è una funzione, e puoi derivarla di nuovo. Ottieni la **derivata seconda** $f''(x)$, poi la terza $f'''(x)$, e così via.

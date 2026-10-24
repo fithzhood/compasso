@@ -25,7 +25,7 @@ const FACCIA = [ // mai due cambi in meno di 2 s (tranne l'accensione)
 const FUMETTI = [
   [2.1, 6.6, '{mink:1/2}, {mink:2/4}, {mink:3/6}:\nsono tre numeri diversi?'],
   // 1 · le strisce
-  [7.9, 12.3, 'Tre strisce uguali, tagliate\nin 2, in 4 e in 6 parti.'],
+  [7.9, 12.4, 'Tre strisce uguali, tagliate\nin 2, in 4 e in 6 parti.'],
   [12.5, 17.3, 'Coloro 1 parte, poi 2, poi 3:\n{mink:1/2}, {mink:2/4} e {mink:3/6}.'],
   [17.5, 21.9, 'Il colore arriva allo {g:stesso punto}:\nvalgono lo stesso numero.'],
   [22.1, 27.1, 'Sono frazioni {v:equivalenti}:\n{mink:1/2 = 2/4 = 3/6}.'],
@@ -40,7 +40,7 @@ const FUMETTI = [
   [62.1, 67.1, 'È la {v:classe di equivalenza} di {mink:1/2}:\nle frazioni equivalenti a lei.'],
   [67.3, 71.5, 'E {mink:2/3}? Il punto {mink:(3; 2)}\nè {r:fuori} dalla semiretta.'],
   [71.7, 76.5, 'Con {mink:4/6} e {mink:6/9} ha la sua semiretta:\nun’{v:altra classe}.'],
-  [76.7, 82.0, 'Due classi diverse non si toccano:\nogni frazione sta in {g:una sola}.'],
+  [76.7, 82.0, 'L’origine non è una frazione: le classi\n{g:non hanno frazioni in comune}.'],
   // 3 · un numero
   [82.2, 88.0, 'Ogni classe è un {v:numero razionale}:\n{mink:1/2}, {mink:2/4}, {mink:3/6} sono i suoi nomi.'],
   [88.2, 93.2, 'Di solito si usa la frazione {g:ridotta}:\nil punto più vicino all’origine.'],
@@ -69,7 +69,7 @@ function linea(ctx, x0, x1, y, al) {
 }
 
 // ---------- 1 · le strisce (7,5–33) ----------
-const SX = 200, SW = 660, SH = 84, SY = [235, 395, 555], PARTI = [2, 4, 6];
+const SX = 200, SW = 660, SH = 84, SY = [260, 420, 580], PARTI = [2, 4, 6];
 function sceneStrisce(ctx, t) {
   if (t < 7.5 || t > 33.4) return;
   const al = 1 - P(t, 32.6, 33.2);
@@ -154,8 +154,8 @@ function assi(ctx, k) {
   arrowHead(ctx, [ox + (x1 + .15) * u * k + 6, oy], 0, C.ink);
   arrowHead(ctx, [ox, oy - (y1 + .2) * u * k - 6], -Math.PI / 2, C.ink);
   ctx.globalAlpha *= P(k, .6, 1);
-  for (let i = 1; i <= x1; i++) txt(ctx, String(i), ox + i * u, oy + 32, { size: 29, color: C.dim });
-  for (let j = 1; j <= y1; j++) txt(ctx, String(j), ox - 18, oy - j * u, { size: 29, color: C.dim, align: 'right' });
+  for (let i = 1; i <= x1; i++) txt(ctx, String(i), ox + i * u, oy + 32, { size: 30, color: C.dim });
+  for (let j = 1; j <= y1; j++) txt(ctx, String(j), ox - 18, oy - j * u, { size: 30, color: C.dim, align: 'right' });
   txt(ctx, 'O', ox - 18, oy + 30, { size: 30, color: C.dim, align: 'right' });
   // i nomi degli assi: dove nessuna semiretta passa
   txt(ctx, 'numeratore', ox + 26, oy - (y1 + .2) * u - 6, { size: 32, color: C.dim, align: 'left' });
@@ -185,12 +185,14 @@ function scenePiano(ctx, t) {
   assi(ctx, P(t, 33.3, 34.3));
   semiretta(ctx, 1 / 2, C.v, P(t, 52.5, 53.7));
   semiretta(ctx, 2 / 3, C.y, P(t, 72.8, 74.0));
+  // l'origine non è una frazione: un cerchietto vuoto, quando Ada lo dice
+  M.hole(ctx, toS(0, 0), C.ink, P(t, 76.9, 77.4, E.back), 10);
   // (2; 1) con le sue coordinate tratteggiate
   const kp = life(t, 43.9, 47.6, .4, .4);
   if (kp > 0) { dashed(ctx, toS(2, 1), toS(2, 0), C.dim, 1, kp); dashed(ctx, toS(2, 1), toS(0, 1), C.dim, 1, kp); }
   PUNTI.forEach(([x, y, ti, c]) => dot(ctx, toS(x, y), C[c], P(t, ti, ti + .4, E.back), 11));
   // i nomi delle due classi, sotto la loro semiretta e lontano dall'altra
-  const p1 = toS(9.6, 3.9), p2 = toS(5.0, 5.5);
+  const p1 = toS(9.2, 2.9), p2 = toS(5.0, 5.5);
   drawRich(ctx, '{v:classe di }{mv:1/2}', p1[0], p1[1], { size: 34, weight: 600, local: t - 62.4 });
   drawRich(ctx, '{y:classe di }{my:2/3}', p2[0], p2[1], { size: 34, weight: 600, local: t - 74.2 });
   // la ridotta: un anello verde intorno a (2; 1)
@@ -211,13 +213,13 @@ function riga(ctx, n, d, pt, y, col, al) {
   drawRich(ctx, '{m' + col + ':' + pt + '}', XC + 20, y, { size: 44, align: 'left', alpha: al });
 }
 function scenePunti(ctx, t) {
-  const al = life(t, 43.6, FINE, .5, .6);
+  const al = life(t, 33.6, FINE, .5, .6);
   if (al <= 0) return;
   card(ctx, ...PAN, al);
   ctx.save(); ctx.globalAlpha *= al;
   const kt = 1 - P(t, 82.2, 82.6);
   conFont(TITOLI, () => {
-    drawRich(ctx, 'frazione → punto', XC, 170, { size: 40, weight: 600, local: t - 43.7, alpha: kt });
+    drawRich(ctx, 'frazione → punto', XC, 170, { size: 40, weight: 600, local: t - 33.8, alpha: kt });
     drawRich(ctx, 'un numero razionale', XC, 170, { size: 40, weight: 600, local: t - 82.6 });
   });
   // la classe di 1/2, poi quella di 2/3
@@ -239,7 +241,7 @@ function scenePunti(ctx, t) {
     else frazione(ctx, n, d, xs[i], 360, 50, 'v', k);
     drawRich(ctx, '{mink:=}', xs[i] + 75, 360, { size: 50, alpha: P(t, 83.0 + .3 * i, 83.4 + .3 * i) });
   });
-  drawRich(ctx, '{mink:…}', XC + 205, 360, { size: 50, alpha: P(t, 83.9, 84.3) });
+  drawRich(ctx, '{mink:…}', XC + 228, 360, { size: 50, alpha: P(t, 83.9, 84.3) });
   drawRich(ctx, '{dim:una classe, tanti nomi}', XC, 500, { size: 34, local: t - 84.4 });
   drawRich(ctx, '{g:la frazione ridotta}', XC, 600, { size: 36, weight: 600, local: t - 88.6 });
   ctx.restore();
@@ -263,7 +265,7 @@ function sceneFine(ctx, t) {
   });
   const pills = [
     [490, '{dim:prodotti in croce}', '{mink:1 · 4 = 2 · 2}'],
-    [960, '{dim:la classe di 1/2}', '{v:sta su una semiretta}'],
+    [960, '{dim:la classe di }{mink:1/2}', '{v:sta su una semiretta}'],
     [1430, '{dim:ogni classe è un}', '{g:numero razionale}'],
   ];
   pills.forEach(([x, testa, corpo], i) => {
@@ -272,7 +274,7 @@ function sceneFine(ctx, t) {
     ctx.save(); ctx.translate(x, 520); ctx.scale(k, k); ctx.translate(-x, -520);
     card(ctx, x - 215, 445, 430, 150);
     drawRich(ctx, testa, x, 486, { size: 32 });
-    drawRich(ctx, corpo, x, 546, { size: 38, weight: 600 });
+    drawRich(ctx, corpo, x, 546, { size: i ? 38 : 40, weight: 600 });
     ctx.restore();
   });
   ctx.restore();

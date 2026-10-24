@@ -119,7 +119,11 @@ La circonferenza $x^2 + y^2 = 1$ non passa il test. La retta $x = 0{,}5$ la tagl
 [ ] la parabola $x = y^2$
 [ ] la retta $x = 3$
 [ ] la circonferenza $x^2 + y^2 = 4$
-=> In $y = x^2 - 4$ ogni $x$ dà un solo $y$. La parabola $x = y^2$ è coricata: per $x = 4$ dà $y = 2$ e $y = -2$. La retta $x = 3$ è proprio verticale. La circonferenza ha due punti su quasi ogni verticale.` },
+=> In $y = x^2 - 4$ ogni $x$ dà un solo $y$. La parabola $x = y^2$ è coricata: per $x = 4$ dà $y = 2$ e $y = -2$. La retta $x = 3$ è proprio verticale. La circonferenza ha due punti su quasi ogni verticale.
+
+Tre funzioni da riconoscere dalla tabella: la proporzionalità **diretta** $y = kx$, **inversa** $y = \dfrac{k}{x}$ e **quadratica** $y = kx^2$, con $k \ne 0$.
+
+[[video:funzioni-generalita/proporzionalita]]` },
 
     { id: 'classificazione', titolo: 'Come si classificano le funzioni', testo: R`Il nome di una funzione dice dove compare la $x$, e ogni tipo ha le sue condizioni sul dominio. Le funzioni **algebriche** usano le quattro operazioni, le potenze e le radici. Le altre sono **trascendenti**.
 

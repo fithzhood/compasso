@@ -26,18 +26,19 @@ const FUMETTI = [
   [7.9, 12.4, 'Divido l’ora in {mink:n = 10} pezzi\nda 6 minuti l’uno.'],
   [12.6, 17.6, 'In ogni pezzo arriva una chiamata\ncon probabilità {mink:p = 0,2}.'],
   [17.8, 21.9, 'Per esempio così: una chiamata\nin 2 pezzi su 10.'],
-  [22.1, 27.3, 'La media è {mink:n · p = 10 · 0,2 = 2}:\nle 2 chiamate all’ora.'],
+  [22.1, 27.3, 'La media è {mink:E(X) = n · p = 2}:\nle 2 chiamate all’ora.'],
   [27.5, 32.9, 'Il numero di chiamate {mink:X} è {v:binomiale}:\nuna barra per ogni valore {mink:k}.'],
   [33.1, 37.7, 'Nessuna chiamata:\n{mink:P(X = 0) ≈ 0,107}.'],
   // 2 · pezzi più corti
-  [37.9, 43.7, 'Ma in 6 minuti ne arrivano anche due:\npezzi più corti, {mink:n = 50}.'],
-  [43.9, 48.1, 'Ora {mink:p = 0,04}, e la media resta\n{mink:n · p = 50 · 0,04 = 2}.'],
-  [48.3, 52.5, 'Le barre si spostano appena:\n{mink:P(X = 0) ≈ 0,130}.'],
+  [37.9, 40.9, 'In 6 minuti\nne arrivano due…'],
+  [41.1, 44.2, '…pezzi più corti:\n{mink:n = 50}.'],
+  [44.4, 48.3, 'Ora {mink:p = 0,04}, e la media resta\n{mink:n · p = 50 · 0,04 = 2}.'],
+  [48.5, 52.5, 'Le barre si spostano appena:\n{mink:P(X = 0) ≈ 0,130}.'],
   [52.7, 57.9, 'Ancora più corti: {mink:n = 1000}\ne {mink:p = 0,002}.'],
   [58.1, 62.7, 'Ora le barre quasi non si muovono:\n{mink:P(X = 0) ≈ 0,135}.'],
   // 3 · la distribuzione di Poisson
   [62.9, 67.2, 'Si posano su una forma precisa:\nla {v:distribuzione di Poisson}.'],
-  [67.4, 71.6, 'Le basta un numero, la media {mink:λ}:\nqui {mink:λ = n · p = 2}.'],
+  [67.4, 71.6, 'Le basta la media, {mink:λ = E(X)}:\nqui {mink:λ = 2}.'],
   [71.8, 76.4, 'Ogni barra viene da questa formula,\ncon {mink:k!}, il fattoriale di {mink:k}.'],
   [76.6, 82.1, 'Con {mink:k = 0}:\n{mink:P(X = 0) = e⁻² ≈ 0,135}.'],
   [82.3, 87.4, 'Per questo Poisson descrive gli\n{v:eventi rari}: guasti, errori, chiamate.'],
@@ -61,7 +62,7 @@ function barre(t) {
 const SX0 = 230, SX1 = 1050, SY = 200, SH = 56, SW = SX1 - SX0;
 const CHIAMATE = [.27, .71], OMBRA = .745;   // OMBRA: la seconda chiamata negli stessi 6 minuti
 // gli n dei pezzi: 10 da 8,6; 50 da 39,8; 1000 da 53,2 (passaggi a dissolvenza)
-const N_TAPPE = [[10, 8.6, 9.4], [50, 39.8, 40.6], [1000, 53.2, 54.0]];
+const N_TAPPE = [[10, 8.6, 9.4], [50, 41.2, 42.0], [1000, 53.2, 54.0]];
 // ---- l'istogramma ----
 const CARD = [110, 110, 1060, 690], PAN = [1200, 110, 610, 690];
 const XK = k => 250 + k * 96, AY = 730, HS = 1400, BW = 70;
@@ -117,7 +118,7 @@ function sceneIntro(ctx, t) {
 
 // pesi dei tre n (dissolvenza ai passaggi)
 function pesiN(t) {
-  const a = P(t, 39.8, 40.6), b = P(t, 53.2, 54.0);
+  const a = P(t, 41.2, 42.0), b = P(t, 53.2, 54.0);
   return [1 - a, a * (1 - b), b];
 }
 // 1–3 · la striscia dell'ora (7.5–FINE)
@@ -141,14 +142,15 @@ function sceneStriscia(ctx, t) {
     });
   }
   // la chiamata in più negli stessi 6 minuti: un cerchio rosso tratteggiato (37,9–43,7)
-  const ko = life(t, 38.0, 43.7, .4, .4);
+  const ko = life(t, 38.0, 44.2, .4, .4);
   if (ko > 0) {
     ctx.save(); ctx.globalAlpha *= ko;
     const n = w[0] > .5 ? 10 : 50, i = Math.floor(OMBRA * n);
     ctx.fillStyle = css(C.r, .18); ctx.fillRect(SX0 + SW * i / n, SY - SH / 2, SW / n, SH);
-    ctx.strokeStyle = css(C.r); ctx.lineWidth = 3; ctx.setLineDash([5, 5]);
-    ctx.beginPath(); ctx.arc(SX0 + OMBRA * SW, SY, 11, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = css(C.r); ctx.lineWidth = 3; ctx.strokeRect(SX0 + SW * i / n, SY - SH / 2, SW / n, SH);
     ctx.restore();
+    // finché i pezzi sono da 6 minuti, la scritta sopra il pezzo con due chiamate
+    drawRich(ctx, '{r:due in 6 minuti}', SX0 + SW * .75, SY - SH / 2 - 26, { size: 30, alpha: ko * (1 - P(t, 41.0, 41.4)) });
   }
   // le divisioni: n = 10, poi i tagli in più di n = 50 e n = 1000
   const tagli = (n, passo, a, lw, op) => {
@@ -158,18 +160,22 @@ function sceneStriscia(ctx, t) {
     ctx.stroke(); ctx.restore();
   };
   tagli(10, 0, P(t, 8.6, 9.4), 2.5, .6);
-  tagli(50, 5, P(t, 39.8, 40.6), 1.5, .45);
+  tagli(50, 5, P(t, 41.2, 42.0), 1.5, .45);
   tagli(1000, 20, P(t, 53.2, 54.0), .6, .3);
   rett(ctx, SX0, SY - SH / 2, SW, SH, 8, null, css(C.ink, .55), 3);
   // le chiamate, sopra a tutto
   CHIAMATE.forEach((T, i) => dot(ctx, [SX0 + T * SW, SY], C.v, P(t, 18.0 + i * .3, 18.4 + i * .3, E.back), 9));
+  if (ko > 0) { ctx.save(); ctx.globalAlpha *= ko; dot(ctx, [SX0 + OMBRA * SW, SY], C.r, P(t, 38.0, 38.4, E.back), 9); ctx.restore(); }
   // sotto la striscia: gli estremi e quanto è lungo un pezzo
   drawRich(ctx, '{dim:0}', SX0, SY + SH / 2 + 34, { size: 30 });
   drawRich(ctx, '{dim:60 min}', SX1, SY + SH / 2 + 34, { size: 30 });
-  const kr = P(t, 82.4, 82.9);
-  const cap = ['{mink:10}{dim: pezzi da 6 minuti}', '{mink:50}{dim: pezzi da 1,2 minuti}', '{mink:1000}{dim: pezzi da 3,6 secondi}'];
-  cap.forEach((s, j) => drawRich(ctx, s, (SX0 + SX1) / 2, SY + SH / 2 + 34, { size: 32, alpha: w[j] * P(t, 8.6, 9.2) * (1 - kr) }));
-  drawRich(ctx, '{dim:tante prove, ognuna con }{mink:p}{dim: piccola}', (SX0 + SX1) / 2, SY + SH / 2 + 34, { size: 32, alpha: kr });
+  // le scritte sotto la striscia non si sovrappongono mai: prima esce una, poi entra l'altra
+  const u1 = P(t, 41.2, 41.6), u2 = P(t, 53.2, 53.6), u3 = P(t, 82.4, 82.7);
+  const cap = [['{mink:10}{dim: pezzi da 6 minuti}', P(t, 8.6, 9.2) * (1 - u1)],
+    ['{mink:50}{dim: pezzi da 1,2 minuti}', P(t, 41.6, 42.0) * (1 - u2)],
+    ['{mink:1000}{dim: pezzi da 3,6 secondi}', P(t, 53.6, 54.0) * (1 - u3)],
+    ['{dim:tante prove, ognuna con }{mink:p}{dim: piccola}', P(t, 82.7, 83.0)]];
+  cap.forEach(([s, a]) => drawRich(ctx, s, (SX0 + SX1) / 2, SY + SH / 2 + 34, { size: 32, alpha: a }));
   ctx.restore();
 }
 
@@ -221,39 +227,44 @@ function scenePannello(ctx, t) {
   if (al <= 0) return;
   card(ctx, ...PAN, al);
   ctx.save(); ctx.globalAlpha *= al;
+  // quando arriva la Poisson, la parte della binomiale esce
+  ctx.save(); ctx.globalAlpha *= 1 - P(t, 62.9, 63.4);
   conFont(TITOLI, () => drawRich(ctx, 'binomiale', PX, 160, { size: 38, weight: 600, local: t - 27.6 }));
   // n
-  const [n1, n2] = cambia(t, 39.8), [n3, n4] = cambia(t, 53.2);
+  const [n1, n2] = cambia(t, 41.2), [n3, n4] = cambia(t, 53.2);
   riga(ctx, '{mink:n =}', null, 220, C.ink, P(t, 8.6, 9.0));
   riga(ctx, null, '10', 220, C.ink, P(t, 8.6, 9.0) * n1);
   riga(ctx, null, '50', 220, C.ink, n2 * n3);
   riga(ctx, null, '1000', 220, C.ink, n4);
   // p: sparisce quando cambiano i pezzi, torna quando Ada lo dice
-  const pv = P(t, 12.8, 13.2) * (1 - P(t, 39.8, 40.1)), p50 = P(t, 44.0, 44.4) * n3;
+  const pv = P(t, 12.8, 13.2) * (1 - P(t, 41.2, 41.5)), p50 = P(t, 44.5, 44.9) * n3;
   riga(ctx, '{mink:p =}', null, 285, C.x, Math.max(pv, p50, n4));
   riga(ctx, null, '0,2', 285, C.x, pv);
   riga(ctx, null, '0,04', 285, C.x, p50);
   riga(ctx, null, '0,002', 285, C.x, n4);
   // n · p
-  riga(ctx, '{mink:n · p =}', '2', 350, C.v, P(t, 22.3, 22.7));
+  riga(ctx, '{mink:E(X) = n · p =}', '2', 350, C.v, P(t, 22.3, 22.7));
   // P(X = 0): esce coi pezzi nuovi, torna con le barre nuove
-  const z1 = P(t, 33.3, 33.7) * (1 - P(t, 39.8, 40.1)), z2 = P(t, 48.6, 49.0) * (1 - P(t, 53.2, 53.5)), z3 = P(t, 58.4, 58.8);
+  const z1 = P(t, 33.3, 33.7) * (1 - P(t, 41.2, 41.5)), z2 = P(t, 48.6, 49.0) * (1 - P(t, 53.2, 53.5)), z3 = P(t, 58.4, 58.8);
   riga(ctx, '{mink:P(X = 0) ≈}', null, 415, C.g, Math.max(z1, z2, z3));
   riga(ctx, null, '0,107', 415, C.g, z1);
   riga(ctx, null, '0,130', 415, C.g, z2);
   riga(ctx, null, '0,135', 415, C.g, z3);
-  // la Poisson
-  const ks = P(t, 63.0, 63.4);
-  if (ks > 0) {
-    ctx.save(); ctx.globalAlpha *= ks; ctx.strokeStyle = C.panelEdge; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(PAN[0] + 40, 455); ctx.lineTo(PAN[0] + PAN[2] - 40, 455); ctx.stroke(); ctx.restore();
-  }
-  if (t > 63.0) conFont(TITOLI, () => drawRich(ctx, 'distribuzione di {g:Poisson}', PX, 495, { size: 38, weight: 600, local: t - 63.1 }));
-  if (t > 67.5) drawRich(ctx, '{mink:λ = n · p = 2}', PX, 555, { size: 44, local: t - 67.6 });
-  if (t > 71.9) formula(ctx, POISSON, PX, 645, 44, { local: t - 72.0 });
+  ctx.restore();
+  // la Poisson, al posto della binomiale
+  if (t > 63.3) conFont(TITOLI, () => drawRich(ctx, 'distribuzione di {g:Poisson}', PX, 170, { size: 40, weight: 600, local: t - 63.4 }));
+  if (t > 67.5) drawRich(ctx, '{mink:λ = E(X) = n · p = 2}', PX, 265, { size: 48, local: t - 67.6 });
+  if (t > 71.9) formula(ctx, POISSON, PX, 405, 52, { local: t - 72.0 });
   if (t > 76.7) {
-    drawRich(ctx, '{mink:P(X = 0) = e⁻² ≈ }{mg:0,135}', PX, 728, { size: 42, local: t - 76.8 });
-    drawRich(ctx, '{dim:perché }{mink:2⁰ = 1}{dim: e }{mink:0! = 1}', PX, 772, { size: 30, local: t - 78.0 });
+    drawRich(ctx, '{mink:P(X = 0) = e⁻² ≈ }{mg:0,135}', PX, 545, { size: 46, local: t - 76.8 });
+    drawRich(ctx, '{dim:perché }{mink:2⁰ = 1}{dim: e }{mink:0! = 1}', PX, 608, { size: 32, local: t - 78.0 });
+    const kb = P(t, 79.0, 79.5);
+    if (kb > 0) {
+      ctx.save(); ctx.globalAlpha *= kb; ctx.strokeStyle = C.panelEdge; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(PAN[0] + 40, 660); ctx.lineTo(PAN[0] + PAN[2] - 40, 660); ctx.stroke(); ctx.restore();
+    }
+    drawRich(ctx, '{dim:la binomiale con }{mink:n = 1000}{dim::}', PX, 708, { size: 32, local: t - 79.1 });
+    drawRich(ctx, '{mink:P(X = 0) ≈ 0,135}', PX, 758, { size: 40, local: t - 79.5 });
   }
   ctx.restore();
 }
@@ -267,14 +278,14 @@ function sceneFine(ctx, t) {
     drawRich(ctx, '{v:in una frase}', W / 2, 150, { size: 42, weight: 500, local: t - FINE - .4 });
     drawRich(ctx, 'Tante prove, probabilità piccola:\nconta solo la media {mink:λ}.', W / 2, 290, { size: 66, weight: 600, local: t - FINE - .8, stagger: .09 });
   });
-  const pills = [[440, '{dim:la media}', 250], [960, '{dim:la distribuzione di Poisson}', 270], [1480, '{dim:nessun evento}', 250]];
+  const pills = [[455, '{dim:la media}', 225], [960, '{dim:la distribuzione di Poisson}', 255], [1465, '{dim:nessun evento}', 225]];
   pills.forEach(([x, testa, mw], i) => {
     const a = FINE + 2.4 + i * .5, k = P(t, a, a + .5, E.back);
     if (k <= 0) return;
     ctx.save(); ctx.translate(x, 545); ctx.scale(k, k); ctx.translate(-x, -545);
     card(ctx, x - mw, 445, 2 * mw, 215);
     drawRich(ctx, testa, x, 484, { size: 30, weight: 400 });
-    if (i === 0) drawRich(ctx, '{mink:λ = n · p}', x, 570, { size: 46 });
+    if (i === 0) drawRich(ctx, '{mink:λ = E(X) = n · p}', x, 570, { size: 40 });
     if (i === 1) formula(ctx, POISSON, x, 575, 40);
     if (i === 2) drawRich(ctx, '{mink:P(X = 0) = e⁻²}\n{mink:≈ 0,135}', x, 570, { size: 40, lh: 1.35 });
     ctx.restore();
@@ -292,8 +303,8 @@ function sceneFine(ctx, t) {
     ['soffio', 27.6], ['traccia', 27.6, 28.1],
     ['tono', 27.8, 29.6, [.36, .89, 1, .67, .29, .09, .02, 0, 0]],                      // le barre crescono
     ['pop', 33.4, .35],                                                                  // P(X = 0)
-    ['pop', 38.1, .3], ['traccia', 39.8, 40.6],                                          // la chiamata in più; 50 pezzi
-    ['pop', 44.1, .4],                                                                   // p = 0,04
+    ['pop', 38.1, .3], ['traccia', 41.2, 42.0],                                          // la chiamata in più; 50 pezzi
+    ['pop', 44.6, .4],                                                                   // p = 0,04
     ['tono', 48.4, 49.4, [.36, .43]], ['pop', 48.7, .5],                                 // le barre si spostano; 0,130
     ['traccia', 53.2, 54.0], ['pop', 53.6, .3],                                          // 1000 pezzi
     ['tono', 58.2, 59.0, [.43, .45]], ['pop', 58.5, .55],                                // quasi ferme; 0,135

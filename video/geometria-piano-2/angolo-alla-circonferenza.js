@@ -16,18 +16,18 @@ const SEQ = [
   ['meta', 4.6, 'Misura {y:50°}: proprio la {g:metà}\ndi {v:100°}.'],
   ['sposto', 4.6, 'Sposto {mink:C} lungo l’arco grande…'],
   ['resta', 4.6, '…e l’angolo resta {y:50°}: non\ndipende da dove sta {mink:C}.'],
-  ['doppio', 5.0, 'L’angolo al centro è sempre il {v:doppio}\ndi quello alla circonferenza.'],
+  ['doppio', 5.4, 'L’angolo in {mink:C} è la {g:metà} di quello al\ncentro che insiste sullo stesso arco.'],
   ['allargo', 5.0, 'Ora allargo {mink:AB}: l’angolo al centro\ncresce, e quello in {mink:C} con lui.', .3],
   ['diam', 5.4, 'Quando {mink:AB} è un {g:diametro}, l’angolo\nal centro è {v:piatto}: {v:180°}.'],
   ['retto', 4.6, 'La metà di {v:180°} è {g:90°}:\nl’angolo in {mink:C} è {g:retto}.'],
   ['semi', 5.0, 'Sposto {mink:C} sulla semicirconferenza:\nl’angolo resta {g:retto}.'],
-  ['rett', 5.0, 'Il triangolo {mink:ABC}, con un lato sul\ndiametro, è sempre {g:rettangolo}.'],
+  ['rett', 5.0, 'Il triangolo {mink:ABC}, inscritto in una\nsemicirconferenza, è {g:rettangolo}.'],
 ];
 const T = {}, FUMETTI = [[2.3, 6.8, 'Un angolo con il vertice sulla\ncirconferenza: quanto misura?']];
 let tt = 7.9;
 for (const [k, d, s, pausa = 0] of SEQ) { tt = +(tt + pausa).toFixed(2); T[k] = tt; FUMETTI.push([tt, +(tt + d).toFixed(2), s]); tt = +(tt + d + .1).toFixed(2); }
 const FINE = +(tt + .3).toFixed(2), DUR = +(FINE + 10.8).toFixed(1);
-FUMETTI.push([FINE + 1.0, FINE + 8.0, 'L’angolo alla circonferenza è sempre\nla {g:metà} di quello al centro.']);
+FUMETTI.push([FINE + 1.0, FINE + 8.0, 'L’angolo alla circonferenza è la {g:metà}\ndi quello al centro sullo stesso arco.']);
 
 const POSA = {
   x: [[0, 760], [6.4, 760], [7.6, 190], [FINE, 190], [FINE + 1.3, 420]],
@@ -194,7 +194,7 @@ function sceneFine(ctx, t) {
   ctx.save(); ctx.globalAlpha *= al;
   conFont(TITOLI, () => {
     drawRich(ctx, '{v:in una frase}', W / 2, 150, { size: 42, weight: 500, local: t - FINE - .4 });
-    drawRich(ctx, 'L’angolo alla circonferenza è la metà\ndi quello al centro, ovunque sia il vertice.', W / 2, 290, { size: 62, weight: 600, local: t - FINE - .8, stagger: .08 });
+    drawRich(ctx, 'L’angolo alla circonferenza è la metà dell’angolo\nal centro che insiste sullo stesso arco.', W / 2, 290, { size: 62, weight: 600, local: t - FINE - .8, stagger: .08 });
   });
   const pills = [[450, 500, null], [980, 420, 'il vertice si muove,\nl’angolo {g:no}'], [1460, 420, 'sul diametro:\nangolo {g:retto}']];
   pills.forEach(([x, w, s], i) => {

@@ -111,7 +111,11 @@ Esempio: $f(x) = x^2$ su $[0; 3]$.
 
 >! La derivabilità deve valere in **tutti** i punti interni. Per $|x|$ su $[-1; 2]$ la corda ha pendenza $\frac{2 - 1}{3} = \frac{1}{3}$. Ma la derivata vale solo $-1$ o $1$, quindi nessun $c$ va bene: in $0$ la funzione non è derivabile.
 
-> Scritta come $f(b) = f(a) + f'(c)\,(b - a)$, la tesi si chiama **formula degli incrementi finiti**.` },
+> Scritta come $f(b) = f(a) + f'(c)\,(b - a)$, la tesi si chiama **formula degli incrementi finiti**.
+
+> **Teorema di Cauchy.** Se $f$ e $g$ sono continue in $[a; b]$, derivabili in $(a; b)$ e $g'(x) \ne 0$ in $(a; b)$, esiste almeno un punto $c \in (a; b)$ tale che $$\frac{f'(c)}{g'(c)} = \frac{f(b) - f(a)}{g(b) - g(a)}.$$ Il punto $c$ è lo stesso per $f$ e per $g$. Con $g(x) = x$ ritrovi Lagrange.
+
+[[video:studio-di-funzione/cauchy]]` },
 
     { id: 'conseguenze', titolo: 'Segno della derivata e monotonia', testo: R`Da Lagrange si ricava il legame fra il segno di $f'$ e l'andamento di $f$.
 

@@ -175,6 +175,8 @@ Poi il prodotto:
 
 **Dalle soluzioni all'equazione.** Due numeri con somma $s$ e prodotto $p$ sono le soluzioni di $x^2-sx+p=0$.
 
+[[video:equazioni-secondo-grado/simmetrici]]
+
 ?? Quale equazione ha come soluzioni $3$ e $-2$?
 [x] $x^2-x-6=0$
 [ ] $x^2+x-6=0$

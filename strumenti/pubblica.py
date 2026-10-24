@@ -11,7 +11,7 @@ from pathlib import Path
 
 SORGENTE = Path(__file__).resolve().parent.parent
 REPO = Path(r'C:\Users\lfili\WebApps\compasso')
-ESCLUDI = {'VALUTAZIONI-VIDEO.json', 'VALUTAZIONI-VIDEO.md', 'valuta-video.bat', '.git', '__pycache__', 'HANDOFF.md', 'REVISIONE-2026-09.md', 'VIDEO.md', 'HANDOFF-VIDEO.md', 'video-mp4', 'voce-testi', 'VOCE.md', 'COPERTURA-PROGRAMMI.md', 'COPERTURA-PROGRAMMI-2.md', 'PRONUNCIA-LETTERE.md', 'PROMPT-VIDEO-NUOVI.md', 'node_modules'}  # gli MP4 restano solo qui
+ESCLUDI = {'VALUTAZIONI-VIDEO.json', 'VALUTAZIONI-VIDEO.md', 'valuta-video.bat', '.git', '__pycache__', 'HANDOFF.md', 'REVISIONE-2026-09.md', 'VIDEO.md', 'HANDOFF-VIDEO.md', 'video-mp4', 'voce-testi', 'VOCE.md', 'COPERTURA-PROGRAMMI.md', 'COPERTURA-PROGRAMMI-2.md', 'PRONUNCIA-LETTERE.md', 'PROMPT-VIDEO-NUOVI.md', 'RIPRESA-CHAT.md', 'node_modules'}  # gli MP4 restano solo qui
 
 def main():
     if len(sys.argv) < 2 or not sys.argv[1].isdigit():

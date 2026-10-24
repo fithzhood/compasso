@@ -232,7 +232,13 @@ Con una base negativa guarda l'esponente. Se è pari, il risultato è positivo: 
 
 $n^2$ puntini formano un quadrato di lato $n$. Guarda come cresce: ogni «L» aggiunge $1, 3, 5, 7, \dots$ puntini. Così la somma dei primi $n$ dispari fa $n^2$.
 
-[[animazione:somma-dispari]]` },
+[[animazione:somma-dispari]]
+
+### Le potenze di 2 e il binario
+
+Con le sole potenze di $2$ si scrivono tutti i numeri naturali: è il sistema **binario**, in base $2$. Ogni cifra dice se una potenza di $2$ c'è ($1$) o non c'è ($0$).
+
+[[video:insiemi-numerici/binario]]` },
 
     { id: 'notazione-scientifica', titolo: 'Notazione scientifica e ordine di grandezza', testo: R`Il Sole è lontano circa $150\,000\,000$ km. Un atomo misura circa $0{,}00000005$ mm. Con le potenze di $10$ li scrivi senza contare gli zeri: $1{,}5 \times 10^8$ km e $5 \times 10^{-8}$ mm.
 

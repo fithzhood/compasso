@@ -10,8 +10,8 @@ CVIDEO.registra('geometria-piano-1/criteri', M => {
 // [chiave, durata del fumetto, testo, pausa prima]
 const SEQ = [
   ['pezzi', 5.6, 'Prima prova: due lati, {x:5} e {y:4},\ne l’angolo fra loro, {v:50°}.'],
-  ['costr', 4.4, 'Apro l’angolo e appoggio\ni due lati sulle sue semirette.'],
-  ['chiudo', 4.4, 'Il terzo lato è obbligato:\nunisco i due estremi.'],
+  ['costr', 5.6, 'Appoggio {mx:AB = 5}, apro l’angolo\nin {mink:A} e ci metto {my:AC = 4}.'],
+  ['chiudo', 4.4, 'Il terzo lato è obbligato:\nunisco {mink:B} e {mink:C}.'],
   ['lal', 4.8, 'Un triangolo solo: è il criterio\n{v:LAL}, lato-angolo-lato.'],
   ['ala', 5.6, 'Ora un lato, {x:5}, e i due angoli\nai suoi estremi: {v:50°} e {y:60°}.', .6],
   ['incontro', 4.4, 'Le due semirette si incontrano\nin un punto solo.'],
@@ -21,7 +21,7 @@ const SEQ = [
   ['lllN', 4.6, 'Sopra {mink:AB} si tagliano in un punto\nsolo: criterio {v:LLL}.'],
   ['aaa', 4.6, 'E con tre angoli? {v:50°},\n{y:60°} e {g:70°}.', .6],
   ['cresce', 4.6, 'Il triangolo si ingrandisce,\nma gli angoli restano quelli.'],
-  ['infiniti', 5.0, 'Triangoli {r:infiniti}: stessa forma,\nmisure diverse. Sono solo {v:simili}.'],
+  ['infiniti', 5.0, 'Triangoli {r:infiniti}: stessa forma,\nmisure diverse. {r:Non} sono congruenti.'],
   ['lla', 5.0, 'Ultima prova: lati {x:5} e {y:3,6},\nangolo di {v:40°}…', .6],
   ['noncomp', 5.4, '…ma l’angolo {r:non} sta fra i due lati:\nil lato {y:3,6} parte da {mink:B}.'],
   ['arco2', 5.0, 'Con il compasso centrato in {mink:B},\nl’arco taglia la semiretta {r:due volte}.'],
@@ -31,7 +31,7 @@ const T = {}, FUMETTI = [[2.3, 6.8, 'Per avere un triangolo solo,\nbastano tre p
 let tt = 7.9;
 for (const [k, d, s, pausa = 0] of SEQ) { tt = +(tt + pausa).toFixed(2); T[k] = tt; FUMETTI.push([tt, +(tt + d).toFixed(2), s]); tt = +(tt + d + .1).toFixed(2); }
 const FINE = +(tt + .3).toFixed(2), DUR = +(FINE + 10.8).toFixed(1);
-FUMETTI.push([FINE + 1.0, FINE + 8.0, 'Tre pezzi bastano solo se sono quelli\ngiusti: {v:LAL}, {v:ALA} o {v:LLL}.']);
+FUMETTI.push([FINE + 1.0, FINE + 8.0, 'Tre pezzi bastano se sono quelli\ngiusti, come {v:LAL}, {v:ALA} o {v:LLL}.']);
 
 const POSA = {
   x: [[0, 760], [6.4, 760], [7.6, 190], [FINE, 190], [FINE + 1.3, 420]],
@@ -137,14 +137,15 @@ function sceneLAL(ctx, t) {
   if (t < a || t > b + .5) return;
   ctx.save(); ctx.globalAlpha *= finestra(t, a, b);
   tri(ctx, [A0, B0, C_LAL], 'g', .12 * P(t, T.lal + .2, T.lal + .8));
-  pezzoAngolo(ctx, posa(t, [[t1 + .3, 110, 320, 0], [t1 + 1.5, A0[0], A0[1], 0]]), 50, 'v', '50°', P(t, a + 2.9, a + 3.3));
-  pezzoLato(ctx, posa(t, [[t1 + 1.3, 110, 185, 0, -1], [t1 + 2.5, A0[0], A0[1], 0, -1]]), 5, 'x', '5', P(t, a + .4, a + .8));
-  pezzoLato(ctx, posa(t, [[t1 + 2.3, 620, 185, 0, 1], [t1 + 3.5, A0[0], A0[1], 50, 1]]), 4, 'y', '4', P(t, a + 1.6, a + 2.0));
+  // prima AB, poi l'angolo in A, poi AC: il lato 5 arriva quando l'etichetta 50° non è ancora lì
+  pezzoLato(ctx, posa(t, [[t1 + .3, 110, 185, 0, -1], [t1 + 1.5, A0[0], A0[1], 0, -1]]), 5, 'x', '5', P(t, a + .4, a + .8));
+  pezzoAngolo(ctx, posa(t, [[t1 + 1.7, 110, 320, 0], [t1 + 2.9, A0[0], A0[1], 0]]), 50, 'v', '50°', P(t, a + 2.9, a + 3.3));
+  pezzoLato(ctx, posa(t, [[t1 + 3.1, 620, 185, 0, 1], [t1 + 4.3, A0[0], A0[1], 50, 1]]), 4, 'y', '4', P(t, a + 1.6, a + 2.0));
   // il terzo lato è obbligato
   seg(ctx, B0, C_LAL, C.g, 6, P(t, T.chiudo + .4, T.chiudo + 1.4));
-  dot(ctx, C_LAL, C.ink, P(t, T.chiudo + 1.3, T.chiudo + 1.6, E.back), 8);
-  nomiAB(ctx, P(t, t1 + 2.4, t1 + 2.8));
-  lab(ctx, '{mink:C}', [C_LAL[0] + 6, C_LAL[1] - 44], P(t, T.chiudo + 1.4, T.chiudo + 1.8));
+  dot(ctx, C_LAL, C.ink, P(t, t1 + 4.2, t1 + 4.5, E.back), 8);
+  nomiAB(ctx, P(t, t1 + 1.4, t1 + 1.8));
+  lab(ctx, '{mink:C}', [C_LAL[0] + 6, C_LAL[1] - 44], P(t, t1 + 4.3, t1 + 4.7));
   ctx.restore();
 }
 
@@ -203,9 +204,9 @@ function sceneAAA(ctx, t) {
   ctx.save(); ctx.globalAlpha *= finestra(t, a, b);
   const k = scala(t), Bk = S(5 * k, 0), Ck = S(XC * k, YC * k);
   // le copie lasciate indietro mentre cresce
-  OMBRE.forEach(g => {
-    if (k < g + .03) return;
-    ctx.save(); ctx.strokeStyle = css(C.dim, .7); ctx.lineWidth = 2.5; ctx.setLineDash([9, 8]);
+  const kO = P(t, T.infiniti + .2, T.infiniti + .8);   // le copie compaiono a crescita finita, quando Ada dice «infiniti»
+  if (kO > 0) OMBRE.forEach(g => {
+    ctx.save(); ctx.strokeStyle = css(C.dim, .7 * kO); ctx.lineWidth = 2.5; ctx.setLineDash([9, 8]);
     ctx.beginPath(); ctx.moveTo(...A0); ctx.lineTo(...S(5 * g, 0)); ctx.lineTo(...S(XC * g, YC * g)); ctx.closePath(); ctx.stroke(); ctx.restore();
   });
   const kT = P(t, a + 3.6, a + 4.4, E.lin);
@@ -256,7 +257,7 @@ const RIGHE = [
   [T.alaN + .4, 'ALA', 'due angoli e il lato fra loro', 'uno', 'g'],
   [T.lllN + 2.0, 'LLL', 'i tre lati', 'uno', 'g'],
   [T.infiniti + .4, '', 'i tre angoli', 'infiniti', 'r'],
-  [T.due + .4, '', 'due lati e un angolo non fra loro', 'due', 'r'],
+  [T.due + .4, '', 'angolo non fra i due lati', 'a volte due', 'r'],
 ];
 function sceneTabella(ctx, t) {
   if (t < T.lal || t > FINE + .2) return;
@@ -271,8 +272,8 @@ function sceneTabella(ctx, t) {
     if (k <= 0) return;
     ctx.save(); ctx.globalAlpha *= k;
     if (nome) drawRich(ctx, '{v:' + nome + '}', 1080, y, { size: 40, weight: 600, align: 'left' });
-    txt(ctx, desc, 1180, y, { size: 30, align: 'left' });
-    drawRich(ctx, '{' + col + ':' + quanti + '}', 1825, y, { size: 44, weight: 600, align: 'right' });
+    txt(ctx, desc, nome ? 1180 : 1080, y, { size: 30, align: 'left' });   // senza sigla, la descrizione parte dalla colonna delle sigle
+    drawRich(ctx, '{' + col + ':' + quanti + '}', 1825, y, { size: quanti.length > 8 ? 40 : 44, weight: 600, align: 'right' });
     ctx.restore();
   });
   ctx.restore();
@@ -285,7 +286,7 @@ function sceneFine(ctx, t) {
   ctx.save(); ctx.globalAlpha *= al;
   conFont(TITOLI, () => {
     drawRich(ctx, '{v:in una frase}', W / 2, 150, { size: 42, weight: 500, local: t - FINE - .4 });
-    drawRich(ctx, 'Tre pezzi bastano, ma devono essere\nquelli giusti: {v:LAL}, {v:ALA} o {v:LLL}.', W / 2, 290, { size: 64, weight: 600, local: t - FINE - .8, stagger: .08 });
+    drawRich(ctx, 'Tre pezzi bastano, ma devono essere\nquelli giusti, come {v:LAL}, {v:ALA} o {v:LLL}.', W / 2, 290, { size: 64, weight: 600, local: t - FINE - .8, stagger: .08 });
   });
   const pills = [[450, 500, '{v:LAL}, {v:ALA}, {v:LLL}:\n{g:un triangolo solo}'], [980, 400, 'tre angoli:\n{r:infiniti}'], [1470, 480, 'angolo non compreso:\n{r:a volte due}']];
   pills.forEach(([x, w, s], i) => {
@@ -306,7 +307,7 @@ function sceneFine(ctx, t) {
   const SUONI = [
     ['soffio', 1.5], ['soffio', 7.9],
     ['pop', T.pezzi + .4, .4], ['pop', T.pezzi + 1.6, .5], ['pop', T.pezzi + 2.9, .6],              // LAL: i tre pezzi
-    ['tono', T.costr + .3, T.costr + 3.5, [.75, .3, .7, .2, .75, .2]],                              // scendono al loro posto
+    ['tono', T.costr + .3, T.costr + 4.3, [.75, .2, .7, .2, .75, .2]],                              // scendono al loro posto
     ['traccia', T.chiudo + .4, T.chiudo + 1.4], ['pop', T.chiudo + 1.3, .7],                       // il terzo lato, C
     ['ding', T.lal + .4],                                                                           // un triangolo solo
     ['pop', T.ala + .5, .4], ['pop', T.ala + 2.9, .5], ['pop', T.ala + 3.9, .6],                    // ALA: i pezzi

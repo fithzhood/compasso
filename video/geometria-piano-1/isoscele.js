@@ -1,30 +1,30 @@
 'use strict';
 /* Il triangolo isoscele, dimostrato — ipotesi AB = AC, tesi β = γ (gli angoli alla base). La bisettrice da A taglia BC
-   in D: ABD e ACD hanno AB = AC (ipotesi), i due angoli in A uguali (bisettrice) e AD in comune, quindi sono congruenti
-   per LAL. Ribaltato su AD, ABD si posa su ACD e β finisce su γ. Lati uguali coi trattini, angoli uguali con gli
+   in D: ABD e ACD hanno AB = AC (ipotesi), i due angoli in A congruenti (bisettrice) e AD in comune, quindi sono congruenti
+   per LAL. Ribaltato su AD, ABD si posa su ACD e β finisce su γ. Lati congruenti coi trattini, angoli congruenti con gli
    archetti, come a scuola. Argomento: geometria-piano-1 (oggi la teoria sta in geometria-euclidea). */
 CVIDEO.registra('geometria-piano-1/isoscele', M => {
   const { W, C, E, P, life, css, mix, TITOLI, conFont, drawRich, richW, txt, glowStroke, dot, card, checkMark } = M;
 
 // [chiave, durata del fumetto, testo, pausa prima]
 const SEQ = [
-  ['tri', 4.4, 'Ecco un triangolo isoscele: i lati\n{mink:AB} e {mink:AC} sono uguali.'],
+  ['tri', 4.4, 'Ecco un triangolo isoscele: i lati\n{mink:AB} e {mink:AC} sono congruenti.'],
   ['tratt', 3.8, 'Lo dicono i {g:trattini},\nuno su ogni lato.'],
   ['base', 4.6, 'Gli angoli alla base sono\n{my:β} in {mink:B} e {my:γ} in {mink:C}.'],
   ['ipo', 4.4, 'L’{v:ipotesi} è quello che so già:\n{mink:AB = AC}.'],
   ['tesi', 4.6, 'La {v:tesi} è quello che devo\ndimostrare: {my:β = γ}.'],
   ['bis', 4.8, 'Dal vertice {mink:A} traccio la {v:bisettrice}:\ntaglia {mink:BC} nel punto {mink:D}.', .3],
-  ['meta', 4.2, 'Divide l’angolo a metà:\ni due {g:archetti} sono uguali.'],
+  ['meta', 4.6, 'Divide l’angolo in due parti\n{g:congruenti}: lo dicono gli archetti.'],
   ['due', 4.4, 'Ora ci sono due triangoli:\n{mink:ABD} e {mink:ACD}.'],
   ['l1', 4.0, '{mink:AB = AC}: lo dice l’ipotesi.'],
-  ['a1', 4.4, 'I due angoli in {mink:A} sono uguali:\nlo dice la bisettrice.'],
+  ['a1', 4.8, 'I due angoli in {mink:A} sono congruenti:\nlo dice la bisettrice.'],
   ['l2', 4.8, '{mink:AD} è un lato di tutti e due\ni triangoli: è {g:in comune}.'],
   ['lal', 5.4, 'Due lati e l’angolo fra loro: per il\ncriterio {v:LAL} sono {g:congruenti}.'],
   ['ribalta', 4.8, 'Ribalto {mink:ABD} lungo {mink:AD}: si posa\nesattamente su {mink:ACD}.'],
   ['corr', 5.0, '{my:β} finisce su {my:γ}: tutti e due stanno\ndi fronte al lato {mink:AD}.'],
   ['fine', 4.4, 'Quindi {my:β = γ}: la tesi\nè {g:dimostrata}.'],
 ];
-const T = {}, FUMETTI = [[2.2, 6.8, 'Nel triangolo isoscele gli angoli\nalla base sono uguali. Perché?']];
+const T = {}, FUMETTI = [[2.1, 7.0, 'Nel triangolo isoscele gli angoli\nalla base sono congruenti. Perché?']];
 let tt = 7.9;
 for (const [k, d, s, pausa = 0] of SEQ) { tt = +(tt + pausa).toFixed(2); T[k] = tt; FUMETTI.push([tt, +(tt + d).toFixed(2), s]); tt = +(tt + d + .1).toFixed(2); }
 const FINE = +(tt + .3).toFixed(2), DUR = +(FINE + 10.8).toFixed(1);
@@ -64,7 +64,7 @@ function archetto(ctx, V, P1, P2, r, col, al, o = {}) {
   ctx.save(); ctx.globalAlpha *= al;
   if (riemp > 0) { ctx.beginPath(); ctx.moveTo(V[0], V[1]); ctx.arc(V[0], V[1], r + (n - 1) * 12, a1, a1 + d, d < 0); ctx.closePath(); ctx.fillStyle = css(col, riemp); ctx.fill(); }
   ctx.strokeStyle = css(col); ctx.lineWidth = o.w || 3.5; ctx.lineCap = 'round';
-  for (let i = 0; i < n; i++) { ctx.beginPath(); ctx.arc(V[0], V[1], r + i * 12, a1, a1 + d, d < 0); ctx.stroke(); }
+  if (!o.soloColore) for (let i = 0; i < n; i++) { ctx.beginPath(); ctx.arc(V[0], V[1], r + i * 12, a1, a1 + d, d < 0); ctx.stroke(); }
   if (o.tacca) {
     const m = a1 + d / 2;
     ctx.beginPath(); ctx.moveTo(V[0] + (r - 13) * Math.cos(m), V[1] + (r - 13) * Math.sin(m));
@@ -133,19 +133,21 @@ function sceneFigura(ctx, t) {
   seg(ctx, A, D, C.v, 5, P(t, T.bis + .4, T.bis + 1.4));
   dot(ctx, D, C.ink, P(t, T.bis + 1.3, T.bis + 1.6, E.back), 7);
   lab(ctx, '{mink:D}', [D[0], D[1] + 44], P(t, T.bis + 1.4, T.bis + 1.8));
-  // i trattini: AB e AC uguali
+  // i trattini: AB e AC congruenti
   const kT = P(t, T.tratt + .3, T.tratt + .7, E.back);
   trattino(ctx, A, B, h1 > 0 ? mix(C.ink, C.g, h1) : C.ink, kT);
   trattino(ctx, A, Cv, h1 > 0 ? mix(C.ink, C.g, h1) : C.ink, kT);
-  // i due angoli in A, uguali: un archetto con la tacca ciascuno
+  // i due angoli in A, congruenti: un archetto con la tacca ciascuno
   const kM = P(t, T.meta + .3, T.meta + .8), ha = life(t, T.a1, T.a1 + 4.4, .3, .3);
   archetto(ctx, A, B, D, 106, C.v, kM, { tacca: true, riemp: .14 + .3 * ha });
   archetto(ctx, A, D, Cv, 106, C.v, kM, { tacca: true, riemp: .14 + .3 * ha });
-  // gli angoli alla base: β e γ; alla fine due archetti verdi ciascuno (uguali)
+  // gli angoli alla base: β e γ solo colorati; alla fine, a tesi dimostrata, due archetti verdi ciascuno (congruenti)
   const kB = P(t, T.base + .4, T.base + .8), kG = P(t, T.base + 1.6, T.base + 2.0);
   const hg = life(t, T.corr + .2, T.corr + 5.0, .3, .4), kD = P(t, T.fine + .3, T.fine + .9);
-  archetto(ctx, B, A, Cv, 68, kD > 0 ? mix(C.y, C.g, kD) : C.y, kB, { n: kD > 0 ? 2 : 1, riemp: .16 });
-  archetto(ctx, Cv, B, A, 68, kD > 0 ? mix(C.y, C.g, kD) : C.y, kG, { n: kD > 0 ? 2 : 1, riemp: .16 + .3 * hg });
+  archetto(ctx, B, A, Cv, 68, kD > 0 ? mix(C.y, C.g, kD) : C.y, kB, { soloColore: true, riemp: .24 });
+  archetto(ctx, Cv, B, A, 68, kD > 0 ? mix(C.y, C.g, kD) : C.y, kG, { soloColore: true, riemp: .24 + .3 * hg });
+  archetto(ctx, B, A, Cv, 62, C.g, kD, { n: 2, riemp: 0 });
+  archetto(ctx, Cv, B, A, 62, C.g, kD, { n: 2, riemp: 0 });
   lab(ctx, '{my:β}', sullaBis(B, A, Cv, 118), kB);
   lab(ctx, '{my:γ}', sullaBis(Cv, B, A, 118), kG);
   // «in comune» dentro ACD, finché non arriva il ribaltamento
@@ -159,7 +161,7 @@ function sceneFigura(ctx, t) {
     ctx.fillStyle = css(C.x, .26); ctx.strokeStyle = css(C.x); ctx.lineWidth = 4; ctx.lineJoin = 'round';
     ctx.beginPath(); ctx.moveTo(...A); ctx.lineTo(...B); ctx.lineTo(...D); ctx.closePath(); ctx.fill(); ctx.stroke();
     trattino(ctx, A, B, C.x, 1);
-    archetto(ctx, B, A, Cv, 68, C.y, 1, { riemp: .3, w: 4.5 });
+    archetto(ctx, B, A, Cv, 68, C.y, 1, { soloColore: true, riemp: .36 });
     ctx.restore();
   }
   // i vertici
@@ -197,18 +199,19 @@ function scenePannello(ctx, t) {
   const kDim = P(t, T.bis, T.bis + .5);
   if (kDim > 0) {
     ctx.save(); ctx.globalAlpha *= kDim;
-    ctx.strokeStyle = C.panelEdge; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(1080, 385); ctx.lineTo(1820, 385); ctx.stroke();
-    conFont(TITOLI, () => drawRich(ctx, 'dimostrazione', 1450, 435, { size: 38, weight: 600 }));
+    ctx.strokeStyle = C.panelEdge; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(1080, 375); ctx.lineTo(1820, 375); ctx.stroke();
+    conFont(TITOLI, () => drawRich(ctx, 'dimostrazione', 1450, 420, { size: 38, weight: 600 }));
     ctx.restore();
   }
-  riga(ctx, t, 510, T.l1 + .3, y => drawRich(ctx, '{mink:AB = AC}', XL, y, { size: 44, align: 'left' }), '{dim:per ipotesi}');
-  riga(ctx, t, 585, T.a1 + .3, y => {
+  riga(ctx, t, 486, T.l1 + .3, y => drawRich(ctx, '{mink:AB = AC}', XL, y, { size: 44, align: 'left' }), '{dim:per ipotesi}');
+  riga(ctx, t, 550, T.a1 + .3, y => {
     let x = XL + angH(ctx, 'BAD', XL, y, 44);
     drawRich(ctx, '{mink: = }', x, y, { size: 44, align: 'left' }); x += richW(ctx, '{mink: = }', 44);
     angH(ctx, 'CAD', x, y, 44);
   }, '{dim:bisettrice}');
-  riga(ctx, t, 660, T.l2 + .3, y => drawRich(ctx, '{mink:AD}', XL, y, { size: 44, align: 'left' }), '{dim:in comune}');
-  riga(ctx, t, 742, T.lal + .4, y => drawRich(ctx, '{mink:ABD}{ink: e }{mink:ACD}{ink: congruenti}', XL, y, { size: 40, align: 'left' }), '{v:LAL}');
+  riga(ctx, t, 614, T.l2 + .3, y => drawRich(ctx, '{mink:AD}', XL, y, { size: 44, align: 'left' }), '{dim:in comune}');
+  riga(ctx, t, 680, T.lal + .4, y => drawRich(ctx, '{mink:ABD}{ink: e }{mink:ACD}{ink: congruenti}', XL, y, { size: 40, align: 'left' }), '{v:LAL}');
+  riga(ctx, t, 746, T.corr + .4, y => drawRich(ctx, '{my:β = γ}', XL, y, { size: 44, align: 'left' }), '{dim:opposti ad }{mink:AD}');
   ctx.restore();
 }
 
@@ -219,7 +222,7 @@ function sceneFine(ctx, t) {
   ctx.save(); ctx.globalAlpha *= al;
   conFont(TITOLI, () => {
     drawRich(ctx, '{v:in una frase}', W / 2, 150, { size: 42, weight: 500, local: t - FINE - .4 });
-    drawRich(ctx, 'La bisettrice divide l’isoscele in due triangoli\ncongruenti: gli angoli alla base sono {g:uguali}.', W / 2, 290, { size: 60, weight: 600, local: t - FINE - .8, stagger: .08 });
+    drawRich(ctx, 'La bisettrice divide l’isoscele in due triangoli\ncongruenti: gli angoli alla base sono {g:congruenti}.', W / 2, 290, { size: 60, weight: 600, local: t - FINE - .8, stagger: .08 });
   });
   const pills = [[470, 480, '{v:ipotesi}: {mink:AB = AC}'], [960, 380, 'criterio {v:LAL}'], [1450, 420, '{v:tesi}: {my:β = γ}']];
   pills.forEach(([x, w, s], i) => {
