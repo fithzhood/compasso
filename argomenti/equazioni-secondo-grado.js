@@ -126,7 +126,11 @@ Applica la formula a $2x^2-5x+2=0$.
 [ ] $-4\pm\sqrt{-4}$
 => Qui $a=1$, $b=4$, $c=-5$. Allora $\Delta=16+20=36$ e il numeratore è $-4\pm\sqrt{36}$. Le soluzioni sono $1$ e $-5$. Con $\sqrt{-4}$ hai perso il segno di $c$: hai fatto $16-20$. Con $4\pm$ hai perso il meno davanti a $b$.
 
->! Il $2a$ divide **tutto** il numeratore, anche $-b$. $\dfrac{-b\pm\sqrt{\Delta}}{2a}$ è diverso da $-b\pm\dfrac{\sqrt{\Delta}}{2a}$.` },
+>! Il $2a$ divide **tutto** il numeratore, anche $-b$. $\dfrac{-b\pm\sqrt{\Delta}}{2a}$ è diverso da $-b\pm\dfrac{\sqrt{\Delta}}{2a}$.
+
+Con $t=x^2$ anche una biquadratica come $x^4-5x^2+4=0$ diventa di secondo grado; poi $x^2=t$ si risolve come una pura.
+
+[[video:equazioni-secondo-grado/biquadratica]]` },
 
     { id: 'formula-ridotta', titolo: 'La formula ridotta', testo: R`Se $b$ è un numero **pari**, nella formula puoi dividere tutto per $2$ e i conti si accorciano.
 
@@ -227,7 +231,11 @@ Il vertice ha ascissa $x_V=-\dfrac{b}{2a}$. Sta a metà fra le due soluzioni, pe
 [ ] nessuna
 => Con $a$ e $c$ di segno opposto, $-4ac$ è positivo. Allora $\Delta=b^2-4ac$ è positivo per ogni $b$. Nel grafico, con $a>0$ e $c<0$ la parabola è aperta verso l'alto e taglia l'asse $y$ sotto lo zero. Per questo attraversa due volte l'asse $x$.
 
-> Questo legame serve nelle disequazioni: $ax^2+bx+c$ è positivo dove la parabola sta sopra l'asse $x$.` },
+> Questo legame serve nelle disequazioni: $ax^2+bx+c$ è positivo dove la parabola sta sopra l'asse $x$.
+
+Con una retta si fa lo stesso: la sostituisci nella parabola, e il $\Delta$ dell'equazione che ottieni conta i punti comuni.
+
+[[video:equazioni-secondo-grado/sistema-retta-parabola]]` },
 
     { id: 'fratte', titolo: 'Equazioni fratte di secondo grado', testo: R`Un'equazione **fratta** ha l'incognita in un denominatore. Si risolve così:
 
