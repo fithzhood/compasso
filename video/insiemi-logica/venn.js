@@ -1,5 +1,5 @@
 'use strict';
-/* Due cerchi che si toccano — A = divisori di 12, B = divisori di 18 in un diagramma di Venn: la parte comune
+/* Due cerchi che si sovrappongono — A = divisori di 12, B = divisori di 18 in un diagramma di Venn: la parte comune
    A ∩ B = {1, 2, 3, 6} sono i divisori comuni (il più grande, 6, è il MCD); A ∪ B ha 8 elementi = 6 + 6 − 4.
    Argomento: insiemi-logica. */
 CVIDEO.registra('insiemi-logica/venn', M => {
@@ -35,7 +35,7 @@ const FUMETTI = [
   [45.3, 49.7, 'Il più grande è 6: è il\n{g:massimo comun divisore}.'],
   // 3 · l'unione
   [50.0, 54.4, 'Tutti i numeri dei due cerchi\nformano l’{v:unione}: {mink:A ∪ B}.'],
-  [54.6, 59.0, 'Chi sta in tutti e due\nsi scrive {r:una volta sola}.'],
+  [54.6, 59.0, 'Chi sta in tutti e due\nsi scrive {v:una volta sola}.'],
   [59.2, 64.5, 'Sono 8: 6 di {mx:A}, più 6 di {my:B},\nmeno i 4 contati due volte.'],
   // chiusura
   [67.4, 74.0, 'Intersezione: in tutti e due.\nUnione: in almeno uno.'],
@@ -80,8 +80,8 @@ function linea(ctx, x0, x1, y, al) {
 
 // ---------- il diagramma ----------
 const CARD = [130, 110, 1000, 690], R = 230, CY = 455;
-// A da sola al centro, poi si sposta a sinistra mentre entra B (21,4–22,8)
-const xA = t => kf(t, [[21.4, 630], [22.8, 520]]);
+// A da sola al centro, poi si sposta a sinistra mentre entra B (18,0–19,4), quando Ada nomina B
+const xA = t => kf(t, [[18.0, 630], [19.4, 520]]);
 const XB = 740;
 // i numeri: posizione con A da sola (a) e posizione finale (f)
 const NUM = [
@@ -117,11 +117,11 @@ function sceneVenn(ctx, t) {
   }
   // i due cerchi e i loro nomi
   cerchio(ctx, ax, CY, C.x, P(t, 8.3, 9.5));
-  cerchio(ctx, XB, CY, C.y, P(t, 22.9, 24.1));
+  cerchio(ctx, XB, CY, C.y, P(t, 19.5, 20.7));
   drawRich(ctx, '{mx:A}', ax - 210, CY - 220, { size: 60, alpha: P(t, 9.3, 9.7) });
-  drawRich(ctx, '{my:B}', XB + 210, CY - 220, { size: 60, alpha: P(t, 23.9, 24.3) });
+  drawRich(ctx, '{my:B}', XB + 210, CY - 220, { size: 60, alpha: P(t, 20.5, 20.9) });
   // i numeri
-  const kMove = P(t, 21.4, 22.8);   // insieme ad A, prima che arrivi B
+  const kMove = P(t, 18.0, 19.4);   // insieme ad A, prima che arrivi B
   NUM.forEach(([n, a, f], i) => {
     let x, y, k;
     if (a) {
@@ -180,7 +180,7 @@ function sceneScheda(ctx, t) {
 function sceneIntro(ctx, t) {
   if (t > 7.5) return;
   const al = 1 - P(t, 6.2, 7.0);
-  conFont(TITOLI, () => drawRich(ctx, 'Due cerchi che si toccano', W / 2, 180, { size: 130, weight: 600, local: t - 1.6, stagger: .15, alpha: al }));
+  conFont(TITOLI, () => drawRich(ctx, 'Due cerchi\nche si sovrappongono', W / 2, 200, { size: 130, weight: 600, local: t - 1.6, stagger: .15, alpha: al, lh: 1.15 }));
 }
 
 // 4 · in una frase (FINE–DUR)
@@ -221,8 +221,8 @@ function sceneFine(ctx, t) {
     ['soffio', 12.3], ['pop', 12.5, .5],                                              // A fra graffe
     ['pop', 16.9, .55],                                                               // B fra graffe
     ['pop', 21.3, .6],                                                                // 1, 2, 3, 6 in viola
-    ['tono', 21.4, 22.8, [.5, .45, .35, .3]],                                         // A si sposta a sinistra
-    ['traccia', 22.9, 24.1],                                                          // il cerchio B
+    ['tono', 18.0, 19.4, [.5, .45, .35, .3]],                                         // A si sposta a sinistra
+    ['traccia', 19.5, 20.7],                                                          // il cerchio B
     ['pop', 26.6, .6], ['pop', 26.9, .7],                                             // 9 e 18
     ['pop', 31.4, .4],                                                                // 4 e 12
     ['soffio', 35.6], ['pop', 35.8, .6],                                              // l'intersezione
@@ -234,7 +234,7 @@ function sceneFine(ctx, t) {
     ['soffio', FINE + .4], ['pop', FINE + 2.2, .5], ['pop', FINE + 2.7, .6], ['pop', FINE + 3.2, .7],
   ];
   return {
-    titolo: 'Due cerchi che si toccano', durata: DUR, copertina: 4.2, suoni: SUONI,
+    titolo: 'Due cerchi che si sovrappongono', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, 35.2, 'due insiemi'], [35.2, 49.8, 'l’intersezione'], [49.8, FINE, 'l’unione']],
     scena(ctx, t) { sceneIntro(ctx, t); sceneVenn(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

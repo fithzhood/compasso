@@ -122,7 +122,7 @@ function sceneBarre(ctx, t) {
     txt(ctx, '20 €', xb, yE(110) + dy, { size: 30, alpha: kg * (1 - k6) });
     blocco(ctx, XB, 0, 120, C.x, k6);
     righe(ctx, XB, 24, 5, C.v, k6, 1);
-    etichette(ctx, XB, 24, 5, '24 €', P(t, 31.1, 31.5));
+    etichette(ctx, XB, 24, 5, '24 €', P(t, 34.9, 35.3));   // insieme a «24 €» nella scheda
     blocco(ctx, XB, 96, 120, C.r, P(t, 35.1, 35.5));
     prezzo(ctx, '120 €', XB, yE(120) - 40, P(t, 23.0, 23.4));
   }
@@ -141,14 +141,16 @@ function sceneBarre(ctx, t) {
     ctx.restore();
     prezzo(ctx, '96 €', XC, yE(100) - 50, P(t, 41.8, 42.2));
   }
-  // i 4 € che mancano per tornare a 100
+  // i 4 € che mancano per tornare a 100: la fetta vuota sopra la barra, e una staffa larga
   const kb = P(t, 44.5, 44.9);
   if (kb > 0) {
-    const x = XC + BW / 2 + 14;
-    ctx.save(); ctx.globalAlpha *= kb; ctx.strokeStyle = css(C.r); ctx.lineWidth = 3;
-    ctx.beginPath(); ctx.moveTo(x, yE(100)); ctx.lineTo(x, yE(96)); ctx.moveTo(x - 6, yE(100)); ctx.lineTo(x + 6, yE(100));
-    ctx.moveTo(x - 6, yE(96)); ctx.lineTo(x + 6, yE(96)); ctx.stroke(); ctx.restore();
-    drawRich(ctx, '{r:−4 €}', x + 14, yE(98), { size: 40, align: 'left', alpha: kb });
+    const x = XC + BW / 2 + 16, y0 = yE(100), y1 = yE(96);
+    ctx.save(); ctx.globalAlpha *= kb;
+    ctx.fillStyle = css(C.r, .16); ctx.fillRect(XC - BW / 2, y0, BW, y1 - y0);
+    ctx.strokeStyle = css(C.r); ctx.lineWidth = 4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x, y0 - 14); ctx.lineTo(x, y1 + 14); ctx.moveTo(x - 14, y0 - 14); ctx.lineTo(x + 2, y0 - 14);
+    ctx.moveTo(x - 14, y1 + 14); ctx.lineTo(x + 2, y1 + 14); ctx.stroke(); ctx.restore();
+    drawRich(ctx, '{r:−4 €}', x + 16, yE(98), { size: 40, align: 'left', alpha: kb });
   }
   // le due basi: 100 € per il +20%, 120 € per il −20%
   const kv = life(t, 48.8, 53.4, .4, .4);

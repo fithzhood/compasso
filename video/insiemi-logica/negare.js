@@ -23,7 +23,7 @@ const FACCIA = [ // mai due cambi in meno di 2 s (tranne l'accensione)
 ];
 // una frase per ogni cosa che succede, e solo mentre succede
 const FUMETTI = [
-  [2.2, 6.4, '«Tutti i gatti sono neri.»\nCome si dice il contrario?'],
+  [2.1, 6.5, '«Tutti i gatti sono neri.»\nCome si scrive la sua negazione?'],
   // 1 · la frase
   [7.9, 11.9, 'Ecco i gatti di un cortile:\nsono tutti neri.'],
   [12.1, 16.1, 'La frase «tutti i gatti sono neri»\nqui è {g:vera}.'],
@@ -39,14 +39,14 @@ const FUMETTI = [
   [48.5, 52.9, 'Con il gatto bianco è {g:vera},\nproprio quando «tutti» è falsa.'],
   [53.1, 57.3, 'Se il gatto torna nero,\n«tutti» è di nuovo {g:vera}…'],
   [57.5, 61.5, '…e «almeno un gatto non è nero»\nè {r:falsa}.'],
-  [61.7, 66.3, 'Per smentire «tutti» basta {g:un solo}\ngatto bianco: un {v:controesempio}.'],
+  [61.7, 66.3, 'Di nuovo bianco: per smentire «tutti»\nbasta {g:un solo} {v:controesempio}.'],
   // 4 · per ogni, esiste
   [66.7, 71.3, 'In simboli, {mv:∀} si legge «per ogni»\ne {mv:∃} si legge «esiste».'],
   [71.5, 76.3, '«Tutti i gatti sono neri» diventa:\nper ogni gatto, il gatto è nero.'],
   [76.5, 80.9, 'La negazione: {g:esiste} un gatto\nche {r:non} è nero.'],
   [81.1, 85.9, 'Negando, «per ogni» diventa «esiste»\ne «è nero» diventa «non è nero».'],
   // chiusura
-  [88.8, 95.4, 'Il contrario di «tutti sono…»\nè «almeno uno non è…».'],
+  [88.8, 95.4, 'La negazione di «tutti sono…»\nè «almeno uno non è…».'],
 ];
 
 // ---------- i gatti ----------
@@ -205,7 +205,7 @@ function sceneFine(ctx, t) {
   });
   const pills = [
     [490, '{dim:non è}', '«{r:nessuno}»'],
-    [960, '{dim:si scambiano}', '{mv:∀}{mink:  →  }{mv:∃}'],
+    [960, '{dim:negando}', '{mv:∀}{ink: diventa }{mv:∃}'],
     [1430, '{dim:per smentire «tutti»}', '{v:un controesempio}'],
   ];
   pills.forEach(([x, testa, corpo], i) => {

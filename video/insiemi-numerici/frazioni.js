@@ -32,7 +32,7 @@ const FUMETTI = [
   [35.1, 39.4, 'Ora le fette sono {g:tutte uguali}:\nsono {v:sesti}.'],
   [39.5, 43.9, 'Le metto insieme:\n3 sesti più 2 sesti…'],
   [44.0, 47.9, '…fanno {g:5 sesti}: {mink:5/6}.'],
-  [48.0, 52.9, '6 è il {v:denominatore comune}:\nil mcm di 2 e 3.'],
+  [48.0, 52.9, '6 è il {v:denominatore comune}:\nil minimo comune multiplo di 2 e 3.'],
   // 3 · la scorciatoia sbagliata
   [53.5, 57.9, 'E se sommassi sopra con sopra\ne sotto con sotto?'],
   [58.0, 62.2, 'Verrebbe {mink:2/5}:\n2 fette su 5.'],
@@ -104,7 +104,7 @@ function scheda(ctx, t) {
 }
 
 // 1–2 · due torte, poi lo stesso taglio (7.5–53.6)
-const CY = 380, R = 160, XA = 400, XB = 1000, XR = 1600, YL = 640, XP = 700, XU = 1300;
+const CY = 395, R = 150, XA = 400, XB = 1000, XR = 1600, YL = 640, XP = 700, XU = 1300;
 const SESTI = [0, 1, 2, 3, 4, 5].map(i => i / 6);
 function sceneTorte(ctx, t) {
   if (t < 7.5 || t > 53.8) return;
@@ -125,13 +125,10 @@ function sceneTorte(ctx, t) {
     vuoto(ctx, XB, CY, R, 0, 1 / 3, C.y, P(vB, 0, .2));
   });
   if (kR > 0) scala(ctx, XR, CY, kR, () => piatto(ctx, XR, CY, R, SESTI, 1));
-  // i segni fra le torte
-  drawRich(ctx, '{mink:+}', XP, CY, { size: 90, alpha: P(t, 11.8, 12.3) });
-  drawRich(ctx, '{mink:=}', XU, CY, { size: 90, alpha: P(t, 39.6, 40.0) });
   drawRich(ctx, '{r:misure}\n{r:diverse}', XP, CY + 125, { size: 32, alpha: life(t, 15.9, 21.0, .4, .4) });
   // il pezzo della prima torta: pulsa, poi vola sul terzo piatto
   if (kA > 0) {
-    const x = lerp(XA, XR, vA), y = CY;
+    const x = lerp(XA, XR, vA), y = CY - 60 * Math.sin(Math.PI * vA);
     scala(ctx, x, y, (vA > 0 ? 1 : kA * tutte) * pul(15.9), () => {
       pezzo(ctx, x, y, R, 0, .5, C.x, P(t, 8.6, 9.1));
       tagliViola(ctx, x, y, R, [1 / 6, 2 / 6], cA);
@@ -139,12 +136,15 @@ function sceneTorte(ctx, t) {
   }
   // il pezzo della seconda: vola e gira di mezzo giro, fino a 3/6–5/6
   if (kB > 0) {
-    const x = lerp(XB, XR, vB), y = CY, g = .5 * vB;
+    const x = lerp(XB, XR, vB), y = CY - 60 * Math.sin(Math.PI * vB), g = .5 * vB;
     scala(ctx, x, y, (vB > 0 ? 1 : kB * tutte) * pul(16.4), () => {
       pezzo(ctx, x, y, R, g, g + 1 / 3, C.y, P(t, 12.2, 12.7));
       tagliViola(ctx, x, y, R, [g + 1 / 6], cB);
     });
   }
+  // i segni fra le torte, sopra i pezzi che passano in volo
+  drawRich(ctx, '{mink:+}', XP, CY, { size: 90, alpha: P(t, 11.8, 12.3) });
+  drawRich(ctx, '{mink:=}', XU, CY, { size: 90, alpha: P(t, 39.6, 40.0) });
   // le frazioni sotto le torte; alla fine il 6 dei denominatori diventa viola
   const v6 = P(t, 48.1, 48.6);
   const lab = (items, x, a) => drawSeq(ctx, items, x, YL, 54, { alpha: a });
@@ -157,9 +157,9 @@ function sceneTorte(ctx, t) {
   lab([fr(5, 6, 'g')], XR, P(t, 44.1, 44.5) * (1 - v6));
   lab([fr(5, 6, 'g', 'v')], XR, v6);
   // la domanda, poi la risposta, in alto
-  drawRich(ctx, '{dim:in quante fette uguali?}', 960, 165, { size: 38, alpha: life(t, 21.2, 26.0, .4, .3) });
-  drawRich(ctx, 'in {v:6} fette uguali', 960, 165, { size: 38, alpha: life(t, 26.0, 48.1, .3, .3) });
-  drawRich(ctx, '{v:6} è il {v:denominatore comune}', 960, 165, { size: 38, alpha: P(t, 48.2, 48.6) });
+  drawRich(ctx, '{dim:in quante fette uguali?}', 960, 158, { size: 38, alpha: life(t, 21.2, 26.0, .4, .3) });
+  drawRich(ctx, 'in {v:6} fette uguali', 960, 158, { size: 38, alpha: life(t, 26.0, 48.1, .3, .3) });
+  drawRich(ctx, '{v:6} è il {v:denominatore comune}', 960, 158, { size: 38, alpha: P(t, 48.2, 48.6) });
   ctx.restore();
 }
 
@@ -214,7 +214,7 @@ function sceneFine(ctx, t) {
   ctx.restore();
 }
 
-  // effetti sonori (strumenti/suoni-sintesi.py): i pezzi che scorrono verso il terzo piatto
+  // effetti sonori (strumenti/suoni-sintesi.py): i pezzi volano in arco sul terzo piatto
   const SUONI = [
     ['soffio', 1.5],
     ['soffio', 7.5], ['pop', 8.1, .5], ['pop', 8.7, .45], ['pop', 9.1, .5],          // la prima torta, mezza, 1/2
@@ -224,7 +224,7 @@ function sceneFine(ctx, t) {
     ['traccia', 25.9, 26.9], ['pop', 27.4, .5],                                       // la prima in sesti: 3/6
     ['traccia', 30.5, 31.5], ['pop', 32.1, .4],                                       // la seconda in sesti: 2/6
     ['pop', 35.4, .6],                                                                // tutte uguali
-    ['pop', 39.7, .5], ['tono', 40.3, 42.0, [.4, .6]], ['tono', 40.9, 42.6, [.45, .65]],   // insieme
+    ['pop', 39.7, .5], ['tono', 40.3, 42.0, [.45, .7, .45]], ['tono', 40.9, 42.6, [.4, .65, .4]],   // insieme
     ['ding', 44.1],                                                                   // 5/6
     ['pop', 48.2, .6],                                                                // il denominatore comune
     ['soffio', 53.5], ['pop', 53.9, .5], ['pop', 55.1, .55],                          // sopra con sopra, sotto con sotto

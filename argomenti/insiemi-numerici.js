@@ -38,6 +38,10 @@ $$\mathbb{Q} = \left\{ \frac{m}{n} \ \middle|\ m, n \in \mathbb{Z},\ n \ne 0 \ri
 
 Si legge: le frazioni $\dfrac{m}{n}$ con $m$ e $n$ interi e $n$ diverso da zero. Con le frazioni puoi sempre dividere, tranne per $0$.
 
+Per sommare due frazioni, prima si porta tutto allo stesso denominatore.
+
+[[video:insiemi-numerici/frazioni]]
+
 | insieme | che cosa aggiunge | equazione che risolve |
 |---|---|---|
 | $\mathbb{N}$ | i numeri per contare | $x + 3 = 5$ |
@@ -106,6 +110,10 @@ Che decimale otterrai?
 ### Dal decimale alla frazione
 
 Un decimale limitato è facile: $0{,}25 = \dfrac{25}{100} = \dfrac{1}{4}$. Sotto metti un $1$ con tanti zeri quante le cifre dopo la virgola. Poi semplifica.
+
+Anche una percentuale è una frazione con denominatore $100$: $20\% = \dfrac{20}{100}$.
+
+[[video:insiemi-numerici/percentuali]]
 
 Anche un periodico viene da una frazione: la sua **frazione generatrice**. Per trovarla, fai sparire il periodo con una sottrazione:
 
