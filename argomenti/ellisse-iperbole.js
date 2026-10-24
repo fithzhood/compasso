@@ -260,7 +260,11 @@ Muovi i cursori e guarda gli asintoti. Poi prova $a=2$, $b=4$, $c=1$, $d=2$: con
 [ ] $y=-3$
 => È il rapporto dei coefficienti di $x$: $\frac42=2$. Per $x$ molto grande $y$ si avvicina a $\frac{4x}{2x}=2$. Con $4$ non hai diviso per $c$, e $-3$ dà l'asintoto verticale.
 
->! Il punto $x=-\frac dc$ va escluso dal dominio, come in ogni frazione.` },
+>! Il punto $x=-\frac dc$ va escluso dal dominio, come in ogni frazione.
+
+Anche ellisse e iperbole si possono spostare. Se al posto di $x$ e di $y$ trovi $x-1$ e $y-2$, la curva è quella di sempre con il centro in $(1;2)$. Quando l'equazione è sviluppata, ci arrivi completando i quadrati.
+
+[[video:ellisse-iperbole/traslata]]` },
 
     { id: 'determinare-equazione', titolo: "Determinare l'equazione dai dati", testo: R`Negli esercizi hai un fuoco, un vertice, un punto della curva o l'eccentricità. Da questi dati ricostruisci $a$ e $b$. Le incognite sono due, quindi servono due dati.
 

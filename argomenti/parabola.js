@@ -222,7 +222,16 @@ Il vertice sta a metà strada fra fuoco e direttrice. Con $F(2; 3)$ e direttrice
 
 Nella scheda **Laboratorio** c'è *Il canestro*: trascina il vertice e regola $a$ finché la parabola entra nell'anello.
 
->! Tre punti allineati non stanno su nessuna parabola: il sistema dà $a = 0$. Due punti con la stessa ascissa non stanno su una parabola con asse verticale.` },
+>! Tre punti allineati non stanno su nessuna parabola: il sistema dà $a = 0$. Due punti con la stessa ascissa non stanno su una parabola con asse verticale.
+
+### Fasci di parabole
+Con due condizioni sole le parabole sono infinite. Quelle che passano per $(0; 0)$ e $(2; 0)$ si scrivono tutte $y = a \cdot x(x - 2)$: ogni valore di $a$ ne dà una.
+
+>* Le parabole $y = a \cdot x(x - 2)$, al variare di $a$, formano un **fascio di parabole**. I punti comuni a tutte, $(0; 0)$ e $(2; 0)$, sono i **punti base**. Con $a = 0$ resta la retta $y = 0$: è la **parabola degenere** del fascio.
+
+[[video:parabola/fasci]]
+
+La terza condizione sceglie $a$. Se la parabola passa anche per $(3; 3)$, allora $3 = a \cdot 3 \cdot (3 - 2)$, cioè $a = 1$.` },
 
     { id: 'segmento-parabolico-problemi', titolo: 'Il segmento parabolico e i problemi', testo: R`Una retta taglia la parabola in due punti. Il segmento fra questi due punti si chiama **corda**. La parte di piano chiusa fra la corda e l'arco di parabola è il **segmento parabolico**. Archimede scoprì che la sua area è sempre due terzi di un rettangolo.
 
