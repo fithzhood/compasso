@@ -185,7 +185,11 @@ Nel grafico vedi le **somme parziali** $S_1, S_2, \dots, S_{15}$ con $a_1 = 1$: 
 ?? Quanto fa $1 + 2 + 4 + 8 + \dots$, sommando tutti gli infiniti termini?
 => Non ha una somma finita, perché i termini crescono. La formula darebbe $\frac{1}{1 - 2} = -1$, un risultato assurdo. Quindi, prima di usare $\frac{a_1}{1-q}$, controlla che $|q| < 1$.
 
->! $\dfrac{a_1}{1 - q}$ vale **solo** se $|q| < 1$. Con $|q| \ge 1$ la somma infinita non ha un valore finito.` },
+>! $\dfrac{a_1}{1 - q}$ vale **solo** se $|q| < 1$. Con $|q| \ge 1$ la somma infinita non ha un valore finito.
+
+Non basta che i termini tendano a $0$: la **serie armonica** $1 + \frac12 + \frac13 + \frac14 + \dots$ non ha una somma finita.
+
+[[video:successioni/serie-armonica]]` },
 
     { id: 'fibonacci', titolo: 'La successione di Fibonacci e il rapporto aureo', testo: R`Nel 1202 Leonardo Fibonacci contava le coppie di conigli di un allevamento. Mese dopo mese le coppie erano $1, 1, 2, 3, 5, 8, 13, \dots$ Ogni numero è la somma dei due prima.
 

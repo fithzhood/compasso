@@ -301,6 +301,10 @@ In un $\frac{\infty}{\infty}$ fra funzioni di tipo diverso vince la più veloce.
 [ ] $1$
 => Fa $0$. Con $x = 10$ vince $x^{100}$, ma da un certo punto $2^x$ la supera e la stacca. Il limite guarda solo quello che succede alla fine.
 
+Lo stesso confronto si fa fra funzioni che tendono a $0$, gli **infinitesimi**: se il rapporto fra due infinitesimi tende a $0$, quello al numeratore è **di ordine superiore**.
+
+[[video:limiti/infinitesimi]]
+
 ### Il limite di una successione
 
 Una successione $a_n$ è una funzione definita sui numeri naturali, quindi il suo limite si cerca solo per $n \to +\infty$. La successione è:

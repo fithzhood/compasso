@@ -396,6 +396,10 @@ Taglialo nel punto $x$: la sezione è un cerchio di raggio $f(x)$. La sua area �
 [ ] $2\pi\int_0^3 x\,dx$
 => Ogni sezione è un cerchio di raggio $x$, di area $\pi x^2$. Il volume è $\pi\int_0^3 x^2\,dx = 9\pi$. Senza il quadrato usi il raggio al posto dell'area del cerchio.
 
+Le sezioni non devono per forza essere cerchi: se nel punto $x$ la sezione ha area $A(x)$, il volume è $V = \int_a^b A(x)\,dx$.
+
+[[video:integrali/volumi-sezioni]]
+
 ### Integrali impropri
 
 E se l'intervallo arriva all'infinito, o la funzione ha un asintoto verticale? Calcoli l'integrale su un intervallo normale, poi fai un limite.
