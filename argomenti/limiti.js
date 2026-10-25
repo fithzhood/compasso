@@ -32,13 +32,13 @@ Ti servono le funzioni elementari: potenze, esponenziali, logaritmi, seno e cose
   sezioni: [
     { id: 'intorni-accumulazione', titolo: 'Intorni e punti di accumulazione', testo: R`Per parlare di limiti devi dire con precisione che cosa vuol dire «vicino a $x_0$».
 
->* Un **intorno di $x_0$** è un intervallo aperto $(x_0 - \delta,\ x_0 + \delta)$, con $\delta > 0$. Contiene i punti che distano da $x_0$ meno di $\delta$.
+>* Un **intorno di $x_0$** è un intervallo aperto $\Iaa{x_0 - \delta}{x_0 + \delta}$, con $\delta > 0$. Contiene i punti che distano da $x_0$ meno di $\delta$.
 
 Puoi scegliere $\delta$ piccolo quanto vuoi. Più è piccolo, più l'intorno si stringe su $x_0$.
 
 Anche l'infinito ha i suoi intorni, con $M$ grande quanto vuoi:
-- un intorno di $+\infty$ è un intervallo $(M, +\infty)$;
-- un intorno di $-\infty$ è un intervallo $(-\infty, -M)$;
+- un intorno di $+\infty$ è un intervallo $\Iaa{M}{+\infty}$;
+- un intorno di $-\infty$ è un intervallo $\Iaa{-\infty}{-M}$;
 - un intorno di $\infty$ senza segno è fatto dei punti con $|x| > M$.
 
 >* **Punto di accumulazione** di un insieme $A$: un $x_0$ tale che ogni suo intorno contiene punti di $A$ diversi da $x_0$.
@@ -441,7 +441,7 @@ Anche la somma di infiniti termini è un limite: quello della somma dei primi $n
   ],
 
   formulario: [
-    { nome: 'Intorni', formula: R`(x_0-\delta,\ x_0+\delta), \qquad (M,+\infty), \qquad (-\infty,-M)`, nota: R`Intorno di $x_0$, di $+\infty$ e di $-\infty$ rispettivamente, con $\delta>0$ e $M$ grande a piacere.` },
+    { nome: 'Intorni', formula: R`\Iaa{x_0-\delta}{x_0+\delta}, \qquad \Iaa{M}{+\infty}, \qquad \Iaa{-\infty}{-M}`, nota: R`Intorno di $x_0$, di $+\infty$ e di $-\infty$ rispettivamente, con $\delta>0$ e $M$ grande a piacere.` },
     { nome: 'Limite finito per x → x₀', formula: R`\forall \varepsilon>0\ \exists\,\delta>0:\ 0<|x-x_0|<\delta \Rightarrow |f(x)-L|<\varepsilon` },
     { nome: 'Limite infinito per x → x₀', formula: R`\forall M>0\ \exists\,\delta>0:\ 0<|x-x_0|<\delta \Rightarrow f(x)>M`, nota: R`Analoga per $-\infty$, con $f(x)<-M$.` },
     { nome: 'Limite per x → ∞', formula: R`\forall \varepsilon>0\ \exists\,N>0:\ |x|>N \Rightarrow |f(x)-L|<\varepsilon`, nota: R`Versione per limite finito; per limite infinito si combina con la definizione precedente.` },
@@ -458,8 +458,8 @@ Anche la somma di infiniti termini è un limite: quello della somma dei primi $n
   ],
 
   flashcards: [
-    { id: 'fc-01', sezione: 'intorni-accumulazione', tipo: 'definizione', fronte: R`Intorno di $x_0$`, retro: R`Intervallo aperto $(x_0-\delta, x_0+\delta)$, con $\delta>0$ piccolo a piacere.` },
-    { id: 'fc-02', sezione: 'intorni-accumulazione', tipo: 'definizione', fronte: R`Intorno di $+\infty$`, retro: R`Un intervallo $(M, +\infty)$, con $M$ grande a piacere.` },
+    { id: 'fc-01', sezione: 'intorni-accumulazione', tipo: 'definizione', fronte: R`Intorno di $x_0$`, retro: R`Intervallo aperto $\Iaa{x_0-\delta}{x_0+\delta}$, con $\delta>0$ piccolo a piacere.` },
+    { id: 'fc-02', sezione: 'intorni-accumulazione', tipo: 'definizione', fronte: R`Intorno di $+\infty$`, retro: R`Un intervallo $\Iaa{M}{+\infty}$, con $M$ grande a piacere.` },
     { id: 'fc-03', sezione: 'intorni-accumulazione', tipo: 'concetto', fronte: R`Cos'è un punto di accumulazione di un insieme $A$?`, retro: R`Un punto $x_0$ tale che ogni suo intorno contiene almeno un punto di $A$ diverso da $x_0$.` },
     { id: 'fc-04', sezione: 'idea-intuitiva', tipo: 'concetto', fronte: R`Cosa dice, intuitivamente, $\lim_{x\to x_0} f(x)=L$?`, retro: R`Che $f(x)$ si avvicina quanto si vuole a $L$ quando $x$ si avvicina, senza coincidere, a $x_0$.` },
     { id: 'fc-05', sezione: 'idea-intuitiva', tipo: 'concetto', fronte: R`Il limite dipende dal valore $f(x_0)$?`, retro: R`No: dipende solo dal comportamento di $f$ vicino a $x_0$, non dal valore (se esiste) in $x_0$.` },
@@ -519,8 +519,8 @@ Anche la somma di infiniti termini è un limite: quello della somma dei primi $n
   ],
 
   quiz: [
-    { id: 'q-01', domanda: R`Che cos'è un intorno di $x_0$?`, opzioni: [R`Un intervallo aperto $(x_0-\delta, x_0+\delta)$, con $\delta>0$`, R`Un insieme finito di punti vicino a $x_0$`, R`Un intervallo chiuso che contiene $x_0$ come estremo`, R`L'insieme dei numeri maggiori di $x_0$`], corretta: 0, spiegazione: R`Per definizione l'intorno di $x_0$ è un intervallo aperto centrato in $x_0$: non è chiuso, non è composto da un numero finito di punti, e non è una semiretta.` },
-    { id: 'q-02', domanda: R`Un intorno di $+\infty$ è...`, opzioni: [R`L'insieme dei numeri interi maggiori di $0$`, R`Un intervallo $(M, +\infty)$, con $M$ grande a piacere`, R`Un intervallo $(-\infty, -M)$`, R`L'intervallo $(0, +\infty)$ fissato`], corretta: 1, spiegazione: R`L'intorno di $+\infty$ è una semiretta che parte da un $M$ arbitrariamente grande; l'intervallo $(-\infty, -M)$ è l'intorno di $-\infty$, e un intervallo fissato non permette di scegliere $M$ a piacere.` },
+    { id: 'q-01', domanda: R`Che cos'è un intorno di $x_0$?`, opzioni: [R`Un intervallo aperto $\Iaa{x_0-\delta}{x_0+\delta}$, con $\delta>0$`, R`Un insieme finito di punti vicino a $x_0$`, R`Un intervallo chiuso che contiene $x_0$ come estremo`, R`L'insieme dei numeri maggiori di $x_0$`], corretta: 0, spiegazione: R`Per definizione l'intorno di $x_0$ è un intervallo aperto centrato in $x_0$: non è chiuso, non è composto da un numero finito di punti, e non è una semiretta.` },
+    { id: 'q-02', domanda: R`Un intorno di $+\infty$ è...`, opzioni: [R`L'insieme dei numeri interi maggiori di $0$`, R`Un intervallo $\Iaa{M}{+\infty}$, con $M$ grande a piacere`, R`Un intervallo $\Iaa{-\infty}{-M}$`, R`L'intervallo $\Iaa{0}{+\infty}$ fissato`], corretta: 1, spiegazione: R`L'intorno di $+\infty$ è una semiretta che parte da un $M$ arbitrariamente grande; l'intervallo $\Iaa{-\infty}{-M}$ è l'intorno di $-\infty$, e un intervallo fissato non permette di scegliere $M$ a piacere.` },
     { id: 'q-03', domanda: R`$x_0$ è punto di accumulazione di un insieme $A$ se...`, opzioni: [R`$x_0$ appartiene ad $A$`, R`Ogni intorno di $x_0$ contiene almeno un punto di $A$ diverso da $x_0$`, R`$A$ contiene infiniti punti`, R`$x_0$ è il minimo di $A$`], corretta: 1, spiegazione: R`È proprio questa la definizione; $x_0$ non deve necessariamente appartenere ad $A$, come mostra l'esempio $A=\{1/n\}$ con punto di accumulazione $0 \notin A$.` },
     { id: 'q-04', domanda: R`Il limite $\lim_{x\to x_0} f(x)$...`, opzioni: [R`Coincide sempre con $f(x_0)$`, R`Esiste solo se $f$ è definita in $x_0$`, R`Non si può calcolare se $f(x_0)$ non esiste`, R`Dipende dal comportamento di $f$ vicino a $x_0$, non dal valore in $x_0$`], corretta: 3, spiegazione: R`Il limite descrive cosa succede intorno a $x_0$: può esistere anche se $f(x_0)$ non è definito, e può differire da $f(x_0)$ quando questo esiste.` },
     { id: 'q-05', domanda: R`Nella definizione $\forall\varepsilon>0\ \exists\delta>0:0<|x-x_0|<\delta\Rightarrow|f(x)-L|<\varepsilon$, che cosa rappresenta $\varepsilon$?`, opzioni: [R`La tolleranza richiesta sui valori di $f(x)$ rispetto a $L$`, R`La distanza tra $x_0$ e $L$`, R`Il dominio della funzione`, R`Il numero di soluzioni dell'equazione`], corretta: 0, spiegazione: R`$\varepsilon$ è la precisione richiesta sull'asse $y$; $\delta$ è la risposta corrispondente sull'asse $x$, cioè quanto restringere l'intorno di $x_0$.` },

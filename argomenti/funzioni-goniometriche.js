@@ -299,8 +299,8 @@ Sull'asse $x$ ci sono i radianti: un giro è lungo $2\pi \approx 6{,}28$.
 
 | | dominio | valori | periodo | zeri |
 |---|---|---|---|---|
-| $\sin x$ | $\mathbb{R}$ | $[-1,\ 1]$ | $2\pi$ | $x = k\pi$ |
-| $\cos x$ | $\mathbb{R}$ | $[-1,\ 1]$ | $2\pi$ | $x = \frac{\pi}{2} + k\pi$ |
+| $\sin x$ | $\mathbb{R}$ | $\Icc{-1}{1}$ | $2\pi$ | $x = k\pi$ |
+| $\cos x$ | $\mathbb{R}$ | $\Icc{-1}{1}$ | $2\pi$ | $x = \frac{\pi}{2} + k\pi$ |
 | $\tan x$ | $x \ne \frac{\pi}{2} + k\pi$ | $\mathbb{R}$ | $\pi$ | $x = k\pi$ |
 
 Il grafico del coseno è la stessa onda del seno, spostata di lato. Di quanto? Scoprilo nel grafico.
@@ -325,9 +325,9 @@ La **tangente** è diversa. Dove il coseno vale zero ha un **asintoto verticale*
 
 | funzione | dominio | valori |
 |---|---|---|
-| $\arcsin x$ | $[-1,\ 1]$ | $\left[-\frac{\pi}{2},\ \frac{\pi}{2}\right]$ |
-| $\arccos x$ | $[-1,\ 1]$ | $[0,\ \pi]$ |
-| $\arctan x$ | $\mathbb{R}$ | $\left(-\frac{\pi}{2},\ \frac{\pi}{2}\right)$ |
+| $\arcsin x$ | $\Icc{-1}{1}$ | $\Icc{-\frac{\pi}{2}}{\frac{\pi}{2}}$ |
+| $\arccos x$ | $\Icc{-1}{1}$ | $\Icc{0}{\pi}$ |
+| $\arctan x$ | $\mathbb{R}$ | $\Iaa{-\frac{\pi}{2}}{\frac{\pi}{2}}$ |
 
 Per esempio $\arcsin\dfrac12 = \dfrac{\pi}{6}$. Non vale $\dfrac{5\pi}{6}$, perché è fuori dall'intervallo. E $\arcsin 2$ non esiste, perché il seno non supera mai $1$.
 
@@ -381,7 +381,7 @@ Nella scheda **Laboratorio** c'è *Sintonizza l'onda*: muovi le creste finché l
         { tipo: 'testo', p: [-2.2, 1.95], testo: 't = {{t}}°  |  giri interi: {{floor(t/360)}}', ancora: 'start' },
         { tipo: 'testo', p: [-2.2, 1.7], testo: 'stesso punto di {{t-360*floor(t/360)}}°', ancora: 'start' }
       ],
-      didascalia: 'Il punto arancio è la partenza, (1, 0). Porta t oltre 360° e poi sotto 0°: il punto P ripassa sempre dagli stessi posti. «Stesso punto di» è l\'angolo fra 0° e 360° che finisce dove finisce t.'
+      didascalia: 'Il punto arancio è la partenza, (1; 0). Porta t oltre 360° e poi sotto 0°: il punto P ripassa sempre dagli stessi posti. «Stesso punto di» è l\'angolo fra 0° e 360° che finisce dove finisce t.'
     },
     circonferenzaGoniometrica: {
       tipo: 'circonferenza-goniometrica', angolo: 60, mostra: ['sin', 'cos', 'tan'],
@@ -464,7 +464,7 @@ Nella scheda **Laboratorio** c'è *Sintonizza l'onda*: muovi le creste finché l
 
     { titolo: 'Una funzione inversa', problema: R`Calcola $\arccos\left(-\dfrac12\right)$.`, passi: [
       R`Cerco l'angolo, fra $0$ e $\pi$ (l'immagine di $\arccos$), il cui coseno vale $-\dfrac12$.`,
-      R`So che $\cos 60^\circ = \dfrac12$; l'angolo supplementare $180^\circ - 60^\circ = 120^\circ$ ha coseno opposto, $\cos 120^\circ = -\dfrac12$, ed è nell'intervallo $[0^\circ, 180^\circ]$ richiesto.`,
+      R`So che $\cos 60^\circ = \dfrac12$; l'angolo supplementare $180^\circ - 60^\circ = 120^\circ$ ha coseno opposto, $\cos 120^\circ = -\dfrac12$, ed è nell'intervallo $\Icc{0^\circ}{180^\circ}$ richiesto.`,
       R`In radianti, $120^\circ = \dfrac{2\pi}{3}$.`
     ], risultato: R`$\arccos\left(-\dfrac12\right) = \dfrac{2\pi}{3}$ (cioè $120^\circ$)` }
   ],
@@ -495,10 +495,10 @@ Nella scheda **Laboratorio** c'è *Sintonizza l'onda*: muovi le creste finché l
     { id: 'fc-06', sezione: 'angoli-orientati', tipo: 'concetto', fronte: R`Qual è il verso positivo di un angolo orientato?`, retro: R`Il verso antiorario (contrario alle lancette dell'orologio). Il verso orario è negativo.` },
     { id: 'fc-07', sezione: 'angoli-orientati', tipo: 'concetto', fronte: R`Angoli congruenti`, retro: R`Angoli con lo stesso punto associato sulla circonferenza goniometrica: differiscono per multipli dell'angolo giro ($2\pi$).` },
     { id: 'fc-08', sezione: 'seno-coseno', tipo: 'definizione', fronte: R`Definizione di seno e coseno`, retro: R`Se $P$ è il punto della circonferenza goniometrica associato ad $\alpha$: $\cos\alpha$ è l'ascissa di $P$, $\sin\alpha$ è la sua ordinata.` },
-    { id: 'fc-09', sezione: 'seno-coseno', tipo: 'concetto', fronte: R`In quale intervallo variano seno e coseno?`, retro: R`Sempre in $[-1, 1]$, perché sono le coordinate di un punto sulla circonferenza di raggio $1$.` },
+    { id: 'fc-09', sezione: 'seno-coseno', tipo: 'concetto', fronte: R`In quale intervallo variano seno e coseno?`, retro: R`Sempre in $\Icc{-1}{1}$, perché sono le coordinate di un punto sulla circonferenza di raggio $1$.` },
     { id: 'fc-10', sezione: 'seno-coseno', tipo: 'concetto', fronte: R`Segno di seno e coseno nel secondo quadrante`, retro: R`Seno positivo, coseno negativo (l'ascissa è a sinistra dell'asse $y$).` },
     { id: 'fc-11', sezione: 'tangente-cotangente', tipo: 'definizione', fronte: R`Definizione di tangente`, retro: R`$\tan\alpha = \dfrac{\sin\alpha}{\cos\alpha}$, definita quando $\cos\alpha \ne 0$.` },
-    { id: 'fc-12', sezione: 'tangente-cotangente', tipo: 'concetto', fronte: R`Significato geometrico della tangente`, retro: R`Lunghezza (con segno) del segmento staccato sulla retta tangente alla circonferenza goniometrica nel punto $(1,0)$, prolungando il raggio fino a incontrarla.` },
+    { id: 'fc-12', sezione: 'tangente-cotangente', tipo: 'concetto', fronte: R`Significato geometrico della tangente`, retro: R`Lunghezza (con segno) del segmento staccato sulla retta tangente alla circonferenza goniometrica nel punto $(1; 0)$, prolungando il raggio fino a incontrarla.` },
     { id: 'fc-13', sezione: 'tangente-cotangente', tipo: 'definizione', fronte: R`Definizione di cotangente`, retro: R`$\cot\alpha = \dfrac{\cos\alpha}{\sin\alpha}$, definita quando $\sin\alpha \ne 0$. Dove la tangente esiste ed è diversa da zero vale anche $\cot\alpha = \dfrac{1}{\tan\alpha}$.` },
     { id: 'fc-14', sezione: 'tangente-cotangente', tipo: 'definizione', fronte: R`Secante e cosecante`, retro: R`$\sec\alpha = \dfrac{1}{\cos\alpha}$, $\csc\alpha = \dfrac{1}{\sin\alpha}$: i reciproci di coseno e seno.` },
     { id: 'fc-15', sezione: 'angoli-notevoli', tipo: 'formula', fronte: R`Seno, coseno e tangente di $30^\circ$, $45^\circ$, $60^\circ$`, retro: R`$\sin$: $\frac12, \frac{\sqrt2}{2}, \frac{\sqrt3}{2}$. $\cos$: gli stessi valori in ordine inverso. $\tan$: $\frac{\sqrt3}{3}, 1, \sqrt3$.` },
@@ -510,7 +510,7 @@ Nella scheda **Laboratorio** c'è *Sintonizza l'onda*: muovi le creste finché l
     { id: 'fc-21', sezione: 'angoli-associati', tipo: 'formula', fronte: R`Angoli supplementari e complementari`, retro: R`Supplementari: $\sin(\pi-\alpha)=\sin\alpha$, $\cos(\pi-\alpha)=-\cos\alpha$. Complementari: seno e coseno si scambiano.` },
     { id: 'fc-22', sezione: 'grafici-periodicita', tipo: 'concetto', fronte: R`Periodo di seno, coseno, tangente`, retro: R`Seno e coseno hanno periodo $2\pi$; tangente e cotangente hanno periodo $\pi$.` },
     { id: 'fc-23', sezione: 'grafici-periodicita', tipo: 'concetto', fronte: R`Dove sono gli asintoti della tangente?`, retro: R`In $x = \dfrac{\pi}{2} + k\pi$, dove il coseno si annulla e la tangente non è definita.` },
-    { id: 'fc-24', sezione: 'inverse-sinusoidi', tipo: 'definizione', fronte: R`Domini e immagini di arcoseno, arcocoseno, arcotangente`, retro: R`$\arcsin$: $[-1,1] \to \left[-\frac{\pi}{2}, \frac{\pi}{2}\right]$. $\arccos$: $[-1,1] \to [0,\pi]$. $\arctan$: $\mathbb{R} \to \left(-\frac{\pi}{2}, \frac{\pi}{2}\right)$.` },
+    { id: 'fc-24', sezione: 'inverse-sinusoidi', tipo: 'definizione', fronte: R`Domini e immagini di arcoseno, arcocoseno, arcotangente`, retro: R`$\arcsin$: $\Icc{-1}{1} \to \Icc{-\frac{\pi}{2}}{\frac{\pi}{2}}$. $\arccos$: $\Icc{-1}{1} \to \Icc{0}{\pi}$. $\arctan$: $\mathbb{R} \to \Iaa{-\frac{\pi}{2}}{\frac{\pi}{2}}$.` },
     { id: 'fc-25', sezione: 'inverse-sinusoidi', tipo: 'formula', fronte: R`Sinusoide generale $y = A\sin(\omega x + \varphi)$`, retro: R`Ampiezza $|A|$, periodo $T = \dfrac{2\pi}{\omega}$, sfasamento orizzontale $-\dfrac{\varphi}{\omega}$.` }
   ],
 
@@ -555,18 +555,18 @@ Nella scheda **Laboratorio** c'è *Sintonizza l'onda*: muovi le creste finché l
     { id: 'q-03', domanda: R`La lunghezza $l$ di un arco di circonferenza di raggio $r$ e angolo al centro $\theta$ vale $l = r\theta$ a condizione che:`, opzioni: [R`$\theta$ sia espresso in gradi`, R`$r$ sia maggiore di $1$`, R`$\theta$ sia espresso in radianti`, R`vale sempre, qualunque unità si usi per $\theta$`], corretta: 2, spiegazione: R`Il radiante è definito proprio perché $l = r\theta$ funzioni senza costanti aggiuntive; in gradi servirebbe moltiplicare anche per $\dfrac{\pi}{180}$.` },
     { id: 'q-04', domanda: R`Per convenzione, un angolo orientato è positivo se il punto si sposta in senso:`, opzioni: [R`orario`, R`dipende dal quadrante di partenza`, R`non ha un verso, è sempre positivo`, R`antiorario`], corretta: 3, spiegazione: R`Il verso antiorario, cioè contrario al movimento delle lancette dell'orologio, è per convenzione il verso positivo.` },
     { id: 'q-05', domanda: R`Il raggio della circonferenza goniometrica vale:`, opzioni: [R`$1$`, R`dipende dal problema`, R`il diametro diviso $2\pi$`, R`il valore massimo del seno moltiplicato per $2$`], corretta: 0, spiegazione: R`Per definizione la circonferenza goniometrica ha raggio $1$: è questo che rende seno e coseno direttamente le coordinate del punto, senza bisogno di dividere per il raggio.` },
-    { id: 'q-06', domanda: R`Se $P = (\cos\alpha, \sin\alpha)$ è il punto associato ad $\alpha$ sulla circonferenza goniometrica, allora:`, opzioni: [R`l'ordinata di $P$ è il coseno`, R`l'ascissa di $P$ è il coseno`, R`$P$ dipende dal raggio scelto`, R`$\cos\alpha$ e $\sin\alpha$ possono superare $1$ in valore assoluto`], corretta: 1, spiegazione: R`Per definizione l'ascissa di $P$ è $\cos\alpha$ e l'ordinata è $\sin\alpha$; entrambe restano in $[-1,1]$ perché $P$ sta su una circonferenza di raggio $1$.` },
-    { id: 'q-07', domanda: R`L'insieme dei valori che possono assumere $\sin\alpha$ e $\cos\alpha$ è:`, opzioni: [R`tutto $\mathbb{R}$`, R`$[0, 1]$`, R`$[-1, 1]$`, R`$(-\infty, +\infty)$ tranne lo $0$`], corretta: 2, spiegazione: R`Sono le coordinate di un punto su una circonferenza di raggio $1$: non possono mai uscire dall'intervallo $[-1,1]$.` },
+    { id: 'q-06', domanda: R`Se $P = (\cos\alpha, \sin\alpha)$ è il punto associato ad $\alpha$ sulla circonferenza goniometrica, allora:`, opzioni: [R`l'ordinata di $P$ è il coseno`, R`l'ascissa di $P$ è il coseno`, R`$P$ dipende dal raggio scelto`, R`$\cos\alpha$ e $\sin\alpha$ possono superare $1$ in valore assoluto`], corretta: 1, spiegazione: R`Per definizione l'ascissa di $P$ è $\cos\alpha$ e l'ordinata è $\sin\alpha$; entrambe restano in $\Icc{-1}{1}$ perché $P$ sta su una circonferenza di raggio $1$.` },
+    { id: 'q-07', domanda: R`L'insieme dei valori che possono assumere $\sin\alpha$ e $\cos\alpha$ è:`, opzioni: [R`tutto $\mathbb{R}$`, R`$\Icc{0}{1}$`, R`$\Icc{-1}{1}$`, R`$\Iaa{-\infty}{+\infty}$ tranne lo $0$`], corretta: 2, spiegazione: R`Sono le coordinate di un punto su una circonferenza di raggio $1$: non possono mai uscire dall'intervallo $\Icc{-1}{1}$.` },
     { id: 'q-08', domanda: R`La tangente di un angolo non è definita quando:`, opzioni: [R`$\alpha = 0^\circ$`, R`$\alpha = 180^\circ$`, R`è sempre definita, per ogni $\alpha$`, R`$\alpha = 90^\circ + k \cdot 180^\circ$`], corretta: 3, spiegazione: R`$\tan\alpha = \dfrac{\sin\alpha}{\cos\alpha}$ non esiste quando $\cos\alpha = 0$, cioè per $\alpha = 90^\circ + k \cdot 180^\circ$. Negli altri angoli elencati il coseno non si annulla.` },
-    { id: 'q-09', domanda: R`Geometricamente, $\tan\alpha$ è la misura (con segno) del segmento staccato sulla retta:`, opzioni: [R`tangente alla circonferenza goniometrica nel punto $(1,0)$, parallela all'asse $y$`, R`che congiunge l'origine con il punto $P$`, R`coincidente con l'asse $x$`, R`tangente alla circonferenza nel punto $(0,1)$, parallela all'asse $x$`], corretta: 0, spiegazione: R`La costruzione della tangente usa la retta verticale tangente alla circonferenza in $(1,0)$; la retta orizzontale tangente in $(0,1)$ serve invece per la cotangente.` },
+    { id: 'q-09', domanda: R`Geometricamente, $\tan\alpha$ è la misura (con segno) del segmento staccato sulla retta:`, opzioni: [R`tangente alla circonferenza goniometrica nel punto $(1; 0)$, parallela all'asse $y$`, R`che congiunge l'origine con il punto $P$`, R`coincidente con l'asse $x$`, R`tangente alla circonferenza nel punto $(0; 1)$, parallela all'asse $x$`], corretta: 0, spiegazione: R`La costruzione della tangente usa la retta verticale tangente alla circonferenza in $(1; 0)$; la retta orizzontale tangente in $(0; 1)$ serve invece per la cotangente.` },
     { id: 'q-10', domanda: R`La relazione fondamentale della goniometria afferma che, per ogni angolo $\alpha$:`, opzioni: [R`$\sin\alpha + \cos\alpha = 1$`, R`$\sin^2\alpha + \cos^2\alpha = 1$`, R`$\sin\alpha \cdot \cos\alpha = 1$`, R`$\tan^2\alpha + 1 = \cos^2\alpha$`], corretta: 1, spiegazione: R`Segue dal teorema di Pitagora applicato al punto $(\cos\alpha, \sin\alpha)$ sulla circonferenza di raggio $1$. Le altre uguaglianze sono false in generale.` },
     { id: 'q-11', domanda: R`Nel primo quadrante ($0^\circ < \alpha < 90^\circ$), seno e coseno sono:`, opzioni: [R`entrambi negativi`, R`seno positivo, coseno negativo`, R`entrambi positivi`, R`seno negativo, coseno positivo`], corretta: 2, spiegazione: R`Nel primo quadrante il punto $P$ ha entrambe le coordinate positive.` },
     { id: 'q-12', domanda: R`In quale quadrante seno e coseno sono entrambi negativi?`, opzioni: [R`primo`, R`secondo`, R`quarto`, R`terzo`], corretta: 3, spiegazione: R`Nel terzo quadrante il punto $P$ ha ascissa e ordinata entrambe negative.` },
     { id: 'q-13', domanda: R`La relazione $\cos\left(\dfrac{\pi}{2} - \alpha\right)$ è uguale a:`, opzioni: [R`$\sin\alpha$`, R`$\cos\alpha$`, R`$-\sin\alpha$`, R`$-\cos\alpha$`], corretta: 0, spiegazione: R`$\alpha$ e $\dfrac{\pi}{2} - \alpha$ sono angoli complementari: seno e coseno si scambiano, ed entrambi restano nel primo quadrante (se $\alpha$ è acuto), quindi positivi.` },
     { id: 'q-14', domanda: R`La relazione $\sin(\pi - \alpha)$ è uguale a:`, opzioni: [R`$-\sin\alpha$`, R`$\sin\alpha$`, R`$\cos\alpha$`, R`$-\cos\alpha$`], corretta: 1, spiegazione: R`$\alpha$ e $\pi - \alpha$ sono angoli supplementari: la funzione resta il seno, e nel secondo quadrante il seno è ancora positivo.` },
     { id: 'q-15', domanda: R`Il periodo della funzione tangente è:`, opzioni: [R`$2\pi$`, R`$\dfrac{\pi}{2}$`, R`$\pi$`, R`$4\pi$`], corretta: 2, spiegazione: R`A differenza di seno e coseno (periodo $2\pi$), la tangente si ripete già dopo mezzo giro: $\tan(x + \pi) = \tan x$.` },
-    { id: 'q-16', domanda: R`Il dominio della funzione $\arcsin$ è:`, opzioni: [R`tutto $\mathbb{R}$`, R`$\left[-\dfrac{\pi}{2}, \dfrac{\pi}{2}\right]$`, R`$[0,\pi]$`, R`$[-1,1]$`], corretta: 3, spiegazione: R`$\arcsin x$ ha senso solo se $x$ è un valore che il seno può assumere, cioè $x \in [-1,1]$; l'intervallo con $\pi$ è invece la sua immagine.` },
-    { id: 'q-17', domanda: R`L'immagine (codominio) della funzione $\arctan$ è:`, opzioni: [R`$\left(-\dfrac{\pi}{2}, \dfrac{\pi}{2}\right)$`, R`$\mathbb{R}$`, R`$[-1,1]$`, R`$[0,\pi]$`], corretta: 0, spiegazione: R`$\arctan x$ restituisce sempre un angolo strettamente compreso fra $-\dfrac{\pi}{2}$ e $\dfrac{\pi}{2}$, mai uguale agli estremi (che sono asintoti della tangente).` },
+    { id: 'q-16', domanda: R`Il dominio della funzione $\arcsin$ è:`, opzioni: [R`tutto $\mathbb{R}$`, R`$\Icc{-\frac{\pi}{2}}{\frac{\pi}{2}}$`, R`$\Icc{0}{\pi}$`, R`$\Icc{-1}{1}$`], corretta: 3, spiegazione: R`$\arcsin x$ ha senso solo se $x$ è un valore che il seno può assumere, cioè $x \in \Icc{-1}{1}$; l'intervallo con $\pi$ è invece la sua immagine.` },
+    { id: 'q-17', domanda: R`L'immagine (codominio) della funzione $\arctan$ è:`, opzioni: [R`$\Iaa{-\frac{\pi}{2}}{\frac{\pi}{2}}$`, R`$\mathbb{R}$`, R`$\Icc{-1}{1}$`, R`$\Icc{0}{\pi}$`], corretta: 0, spiegazione: R`$\arctan x$ restituisce sempre un angolo strettamente compreso fra $-\dfrac{\pi}{2}$ e $\dfrac{\pi}{2}$, mai uguale agli estremi (che sono asintoti della tangente).` },
     { id: 'q-18', domanda: R`Nella sinusoide $y = A\sin(\omega x + \varphi)$, il periodo vale:`, opzioni: [R`$2\pi\omega$`, R`$\dfrac{2\pi}{\omega}$`, R`$\dfrac{\omega}{2\pi}$`, R`$A \cdot 2\pi$`], corretta: 1, spiegazione: R`Il periodo dipende solo dalla pulsazione $\omega$, non dall'ampiezza $A$ né dalla fase $\varphi$.` }
   ],
 

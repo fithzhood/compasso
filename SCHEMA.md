@@ -313,6 +313,12 @@ cui servono), senza forzarne altre.
   italiani (Bergamini, Sasso). Notazioni italiane: `\Delta` per il discriminante,
   «tabella dei segni», «c.e.» per le condizioni di esistenza, virgola decimale nel
   testo (`2,5`) ma punto nei numeri JS.
+- **Punti e intervalli non si confondono** (decisione di Luca del 25/10/2026): stesse parentesi
+  dei libri (tonde per l'estremo escluso, quadre per l'incluso), ma **separatore diverso**: i punti
+  col punto e virgola, `$(2; 4)$`; gli intervalli con la **virgola**, `$(1, 3)$`, `$[1, 3)$`,
+  `$(-\infty, 2]$`. In LaTeX usa le macro del sito: `\Iaa{1}{3}` = (1, 3), `\Icc{1}{3}` = [1, 3],
+  `\Ica{1}{3}` = [1, 3), `\Iac{1}{3}` = (1, 3]; unione `$\Iaa{-\infty}{-1} \cup \Iaa{3}{+\infty}$`.
+  Con estremi decimali la virgola del separatore va seguita da uno spazio (la macro lo mette già).
 - Niente riempitivi: ogni frase porta un'informazione.
 - Ogni sezione deve essere leggibile da sola (lo studente potrebbe aprire solo quella).
 - Gli id (`fc-01`, `es-01`, `q-01`, sezioni) unici nel file.

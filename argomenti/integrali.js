@@ -261,7 +261,7 @@ Se al numeratore c'è anche un termine in $x$, separi due pezzi. La parte multip
 
 L'idea è riempirla di rettangoli.
 
-1. Dividi $[a;b]$ in $n$ parti uguali, larghe $\Delta x = \dfrac{b-a}{n}$.
+1. Dividi $\Icc{a}{b}$ in $n$ parti uguali, larghe $\Delta x = \dfrac{b-a}{n}$.
 2. Su ogni parte disegna un rettangolo *sotto* la curva e uno che la contiene.
 3. Somma le aree dei primi: è la **somma inferiore** $s_n$. Somma quelle dei secondi: è la **somma superiore** $S_n$.
 
@@ -269,7 +269,7 @@ L'area sta in mezzo: $s_n \le \text{area} \le S_n$. Guarda che cosa succede quan
 
 [[animazione:riemann]]
 
->* Se $s_n$ e $S_n$ tendono allo stesso numero, $f$ è **integrabile** in $[a;b]$. Quel numero è l'**integrale definito**: $$\int_a^b f(x)\,dx = \lim_{n \to \infty} \sum_{i=1}^{n} f(x_i)\,\Delta x.$$
+>* Se $s_n$ e $S_n$ tendono allo stesso numero, $f$ è **integrabile** in $\Icc{a}{b}$. Quel numero è l'**integrale definito**: $$\int_a^b f(x)\,dx = \lim_{n \to \infty} \sum_{i=1}^{n} f(x_i)\,\Delta x.$$
 
 Il simbolo $\int$ è una S allungata: sta per «somma». $f(x)\,dx$ è l'area di un rettangolo alto $f(x)$ e largo $dx$.
 
@@ -288,7 +288,7 @@ Le proprietà si capiscono pensando alle aree:
 2. $\int_b^a f(x)\,dx = -\int_a^b f(x)\,dx$ (scambiare gli estremi cambia il segno);
 3. linearità: $\int_a^b [\alpha f + \beta g]\,dx = \alpha\int_a^b f\,dx + \beta\int_a^b g\,dx$;
 4. additività: $\int_a^b f\,dx = \int_a^c f\,dx + \int_c^b f\,dx$, per ogni $c$;
-5. se $f(x) \le g(x)$ in $[a;b]$, allora $\int_a^b f\,dx \le \int_a^b g\,dx$.
+5. se $f(x) \le g(x)$ in $\Icc{a}{b}$, allora $\int_a^b f\,dx \le \int_a^b g\,dx$.
 
 >! Se nel risultato di un integrale definito compare la $x$, c'è un errore. La variabile di integrazione è **muta**: $\int_a^b f(x)\,dx$ e $\int_a^b f(t)\,dt$ sono lo stesso numero.` },
 
@@ -308,7 +308,7 @@ Nell'animazione guarda quanto cresce l'area a ogni passo. Dove la curva è alta 
 
 La velocità con cui cresce l'area è l'altezza della curva. In simboli: la derivata della funzione integrale è la funzione di partenza.
 
->* **Teorema fondamentale del calcolo integrale (Torricelli–Barrow).** Se $f$ è continua in $[a;b]$, la funzione integrale $F$ è derivabile e $$F'(x) = f(x) \quad \text{per ogni } x \in [a;b].$$
+>* **Teorema fondamentale del calcolo integrale (Torricelli–Barrow).** Se $f$ è continua in $\Icc{a}{b}$, la funzione integrale $F$ è derivabile e $$F'(x) = f(x) \quad \text{per ogni } x \in \Icc{a}{b}.$$
 
 Il perché: da $x$ a $x+h$ l'area cresce di una striscia alta circa $f(x)$ e larga $h$. Quindi $\dfrac{F(x+h)-F(x)}{h} \approx f(x)$. Con $h \to 0$ diventa un'uguaglianza.
 
@@ -343,7 +343,7 @@ Trascina l'estremo $b$ e guarda i due numeri. Finché la sinusoide sta sopra l'a
 
 Con $b = 2\pi$ le due gobbe hanno area $2$, ma segno opposto: $$\int_0^{2\pi} \sin x\,dx = \big[-\cos x\big]_0^{2\pi} = -1 + 1 = 0.$$
 
->* Per l'**area**, spezza l'intervallo dove $f$ cambia segno. Integra su ogni tratto e somma i **valori assoluti**. Per la sinusoide su $[0;2\pi]$: $A = \lvert 2 \rvert + \lvert -2 \rvert = 4$.
+>* Per l'**area**, spezza l'intervallo dove $f$ cambia segno. Integra su ogni tratto e somma i **valori assoluti**. Per la sinusoide su $\Icc{0}{2\pi}$: $A = \lvert 2 \rvert + \lvert -2 \rvert = 4$.
 
 ?? Quanto vale l'area della regione fra $y = x$, l'asse $x$ e le rette $x = -2$ e $x = 2$?
 [x] $4$
@@ -368,15 +368,15 @@ Gli estremi $a$ e $b$ sono le ascisse dei punti dove le curve si incontrano. La 
 
 Un'auto fa $150$ km in $2$ ore. La velocità media è $75$ km/h: a quella velocità costante farebbe la stessa strada.
 
->* **Teorema della media.** Se $f$ è continua in $[a;b]$, esiste un punto $c$ in $[a;b]$ tale che $$f(c) = \frac{1}{b-a}\int_a^b f(x)\,dx.$$ $f(c)$ è il **valor medio**: l'altezza del rettangolo di base $b-a$ con la stessa area.
+>* **Teorema della media.** Se $f$ è continua in $\Icc{a}{b}$, esiste un punto $c$ in $\Icc{a}{b}$ tale che $$f(c) = \frac{1}{b-a}\int_a^b f(x)\,dx.$$ $f(c)$ è il **valor medio**: l'altezza del rettangolo di base $b-a$ con la stessa area.
 
-Esempio: il valor medio di $x^2$ in $[0;3]$ è $\dfrac{1}{3}\int_0^3 x^2\,dx = \dfrac{1}{3}\cdot 9 = 3$. Lo raggiunge in $c = \sqrt{3}$.
+Esempio: il valor medio di $x^2$ in $\Icc{0}{3}$ è $\dfrac{1}{3}\int_0^3 x^2\,dx = \dfrac{1}{3}\cdot 9 = 3$. Lo raggiunge in $c = \sqrt{3}$.
 
 >! Se la funzione cambia segno, area e integrale sono diversi. Se il testo dice *area*, studia prima il segno.
 
 ### Il metodo dei trapezi
 
-Quando non serve il valore esatto, l'integrale si stima. Dividi $[a;b]$ in $n$ strisce larghe $\Delta x = \dfrac{b-a}{n}$ (nel video la larghezza si chiama $h$: $h = \Delta x$), con estremi $x_0 = a,\ x_1,\ \dots,\ x_n = b$. Su ogni striscia sostituisci l'arco di curva con il segmento che ne unisce gli estremi: ogni striscia diventa un trapezio, e la somma delle aree è $$T = \Delta x\left[\frac{f(x_0)}{2} + f(x_1) + \dots + f(x_{n-1}) + \frac{f(x_n)}{2}\right].$$ Se la curva ha la concavità verso l'alto, sopra la curva c'è il lato inclinato di ogni trapezio e la stima è per eccesso. Per $x^2$ fra $0$ e $2$, con $4$ trapezi, $T = 2{,}75$ contro $\dfrac{8}{3} \approx 2{,}667$. Ogni volta che $\Delta x$ si dimezza, l'errore diventa un quarto: esattamente per $x^2$, circa un quarto in generale.
+Quando non serve il valore esatto, l'integrale si stima. Dividi $\Icc{a}{b}$ in $n$ strisce larghe $\Delta x = \dfrac{b-a}{n}$ (nel video la larghezza si chiama $h$: $h = \Delta x$), con estremi $x_0 = a,\ x_1,\ \dots,\ x_n = b$. Su ogni striscia sostituisci l'arco di curva con il segmento che ne unisce gli estremi: ogni striscia diventa un trapezio, e la somma delle aree è $$T = \Delta x\left[\frac{f(x_0)}{2} + f(x_1) + \dots + f(x_{n-1}) + \frac{f(x_n)}{2}\right].$$ Se la curva ha la concavità verso l'alto, sopra la curva c'è il lato inclinato di ogni trapezio e la stima è per eccesso. Per $x^2$ fra $0$ e $2$, con $4$ trapezi, $T = 2{,}75$ contro $\dfrac{8}{3} \approx 2{,}667$. Ogni volta che $\Delta x$ si dimezza, l'errore diventa un quarto: esattamente per $x^2$, circa un quarto in generale.
 
 [[video:integrali/trapezi]]` },
 
@@ -520,7 +520,7 @@ La regione è infinitamente lunga, ma ha area finita. Con $\frac{1}{x}$ invece $
       R`Si cerca una primitiva qualsiasi: $G(x) = 4x - \dfrac{x^3}{3}$.`,
       R`Formula fondamentale: $\int_0^2 (4-x^2)dx = \big[4x - \frac{x^3}{3}\big]_0^2 = G(2) - G(0)$.`,
       R`$G(2) = 8 - \dfrac{8}{3} = \dfrac{16}{3}$ e $G(0) = 0$.`,
-      R`In $[0;2]$ la parabola $y = 4-x^2$ sta sopra l'asse $x$, quindi il numero trovato è proprio l'area della regione: circa $5{,}33$.`
+      R`In $\Icc{0}{2}$ la parabola $y = 4-x^2$ sta sopra l'asse $x$, quindi il numero trovato è proprio l'area della regione: circa $5{,}33$.`
     ], risultato: R`$\dfrac{16}{3}$` },
 
     { titolo: 'Un volume di rotazione', problema: R`La regione sotto $y = \sqrt{x}$, con $0 \le x \le 4$, ruota di un giro completo attorno all'asse $x$. Calcola il volume del solido.`, passi: [
@@ -543,8 +543,8 @@ La regione è infinitamente lunga, ma ha area finita. Con $\frac{1}{x}$ invece $
     { nome: 'Integrazione per sostituzione', formula: R`\int f(g(x))\,g'(x)\,dx = \int f(t)\,dt \quad \text{con } t = g(x),\ dt = g'(x)\,dx`, nota: R`Negli integrali definiti gli estremi diventano $g(a)$ e $g(b)$, e non si torna alla variabile $x$.` },
     { nome: 'Formula fondamentale (Leibniz–Newton)', formula: R`\int_a^b f(x)\,dx = \big[G(x)\big]_a^b = G(b) - G(a)`, nota: R`$G$ è una primitiva **qualunque** di $f$: la costante si semplifica nella differenza.` },
     { nome: 'Derivata della funzione integrale', formula: R`\frac{d}{dx}\int_a^x f(t)\,dt = f(x)`, nota: R`Teorema di Torricelli–Barrow, con $f$ continua. Con estremo $g(x)$ si moltiplica per $g'(x)$.` },
-    { nome: 'Area fra due curve', formula: R`A = \int_a^b \big[f(x) - g(x)\big]\,dx`, nota: R`Con $f$ sopra e $g$ sotto in tutto $[a;b]$; $a$ e $b$ sono di solito le ascisse delle intersezioni.` },
-    { nome: 'Valor medio', formula: R`f(c) = \frac{1}{b-a}\int_a^b f(x)\,dx`, nota: R`Teorema della media: con $f$ continua un tale $c \in [a;b]$ esiste sempre.` },
+    { nome: 'Area fra due curve', formula: R`A = \int_a^b \big[f(x) - g(x)\big]\,dx`, nota: R`Con $f$ sopra e $g$ sotto in tutto $\Icc{a}{b}$; $a$ e $b$ sono di solito le ascisse delle intersezioni.` },
+    { nome: 'Valor medio', formula: R`f(c) = \frac{1}{b-a}\int_a^b f(x)\,dx`, nota: R`Teorema della media: con $f$ continua un tale $c \in \Icc{a}{b}$ esiste sempre.` },
     { nome: 'Volume di rotazione attorno all\'asse x', formula: R`V = \pi \int_a^b [f(x)]^2\,dx` }
   ],
 
@@ -565,13 +565,13 @@ La regione è infinitamente lunga, ma ha area finita. Con $\frac{1}{x}$ invece $
     { id: 'fc-14', sezione: 'razionali-fratte', tipo: 'procedura', fronte: R`Denominatore di secondo grado con $\Delta > 0$`, retro: R`Si scompone in $(x-x_1)(x-x_2)$ e si decompone in fratti semplici $\dfrac{A}{x-x_1} + \dfrac{B}{x-x_2}$: il risultato è una somma di logaritmi.` },
     { id: 'fc-15', sezione: 'razionali-fratte', tipo: 'procedura', fronte: R`Denominatore di secondo grado con $\Delta < 0$`, retro: R`Si completa il quadrato: $\int \dfrac{du}{u^2+k^2} = \dfrac{1}{k}\arctan\dfrac{u}{k} + c$. Nel risultato compare un'arcotangente.` },
     { id: 'fc-16', sezione: 'definito', tipo: 'definizione', fronte: R`Integrale definito`, retro: R`Il limite comune delle somme inferiori e superiori dei rettangoli quando la loro base tende a zero: $\int_a^b f(x)\,dx$. È un **numero**.` },
-    { id: 'fc-17', sezione: 'definito', tipo: 'concetto', fronte: R`Quali funzioni sono integrabili in $[a;b]$?`, retro: R`Tutte le continue; più in generale le limitate con un numero finito di punti di discontinuità.` },
+    { id: 'fc-17', sezione: 'definito', tipo: 'concetto', fronte: R`Quali funzioni sono integrabili in $\Icc{a}{b}$?`, retro: R`Tutte le continue; più in generale le limitate con un numero finito di punti di discontinuità.` },
     { id: 'fc-18', sezione: 'definito', tipo: 'formula', fronte: R`Additività rispetto all'intervallo`, retro: R`$\int_a^b f\,dx = \int_a^c f\,dx + \int_c^b f\,dx$. Inoltre $\int_b^a f\,dx = -\int_a^b f\,dx$.` },
     { id: 'fc-19', sezione: 'teorema-fondamentale', tipo: 'definizione', fronte: R`Funzione integrale`, retro: R`$F(x) = \int_a^x f(t)\,dt$: l'area con segno accumulata da $a$ fino a $x$.` },
     { id: 'fc-20', sezione: 'teorema-fondamentale', tipo: 'concetto', fronte: R`Teorema fondamentale del calcolo integrale`, retro: R`Se $f$ è continua, la funzione integrale è derivabile e $F'(x) = f(x)$. Quindi ogni funzione continua ha primitive.` },
     { id: 'fc-21', sezione: 'teorema-fondamentale', tipo: 'formula', fronte: R`Formula di Leibniz–Newton`, retro: R`$\int_a^b f(x)\,dx = G(b) - G(a)$, con $G$ primitiva qualunque di $f$.` },
     { id: 'fc-22', sezione: 'aree', tipo: 'concetto', fronte: R`Integrale definito e area: che differenza c'è?`, retro: R`L'integrale è un'area **con segno**: dove $f < 0$ conta negativamente. Per l'area si spezza l'intervallo e si sommano i valori assoluti.` },
-    { id: 'fc-23', sezione: 'aree', tipo: 'formula', fronte: R`Valor medio di $f$ in $[a;b]$`, retro: R`$\dfrac{1}{b-a}\int_a^b f(x)\,dx$: l'altezza del rettangolo di base $b-a$ con la stessa area.` },
+    { id: 'fc-23', sezione: 'aree', tipo: 'formula', fronte: R`Valor medio di $f$ in $\Icc{a}{b}$`, retro: R`$\dfrac{1}{b-a}\int_a^b f(x)\,dx$: l'altezza del rettangolo di base $b-a$ con la stessa area.` },
     { id: 'fc-24', sezione: 'volumi-impropri', tipo: 'formula', fronte: R`Volume di un solido di rotazione attorno all'asse $x$`, retro: R`$V = \pi\int_a^b [f(x)]^2\,dx$: ogni sezione è un cerchio di raggio $f(x)$.` },
     { id: 'fc-25', sezione: 'volumi-impropri', tipo: 'definizione', fronte: R`Integrale improprio su intervallo illimitato`, retro: R`$\int_a^{+\infty} f\,dx = \lim_{b \to +\infty}\int_a^b f\,dx$. Converge se il limite è finito, altrimenti diverge.` }
   ],
@@ -589,7 +589,7 @@ La regione è infinitamente lunga, ma ha area finita. Con $\frac{1}{x}$ invece $
     { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Calcola $\displaystyle\int_0^3 (2x - 1)\,dx$.`, suggerimenti: [R`Una primitiva è $x^2 - x$.`], risposta: val(6), soluzione: [R`Primitiva: $x^2 - x$.`, R`$\big[x^2 - x\big]_0^3 = (9 - 3) - 0 = 6$.`] },
     { id: 'b-11', livello: 'base', difficolta: 2, testo: R`Calcola $\displaystyle\int_0^{\pi} \sin x\,dx$.`, suggerimenti: [R`Una primitiva di $\sin x$ è $-\cos x$: attento al segno.`, R`$\cos \pi = -1$ e $\cos 0 = 1$.`], risposta: val(2), soluzione: [R`Primitiva: $-\cos x$.`, R`$\big[-\cos x\big]_0^{\pi} = -\cos \pi - (-\cos 0)$.`, R`$= 1 + 1 = 2$.`] },
     { id: 'b-12', livello: 'base', difficolta: 2, testo: R`Calcola $\displaystyle\int_0^1 e^x\,dx$. Puoi scrivere e per il numero di Nepero.`, suggerimenti: [R`Una primitiva di $e^x$ è $e^x$. Ricorda che $e^0 = 1$.`], risposta: val(Math.E - 1), soluzione: [R`$\big[e^x\big]_0^1 = e^1 - e^0$.`, R`$= e - 1$, circa $1{,}72$.`] },
-    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Calcola l'area della regione sotto $y = x^2$, sopra l'asse $x$, fra $x = 0$ e $x = 3$.`, suggerimenti: [R`In $[0; 3]$ la curva sta sopra l'asse: l'area è l'integrale.`], risposta: val(9), soluzione: [R`$x^2 \ge 0$, quindi l'area è $\displaystyle\int_0^3 x^2\,dx$.`, R`Primitiva: $\dfrac{x^3}{3}$.`, R`$\dfrac{27}{3} - 0 = 9$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Calcola l'area della regione sotto $y = x^2$, sopra l'asse $x$, fra $x = 0$ e $x = 3$.`, suggerimenti: [R`In $\Icc{0}{3}$ la curva sta sopra l'asse: l'area è l'integrale.`], risposta: val(9), soluzione: [R`$x^2 \ge 0$, quindi l'area è $\displaystyle\int_0^3 x^2\,dx$.`, R`Primitiva: $\dfrac{x^3}{3}$.`, R`$\dfrac{27}{3} - 0 = 9$.`] },
     { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Calcola l'area della regione fra la parabola $y = 4 - x^2$ e l'asse $x$.`, suggerimenti: [R`Trova dove la parabola taglia l'asse $x$: sono gli estremi.`, R`Fra $-2$ e $2$ la parabola sta sopra l'asse.`], risposta: val(32 / 3), soluzione: [R`$4 - x^2 = 0$ per $x = -2$ e $x = 2$. In mezzo la curva sta sopra l'asse.`, R`Primitiva: $4x - \dfrac{x^3}{3}$.`, R`In $2$ vale $8 - \dfrac{8}{3} = \dfrac{16}{3}$. In $-2$ vale $-\dfrac{16}{3}$.`, R`Area: $\dfrac{16}{3} + \dfrac{16}{3} = \dfrac{32}{3}$.`] },
     { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Calcola l'area della regione fra la parabola $y = x^2 - 2x$ e l'asse $x$.`, suggerimenti: [R`La parabola taglia l'asse in $0$ e in $2$. In mezzo sta sotto l'asse.`, R`L'integrale viene negativo: l'area è il suo valore assoluto.`], risposta: val(4 / 3), soluzione: [R`$x^2 - 2x = 0$ per $x = 0$ e $x = 2$. In mezzo la curva sta sotto l'asse.`, R`$\displaystyle\int_0^2 (x^2 - 2x)\,dx = \left[\dfrac{x^3}{3} - x^2\right]_0^2 = \dfrac{8}{3} - 4 = -\dfrac{4}{3}$.`, R`L'area è il valore assoluto: $\dfrac{4}{3}$.`] },
     { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Calcola l'area della regione fra la retta $y = x$ e l'asse $x$, per $x$ fra $-1$ e $3$.`, suggerimenti: [R`La retta cambia segno in $x = 0$: spezza l'integrale lì.`, R`Il pezzo sotto l'asse va preso con il segno cambiato.`], risposta: val(5), soluzione: [R`$\displaystyle\int_{-1}^{0} x\,dx = \left[\dfrac{x^2}{2}\right]_{-1}^{0} = -\dfrac{1}{2}$: sotto l'asse, area $\dfrac{1}{2}$.`, R`$\displaystyle\int_0^3 x\,dx = \dfrac{9}{2}$.`, R`Area: $\dfrac{1}{2} + \dfrac{9}{2} = 5$. L'integrale da $-1$ a $3$ invece vale $4$.`] },
@@ -604,15 +604,15 @@ La regione è infinitamente lunga, ma ha area finita. Con $\frac{1}{x}$ invece $
 
     { id: 'es-03', difficolta: 1, testo: R`Calcola $\displaystyle\int_0^1 (x^2 + 1)\,dx$.`, suggerimenti: [R`Trova una primitiva e usa la formula fondamentale.`, R`Una primitiva è $\dfrac{x^3}{3} + x$.`], risposta: { tipo: 'numero', valore: 1.3333, tolleranza: 0.01 }, soluzione: [R`Primitiva: $G(x) = \dfrac{x^3}{3} + x$.`, R`$G(1) - G(0) = \left(\dfrac{1}{3} + 1\right) - 0 = \dfrac{4}{3}$.`] },
 
-    { id: 'es-04', difficolta: 1, testo: R`Calcola $\displaystyle\int_0^{\pi/2} \cos x\,dx$.`, suggerimenti: [R`La primitiva del coseno è il seno.`, R`Ricorda che $\sin\dfrac{\pi}{2} = 1$ e $\sin 0 = 0$.`], risposta: { tipo: 'numero', valore: 1, tolleranza: 0.01 }, soluzione: [R`$\big[\sin x\big]_0^{\pi/2} = \sin\dfrac{\pi}{2} - \sin 0 = 1 - 0 = 1$.`, R`Il risultato è positivo perché in $\left[0;\dfrac{\pi}{2}\right]$ il coseno è positivo: è l'area sotto la curva.`] },
+    { id: 'es-04', difficolta: 1, testo: R`Calcola $\displaystyle\int_0^{\pi/2} \cos x\,dx$.`, suggerimenti: [R`La primitiva del coseno è il seno.`, R`Ricorda che $\sin\dfrac{\pi}{2} = 1$ e $\sin 0 = 0$.`], risposta: { tipo: 'numero', valore: 1, tolleranza: 0.01 }, soluzione: [R`$\big[\sin x\big]_0^{\pi/2} = \sin\dfrac{\pi}{2} - \sin 0 = 1 - 0 = 1$.`, R`Il risultato è positivo perché in $\Icc{0}{\dfrac{\pi}{2}}$ il coseno è positivo: è l'area sotto la curva.`] },
 
     { id: 'es-05', difficolta: 2, testo: R`Calcola $\displaystyle\int \frac{x}{x^2+4}\,dx$.`, suggerimenti: [R`Guarda la derivata del denominatore.`, R`$D(x^2+4) = 2x$: al numeratore c'è $x$, manca solo il fattore $2$.`], risposta: prim(['1/2ln(x^2+4)'], ['(1/2)ln(x^2+4)', 'ln(x^2+4)/2', '1/2*ln(x^2+4)', '0.5ln(x^2+4)', '1/2ln|x^2+4|', 'ln|x^2+4|/2', 'ln(√(x^2+4))']), soluzione: [R`Si moltiplica e si divide per $2$: $\dfrac{1}{2}\displaystyle\int \dfrac{2x}{x^2+4}\,dx$.`, R`Ora è della forma $\dfrac{f'}{f}$, quindi si ottiene $\dfrac{1}{2}\ln(x^2+4) + c$.`, R`Il valore assoluto non serve: $x^2+4$ è sempre positivo.`] },
 
     { id: 'es-06', difficolta: 2, testo: R`Calcola $\displaystyle\int_0^{\pi} x\sin x\,dx$.`, suggerimenti: [R`Prodotto fra un polinomio e una funzione goniometrica: integrazione per parti.`, R`Prendi $f(x) = x$ come fattore finito e $g'(x) = \sin x$ come differenziale, così $g(x) = -\cos x$.`], risposta: { tipo: 'numero', valore: 3.1416, tolleranza: 0.01 }, soluzione: [R`Per parti: $\int_0^\pi x\sin x\,dx = \big[-x\cos x\big]_0^{\pi} + \int_0^{\pi}\cos x\,dx$.`, R`Primo pezzo: $-\pi\cos\pi + 0 = -\pi(-1) = \pi$.`, R`Secondo pezzo: $\big[\sin x\big]_0^\pi = 0$.`, R`Totale: $\pi \approx 3{,}14$.`] },
 
-    { id: 'es-07', difficolta: 2, testo: R`Calcola l'area della regione compresa fra la parabola $y = x^2$ e la retta $y = x$.`, suggerimenti: [R`Prima trova le ascisse dei punti di intersezione.`, R`$x^2 = x$ dà $x = 0$ e $x = 1$; fra questi valori la retta sta sopra.`], risposta: { tipo: 'numero', valore: 0.16667, tolleranza: 0.005 }, soluzione: [R`Intersezioni: $x^2 = x \Rightarrow x(x-1) = 0$, cioè $x = 0$ e $x = 1$.`, R`In $[0;1]$ si ha $x \ge x^2$, quindi $A = \displaystyle\int_0^1 (x - x^2)\,dx$.`, R`$\left[\dfrac{x^2}{2} - \dfrac{x^3}{3}\right]_0^1 = \dfrac{1}{2} - \dfrac{1}{3} = \dfrac{1}{6} \approx 0{,}167$.`] },
+    { id: 'es-07', difficolta: 2, testo: R`Calcola l'area della regione compresa fra la parabola $y = x^2$ e la retta $y = x$.`, suggerimenti: [R`Prima trova le ascisse dei punti di intersezione.`, R`$x^2 = x$ dà $x = 0$ e $x = 1$; fra questi valori la retta sta sopra.`], risposta: { tipo: 'numero', valore: 0.16667, tolleranza: 0.005 }, soluzione: [R`Intersezioni: $x^2 = x \Rightarrow x(x-1) = 0$, cioè $x = 0$ e $x = 1$.`, R`In $\Icc{0}{1}$ si ha $x \ge x^2$, quindi $A = \displaystyle\int_0^1 (x - x^2)\,dx$.`, R`$\left[\dfrac{x^2}{2} - \dfrac{x^3}{3}\right]_0^1 = \dfrac{1}{2} - \dfrac{1}{3} = \dfrac{1}{6} \approx 0{,}167$.`] },
 
-    { id: 'es-08', difficolta: 2, testo: R`Calcola l'**area** della regione compresa fra la curva $y = x^3$, l'asse $x$ e le rette $x = -1$ e $x = 1$.`, suggerimenti: [R`Attenzione: è chiesta l'area, non l'integrale. Studia il segno di $x^3$.`, R`In $[-1;0]$ la curva sta sotto l'asse: quel pezzo va preso in valore assoluto.`, R`Per simmetria i due pezzi hanno la stessa area.`], risposta: { tipo: 'numero', valore: 0.5, tolleranza: 0.01 }, soluzione: [R`$\displaystyle\int_{-1}^{0} x^3 dx = \left[\dfrac{x^4}{4}\right]_{-1}^{0} = 0 - \dfrac{1}{4} = -\dfrac{1}{4}$: negativo, quindi quell'area vale $\dfrac{1}{4}$.`, R`$\displaystyle\int_{0}^{1} x^3 dx = \dfrac{1}{4}$.`, R`Area totale: $\dfrac{1}{4} + \dfrac{1}{4} = \dfrac{1}{2}$. L'integrale su $[-1;1]$ invece vale $0$, perché la funzione è dispari.`] },
+    { id: 'es-08', difficolta: 2, testo: R`Calcola l'**area** della regione compresa fra la curva $y = x^3$, l'asse $x$ e le rette $x = -1$ e $x = 1$.`, suggerimenti: [R`Attenzione: è chiesta l'area, non l'integrale. Studia il segno di $x^3$.`, R`In $\Icc{-1}{0}$ la curva sta sotto l'asse: quel pezzo va preso in valore assoluto.`, R`Per simmetria i due pezzi hanno la stessa area.`], risposta: { tipo: 'numero', valore: 0.5, tolleranza: 0.01 }, soluzione: [R`$\displaystyle\int_{-1}^{0} x^3 dx = \left[\dfrac{x^4}{4}\right]_{-1}^{0} = 0 - \dfrac{1}{4} = -\dfrac{1}{4}$: negativo, quindi quell'area vale $\dfrac{1}{4}$.`, R`$\displaystyle\int_{0}^{1} x^3 dx = \dfrac{1}{4}$.`, R`Area totale: $\dfrac{1}{4} + \dfrac{1}{4} = \dfrac{1}{2}$. L'integrale su $\Icc{-1}{1}$ invece vale $0$, perché la funzione è dispari.`] },
 
     { id: 'es-09', difficolta: 2, testo: R`Calcola $\displaystyle\int \frac{2x+3}{x^2+x-2}\,dx$.`, suggerimenti: [R`Il grado del numeratore è minore: scomponi subito il denominatore.`, R`$x^2+x-2 = (x+2)(x-1)$: cerca $A$ e $B$ con $\dfrac{A}{x+2} + \dfrac{B}{x-1}$.`], soluzione: [R`$x^2+x-2 = (x+2)(x-1)$, perché le radici sono $-2$ e $1$.`, R`Si impone $A(x-1) + B(x+2) = 2x+3$.`, R`Con $x = 1$: $3B = 5$, cioè $B = \dfrac{5}{3}$. Con $x = -2$: $-3A = -1$, cioè $A = \dfrac{1}{3}$.`, R`Risultato: $\dfrac{1}{3}\ln \lvert x+2 \rvert + \dfrac{5}{3}\ln \lvert x-1 \rvert + c$.`] },
 
@@ -620,7 +620,7 @@ La regione è infinitamente lunga, ma ha area finita. Con $\frac{1}{x}$ invece $
 
     { id: 'es-11', difficolta: 3, testo: R`Stabilisci se $\displaystyle\int_1^{+\infty} \frac{dx}{x^3}$ converge e, in caso affermativo, calcolane il valore.`, suggerimenti: [R`Sostituisci $+\infty$ con un estremo $b$ finito, integra, e solo alla fine fai il limite.`, R`Una primitiva di $x^{-3}$ è $-\dfrac{1}{2x^2}$.`], risposta: { tipo: 'numero', valore: 0.5, tolleranza: 0.01 }, soluzione: [R`$\displaystyle\int_1^{b} x^{-3} dx = \left[-\dfrac{1}{2x^2}\right]_1^{b} = -\dfrac{1}{2b^2} + \dfrac{1}{2}$.`, R`$\lim_{b \to +\infty}\left(\dfrac{1}{2} - \dfrac{1}{2b^2}\right) = \dfrac{1}{2}$: il limite è finito, quindi l'integrale **converge**.`, R`Valore: $\dfrac{1}{2}$. Con $\dfrac{1}{x}$ al posto di $\dfrac{1}{x^3}$ l'integrale divergerebbe.`] },
 
-    { id: 'es-12', difficolta: 3, testo: R`Sia $F(x) = \displaystyle\int_0^x (t^2 - 4t)\,dt$. Determina l'ascissa del punto di minimo di $F$ nell'intervallo $[0; 5]$.`, suggerimenti: [R`Non serve calcolare $F$: serve la sua derivata.`, R`Per il teorema fondamentale $F'(x) = x^2 - 4x$.`, R`Studia il segno di $x(x-4)$ in $[0;5]$.`], risposta: { tipo: 'numero', valore: 4, tolleranza: 0.01 }, soluzione: [R`Per il teorema fondamentale del calcolo integrale $F'(x) = x^2 - 4x = x(x-4)$.`, R`In $[0;5]$: $F' < 0$ per $0 < x < 4$ (la funzione integrale scende), $F' > 0$ per $x > 4$ (risale).`, R`Il minimo è in $x = 4$. Vale $F(4) = \left[\dfrac{t^3}{3} - 2t^2\right]_0^4 = \dfrac{64}{3} - 32 = -\dfrac{32}{3}$.`] }
+    { id: 'es-12', difficolta: 3, testo: R`Sia $F(x) = \displaystyle\int_0^x (t^2 - 4t)\,dt$. Determina l'ascissa del punto di minimo di $F$ nell'intervallo $\Icc{0}{5}$.`, suggerimenti: [R`Non serve calcolare $F$: serve la sua derivata.`, R`Per il teorema fondamentale $F'(x) = x^2 - 4x$.`, R`Studia il segno di $x(x-4)$ in $\Icc{0}{5}$.`], risposta: { tipo: 'numero', valore: 4, tolleranza: 0.01 }, soluzione: [R`Per il teorema fondamentale del calcolo integrale $F'(x) = x^2 - 4x = x(x-4)$.`, R`In $\Icc{0}{5}$: $F' < 0$ per $0 < x < 4$ (la funzione integrale scende), $F' > 0$ per $x > 4$ (risale).`, R`Il minimo è in $x = 4$. Vale $F(4) = \left[\dfrac{t^3}{3} - 2t^2\right]_0^4 = \dfrac{64}{3} - 32 = -\dfrac{32}{3}$.`] }
   ],
 
   quiz: [
@@ -634,11 +634,11 @@ La regione è infinitamente lunga, ma ha area finita. Con $\frac{1}{x}$ invece $
     { id: 'q-08', domanda: R`Integrando $\dfrac{N(x)}{D(x)}$ con $N$ di grado $3$ e $D$ di grado $2$, la prima cosa da fare è…`, opzioni: [R`scomporre il denominatore in fattori`, R`eseguire la divisione fra i polinomi`, R`completare il quadrato al denominatore`, R`derivare il numeratore`], corretta: 1, spiegazione: R`Con grado del numeratore maggiore o uguale a quello del denominatore si divide, ottenendo un polinomio più un resto di grado minore. Solo su quel resto si applicano i fratti semplici o il completamento del quadrato.` },
     { id: 'q-09', domanda: R`Se il denominatore è di secondo grado con $\Delta < 0$, quale funzione compare tipicamente nel risultato?`, opzioni: [R`l'arcotangente`, R`l'arcoseno`, R`una radice quadrata`, R`due logaritmi di fattori di primo grado`], corretta: 0, spiegazione: R`Con $\Delta < 0$ il trinomio è irriducibile: si completa il quadrato e si ricade su $\int \frac{du}{u^2+k^2} = \frac{1}{k}\arctan\frac{u}{k}$. I due logaritmi compaiono invece quando $\Delta > 0$.` },
     { id: 'q-10', domanda: R`L'integrale definito $\int_a^b f(x)\,dx$ è…`, opzioni: [R`una famiglia di funzioni`, R`una funzione della variabile $x$`, R`un numero`, R`sempre positivo`], corretta: 2, spiegazione: R`È il limite delle somme dei rettangoli: un numero, che non porta la costante $c$ e in cui la $x$ non compare (è variabile muta). Può essere negativo o nullo se $f$ assume valori negativi.` },
-    { id: 'q-11', domanda: R`Se $f(x) < 0$ in tutto $[a;b]$, allora $\int_a^b f(x)\,dx$…`, opzioni: [R`è positivo`, R`è nullo`, R`è negativo, e il suo opposto è l'area della regione`, R`non esiste`], corretta: 2, spiegazione: R`I contributi dei rettangoli sotto l'asse contano negativamente. L'area, che è per definizione positiva, si ottiene cambiando segno al risultato.` },
+    { id: 'q-11', domanda: R`Se $f(x) < 0$ in tutto $\Icc{a}{b}$, allora $\int_a^b f(x)\,dx$…`, opzioni: [R`è positivo`, R`è nullo`, R`è negativo, e il suo opposto è l'area della regione`, R`non esiste`], corretta: 2, spiegazione: R`I contributi dei rettangoli sotto l'asse contano negativamente. L'area, che è per definizione positiva, si ottiene cambiando segno al risultato.` },
     { id: 'q-12', domanda: R`Che cosa afferma il teorema fondamentale del calcolo integrale?`, opzioni: [R`che la funzione integrale $F(x) = \int_a^x f(t)\,dt$ ha derivata $f(x)$`, R`che la funzione integrale è costante`, R`che la funzione integrale coincide con $f$`, R`che ogni funzione ammette primitive`], corretta: 0, spiegazione: R`Con $f$ continua, $F'(x) = f(x)$: derivata e integrale sono operazioni inverse. Da qui segue che ogni funzione **continua** ha primitive: dire che **ogni** funzione ammette primitive dimentica proprio l'ipotesi di continuità.` },
     { id: 'q-13', domanda: R`Nella formula $\int_a^b f(x)\,dx = G(b) - G(a)$, la funzione $G$ è…`, opzioni: [R`la derivata di $f$`, R`una primitiva qualunque di $f$`, R`l'unica primitiva di $f$ che si annulla in $a$`, R`la funzione integranda stessa`], corretta: 1, spiegazione: R`Qualunque primitiva va bene: se se ne usa un'altra, differisce per una costante che si semplifica nella differenza $G(b) - G(a)$.` },
     { id: 'q-14', domanda: R`L'area della regione compresa fra $y = f(x)$ (sopra) e $y = g(x)$ (sotto) per $a \le x \le b$ vale…`, opzioni: [R`$\int_a^b [f(x) - g(x)]\,dx$`, R`$\int_a^b [g(x) - f(x)]\,dx$`, R`$\int_a^b f(x)\,dx \cdot \int_a^b g(x)\,dx$`, R`$\left\lvert \int_a^b f(x)\,dx \right\rvert - \left\lvert \int_a^b g(x)\,dx \right\rvert$`], corretta: 0, spiegazione: R`Si integra la differenza fra la curva superiore e quella inferiore. La formula vale anche se le curve stanno sotto l'asse $x$: conta solo quale sta sopra l'altra.` },
-    { id: 'q-15', domanda: R`Il valor medio di una funzione continua $f$ in $[a;b]$ è…`, opzioni: [R`$\dfrac{f(a)+f(b)}{2}$`, R`$\dfrac{1}{b-a}\int_a^b f(x)\,dx$`, R`$\int_a^b f(x)\,dx$`, R`il massimo di $f$ in $[a;b]$`], corretta: 1, spiegazione: R`È l'altezza del rettangolo di base $b-a$ che ha la stessa area della regione sotto la curva. La media fra i valori agli estremi non tiene conto di ciò che succede in mezzo.` },
+    { id: 'q-15', domanda: R`Il valor medio di una funzione continua $f$ in $\Icc{a}{b}$ è…`, opzioni: [R`$\dfrac{f(a)+f(b)}{2}$`, R`$\dfrac{1}{b-a}\int_a^b f(x)\,dx$`, R`$\int_a^b f(x)\,dx$`, R`il massimo di $f$ in $\Icc{a}{b}$`], corretta: 1, spiegazione: R`È l'altezza del rettangolo di base $b-a$ che ha la stessa area della regione sotto la curva. La media fra i valori agli estremi non tiene conto di ciò che succede in mezzo.` },
     { id: 'q-16', domanda: R`Il volume del solido ottenuto ruotando attorno all'asse $x$ la regione sotto $y = f(x)$ fra $a$ e $b$ è…`, opzioni: [R`$\pi\int_a^b f(x)\,dx$`, R`$2\pi\int_a^b f(x)\,dx$`, R`$\pi\int_a^b [f(x)]^2\,dx$`, R`$\pi^2\int_a^b f(x)\,dx$`], corretta: 2, spiegazione: R`Ogni sezione perpendicolare all'asse è un cerchio di raggio $f(x)$, quindi di area $\pi[f(x)]^2$; sommando i dischi si ottiene la formula. Senza il quadrato non si otterrebbe nemmeno un'area.` },
     { id: 'q-17', domanda: R`Che cosa si può dire di $\displaystyle\int_1^{+\infty}\frac{dx}{x}$?`, opzioni: [R`converge a $1$`, R`converge a $0$`, R`diverge`, R`non ha senso, perché $+\infty$ non è un numero`], corretta: 2, spiegazione: R`$\int_1^b \frac{dx}{x} = \ln b$, e $\ln b \to +\infty$: l'integrale diverge. Ha senso eccome, purché lo si definisca come limite; $\int_1^{+\infty}\frac{dx}{x^2}$, invece, converge a $1$.` }
   ],

@@ -50,7 +50,7 @@ Ti servono i limiti (destro, sinistro e all'infinito) e il dominio di una funzio
     R`$f$ è continua in $x_0$ se $\lim_{x \to x_0} f(x) = f(x_0)$. Il valore esiste, il limite è finito, e i due numeri sono uguali.`,
     R`Polinomi, frazioni, radici, esponenziali, logaritmi, seno e coseno sono continui dove sono definiti. Per il loro limite basta sostituire.`,
     R`La specie di una discontinuità si legge dai due limiti laterali. Finiti e diversi: prima specie (salto). Almeno uno infinito o inesistente: seconda specie. Uguali e finiti, ma il valore manca o è diverso: terza specie (eliminabile).`,
-    R`Teorema degli zeri: se $f$ è continua su $[a, b]$ e agli estremi ha segni opposti, in mezzo si annulla almeno una volta.`,
+    R`Teorema degli zeri: se $f$ è continua su $\Icc{a}{b}$ e agli estremi ha segni opposti, in mezzo si annulla almeno una volta.`,
     R`Asintoto verticale $x = c$: in $c$ un limite laterale è infinito. Asintoto orizzontale $y = q$: all'infinito $f(x)$ tende a $q$. Asintoto obliquo $y = mx + q$: prima $m = \lim \frac{f(x)}{x}$, poi $q = \lim (f(x) - mx)$.`
   ],
 
@@ -69,7 +69,7 @@ Questa uguaglianza chiede tre cose. Ogni discontinuità nasce da una che manca.
 
 $f$ è **continua a destra** in $x_0$ se $\lim_{x \to x_0^+} f(x) = f(x_0)$. Allo stesso modo è continua a sinistra.
 
->* **Continuità in un intervallo.** $f$ è continua in $[a, b]$ se lo è in ogni punto. In $a$ basta da destra, in $b$ da sinistra.
+>* **Continuità in un intervallo.** $f$ è continua in $\Icc{a}{b}$ se lo è in ogni punto. In $a$ basta da destra, in $b$ da sinistra.
 
 ?? Sia $f(x) = x + 1$ per $x < 0$, $f(0) = 3$, $f(x) = x^2 + 1$ per $x > 0$. È continua in $0$?
 [ ] sì: $f(0)$ esiste
@@ -154,15 +154,15 @@ $\frac{1}{x^2}$ in $x = 0$ ha i due limiti laterali uguali a $+\infty$. La retta
 [ ] terza
 => Basta un limite laterale infinito. La prima specie vuole **tutti e due** i limiti finiti.` },
 
-    { id: 'teoremi', titolo: 'I teoremi sulle funzioni continue', testo: R`Questi tre teoremi sembrano ovvi, ma valgono solo con le loro ipotesi. Tutti chiedono $f$ continua su un intervallo **chiuso e limitato** $[a, b]$.
+    { id: 'teoremi', titolo: 'I teoremi sulle funzioni continue', testo: R`Questi tre teoremi sembrano ovvi, ma valgono solo con le loro ipotesi. Tutti chiedono $f$ continua su un intervallo **chiuso e limitato** $\Icc{a}{b}$.
 
 [[video:continuita-asintoti/teorema-degli-zeri]]
 
->* **Teorema di Weierstrass.** Se $f$ è continua in $[a, b]$, in $[a, b]$ ha un **massimo assoluto** e un **minimo assoluto**.
+>* **Teorema di Weierstrass.** Se $f$ è continua in $\Icc{a}{b}$, in $\Icc{a}{b}$ ha un **massimo assoluto** e un **minimo assoluto**.
 
->* **Teorema degli zeri** (di Bolzano). Sia $f$ continua in $[a, b]$, con segni opposti agli estremi: $f(a) \cdot f(b) < 0$. Allora esiste almeno un $c \in (a, b)$ con $f(c) = 0$.
+>* **Teorema degli zeri** (di Bolzano). Sia $f$ continua in $\Icc{a}{b}$, con segni opposti agli estremi: $f(a) \cdot f(b) < 0$. Allora esiste almeno un $c \in \Iaa{a}{b}$ con $f(c) = 0$.
 
->* **Teorema dei valori intermedi.** Se $f$ è continua in $[a, b]$, assume **tutti** i valori fra il suo minimo e il suo massimo.
+>* **Teorema dei valori intermedi.** Se $f$ è continua in $\Icc{a}{b}$, assume **tutti** i valori fra il suo minimo e il suo massimo.
 
 È il teorema del termometro: da $36{,}5$ a $37{,}8$ senza salti, la temperatura passa per $37$.
 
@@ -170,8 +170,8 @@ Se manca un'ipotesi, il teorema può fallire:
 
 | ipotesi che manca | controesempio | che cosa va storto |
 |---|---|---|
-| intervallo chiuso | $\frac{1}{x}$ su $(0, 1]$ | vicino a $0$ cresce senza fine: nessun massimo |
-| continuità | $-1$ per $x < 0$ e $1$ per $x \ge 0$, su $[-1, 1]$ | cambia segno saltando lo zero |
+| intervallo chiuso | $\frac{1}{x}$ su $\Iac{0}{1}$ | vicino a $0$ cresce senza fine: nessun massimo |
+| continuità | $-1$ per $x < 0$ e $1$ per $x \ge 0$, su $\Icc{-1}{1}$ | cambia segno saltando lo zero |
 
 Esempio: $x^3 - x - 1 = 0$ ha una soluzione fra $1$ e $2$. Infatti il polinomio è continuo, $f(1) = -1$ e $f(2) = 5$.
 
@@ -179,9 +179,9 @@ Trascina $A$ e $B$ sulla curva e guarda il segno di $f(a) \cdot f(b)$.
 
 [[grafico:zeri]]
 
->! Il teorema degli zeri vale in un verso solo. $x^2 - 1$ su $[-2, 2]$ ha $f(-2) \cdot f(2) = 9 > 0$, eppure ha due zeri. E garantisce **almeno** uno zero, non uno solo.
+>! Il teorema degli zeri vale in un verso solo. $x^2 - 1$ su $\Icc{-2}{2}$ ha $f(-2) \cdot f(2) = 9 > 0$, eppure ha due zeri. E garantisce **almeno** uno zero, non uno solo.
 
-?? $f$ è continua in $[0, 4]$, con $f(0) = 3$ e $f(4) = 7$. Che cosa si può dire con certezza?
+?? $f$ è continua in $\Icc{0}{4}$, con $f(0) = 3$ e $f(4) = 7$. Che cosa si può dire con certezza?
 [x] $f$ vale $5$ in qualche punto
 [ ] $f$ si annulla
 [ ] $f$ non ha zeri
@@ -192,37 +192,37 @@ Trascina $A$ e $B$ sulla curva e guarda il segno di $f(a) \cdot f(b)$.
 
 [[video:continuita-asintoti/bisezione]]
 
-Parti da $[a, b]$, con $f$ continua e $f(a) \cdot f(b) < 0$. Poi:
+Parti da $\Icc{a}{b}$, con $f$ continua e $f(a) \cdot f(b) < 0$. Poi:
 
 1. Calcola il punto medio $m = \frac{a + b}{2}$ e il valore $f(m)$.
 2. Se $f(m) = 0$, la soluzione è $m$.
-3. Se $f(a)$ e $f(m)$ hanno segni opposti, tieni $[a, m]$.
-4. Altrimenti tieni $[m, b]$.
+3. Se $f(a)$ e $f(m)$ hanno segni opposti, tieni $\Icc{a}{m}$.
+4. Altrimenti tieni $\Icc{m}{b}$.
 5. Ricomincia dal passo 1 con il nuovo intervallo, lungo la metà.
 
-Esempio con $f(x) = x^3 - x - 1$ su $[1, 2]$, dove $f(1) = -1$ e $f(2) = 5$:
+Esempio con $f(x) = x^3 - x - 1$ su $\Icc{1}{2}$, dove $f(1) = -1$ e $f(2) = 5$:
 
 | passo | $m$ | $f(m)$ | nuovo intervallo |
 |---|---|---|---|
-| 1 | 1,5 | 0,875 | [1; 1,5] |
-| 2 | 1,25 | −0,297 | [1,25; 1,5] |
-| 3 | 1,375 | 0,225 | [1,25; 1,375] |
+| 1 | 1,5 | 0,875 | $\Icc{1}{1{,}5}$ |
+| 2 | 1,25 | −0,297 | $\Icc{1{,}25}{1{,}5}$ |
+| 3 | 1,375 | 0,225 | $\Icc{1{,}25}{1{,}375}$ |
 
 Dopo tre passi sai che lo zero sta fra $1{,}25$ e $1{,}375$. Il valore vero è $1{,}3247\ldots$
 
 Ogni passo dimezza l'intervallo. Dopo $n$ passi è lungo $\frac{b - a}{2^n}$. Se prendi il punto medio come stima, l'errore è al massimo la metà: $\frac{b - a}{2^{n+1}}$.
 
-?? Partendo da $[1, 2]$, quanti passi di bisezione servono perché l'intervallo sia lungo meno di $0{,}01$?
+?? Partendo da $\Icc{1}{2}$, quanti passi di bisezione servono perché l'intervallo sia lungo meno di $0{,}01$?
 [ ] $5$
 [x] $7$
 [ ] $100$
 => Dopo $n$ passi la lunghezza è $\frac{1}{2^n}$. Con $n = 6$ viene $\frac{1}{64} \approx 0{,}016$, troppo. Con $n = 7$ viene $\frac{1}{128} \approx 0{,}008$. L'intervallo si dimezza, non cala di $0{,}01$ a ogni passo.
 
->! Se in $[a, b]$ ci sono più zeri, la bisezione ne trova **uno**, e non sai quale. Prima separali con lo studio del segno.
+>! Se in $\Icc{a}{b}$ ci sono più zeri, la bisezione ne trova **uno**, e non sai quale. Prima separali con lo studio del segno.
 
 Il **metodo delle tangenti** (o di Newton) sostituisce alla curva la sua tangente. Usa la derivata: la trovi nell'argomento «Derivate». Parti da un $x_0$ vicino allo zero e tracci la tangente nel punto $(x_0; f(x_0))$. Il punto in cui taglia l'asse $x$ è il nuovo $x_1$. Poi riparti da lì, sempre con la stessa formula: $$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}.$$ Serve $f'(x_n) \ne 0$. Vicino allo zero di solito bastano pochi passi.
 
-Con $f(x) = x^2 - 2$ e $x_0 = 1$, dopo tre passi $x_3 \approx 1{,}414216$: sbaglia di circa $0{,}000002$ da $\sqrt{2}$. Con la bisezione da $[1, 2]$, per chiudere $\sqrt{2}$ in un intervallo lungo meno di $0{,}00001$ servono $17$ passi.
+Con $f(x) = x^2 - 2$ e $x_0 = 1$, dopo tre passi $x_3 \approx 1{,}414216$: sbaglia di circa $0{,}000002$ da $\sqrt{2}$. Con la bisezione da $\Icc{1}{2}$, per chiudere $\sqrt{2}$ in un intervallo lungo meno di $0{,}00001$ servono $17$ passi.
 
 [[video:continuita-asintoti/tangenti]]` },
 
@@ -439,7 +439,7 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
     ], risultato: R`Prima specie (salto) in $x = 2$, con salto $s = 2$.` },
 
     { titolo: 'Trovare il parametro', problema: R`Determina $k$ in modo che $f(x) = \begin{cases} x^2 + 1 & x \le 2 \\ kx - 3 & x > 2 \end{cases}$ sia continua su tutto $\mathbb{R}$.`, passi: [
-      R`Su $(-\infty, 2)$ e su $(2, +\infty)$ la funzione è polinomiale, quindi continua qualunque sia $k$: l'unico punto da controllare è il raccordo $x_0 = 2$.`,
+      R`Su $\Iaa{-\infty}{2}$ e su $\Iaa{2}{+\infty}$ la funzione è polinomiale, quindi continua qualunque sia $k$: l'unico punto da controllare è il raccordo $x_0 = 2$.`,
       R`Valore e limite sinistro (dove vale la prima formula, che include $x = 2$): $f(2) = 4 + 1 = 5$ e $\lim_{x \to 2^-} f(x) = 5$.`,
       R`Limite destro: $\lim_{x \to 2^+} (kx - 3) = 2k - 3$.`,
       R`Impongo l'uguaglianza dei tre numeri: $2k - 3 = 5$, da cui $k = 4$.`,
@@ -461,11 +461,11 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
       R`Verifica con la divisione fra polinomi: $\dfrac{2x^2 - x + 1}{x - 1} = 2x + 1 + \dfrac{2}{x-1}$, e il resto $\dfrac{2}{x-1}$ tende a zero. ✓`
     ], risultato: R`Asintoto verticale $x = 1$ e asintoto obliquo $y = 2x + 1$ (da entrambe le parti).` },
 
-    { titolo: 'Teorema degli zeri e bisezione', problema: R`Mostra che $x^3 - x - 1 = 0$ ha una soluzione in $[1, 2]$ e localizzala con tre passi di bisezione.`, passi: [
-      R`$f(x) = x^3 - x - 1$ è polinomiale, quindi continua in $[1, 2]$. Inoltre $f(1) = 1 - 1 - 1 = -1 < 0$ e $f(2) = 8 - 2 - 1 = 5 > 0$: per il teorema degli zeri esiste $c \in (1, 2)$ con $f(c) = 0$.`,
-      R`Primo passo: $m = 1{,}5$ e $f(1{,}5) = 3{,}375 - 2{,}5 = 0{,}875 > 0$. Lo zero sta dove i segni sono discordi, cioè in $[1;\ 1{,}5]$.`,
-      R`Secondo passo: $m = 1{,}25$ e $f(1{,}25) = 1{,}953125 - 2{,}25 = -0{,}296875 < 0$. Ora il cambio di segno è fra $1{,}25$ e $1{,}5$: nuovo intervallo $[1{,}25;\ 1{,}5]$.`,
-      R`Terzo passo: $m = 1{,}375$ e $f(1{,}375) = 2{,}599609\ldots - 2{,}375 = 0{,}2246\ldots > 0$. Nuovo intervallo $[1{,}25;\ 1{,}375]$, lungo $\dfrac{1}{8}$.`,
+    { titolo: 'Teorema degli zeri e bisezione', problema: R`Mostra che $x^3 - x - 1 = 0$ ha una soluzione in $\Icc{1}{2}$ e localizzala con tre passi di bisezione.`, passi: [
+      R`$f(x) = x^3 - x - 1$ è polinomiale, quindi continua in $\Icc{1}{2}$. Inoltre $f(1) = 1 - 1 - 1 = -1 < 0$ e $f(2) = 8 - 2 - 1 = 5 > 0$: per il teorema degli zeri esiste $c \in \Iaa{1}{2}$ con $f(c) = 0$.`,
+      R`Primo passo: $m = 1{,}5$ e $f(1{,}5) = 3{,}375 - 2{,}5 = 0{,}875 > 0$. Lo zero sta dove i segni sono discordi, cioè in $\Icc{1}{1{,}5}$.`,
+      R`Secondo passo: $m = 1{,}25$ e $f(1{,}25) = 1{,}953125 - 2{,}25 = -0{,}296875 < 0$. Ora il cambio di segno è fra $1{,}25$ e $1{,}5$: nuovo intervallo $\Icc{1{,}25}{1{,}5}$.`,
+      R`Terzo passo: $m = 1{,}375$ e $f(1{,}375) = 2{,}599609\ldots - 2{,}375 = 0{,}2246\ldots > 0$. Nuovo intervallo $\Icc{1{,}25}{1{,}375}$, lungo $\dfrac{1}{8}$.`,
       R`Come stima si prende il punto medio, $1{,}3125$, con errore al più $0{,}0625$. Il valore esatto è $1{,}3247\ldots$ ✓`
     ], risultato: R`Lo zero esiste ed è compreso fra $1{,}25$ e $1{,}375$.` }
   ]
@@ -477,9 +477,9 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
     { nome: 'Discontinuità di prima specie (salto)', formula: R`l^- \ne l^+ \ \text{entrambi finiti}, \qquad s = l^+ - l^-`, nota: R`Il numero $s$ è il salto; non si può eliminare ridefinendo $f$.` },
     { nome: 'Discontinuità di seconda specie', formula: R`l^- = \pm\infty \quad \text{oppure} \quad l^+ = \pm\infty \quad \text{oppure un limite laterale non esiste}` },
     { nome: 'Discontinuità di terza specie (eliminabile)', formula: R`\lim_{x \to x_0} f(x) = l \ \text{finito}, \quad \text{ma } f(x_0) \ne l \ \text{o non definita}`, nota: R`Si elimina ponendo $f(x_0) = l$: è il prolungamento per continuità.` },
-    { nome: 'Teorema di Weierstrass', formula: R`f \ \text{continua in} \ [a, b] \ \Rightarrow \ \exists \ \max_{[a,b]} f \ \text{e} \ \min_{[a,b]} f`, nota: R`Servono intervallo chiuso e limitato, e continuità su tutto l'intervallo.` },
-    { nome: 'Teorema degli zeri (Bolzano)', formula: R`f \ \text{continua in} \ [a,b], \ f(a) \cdot f(b) < 0 \ \Rightarrow \ \exists \, c \in (a,b) : f(c) = 0`, nota: R`Garantisce almeno uno zero, non esattamente uno.` },
-    { nome: 'Teorema dei valori intermedi', formula: R`f \ \text{continua in} \ [a,b] \ \Rightarrow \ f \ \text{assume ogni valore fra} \ \min f \ \text{e} \ \max f` },
+    { nome: 'Teorema di Weierstrass', formula: R`f \ \text{continua in} \ \Icc{a}{b} \ \Rightarrow \ \exists \ \max_{\Icc{a}{b}} f \ \text{e} \ \min_{\Icc{a}{b}} f`, nota: R`Servono intervallo chiuso e limitato, e continuità su tutto l'intervallo.` },
+    { nome: 'Teorema degli zeri (Bolzano)', formula: R`f \ \text{continua in} \ \Icc{a}{b}, \ f(a) \cdot f(b) < 0 \ \Rightarrow \ \exists \, c \in \Iaa{a}{b} : f(c) = 0`, nota: R`Garantisce almeno uno zero, non esattamente uno.` },
+    { nome: 'Teorema dei valori intermedi', formula: R`f \ \text{continua in} \ \Icc{a}{b} \ \Rightarrow \ f \ \text{assume ogni valore fra} \ \min f \ \text{e} \ \max f` },
     { nome: 'Bisezione: ampiezza dopo n passi', formula: R`\frac{b - a}{2^n}`, nota: R`Prendendo il punto medio come stima, l'errore è al più $\dfrac{b-a}{2^{n+1}}$.` },
     { nome: 'Asintoto verticale', formula: R`\lim_{x \to c^-} f(x) = \pm\infty \ \ \text{o} \ \ \lim_{x \to c^+} f(x) = \pm\infty \ \Rightarrow \ x = c`, nota: R`Si cerca solo nei punti esclusi dal dominio.` },
     { nome: 'Asintoto orizzontale', formula: R`\lim_{x \to +\infty} f(x) = q \ \text{finito} \ \Rightarrow \ y = q`, nota: R`Da calcolare separatamente per $x \to +\infty$ e per $x \to -\infty$.` },
@@ -490,7 +490,7 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
   flashcards: [
     { id: 'fc-01', sezione: 'definizione', tipo: 'definizione', fronte: R`Funzione continua in $x_0$`, retro: R`$\lim_{x \to x_0} f(x) = f(x_0)$, con il limite finito e $x_0$ nel dominio.` },
     { id: 'fc-02', sezione: 'definizione', tipo: 'concetto', fronte: R`Le tre condizioni della continuità in $x_0$`, retro: R`1) $f(x_0)$ esiste; 2) il limite per $x \to x_0$ esiste finito; 3) i due numeri coincidono.` },
-    { id: 'fc-03', sezione: 'definizione', tipo: 'definizione', fronte: R`Funzione continua in $[a, b]$`, retro: R`Continua in ogni punto interno, continua a destra in $a$ e a sinistra in $b$.` },
+    { id: 'fc-03', sezione: 'definizione', tipo: 'definizione', fronte: R`Funzione continua in $\Icc{a}{b}$`, retro: R`Continua in ogni punto interno, continua a destra in $a$ e a sinistra in $b$.` },
     { id: 'fc-04', sezione: 'definizione', tipo: 'concetto', fronte: R`$f(x) = \dfrac{1}{x}$ è continua?`, retro: R`Sì, in ogni punto del suo dominio $\mathbb{R} \setminus \{0\}$. In $0$ non è definita, quindi lì non è continua: $0$ è un punto di discontinuità di seconda specie.` },
     { id: 'fc-05', sezione: 'funzioni-elementari', tipo: 'concetto', fronte: R`Quali funzioni elementari sono continue nel loro dominio?`, retro: R`Tutte: polinomiali, razionali, irrazionali, goniometriche, esponenziali, logaritmiche, valore assoluto.` },
     { id: 'fc-06', sezione: 'funzioni-elementari', tipo: 'procedura', fronte: R`Limite di una funzione continua in $x_0$`, retro: R`Si calcola sostituendo: $\lim_{x \to x_0} f(x) = f(x_0)$.` },
@@ -502,10 +502,10 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
     { id: 'fc-12', sezione: 'discontinuita', tipo: 'definizione', fronte: R`Discontinuità di terza specie`, retro: R`Il limite esiste finito, ma $f(x_0)$ non esiste o è diverso dal limite. Si dice eliminabile.` },
     { id: 'fc-13', sezione: 'discontinuita', tipo: 'procedura', fronte: R`Come si classifica una discontinuità`, retro: R`Si calcolano i due limiti laterali: diversi e finiti $\to$ prima specie; almeno uno infinito o inesistente $\to$ seconda; uguali e finiti $\to$ terza.` },
     { id: 'fc-14', sezione: 'discontinuita', tipo: 'concetto', fronte: R`Prolungamento per continuità`, retro: R`Nel caso eliminabile, si ridefinisce $f(x_0) = \lim_{x \to x_0} f(x)$ e la nuova funzione è continua.` },
-    { id: 'fc-15', sezione: 'teoremi', tipo: 'definizione', fronte: R`Teorema di Weierstrass`, retro: R`Se $f$ è continua in $[a, b]$ (chiuso e limitato), ammette massimo e minimo assoluti in $[a, b]$.` },
-    { id: 'fc-16', sezione: 'teoremi', tipo: 'definizione', fronte: R`Teorema degli zeri`, retro: R`Se $f$ è continua in $[a,b]$ e $f(a) \cdot f(b) < 0$, esiste almeno un $c \in (a,b)$ con $f(c) = 0$.` },
-    { id: 'fc-17', sezione: 'teoremi', tipo: 'definizione', fronte: R`Teorema dei valori intermedi`, retro: R`Una funzione continua in $[a,b]$ assume tutti i valori compresi fra il suo minimo e il suo massimo.` },
-    { id: 'fc-18', sezione: 'teoremi', tipo: 'concetto', fronte: R`Controesempio a Weierstrass`, retro: R`$f(x) = \dfrac{1}{x}$ su $(0, 1]$: continua, ma senza massimo. L'intervallo non è chiuso.` },
+    { id: 'fc-15', sezione: 'teoremi', tipo: 'definizione', fronte: R`Teorema di Weierstrass`, retro: R`Se $f$ è continua in $\Icc{a}{b}$ (chiuso e limitato), ammette massimo e minimo assoluti in $\Icc{a}{b}$.` },
+    { id: 'fc-16', sezione: 'teoremi', tipo: 'definizione', fronte: R`Teorema degli zeri`, retro: R`Se $f$ è continua in $\Icc{a}{b}$ e $f(a) \cdot f(b) < 0$, esiste almeno un $c \in \Iaa{a}{b}$ con $f(c) = 0$.` },
+    { id: 'fc-17', sezione: 'teoremi', tipo: 'definizione', fronte: R`Teorema dei valori intermedi`, retro: R`Una funzione continua in $\Icc{a}{b}$ assume tutti i valori compresi fra il suo minimo e il suo massimo.` },
+    { id: 'fc-18', sezione: 'teoremi', tipo: 'concetto', fronte: R`Controesempio a Weierstrass`, retro: R`$f(x) = \dfrac{1}{x}$ su $\Iac{0}{1}$: continua, ma senza massimo. L'intervallo non è chiuso.` },
     { id: 'fc-19', sezione: 'bisezione', tipo: 'procedura', fronte: R`I passi del metodo di bisezione`, retro: R`Si calcola $m = \dfrac{a+b}{2}$ e $f(m)$; si tiene la metà agli estremi della quale $f$ cambia segno; si ripete.` },
     { id: 'fc-20', sezione: 'bisezione', tipo: 'formula', fronte: R`Ampiezza dell'intervallo dopo $n$ bisezioni`, retro: R`$\dfrac{b-a}{2^n}$.` },
     { id: 'fc-21', sezione: 'asintoti-verticali-orizzontali', tipo: 'definizione', fronte: R`Asintoto verticale`, retro: R`La retta $x = c$, quando almeno uno dei limiti laterali di $f$ in $c$ è infinito.` },
@@ -552,7 +552,7 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
 
     { id: 'es-07', difficolta: 2, testo: R`Calcola il salto di $f(x) = \dfrac{x - 3}{|x - 3|}$ nel suo punto di discontinuità.`, suggerimenti: [R`Il punto critico è $x = 3$: togli il valore assoluto distinguendo $x > 3$ e $x < 3$.`, R`Il salto è $s = l^+ - l^-$, e l'ordine dei due limiti conta.`], risposta: { tipo: 'numero', valore: 2, tolleranza: 0.01 }, soluzione: [R`Per $x > 3$: $|x-3| = x-3$, quindi $f(x) = 1$ e $l^+ = 1$.`, R`Per $x < 3$: $|x-3| = 3-x$, quindi $f(x) = -1$ e $l^- = -1$.`, R`Prima specie, con salto $s = 1 - (-1) = 2$.`] },
 
-    { id: 'es-08', difficolta: 2, testo: R`L'equazione $x^3 + x - 3 = 0$ ha una soluzione in $[1, 2]$. Applica **due** passi di bisezione e indica l'intervallo che ottieni.`, suggerimenti: [R`Verifica prima che $f(1)$ e $f(2)$ abbiano segni opposti.`, R`Primo punto medio: $m = 1{,}5$. Calcola $f(1{,}5)$ e guarda con quale estremo ha segno discorde.`], risposta: { tipo: 'intervallo', da: 1, a: 1.25, chiusoDa: true, chiusoA: true }, soluzione: [R`$f(1) = 1 + 1 - 3 = -1 < 0$ e $f(2) = 8 + 2 - 3 = 7 > 0$: le ipotesi del teorema degli zeri valgono.`, R`Primo passo: $f(1{,}5) = 3{,}375 + 1{,}5 - 3 = 1{,}875 > 0$. Il segno cambia fra $1$ e $1{,}5$: nuovo intervallo $[1;\ 1{,}5]$.`, R`Secondo passo: $f(1{,}25) = 1{,}953125 + 1{,}25 - 3 = 0{,}203125 > 0$. Il segno cambia fra $1$ e $1{,}25$.`, R`Intervallo finale $[1;\ 1{,}25]$, di ampiezza $0{,}25$.`] },
+    { id: 'es-08', difficolta: 2, testo: R`L'equazione $x^3 + x - 3 = 0$ ha una soluzione in $\Icc{1}{2}$. Applica **due** passi di bisezione e indica l'intervallo che ottieni.`, suggerimenti: [R`Verifica prima che $f(1)$ e $f(2)$ abbiano segni opposti.`, R`Primo punto medio: $m = 1{,}5$. Calcola $f(1{,}5)$ e guarda con quale estremo ha segno discorde.`], risposta: { tipo: 'intervallo', da: 1, a: 1.25, chiusoDa: true, chiusoA: true }, soluzione: [R`$f(1) = 1 + 1 - 3 = -1 < 0$ e $f(2) = 8 + 2 - 3 = 7 > 0$: le ipotesi del teorema degli zeri valgono.`, R`Primo passo: $f(1{,}5) = 3{,}375 + 1{,}5 - 3 = 1{,}875 > 0$. Il segno cambia fra $1$ e $1{,}5$: nuovo intervallo $\Icc{1}{1{,}5}$.`, R`Secondo passo: $f(1{,}25) = 1{,}953125 + 1{,}25 - 3 = 0{,}203125 > 0$. Il segno cambia fra $1$ e $1{,}25$.`, R`Intervallo finale $\Icc{1}{1{,}25}$, di ampiezza $0{,}25$.`] },
 
     { id: 'es-09', difficolta: 2, testo: R`Quale valore bisogna assegnare a $f(2)$ perché $f(x) = \dfrac{x^2 - 5x + 6}{x - 2}$ diventi continua in $x = 2$?`, suggerimenti: [R`Scomponi il numeratore: le sue radici sono $2$ e $3$.`, R`Il valore da assegnare è il limite per $x \to 2$.`], risposta: { tipo: 'numero', valore: -1, tolleranza: 0.01 }, soluzione: [R`$x^2 - 5x + 6 = (x-2)(x-3)$, quindi per $x \ne 2$ si ha $f(x) = x - 3$.`, R`$\lim_{x \to 2} f(x) = 2 - 3 = -1$: la discontinuità è eliminabile.`, R`Ponendo $f(2) = -1$ la funzione è continua su tutto $\mathbb{R}$.`] },
 
@@ -568,9 +568,9 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
 
     { id: 'q-02', domanda: R`In $x_0$ il limite sinistro di $f$ vale $3$ e il limite destro vale $-1$. La discontinuità è…`, opzioni: [R`di prima specie, con salto $-4$`, R`di prima specie, con salto $4$`, R`di seconda specie`, R`eliminabile`], corretta: 0, spiegazione: R`I limiti laterali sono finiti e diversi: prima specie. Il salto è $s = l^+ - l^- = -1 - 3 = -4$; scriverlo $+4$ significa aver invertito destra e sinistra. Non è di seconda specie (nessun limite infinito) né eliminabile (i limiti sono diversi).` },
 
-    { id: 'q-03', domanda: R`Il teorema di Weierstrass richiede che la funzione sia…`, opzioni: [R`derivabile in $(a, b)$`, R`continua in un intervallo chiuso e limitato`, R`continua in un intervallo qualsiasi`, R`monotòna in $[a, b]$`], corretta: 1, spiegazione: R`Le due ipotesi sono continuità e intervallo chiuso e limitato: su $(0, 1]$ la funzione continua $\frac1x$ non ha massimo. La derivabilità non serve ($|x|$ su $[-1,1]$ ha massimo e minimo), la monotonia nemmeno.` },
+    { id: 'q-03', domanda: R`Il teorema di Weierstrass richiede che la funzione sia…`, opzioni: [R`derivabile in $\Iaa{a}{b}$`, R`continua in un intervallo chiuso e limitato`, R`continua in un intervallo qualsiasi`, R`monotòna in $\Icc{a}{b}$`], corretta: 1, spiegazione: R`Le due ipotesi sono continuità e intervallo chiuso e limitato: su $\Iac{0}{1}$ la funzione continua $\frac1x$ non ha massimo. La derivabilità non serve ($|x|$ su $\Icc{-1}{1}$ ha massimo e minimo), la monotonia nemmeno.` },
 
-    { id: 'q-04', domanda: R`Quali sono le ipotesi del teorema degli zeri?`, opzioni: [R`$f$ continua in $[a,b]$ e $f(a) \cdot f(b) > 0$`, R`$f$ derivabile in $[a,b]$`, R`$f$ continua in $[a,b]$ e $f(a) \cdot f(b) < 0$`, R`$f$ continua in $(a,b)$ e $f(a) = f(b)$`], corretta: 2, spiegazione: R`Serve la continuità sull'intervallo chiuso e il cambio di segno agli estremi, cioè prodotto **negativo**. Con prodotto positivo il teorema non dice nulla; $f(a) = f(b)$ è l'ipotesi del teorema di Rolle, che riguarda le derivate.` },
+    { id: 'q-04', domanda: R`Quali sono le ipotesi del teorema degli zeri?`, opzioni: [R`$f$ continua in $\Icc{a}{b}$ e $f(a) \cdot f(b) > 0$`, R`$f$ derivabile in $\Icc{a}{b}$`, R`$f$ continua in $\Icc{a}{b}$ e $f(a) \cdot f(b) < 0$`, R`$f$ continua in $\Iaa{a}{b}$ e $f(a) = f(b)$`], corretta: 2, spiegazione: R`Serve la continuità sull'intervallo chiuso e il cambio di segno agli estremi, cioè prodotto **negativo**. Con prodotto positivo il teorema non dice nulla; $f(a) = f(b)$ è l'ipotesi del teorema di Rolle, che riguarda le derivate.` },
 
     { id: 'q-05', domanda: R`Che tipo di discontinuità presenta $f(x) = \dfrac{1}{x - 1}$ in $x = 1$?`, opzioni: [R`di prima specie`, R`di terza specie, eliminabile`, R`nessuna, perché in $1$ la funzione non è definita`, R`di seconda specie`], corretta: 3, spiegazione: R`I limiti laterali valgono $-\infty$ e $+\infty$: basta che uno sia infinito perché la discontinuità sia di seconda specie. Il fatto che $1$ non appartenga al dominio non annulla la domanda: la funzione è definita in punti vicini quanto vuoi a $1$, e la retta $x = 1$ è asintoto verticale.` },
 
@@ -580,9 +580,9 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
 
     { id: 'q-08', domanda: R`Una discontinuità si dice eliminabile quando…`, opzioni: [R`i limiti laterali sono finiti e diversi`, R`il limite esiste finito ma non coincide con $f(x_0)$, oppure $f(x_0)$ non esiste`, R`almeno un limite laterale è infinito`, R`la funzione non è derivabile in $x_0$`], corretta: 1, spiegazione: R`Se il limite esiste finito, basta ridefinire (o definire) $f(x_0)$ uguale al limite. Limiti laterali diversi danno la prima specie, un limite infinito la seconda; la derivabilità non c'entra con la classificazione delle discontinuità.` },
 
-    { id: 'q-09', domanda: R`La funzione $f(x) = \dfrac{1}{x}$ è continua su $(0, 1]$ ma non ha massimo. Perché questo non contraddice Weierstrass?`, opzioni: [R`perché $f$ non è continua`, R`perché l'intervallo non è chiuso`, R`perché $f$ non è limitata inferiormente`, R`perché Weierstrass vale solo per i polinomi`], corretta: 1, spiegazione: R`L'estremo $0$ è escluso: l'intervallo non è chiuso, quindi un'ipotesi del teorema non vale. La funzione è continua in tutto $(0,1]$, ed è limitata inferiormente (vale sempre almeno $1$); il teorema si applica a qualunque funzione continua, non solo ai polinomi.` },
+    { id: 'q-09', domanda: R`La funzione $f(x) = \dfrac{1}{x}$ è continua su $\Iac{0}{1}$ ma non ha massimo. Perché questo non contraddice Weierstrass?`, opzioni: [R`perché $f$ non è continua`, R`perché l'intervallo non è chiuso`, R`perché $f$ non è limitata inferiormente`, R`perché Weierstrass vale solo per i polinomi`], corretta: 1, spiegazione: R`L'estremo $0$ è escluso: l'intervallo non è chiuso, quindi un'ipotesi del teorema non vale. La funzione è continua in tutto $\Iac{0}{1}$, ed è limitata inferiormente (vale sempre almeno $1$); il teorema si applica a qualunque funzione continua, non solo ai polinomi.` },
 
-    { id: 'q-10', domanda: R`Partendo da $[a, b]$, dopo $n$ passi di bisezione l'intervallo è lungo…`, opzioni: [R`$\dfrac{b-a}{n}$`, R`$\dfrac{b-a}{2n}$`, R`$(b-a) \cdot 2^n$`, R`$\dfrac{b-a}{2^n}$`], corretta: 3, spiegazione: R`Ogni passo dimezza l'ampiezza, quindi dopo $n$ passi si è diviso $n$ volte per $2$: il fattore è $2^n$, non $n$ né $2n$. La lunghezza diminuisce, quindi non può moltiplicarsi per $2^n$.` },
+    { id: 'q-10', domanda: R`Partendo da $\Icc{a}{b}$, dopo $n$ passi di bisezione l'intervallo è lungo…`, opzioni: [R`$\dfrac{b-a}{n}$`, R`$\dfrac{b-a}{2n}$`, R`$(b-a) \cdot 2^n$`, R`$\dfrac{b-a}{2^n}$`], corretta: 3, spiegazione: R`Ogni passo dimezza l'ampiezza, quindi dopo $n$ passi si è diviso $n$ volte per $2$: il fattore è $2^n$, non $n$ né $2n$. La lunghezza diminuisce, quindi non può moltiplicarsi per $2^n$.` },
 
     { id: 'q-11', domanda: R`La funzione di Dirichlet, che vale $1$ sui razionali e $0$ sugli irrazionali…`, opzioni: [R`è continua solo in $x = 0$`, R`è continua su tutto $\mathbb{R}$`, R`non è continua in nessun punto`, R`ha una discontinuità di prima specie in ogni numero intero`], corretta: 2, spiegazione: R`In ogni intervallo, per piccolo che sia, ci sono sia razionali sia irrazionali: nessun limite laterale esiste, in nessun punto. Non è quindi di prima specie da nessuna parte, e non è continua da nessuna parte, nemmeno in $0$.` },
 
@@ -592,7 +592,7 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
 
     { id: 'q-14', domanda: R`Una funzione può avere, per $x \to +\infty$, sia un asintoto orizzontale sia uno obliquo?`, opzioni: [R`sì, se è periodica`, R`sì, sempre`, R`no: il limite di $\dfrac{f(x)}{x}$ è unico, o vale $0$ o vale $m \ne 0$`, R`sì, se ha anche un asintoto verticale`], corretta: 2, spiegazione: R`Su ogni lato c'è al massimo un asintoto non verticale, perché il limite di $\frac{f(x)}{x}$, se esiste, è un solo numero: se è $0$ l'asintoto (eventuale) è orizzontale, altrimenti è obliquo. La presenza di asintoti verticali o la periodicità non cambiano nulla.` },
 
-    { id: 'q-15', domanda: R`Se $f$ è continua in $[a,b]$ e $f(a) \cdot f(b) > 0$, allora…`, opzioni: [R`$f$ non ha zeri in $[a,b]$`, R`$f$ ha esattamente due zeri`, R`il teorema degli zeri non dice nulla: zeri possono esserci oppure no`, R`$f$ ha almeno uno zero`], corretta: 2, spiegazione: R`Il teorema dà una condizione **sufficiente**, non necessaria. Con $f(x) = x^2 - 1$ su $[-2, 2]$ il prodotto vale $9 > 0$ eppure ci sono due zeri; con $f(x) = x^2 + 1$ non ce n'è nessuno. Senza il cambio di segno non si può concludere niente.` },
+    { id: 'q-15', domanda: R`Se $f$ è continua in $\Icc{a}{b}$ e $f(a) \cdot f(b) > 0$, allora…`, opzioni: [R`$f$ non ha zeri in $\Icc{a}{b}$`, R`$f$ ha esattamente due zeri`, R`il teorema degli zeri non dice nulla: zeri possono esserci oppure no`, R`$f$ ha almeno uno zero`], corretta: 2, spiegazione: R`Il teorema dà una condizione **sufficiente**, non necessaria. Con $f(x) = x^2 - 1$ su $\Icc{-2}{2}$ il prodotto vale $9 > 0$ eppure ci sono due zeri; con $f(x) = x^2 + 1$ non ce n'è nessuno. Senza il cambio di segno non si può concludere niente.` },
 
     { id: 'q-16', domanda: R`Dove si cercano gli asintoti verticali di una funzione?`, opzioni: [R`nei punti in cui la funzione si annulla`, R`nei punti esclusi dal dominio e negli estremi finiti esclusi`, R`solo in $x = 0$`, R`nei punti di massimo e di minimo`], corretta: 1, spiegazione: R`Un asintoto verticale nasce da un limite infinito, che può accadere solo dove la funzione non è definita: denominatori che si annullano, argomenti di logaritmi che tendono a zero, estremi esclusi del dominio. Dove la funzione vale zero il grafico taglia l'asse $x$, il contrario di un asintoto verticale.` }
   ],

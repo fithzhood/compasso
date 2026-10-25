@@ -15,7 +15,9 @@ const INDICE = global.window.COMPASSO_INDICE;
 const ANIMAZIONI = require(path.join(radice, 'compasso-animazioni.js')).nomi();
 
 const CONTA = { sezioni: [5, 9], esempi: [4, 6], formulario: [6, 14], flashcards: [16, 26], esercizi: [8, 40], quiz: [12, 18], suggerimenti: [6, 10], aneddoti: [3, 5] };
-const KOPZ = { strict: 'ignore', macros: { '\\evid': '\\htmlClass{evid}{#1}', '\\evidb': '\\htmlClass{evid evid2}{#1}' }, trust: c => c.command === '\\htmlClass' };
+const KOPZ = { strict: 'ignore', macros: { '\\evid': '\\htmlClass{evid}{#1}', '\\evidb': '\\htmlClass{evid evid2}{#1}',
+  /* le stesse macro degli intervalli di compasso.js (separatore: virgola) */
+  '\\Icc': '[#1,\\,#2]', '\\Iaa': '(#1,\\,#2)', '\\Ica': '[#1,\\,#2)', '\\Iac': '(#1,\\,#2]' }, trust: c => c.command === '\\htmlClass' };
 const KT = (t, d) => katex.renderToString(t, Object.assign({ throwOnError: true, displayMode: !!d }, KOPZ, { macros: Object.assign({}, KOPZ.macros) }));
 const VIETATI = [/\\\(/, /\\\[/, /\\begin\{align\*?\}/, /\\begin\{equation/, /\\textbf/, /\\newcommand/];
 

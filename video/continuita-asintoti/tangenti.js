@@ -1,7 +1,7 @@
 'use strict';
 /* Il metodo delle tangenti — lo zero positivo di f(x) = x² − 2 partendo da x₀ = 1: la tangente in (x₀; f(x₀)) taglia
    l'asse x in x₁ = x₀ − f(x₀)/f′(x₀) = 1,5; poi x₂ = 1,5 − 0,25/3 ≈ 1,41667, x₃ ≈ 1,414216 contro √2 ≈ 1,414214:
-   cinque cifre decimali giuste dopo tre passi. La bisezione da [1; 2] scende sotto 0,00001 solo dopo 17 passi
+   cinque cifre decimali giuste dopo tre passi. La bisezione da [1, 2] scende sotto 0,00001 solo dopo 17 passi
    (1/2¹⁷ ≈ 0,0000076, 1/2¹⁶ ≈ 0,0000153); x₃ sbaglia di circa 0,0000021. Conti rifatti con node. Argomento: continuita-asintoti. */
 CVIDEO.registra('continuita-asintoti/tangenti', M => {
   const { W, C, E, P, life, css, TITOLI, conFont, drawRich, drawSeq, txt, dot, glowStroke, dashed, arrowHead, card } = M;
@@ -188,7 +188,7 @@ function sceneScheda(ctx, t) {
     ctx.strokeStyle = C.panelEdge; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(1180, 678); ctx.lineTo(1790, 678); ctx.stroke();
     ctx.restore();
   }
-  riga(ctx, '{dim:bisezione da }{mink:[1; 2]}{dim::  }{r:17 passi}', 722, kb, 36);
+  riga(ctx, '{dim:bisezione da }{mink:[1, 2]}{dim::  }{r:17 passi}', 722, kb, 36);
   riga(ctx, '{dim:tangenti da }{mink:x₀ = 1}{dim::  }{g:3 passi}', 768, P(t, T.veloce + .3, T.veloce + .7), 36);
   ctx.restore();
 }

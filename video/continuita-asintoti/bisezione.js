@@ -132,7 +132,7 @@ function sceneScheda(ctx, t) {
   drawRich(ctx, '{dim:valore di }{my:f}', 1450, 190, { size: 30 });
   txt(ctx, 'intervallo', 1690, 190, { size: 30, color: C.dim });
   ctx.strokeStyle = C.panelEdge; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(1170, 225); ctx.lineTo(1800, 225); ctx.stroke();
-  txt(ctx, '[1; 2]', 1690, 280, { size: 36, color: C.v });
+  txt(ctx, '[1, 2]', 1690, 280, { size: 36, color: C.v });
   ctx.restore();
   PASSI.forEach((K, i) => {
     const y = 345 + i * 65;
@@ -181,7 +181,7 @@ function sceneFine(ctx, t) {
     ['soffio', 7.2], ['traccia', 7.4, 8.2],                                            // l'asse x
     ['tono', 8.0, 9.0, [0, .08, .2, .38, .61, 1]], ['pop', 8.8, .55],                  // la curva sale da −1 a 5, la formula
     ['pop', 14.7, .1], ['pop', 15.0, .9],                                               // f(1) = −1, f(2) = 5
-    ['soffio', 21.8], ['pop', 22.2, .45],                                               // la scheda, la morsa [1; 2]
+    ['soffio', 21.8], ['pop', 22.2, .45],                                               // la scheda, la morsa [1, 2]
     ['pop', 27.7, .5], ['traccia', 32.7, 33.3], ['pop', 33.1, .7],                     // 1,5 e f(1,5) positivo
     ['tono', 44.5, 45.4, [.6, .35]], ['pop', 44.6, .5],                                 // la morsa si stringe a [1; 1,5]
     ['pop', 50.0, .45], ['traccia', 50.6, 51.2], ['pop', 51.0, .2],                    // 1,25 e f(1,25) negativo

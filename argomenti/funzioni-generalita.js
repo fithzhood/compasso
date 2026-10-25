@@ -7,7 +7,7 @@ const R = String.raw;
    Espressioni (composta e inversa): espr(['(x+4)/2', …], prefissi) aggiunge le varianti con * e
    con «y=» o «f^-1(x)=» davanti; le forme sono state valutate in punti a caso contro la funzione giusta. */
 const SEGNA_D = 'es. x > 7 oppure x ≠ 7';
-const SIMB_D = ['<', '>', '≤', '≥', '≠', '∞', '(', ')', ';', '−'];
+const SIMB_D = ['<', '>', '≤', '≥', '≠', '∞', '(', ')', '[', ']', ',', '−'];
 const dominio = f => ({ tipo: 'testo', accettate: f.concat(f.map(a => 'x∈' + a), f.map(a => 'D=' + a)), segnaposto: SEGNA_D, simboli: SIMB_D });
 const INF = ['inf', '∞', 'infinito'], SEP = [';', ','];
 const disF = (op, n) => {
@@ -88,21 +88,21 @@ Intorno a una funzione ci sono tre insiemi. Nella tabella l'esempio è $f(x) = x
 |---|---|---|
 | **dominio** | le $x$ che puoi mettere dentro | $\mathbb{R}$ |
 | **codominio** | dove cerchi i risultati | $\mathbb{R}$ |
-| **immagine** | i risultati che escono davvero | $[0, +\infty)$ |
+| **immagine** | i risultati che escono davvero | $\Ica{0}{+\infty}$ |
 
 L'immagine può essere più piccola del codominio. Nel grafico c'è $f(x) = x^2 - 2x$: prova a far uscire un risultato qualunque.
 
 [[grafico:immagine]]
 
-Sotto $-1$ non si scende, perché $x^2 - 2x = (x-1)^2 - 1$ e un quadrato non è mai negativo. Quindi l'immagine è $[-1, +\infty)$, anche se il codominio è $\mathbb{R}$.
+Sotto $-1$ non si scende, perché $x^2 - 2x = (x-1)^2 - 1$ e un quadrato non è mai negativo. Quindi l'immagine è $\Ica{-1}{+\infty}$, anche se il codominio è $\mathbb{R}$.
 
 >! Il codominio lo scegli tu quando scrivi $f: A \to B$. L'immagine invece la decide la regola: sono i valori raggiunti davvero.
 
 ?? Qual è l'immagine di $f(x) = x^2 + 1$, da $\mathbb{R}$ a $\mathbb{R}$?
-[x] $[1, +\infty)$
+[x] $\Ica{1}{+\infty}$
 [ ] $\mathbb{R}$
-[ ] $[0, +\infty)$
-=> $x^2$ vale almeno $0$, quindi $x^2 + 1$ vale almeno $1$ e raggiunge ogni numero da $1$ in su. $\mathbb{R}$ è il codominio, non l'immagine. $[0, +\infty)$ è l'immagine di $x^2$: manca il $+1$.` },
+[ ] $\Ica{0}{+\infty}$
+=> $x^2$ vale almeno $0$, quindi $x^2 + 1$ vale almeno $1$ e raggiunge ogni numero da $1$ in su. $\mathbb{R}$ è il codominio, non l'immagine. $\Ica{0}{+\infty}$ è l'immagine di $x^2$: manca il $+1$.` },
 
     { id: 'grafico-funzione', titolo: 'Funzioni numeriche e il loro grafico', testo: R`D'ora in poi dominio e codominio sono fatti di numeri reali: sono **funzioni numeriche**. Il loro **grafico** è l'insieme dei punti $(x;\ f(x))$.
 
@@ -161,7 +161,7 @@ Se i pezzi delicati sono più di uno, le condizioni devono valere **tutte insiem
 ~ \evid{x+1 \ge 0} :: la radice quadrata vuole il radicando non negativo
 ~ \evid{x-4 \ne 0} :: il denominatore non deve annullarsi
 ~ x \ge -1 \ \text{ e } \ x \ne 4 :: risolvo le due condizioni e le tengo insieme
-~ D = \evidb{[-1, 4) \cup (4, +\infty)} :: da $-1$ compreso in su, saltando il $4$
+~ D = \evidb{\Ica{-1}{4} \cup \Iaa{4}{+\infty}} :: da $-1$ compreso in su, saltando il $4$
 
 >* Il dominio è fatto dai valori che rispettano **tutte** le condizioni: è l'intersezione, mai l'unione.
 
@@ -203,7 +203,7 @@ Trascina la retta orizzontale e conta i punti in cui taglia la parabola. Poi spo
 
 [[grafico:iniettiva]]
 
-Con il dominio da $0$ in su, ogni retta orizzontale taglia la curva una volta sola: $x^2$ ristretta a $[0, +\infty)$ è iniettiva.
+Con il dominio da $0$ in su, ogni retta orizzontale taglia la curva una volta sola: $x^2$ ristretta a $\Ica{0}{+\infty}$ è iniettiva.
 
 Con i calcoli, parti da due ingressi con lo stesso risultato e guarda se sono per forza uguali. Per $f(x) = 2x + 3$:
 
@@ -214,28 +214,28 @@ Con i calcoli, parti da due ingressi con lo stesso risultato e guarda se sono pe
 
 Con $x^2$ il conto si ferma a $x_1^2 = x_2^2$, che vale anche per $x_1 = -x_2$: non è iniettiva.
 
-$f: A \to B$ è **suriettiva** se l'immagine è tutto il codominio $B$. Per esempio $x^2$ da $\mathbb{R}$ a $\mathbb{R}$ non è suriettiva, perché i negativi non escono mai. Da $\mathbb{R}$ a $[0, +\infty)$ invece sì.
+$f: A \to B$ è **suriettiva** se l'immagine è tutto il codominio $B$. Per esempio $x^2$ da $\mathbb{R}$ a $\mathbb{R}$ non è suriettiva, perché i negativi non escono mai. Da $\mathbb{R}$ a $\Ica{0}{+\infty}$ invece sì.
 
 Una funzione iniettiva **e** suriettiva è **biunivoca**: ogni elemento di $B$ viene da un solo elemento di $A$. Solo così si può invertire.
 
 >! Una funzione pari non è iniettiva: per ogni $x \ne 0$, $x$ e $-x$ danno lo stesso risultato.
 
-?? $f(x) = x^2$, con dominio $[0, +\infty)$ e codominio $\mathbb{R}$, è…
+?? $f(x) = x^2$, con dominio $\Ica{0}{+\infty}$ e codominio $\mathbb{R}$, è…
 [x] iniettiva ma non suriettiva
 [ ] biunivoca
 [ ] suriettiva ma non iniettiva
 [ ] né iniettiva né suriettiva
-=> Con $x \ge 0$ ogni risultato viene da un solo $x$: è iniettiva. Però i negativi del codominio non escono mai, quindi non è suriettiva e nemmeno biunivoca. Con codominio $[0, +\infty)$ sarebbe biunivoca.` },
+=> Con $x \ge 0$ ogni risultato viene da un solo $x$: è iniettiva. Però i negativi del codominio non escono mai, quindi non è suriettiva e nemmeno biunivoca. Con codominio $\Ica{0}{+\infty}$ sarebbe biunivoca.` },
 
     { id: 'crescenza-monotonia', titolo: 'Funzioni crescenti, decrescenti, monotone', testo: R`Letto da sinistra a destra, un grafico ha tratti in cui sale e tratti in cui scende.
 
 >* $f$ è **crescente** in un intervallo $I$ se, **per ogni** coppia $x_1 < x_2$ di $I$, vale $f(x_1) < f(x_2)$. È **decrescente** se $x_1 < x_2 \Rightarrow f(x_1) > f(x_2)$. È **monotona** in $I$ se è crescente in tutto $I$ oppure decrescente in tutto $I$.
 
-$f(x) = x^3$ è crescente su tutto $\mathbb{R}$. $f(x) = x^2$ invece non è monotona su $\mathbb{R}$: scende su $(-\infty, 0]$ e sale su $[0, +\infty)$.
+$f(x) = x^3$ è crescente su tutto $\mathbb{R}$. $f(x) = x^2$ invece non è monotona su $\mathbb{R}$: scende su $\Iac{-\infty}{0}$ e sale su $\Ica{0}{+\infty}$.
 
 La definizione vale per **ogni** coppia di punti, non per una sola.
 
-?? Sai che $f(1) = 2$ e $f(3) = 5$. Puoi concludere che $f$ è crescente in $[1, 3]$?
+?? Sai che $f(1) = 2$ e $f(3) = 5$. Puoi concludere che $f$ è crescente in $\Icc{1}{3}$?
 => No. Fra $1$ e $3$ la funzione potrebbe scendere e poi risalire, per esempio passando per $f(2) = 0$. Due valori non dicono cosa fa la funzione in mezzo.
 
 Una funzione crescente su tutto il dominio è anche iniettiva. Il contrario non vale: $f(x) = \dfrac{1}{x}$ è iniettiva ma non è monotona.
@@ -387,7 +387,7 @@ Prova con il grafico di $y = \dfrac{x-1}{x+2}$. Passa il dito sulla curva per le
 ?? Qual è l'immagine della funzione?
 => Tutti i numeri reali tranne $1$. I due rami coprono tutte le quote tranne $y = 1$, a cui si avvicinano senza arrivarci. Lo conferma il calcolo: $\dfrac{x-1}{x+2} = 1$ porta a $-1 = 2$, impossibile.
 
-Su ciascuno dei due rami la curva sale: la funzione è crescente in $(-\infty, -2)$ e in $(-2, +\infty)$, presi separatamente.
+Su ciascuno dei due rami la curva sale: la funzione è crescente in $\Iaa{-\infty}{-2}$ e in $\Iaa{-2}{+\infty}$, presi separatamente.
 
 >! Crescente su ogni ramo non vuol dire crescente su tutto il dominio. Infatti $-3 < 0$, ma $f(-3) = 4$ è più grande di $f(0) = -\frac12$.` }
   ],
@@ -517,8 +517,8 @@ Su ciascuno dei due rami la curva sale: la funzione è crescente in $(-\infty, -
       R`Ci sono due condizioni da imporre insieme: il radicando non negativo (indice pari) e il denominatore diverso da zero.`,
       R`Radicando: $x + 1 \ge 0 \Rightarrow x \ge -1$. Denominatore: $x - 4 \ne 0 \Rightarrow x \ne 4$.`,
       R`Metto le due condizioni a sistema (intersezione): $x \ge -1$ e $x \ne 4$.`,
-      R`Il dominio è $[-1, 4) \cup (4, +\infty)$.`
-    ], risultato: R`Dominio: $[-1, 4) \cup (4, +\infty)$.` },
+      R`Il dominio è $\Ica{-1}{4} \cup \Iaa{4}{+\infty}$.`
+    ], risultato: R`Dominio: $\Ica{-1}{4} \cup \Iaa{4}{+\infty}$.` },
 
     { titolo: 'Parità di una funzione', problema: R`Stabilisci se $f(x) = x^4 - 3x^2 + 1$ è pari, dispari o nessuna delle due.`, passi: [
       R`Il dominio è tutto $\mathbb{R}$, simmetrico rispetto a $0$: posso procedere con il test.`,
@@ -606,12 +606,12 @@ Su ciascuno dei due rami la curva sale: la funzione è crescente in $(-\infty, -
     { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Trova l'inversa di $f(x) = x + 5$. Scrivi solo l'espressione, per esempio *3x+1*.`, suggerimenti: [R`Scambia $x$ e $y$ in $y = x + 5$, poi ricava $y$.`], risposta: espr(['x-5', '-5+x'], INV), soluzione: [R`Scrivo $y = x + 5$ e scambio $x$ e $y$: $x = y + 5$.`, R`Ricavo $y$: $y = x - 5$.`, R`Quindi $f^{-1}(x) = x - 5$.`] },
     { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Trova l'inversa di $f(x) = 2x - 4$. Per le frazioni usa la barra, per esempio *(x-2)/5*.`, suggerimenti: [R`Scambia $x$ e $y$ in $y = 2x - 4$.`, R`Da $x = 2y - 4$ porta il $4$ a sinistra, poi dividi per $2$.`], risposta: espr(['(x+4)/2', '(4+x)/2', 'x/2+2', '2+x/2', '1/2x+2', '(1/2)x+2', '0.5x+2', '2+0.5x', 'x/2+4/2'], INV), soluzione: [R`Scrivo $y = 2x - 4$ e scambio $x$ e $y$: $x = 2y - 4$.`, R`Porto il $-4$ a sinistra: $x + 4 = 2y$.`, R`Divido per $2$: $f^{-1}(x) = \dfrac{x + 4}{2}$.`] },
     { id: 'es-01', difficolta: 1, testo: R`Trova il dominio naturale di $f(x) = \dfrac{2x - 1}{x + 5}$.`, suggerimenti: [R`È una funzione razionale fratta: quale condizione riguarda il denominatore?`, R`Il denominatore si annulla per un solo valore di $x$.`], risposta: tranne(-5), soluzione: [R`Essendo una funzione razionale fratta, il denominatore non può annullarsi: $x + 5 \ne 0$.`, R`Cioè $x \ne -5$.`, R`Il dominio naturale è $\mathbb{R} \setminus \{-5\}$.`] },
-    { id: 'es-02', difficolta: 1, testo: R`Trova il dominio naturale di $f(x) = \sqrt{x - 4}$.`, suggerimenti: [R`Il radicando ha indice pari: quale condizione impone?`, R`Deve essere $x - 4 \ge 0$.`], risposta: { tipo: 'intervallo', da: 4, a: 'inf', chiusoDa: true, chiusoA: false }, soluzione: [R`Indice pari: il radicando deve essere non negativo, $x - 4 \ge 0$.`, R`Cioè $x \ge 4$.`, R`Il dominio è $[4, +\infty)$.`] },
+    { id: 'es-02', difficolta: 1, testo: R`Trova il dominio naturale di $f(x) = \sqrt{x - 4}$.`, suggerimenti: [R`Il radicando ha indice pari: quale condizione impone?`, R`Deve essere $x - 4 \ge 0$.`], risposta: { tipo: 'intervallo', da: 4, a: 'inf', chiusoDa: true, chiusoA: false }, soluzione: [R`Indice pari: il radicando deve essere non negativo, $x - 4 \ge 0$.`, R`Cioè $x \ge 4$.`, R`Il dominio è $\Ica{4}{+\infty}$.`] },
     { id: 'es-03', difficolta: 1, testo: R`Trova gli zeri di $f(x) = x^2 - 5x + 6$.`, suggerimenti: [R`Uno zero è un valore di $x$ per cui $f(x) = 0$: risolvi l'equazione di secondo grado associata.`, R`Cerca due numeri con somma $5$ e prodotto $6$.`], risposta: { tipo: 'numeri', valori: [2, 3] }, soluzione: [R`Risolvo $x^2 - 5x + 6 = 0$: cerco due numeri con somma $5$ e prodotto $6$, cioè $2$ e $3$.`, R`Gli zeri sono $x = 2$ e $x = 3$.`] },
     { id: 'es-04', difficolta: 1, testo: R`Date $f(x) = 3x - 2$ e $g(x) = x + 1$, calcola $(f \circ g)(2)$.`, suggerimenti: [R`Calcola prima $g(2)$.`, R`Poi applica $f$ al risultato ottenuto.`], risposta: { tipo: 'numero', valore: 7 }, soluzione: [R`$g(2) = 2 + 1 = 3$.`, R`$(f \circ g)(2) = f(3) = 3 \cdot 3 - 2 = 7$.`] },
     { id: 'es-05', difficolta: 2, testo: R`Stabilisci se $f(x) = x^3 - x$ è pari, dispari o nessuna delle due.`, suggerimenti: [R`Calcola $f(-x)$ e confrontalo con $f(x)$.`, R`$f(-x) = (-x)^3 - (-x) = -x^3 + x$: raccogli il segno.`], risposta: DISPARI, soluzione: [R`$f(-x) = (-x)^3 - (-x) = -x^3 + x = -(x^3 - x) = -f(x)$.`, R`Poiché $f(-x) = -f(x)$ per ogni $x$, la funzione è **dispari**.`] },
-    { id: 'es-06', difficolta: 2, testo: R`Trova il dominio naturale di $f(x) = \sqrt{4 - x^2}$.`, suggerimenti: [R`Indice pari: imponi il radicando non negativo.`, R`Risolvi la disequazione $4 - x^2 \ge 0$, cioè $x^2 \le 4$.`], risposta: { tipo: 'intervallo', da: -2, a: 2, chiusoDa: true, chiusoA: true }, soluzione: [R`Condizione: $4 - x^2 \ge 0$, cioè $x^2 \le 4$.`, R`Risolvendo (disequazione pura), $-2 \le x \le 2$.`, R`Il dominio è $[-2, 2]$.`] },
-    { id: 'es-07', difficolta: 2, testo: R`Trova il dominio naturale di $f(x) = \log(x - 1) + \dfrac{1}{x - 3}$.`, suggerimenti: [R`Ci sono due condizioni distinte da mettere a sistema: una per il logaritmo, una per il denominatore.`, R`Argomento del logaritmo: $x - 1 > 0$. Denominatore: $x - 3 \ne 0$.`, R`Il dominio è l'insieme dei valori che rispettano entrambe le condizioni insieme.`], soluzione: [R`Argomento del logaritmo positivo: $x - 1 > 0 \Rightarrow x > 1$.`, R`Denominatore diverso da zero: $x - 3 \ne 0 \Rightarrow x \ne 3$.`, R`A sistema: $x > 1$ e $x \ne 3$, cioè il dominio è $(1, 3) \cup (3, +\infty)$.`] },
+    { id: 'es-06', difficolta: 2, testo: R`Trova il dominio naturale di $f(x) = \sqrt{4 - x^2}$.`, suggerimenti: [R`Indice pari: imponi il radicando non negativo.`, R`Risolvi la disequazione $4 - x^2 \ge 0$, cioè $x^2 \le 4$.`], risposta: { tipo: 'intervallo', da: -2, a: 2, chiusoDa: true, chiusoA: true }, soluzione: [R`Condizione: $4 - x^2 \ge 0$, cioè $x^2 \le 4$.`, R`Risolvendo (disequazione pura), $-2 \le x \le 2$.`, R`Il dominio è $\Icc{-2}{2}$.`] },
+    { id: 'es-07', difficolta: 2, testo: R`Trova il dominio naturale di $f(x) = \log(x - 1) + \dfrac{1}{x - 3}$.`, suggerimenti: [R`Ci sono due condizioni distinte da mettere a sistema: una per il logaritmo, una per il denominatore.`, R`Argomento del logaritmo: $x - 1 > 0$. Denominatore: $x - 3 \ne 0$.`, R`Il dominio è l'insieme dei valori che rispettano entrambe le condizioni insieme.`], soluzione: [R`Argomento del logaritmo positivo: $x - 1 > 0 \Rightarrow x > 1$.`, R`Denominatore diverso da zero: $x - 3 \ne 0 \Rightarrow x \ne 3$.`, R`A sistema: $x > 1$ e $x \ne 3$, cioè il dominio è $\Iaa{1}{3} \cup \Iaa{3}{+\infty}$.`] },
     { id: 'es-08', difficolta: 2, testo: R`Verifica che $f(x) = 2x + 7$ è invertibile e trova $f^{-1}(x)$.`, suggerimenti: [R`Una funzione lineare non costante è sempre biunivoca su $\mathbb{R}$.`, R`Scambia $x$ e $y$ in $y = 2x + 7$ e risolvi rispetto alla nuova $y$.`], risposta: espr(['(x-7)/2', 'x/2-7/2', 'x/2-3.5', '1/2x-7/2', '(1/2)x-7/2', '0.5x-3.5', '-7/2+x/2'], INV), soluzione: [R`$f$ è lineare e non costante: è biunivoca su $\mathbb{R}$, quindi invertibile.`, R`Pongo $y = 2x + 7$, scambio $x$ e $y$: $x = 2y + 7$.`, R`Risolvo rispetto a $y$: $y = \dfrac{x - 7}{2}$.`] },
     { id: 'es-09', difficolta: 3, testo: R`Date $f(x) = \sqrt{x - 2}$ e $g(x) = x^2 + 1$, trova il dominio di $(f \circ g)(x)$.`, suggerimenti: [R`Calcola prima l'espressione di $(f \circ g)(x) = f(g(x))$.`, R`Poi imponi che il radicando sia non negativo.`, R`Arrivi a $x^2 + 1 - 2 \ge 0$, cioè $x^2 \ge 1$.`], risposta: fuori(-1, 1), soluzione: [R`$(f \circ g)(x) = f(x^2+1) = \sqrt{x^2 + 1 - 2} = \sqrt{x^2 - 1}$.`, R`Serve $x^2 - 1 \ge 0$, cioè $x^2 \ge 1$.`, R`Risolvendo (disequazione pura), $x \le -1$ oppure $x \ge 1$.`] },
     { id: 'es-10', difficolta: 3, testo: R`Date $f(x) = \dfrac{1}{x}$ e $g(x) = x - 3$, scrivi l'espressione di $(g \circ f)(x)$ e stabilisci per quali $x$ è definita. Nella casella scrivi l'espressione.`, suggerimenti: [R`$(g \circ f)(x) = g(f(x))$: sostituisci $f(x)$ dentro $g$.`, R`Il denominatore di $f$ impone già una condizione.`], risposta: espr(['1/x-3', '(1-3x)/x', '-3+1/x', '1/x-3,x≠0', '1/x-3 con x≠0', '1/x-3;x≠0'], ['(g∘f)(x)=', 'g(f(x))=']), soluzione: [R`$(g \circ f)(x) = g\left(\dfrac{1}{x}\right) = \dfrac{1}{x} - 3$.`, R`È definita per $x \ne 0$, la stessa condizione richiesta da $f$: $g$ non aggiunge altre restrizioni, perché è definita per ogni numero reale.`] },

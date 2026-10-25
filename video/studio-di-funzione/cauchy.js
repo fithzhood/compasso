@@ -43,7 +43,7 @@ const FUMETTI = [
   [72.0, 78.0, 'Lagrange su {mink:f} da sola darebbe\nun altro istante: {mx:t}{mink: ≈ 0,58}.'],
   [78.2, 82.0, 'Su {mink:g} da sola, un altro ancora:\n{mx:t}{mink: = 0,5}.'],
   [82.2, 87.9, 'È il teorema di {v:Cauchy}: un solo {mink:c}\nper le derivate di {mink:f} e di {mink:g}.'],
-  [88.1, 95.1, 'Servono {mink:f} e {mink:g} continue in {mink:[a; b]},\nderivabili in {mink:(a; b)}, con {mink:g′(}{mx:t}{mink:) ≠ 0}.'],
+  [88.1, 95.1, 'Servono {mink:f} e {mink:g} continue in {mink:[a, b]},\nderivabili in {mink:(a, b)}, con {mink:g′(}{mx:t}{mink:) ≠ 0}.'],
   // chiusura
   [FINE + 1.0, DUR - 3.0, 'Due funzioni, un solo istante {mink:c}:\nil teorema di Cauchy.'],
 ];
@@ -210,11 +210,11 @@ function scenePannello(ctx, t) {
   if (t > 82.3) {
     conFont(TITOLI, () => drawRich(ctx, 'teorema di {v:Cauchy}', PX, 175, { size: 42, weight: 600, local: t - 82.4 }));
     drawSeq(ctx, [{ num: '{mink:f′(c)}', den: '{mink:g′(c)}' }, '{mink:=}', { num: '{mink:f(b) − f(a)}', den: '{mink:g(b) − g(a)}' }], PX, 295, 42, { local: t - 83.0 });
-    drawRich(ctx, '{dim:per un }{mink:c}{dim: in }{mink:(a; b)}{dim:; qui }{mink:a = 0}{dim:, }{mink:b = 1}', PX, 382, { size: 32, local: t - 83.8 });
+    drawRich(ctx, '{dim:per un }{mink:c}{dim: in }{mink:(a, b)}{dim:; qui }{mink:a = 0}{dim:, }{mink:b = 1}', PX, 382, { size: 32, local: t - 83.8 });
   }
   if (t > 88.2) {
-    drawRich(ctx, '{mink:f}{dim:, }{mink:g}{dim: continue in }{mink:[a; b]}', PX, 445, { size: 34, local: t - 88.3 });
-    drawRich(ctx, '{dim:derivabili in }{mink:(a; b)}{dim:, con }{mink:g′(}{mx:t}{mink:) ≠ 0}', PX, 495, { size: 34, local: t - 90.0 });
+    drawRich(ctx, '{mink:f}{dim:, }{mink:g}{dim: continue in }{mink:[a, b]}', PX, 445, { size: 34, local: t - 88.3 });
+    drawRich(ctx, '{dim:derivabili in }{mink:(a, b)}{dim:, con }{mink:g′(}{mx:t}{mink:) ≠ 0}', PX, 495, { size: 34, local: t - 90.0 });
   }
   // la linea del tempo (65,9–FINE): c per tutte e due, poi f da sola e g da sola
   const kl = P(t, 67.4, 67.9);

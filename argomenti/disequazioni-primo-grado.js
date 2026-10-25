@@ -35,7 +35,7 @@ Ti serve saper risolvere le equazioni di primo grado. I passaggi sono quasi gli 
     R`Una disequazione ha di solito infinite soluzioni: un tratto di numeri.`,
     R`Sommare o togliere lo stesso numero ai due membri non cambia il verso.`,
     R`Moltiplicare o dividere per un numero **negativo** capovolge il verso.`,
-    R`Parentesi quadra se l'estremo è incluso, tonda se è escluso. L'infinito vuole sempre la tonda.`,
+    R`Negli intervalli la quadra include l'estremo, $[a$; la tonda lo esclude, $(a$. All'infinito va sempre la tonda. Gli estremi si separano con la virgola: $\Iaa{4}{+\infty}$.`,
     R`Se la $x$ sparisce, resta un confronto fra numeri. Se è vero la soluzione è $\mathbb{R}$, se è falso è $\varnothing$.`,
     R`In un sistema di disequazioni la soluzione è la parte comune degli intervalli.`
   ],
@@ -66,7 +66,7 @@ La soluzione è $x > 3$. Il $3$ è escluso: lì viene $0 > 0$, che è falso.
     { id: 'intervalli', titolo: 'Gli intervalli', testo: R`Prendi i numeri da $-2$ incluso a $5$ escluso. Puoi scriverli in tre modi:
 
 - con una disuguaglianza: $-2 \le x < 5$;
-- con un **intervallo**: $[-2, 5)$;
+- con un **intervallo**: $\Ica{-2}{5}$;
 - con un disegno sulla **retta reale**.
 
 In tutti e tre conta una domanda: l'estremo è incluso o no?
@@ -75,25 +75,27 @@ In tutti e tre conta una domanda: l'estremo è incluso o no?
 
 | disuguaglianza | intervallo | sulla retta reale |
 |---|---|---|
-| $a < x < b$ | $(a, b)$ | pallini vuoti in $a$ e $b$ |
-| $a \le x \le b$ | $[a, b]$ | pallini pieni in $a$ e $b$ |
-| $a \le x < b$ | $[a, b)$ | pieno in $a$, vuoto in $b$ |
-| $x > a$ | $(a, +\infty)$ | vuoto in $a$, freccia a destra |
-| $x \le a$ | $(-\infty, a]$ | pieno in $a$, freccia a sinistra |
+| $a < x < b$ | $\Iaa{a}{b}$ | pallini vuoti in $a$ e $b$ |
+| $a \le x \le b$ | $\Icc{a}{b}$ | pallini pieni in $a$ e $b$ |
+| $a \le x < b$ | $\Ica{a}{b}$ | pieno in $a$, vuoto in $b$ |
+| $x > a$ | $\Iaa{a}{+\infty}$ | vuoto in $a$, freccia a destra |
+| $x \le a$ | $\Iac{-\infty}{a}$ | pieno in $a$, freccia a sinistra |
 
 [[grafico:intervalliNotazione]]
 
->* Estremo **incluso** ($\le$, $\ge$): parentesi quadra, pallino pieno. Estremo **escluso** ($<$, $>$): parentesi tonda, pallino vuoto. L'infinito ha sempre la tonda.
+>* Estremo **incluso** ($\le$, $\ge$): parentesi **quadra**, $[a$ oppure $a]$, pallino pieno. Estremo **escluso** ($<$, $>$): parentesi **tonda**, $(a$ oppure $a)$, pallino vuoto. L'infinito non è un numero e non si raggiunge: all'infinito va sempre la tonda.
 
-Molti libri scrivono $]a, b[$ invece di $(a, b)$. Il significato è lo stesso.
+Fra i due estremi si mette la **virgola**. Il punto e virgola serve per i punti del piano: $(4; 2)$ è un punto, $\Iaa{4}{+\infty}$ è un intervallo.
+
+Alcuni libri scrivono l'intervallo aperto con le quadre girate verso l'esterno, $]a, b[$. Vuol dire lo stesso $\Iaa{a}{b}$.
 
 ?? Come si scrive $x \ge -1$ con un intervallo?
-[x] $[-1, +\infty)$
-[ ] $(-1, +\infty)$
-[ ] $[-1, +\infty]$
-=> $\ge$ include $-1$: quadra a sinistra. A destra c'è $+\infty$, che vuole sempre la tonda. $(-1, +\infty)$ esclude $-1$, che invece va incluso.
+[x] $\Ica{-1}{+\infty}$
+[ ] $\Iaa{-1}{+\infty}$
+[ ] $\Icc{-1}{+\infty}$
+=> $\ge$ include $-1$: quadra davanti a $-1$. A destra c'è $+\infty$, che vuole sempre la tonda. $\Iaa{-1}{+\infty}$ esclude $-1$, che invece va incluso.
 
->! $(2, 5)$ può essere un intervallo o un punto del piano. In questo capitolo è un intervallo.` },
+>! Separa gli estremi con la virgola, non con il punto e virgola: $(1; 3)$ è un punto del piano, $\Iaa{1}{3}$ un intervallo. Con i decimali lascia uno spazio dopo la virgola che separa: $\Icc{1{,}5}{3}$.` },
 
     { id: 'principi-equivalenza', titolo: 'I principi di equivalenza e il cambio di verso', testo: R`Come per le equazioni, ci sono due principi. Semplificano la disequazione senza cambiarne le soluzioni.
 
@@ -382,7 +384,7 @@ La disequazione dà tutti i numeri fino a $5$. Ma il testo parla di numeri **nat
     { nome: 'Soluzione con a positivo', formula: R`ax > b \ \Rightarrow\ x > \frac{b}{a} \quad (a > 0)`, nota: R`Dividendo per un numero positivo il verso resta.` },
     { nome: 'Soluzione con a negativo', formula: R`ax > b \ \Rightarrow\ x < \frac{b}{a} \quad (a < 0)`, nota: R`Dividendo per $a < 0$ il verso cambia.` },
     { nome: 'Casi con a nullo', formula: R`0 \cdot x > b: \quad \begin{cases} b < 0 & S = \mathbb{R} \\ b \ge 0 & S = \varnothing \end{cases}`, nota: R`Quando $a = 0$ l'incognita scompare: resta il confronto $0 > b$, sempre vero o sempre falso.` },
-    { nome: 'Notazioni di intervallo', formula: R`(a, b), \quad [a, b], \quad [a, b), \quad (a, b]`, nota: R`Aperto, chiuso, semiaperto a destra, semiaperto a sinistra: la parentesi quadra include l'estremo, quella tonda lo esclude.` },
+    { nome: 'Notazioni di intervallo', formula: R`\Iaa{a}{b}, \quad \Icc{a}{b}, \quad \Ica{a}{b}, \quad \Iac{a}{b}`, nota: R`Aperto, chiuso, semiaperto a destra, semiaperto a sinistra: la quadra include l'estremo, la tonda lo esclude; all'infinito sempre la tonda. Gli estremi si separano con la virgola: il punto e virgola è dei punti, $(4; 2)$.` },
     { nome: 'Scrittura di un sistema', formula: R`\begin{cases} f(x) > 0 \\ g(x) \ge 0 \end{cases}`, nota: R`La graffa significa "e": entrambe le condizioni devono valere insieme.` },
     { nome: 'Soluzione di un sistema', formula: R`S = S_1 \cap S_2`, nota: R`L'intersezione, non l'unione: un valore deve stare in ogni insieme soluzione.` },
     { nome: 'Disequazione fratta (forma tipo)', formula: R`\frac{N(x)}{D(x)} \ge 0`, nota: R`Si studia il segno di $N(x)$ e di $D(x)$ separatamente con la tabella dei segni: mai moltiplicare per $D(x)$.` },
@@ -393,8 +395,8 @@ La disequazione dà tutti i numeri fino a $5$. Ma il testo parla di numeri **nat
     { id: 'fc-01', sezione: 'disuguaglianze', tipo: 'definizione', fronte: R`Che cos'è una disuguaglianza?`, retro: R`Un confronto tra due espressioni con i simboli $<, \ >, \ \le, \ \ge, \ \ne$.` },
     { id: 'fc-02', sezione: 'disuguaglianze', tipo: 'definizione', fronte: R`Che cos'è una disequazione?`, retro: R`Una disuguaglianza che contiene un'incognita: risolverla vuol dire trovare tutti i valori che la rendono vera.` },
     { id: 'fc-03', sezione: 'disuguaglianze', tipo: 'concetto', fronte: R`Quante soluzioni ha di solito una disequazione?`, retro: R`Di solito infinite, un intero intervallo di numeri: non un valore isolato come in un'equazione.` },
-    { id: 'fc-04', sezione: 'intervalli', tipo: 'definizione', fronte: R`Intervallo aperto $(a,b)$`, retro: R`I numeri $x$ con $a < x < b$: gli estremi $a$ e $b$ sono esclusi.` },
-    { id: 'fc-05', sezione: 'intervalli', tipo: 'definizione', fronte: R`Intervallo chiuso $[a,b]$`, retro: R`I numeri $x$ con $a \le x \le b$: gli estremi sono inclusi.` },
+    { id: 'fc-04', sezione: 'intervalli', tipo: 'definizione', fronte: R`Intervallo aperto $\Iaa{a}{b}$`, retro: R`I numeri $x$ con $a < x < b$: gli estremi $a$ e $b$ sono esclusi, per questo le parentesi tonde. Fra gli estremi la virgola.` },
+    { id: 'fc-05', sezione: 'intervalli', tipo: 'definizione', fronte: R`Intervallo chiuso $\Icc{a}{b}$`, retro: R`I numeri $x$ con $a \le x \le b$: gli estremi sono inclusi, per questo le parentesi quadre.` },
     { id: 'fc-06', sezione: 'intervalli', tipo: 'concetto', fronte: R`Come si disegna un estremo escluso sulla retta reale?`, retro: R`Con un pallino vuoto; un estremo incluso si disegna con un pallino pieno.` },
     { id: 'fc-07', sezione: 'principi-equivalenza', tipo: 'concetto', fronte: R`Primo principio di equivalenza delle disequazioni`, retro: R`Si può sommare o sottrarre lo stesso numero a entrambi i membri: il verso non cambia.` },
     { id: 'fc-08', sezione: 'principi-equivalenza', tipo: 'concetto', fronte: R`Secondo principio: moltiplicare per un numero positivo`, retro: R`Il verso della disequazione resta invariato.` },
@@ -455,7 +457,7 @@ La disequazione dà tutti i numeri fino a $5$. Ma il testo parla di numeri **nat
     { id: 'q-05', domanda: R`Perché non si moltiplicano mai entrambi i membri di una disequazione fratta per il denominatore che contiene $x$?`, opzioni: [R`Perché il segno del denominatore non è noto a priori, e potrebbe capovolgere il verso`, R`Perché il denominatore potrebbe essere zero e annullare l'equazione`, R`Perché moltiplicare cambia il grado della disequazione`, R`Non è vietato: si può sempre fare`], corretta: 0, spiegazione: R`Il denominatore, contenendo $x$, può essere positivo o negativo a seconda del valore di $x$: moltiplicare per esso senza saperne il segno può capovolgere (o no) il verso senza controllo.` },
     { id: 'q-06', domanda: R`Nella disequazione fratta $\dfrac{x - 1}{x - 3} \ge 0$, il valore $x = 3$…`, opzioni: [R`È sempre accettabile, perché il simbolo è $\ge$`, R`Va incluso solo se $x = 1$ non è soluzione`, R`Rende la disequazione sempre vera`, R`Va sempre escluso, perché annulla il denominatore`], corretta: 3, spiegazione: R`Il denominatore non può mai annullarsi: $x = 3$ è escluso a prescindere dal simbolo di confronto, anche se questo è $\ge$.` },
     { id: 'q-07', domanda: R`Come si trova il segno di un prodotto di più fattori lineari in un intervallo?`, opzioni: [R`Si somma il segno di ciascun fattore`, R`Basta guardare il segno del primo fattore`, R`Si moltiplicano i segni dei singoli fattori`, R`Dipende solo dal segno di $x$`], corretta: 2, spiegazione: R`Il segno di un prodotto (o di un quoziente) è il prodotto dei segni: un numero pari di fattori negativi dà un risultato positivo, uno dispari un risultato negativo.` },
-    { id: 'q-08', domanda: R`Quale delle seguenti rappresenta l'intervallo $-2 \le x < 5$?`, opzioni: [R`$(-2, 5)$`, R`$[-2, 5]$`, R`$[-2, 5)$`, R`$(-2, 5]$`], corretta: 2, spiegazione: R`La parentesi quadra a sinistra indica che $-2$ è incluso; la tonda a destra indica che $5$ è escluso: è proprio $[-2, 5)$.` },
+    { id: 'q-08', domanda: R`Quale delle seguenti rappresenta l'intervallo $-2 \le x < 5$?`, opzioni: [R`$\Iaa{-2}{5}$`, R`$\Icc{-2}{5}$`, R`$\Ica{-2}{5}$`, R`$\Iac{-2}{5}$`], corretta: 2, spiegazione: R`$-2$ è incluso, quindi a sinistra va la quadra; $5$ è escluso, quindi a destra va la tonda: è proprio $\Ica{-2}{5}$.` },
     { id: 'q-09', domanda: R`In una disequazione letterale $kx > 3$, qual è il primo passo della discussione?`, opzioni: [R`Stabilire il segno del coefficiente $k$`, R`Calcolare il discriminante`, R`Porre $k = 0$ e basta`, R`Sostituire $x = 0$`], corretta: 0, spiegazione: R`Dividere per $k$ richiede di sapere se $k$ è positivo, negativo o nullo: da questo dipende se il verso resta com'è, si capovolge, oppure $x$ scompare del tutto.` },
     { id: 'q-10', domanda: R`Se in una disequazione letterale il coefficiente di $x$ è esattamente $0$…`, opzioni: [R`La disequazione ha sempre infinite soluzioni`, R`L'incognita scompare: resta un confronto tra numeri`, R`Bisogna comunque dividere per $0$`, R`Il verso si capovolge sempre`], corretta: 1, spiegazione: R`Con coefficiente nullo il termine in $x$ sparisce: resta solo un confronto tra numeri, sempre vero (soluzione $\mathbb{R}$) oppure sempre falso (nessuna soluzione), indipendentemente da $x$.` },
     { id: 'q-11', domanda: R`Come si traduce in simboli la frase "il doppio di un numero non supera 10"?`, opzioni: [R`$2x < 10$`, R`$2x \ge 10$`, R`$2x > 10$`, R`$2x \le 10$`], corretta: 3, spiegazione: R`"Non supera" significa "è minore o uguale": la traduzione corretta è $2x \le 10$, che include anche il caso $2x = 10$.` },
@@ -479,7 +481,7 @@ La disequazione dà tutti i numeri fino a $5$. Ma il testo parla di numeri **nat
   aneddoti: [
     { matematico: 'Thomas Harriot', anni: 'circa 1560–1621', titolo: 'I segni del confronto, nati per caso', testo: R`Thomas Harriot fu una delle menti più versatili dell'Inghilterra elisabettiana: matematico, astronomo, linguista, esploratore. Nel 1585 accompagnò la spedizione di Walter Raleigh nella colonia di Roanoke, in America, dove studiò la lingua degli Algonchini e fu tra i primi europei a descrivere il tabacco. Tornato in patria si dedicò all'algebra, cercando una notazione più snella di quella dei suoi contemporanei. Era estremamente riservato e non pubblicò quasi nulla in vita: i suoi manoscritti restarono per anni in un baule. Solo dieci anni dopo la sua morte, nel 1631, alcuni amici curarono la stampa dell'opera *Artis Analyticae Praxis*, dove compaiono per la prima volta i simboli $<$ e $>$ per "minore" e "maggiore": due parentesi appuntite, pensate apposta per mostrare a colpo d'occhio quale dei due numeri fosse più grande.`, legame: R`I simboli $<$ e $>$ che si usano in ogni disequazione non sono una convenzione qualunque: nacquero apposta per mostrare visivamente quale numero è maggiore.` },
     { matematico: 'Pierre Bouguer', anni: '1698–1758', titolo: 'Una lineetta in più, sotto il segno', testo: R`Pierre Bouguer fu un prodigio: a soli 15 anni ereditò dal padre la cattedra di idrografia a Le Croisic, in Bretagna, e la tenne da adolescente. Da adulto fu tra i protagonisti della spedizione geodetica francese in Perù (1735-1744), organizzata per misurare la lunghezza di un grado di meridiano vicino all'equatore e stabilire se la Terra fosse schiacciata ai poli o all'equatore (aveva ragione Newton: ai poli). Il suo nome resta legato anche a un dettaglio più piccolo, ma quotidiano: nel 1734 propose di aggiungere una lineetta sotto i segni $<$ e $>$ di Harriot, per indicare "o uguale". Nacquero così $\le$ e $\ge$, oggi indispensabili in ogni disequazione con estremo incluso.`, legame: R`Ogni volta che si scrive $\le$ o $\ge$ per includere un estremo, si usa l'aggiunta di Bouguer ai segni di Harriot.` },
-    { matematico: 'Nicolas Bourbaki (pseudonimo collettivo)', anni: 'fondato nel 1935', titolo: 'Il matematico francese che non è mai esistito', testo: R`Negli anni '30 un gruppo di giovani matematici francesi, delusi dai manuali universitari che trovavano superati, decise di scrivere da capo un trattato rigoroso di tutta la matematica moderna. Per firmarlo inventarono un autore che non esisteva: Nicolas Bourbaki, un nome preso in prestito, si racconta, da un generale francese dell'Ottocento, buono per uno scherzo tra studenti. Dietro lo pseudonimo si nascondevano matematici come André Weil e Henri Cartan, che si riunivano in congressi per discutere ogni riga del trattato. Fu il gruppo Bourbaki a fissare molte notazioni oggi date per scontate, come le parentesi quadre "rovesciate" $]a, b[$ per un intervallo aperto, al posto delle tonde $(a, b)$: lo stesso significato, scritto in un modo che in Francia, e in molti libri italiani, è rimasto lo standard.`, legame: R`La notazione con le parentesi quadre rovesciate per gli intervalli aperti, che si trova in molti libri italiani, viene proprio dal gruppo Bourbaki.` },
+    { matematico: 'Nicolas Bourbaki (pseudonimo collettivo)', anni: 'fondato nel 1935', titolo: 'Il matematico francese che non è mai esistito', testo: R`Negli anni '30 un gruppo di giovani matematici francesi, delusi dai manuali universitari che trovavano superati, decise di scrivere da capo un trattato rigoroso di tutta la matematica moderna. Per firmarlo inventarono un autore che non esisteva: Nicolas Bourbaki, un nome preso in prestito, si racconta, da un generale francese dell'Ottocento, buono per uno scherzo tra studenti. Dietro lo pseudonimo si nascondevano matematici come André Weil e Henri Cartan, che si riunivano in congressi per discutere ogni riga del trattato. Fu il gruppo Bourbaki a fissare molte notazioni oggi date per scontate, come le parentesi quadre "rovesciate" $]a, b[$ per un intervallo aperto, al posto delle tonde $\Iaa{a}{b}$: lo stesso significato, scritto in un modo che in Francia, e in alcuni libri italiani, è rimasto lo standard.`, legame: R`Le quadre rovesciate $]a, b[$ che si trovano in alcuni libri vengono dal gruppo Bourbaki. Qui si usano le tonde, $\Iaa{a}{b}$, con la virgola fra gli estremi: il punto e virgola resta ai punti del piano.` },
     { matematico: 'Diofanto di Alessandria', anni: 'III secolo d.C. (date esatte incerte)', titolo: 'Le soluzioni che Diofanto chiamava assurde', testo: R`Diofanto di Alessandria scrisse l'*Arithmetica*, una raccolta di problemi che sarebbe servita da modello per secoli (Fermat annotò il suo "ultimo teorema" proprio a margine di una pagina di Diofanto). Diofanto lavorava solo con numeri positivi: per lui i numeri esistevano per contare quantità reali, lunghezze, monete, ed erano gli unici ammissibili. Quando un problema portava a una soluzione negativa, non la scartava in silenzio: la definiva esplicitamente "átopos", assurda, impossibile da accettare. Ci vollero secoli, passando per l'India, dove Brahmagupta chiamava i numeri negativi "debiti" invece di respingerli, perché diventassero cittadini a pieno titolo dell'algebra, con regole precise sul loro segno.`, legame: R`La regola per cui moltiplicare per un numero negativo capovolge il verso di una disequazione presuppone di accettare i numeri negativi: una battaglia che Diofanto, per primo, aveva già perso in partenza.` }
   ]
 });

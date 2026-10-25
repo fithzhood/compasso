@@ -337,7 +337,7 @@ Per esempio $y = 2^x - 3$ è $y = 2^x$ abbassata di $3$. Passa per $(0;-2)$ e ha
     { nome: 'Quoziente di potenze, stessa base', formula: R`\frac{a^x}{a^y} = a^{x-y}` },
     { nome: 'Potenza di potenza', formula: R`\left(a^x\right)^y = a^{xy}` },
     { nome: 'Potenza di un prodotto', formula: R`(ab)^x = a^x b^x` },
-    { nome: 'Funzione esponenziale', formula: R`f(x) = a^x, \qquad a>0,\ a \ne 1`, nota: R`Dominio $\mathbb{R}$, immagine $(0,+\infty)$, asintoto $y=0$.` },
+    { nome: 'Funzione esponenziale', formula: R`f(x) = a^x, \qquad a>0,\ a \ne 1`, nota: R`Dominio $\mathbb{R}$, immagine $\Iaa{0}{+\infty}$, asintoto $y=0$.` },
     { nome: 'Numero di Nepero', formula: R`e = \lim_{n \to \infty} \left(1+\frac1n\right)^n \approx 2{,}71828`, nota: R`Base dell'esponenziale naturale $e^x$.` },
     { nome: 'Equazione esponenziale, basi uguali', formula: R`a^{f(x)} = a^{g(x)} \iff f(x) = g(x)`, nota: R`Per $a>0$, $a \ne 1$.` },
     { nome: 'Disequazione esponenziale, a > 1', formula: R`a^{f(x)} > a^{g(x)} \iff f(x) > g(x)`, nota: R`Il verso si conserva.` },
@@ -354,7 +354,7 @@ Per esempio $y = 2^x - 3$ è $y = 2^x$ abbassata di $3$. Passa per $(0;-2)$ e ha
     { id: 'fc-05', sezione: 'proprieta-potenze', tipo: 'formula', fronte: R`$\left(a^x\right)^y$`, retro: R`$= a^{xy}$` },
     { id: 'fc-06', sezione: 'proprieta-potenze', tipo: 'formula', fronte: R`$a^{-x}$`, retro: R`$= \dfrac{1}{a^x}$, con $a \ne 0$.` },
     { id: 'fc-07', sezione: 'funzione-esponenziale', tipo: 'concetto', fronte: R`Dominio di $y=a^x$`, retro: R`$\mathbb{R}$: l'esponente può essere un numero reale qualsiasi.` },
-    { id: 'fc-08', sezione: 'funzione-esponenziale', tipo: 'concetto', fronte: R`Immagine di $y=a^x$`, retro: R`$(0,+\infty)$: la funzione esponenziale è sempre strettamente positiva.` },
+    { id: 'fc-08', sezione: 'funzione-esponenziale', tipo: 'concetto', fronte: R`Immagine di $y=a^x$`, retro: R`$\Iaa{0}{+\infty}$: la funzione esponenziale è sempre strettamente positiva.` },
     { id: 'fc-09', sezione: 'funzione-esponenziale', tipo: 'concetto', fronte: R`Punto fisso del grafico di $y=a^x$`, retro: R`$(0;1)$, per qualunque base $a$: infatti $a^0=1$.` },
     { id: 'fc-10', sezione: 'funzione-esponenziale', tipo: 'concetto', fronte: R`Asintoto del grafico di $y=a^x$`, retro: R`La retta $y=0$: la curva vi si avvicina indefinitamente senza mai toccarlo.` },
     { id: 'fc-11', sezione: 'numero-e', tipo: 'definizione', fronte: R`Definizione del numero di Nepero $e$`, retro: R`$e = \lim_{n\to\infty}\left(1+\dfrac1n\right)^n \approx 2{,}718281828\ldots$` },
@@ -411,8 +411,8 @@ Per esempio $y = 2^x - 3$ è $y = 2^x$ abbassata di $3$. Passa per $(0;-2)$ e ha
   ],
 
   quiz: [
-    { id: 'q-01', domanda: R`Qual è il dominio della funzione $y=a^x$, con $a>0$ e $a \ne 1$?`, opzioni: [R`$\mathbb{R}$`, R`$\mathbb{R} - \{0\}$`, R`$(0,+\infty)$`, R`$[0,+\infty)$`], corretta: 0, spiegazione: R`L'esponente può essere qualunque numero reale: il dominio è tutto $\mathbb{R}$. $(0,+\infty)$ è invece l'immagine, cioè l'insieme dei valori assunti da $y$.` },
-    { id: 'q-02', domanda: R`Qual è l'immagine della funzione $y=a^x$?`, opzioni: [R`$\mathbb{R}$`, R`$(0,+\infty)$`, R`$[0,+\infty)$`, R`$\mathbb{R} - \{0\}$`], corretta: 1, spiegazione: R`$a^x$ è sempre strettamente positiva, per ogni $x$ reale: non è mai né nulla né negativa. L'immagine è $(0,+\infty)$.` },
+    { id: 'q-01', domanda: R`Qual è il dominio della funzione $y=a^x$, con $a>0$ e $a \ne 1$?`, opzioni: [R`$\mathbb{R}$`, R`$\mathbb{R} - \{0\}$`, R`$\Iaa{0}{+\infty}$`, R`$\Ica{0}{+\infty}$`], corretta: 0, spiegazione: R`L'esponente può essere qualunque numero reale: il dominio è tutto $\mathbb{R}$. $\Iaa{0}{+\infty}$ è invece l'immagine, cioè l'insieme dei valori assunti da $y$.` },
+    { id: 'q-02', domanda: R`Qual è l'immagine della funzione $y=a^x$?`, opzioni: [R`$\mathbb{R}$`, R`$\Iaa{0}{+\infty}$`, R`$\Ica{0}{+\infty}$`, R`$\mathbb{R} - \{0\}$`], corretta: 1, spiegazione: R`$a^x$ è sempre strettamente positiva, per ogni $x$ reale: non è mai né nulla né negativa. L'immagine è $\Iaa{0}{+\infty}$.` },
     { id: 'q-03', domanda: R`Il grafico di $y=a^x$, qualunque sia la base $a>0$, $a\ne1$, passa sempre per il punto…`, opzioni: [R`$(1;0)$`, R`$(0;0)$`, R`$(0;1)$`, R`$(1;1)$`], corretta: 2, spiegazione: R`$a^0=1$ per ogni base positiva, quindi il grafico passa sempre per $(0;1)$.` },
     { id: 'q-04', domanda: R`Se $a>1$, la funzione $y=a^x$ è…`, opzioni: [R`decrescente`, R`costante`, R`crescente`, R`né crescente né decrescente`], corretta: 2, spiegazione: R`Con base maggiore di $1$, aumentando $x$ il valore $a^x$ aumenta sempre: la funzione è crescente su tutto $\mathbb{R}$.` },
     { id: 'q-05', domanda: R`Se $0<a<1$, la funzione $y=a^x$ è…`, opzioni: [R`crescente`, R`decrescente`, R`costante`, R`definita solo per $x \ge 0$`], corretta: 1, spiegazione: R`Con base compresa fra $0$ e $1$, aumentando $x$ il valore $a^x$ diminuisce: la funzione è decrescente.` },

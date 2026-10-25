@@ -181,7 +181,7 @@
     {
       f: Math.sin, fTex: 'f(x) = \\sin x', a: 0, b: PI, n0: 4,
       vista: { x0: -0.5, x1: 3.95, y0: -0.55, y1: 1.35 },
-      pi: true, intervalloTex: '[\\,0;\\ \\pi\\,]',
+      pi: true, intervalloTex: '\\Icc{0}{\\pi}',
       tipo: 'numero', risposta: 2, toll: 0.1,
       compito: '$f(x) = \\sin x$ da 0 a $\\pi$: una gobba sola. Quanta acqua? Tolleranza 0,1.',
       integraleTex: () => '\\int_{0}^{\\pi}\\sin x\\,dx = \\Big[-\\cos x\\Big]_{0}^{\\pi} = 1 + 1 = 2',
@@ -191,7 +191,7 @@
     {
       f: Math.sin, fTex: 'f(x) = \\sin x', a: 0, b: 2 * PI, n0: 4,
       vista: { x0: -0.5, x1: 7.1, y0: -1.35, y1: 1.35 },
-      pi: true, intervalloTex: '[\\,0;\\ 2\\pi\\,]',
+      pi: true, intervalloTex: '\\Icc{0}{2\\pi}',
       tipo: 'numero', risposta: 0, toll: 0.1, trappola: 4,
       compito: 'Stessa curva, ma fino a $2\\pi$: la seconda gobba scende sotto il fondo, e lì l\'acqua manca. Quanta acqua **netta**? Tolleranza 0,1.',
       integraleTex: () => '\\int_{0}^{2\\pi}\\sin x\\,dx = \\Big[-\\cos x\\Big]_{0}^{2\\pi} = -1 + 1 = 0',
@@ -242,7 +242,7 @@
     }
   ];
 
-  /* consegne brevi per il telefono in verticale (f e [a; b] sono già scritti sotto): la consegna
+  /* consegne brevi per il telefono in verticale (f e [a, b] sono già scritti sotto): la consegna
      intera si legge nel «?». null = la consegna è già corta. */
   const BREVI = [
     'Bordo piatto da 0 a 3: quanta acqua ci sta? Tolleranza 0,05.',
@@ -509,10 +509,10 @@
         return '\\int_{' + ea + '}^{' + eb + '} ' + dentro + '\\,dx = \\left[' + L.F + '\\right]_{' + ea + '}^{' + eb + '} ' + (intero(val) || Math.abs(val) < 5e-4 ? '= ' : '\\approx ') + texVal(Math.abs(val) < 5e-4 ? 0 : val, 2);
       }
       function aggiornaDati() {
-        const inter = (!libero && L.intervalloTex) || ('[\\,' + texEstremo(a) + ';\\ ' + texEstremo(b) + '\\,]');
+        const inter = (!libero && L.intervalloTex) || ('\\Icc{' + texEstremo(a) + '}{' + texEstremo(b) + '}');
         datiEl.innerHTML =
           (libero ? '' : '<span>' + ctx.tex(L.fTex.replace(/\\frac/g, '\\dfrac')) + '</span>') +
-          (libero ? '' : '<span>' + ctx.tex('[\\,a;\\ b\\,] = ' + inter) + '</span>') +
+          (libero ? '' : '<span>' + ctx.tex('\\Icc{a}{b} = ' + inter) + '</span>') +
           '<span class="somma">somma dei rettangoli ≈ ' + ctx.tex(texNum(sommaOra(), 2)) + '</span>';
         contaN.textContent = 'n = ' + n;
         if (libero) esattoEl.innerHTML = ctx.tex('\\displaystyle ' + integraleLibero());

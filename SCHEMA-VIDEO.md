@@ -21,7 +21,7 @@ Motore: `compasso-video.js` (non si tocca dai file dei video). Modello da legger
 - **Fumetti corti:** al massimo due righe (`\n`), circa 38 caratteri per riga. Restano aperti
   almeno 1,5 s + 0,25 s per parola (una formula conta come una parola). Pause senza fumetto: al massimo 3 s.
 - **Matematica giusta e coerente con `argomenti/<id>.js`**: stesse notazioni del sito. Coordinate
-  col punto e virgola `(2; 4)`, virgola decimale `1,5`, segno meno vero `−`, `·` per il prodotto.
+  col punto e virgola `(2; 4)`, intervalli con la virgola `(1, 3)`, `[1, 3)` (il punto e virgola è dei punti), virgola decimale `1,5`, segno meno vero `−`, `·` per il prodotto.
   Ogni numero mostrato va ricontrollato con `node`. Il prodotto si scrive sempre `·`, mai `×`; una notazione sola per tutto il video (pillole comprese).
 - **Ogni simbolo nuovo si dice prima di usarlo**: se compaiono h, u, f e g, un fumetto o un'etichetta dice che cosa sono la prima volta che si vedono.
 - **Etichette lontane dalle linee che si muovono**: un'etichetta di un punto non deve mai essere attraversata da una retta o da una curva durante l'animazione.

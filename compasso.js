@@ -118,7 +118,9 @@
      MINI-MARKDOWN + KATEX
      ===================================================================== */
   /* \evid{…} evidenzia la parte che cambia (evidenziatore che passa), \evidb{…} con il secondo colore */
-  const KATEX_OPZ = { throwOnError: false, strict: 'ignore', output: 'html', macros: { '\\evid': '\\htmlClass{evid}{#1}', '\\evidb': '\\htmlClass{evid evid2}{#1}' }, trust: c => c.command === '\\htmlClass' };
+  const KATEX_OPZ = { throwOnError: false, strict: 'ignore', output: 'html', macros: { '\\evid': '\\htmlClass{evid}{#1}', '\\evidb': '\\htmlClass{evid evid2}{#1}',
+    /* intervalli: tonde e quadre con la VIRGOLA, per non confondersi con i punti (2; 4) che hanno il punto e virgola */
+    '\\Icc': '[#1,\\,#2]', '\\Iaa': '(#1,\\,#2)', '\\Ica': '[#1,\\,#2)', '\\Iac': '(#1,\\,#2]' }, trust: c => c.command === '\\htmlClass' };
   function tex(src, display) {
     try { return katex.renderToString(src, Object.assign({}, KATEX_OPZ, { displayMode: !!display, macros: Object.assign({}, KATEX_OPZ.macros) })); }
     catch (e) { return '<code>' + esc(src) + '</code>'; }
@@ -1020,11 +1022,11 @@
         const esito = card.querySelector('.es-esito');
         let leggi;
         if (e.risposta.tipo === 'intervallo') {
-          box.innerHTML = `<span class="intervallo"><select class="pa"><option value="(">(</option><option value="[">[</option></select><input class="da" placeholder="−∞ o numero"><span>;</span><input class="a" placeholder="+∞ o numero"><select class="pb"><option value=")">)</option><option value="]">]</option></select></span><button class="btn piccolo primario b-ok" type="button">Controlla</button>`;
+          box.innerHTML = `<span class="intervallo"><select class="pa"><option value="(">(</option><option value="[">[</option></select><input class="da" placeholder="−∞ o numero"><span>,</span><input class="a" placeholder="+∞ o numero"><select class="pb"><option value=")">)</option><option value="]">]</option></select></span><button class="btn piccolo primario b-ok" type="button">Controlla</button>`;
           leggi = () => ({ da: box.querySelector('.da').value, a: box.querySelector('.a').value, chiusoDa: box.querySelector('.pa').value === '[', chiusoA: box.querySelector('.pb').value === ']' });
         } else {
           const ph = segnapostoSicuro(e.risposta, e.risposta.segnaposto || { numero: 'La tua risposta (es. 2,5 oppure 5/2)', numeri: 'Le soluzioni (es. -1; 3)', testo: 'La tua risposta' }[e.risposta.tipo]);
-          box.innerHTML = `<input type="text" placeholder="${esc(ph)}" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn piccolo primario b-ok" type="button">Controlla</button><div class="es-simboli" aria-label="Simboli">${(e.risposta.simboli || (e.risposta.tipo === 'testo' && (e.risposta.accettate || []).some(a => /[<>≤≥]/.test(a)) ? ['<', '>', '≤', '≥', '∞', '(', ')', ';', '−'] : ['√', 'π', '^', '/', ';', '(', ')', '−'])).map(c => `<button type="button" class="es-simbolo" data-c="${c === '−' ? '-' : c}">${c}</button>`).join('')}</div>`;
+          box.innerHTML = `<input type="text" placeholder="${esc(ph)}" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn piccolo primario b-ok" type="button">Controlla</button><div class="es-simboli" aria-label="Simboli">${(e.risposta.simboli || (e.risposta.tipo === 'testo' && (e.risposta.accettate || []).some(a => /[<>≤≥]/.test(a)) ? ['<', '>', '≤', '≥', '∞', '(', ')', '[', ']', '−'] : ['√', 'π', '^', '/', ';', '(', ')', '−'])).map(c => `<button type="button" class="es-simbolo" data-c="${c === '−' ? '-' : c}">${c}</button>`).join('')}</div>`;
           leggi = () => box.querySelector('input').value;
           /* i simboli che sulla tastiera del telefono non ci sono: si inseriscono dove sta il cursore */
           const inpS = box.querySelector('input');
