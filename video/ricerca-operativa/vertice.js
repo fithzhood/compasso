@@ -1,5 +1,5 @@
 'use strict';
-/* Il massimo sta in un vertice — programmazione lineare col metodo grafico. Vincoli x ≥ 0, y ≥ 0, x + y ≤ 6, x ≤ 4,
+/* Il massimo si raggiunge in un vertice — programmazione lineare col metodo grafico. Vincoli x ≥ 0, y ≥ 0, x + y ≤ 6, x ≤ 4,
    y ≤ 5: la regione ammissibile è il poligono O(0; 0), A(4; 0), B(4; 2), C(1; 5), D(0; 5). La funzione obiettivo
    z = 3x + 2y vale 0, 12, 16, 13, 10 nei vertici. Le rette 3x + 2y = k sono parallele: k cresce, la retta scorre e
    l'ultimo punto della regione che tocca è B(4; 2), dove z = 16 è il massimo. Se il massimo esiste, si raggiunge in
@@ -94,7 +94,7 @@ function assi(ctx, k) {
   ctx.restore();
 }
 // i vertici: [nome, x, y, spostamento dell'etichetta in pixel], etichette dove le rette dei vincoli non passano
-const VERT = [['O', 0, 0, -28, 30], ['A', 4, 0, 30, -30], ['B', 4, 2, 30, -30], ['C', 1, 5, 12, -40], ['D', 0, 5, -32, 0]];
+const VERT = [['O', 0, 0, -28, 30], ['A', 4, 0, 30, -30], ['B', 4, 2, 30, -30], ['C', 1, 5, -24, 34], ['D', 0, 5, -32, 0]];
 const VAL = VERT.map(([, x, y]) => 3 * x + 2 * y);   // 0, 12, 16, 13, 10
 // k della retta 3x + 2y = k: fermo a 6, scorre fino a 14 mentre Ada lo dice, poi arriva a 16 e si ferma
 const kRetta = t => kf2(t, [[T.scorre + .4, 6], [T.scorre + 4.4, 14], [T.esce + .2, 14], [T.esce + 1.4, 16]]);
@@ -114,7 +114,7 @@ function distSeg(p, a, b) {
 function sceneIntro(ctx, t) {
   if (t > 7.5) return;
   const al = 1 - P(t, 6.2, 7.0);
-  conFont(TITOLI, () => drawRich(ctx, 'Il massimo sta in un vertice', W / 2, 180, { size: 130, weight: 600, local: t - 1.6, stagger: .15, alpha: al }));
+  conFont(TITOLI, () => drawRich(ctx, 'Il massimo si raggiunge\nin un vertice', W / 2, 205, { size: 130, weight: 600, local: t - 1.6, stagger: .15, alpha: al }));
 }
 
 // 1–3 · il piano: i vincoli tagliano la regione, la retta della funzione obiettivo scorre (7.5–FINE)
@@ -282,7 +282,7 @@ function sceneFine(ctx, t) {
     ['soffio', FINE + .4], ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],
   ];
   return {
-    titolo: 'Il massimo sta in un vertice', durata: DUR, copertina: 4.2, suoni: SUONI,
+    titolo: 'Il massimo si raggiunge in un vertice', durata: DUR, copertina: 4.2, suoni: SUONI,
     ada: { posa: POSA, facce: FACCIA, fumetti: FUMETTI },
     capitoli: [[7.5, T.z - .2, 'la regione ammissibile'], [T.z - .2, T.tabella - .2, 'la retta che scorre'], [T.tabella - .2, FINE, 'il conto nei vertici']],
     scena(ctx, t) { sceneIntro(ctx, t); scenePiano(ctx, t); sceneScheda(ctx, t); sceneFine(ctx, t); },

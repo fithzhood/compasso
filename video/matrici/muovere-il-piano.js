@@ -17,7 +17,7 @@ const SEQ = [
   ['e2', 5.4, '…e {y:(0; 1)} nella seconda, {y:(1; 3)}.'],
   ['tutto', 6.0, 'Il resto del piano segue:\nla {v:quadrettatura} si deforma.'],
   ['arriva', 6.8, 'Il punto {g:(1; 1)} finisce in {g:(3; 4)},\ncioè {x:(2; 1)} + {y:(1; 3)}.'],
-  ['righe', 6.2, 'Le righe restano {g:dritte} e {g:parallele},\nalla stessa distanza fra loro.'],
+  ['righe', 6.2, 'Le linee della quadrettatura restano\n{g:dritte}, {g:parallele} ed equidistanti.'],
   ['origine', 4.6, 'E l’{g:origine} resta ferma.'],
   ['regola', 6.8, 'Ogni punto {mink:(}{mx:x}{mink:; }{my:y}{mink:)} va in\n{mink:(2}{mx:x}{mink: + }{my:y}{mink:; }{mx:x}{mink: + 3}{my:y}{mink:)}.', .3],
   ['generale', 7.4, 'Con le lettere {mink:a}, {mink:b}, {mink:c}, {mink:d} al posto\ndei numeri: {mink:(a}{mx:x}{mink: + b}{my:y}{mink:; c}{mx:x}{mink: + d}{my:y}{mink:)}.'],
@@ -195,7 +195,7 @@ function sceneFine(ctx, t) {
     drawRich(ctx, '{v:in una frase}', W / 2, 150, { size: 42, weight: 500, local: t - FINE - .4 });
     drawRich(ctx, 'Le colonne della matrice dicono dove vanno\n(1; 0) e (0; 1): il resto del piano segue.', W / 2, 290, { size: 64, weight: 600, local: t - FINE - .8, stagger: .08 });
   });
-  const pills = [[470, null], [960, '{x:(1; 0)}{mink: → }{x:(2; 1)}\n{y:(0; 1)}{mink: → }{y:(1; 3)}'], [1450, 'righe {g:parallele}\norigine {g:ferma}']];
+  const pills = [[470, null], [960, '{x:(1; 0)}{mink: → }{x:(2; 1)}\n{y:(0; 1)}{mink: → }{y:(1; 3)}'], [1450, 'linee {g:parallele}\norigine {g:ferma}']];
   pills.forEach(([x, s], i) => {
     const a = FINE + 2.6 + i * .5, k = P(t, a, a + .5, E.back);
     if (k <= 0) return;

@@ -16,12 +16,12 @@ const SEQ = [
   ['rett', 5.0, 'Lo chiudo in un rettangolo\n3 per 4: area 12.'],
   ['pezzi', 7.0, 'Tolgo i sei pezzi intorno:\n{mink:1 + 1 + 1 + 1 + 1,5 + 1,5 = 7}.'],
   ['resta', 6.0, 'Resta {mink:12 − 7 =} {g:5}: il parallelogramma\nvale cinque quadratini.'],
-  ['det', 6.0, 'Il {v:determinante} fa lo stesso conto:\ndiagonale che scende meno l’altra.'],
+  ['det', 6.0, 'Il {v:determinante} dà lo stesso numero:\nprodotto di una diagonale meno l’altro.'],
   ['det5', 5.4, 'Qui {mink:2 · 3 − 1 · 1 =} {g:5}.\nProprio l’area!'],
   ['zero', 5.4, 'Riparto dal quadratino,\ncon un’altra matrice…'],
   ['schiaccia', 6.4, '…le colonne {x:(2; 1)} e {y:(4; 2)} stanno\nsulla stessa retta: tutto si {r:schiaccia}.'],
   ['det0', 5.6, 'Area 0, e infatti\n{mink:2 · 2 − 4 · 1 =} {r:0}.'],
-  ['neg', 6.0, 'Ora scambio le colonne\ndella prima matrice.'],
+  ['neg', 6.4, 'Ora scambio le colonne\ndella prima matrice.'],
   ['ribalta', 6.4, 'Stesso parallelogramma, ma\nla bandierina è {r:ribaltata}.'],
   ['detneg', 6.4, '{mink:1 · 1 − 2 · 3 =} {r:−5}: il segno\nmeno dice che si è ribaltata.'],
   ['area5', 5.4, 'L’area resta 5: è il valore\nassoluto, {mink:|−5| = 5}.'],
@@ -43,7 +43,7 @@ const FACCIA = [ // mai due cambi in meno di 2 s (tranne l'accensione)
   [0, 'neutro'], [1.45, 'sorpreso'], [2.0, 'pensa'], [7.9, 'neutro'],
   [T.resta + .6, 'festa'], [T.resta + 3.0, 'neutro'], [T.det5 + .6, 'felice'], [T.det5 + 3.0, 'neutro'],
   [T.schiaccia + 2.4, 'sorpreso'], [T.schiaccia + 4.8, 'neutro'],
-  [T.ribalta + 2.8, 'sorpreso'], [T.ribalta + 5.0, 'neutro'], [T.area5 + .6, 'felice'], [T.area5 + 3.0, 'neutro'],
+  [T.neg + 3.0, 'sorpreso'], [T.neg + 5.2, 'neutro'], [T.area5 + .6, 'felice'], [T.area5 + 3.0, 'neutro'],
   [FINE + 2.3, 'felice'], [FINE + 6.8, 'occhiolino'],
 ];
 
@@ -82,8 +82,9 @@ function mt(t) {
   if (t < T.zero) return mixM(ID, MA, P(t, T.diventa + .4, T.diventa + 2.4));
   if (t < T.schiaccia) return mixM(MA, ID, P(t, T.zero + .4, T.zero + 1.4));
   if (t < T.neg) return mixM(ID, MZ, P(t, T.schiaccia + .4, T.schiaccia + 2.4));
-  if (t < T.ribalta) return mixM(MZ, ID, P(t, T.neg + .4, T.neg + 1.4));
-  return mixM(ID, MB, P(t, T.ribalta + .4, T.ribalta + 2.8));
+  // torna il parallelogramma della prima matrice, poi le colonne si scambiano (si schiaccia a metà e si riapre ribaltato)
+  if (t < T.neg + 2.0) return mixM(MZ, MA, P(t, T.neg + .3, T.neg + 1.3));
+  return mixM(MA, MB, P(t, T.neg + 2.0, T.neg + 4.4));
 }
 const app = (m, x, y) => [m[0][0] * x + m[0][1] * y, m[1][0] * x + m[1][1] * y];
 
@@ -133,6 +134,16 @@ function figura(ctx, m, al) {
   ctx.strokeStyle = css(C.ink); ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(b[0], b[1]); ctx.lineTo(c[0], c[1]); ctx.stroke();
   ctx.restore();
 }
+// la bandierina della prima matrice, tratteggiata e sbiadita, per il confronto con quella ribaltata
+function bandieraFantasma(ctx, al) {
+  if (al <= 0) return;
+  const [b, c, p, n] = BAND.map(v => S(...app(MA, v[0], v[1])));
+  ctx.save(); ctx.globalAlpha *= al * .7; ctx.setLineDash([8, 8]); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(c[0], c[1]); ctx.lineTo(p[0], p[1]); ctx.lineTo(n[0], n[1]); ctx.closePath();
+  ctx.strokeStyle = css(C.y); ctx.lineWidth = 3; ctx.stroke();
+  ctx.strokeStyle = css(C.dim); ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(b[0], b[1]); ctx.lineTo(c[0], c[1]); ctx.stroke();
+  ctx.restore();
+}
 // i sei pezzi fra il rettangolo 3 × 4 e il parallelogramma, con le loro aree
 const PEZZI = [
   [[[0, 0], [2, 0], [2, 1]], '1', [1.33, .33]], [[[2, 0], [3, 0], [3, 1], [2, 1]], '1', [2.5, .5]],
@@ -171,6 +182,7 @@ function scenePiano(ctx, t) {
   // il quadratino (o la figura in cui si è trasformato) con la bandierina, e le due colonne
   const m = mt(t), kq = P(t, T.quadratino + .2, T.quadratino + .8);
   figura(ctx, m, kq);
+  bandieraFantasma(ctx, life(t, T.ribalta + .2, T.detneg, .5, .4));
   freccia(ctx, app(m, 1, 0), C.x, kq);
   freccia(ctx, app(m, 0, 1), C.y, kq);
   dot(ctx, S(0, 0), C.ink, kq, 8);
@@ -193,7 +205,8 @@ function sceneScheda(ctx, t) {
   // le tre matrici, una dopo l'altra
   matrice(ctx, XC, 250, COL(2, 1, 1, 3), 56, P(t, T.matrice + .3, T.matrice + .8) * (1 - P(t, T.zero + .2, T.zero + .6)));
   matrice(ctx, XC, 250, COL(2, 4, 1, 2), 56, P(t, T.zero + .6, T.zero + 1.0) * (1 - P(t, T.neg + .2, T.neg + .6)));
-  matrice(ctx, XC, 250, COL(1, 2, 3, 1), 56, P(t, T.neg + .6, T.neg + 1.0));
+  matrice(ctx, XC, 250, COL(2, 1, 1, 3), 56, P(t, T.neg + .6, T.neg + 1.0) * (1 - P(t, T.neg + 1.8, T.neg + 2.1)));
+  matrice(ctx, XC, 250, COL(1, 2, 3, 1), 56, P(t, T.neg + 2.1, T.neg + 2.5));
   // 1 · l'area con il rettangolo
   const kA = 1 - P(t, T.det, T.det + .4);
   if (kA > 0) {
@@ -224,8 +237,8 @@ function sceneScheda(ctx, t) {
   }
   // 4 · determinante negativo
   if (t > T.neg) {
-    lab(ctx, '{dim:le colonne di prima, scambiate}', XC, 375, P(t, T.neg + .8, T.neg + 1.2), 32);
-    lab(ctx, '{r:bandierina ribaltata}', XC, 455, P(t, T.ribalta + 2.8, T.ribalta + 3.2), 40);
+    lab(ctx, '{dim:le colonne di prima, scambiate}', XC, 375, P(t, T.neg + 2.5, T.neg + 2.9), 32);
+    lab(ctx, '{r:ribaltata}{dim:  (tratteggiata: la prima)}', XC, 455, P(t, T.ribalta + .4, T.ribalta + .8), 36);
     rigaDet(ctx, XC, 565, VERDI(1, 2, 3, 1), '{mink:=} {mg:1 · 1}{mink: − }{mr:2 · 3}{mink: =} {mr:−5}', 44, P(t, T.detneg + .3, T.detneg + .8));
     lab(ctx, '{dim:area:}  {mink:|−5| =} {mg:5}', XC, 690, P(t, T.area5 + .4, T.area5 + .8), 44);
   }
@@ -268,9 +281,9 @@ function sceneFine(ctx, t) {
     ['soffio', T.zero + .2], ['tono', T.zero + .4, T.zero + 1.4, [.75, .2]],                 // torna quadratino
     ['tono', T.schiaccia + .4, T.schiaccia + 2.4, [.2, .15, .08, 0]],                        // si schiaccia
     ['pop', T.det0 + .3, .2], ['pop', T.det0 + 1.2, .3],
-    ['soffio', T.neg + .2], ['tono', T.neg + .4, T.neg + 1.4, [0, .2]],
-    ['tono', T.ribalta + .4, T.ribalta + 2.8, [.2, .1, 0, .3, .6, .75]],                     // si schiaccia e si ribalta
-    ['pop', T.ribalta + 2.8, .4], ['pop', T.detneg + .3, .3], ['ding', T.area5 + .4],
+    ['soffio', T.neg + .2], ['tono', T.neg + .3, T.neg + 1.3, [0, .75]],                         // torna la prima figura
+    ['tono', T.neg + 2.0, T.neg + 4.4, [.75, .5, 0, .5, .75]],                               // le colonne si scambiano: si ribalta
+    ['pop', T.ribalta + .3, .4], ['pop', T.detneg + .3, .3], ['ding', T.area5 + .4],
     ['soffio', FINE + .4], ['pop', FINE + 2.6, .5], ['pop', FINE + 3.1, .6], ['pop', FINE + 3.6, .7],
   ];
   return {

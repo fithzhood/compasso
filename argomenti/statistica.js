@@ -238,6 +238,10 @@ Se i due caratteri sono numeri, ogni studente diventa un punto $(x_i, y_i)$. L'i
 
 La **retta di regressione** passa «in mezzo» ai punti nel modo migliore. Per gli otto studenti è $y = 0{,}5x + 3{,}75$, con $r \approx 0{,}98$. Lo $0{,}5$ vuol dire: un'ora di studio in più vale in media mezzo punto.
 
+«Nel modo migliore» vuol dire questo: la somma dei quadrati degli scarti verticali fra i punti e la retta è la più piccola possibile. Per questo si chiama anche retta dei **minimi quadrati**.
+
+[[video:statistica/minimi-quadrati]]
+
 Trascina l'ottavo studente (il punto arancione) in basso a destra. Un solo punto anomalo piega la retta e fa crollare $r$.
 
 [[grafico:regressione]]

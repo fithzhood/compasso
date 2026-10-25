@@ -125,7 +125,13 @@ Esempio: $120^\circ$ cade nel secondo quadrante. Quindi il seno è positivo e il
 [ ] seno negativo, coseno positivo
 => $200^\circ$ sta fra $180^\circ$ e $270^\circ$, nel terzo quadrante. Lì $P$ è in basso a sinistra, e ha tutte e due le coordinate negative. Seno positivo e coseno negativo è il secondo quadrante.
 
->! Non scambiare seno e coseno. Il coseno è l'ascissa (orizzontale), il seno è l'ordinata (verticale).` },
+>! Non scambiare seno e coseno. Il coseno è l'ascissa (orizzontale), il seno è l'ordinata (verticale).
+
+### Coordinate polari
+
+Un punto qualunque $Q$ del piano si può dare anche con le **coordinate polari**: la distanza $r$ dall'origine e l'angolo $\theta$ che $OQ$ forma con il semiasse positivo delle $x$ (è l'angolo che finora abbiamo chiamato $\alpha$). Sulla circonferenza goniometrica il punto associato a $\theta$ ha coordinate $\cos\theta$ e $\sin\theta$; $Q$ è $r$ volte più lontano, quindi $x = r\cos\theta$ e $y = r\sin\theta$. Se si lega la distanza all'angolo, per esempio con $r = \theta$ in radianti, il punto si allontana mentre gira e disegna la **spirale di Archimede**, con i giri tutti alla stessa distanza $2\pi$.
+
+[[video:funzioni-goniometriche/polari]]` },
 
     { id: 'tangente-cotangente', titolo: 'Tangente e cotangente', testo: R`Nel triangolo rettangolo la tangente era cateto opposto diviso cateto adiacente. Qui i due cateti sono $\sin\alpha$ e $\cos\alpha$.
 

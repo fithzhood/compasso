@@ -254,7 +254,13 @@ Il numero di soluzioni del sistema dice come stanno le due rette:
 ?? Dove si incontrano $y = 2x + 1$ e $y = 2x - 5$?
 => Da nessuna parte. Uguagliando viene $2x + 1 = 2x - 5$, cioè $1 = -5$: impossibile. Le due rette hanno la stessa pendenza e $q$ diversi, quindi sono parallele.
 
->! Con una retta verticale $x = k$ non c'è una $y$ da uguagliare. Metti $x = k$ nell'altra equazione e trovi subito la $y$.` },
+>! Con una retta verticale $x = k$ non c'è una $y$ da uguagliare. Metti $x = k$ nell'altra equazione e trovi subito la $y$.
+
+### Disequazioni in due incognite
+
+Le soluzioni di una **disequazione in due incognite**, come $y > 2x - 1$, sono i punti di un **semipiano**. Il bordo è la retta $y = 2x - 1$: tratteggiata con $>$ e $<$, perché i suoi punti non sono soluzioni, continua con $\ge$ e $\le$. Per scegliere la metà giusta provi un punto fuori dalla retta, per esempio $(0; 0)$: se la disuguaglianza viene vera, è la metà che contiene il punto; se viene falsa, l'altra. Con più disequazioni insieme le soluzioni stanno nell'intersezione dei semipiani.
+
+[[video:piano-cartesiano-retta/semipiano]]` },
 
     { id: 'distanza-punto-retta', titolo: 'Distanza di un punto da una retta', testo: R`Da un punto $P$ a una retta $r$ puoi tracciare tanti segmenti. Il più corto è quello **perpendicolare** a $r$. La sua lunghezza è la **distanza** di $P$ da $r$. Per calcolarla c'è una formula, con la retta in forma implicita.
 

@@ -302,7 +302,11 @@ Il prodotto **non** si deriva come la somma. Se prendi $f(x) = g(x) = x$, il pro
 [ ] $6$
 => $f'(x) = 3x^2$ e $f''(x) = 6x$, quindi $f''(2) = 12$. $144$ è $(f'(2))^2$. $6$ viene da $6x$ senza sostituire $x = 2$.
 
-**Il differenziale.** Il differenziale di $f$ in $x_0$ è $df = f'(x_0)\,dx$, con $dx$ piccolo ma non nullo. Approssima la variazione vera $f(x_0 + dx) - f(x_0)$ usando la tangente. Più $dx$ è piccolo, meglio funziona.` },
+**Il differenziale.** Il differenziale di $f$ in $x_0$ è $df = f'(x_0)\,dx$, con $dx$ piccolo ma non nullo. Approssima la variazione vera $f(x_0 + dx) - f(x_0)$ usando la tangente. Più $dx$ è piccolo, meglio funziona.
+
+**Il polinomio di Taylor.** Vicino a $0$ la tangente dà $\sin x \approx x$; aggiungendo termini costruiti con le derivate successive in $0$ si ottengono polinomi che seguono la funzione per un tratto più lungo: $$\sin x \approx x, \qquad \sin x \approx x - \frac{x^3}{6}, \qquad \sin x \approx x - \frac{x^3}{6} + \frac{x^5}{120},$$ con $6 = 3!$ e $120 = 5!$ (sono i polinomi di Taylor centrati in $0$, detti anche di Maclaurin, di grado $1$, $3$ e $5$). È un'approssimazione: in $x = 1$ il grado $5$ vale circa $0{,}84167$ contro $\sin 1 \approx 0{,}84147$, ma lontano da $0$ il polinomio si stacca dal seno.
+
+[[video:derivate/taylor]]` },
 
     { id: 'applicazioni', titolo: 'Applicazioni: velocità, accelerazione e tasso di variazione', testo: R`La derivata misura il **tasso di variazione istantaneo**. Dice quanto cambia una quantità per ogni unità in più dell'altra, in quel momento.
 

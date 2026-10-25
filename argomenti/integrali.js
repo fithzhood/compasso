@@ -372,7 +372,13 @@ Un'auto fa $150$ km in $2$ ore. La velocità media è $75$ km/h: a quella veloci
 
 Esempio: il valor medio di $x^2$ in $[0;3]$ è $\dfrac{1}{3}\int_0^3 x^2\,dx = \dfrac{1}{3}\cdot 9 = 3$. Lo raggiunge in $c = \sqrt{3}$.
 
->! Se la funzione cambia segno, area e integrale sono diversi. Se il testo dice *area*, studia prima il segno.` },
+>! Se la funzione cambia segno, area e integrale sono diversi. Se il testo dice *area*, studia prima il segno.
+
+### Il metodo dei trapezi
+
+Quando non serve il valore esatto, l'integrale si stima. Dividi $[a;b]$ in $n$ strisce larghe $\Delta x = \dfrac{b-a}{n}$ (nel video la larghezza si chiama $h$: $h = \Delta x$), con estremi $x_0 = a,\ x_1,\ \dots,\ x_n = b$. Su ogni striscia sostituisci l'arco di curva con il segmento che ne unisce gli estremi: ogni striscia diventa un trapezio, e la somma delle aree è $$T = \Delta x\left[\frac{f(x_0)}{2} + f(x_1) + \dots + f(x_{n-1}) + \frac{f(x_n)}{2}\right].$$ Se la curva ha la concavità verso l'alto, sopra la curva c'è il lato inclinato di ogni trapezio e la stima è per eccesso. Per $x^2$ fra $0$ e $2$, con $4$ trapezi, $T = 2{,}75$ contro $\dfrac{8}{3} \approx 2{,}667$. Ogni volta che $\Delta x$ si dimezza, l'errore diventa un quarto: esattamente per $x^2$, circa un quarto in generale.
+
+[[video:integrali/trapezi]]` },
 
     { id: 'volumi-impropri', titolo: 'Volumi di rotazione e integrali impropri', testo: R`### Solidi di rotazione
 

@@ -1,7 +1,7 @@
 'use strict';
 /* Quanto ordinare — il lotto economico. Un negozio vende 1200 pezzi all'anno; ogni ordine costa 50 €, tenere un pezzo
    in magazzino costa 3 € all'anno. Con q pezzi a ordine: costo delle ordinazioni 1200/q · 50 (scende), costo di
-   magazzino q/2 · 3 (sale: in media in magazzino ci sono q/2 pezzi). Il totale ha il minimo in q = 200, proprio dove
+   magazzino 3 · q/2 (sale: in media in magazzino ci sono q/2 pezzi). Il totale ha il minimo in q = 200, proprio dove
    le due curve si incrociano: 60 000/q = 1,5 · q, q² = 40 000. A q = 200: 6 ordini, 300 € + 300 € = 600 €.
    Controprova: q = 100 → 600 + 150 = 750 €; q = 400 → 150 + 600 = 750 €.
    Argomento: ricerca-operativa (non c'è ancora: sezione «Problemi di scelta: il lotto economico»). */
@@ -14,13 +14,13 @@ const SEQ = [
   ['ordine', 5.6, 'Ogni ordine costa {g:50 €}, qualunque\nsia la quantità ordinata.'],
   ['magaz', 5.4, 'Tenere un pezzo in magazzino\ncosta {g:3 €} all’anno.'],
   ['q', 6.6, 'Chiamo {mx:q} i pezzi di ogni ordine:\nfaccio {mink:1200/}{mx:q} ordini all’anno.'],
-  ['cOrd', 7.0, 'Costo delle ordinazioni: {mink:1200/}{mx:q}{mink: · 50}.\nPiù grande è {mx:q}, più {g:scende}.'],
+  ['cOrd', 7.0, 'Costo delle ordinazioni: {mink:50 · 1200/}{mx:q}.\nPiù grande è {mx:q}, più {g:scende}.'],
   ['scorta', 7.0, 'Il magazzino si svuota piano piano:\nin media ci sono {mx:q}{mink:/2} pezzi.'],
-  ['cMag', 6.6, 'Costo di magazzino: {mx:q}{mink:/2 · 3}.\nPiù grande è {mx:q}, più {r:sale}.'],
+  ['cMag', 6.6, 'Costo di magazzino: {mink:3 · }{mx:q}{mink:/2}.\nPiù grande è {mx:q}, più {r:sale}.'],
   ['somma', 5.4, 'Il costo totale è la {v:somma}\ndelle due curve.'],
   ['minimo', 4.6, 'Ha un punto più basso:\nil {g:minimo}.'],
   ['incrocio', 6.0, 'E il minimo cade proprio dove\nle due curve si {v:incrociano}!'],
-  ['uguali', 6.8, 'Lì i due costi sono uguali:\n{mink:1200/}{mx:q}{mink: · 50 = }{mx:q}{mink:/2 · 3}.'],
+  ['uguali', 6.8, 'Lì i due costi sono uguali:\n{mink:50 · 1200/}{mx:q}{mink: = 3 · }{mx:q}{mink:/2}.'],
   ['q200', 6.6, 'Cioè {mx:q}{mink:² = 40 000}, {mx:q}{mink: =} {g:200}:\nè il {v:lotto economico}.'],
   ['conti', 7.2, 'Sono 6 ordini: 300 € di ordinazioni\ne 300 € di magazzino, {g:600 €}.'],
   ['prova', 6.6, 'Con 100 o con 400 pezzi a ordine\nsi spende di più: {r:750 €}.'],
@@ -29,7 +29,7 @@ const T = {}, FUMETTI = [[2.3, 6.8, 'Ordinare tanto in una volta sola,\no poco a
 let tt = 7.9;
 for (const [k, d, s, pausa = 0] of SEQ) { tt = +(tt + pausa).toFixed(2); T[k] = tt; FUMETTI.push([tt, +(tt + d).toFixed(2), s]); tt = +(tt + d + .1).toFixed(2); }
 const FINE = +(tt + .3).toFixed(2), DUR = +(FINE + 10.8).toFixed(1);
-FUMETTI.push([FINE + 1.0, FINE + 8.0, 'Il lotto migliore è dove i due costi\nsi pareggiano: lì il totale è minimo.']);
+FUMETTI.push([FINE + 1.0, FINE + 8.0, 'In questo modello il totale è minimo\ndove i due costi si pareggiano.']);
 
 const POSA = {
   x: [[0, 760], [6.4, 760], [7.6, 190], [FINE, 190], [FINE + 1.3, 420]],
@@ -181,14 +181,14 @@ function sceneScheda(ctx, t) {
     else drawSeq(ctx, items, XR - 130, yy, 40);
     ctx.restore();
   };
-  leg('{x:ordinazioni}', C.x, [{ num: '{mink:1200}', den: '{mx:q}' }, '{mink:· 50}'], y + 475, P(t, T.cOrd + .7, T.cOrd + 1.2));
-  leg('{y:magazzino}', C.y, [{ num: '{mx:q}', den: '{mink:2}' }, '{mink:· 3}'], y + 570, P(t, T.cMag + .7, T.cMag + 1.2));
+  leg('{x:ordinazioni}', C.x, ['{mink:50 ·}', { num: '{mink:1200}', den: '{mx:q}' }], y + 475, P(t, T.cOrd + .7, T.cOrd + 1.2));
+  leg('{y:magazzino}', C.y, ['{mink:3 ·}', { num: '{mx:q}', den: '{mink:2}' }], y + 570, P(t, T.cMag + .7, T.cMag + 1.2));
   leg('{v:totale}', C.v, '{dim:la somma delle due}', y + 650, P(t, T.somma + .3, T.somma + .8));
   // dove i costi sono uguali
   const k2 = life(t, T.uguali + .2, T.conti + .1, .5, .4);
   if (k2 > 0) {
     ctx.save(); ctx.globalAlpha *= k2;
-    drawSeq(ctx, [{ num: '{mink:1200}', den: '{mx:q}' }, '{mink:· 50 =}', { num: '{mx:q}', den: '{mink:2}' }, '{mink:· 3}'], XC, y + 100, 48, { local: t - T.uguali - .3 });
+    drawSeq(ctx, ['{mink:50 ·}', { num: '{mink:1200}', den: '{mx:q}' }, '{mink:= 3 ·}', { num: '{mx:q}', den: '{mink:2}' }], XC, y + 100, 48, { local: t - T.uguali - .3 });
     lab(ctx, '{mink:60 000 = 1,5 · }{mx:q}{mink:²}', XC, y + 225, P(t, T.q200 + .3, T.q200 + .7), 44);
     lab(ctx, '{mx:q}{mink:² = 40 000}', XC, y + 295, P(t, T.q200 + .8, T.q200 + 1.2), 44);
     lab(ctx, '{mx:q}{mink: = √40 000 =} {mg:200}', XC, y + 365, P(t, T.q200 + 1.4, T.q200 + 1.8), 44);
@@ -199,9 +199,9 @@ function sceneScheda(ctx, t) {
   if (k3 > 0) {
     ctx.save(); ctx.globalAlpha *= k3;
     lab(ctx, '{mx:q}{mink: =} {mg:200}', XC, y + 80, 1, 52);
-    riga('ordini', '{mink:1200 : 200 = 6}', y + 165, P(t, T.conti + .5, T.conti + .9));
-    riga('ordinazioni', '{mink:6 · 50 = 300 €}', y + 235, P(t, T.conti + 1.0, T.conti + 1.4));
-    riga('magazzino', '{mink:100 · 3 = 300 €}', y + 305, P(t, T.conti + 1.5, T.conti + 1.9));
+    riga('ordini', '{mink:1200/200 = 6}', y + 165, P(t, T.conti + .5, T.conti + .9));
+    riga('ordinazioni', '{mink:50 · 6 = 300 €}', y + 235, P(t, T.conti + 1.0, T.conti + 1.4));
+    riga('magazzino', '{mink:3 · 100 = 300 €}', y + 305, P(t, T.conti + 1.5, T.conti + 1.9));
     riga('totale', '{mg:600 €}', y + 375, P(t, T.conti + 2.0, T.conti + 2.4));
     ctx.restore();
   }
@@ -224,10 +224,10 @@ function sceneFine(ctx, t) {
   ctx.save(); ctx.globalAlpha *= al;
   conFont(TITOLI, () => {
     drawRich(ctx, '{v:in una frase}', W / 2, 150, { size: 42, weight: 500, local: t - FINE - .4 });
-    drawRich(ctx, 'Il costo totale è minimo dove ordinazioni\ne magazzino costano uguale.', W / 2, 290, { size: 64, weight: 600, local: t - FINE - .8, stagger: .08 });
+    drawRich(ctx, 'In questo modello il costo totale è minimo\ndove ordinazioni e magazzino costano uguale.', W / 2, 290, { size: 64, weight: 600, local: t - FINE - .8, stagger: .08 });
   });
-  const pills = [[470, '{x:ordinazioni}{dim:, scende}', [{ num: '{mink:1200}', den: '{mx:q}' }, '{mink:· 50}']],
-    [960, '{y:magazzino}{dim:, sale}', [{ num: '{mx:q}', den: '{mink:2}' }, '{mink:· 3}']], [1450, '{v:lotto economico}', ['{mx:q}{mink: =} {mg:200}']]];
+  const pills = [[470, '{x:ordinazioni}{dim:, scende}', ['{mink:50 ·}', { num: '{mink:1200}', den: '{mx:q}' }]],
+    [960, '{y:magazzino}{dim:, sale}', ['{mink:3 ·}', { num: '{mx:q}', den: '{mink:2}' }]], [1450, '{v:lotto economico}', ['{mx:q}{mink: =} {mg:200}']]];
   pills.forEach(([x, testa, s], i) => {
     const a = FINE + 2.6 + i * .5, k = P(t, a, a + .5, E.back);
     if (k <= 0) return;

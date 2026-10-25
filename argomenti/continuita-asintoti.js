@@ -218,7 +218,13 @@ Ogni passo dimezza l'intervallo. Dopo $n$ passi è lungo $\frac{b - a}{2^n}$. Se
 [ ] $100$
 => Dopo $n$ passi la lunghezza è $\frac{1}{2^n}$. Con $n = 6$ viene $\frac{1}{64} \approx 0{,}016$, troppo. Con $n = 7$ viene $\frac{1}{128} \approx 0{,}008$. L'intervallo si dimezza, non cala di $0{,}01$ a ogni passo.
 
->! Se in $[a, b]$ ci sono più zeri, la bisezione ne trova **uno**, e non sai quale. Prima separali con lo studio del segno.` },
+>! Se in $[a, b]$ ci sono più zeri, la bisezione ne trova **uno**, e non sai quale. Prima separali con lo studio del segno.
+
+Il **metodo delle tangenti** (o di Newton) sostituisce alla curva la sua tangente. Usa la derivata: la trovi nell'argomento «Derivate». Parti da un $x_0$ vicino allo zero e tracci la tangente nel punto $(x_0; f(x_0))$. Il punto in cui taglia l'asse $x$ è il nuovo $x_1$. Poi riparti da lì, sempre con la stessa formula: $$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}.$$ Serve $f'(x_n) \ne 0$. Vicino allo zero di solito bastano pochi passi.
+
+Con $f(x) = x^2 - 2$ e $x_0 = 1$, dopo tre passi $x_3 \approx 1{,}414216$: sbaglia di circa $0{,}000002$ da $\sqrt{2}$. Con la bisezione da $[1, 2]$, per chiudere $\sqrt{2}$ in un intervallo lungo meno di $0{,}00001$ servono $17$ passi.
+
+[[video:continuita-asintoti/tangenti]]` },
 
     { id: 'asintoti-verticali-orizzontali', titolo: 'Asintoti verticali e orizzontali', testo: R`Un **asintoto** è una retta a cui il grafico si avvicina sempre di più, senza fine. Succede vicino a un punto escluso dal dominio, oppure all'infinito.
 
