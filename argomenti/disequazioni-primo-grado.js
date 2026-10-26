@@ -192,11 +192,7 @@ Con $x > 4$ e $x < 1$ la parte comune non c'è: $S = \varnothing$.
 2. Questi numeri tagliano la retta in intervalli. In ogni intervallo, ogni fattore ha sempre lo stesso segno.
 3. Fai la **tabella dei segni** e moltiplica i segni in ogni colonna.
 
-| | $x < -1$ | $-1 < x < 3$ | $x > 3$ |
-|---|---|---|---|
-| $x + 1$ | $-$ | $+$ | $+$ |
-| $x - 3$ | $-$ | $-$ | $+$ |
-| prodotto | $+$ | $-$ | $+$ |
+[[grafico:segniProdotto]]
 
 Il prodotto è negativo solo nel tratto centrale: $-1 < x < 3$.
 
@@ -208,11 +204,7 @@ Una **disequazione fratta** ha la $x$ anche al denominatore, come $\dfrac{x - 2}
 
 Qui il numeratore si annulla in $2$, il denominatore in $4$:
 
-| | $x < 2$ | $2 < x < 4$ | $x > 4$ |
-|---|---|---|---|
-| $x - 2$ | $-$ | $+$ | $+$ |
-| $x - 4$ | $-$ | $-$ | $+$ |
-| frazione | $+$ | $-$ | $+$ |
+[[grafico:segniFratta]]
 
 La frazione è positiva per $x < 2$ e per $x > 4$. Il simbolo è $\ge$, quindi va bene anche la frazione uguale a $0$.
 
@@ -284,6 +276,23 @@ La disequazione dà tutti i numeri fino a $5$. Ma il testo parla di numeri **nat
   ],
 
   grafici: {
+    /* tabelle dei segni, come sul quaderno (tipo 'segni', SCHEMA.md §3) */
+    segniProdotto: { tipo: 'segni', valori: ['-1', '3'],
+      righe: [ { nome: 'x + 1', segni: ['−', '+', '+'], zeri: [0] }, { nome: 'x - 3', segni: ['−', '−', '+'], zeri: [1] } ],
+      risultato: { nome: 'prodotto', segni: ['+', '−', '+'], zeri: [0, 1] }, evidenzia: '<0',
+      didascalia: 'Segno di (x + 1)(x − 3): in blu dove il prodotto è negativo.' },
+    segniFratta: { tipo: 'segni', valori: ['2', '4'],
+      righe: [ { nome: 'x - 2', segni: ['−', '+', '+'], zeri: [0] }, { nome: 'x - 4', segni: ['−', '−', '+'], zeri: [1] } ],
+      risultato: { nome: R`\dfrac{x-2}{x-4}`, segni: ['+', '−', '+'], zeri: [0], esclusi: [1] }, evidenzia: '>=0',
+      didascalia: 'In 2 la frazione vale 0, in 4 non esiste (✗). In blu dove è ≥ 0.' },
+    segniEs07: { tipo: 'segni', valori: ['-1', '2'],
+      righe: [ { nome: 'x + 1', segni: ['−', '+', '+'], zeri: [0] }, { nome: 'x - 2', segni: ['−', '−', '+'], zeri: [1] } ],
+      risultato: { nome: R`\dfrac{x+1}{x-2}`, segni: ['+', '−', '+'], zeri: [0], esclusi: [1] }, evidenzia: '<=0',
+      didascalia: 'In blu dove la frazione è ≤ 0: lo 0 in −1 conta, la ✗ in 2 no.' },
+    segniEs08: { tipo: 'segni', valori: ['-2', '1', '4'],
+      righe: [ { nome: 'x + 2', segni: ['−', '+', '+', '+'], zeri: [0] }, { nome: 'x - 1', segni: ['−', '−', '+', '+'], zeri: [1] }, { nome: 'x - 4', segni: ['−', '−', '−', '+'], zeri: [2] } ],
+      risultato: { nome: 'quoziente', segni: ['−', '+', '−', '+'], zeri: [0, 1], esclusi: [2] }, evidenzia: '>=0',
+      didascalia: 'In blu dove il quoziente è ≥ 0.' },
     intervalliNotazione: {
       tipo: 'retta-reale', x: [-6, 6],
       intervalli: [
@@ -363,7 +372,9 @@ La disequazione dà tutti i numeri fino a $5$. Ma il testo parla di numeri **nat
 
     { titolo: 'Una disequazione fratta', problema: R`Risolvi $\dfrac{x - 2}{x - 4} \ge 0$.`, passi: [
       R`Numeratore nullo per $x = 2$ (incluso, perché il simbolo è $\ge$); denominatore nullo per $x = 4$ (sempre escluso, condizione di esistenza $x \ne 4$).`,
-      R`Tabella dei segni: per $x < 2$ entrambi i fattori sono negativi, frazione positiva. Per $2 < x < 4$ il numeratore è positivo e il denominatore negativo, frazione negativa. Per $x > 4$ entrambi positivi, frazione positiva.`,
+      R`Tabella dei segni: per $x < 2$ entrambi i fattori sono negativi, frazione positiva. Per $2 < x < 4$ il numeratore è positivo e il denominatore negativo, frazione negativa. Per $x > 4$ entrambi positivi, frazione positiva.
+
+[[grafico:segniFratta]]`,
       R`La disequazione chiede la frazione $\ge 0$: va bene per $x \le 2$ (frazione positiva o nulla) e per $x > 4$ (frazione positiva), mai per $2 < x \le 4$.`
     ], risultato: R`$x \le 2 \ \lor\ x > 4$` },
 
@@ -443,8 +454,12 @@ La disequazione dà tutti i numeri fino a $5$. Ma il testo parla di numeri **nat
     { id: 'es-04', difficolta: 2, testo: R`Risolvi il sistema $\begin{cases} 3x - 1 > 2 \\ 5 - x \ge 1 \end{cases}$.`, suggerimenti: [R`Risolvi le due disequazioni separatamente.`, R`Nella seconda, isolando $x$ dovrai dividere per un numero negativo.`, R`Disegna i due intervalli sulla stessa retta e cerca la parte comune.`], risposta: { tipo: 'intervallo', da: 1, a: 4, chiusoDa: false, chiusoA: true }, soluzione: [R`Prima: $3x - 1 > 2 \Rightarrow 3x > 3 \Rightarrow x > 1$.`, R`Seconda: $5 - x \ge 1 \Rightarrow -x \ge -4$; dividendo per $-1$ (verso capovolto) $x \le 4$.`, R`Intersezione: $1 < x \le 4$.`] },
     { id: 'es-05', difficolta: 2, testo: R`Risolvi il sistema $\begin{cases} x > 3 \\ x < -1 \end{cases}$.`, suggerimenti: [R`Le due disequazioni sono già risolte: disegna entrambi gli intervalli sulla stessa retta.`, R`Cerca dove si sovrappongono.`], risposta: { tipo: 'testo', accettate: ['impossibile', 'nessuna soluzione', 'insieme vuoto', 'vuoto', '∅', 'nessuna'] }, soluzione: [R`Il primo intervallo è $x > 3$, il secondo $x < -1$: non hanno nessun punto in comune, perché non esiste un numero insieme maggiore di $3$ e minore di $-1$.`, R`Il sistema non ha soluzione: $S = \varnothing$.`] },
     { id: 'es-06', difficolta: 2, testo: R`Risolvi $(x + 1)(x - 3) < 0$.`, suggerimenti: [R`Trova gli zeri dei due fattori: $-1$ e $3$.`, R`Con il prodotto minore di zero, la soluzione è l'intervallo *tra* le due radici.`], risposta: { tipo: 'intervallo', da: -1, a: 3, chiusoDa: false, chiusoA: false }, soluzione: [R`Zeri dei fattori: $x = -1$ e $x = 3$.`, R`Per $x < -1$ entrambi i fattori sono negativi, prodotto positivo. Per $-1 < x < 3$ i fattori hanno segno discorde, prodotto negativo. Per $x > 3$ entrambi positivi, prodotto positivo.`, R`La disequazione chiede il prodotto negativo: $-1 < x < 3$.`] },
-    { id: 'es-07', difficolta: 2, testo: R`Risolvi $\dfrac{x + 1}{x - 2} \le 0$.`, suggerimenti: [R`Zero del numeratore: $x = -1$ (incluso, perché il simbolo è $\le$). Zero del denominatore: $x = 2$ (sempre escluso).`, R`Costruisci la tabella dei segni tra questi due valori.`], risposta: { tipo: 'intervallo', da: -1, a: 2, chiusoDa: true, chiusoA: false }, soluzione: [R`Numeratore nullo in $x = -1$ (incluso), denominatore nullo in $x = 2$ (escluso).`, R`Per $x < -1$: numeratore negativo, denominatore negativo, frazione positiva. Per $-1 < x < 2$: numeratore positivo, denominatore negativo, frazione negativa. Per $x > 2$: entrambi positivi, frazione positiva.`, R`La disequazione chiede $\le 0$: soluzione $-1 \le x < 2$.`] },
-    { id: 'es-08', difficolta: 3, testo: R`Risolvi $\dfrac{(x - 1)(x + 2)}{x - 4} \ge 0$.`, suggerimenti: [R`Trova prima gli zeri di ciascun fattore: $x = 1$, $x = -2$ al numeratore, $x = 4$ al denominatore.`, R`Costruisci la tabella dei segni con questi tre valori come confini degli intervalli.`, R`Il denominatore nullo va sempre escluso, anche se il verso è $\ge$: controlla dov'è.`], risposta: { tipo: 'testo', accettate: ['-2<=x<=1 o x>4', '-2≤x≤1 o x>4', 'x>4 o -2<=x<=1', '-2<=x<=1 oppure x>4', 'x>4 oppure -2<=x<=1', '-2<=x<=1 ∨ x>4', '-2<=x<=1 v x>4', '[-2,1]∪(4,+inf)', '[-2;1]∪(4;+inf)', '[-2,1]∪]4,+inf[', '[-2;1]∪]4;+inf[', '[-2;1]u]4;+inf[', '[-2,1]u(4,+inf)', '[-2;1]u(4;+inf)', '[-2,1]∪(4,+∞)', '[-2;1]∪(4;+∞)', '[-2,1]∪]4,+∞[', '[-2;1]∪]4;+∞['] }, soluzione: [R`Zeri: numeratore in $x = -2$ e $x = 1$ (inclusi), denominatore in $x = 4$ (escluso).`, R`Tabella dei segni: per $x < -2$ il quoziente è negativo; per $-2 < x < 1$ è positivo; per $1 < x < 4$ è negativo; per $x > 4$ è positivo.`, R`La disequazione chiede $\ge 0$: soluzione $-2 \le x \le 1$ oppure $x > 4$, con $x = 4$ sempre escluso.`] },
+    { id: 'es-07', difficolta: 2, testo: R`Risolvi $\dfrac{x + 1}{x - 2} \le 0$.`, suggerimenti: [R`Zero del numeratore: $x = -1$ (incluso, perché il simbolo è $\le$). Zero del denominatore: $x = 2$ (sempre escluso).`, R`Costruisci la tabella dei segni tra questi due valori.`], risposta: { tipo: 'intervallo', da: -1, a: 2, chiusoDa: true, chiusoA: false }, soluzione: [R`Numeratore nullo in $x = -1$ (incluso), denominatore nullo in $x = 2$ (escluso).`, R`Per $x < -1$: numeratore negativo, denominatore negativo, frazione positiva. Per $-1 < x < 2$: numeratore positivo, denominatore negativo, frazione negativa. Per $x > 2$: entrambi positivi, frazione positiva.
+
+[[grafico:segniEs07]]`, R`La disequazione chiede $\le 0$: soluzione $-1 \le x < 2$.`] },
+    { id: 'es-08', difficolta: 3, testo: R`Risolvi $\dfrac{(x - 1)(x + 2)}{x - 4} \ge 0$.`, suggerimenti: [R`Trova prima gli zeri di ciascun fattore: $x = 1$, $x = -2$ al numeratore, $x = 4$ al denominatore.`, R`Costruisci la tabella dei segni con questi tre valori come confini degli intervalli.`, R`Il denominatore nullo va sempre escluso, anche se il verso è $\ge$: controlla dov'è.`], risposta: { tipo: 'testo', accettate: ['-2<=x<=1 o x>4', '-2≤x≤1 o x>4', 'x>4 o -2<=x<=1', '-2<=x<=1 oppure x>4', 'x>4 oppure -2<=x<=1', '-2<=x<=1 ∨ x>4', '-2<=x<=1 v x>4', '[-2,1]∪(4,+inf)', '[-2;1]∪(4;+inf)', '[-2,1]∪]4,+inf[', '[-2;1]∪]4;+inf[', '[-2;1]u]4;+inf[', '[-2,1]u(4,+inf)', '[-2;1]u(4;+inf)', '[-2,1]∪(4,+∞)', '[-2;1]∪(4;+∞)', '[-2,1]∪]4,+∞[', '[-2;1]∪]4;+∞['] }, soluzione: [R`Zeri: numeratore in $x = -2$ e $x = 1$ (inclusi), denominatore in $x = 4$ (escluso).`, R`Tabella dei segni: per $x < -2$ il quoziente è negativo; per $-2 < x < 1$ è positivo; per $1 < x < 4$ è negativo; per $x > 4$ è positivo.
+
+[[grafico:segniEs08]]`, R`La disequazione chiede $\ge 0$: soluzione $-2 \le x \le 1$ oppure $x > 4$, con $x = 4$ sempre escluso.`] },
     { id: 'es-09', difficolta: 3, testo: R`Risolvi al variare del parametro $k$ la disequazione $(k - 2)x \le 3$.`, suggerimenti: [R`Isola $x$ dividendo per il coefficiente $k - 2$: il primo bivio è il suo segno.`, R`Distingui tre casi: $k > 2$, $k < 2$, $k = 2$.`, R`Nel caso $k = 2$ il coefficiente si annulla: che cosa resta dell'incognita?`], soluzione: [R`Se $k > 2$ (cioè $k - 2 > 0$): dividendo per un positivo il verso non cambia, $x \le \dfrac{3}{k - 2}$.`, R`Se $k < 2$ (cioè $k - 2 < 0$): dividendo per un negativo il verso cambia, $x \ge \dfrac{3}{k - 2}$.`, R`Se $k = 2$: il coefficiente è $0$, resta $0 \le 3$, sempre vero: la soluzione è $\mathbb{R}$, qualunque $x$.`] },
     { id: 'es-10', difficolta: 3, testo: R`In un rettangolo la base supera l'altezza di $3\ \text{cm}$. Sapendo che il perimetro non deve superare $46\ \text{cm}$, quali valori può assumere l'altezza?`, suggerimenti: [R`Chiama $x$ l'altezza: la base è $x + 3$.`, R`Il perimetro di un rettangolo è il doppio della somma di base e altezza.`, R`Non dimenticare che anche l'altezza deve essere positiva.`], risposta: { tipo: 'intervallo', da: 0, a: 10, chiusoDa: false, chiusoA: true }, soluzione: [R`Altezza $x$, base $x + 3$. Perimetro: $2(x + (x + 3)) = 4x + 6$.`, R`Condizione: $4x + 6 \le 46$, cioè $4x \le 40$, $x \le 10$.`, R`In più l'altezza deve essere positiva: $x > 0$. Insieme: $0 < x \le 10\ \text{cm}$.`] }
   ],

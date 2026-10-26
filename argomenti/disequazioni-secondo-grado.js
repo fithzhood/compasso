@@ -174,11 +174,7 @@ Qui puoi usare la **tabella dei segni**:
 2. Scrivi il segno di ogni fattore in ogni intervallo.
 3. Moltiplica i segni.
 
-| intervallo | $x-3$ | $x+1$ | prodotto |
-|---|---|---|---|
-| $x<-1$ | $-$ | $-$ | $+$ |
-| $-1<x<3$ | $-$ | $+$ | $-$ |
-| $x>3$ | $+$ | $+$ | $+$ |
+[[grafico:segniProdotto]]
 
 Il prodotto è positivo per $x<-1$ e per $x>3$. La tabella funziona anche con più di due fattori.
 
@@ -186,12 +182,7 @@ Una **disequazione fratta** ha la $x$ anche al denominatore. Per esempio $\dfrac
 
 I valori che annullano il denominatore sono sempre esclusi: lo dicono le **condizioni di esistenza** (c.e.).
 
-| intervallo | $x-1$ | $x^2-4$ | frazione |
-|---|---|---|---|
-| $x<-2$ | $-$ | $+$ | $-$ |
-| $-2<x<1$ | $-$ | $-$ | $+$ |
-| $1<x<2$ | $+$ | $-$ | $-$ |
-| $x>2$ | $+$ | $+$ | $+$ |
+[[grafico:segniFratta]]
 
 La frazione è $\ge 0$ per $-2<x\le 1$ oppure per $x>2$. Il valore $x=1$ è compreso: lì la frazione vale $0$. Invece $-2$ e $2$ sono esclusi, perché lì la frazione non esiste.
 
@@ -231,13 +222,7 @@ Con la scorciatoia sbagliata otterresti $x+3>2$, cioè $x>-1$. Ma in questo inte
 
 C'è una scorciatoia. A destra di tutti gli zeri ogni fattore è positivo, quindi il prodotto è $+$. Quando passi uno zero cambia segno un fattore solo, e con lui il prodotto. Quindi i segni si alternano:
 
-| intervallo | segno |
-|---|---|
-| $x>2$ | $+$ (si parte da qui) |
-| $1<x<2$ | $-$ |
-| $-1<x<1$ | $+$ |
-| $-2<x<-1$ | $-$ |
-| $x<-2$ | $+$ |
+[[grafico:segniAlterni]]
 
 La disequazione chiede il segno $-$: $-2<x<-1\ \lor\ 1<x<2$.
 
@@ -280,6 +265,30 @@ Il lato deve essere fra $3$ e $7\ \text{cm}$, estremi esclusi.
   ],
 
   grafici: {
+    /* tabelle dei segni, come sul quaderno (tipo 'segni', SCHEMA.md §3) */
+    segniProdotto: { tipo: 'segni', valori: ['-1', '3'],
+      righe: [ { nome: 'x - 3', segni: ['−', '−', '+'], zeri: [1] }, { nome: 'x + 1', segni: ['−', '+', '+'], zeri: [0] } ],
+      risultato: { nome: 'prodotto', segni: ['+', '−', '+'], zeri: [0, 1] }, evidenzia: '>0',
+      didascalia: 'Segno di (x − 3)(x + 1): in blu dove il prodotto è positivo.' },
+    segniFratta: { tipo: 'segni', valori: ['-2', '1', '2'],
+      righe: [ { nome: 'x - 1', segni: ['−', '−', '+', '+'], zeri: [1] }, { nome: 'x^2 - 4', segni: ['+', '−', '−', '+'], zeri: [0, 2] } ],
+      risultato: { nome: 'frazione', segni: ['−', '+', '−', '+'], zeri: [1], esclusi: [0, 2] }, evidenzia: '>=0',
+      didascalia: 'In 1 la frazione vale 0; in −2 e in 2 non esiste (✗). In blu dove è ≥ 0.' },
+    segniAlterni: { tipo: 'segni', valori: ['-2', '-1', '1', '2'],
+      righe: [ { nome: 'x^4 - 5x^2 + 4', segni: ['+', '−', '+', '−', '+'], zeri: [0, 1, 2, 3] } ], evidenzia: '<0',
+      didascalia: 'Si parte da destra, dove tutti i fattori sono positivi: poi il segno cambia a ogni zero. In blu dove è negativo.' },
+    segniEsempio: { tipo: 'segni', valori: [R`\dfrac{1}{2}`, '2', '3'],
+      righe: [ { nome: '2x - 1', segni: ['−', '+', '+', '+'], zeri: [0] }, { nome: 'x - 2', segni: ['−', '−', '+', '+'], zeri: [1] }, { nome: 'x - 3', segni: ['−', '−', '−', '+'], zeri: [2] } ],
+      risultato: { nome: 'quoziente', segni: ['−', '+', '−', '+'], zeri: [0], esclusi: [1, 2] }, evidenzia: '<0',
+      didascalia: 'Il denominatore è (x − 2)(x − 3): in 2 e in 3 il quoziente non esiste. In blu dove è negativo.' },
+    segniEs06: { tipo: 'segni', valori: ['-1', '2'],
+      righe: [ { nome: 'x + 1', segni: ['−', '+', '+'], zeri: [0] }, { nome: 'x - 2', segni: ['−', '−', '+'], zeri: [1] } ],
+      risultato: { nome: R`\dfrac{x+1}{x-2}`, segni: ['+', '−', '+'], zeri: [0], esclusi: [1] }, evidenzia: '<=0',
+      didascalia: 'In blu dove la frazione è ≤ 0: lo 0 in −1 conta, la ✗ in 2 no.' },
+    segniEs12: { tipo: 'segni', valori: ['-3', '-1', '1'],
+      righe: [ { nome: 'x + 3', segni: ['−', '+', '+', '+'], zeri: [0] }, { nome: 'x + 1', segni: ['−', '−', '+', '+'], zeri: [1] }, { nome: 'x - 1', segni: ['−', '−', '−', '+'], zeri: [2] } ],
+      risultato: { nome: R`\dfrac{x^2-1}{x+3}`, segni: ['−', '+', '−', '+'], zeri: [1, 2], esclusi: [0] }, evidenzia: '>0',
+      didascalia: 'Numeratore (x − 1)(x + 1), denominatore x + 3. In blu dove la frazione è positiva.' },
     segno: {
       tipo: 'piano', x: [-5, 5], y: [-6, 6],
       parametri: [
@@ -334,7 +343,9 @@ Il lato deve essere fra $3$ e $7\ \text{cm}$, estremi esclusi.
     { titolo: 'Disequazione fratta', problema: R`Risolvi $\dfrac{2x-1}{x^2-5x+6}<0$.`, passi: [
       R`Scompongo il denominatore: $x^2-5x+6=(x-2)(x-3)$. Condizioni di esistenza: $x\ne2$, $x\ne3$.`,
       R`Zero del numeratore: $x=\dfrac12$. Zeri del denominatore: $x=2$, $x=3$ (sempre esclusi).`,
-      R`Tabella dei segni: per $x<\dfrac12$ il quoziente è negativo; per $\dfrac12<x<2$ è positivo; per $2<x<3$ è negativo; per $x>3$ è positivo.`,
+      R`Tabella dei segni: per $x<\dfrac12$ il quoziente è negativo; per $\dfrac12<x<2$ è positivo; per $2<x<3$ è negativo; per $x>3$ è positivo.
+
+[[grafico:segniEsempio]]`,
       R`La disequazione chiede $<0$: soluzione $x<\dfrac12$ oppure $2<x<3$, con $x=2$ e $x=3$ sempre esclusi.`
     ], risultato: R`$x<\dfrac12 \ \lor\ 2<x<3$` },
 
@@ -415,13 +426,17 @@ Il lato deve essere fra $3$ e $7\ \text{cm}$, estremi esclusi.
     { id: 'es-03', difficolta: 1, testo: R`Risolvi $x^2+4\le0$.`, suggerimenti: [R`Il discriminante è negativo: che segno ha sempre il trinomio?`, R`$x^2+4$ è la somma di un quadrato e di un numero positivo.`], risposta: NESSUNA, soluzione: [R`$\Delta=0-16=-16<0$: nessuna radice reale, il trinomio ha sempre il segno di $a=1$, cioè è sempre positivo.`, R`$x^2+4\ge4>0$ per ogni $x$: non può mai essere $\le0$. $S=\varnothing$.`] },
     { id: 'es-04', difficolta: 2, testo: R`Risolvi $2x^2-2x-12>0$.`, suggerimenti: [R`Puoi dividere tutto per $2$ (positivo, il verso non cambia).`, R`Scomponi $x^2-x-6$ trovando due numeri con somma $-1$ e prodotto $-6$.`], risposta: esterni(-2, 3), soluzione: [R`Divido per $2$: $x^2-x-6>0$.`, R`$(x-3)(x+2)>0$: radici $-2$ e $3$, $a>0$.`, R`Valori esterni: $x<-2 \ \lor\ x>3$.`] },
     { id: 'es-05', difficolta: 2, testo: R`Risolvi $-x^2+2x+3\ge0$.`, suggerimenti: [R`Il coefficiente di $x^2$ è negativo: moltiplica per $-1$ prima di applicare lo schema.`, R`Non dimenticare di cambiare il verso della disequazione.`], risposta: { tipo: 'intervallo', da: -1, a: 3, chiusoDa: true, chiusoA: true }, soluzione: [R`Moltiplico per $-1$ (cambio verso): $x^2-2x-3\le0$.`, R`$(x-3)(x+1)\le0$: radici $-1$ e $3$, $a>0$, valori interni inclusi gli estremi.`, R`$-1\le x\le3$.`] },
-    { id: 'es-06', difficolta: 2, testo: R`Risolvi $\dfrac{x+1}{x-2}\le0$.`, suggerimenti: [R`Trova lo zero del numeratore e la condizione di esistenza del denominatore.`, R`Costruisci la tabella dei segni fra $-1$ e $2$.`], risposta: { tipo: 'intervallo', da: -1, a: 2, chiusoDa: true, chiusoA: false }, soluzione: [R`Numeratore nullo in $x=-1$ (incluso, verso $\le$); denominatore nullo in $x=2$ (sempre escluso).`, R`Per $x<-1$ la frazione è positiva; per $-1<x<2$ è negativa; per $x>2$ è positiva.`, R`Soluzione: $-1\le x<2$.`] },
+    { id: 'es-06', difficolta: 2, testo: R`Risolvi $\dfrac{x+1}{x-2}\le0$.`, suggerimenti: [R`Trova lo zero del numeratore e la condizione di esistenza del denominatore.`, R`Costruisci la tabella dei segni fra $-1$ e $2$.`], risposta: { tipo: 'intervallo', da: -1, a: 2, chiusoDa: true, chiusoA: false }, soluzione: [R`Numeratore nullo in $x=-1$ (incluso, verso $\le$); denominatore nullo in $x=2$ (sempre escluso).`, R`Per $x<-1$ la frazione è positiva; per $-1<x<2$ è negativa; per $x>2$ è positiva.
+
+[[grafico:segniEs06]]`, R`Soluzione: $-1\le x<2$.`] },
     { id: 'es-07', difficolta: 2, testo: R`Risolvi il sistema $\begin{cases} x^2-16<0 \\ x-1>0 \end{cases}$.`, suggerimenti: [R`Risolvi le due disequazioni separatamente.`, R`Disegna i due intervalli sulla stessa retta e cerca la parte comune.`], risposta: { tipo: 'intervallo', da: 1, a: 4, chiusoDa: false, chiusoA: false }, soluzione: [R`Prima: $x^2-16<0 \Rightarrow -4<x<4$.`, R`Seconda: $x-1>0 \Rightarrow x>1$.`, R`Intersezione: $1<x<4$.`] },
     { id: 'es-08', difficolta: 3, testo: R`Risolvi $x^4-13x^2+36<0$.`, suggerimenti: [R`Poni $t=x^2$ e risolvi prima in $t$: ottieni un'equazione di secondo grado.`, R`Scomponi come differenza di quadrati due volte.`, R`Le quattro radici, in ordine, dividono la retta in cinque intervalli: segna dove il segno si alterna.`], risposta: { tipo: 'testo', accettate: ['-3<x<-2 o 2<x<3', '-3<x<-2 v 2<x<3', '-3<x<-2 ∨ 2<x<3', ']-3;-2[ u ]2;3[', '(-3,-2)∪(2,3)', '(-3,-2)u(2,3)', '(-3;-2)∪(2;3)', '(-3;-2)u(2;3)'] }, soluzione: [R`$x^4-13x^2+36=(x^2-4)(x^2-9)=(x-2)(x+2)(x-3)(x+3)$.`, R`Radici in ordine: $-3,-2,2,3$, tutte semplici. Il segno si alterna: positivo per $x>3$, negativo per $2<x<3$, positivo per $-2<x<2$, negativo per $-3<x<-2$, positivo per $x<-3$.`, R`Soluzione (segno negativo): $-3<x<-2 \ \lor\ 2<x<3$.`] },
     { id: 'es-09', difficolta: 3, testo: R`Risolvi $(x+2)(x-1)\ge3(x-1)$.`, suggerimenti: [R`Non dividere per $(x-1)$: il suo segno non è noto.`, R`Porta tutto a un membro e raccogli $(x-1)$.`], risposta: TUTTI, soluzione: [R`$(x+2)(x-1)-3(x-1)\ge0 \Rightarrow (x-1)\left[(x+2)-3\right]\ge0 \Rightarrow (x-1)(x-1)\ge0$.`, R`$(x-1)^2\ge0$ è vera per ogni $x$ reale: un quadrato non è mai negativo.`] },
     { id: 'es-10', difficolta: 3, testo: R`Un rettangolo ha un lato di $x\ \text{cm}$ e l'altro di $(x-2)\ \text{cm}$, con $x>2$. Per quali $x$ l'area supera $15\ \text{cm}^2$?`, suggerimenti: [R`Scrivi l'area come prodotto dei due lati e confrontala con $15$.`, R`Dopo aver risolto la disequazione, ricordati del vincolo $x>2$.`], risposta: { tipo: 'testo', accettate: ['x>5', 'x > 5', ']5;+inf[', ']5;+∞[', 'x∈]5;+∞[', '(5;+inf)', '(5;+∞)', '(5,+inf)', '(5,+∞)', 'x∈(5,+∞)', '(5,inf)', '(5,∞)'] }, soluzione: [R`Area: $x(x-2)>15 \Rightarrow x^2-2x-15>0 \Rightarrow (x-5)(x+3)>0$.`, R`Valori esterni: $x<-3 \ \lor\ x>5$.`, R`Intersecando con il vincolo $x>2$: resta solo $x>5\ \text{cm}$.`] },
     { id: 'es-11', difficolta: 1, testo: R`Risolvi $4x^2+4x+1\ge0$.`, suggerimenti: [R`Riconosci il quadrato di un binomio.`, R`Un quadrato può mai essere negativo?`], risposta: TUTTI, soluzione: [R`$4x^2+4x+1=(2x+1)^2$.`, R`Un quadrato è sempre $\ge0$: la disequazione è vera per ogni $x$ reale.`] },
-    { id: 'es-12', difficolta: 3, testo: R`Risolvi $\dfrac{x^2-1}{x+3}>0$.`, suggerimenti: [R`Scomponi il numeratore: $x^2-1=(x-1)(x+1)$.`, R`Costruisci la tabella dei segni con tre fattori: $x-1$, $x+1$, $x+3$.`], risposta: { tipo: 'testo', accettate: ['-3<x<-1 o x>1', '-3<x<-1 v x>1', '-3<x<-1 ∨ x>1', ']-3;-1[ u ]1;+inf[', ']-3;-1[∪]1;+inf[', ']-3;-1[∪]1;+∞[', ']-3;-1[u]1;+∞[', '(-3;-1)∪(1;+∞)', '(-3;-1)u(1;+inf)', '(-3,-1)∪(1,+∞)', '(-3,-1)u(1,+∞)', '(-3,-1)∪(1,+inf)', '(-3,-1)u(1,+inf)'] }, soluzione: [R`Numeratore $(x-1)(x+1)$, zeri $\pm1$; denominatore zero in $x=-3$ (c.e.).`, R`Tabella dei segni: per $x<-3$ negativo; per $-3<x<-1$ positivo; per $-1<x<1$ negativo; per $x>1$ positivo.`, R`Soluzione ($>0$): $-3<x<-1 \ \lor\ x>1$.`] }
+    { id: 'es-12', difficolta: 3, testo: R`Risolvi $\dfrac{x^2-1}{x+3}>0$.`, suggerimenti: [R`Scomponi il numeratore: $x^2-1=(x-1)(x+1)$.`, R`Costruisci la tabella dei segni con tre fattori: $x-1$, $x+1$, $x+3$.`], risposta: { tipo: 'testo', accettate: ['-3<x<-1 o x>1', '-3<x<-1 v x>1', '-3<x<-1 ∨ x>1', ']-3;-1[ u ]1;+inf[', ']-3;-1[∪]1;+inf[', ']-3;-1[∪]1;+∞[', ']-3;-1[u]1;+∞[', '(-3;-1)∪(1;+∞)', '(-3;-1)u(1;+inf)', '(-3,-1)∪(1,+∞)', '(-3,-1)u(1,+∞)', '(-3,-1)∪(1,+inf)', '(-3,-1)u(1,+inf)'] }, soluzione: [R`Numeratore $(x-1)(x+1)$, zeri $\pm1$; denominatore zero in $x=-3$ (c.e.).`, R`Tabella dei segni: per $x<-3$ negativo; per $-3<x<-1$ positivo; per $-1<x<1$ negativo; per $x>1$ positivo.
+
+[[grafico:segniEs12]]`, R`Soluzione ($>0$): $-3<x<-1 \ \lor\ x>1$.`] }
   ],
 
   quiz: [

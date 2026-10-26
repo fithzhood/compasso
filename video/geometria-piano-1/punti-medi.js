@@ -3,7 +3,7 @@
    punti medi di AB, BC, CD, DA. MNPQ è sempre un parallelogramma (teorema di Varignon), anche mentre i vertici si muovono
    e anche con ABCD concavo. Perché: nel triangolo ABC il segmento che unisce i punti medi di due lati è parallelo al terzo
    lato e lungo la metà, quindi MN ∥ AC; in ACD QP ∥ AC; allo stesso modo con la diagonale BD: NP ∥ BD ∥ MQ. Lati opposti
-   paralleli: è un parallelogramma (la definizione del sito). Argomento: geometria-piano-1 (oggi geometria-euclidea, § quadrilateri). */
+   paralleli: è un parallelogramma (la definizione del sito). Argomento: geometria-piano-1 (la teoria sta in geometria-piano-1). */
 CVIDEO.registra('geometria-piano-1/punti-medi', M => {
   const { W, C, E, P, life, kf, lerp, css, TITOLI, conFont, drawRich, glowStroke, dot, card, checkMark } = M;
 

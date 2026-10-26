@@ -81,6 +81,7 @@ body {
 }
 strong, b { font-weight: 600; }
 img, svg { max-width: 100%; }
+.katex svg { max-width: none; }   /* le frecce di \vec e i cappelli larghi di KaTeX stanno in contenitori larghi 0 */
 a { color: var(--accento-testo); text-underline-offset: 3px; text-decoration-thickness: 1px; }
 button { font: inherit; color: inherit; cursor: pointer; }
 input, select, textarea { font: inherit; color: inherit; }
@@ -810,6 +811,42 @@ a.stat:hover, .stat.riprendi:hover { transform: translateY(-2px); border-color: 
   .cg-valori text { font-size: 22px; }
 }
 .cg-svg text { white-space: pre; }
+/* tabella dei segni (grafico tipo 'segni'), come sul quaderno: i valori in alto, ognuno sopra una
+   linea verticale che scende per tutta la tabella; i segni negli spazi fra le linee; 0 e ✗ sulle linee */
+.cg-segni-scorre { overflow-x: auto; overflow-y: hidden; padding: 2px 4px 4px; }
+.cg-segni { display: grid; width: 100%; max-width: 620px; margin: 0 auto; color: var(--g-testo); font-size: 1.05rem; line-height: 1.2; }
+.cg-segni .sg-c { display: flex; align-items: center; justify-content: center; min-height: 2.6em; }
+.cg-segni .sg-l { min-width: 0; }
+.cg-segni .sg-b { border-bottom: 2px solid var(--g-asse); }
+.cg-segni .sg-nome { justify-content: flex-start; padding: .2em .9em .2em .15em; white-space: nowrap; font-weight: 600; }
+.cg-segni .sg-testa { min-height: 2.3em; align-items: flex-end; padding-bottom: .3em; }
+.cg-segni .sg-l { position: relative; z-index: 1; background: var(--g-asse); }
+.cg-segni .sg-l.sg-testa { background: none; }
+.cg-segni .sg-v { flex: none; white-space: nowrap; font-weight: 600; }
+.cg-segni .sg-v .katex { font-size: 1.12em; }
+.cg-segni .sg-nome .katex { font-size: 1.15em; }
+/* + − e 0 con il carattere delle formule (KaTeX_Main): segni pieni, e lo 0 non sembra una O */
+.cg-segni .sg-s { font-family: KaTeX_Main, "Times New Roman", serif; font-size: 1.75em; font-weight: 700; line-height: 1; }
+.cg-segni .sg-m { flex: none; display: block; background: var(--g-sfondo); font-family: KaTeX_Main, "Times New Roman", serif; font-size: 1.4em; font-weight: 700; line-height: 1; padding: .06em .06em .02em; border-radius: 4px; }
+.cg-segni .sg-x { padding: .14em .1em; }
+.cg-segni .sg-x svg { display: block; width: .78em; height: .78em; fill: none; stroke: var(--no); stroke-width: 2.1; stroke-linecap: round; }
+.cg-segni .sg-punto { font-family: var(--font); font-size: .6em; font-weight: 600; color: var(--testo2); padding: .2em .2em; }
+.cg-segni .sg-freccia { width: 1.6em; height: 1.6em; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.cg-segni .sg-risultato.sg-nome, .cg-segni .sg-andamento.sg-nome { color: var(--testo); }
+/* il segno che interessa (evidenzia): sfondo tenue e colore dell'accento */
+.cg-segni .sg-int.sg-evid { background: var(--accento-tenue); color: var(--accento-testo); }
+.cg-segni .sg-l.sg-evid .sg-m { color: var(--accento-testo); background: var(--accento-tenue); }
+@container (max-width: 420px) {
+  .cg-segni { font-size: 1rem; } .cg-segni .sg-nome { padding-right: .6em; }
+  .cg-segni.sg-fitta { font-size: .9rem; } .cg-segni.sg-fittissima { font-size: .84rem; }
+  .cg-segni.sg-fitta .sg-nome { padding-right: .45em; } .cg-segni.sg-fitta .sg-nome .katex { font-size: 1.05em; }
+  .cg-segni.sg-fitta .sg-s { font-size: 1.55em; } .cg-segni.sg-fitta .sg-m { font-size: 1.2em; }
+}
+/* dentro una soluzione (riquadro stretto) con tanti intervalli */
+@container (max-width: 300px) {
+  .cg-segni.sg-fitta .sg-s { font-size: 1.35em; } .cg-segni.sg-fitta .sg-m { font-size: 1.05em; padding: .04em 0 0; }
+  .cg-segni.sg-fitta .sg-nome .katex { font-size: .98em; }
+}
 /* la striscia dei laboratori nella home: descrizioni corte, e sul telefono si scorre di lato */
 .lab-blocco .tessera-lab p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 @media (max-width: 640px) {
@@ -1023,3 +1060,5 @@ body.in-lab .mascotte-bolla:not(.compatta) { max-width: min(320px, calc(100vw - 
 @media (max-width: 500px) { .linea-tempo .tacca { width: 9px; height: 9px; top: -3px; border-width: 1.5px; } }
 /* niente pagina più larga dello schermo (un'animazione di entrata o una tacca non devono far scorrere di lato) */
 body { overflow-x: hidden; }
+:root[data-tema="scuro"] .g-area { fill-opacity: .4; }   /* le aree colorate dei grafici, in scuro, si vedevano appena */
+.nobr { white-space: nowrap; }   /* una formula e la punteggiatura che la segue non si separano andando a capo */

@@ -242,12 +242,7 @@ Esempio: $\sin x\,(2\cos x - 1) > 0$ fra $0$ e $2\pi$.
 
 I punti $0$, $\frac{\pi}{3}$, $\pi$, $\frac{5\pi}{3}$ dividono il giro in quattro tratti:
 
-| tratto | $\sin x$ | $2\cos x - 1$ | prodotto |
-|---|---|---|---|
-| $0 < x < \frac{\pi}{3}$ | $+$ | $+$ | $+$ |
-| $\frac{\pi}{3} < x < \pi$ | $+$ | $-$ | $-$ |
-| $\pi < x < \frac{5\pi}{3}$ | $-$ | $-$ | $+$ |
-| $\frac{5\pi}{3} < x < 2\pi$ | $-$ | $+$ | $-$ |
+[[grafico:segniGiro]]
 
 Le soluzioni sono $0 < x < \frac{\pi}{3}$ e $\pi < x < \frac{5\pi}{3}$, più $2n\pi$.
 
@@ -287,6 +282,17 @@ Usa lo stesso giro per tutte le condizioni. Scrivile su righe una sotto l'altra,
   ],
 
   grafici: {
+    /* tabelle dei segni su un giro, come sul quaderno (tipo 'segni', SCHEMA.md §3): le linee di 0 e 2π
+       chiudono il giro, e fuori (colonne vuote) non si scrive niente */
+    segniGiro: { tipo: 'segni', valori: ['0', R`\dfrac{\pi}{3}`, R`\pi`, R`\dfrac{5\pi}{3}`, R`2\pi`],
+      righe: [ { nome: R`\sin x`, segni: ['', '+', '+', '−', '−', ''], zeri: [0, 2, 4] }, { nome: R`2\cos x - 1`, segni: ['', '+', '−', '−', '+', ''], zeri: [1, 3] } ],
+      risultato: { nome: 'prodotto', segni: ['', '+', '−', '+', '−', ''], zeri: [0, 1, 2, 3, 4] }, evidenzia: '>0',
+      didascalia: 'Segno di sin x (2cos x − 1) su un giro, da 0 a 2π: in blu dove il prodotto è positivo.' },
+    /* qui le linee di 0 e 2π non ci stanno (la soluzione è stretta): il giro lo dice la didascalia */
+    segniEs09: { tipo: 'segni', valori: [R`\dfrac{\pi}{6}`, R`\dfrac{2\pi}{3}`, R`\dfrac{5\pi}{6}`, R`\dfrac{4\pi}{3}`],
+      righe: [ { nome: R`2\sin x - 1`, segni: ['−', '+', '+', '−', '−'], zeri: [0, 2] }, { nome: R`2\cos x + 1`, segni: ['+', '+', '−', '−', '+'], zeri: [1, 3] } ],
+      risultato: { nome: 'prodotto', segni: ['−', '+', '−', '+', '−'], zeri: [0, 1, 2, 3] }, evidenzia: '>0',
+      didascalia: 'Su un giro, da 0 (prima colonna) a 2π (ultima): in blu dove il prodotto è positivo.' },
     senoCirconferenza: {
       tipo: 'piano', x: [-1.7, 1.7], y: [-1.35, 1.35], proporzioni: 'uguali', passo: [0.5, 0.5],
       parametri: [{ nome: 'k', min: -1, max: 1, passo: 0.05, valore: 0.5, nascosto: true }],
@@ -483,7 +489,9 @@ Usa lo stesso giro per tutte le condizioni. Scrivile su righe una sotto l'altra,
 
     { id: 'es-08', difficolta: 2, testo: R`Risolvi la disequazione $2\sin x + 1 \le 0$ nell'intervallo $\Ica{0}{2\pi}$ (nelle caselle scrivi gli estremi in decimale: per esempio $\frac{\pi}{5}\approx 0{,}63$).`, suggerimenti: [R`Isola il seno: $\sin x \le -\dfrac12$.`, R`Pensa alla circonferenza: dove l'ordinata è minore o uguale a $-\dfrac12$?`], risposta: { tipo: 'intervallo', da: 3.6652, a: 5.7596, chiusoDa: true, chiusoA: true }, soluzione: [R`$\sin x \le -\dfrac12$.`, R`$\sin x = -\dfrac12$ per $x=\dfrac{7\pi}{6}$ e $x=\dfrac{11\pi}{6}$; il seno è minore o uguale a $-\dfrac12$ nell'arco fra questi due punti (quello "sotto").`, R`Soluzione in $\Ica{0}{2\pi}$: $\dfrac{7\pi}{6} \le x \le \dfrac{11\pi}{6}$.`] },
 
-    { id: 'es-09', difficolta: 3, testo: R`Risolvi la disequazione $(2\sin x - 1)(2\cos x + 1) > 0$ nell'intervallo $\Ica{0}{2\pi}$.`, suggerimenti: [R`Studia il segno di ciascun fattore separatamente, come per una disequazione algebrica.`, R`$2\sin x - 1 > 0$ per $x \in \Iaa{\frac{\pi}{6}}{\frac{5\pi}{6}}$; $2\cos x+1>0$ per $x \in \Ica{0}{\frac{2\pi}{3}}\cup\Iaa{\frac{4\pi}{3}}{2\pi}$.`, R`Costruisci la tabella dei segni sui quattro punti $\dfrac{\pi}{6}, \dfrac{2\pi}{3}, \dfrac{5\pi}{6}, \dfrac{4\pi}{3}$ e cerca dove concordano.`], soluzione: [R`Primo fattore: $2\sin x-1>0 \iff \sin x>\dfrac12 \iff x\in\Iaa{\frac{\pi}{6}}{\frac{5\pi}{6}}$.`, R`Secondo fattore: $2\cos x+1>0 \iff \cos x>-\dfrac12 \iff x\in\Ica{0}{\frac{2\pi}{3}}\cup\Iaa{\frac{4\pi}{3}}{2\pi}$.`, R`Tabella dei segni sui quattro punti $\dfrac{\pi}{6}<\dfrac{2\pi}{3}<\dfrac{5\pi}{6}<\dfrac{4\pi}{3}$: il prodotto è positivo su $\Iaa{\frac{\pi}{6}}{\frac{2\pi}{3}}$ e su $\Iaa{\frac{5\pi}{6}}{\frac{4\pi}{3}}$.`, R`Soluzione: $x\in\Iaa{\frac{\pi}{6}}{\frac{2\pi}{3}}\cup\Iaa{\frac{5\pi}{6}}{\frac{4\pi}{3}}$.`] },
+    { id: 'es-09', difficolta: 3, testo: R`Risolvi la disequazione $(2\sin x - 1)(2\cos x + 1) > 0$ nell'intervallo $\Ica{0}{2\pi}$.`, suggerimenti: [R`Studia il segno di ciascun fattore separatamente, come per una disequazione algebrica.`, R`$2\sin x - 1 > 0$ per $x \in \Iaa{\frac{\pi}{6}}{\frac{5\pi}{6}}$; $2\cos x+1>0$ per $x \in \Ica{0}{\frac{2\pi}{3}}\cup\Iaa{\frac{4\pi}{3}}{2\pi}$.`, R`Costruisci la tabella dei segni sui quattro punti $\dfrac{\pi}{6}, \dfrac{2\pi}{3}, \dfrac{5\pi}{6}, \dfrac{4\pi}{3}$ e cerca dove concordano.`], soluzione: [R`Primo fattore: $2\sin x-1>0 \iff \sin x>\dfrac12 \iff x\in\Iaa{\frac{\pi}{6}}{\frac{5\pi}{6}}$.`, R`Secondo fattore: $2\cos x+1>0 \iff \cos x>-\dfrac12 \iff x\in\Ica{0}{\frac{2\pi}{3}}\cup\Iaa{\frac{4\pi}{3}}{2\pi}$.`, R`Tabella dei segni sui quattro punti $\dfrac{\pi}{6}<\dfrac{2\pi}{3}<\dfrac{5\pi}{6}<\dfrac{4\pi}{3}$: il prodotto è positivo su $\Iaa{\frac{\pi}{6}}{\frac{2\pi}{3}}$ e su $\Iaa{\frac{5\pi}{6}}{\frac{4\pi}{3}}$.
+
+[[grafico:segniEs09]]`, R`Soluzione: $x\in\Iaa{\frac{\pi}{6}}{\frac{2\pi}{3}}\cup\Iaa{\frac{5\pi}{6}}{\frac{4\pi}{3}}$.`] },
 
     { id: 'es-10', difficolta: 3, testo: R`Trova, con $x \in \Ica{0}{2\pi}$, l'unica soluzione del sistema $\cos x = -\dfrac12$, $\sin x < 0$ (nella casella scrivi il valore decimale: per esempio $\frac{\pi}{5}\approx 0{,}63$).`, suggerimenti: [R`Risolvi prima $\cos x=-\dfrac12$ da sola: due soluzioni.`, R`Fra le due, tieni solo quella con seno negativo.`], risposta: { tipo: 'numero', valore: 4.1888, tolleranza: 0.01 }, soluzione: [R`$\cos x=-\dfrac12 \Rightarrow x=\dfrac{2\pi}{3} \lor x=\dfrac{4\pi}{3}$.`, R`$\sin\dfrac{2\pi}{3}=\dfrac{\sqrt3}{2}>0$: scartata. $\sin\dfrac{4\pi}{3}=-\dfrac{\sqrt3}{2}<0$: accettata.`, R`Soluzione del sistema: $x=\dfrac{4\pi}{3}$.`] }
   ],

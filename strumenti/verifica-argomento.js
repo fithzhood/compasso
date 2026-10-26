@@ -120,6 +120,23 @@ function verificaFile(file) {
   const grafici = arg.grafici || {};
   const usati = new Set();
   for (const nome in grafici) { const errs = G.verifica(grafici[nome]); errs.forEach(e => E(`grafici.${nome}: ${e}`)); }
+  /* tabelle dei segni: la forma dei dati (segni = valori + 1, indici validi, prodotto dei segni) la
+     controlla G.verifica; qui i valori e i nomi, che sono TeX (o una parola, o testo con $…$) */
+  for (const nome in grafici) {
+    const g = grafici[nome]; if (!g || g.tipo !== 'segni') continue;
+    const prova = (s, dove) => {
+      if (s == null) return; s = String(s);
+      if (/^[A-Za-zÀ-ÿ' ]{3,}$/.test(s)) return;
+      const pezzi = s.indexOf('$') < 0 ? [s] : s.split('$').filter((p, i) => i % 2);
+      if (s.indexOf('$') >= 0 && s.split('$').length % 2 === 0) { E(`grafici.${nome}.${dove}: numero dispari di $`); return; }
+      pezzi.forEach(t => { try { KT(t, false); } catch (err) { E(`grafici.${nome}.${dove}: "${t}" → ${err.message.replace('KaTeX parse error: ', '')}`); } });
+    };
+    (g.valori || []).forEach((v, i) => prova(v, `valori[${i}]`));
+    (g.righe || []).forEach((r, i) => prova(r && r.nome, `righe[${i}].nome`));
+    if (g.risultato) prova(g.risultato.nome, 'risultato.nome');
+    if (g.andamento) { prova(g.andamento.nome, 'andamento.nome'); (g.andamento.punti || []).forEach((p, i) => prova(p, `andamento.punti[${i}]`)); }
+    if (g.variabile) prova(g.variabile, 'variabile');
+  }
   testi.forEach(([s, dove]) => {
     const re = /\[\[grafico:([^\]]+)\]\]/g; let m;
     while ((m = re.exec(s))) { usati.add(m[1]); if (!grafici[m[1]]) E(`${dove}: grafico "${m[1]}" non definito`); }

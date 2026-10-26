@@ -195,6 +195,36 @@ Il grafico ha già un mirino: passando il dito o il mouse mostra x e f(x).
   didascalia: '...' }
 ```
 
+### `tipo: 'segni'` — tabella dei segni (come sul quaderno)
+In alto i valori critici, ognuno sopra una **linea verticale** che scende per tutta la tabella;
+a sinistra i nomi delle righe; i segni stanno **negli spazi fra le linee** (lo spazio è
+l'intervallo: niente colonne «x < 2»). Sulla linea: `0` dove la riga si annulla, una **✗ rossa**
+dove non esiste. Il risultato sta sotto una seconda riga orizzontale.
+```js
+{ tipo: 'segni', valori: ['2', '7'],                       // in ordine crescente
+  righe: [ { nome: 'N', segni: ['−', '+', '+'], zeri: [0] },  // segni: valori + 1 (uno per intervallo)
+           { nome: 'D', segni: ['−', '−', '+'], zeri: [1] } ],
+  risultato: { nome: '\\dfrac{N}{D}', segni: ['+', '−', '+'], zeri: [0], esclusi: [1] },
+  evidenzia: '>=0',          // facoltativo: colora nel risultato il segno che interessa
+  didascalia: 'Segno di (x − 2)/(x − 7).' }
+```
+- `zeri`, `esclusi`: **indici dei valori** (0 = il primo). `esclusi` mette la ✗ (la funzione lì non
+  esiste); va su qualunque riga, per esempio su `f′` dove la derivata non esiste.
+- `valori` e `nome` sono **TeX** (KaTeX): `'\\dfrac{5\\pi}{3}'`, `"f'"`, `'x + 1'`. Fanno eccezione
+  una parola sola di almeno tre lettere (`'prodotto'`, `'frazione'`: testo normale) e il testo con
+  le formule fra dollari (`'segno di $f$'`). In un `R\`…\`` le barre non si raddoppiano.
+- Segni ammessi: `'+'`, `'−'` (o `'-'`), `''` (vuoto: intervallo fuori dal tratto studiato, per
+  esempio prima di $0$ su un giro di circonferenza; la colonna diventa stretta).
+- `risultato` è facoltativo (tabella di un solo fattore). Il validatore controlla che ogni suo segno
+  sia il prodotto dei segni delle righe, e che 0 e ✗ stiano dove si annulla qualche riga; per una
+  tabella che non è un prodotto o un quoziente si spegne con `prodotto: false`.
+- `evidenzia`: `'+'`/`'>0'`, `'−'`/`'<0'`; con `'>=0'`, `'<=0'` (o `'+0'`, `'−0'`) anche gli zeri.
+  Vale per il risultato (senza risultato, per l'ultima riga).
+- `andamento` (facoltativo): la riga delle frecce sotto il risultato, per lo studio di $f'$.
+  `{ nome: 'f', frecce: ['↗', '↘', '↘', '↗'], punti: ['max', '', 'min'], esclusi: [1] }`:
+  `frecce` una per intervallo (`'↗'`, `'↘'`, `'→'`, `''`), `punti` una scritta per valore (facoltativo).
+- `variabile` (facoltativo): scritta nell'angolo in alto a sinistra, per esempio `'x'`.
+
 ### `tipo: 'circonferenza-goniometrica'` — interattiva
 ```js
 { tipo: 'circonferenza-goniometrica', angolo: 60, mostra: ['sin', 'cos', 'tan'], didascalia: '...' }
@@ -273,11 +303,11 @@ una riga** (non vanno definite in `grafici`). Nomi disponibili e dove hanno sens
 
 | nome | cosa mostra | argomenti |
 |---|---|---|
-| `pitagora` | dimostrazione per riordinamento di c² = a² + b² | geometria-euclidea, trigonometria |
-| `euclide-primo` | primo teorema di Euclide: b² = c · m | geometria-euclidea |
-| `somma-angoli` | gli angoli di un triangolo formano un angolo piatto | geometria-euclidea |
-| `talete` | parallele e segmenti proporzionali | geometria-euclidea |
-| `area-cerchio` | gli spicchi del cerchio diventano un rettangolo πr · r | geometria-euclidea, limiti |
+| `pitagora` | dimostrazione per riordinamento di c² = a² + b² | geometria-piano-2, trigonometria |
+| `euclide-primo` | primo teorema di Euclide: b² = c · m | geometria-piano-2 |
+| `somma-angoli` | gli angoli di un triangolo formano un angolo piatto | geometria-piano-1 |
+| `talete` | parallele e segmenti proporzionali | geometria-piano-2 |
+| `area-cerchio` | gli spicchi del cerchio diventano un rettangolo πr · r | geometria-piano-2, limiti |
 | `quadrato-binomio` | (a + b)² = a² + 2ab + b² con i rettangoli | monomi-polinomi |
 | `completamento-quadrato` | x² + 6x + 9 = (x + 3)² | equazioni-secondo-grado, scomposizione |
 | `pendenza-retta` | il coefficiente angolare come rapporto Δy/Δx | piano-cartesiano-retta |

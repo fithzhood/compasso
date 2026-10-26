@@ -1,4 +1,4 @@
-/* Laboratorio «Il triangolo che si muove» — geometria euclidea.
+/* Laboratorio «Il triangolo che si muove» — geometria del piano 1.
    Tre vertici agganciati alla griglia intera: angoli, lati, area, perimetro e classificazione
    si aggiornano mentre trascini. Niente calamite: ogni livello si chiude con «Conferma». */
 (function () {

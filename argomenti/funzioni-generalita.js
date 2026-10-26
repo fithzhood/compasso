@@ -179,11 +179,7 @@ Se i pezzi delicati sono più di uno, le condizioni devono valere **tutte insiem
 
 Per il segno risolvi $f(x) > 0$. Con un prodotto o un quoziente usa la **tabella dei segni**, come nelle disequazioni fratte. Per $f(x) = \dfrac{x-1}{x+2}$ il numeratore è positivo per $x > 1$, il denominatore per $x > -2$.
 
-| | $x < -2$ | $-2 < x < 1$ | $x > 1$ |
-|---|---|---|---|
-| $x - 1$ | $-$ | $-$ | $+$ |
-| $x + 2$ | $-$ | $+$ | $+$ |
-| $f(x)$ | $+$ | $-$ | $+$ |
+[[grafico:segniF]]
 
 Quindi $f$ è positiva per $x < -2$ e per $x > 1$, negativa fra $-2$ e $1$. Lo zero è $x = 1$, e in $x = -2$ la funzione non esiste.
 
@@ -393,6 +389,11 @@ Su ciascuno dei due rami la curva sale: la funzione è crescente in $\Iaa{-\inft
   ],
 
   grafici: {
+    /* tabella dei segni, come sul quaderno (tipo 'segni', SCHEMA.md §3) */
+    segniF: { tipo: 'segni', valori: ['-2', '1'],
+      righe: [ { nome: 'x - 1', segni: ['−', '−', '+'], zeri: [1] }, { nome: 'x + 2', segni: ['−', '+', '+'], zeri: [0] } ],
+      risultato: { nome: 'f(x)', segni: ['+', '−', '+'], zeri: [1], esclusi: [0] },
+      didascalia: 'Segno di f(x) = (x − 1)/(x + 2): lo zero in 1, e in −2 la funzione non esiste (✗).' },
     immagine: {
       tipo: 'piano', x: [-2, 4], y: [-2.5, 6],
       parametri: [ { nome: 'p', min: -1.5, max: 3.5, passo: 0.1, valore: 2.8, nascosto: true } ],

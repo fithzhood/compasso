@@ -155,7 +155,7 @@
   const fmt = (n, d) => {
     if (!isFinite(n)) return '';
     const r = Math.round(n * 1e6) / 1e6;
-    return String(Number(r.toFixed(d == null ? 2 : d))).replace('.', ',');
+    return String(Number(r.toFixed(d == null ? 2 : d))).replace('.', ',').replace(/^-/, '−');
   };
   const colore = i => 'var(--s' + (((i || 1) - 1) % 4 + 1) + ')';
   let contatoreId = 0;
@@ -311,7 +311,7 @@
             sopra.push([sx(x), sy(y1)]); sotto.push([sx(x), sy(y2)]);
           }
           const d = 'M' + sopra.map(p => p.join(',')).join('L') + 'L' + sotto.reverse().map(p => p.join(',')).join('L') + 'Z';
-          gDati.appendChild(el('path', { d, fill: col, 'fill-opacity': .22, stroke: 'none' }));
+          gDati.appendChild(el('path', { d, fill: col, 'fill-opacity': .22, stroke: 'none', class: 'g-area' }));
           if (e.etichetta) gSopra.appendChild(etich((sx(a) + sx(b)) / 2, sy(0) - 8, e.etichetta));
           break;
         }
@@ -637,6 +637,109 @@
   }
 
   /* ============================================================
+     6b. TABELLA DEI SEGNI (come sul quaderno)
+     In alto i valori, ognuno sopra una linea verticale che scende per tutta la tabella;
+     i segni stanno negli spazi fra le linee (lo spazio È l'intervallo); 0 sulla linea dove
+     una riga si annulla, ✗ rossa dove non esiste. HTML + CSS (non SVG) per avere KaTeX.
+     ============================================================ */
+  const SG_FRECCE = { '↗': 'M4 20 19 5M10 5h9v9', '↘': 'M4 4l15 15M19 10v9h-9', '→': 'M3 12h17M14 6l6 6-6 6', '': '' };
+  const SG_SEGNI = { '+': '+', '-': '−', '−': '−', '': '' };
+  /* un nome o un valore: con dei $…$ è testo con formule; solo lettere (almeno tre) è una parola;
+     altrimenti è tutto TeX */
+  function segniTesto(s) {
+    s = String(s == null ? '' : s);
+    const K = typeof window !== 'undefined' && window.katex;
+    const esc = t => t.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+    const kt = t => { if (!K) return esc(t); try { return K.renderToString(t, { throwOnError: false, strict: 'ignore', displayMode: false }); } catch (e) { return esc(t); } };
+    if (/^[A-Za-zÀ-ÿ' ]{3,}$/.test(s)) return esc(s); /* una parola sola ("prodotto"): testo */
+    if (s.indexOf('$') < 0) return kt(s);
+    return s.split('$').map((p, i) => i % 2 ? kt(p) : esc(p)).join('');
+  }
+  function renderSegni(spec) {
+    const valori = spec.valori || [], n = valori.length;
+    const righe = (spec.righe || []).slice(), ris = spec.risultato || null, and = spec.andamento || null;
+    const tutte = righe.concat(ris ? [ris] : []);
+    /* il segno che interessa: '+' / '>0', '−' / '<0'; con '=', '≥', '≤' o '+0' anche gli zeri */
+    const ev = String(spec.evidenzia || '');
+    const evS = /[>+≥]/.test(ev) ? '+' : /[<\-−≤]/.test(ev) ? '−' : '', ev0 = /[=≥≤]|^[+\-−]0$/.test(ev);
+    const bersaglio = ris || righe[righe.length - 1];
+    /* un intervallo senza nessun segno (fuori dal tratto studiato) resta stretto */
+    const vuota = []; for (let k = 0; k <= n; k++) vuota.push(tutte.every(r => !SG_SEGNI[(r.segni || [])[k] || '']) && !(and && (and.frecce || [])[k]));
+    let colonne = 'auto'; for (let k = 0; k <= n; k++) { colonne += vuota[k] ? ' .8em' : ' minmax(2.2em, 1fr)'; if (k < n) colonne += ' 2px'; }
+    /* con tanti intervalli, sul telefono si stringe tutto un po' (vedi compasso.css) */
+    const piene = vuota.filter(x => !x).length;
+    const scorre = document.createElement('div'); scorre.className = 'cg-segni-scorre';
+    const g = document.createElement('div'); g.className = 'cg-segni' + (piene >= 5 ? ' sg-fitta sg-fittissima' : piene >= 4 ? ' sg-fitta' : ''); g.style.gridTemplateColumns = colonne;
+    scorre.appendChild(g);
+    const cella = (cls, html) => { const d = document.createElement('div'); d.className = 'sg-c ' + cls; if (html) d.innerHTML = html; g.appendChild(d); return d; };
+    const croce = '<span class="sg-m sg-x" title="non esiste"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1.6 1.6 8.4 8.4M8.4 1.6 1.6 8.4"/></svg></span>';
+    /* riga dei valori */
+    cella('sg-nome sg-testa sg-b', spec.variabile ? segniTesto(spec.variabile) : '');
+    for (let k = 0; k <= n; k++) { cella('sg-int sg-testa sg-b'); if (k < n) cella('sg-l sg-testa sg-b', '<span class="sg-v">' + segniTesto(valori[k]) + '</span>'); }
+    /* righe dei fattori, risultato, andamento */
+    const disegna = (r, cls, linea, frecce) => {
+      const zeri = r.zeri || [], esclusi = r.esclusi || [], punti = r.punti || [];
+      cella('sg-nome ' + cls + (linea ? ' sg-b' : ''), segniTesto(r.nome));
+      for (let k = 0; k <= n; k++) {
+        let html = '', c = 'sg-int ' + cls + (linea ? ' sg-b' : '');
+        if (frecce) { const d = SG_FRECCE[(r.frecce || [])[k] || '']; if (d) html = '<svg class="sg-freccia" viewBox="0 0 24 24" aria-label="' + r.frecce[k] + '"><path d="' + d + '"/></svg>'; }
+        else { const s = SG_SEGNI[(r.segni || [])[k] || '']; if (s) html = '<span class="sg-s">' + s + '</span>'; if (s && r === bersaglio && s === evS) c += ' sg-evid'; }
+        cella(c, html);
+        if (k < n) {
+          let m = '', cl = 'sg-l ' + cls + (linea ? ' sg-b' : '');
+          if (esclusi.indexOf(k) >= 0) m = croce;
+          else if (zeri.indexOf(k) >= 0) { m = '<span class="sg-m sg-zero">0</span>'; if (r === bersaglio && ev0) cl += ' sg-evid'; }
+          else if (frecce && punti[k]) m = '<span class="sg-m sg-punto">' + segniTesto(punti[k]) + '</span>';
+          cella(cl, m);
+        }
+      }
+    };
+    righe.forEach((r, i) => disegna(r, 'sg-riga', i === righe.length - 1 && !!(ris || and), false));
+    if (ris) disegna(ris, 'sg-riga sg-risultato', !!and, false);
+    if (and) disegna(and, 'sg-riga sg-andamento', false, true);
+    return scorre;
+  }
+  function verificaSegni(spec) {
+    const e = [], v = spec.valori;
+    if (!Array.isArray(v) || !v.length) return ['segni: servono i valori, almeno uno'];
+    const n = v.length;
+    const indici = (r, campo, dove) => {
+      if (r[campo] == null) return;
+      if (!Array.isArray(r[campo])) { e.push(dove + '.' + campo + ' deve essere un array di indici'); return; }
+      r[campo].forEach(i => { if (!Number.isInteger(i) || i < 0 || i >= n) e.push(dove + '.' + campo + ': indice ' + i + ' non valido (gli indici dei valori vanno da 0 a ' + (n - 1) + ')'); });
+    };
+    const riga = (r, dove, frecce) => {
+      if (!r || typeof r !== 'object') { e.push(dove + ': deve essere un oggetto'); return; }
+      if (r.nome == null) e.push(dove + ': manca nome');
+      const campo = frecce ? 'frecce' : 'segni', s = r[campo], ammessi = frecce ? SG_FRECCE : SG_SEGNI;
+      if (!Array.isArray(s) || s.length !== n + 1) e.push(dove + '.' + campo + ': servono ' + (n + 1) + ' elementi, uno per intervallo (i valori sono ' + n + ')');
+      else s.forEach((x, k) => { if (!Object.prototype.hasOwnProperty.call(ammessi, x)) e.push(dove + '.' + campo + '[' + k + ']: "' + x + '" non ammesso (' + Object.keys(ammessi).map(a => '"' + a + '"').join(', ') + ')'); });
+      indici(r, 'zeri', dove); indici(r, 'esclusi', dove);
+      (r.zeri || []).forEach(i => { if ((r.esclusi || []).indexOf(i) >= 0) e.push(dove + ': l\'indice ' + i + ' è sia fra gli zeri sia fra gli esclusi'); });
+      if (r.punti != null && (!Array.isArray(r.punti) || r.punti.length !== n)) e.push(dove + '.punti: servono ' + n + ' elementi, uno per valore');
+    };
+    const righe = spec.righe || [];
+    if (!Array.isArray(righe)) e.push('segni: righe deve essere un array');
+    else righe.forEach((r, i) => riga(r, 'righe[' + i + ']', false));
+    if (!righe.length && !spec.risultato) e.push('segni: serve almeno una riga');
+    if (spec.risultato) riga(spec.risultato, 'risultato', false);
+    if (spec.andamento) riga(spec.andamento, 'andamento', true);
+    /* il risultato è il prodotto (o il quoziente) delle righe: segno per segno deve tornare */
+    const R = spec.risultato;
+    if (R && Array.isArray(righe) && righe.length && spec.prodotto !== false && !e.length) {
+      for (let k = 0; k <= n; k++) {
+        const ss = righe.map(r => SG_SEGNI[r.segni[k]]);
+        if (ss.some(x => !x) || !SG_SEGNI[R.segni[k]]) continue;
+        const atteso = ss.filter(x => x === '−').length % 2 ? '−' : '+';
+        if (SG_SEGNI[R.segni[k]] !== atteso) e.push('risultato.segni[' + k + ']: il prodotto dei segni delle righe dà "' + atteso + '"');
+      }
+      const marcati = new Set(); righe.forEach(r => (r.zeri || []).concat(r.esclusi || []).forEach(i => marcati.add(i)));
+      (R.zeri || []).concat(R.esclusi || []).forEach(i => { if (!marcati.has(i)) e.push('risultato: in ' + v[i] + ' nessuna riga si annulla, quindi lì non va né 0 né ✗'); });
+    }
+    return e;
+  }
+
+  /* ============================================================
      7. RENDER GENERALE con cursori dei parametri
      ============================================================ */
   const RENDER = { piano: renderPiano, funzione: renderPiano, 'retta-reale': renderRettaReale, barre: renderBarre, 'circonferenza-goniometrica': renderCirconferenza };
@@ -648,6 +751,8 @@
       if (window.CANIM) window.CANIM.render(spec, wrap); else wrap.textContent = 'Animazioni non disponibili';
     } else if (spec.tipo === 'svg') {
       const div = document.createElement('div'); div.className = 'cg-svg-grezzo'; div.innerHTML = spec.codice; wrap.appendChild(div);
+    } else if (spec.tipo === 'segni') {
+      wrap.classList.add('cg-segni-figura'); wrap.appendChild(renderSegni(spec));
     } else {
       const fn = RENDER[spec.tipo];
       if (!fn) { wrap.textContent = 'Tipo di grafico sconosciuto: ' + spec.tipo; return wrap; }
@@ -691,6 +796,7 @@
       if (CA && !CA.ANIM[spec.nome]) errori.push('animazione sconosciuta: ' + spec.nome + ' (disponibili: ' + CA.nomi().join(', ') + ')');
       return errori;
     }
+    if (spec.tipo === 'segni') return verificaSegni(spec);
     if (!RENDER[spec.tipo] && spec.tipo !== 'svg') errori.push('tipo sconosciuto: ' + spec.tipo);
     const nomiParamDich = new Set((spec.parametri || []).map(p => p.nome));
     (spec.elementi || []).forEach((e, i) => { if (e.tipo === 'punto' && e.giro) { if (!e.giro.parametro || !nomiParamDich.has(e.giro.parametro)) errori.push('elementi[' + i + '](punto con giro): giro.parametro va dichiarato in parametri'); if (!Array.isArray(e.giro.centro) || e.giro.centro.length !== 2) errori.push('elementi[' + i + '](punto con giro): giro.centro deve essere [x, y]'); } });

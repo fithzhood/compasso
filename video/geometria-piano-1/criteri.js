@@ -2,8 +2,8 @@
 /* Tre pezzi bastano? — i pezzi arrivano dall'alto e si montano sulla base AB = 5. Con due lati e l'angolo fra loro (LAL),
    con un lato e i due angoli ai suoi estremi (ALA), con tre lati (LLL, gli archi del compasso) esce un triangolo solo;
    con tre angoli (50°, 60°, 70°) infiniti triangoli simili; con due lati e un angolo non compreso (5, 3,6 e 40° in A)
-   l'arco di centro B taglia la semiretta due volte: due triangoli. Argomento: geometria-piano-1 (oggi la teoria sta in
-   geometria-euclidea, § congruenza-punti-notevoli). */
+   l'arco di centro B taglia la semiretta due volte: due triangoli. Argomento: geometria-piano-1 (la teoria sta in
+   geometria-piano-1). */
 CVIDEO.registra('geometria-piano-1/criteri', M => {
   const { W, C, E, P, life, clamp, lerp, css, TITOLI, conFont, drawRich, txt, glowStroke, dot, card } = M;
 

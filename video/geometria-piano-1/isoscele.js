@@ -2,7 +2,7 @@
 /* Il triangolo isoscele, dimostrato — ipotesi AB = AC, tesi β = γ (gli angoli alla base). La bisettrice da A taglia BC
    in D: ABD e ACD hanno AB = AC (ipotesi), i due angoli in A congruenti (bisettrice) e AD in comune, quindi sono congruenti
    per LAL. Ribaltato su AD, ABD si posa su ACD e β finisce su γ. Lati congruenti coi trattini, angoli congruenti con gli
-   archetti, come a scuola. Argomento: geometria-piano-1 (oggi la teoria sta in geometria-euclidea). */
+   archetti, come a scuola. Argomento: geometria-piano-1 (la teoria sta in geometria-piano-1). */
 CVIDEO.registra('geometria-piano-1/isoscele', M => {
   const { W, C, E, P, life, css, mix, TITOLI, conFont, drawRich, richW, txt, glowStroke, dot, card, checkMark } = M;
 

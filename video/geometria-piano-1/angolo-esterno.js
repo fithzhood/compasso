@@ -3,7 +3,7 @@
    esterno δ = AĈD è adiacente a γ (γ + δ = 180°) e gli angoli interni sommano 180°, quindi δ = α + β, la somma dei due
    interni non adiacenti, e δ è maggiore di ciascuno. Le copie di α e β, portate in C, riempiono δ. Poi A si muove: gli
    angoli sono sempre interi (β e γ scorrono a gradi interi) e l'uguaglianza resta: 110° = 60° + 50°, 80° = 45° + 35°,
-   140° = 75° + 65°. Argomento: geometria-piano-1 (oggi la teoria sta in geometria-euclidea). */
+   140° = 75° + 65°. Argomento: geometria-piano-1 (la teoria sta in geometria-piano-1). */
 CVIDEO.registra('geometria-piano-1/angolo-esterno', M => {
   const { W, C, E, P, life, kf, lerp, css, TITOLI, conFont, drawRich, glowStroke, dot, card } = M;
 

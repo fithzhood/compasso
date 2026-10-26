@@ -135,7 +135,7 @@
     /* righe di derivazione "~ LATEX :: commento": il LaTeX va reso prima dell'escape */
     s = s.replace(/^[ \t]*~[ \t]+(.+?)(?:[ \t]+::[ \t]+(.*))?[ \t]*$/gm, (_, t, c) => { mat.push(tex(t, true)); return '~ \x01' + (mat.length - 1) + '\x01' + (c ? ' \x02 ' + c : ''); });
     s = s.replace(/\$\$([\s\S]+?)\$\$/g, (_, t) => { mat.push(tex(t, true)); return '' + (mat.length - 1) + ''; });
-    s = s.replace(/\$([^$\n]+?)\$/g, (_, t) => { mat.push(tex(t, false)); return '' + (mat.length - 1) + ''; });
+    s = s.replace(/\$([^$\n]+?)\$([.,;:!?»)]*)/g, (_, t, p) => { mat.push(p ? '<span class="nobr">' + tex(t, false) + p + '</span>' : tex(t, false)); return '' + (mat.length - 1) + ''; });
     s = esc(s);
     const righe = s.split('\n'); const out = []; let par = [], lista = null, tipoLista = '', quote = null, tipoQuote = '', tab = null;
     const chiudiPar = () => { if (par.length) { out.push('<p>' + inline(par.join(' ')) + '</p>'); par = []; } };
@@ -195,6 +195,7 @@
   }
   function montaGrafici(radice, arg) {
     radice.querySelectorAll('.grafico-slot').forEach(slot => {
+      if (slot.firstChild) return; /* già montato: riaprendo una soluzione non si duplica */
       if (slot.dataset.animazione) { try { CGRAF.render({ tipo: 'animazione', nome: slot.dataset.animazione }, slot); } catch (e) { slot.textContent = 'Animazione non disponibile (' + e.message + ')'; } return; }
       const spec = arg && arg.grafici && arg.grafici[slot.dataset.grafico];
       if (spec) { try { CGRAF.render(spec, slot); } catch (e) { slot.textContent = 'Grafico non disponibile (' + e.message + ')'; } }
@@ -927,6 +928,8 @@
     return NaN;
   }
   function numeriDa(s) {
+    /* una coppia scritta come punto, «(2/3; 1,5)»: via le tonde esterne */
+    s = String(s).trim(); if (/^\([^()]*(\([^()]*\)[^()]*)*\)$/.test(s) && /;/.test(s)) s = s.slice(1, -1);
     /* nomi delle incognite (x1 =, x₂ =, y =) via; «+-4» vale ±4; il segno staccato dal numero si riattacca */
     s = String(s).replace(/\b[a-z][\d₀-₉]?\s*=\s*/gi, ' ').replace(/\+\s*[-−]/g, '±').replace(/(^|[;,]|\be\b)\s*([-+−])\s+(?=[\dπ√(])/g, '$1$2');
     /* separate da punto e virgola: ogni pezzo può essere un'espressione (π/6; 5π/6; √2/2) */

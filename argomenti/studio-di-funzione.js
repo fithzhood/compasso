@@ -118,6 +118,8 @@ Sul piano di lavoro userai sempre gli stessi segni:
 
     { id: 'dominio', titolo: 'Primo passo: il dominio', testo: R`Il primo passo è capire **dove la funzione esiste**. È il suo dominio: l'insieme delle $x$ per cui la formula dà un numero.
 
+[[video:studio-di-funzione/dominio]]
+
 >* **Condizioni di esistenza (c.e.)** più comuni: un denominatore deve essere $\ne 0$. Il radicando di una radice di indice pari deve essere $\ge 0$. L'argomento di un logaritmo deve essere $> 0$.
 
 Per la funzione guida c'è solo un denominatore.
@@ -192,6 +194,8 @@ Una frazione vale zero quando si annulla il numeratore, ma non il denominatore.
 
     { id: 'segno', titolo: 'Quarto passo: il segno', testo: R`Il segno dice se il grafico sta **sopra o sotto** l'asse $x$, intervallo per intervallo. È il passo che toglie più spazio alla curva.
 
+[[video:studio-di-funzione/segno]]
+
 >* Dove $f(x) > 0$ il grafico sta **sopra** l'asse $x$. Dove $f(x) < 0$ sta **sotto**. Il segno può cambiare solo negli zeri e nei punti esclusi dal dominio.
 
 Per una frazione studi il segno del numeratore e del denominatore. Poi metti tutto in una **tabella dei segni**.
@@ -200,11 +204,7 @@ Per una frazione studi il segno del numeratore e del denominatore. Poi metti tut
 ~ D(x) = x - 3 :: denominatore: positivo per $x > 3$
 ~ f(x) > 0 \iff \evidb{-1 < x < 2 \ \lor \ x > 3} :: la frazione è positiva dove i due segni sono uguali
 
-| $x$ | $< -1$ | $-1; 2$ | $2; 3$ | $> 3$ |
-|---|---|---|---|---|
-| $N$ | $+$ | $-$ | $+$ | $+$ |
-| $D$ | $-$ | $-$ | $-$ | $+$ |
-| $f$ | $-$ | $+$ | $-$ | $+$ |
+[[grafico:sfTabellaSegno]]
 
 **Sul piano** succede la cosa più utile di tutto lo studio. In ogni intervallo **ombreggi la metà del piano dove il grafico non passa**:
 
@@ -227,6 +227,8 @@ Guarda il risultato: le zone libere formano una scacchiera. La curva deve restar
 [ ] Nessuna: si ombreggia solo dove $f$ è negativa.
 => La curva sta sopra l'asse, quindi la zona vietata è quella sotto. Si ombreggiano sempre le zone dove il grafico non può stare, sia dove $f$ è positiva sia dove è negativa.` },
     { id: 'asintoti', titolo: 'Quinto passo: limiti e asintoti', testo: R`Ora guardi che cosa fa la funzione **ai bordi** del dominio: vicino ai punti esclusi e all'infinito. Servono i limiti. La teoria degli asintoti è nell'argomento «Continuità e asintoti»: qui la usi.
+
+[[video:studio-di-funzione/asintoti]]
 
 >* **Asintoto verticale** $x = x_0$: almeno uno dei due limiti laterali per $x \to x_0$ è infinito. **Orizzontale** $y = \ell$: il limite per $x \to \pm\infty$ è il numero $\ell$. **Obliquo** $y = mx + q$: $m = \lim \frac{f(x)}{x}$ e $q = \lim \left[f(x) - mx\right]$ sono finiti, con $m \ne 0$.
 
@@ -259,6 +261,8 @@ Poi allunghi i pezzi verso i punti noti, restando nelle zone libere. Ottieni il 
 
     { id: 'derivata-prima', titolo: 'Sesto passo: la derivata prima', testo: R`La derivata prima dice dove la funzione **sale** e dove **scende**. Lo garantisce il criterio di monotonia, conseguenza del teorema di Lagrange: su un intervallo, $f' > 0$ vuol dire crescente e $f' < 0$ decrescente.
 
+[[video:studio-di-funzione/derivata-prima]]
+
 >* **Il metodo.** Calcola $f'(x)$ e studia il suo segno con una tabella dei segni. Prendi un punto del dominio in cui $f$ è continua. Se lì $f'$ passa da $+$ a $-$, c'è un **massimo** relativo. Se passa da $-$ a $+$, c'è un **minimo**.
 
 Per la funzione guida conviene la forma $f(x) = x + 2 + \frac{4}{x - 3}$.
@@ -267,10 +271,7 @@ Per la funzione guida conviene la forma $f(x) = x + 2 + \frac{4}{x - 3}$.
 ~ f'(x) = \frac{\evid{(x - 1)(x - 5)}}{(x - 3)^2} :: denominatore comune: $(x - 3)^2 - 4 = x^2 - 6x + 5$, poi scompongo
 ~ f'(x) > 0 \iff x < 1 \ \lor \ x > 5 :: il denominatore è un quadrato: il segno lo decide il numeratore
 
-| $x$ | $< 1$ | $1; 3$ | $3; 5$ | $> 5$ |
-|---|---|---|---|---|
-| $f'$ | $+$ | $-$ | $-$ | $+$ |
-| $f$ | ↗ | ↘ | ↘ | ↗ |
+[[grafico:sfTabellaDerivata]]
 
 ~ x = 1: \ + \to - \ \Rightarrow \ \text{massimo } \evidb{(1; 1)} :: $f(1) = \frac{1 - 1 - 2}{1 - 3} = \frac{-2}{-2} = 1$
 ~ x = 3: \ \text{fuori dal dominio} :: qui $f$ non esiste, e comunque $f'$ non cambia segno: niente estremo
@@ -334,6 +335,8 @@ La tangente inflessionale **attraversa** la curva: da una parte la curva sta sop
 
     { id: 'grafico', titolo: 'Ottavo passo: il grafico', testo: R`Ora metti tutto insieme. Disegni gli asintoti e segni i punti. Poi tracci la curva seguendo le frecce e gli archi.
 
+[[video:studio-di-funzione/grafico]]
+
 >* Il grafico finale rispetta **tutti** i passi insieme. Sta nelle zone libere e passa per i punti trovati. Sale e scende come dicono le frecce, e si piega come dicono gli archi.
 
 [[grafico:sfFinale]]
@@ -391,6 +394,19 @@ Nel grafico ogni punto $P$ della curva è un rettangolo: in alto leggi base, alt
 > Se la grandezza contiene una radice quadrata, come una distanza, lavora sul suo **quadrato**. I punti di massimo e di minimo sono gli stessi, e i conti sono più semplici.` }
   ],
   grafici: {
+    /* ---- tabelle dei segni, come sul quaderno (tipo 'segni', SCHEMA.md §3) ---- */
+    sfTabellaSegno: { tipo: 'segni', valori: ['-1', '2', '3'],
+      righe: [ { nome: 'N', segni: ['+', '−', '+', '+'], zeri: [0, 1] }, { nome: 'D', segni: ['−', '−', '−', '+'], zeri: [2] } ],
+      risultato: { nome: 'f', segni: ['−', '+', '−', '+'], zeri: [0, 1], esclusi: [2] },
+      didascalia: 'N = (x + 1)(x − 2), D = x − 3. La funzione si annulla in −1 e in 2; in 3 non esiste (✗).' },
+    sfTabellaDerivata: { tipo: 'segni', valori: ['1', '3', '5'],
+      righe: [ { nome: "f'", segni: ['+', '−', '−', '+'], zeri: [0, 2], esclusi: [1] } ],
+      andamento: { nome: 'f', frecce: ['↗', '↘', '↘', '↗'], punti: ['max', '', 'min'], esclusi: [1] },
+      didascalia: 'Segno di f′ e andamento di f: in 3 né f né f′ esistono (✗), e lì non c\'è nessun estremo.' },
+    esTabellaSegno: { tipo: 'segni', valori: ['-1', '0', '1'],
+      righe: [ { nome: 'x', segni: ['−', '−', '+', '+'], zeri: [1] }, { nome: 'x^2 - 1', segni: ['+', '−', '−', '+'], zeri: [0, 2] } ],
+      risultato: { nome: 'f', segni: ['−', '+', '−', '+'], zeri: [1], esclusi: [0, 2] },
+      didascalia: 'Segno di f(x) = x/(x² − 1): zero in 0, e in −1 e in 1 la funzione non esiste (✗).' },
     /* ---- il piano di lavoro della funzione guida, passo dopo passo ---- */
     sfDominio: piano({
       elementi: [
@@ -666,7 +682,9 @@ Nel grafico ogni punto $P$ della curva è un rettangolo: in alto leggi base, alt
 
     { titolo: 'Una razionale fratta sempre decrescente', problema: R`Studia $f(x) = \dfrac{x}{x^2 - 1}$, fino a concavità e flessi.`, passi: [
       R`**Dominio e simmetrie.** $x^2 - 1 \ne 0$: $D = \mathbb{R} \setminus \{-1; 1\}$, simmetrico. $f(-x) = \dfrac{-x}{x^2 - 1} = -f(x)$: dispari.`,
-      R`**Zeri e segno.** Zero in $x = 0$. Tabella dei segni con $x$ e $(x - 1)(x + 1)$: negativa per $x < -1$, positiva fra $-1$ e $0$, negativa fra $0$ e $1$, positiva per $x > 1$.`,
+      R`**Zeri e segno.** Zero in $x = 0$. Tabella dei segni con $x$ e $(x - 1)(x + 1)$: negativa per $x < -1$, positiva fra $-1$ e $0$, negativa fra $0$ e $1$, positiva per $x > 1$.
+
+[[grafico:esTabellaSegno]]`,
       R`**Limiti.** In $x = \pm 1$ il numeratore vale $\pm 1$ e il denominatore tende a $0$: due asintoti verticali. Per esempio $\lim_{x \to 1^+} f(x) = \dfrac{1}{0^+} = +\infty$. All'infinito il denominatore ha grado più alto: asintoto $y = 0$.`,
       R`**Derivata prima.** $f'(x) = \dfrac{(x^2 - 1) - x \cdot 2x}{(x^2 - 1)^2} = -\dfrac{x^2 + 1}{(x^2 - 1)^2}$, sempre negativa. Niente massimi né minimi: la funzione decresce su **ciascuno** dei tre intervalli del dominio.`,
       R`**Derivata seconda.** Si trova $f''(x) = \dfrac{2x(x^2 + 3)}{(x^2 - 1)^3}$. Il segno cambia in $0$, $-1$ e $1$, ma solo $0$ sta nel dominio: flesso in $(0; 0)$, con tangente $y = -x$, perché $f'(0) = -1$.`,
