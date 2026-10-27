@@ -6,7 +6,7 @@
    al centro, quindi α + γ = 360° : 2. Poi D esce lungo il raggio: δ scende a 65° e β + δ = 165°; D entra: δ sale a 95°
    e β + δ = 195° (δ va a gradi interi, la distanza di D da O si trova per bisezione; il quadrilatero resta convesso).
    Regola: un quadrilatero convesso è inscrivibile se e solo se gli angoli opposti sono supplementari.
-   Argomento: geometria-piano-2 (oggi la teoria sta in geometria-euclidea, § circonferenza). */
+   Argomento: geometria-piano-2 (la teoria sta in geometria-piano-2, § quadrilateri-inscritti). */
 CVIDEO.registra('geometria-piano-2/inscrivibile', M => {
   const { W, C, E, P, life, kf, lerp, css, TITOLI, conFont, drawRich, dot, card } = M;
 

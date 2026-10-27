@@ -2,7 +2,7 @@
 /* L’angolo che non cambia — circonferenza di centro O, A e B con l'angolo al centro di 100°: il vertice C scorre
    sull'arco grande e l'angolo alla circonferenza resta 50°, la metà; poi la corda AB si allarga fino al diametro:
    l'angolo al centro diventa piatto e quello in C retto, ovunque sia C. Nomi degli angoli come nel sito (A\widehat{O}B).
-   Argomento: geometria-piano-2 (oggi la teoria sta in geometria-euclidea, § circonferenza). */
+   Argomento: geometria-piano-2 (la teoria sta in geometria-piano-2, § angoli-circonferenza). */
 CVIDEO.registra('geometria-piano-2/angolo-alla-circonferenza', M => {
   const { W, C, E, P, life, kf, clamp, lerp, css, TITOLI, conFont, drawRich, richW, txt, fixedNum, dot, card } = M;
 

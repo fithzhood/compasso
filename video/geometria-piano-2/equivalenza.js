@@ -3,7 +3,7 @@
    staccato va dall'altra parte e viene un rettangolo con la stessa base e la stessa altezza. Pezzi a due a due
    congruenti: le figure sono equiscomponibili, quindi equivalenti (stessa area, b · h). Poi un triangolo e una sua
    copia congruente girata di mezzo giro fanno un parallelogramma: il triangolo vale b · h / 2.
-   Argomento: geometria-piano-2 (oggi la teoria sta in geometria-euclidea, § aree). */
+   Argomento: geometria-piano-2 (la teoria sta in geometria-piano-2, § equivalenza). */
 CVIDEO.registra('geometria-piano-2/equivalenza', M => {
   const { W, C, E, P, life, lerp, css, TITOLI, conFont, drawRich, drawSeq, card } = M;
 

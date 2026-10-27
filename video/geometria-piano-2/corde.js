@@ -3,7 +3,7 @@
    la divide in PA e PB: col diametro PA = 3 e PB = 7, prodotto 21 = 5² − 2²; la corda gira intorno a P
    (45°: PA ≈ 3,38, PB ≈ 6,21; perpendicolare a OP: √21 ≈ 4,58 ciascuno) e il prodotto resta 21.
    Chiude con il teorema delle corde PA · PB = PC · PD. I pezzi si misurano sempre da P.
-   Argomento: geometria-piano-2 (oggi la teoria sta in geometria-euclidea, § circonferenza). */
+   Argomento: geometria-piano-2 (la teoria sta in geometria-piano-2, § corde-secanti). */
 CVIDEO.registra('geometria-piano-2/corde', M => {
   const { W, C, E, P, life, kf, lerp, css, TITOLI, conFont, drawRich, richW, fixedNum, fmtN, dot, card } = M;
 
