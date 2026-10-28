@@ -310,7 +310,7 @@ Trascina il vertice $C$ in orizzontale: il triangolo cambia forma, ma base e alt
 
 Nel laboratorio «Il triangolo che si muove», in Geometria del piano 1, c'è un livello proprio così. La base è bloccata, e cerchi tre posizioni del vertice con la stessa area.
 
-?? Un triangolo ha un lato di $6$ cm. Il vertice opposto dista $4$ cm dalla retta di quel lato, ma l'altezza cade fuori dal lato. Quanto vale l'area?
+?? Un triangolo ha un lato di $6$ cm. Il vertice opposto dista $4$ cm dalla retta di quel lato, ma l'altezza cade fuori dal lato. Quanto vale l'area?
 [x] $12\ \text{cm}^2$
 [ ] $24\ \text{cm}^2$
 [ ] non si può calcolare
@@ -318,7 +318,7 @@ Nel laboratorio «Il triangolo che si muove», in Geometria del piano 1, c'è un
 
 >! Equivalenti non vuol dire con lo stesso perimetro. Un rettangolo $1\times9$ e un quadrato di lato $3$ hanno tutti e due area $9$. I perimetri però sono $20$ e $12$.` },
 
-    { id: 'pitagora-euclide', titolo: 'Il teorema di Pitagora e i teoremi di Euclide', testo: R`Una scala lunga $5$ metri è appoggiata al muro, con il piede a $3$ metri dal muro. Muro, pavimento e scala formano un triangolo rettangolo. La scala è l'ipotenusa, il lato opposto all'angolo retto.
+    { id: 'pitagora-euclide', titolo: 'Il teorema di Pitagora e i teoremi di Euclide', testo: R`Una scala lunga $5$ metri è appoggiata al muro, con il piede a $3$ metri dal muro. Muro, pavimento e scala formano un triangolo rettangolo. La scala è l'ipotenusa, il lato opposto all'angolo retto.
 
 Per trovare l'altezza $h$ scrivi $3^2+h^2=5^2$, quindi $h^2=25-9=16$ e $h=4$ metri.
 
@@ -395,9 +395,9 @@ Euclide lo enunciava con le figure. Il quadrato costruito su un cateto è **equi
 ~ ACGF\doteq AHKL :: basi $AF$ e $AL$ congruenti sulla stessa retta; stessa altezza, la distanza di $C$ dalla retta $AL$, cioè $AH=m$
 ~ \evidb{b^2=c\cdot m} :: il quadrato di lato $b$ è equivalente al rettangolo di lati $c$ e $m$` },
 
-    { id: 'talete-similitudine', titolo: 'Il teorema di Talete e la similitudine', testo: R`Un palo alto $3$ metri fa un'ombra di $2$ metri. Nello stesso momento un albero fa un'ombra di $10$ metri. Quanto è alto l'albero?
+    { id: 'talete-similitudine', titolo: 'Il teorema di Talete e la similitudine', testo: R`Un palo alto $3$ metri fa un'ombra di $2$ metri. Nello stesso momento un albero fa un'ombra di $10$ metri. Quanto è alto l'albero?
 
-I raggi del sole arrivano paralleli, quindi i due triangoli hanno la stessa forma. L'ombra dell'albero è $5$ volte quella del palo. Allora anche l'albero è alto $5$ volte il palo: $15$ metri.
+I raggi del sole arrivano paralleli, quindi i due triangoli hanno la stessa forma. L'ombra dell'albero è $5$ volte quella del palo. Allora anche l'albero è alto $5$ volte il palo: $15$ metri.
 
 [[video:geometria-piano-2/piramide]]
 
@@ -441,7 +441,7 @@ Trascina il vertice $B'$: quando i lati raddoppiano, l'area diventa quattro volt
 
 [[grafico:simili]]
 
-?? Una pizza ha diametro $30$ cm, un'altra $15$ cm. Quante pizze piccole fanno una pizza grande?
+?? Una pizza ha diametro $30$ cm, un'altra $15$ cm. Quante pizze piccole fanno una pizza grande?
 [x] $4$
 [ ] $2$
 [ ] $3{,}14$
@@ -495,7 +495,8 @@ Qui il raggio è $5$ e $OP=13$. Il triangolo $OTP$ è rettangolo in $T$, e per P
 
 Chiama $H$ il punto medio della corda $AB$: $OH$ è perpendicolare alla secante. Con $P$ esterno e $A$ più vicino a $P$, $PA=PH-AH$ e $PB=PH+AH$.
 
-~ PA\cdot PB=(PH-AH)(PH+AH)=PH^2-AH^2 :: somma per differenza
+~ PA\cdot PB=(PH-AH)(PH+AH) :: $PA=PH-AH$ e $PB=PH+AH$
+~ PA\cdot PB=PH^2-AH^2 :: somma per differenza
 ~ PH^2=OP^2-OH^2 :: Pitagora nel triangolo $OHP$, rettangolo in $H$
 ~ AH^2=r^2-OH^2 :: Pitagora nel triangolo $OHA$, che ha per ipotenusa il raggio
 ~ PA\cdot PB=OP^2-r^2 :: sottraggo: $OH^2$ se ne va
@@ -528,7 +529,7 @@ Nell'esagono regolare l'angolo al centro di ogni triangolo è $360^\circ:6=60^\c
 
 ### Circonferenza e cerchio
 
-Con raggio $5$ cm la circonferenza è lunga $2\pi\cdot5=10\pi\approx31{,}4$ cm. Il cerchio ha area $\pi\cdot5^2=25\pi\approx78{,}5\ \text{cm}^2$.
+Con raggio $5$ cm la circonferenza è lunga $2\pi\cdot5=10\pi\approx31{,}4$ cm. Il cerchio ha area $\pi\cdot5^2=25\pi\approx78{,}5\ \text{cm}^2$.
 
 >* $$C=2\pi r\qquad A=\pi r^2$$
 
@@ -542,7 +543,7 @@ L'esagono inscritto ha perimetro $6r$, più corto della circonferenza. Quindi $2
 
 Un **settore circolare** è la parte di cerchio fra due raggi. Il suo arco e la sua area sono proporzionali all'angolo al centro $\alpha$.
 
->* $$\ell=2\pi r\cdot\frac{\alpha}{360^\circ}\qquad A_{\text{settore}}=\pi r^2\cdot\frac{\alpha}{360^\circ}$$
+>* $$\begin{gathered} \ell=2\pi r\cdot\frac{\alpha}{360^\circ} \\ A_{\text{settore}}=\pi r^2\cdot\frac{\alpha}{360^\circ} \end{gathered}$$
 
 Con $r=3$ e $\alpha=60^\circ$ si prende un sesto di tutto. L'arco è $6\pi:6=\pi$, il settore $9\pi:6=\frac32\pi$.
 

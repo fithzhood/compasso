@@ -42,7 +42,7 @@ COMPASSO.registra({
   id: 'piano-cartesiano-retta',
   titolo: 'Piano cartesiano e retta',
 
-  introduzione: R`Un taxi costa $3$ euro alla partenza più $1{,}50$ euro al chilometro. Dopo $x$ chilometri il prezzo è $y = 1{,}5x + 3$. Segna su un foglio a quadretti i punti $(x; y)$ per $x = 0, 1, 2, 3, \ldots$: sono tutti allineati. L'equazione disegna una **retta**.
+  introduzione: R`Un taxi costa $3$ euro alla partenza più $1{,}50$ euro al chilometro. Dopo $x$ chilometri il prezzo è $y = 1{,}5x + 3$. Segna su un foglio a quadretti i punti $(x; y)$ per $x = 0, 1, 2, 3, \ldots$: sono tutti allineati. L'equazione disegna una **retta**.
 
 Nel **piano cartesiano** ogni punto diventa una coppia di numeri, le sue coordinate. Ogni retta diventa un'equazione di primo grado in $x$ e $y$. Così i problemi di geometria si risolvono con i conti.
 
@@ -149,7 +149,7 @@ Una retta passa per l'**origine** quando $q = 0$, cioè $y = mx$. Nella forma im
 
 >! Le rette verticali non si scrivono come $y = mx + q$: restano $x = k$. La forma implicita invece va bene per tutte.` },
 
-    { id: 'coefficiente-angolare', titolo: 'Il coefficiente angolare', testo: R`Un cartello stradale dice «pendenza $10\%$»: la strada sale di $10$ metri ogni $100$ in orizzontale. Il **coefficiente angolare** $m$ è la stessa idea. Dice quanto sale la retta, diviso quanto va avanti.
+    { id: 'coefficiente-angolare', titolo: 'Il coefficiente angolare', testo: R`Un cartello stradale dice «pendenza $10\%$»: la strada sale di $10$ metri ogni $100$ in orizzontale. Il **coefficiente angolare** $m$ è la stessa idea. Dice quanto sale la retta, diviso quanto va avanti.
 
 [[video:piano-cartesiano-retta/coefficiente-angolare]]
 

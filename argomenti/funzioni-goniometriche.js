@@ -191,7 +191,7 @@ Il cateto corto sta di fronte all'angolo di $30^\circ$. Quindi $\sin 30^\circ = 
 
 | $\alpha$ | $0^\circ$ | $30^\circ$ | $45^\circ$ | $60^\circ$ | $90^\circ$ |
 |---|---|---|---|---|---|
-| radianti | $0$ | $\pi/6$ | $\pi/4$ | $\pi/3$ | $\pi/2$ |
+| rad | $0$ | $\pi/6$ | $\pi/4$ | $\pi/3$ | $\pi/2$ |
 | $\sin\alpha$ | $0$ | $1/2$ | $\sqrt2/2$ | $\sqrt3/2$ | $1$ |
 | $\cos\alpha$ | $1$ | $\sqrt3/2$ | $\sqrt2/2$ | $1/2$ | $0$ |
 | $\tan\alpha$ | $0$ | $\sqrt3/3$ | $1$ | $\sqrt3$ | non definita |
@@ -250,12 +250,12 @@ Gli **angoli associati** ad $\alpha$ hanno il punto simmetrico a quello di $\alp
 
 [[animazione:angoli-associati]]
 
-| angolo | simmetria | seno | coseno |
-|---|---|---|---|
-| $-\alpha$ (opposto) | asse $x$ | $-\sin\alpha$ | $\cos\alpha$ |
-| $180^\circ - \alpha$ (supplementare) | asse $y$ | $\sin\alpha$ | $-\cos\alpha$ |
-| $180^\circ + \alpha$ | origine | $-\sin\alpha$ | $-\cos\alpha$ |
-| $90^\circ - \alpha$ (complementare) | bisettrice | $\cos\alpha$ | $\sin\alpha$ |
+| angolo e simmetria | seno | coseno |
+|---|---|---|
+| opposto $-\alpha$: asse $x$ | $-\sin\alpha$ | $\cos\alpha$ |
+| supplementare $180^\circ - \alpha$: asse $y$ | $\sin\alpha$ | $-\cos\alpha$ |
+| $180^\circ + \alpha$: origine | $-\sin\alpha$ | $-\cos\alpha$ |
+| complementare $90^\circ - \alpha$: bisettrice | $\cos\alpha$ | $\sin\alpha$ |
 
 Per un angolo preciso, come $210^\circ$, fai così.
 1. Trova il quadrante: $210^\circ$ è nel terzo.
@@ -537,7 +537,7 @@ Nella scheda **Laboratorio** c'è *Sintonizza l'onda*: muovi le creste finché l
     { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Quanto vale $\cos(-120^\circ)$?`, suggerimenti: [R`Aggiungi un giro: $-120^\circ + 360^\circ$.`, R`Poi trova il quadrante e l'angolo di riferimento.`], risposta: esatto(-0.5), soluzione: [R`$-120^\circ + 360^\circ = 240^\circ$: il punto associato è lo stesso.`, R`$240^\circ$ è nel terzo quadrante, dove il coseno è negativo. L'angolo di riferimento è $60^\circ$.`, R`$\cos(-120^\circ) = -\cos 60^\circ = -\dfrac12$.`] },
     { id: 'es-01', difficolta: 1, testo: R`Converti l'angolo di $135^\circ$ in radianti. (Nella casella puoi scrivere il risultato con π (per esempio «π/3») oppure in decimali.)`, suggerimenti: [R`Usa la formula di conversione gradi → radianti.`, R`$135^\circ = 135 \cdot \dfrac{\pi}{180}$: semplifica la frazione prima di moltiplicare per $\pi$.`], risposta: { tipo: 'numero', valore: 2.356, tolleranza: 0.01 }, soluzione: [R`$\alpha_{\text{rad}} = 135 \cdot \dfrac{\pi}{180} = \dfrac{135}{180}\pi = \dfrac{3\pi}{4}$.`, R`In decimale, $\dfrac{3\pi}{4} \approx 2{,}356$.`] },
     { id: 'es-02', difficolta: 1, testo: R`Converti $\dfrac{5\pi}{6}$ radianti in gradi.`, suggerimenti: [R`Usa la formula di conversione radianti → gradi.`, R`Il fattore $\pi$ si semplifica con quello al numeratore.`], risposta: { tipo: 'numero', valore: 150, tolleranza: 0.01 }, soluzione: [R`$\alpha_{\text{gradi}} = \dfrac{5\pi}{6} \cdot \dfrac{180}{\pi} = \dfrac{5 \cdot 180}{6} = 150^\circ$.`] },
-    { id: 'es-03', difficolta: 1, testo: R`Una circonferenza ha raggio $10$ cm. Quanto misura l'arco corrispondente a un angolo al centro di $45^\circ$? (Due cifre decimali, in cm.)`, suggerimenti: [R`Prima converti l'angolo in radianti: la formula $l = r\theta$ vuole $\theta$ in radianti.`, R`$45^\circ = \dfrac{\pi}{4}$ rad.`], risposta: { tipo: 'numero', valore: 7.854, tolleranza: 0.01 }, soluzione: [R`$45^\circ = \dfrac{\pi}{4} \approx 0{,}785$ rad.`, R`$l = r\theta = 10 \cdot \dfrac{\pi}{4} = 2{,}5\pi \approx 7{,}854$ cm.`] },
+    { id: 'es-03', difficolta: 1, testo: R`Una circonferenza ha raggio $10$ cm. Quanto misura l'arco corrispondente a un angolo al centro di $45^\circ$? (Due cifre decimali, in cm.)`, suggerimenti: [R`Prima converti l'angolo in radianti: la formula $l = r\theta$ vuole $\theta$ in radianti.`, R`$45^\circ = \dfrac{\pi}{4}$ rad.`], risposta: { tipo: 'numero', valore: 7.854, tolleranza: 0.01 }, soluzione: [R`$45^\circ = \dfrac{\pi}{4} \approx 0{,}785$ rad.`, R`$l = r\theta = 10 \cdot \dfrac{\pi}{4} = 2{,}5\pi \approx 7{,}854$ cm.`] },
     { id: 'es-04', difficolta: 1, testo: R`Calcola $\sin 150^\circ$.`, suggerimenti: [R`$150^\circ = 180^\circ - 30^\circ$: è il supplementare di $30^\circ$.`, R`Gli angoli supplementari hanno lo stesso seno.`], risposta: { tipo: 'numero', valore: 0.5, tolleranza: 0.01 }, soluzione: [R`$150^\circ$ è nel secondo quadrante, dove il seno è positivo.`, R`$\sin 150^\circ = \sin(180^\circ - 30^\circ) = \sin 30^\circ = \dfrac12$.`] },
     { id: 'es-05', difficolta: 1, testo: R`Calcola $\cos 210^\circ$.`, suggerimenti: [R`$210^\circ = 180^\circ + 30^\circ$.`, R`Nel terzo quadrante il coseno è negativo.`], risposta: { tipo: 'numero', valore: -0.866, tolleranza: 0.01 }, soluzione: [R`$210^\circ$ è nel terzo quadrante: $\cos 210^\circ = \cos(180^\circ + 30^\circ) = -\cos 30^\circ$.`, R`$-\cos 30^\circ = -\dfrac{\sqrt3}{2} \approx -0{,}866$.`] },
     { id: 'es-06', difficolta: 2, testo: R`Sapendo che $\sin\alpha = \dfrac35$ e che $\alpha$ è un angolo del primo quadrante, trova $\cos\alpha$.`, suggerimenti: [R`Usa la relazione fondamentale $\sin^2\alpha + \cos^2\alpha = 1$.`, R`Nel primo quadrante il coseno è positivo.`], risposta: { tipo: 'numero', valore: 0.8, tolleranza: 0.01 }, soluzione: [R`$\cos^2\alpha = 1 - \dfrac9{25} = \dfrac{16}{25}$.`, R`$\cos\alpha = +\sqrt{\dfrac{16}{25}} = \dfrac45 = 0{,}8$ (positivo, primo quadrante).`] },
@@ -576,7 +576,7 @@ Nella scheda **Laboratorio** c'è *Sintonizza l'onda*: muovi le creste finché l
     { tipo: 'trucco', testo: R`Per ricordare i valori di $30^\circ$, $45^\circ$, $60^\circ$: al numeratore compaiono $1, \sqrt2, \sqrt3$ (crescenti per il seno, decrescenti per il coseno), tutti divisi per $2$.` },
     { tipo: 'errore', testo: R`Negli angoli associati, lo scambio fra seno e coseno avviene solo con $90^\circ$ e $270^\circ$; sommando un multiplo di $180^\circ$ la funzione resta la stessa. Confondere le due regole è l'errore più comune.` },
     { tipo: 'metodo', testo: R`Per applicare la regola pratica degli angoli associati, immagina sempre $\alpha$ come un angolo acuto del primo quadrante: il segno finale si legge da dove cade l'angolo associato, non da $\alpha$.` },
-    { tipo: 'trucco', testo: R`Un radiante misura circa $57$ gradi: un modo rapido per farsi un'idea della grandezza di un angolo dato in radianti, prima ancora di convertirlo con precisione.` },
+    { tipo: 'trucco', testo: R`Un radiante misura circa $57$ gradi: un modo rapido per farsi un'idea della grandezza di un angolo dato in radianti, prima ancora di convertirlo con precisione.` },
     { tipo: 'errore', testo: R`Il periodo della tangente è $\pi$, non $2\pi$: copiare per la tangente il periodo di seno e coseno è un errore frequente.` },
     { tipo: 'trucco', testo: R`Controllo lampo su un seno o un coseno appena calcolati: eleva al quadrato entrambi (se li conosci) e verifica che la somma faccia $1$.` }
   ],

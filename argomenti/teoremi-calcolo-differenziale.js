@@ -28,7 +28,7 @@ COMPASSO.registra({
 
   introduzione: R`La derivata parla di un punto solo: dice quanto è ripida la curva lì. I teoremi del calcolo differenziale fanno un salto. Da quello che succede in ogni punto ricavano come si comporta la funzione su tutto un intervallo.
 
-Il cuore è il teorema di Lagrange. Se in due ore percorri $180$ km, in qualche istante il tachimetro ha segnato $90$ km/h. Da qui viene la regola che userai in ogni studio di funzione: dove la derivata è positiva, la funzione cresce.
+Il cuore è il teorema di Lagrange. Se in due ore percorri $180$ km, in qualche istante il tachimetro ha segnato $90$ km/h. Da qui viene la regola che userai in ogni studio di funzione: dove la derivata è positiva, la funzione cresce.
 
 Altri due teoremi completano il quadro. Fermat dice dove cercare i massimi e i minimi. De l'Hôpital scioglie molti limiti nella forma $\frac{0}{0}$ o $\frac{\infty}{\infty}$. Ti servono i limiti, la continuità e le regole di derivazione. Tutto questo lo userai nell'argomento «Studio di funzione».`,
 
@@ -70,7 +70,7 @@ Servono tutte e tre le ipotesi. La tabella mostra che cosa succede se ne manca u
 
 > La derivabilità serve solo nei punti interni. Agli estremi la tangente può anche essere verticale.` },
 
-    { id: 'lagrange', titolo: 'Il teorema di Lagrange', testo: R`In due ore percorri $180$ km, quindi la media è $90$ km/h. Allora in almeno un istante il tachimetro ha segnato proprio $90$. Il teorema di Lagrange dice la stessa cosa per una funzione.
+    { id: 'lagrange', titolo: 'Il teorema di Lagrange', testo: R`In due ore percorri $180$ km, quindi la media è $90$ km/h. Allora in almeno un istante il tachimetro ha segnato proprio $90$. Il teorema di Lagrange dice la stessa cosa per una funzione.
 
 [[video:studio-di-funzione/lagrange]]
 
@@ -309,9 +309,9 @@ La forma $0 \cdot \infty$ va prima scritta come quoziente.
     { nome: 'Formula degli incrementi finiti', formula: R`f(b) = f(a) + f'(c)\,(b - a)`, nota: R`È il teorema di Lagrange riscritto: $c$ è un opportuno punto interno.` },
     { nome: 'Teorema di Cauchy', formula: R`\frac{f'(c)}{g'(c)} = \frac{f(b) - f(a)}{g(b) - g(a)}`, nota: R`Con $f$, $g$ continue in $\Icc{a}{b}$, derivabili in $\Iaa{a}{b}$ e $g' \ne 0$. Con $g(x) = x$ è Lagrange.` },
     { nome: 'Derivata nulla su un intervallo', formula: R`f'(x) = 0 \ \text{ in } I \quad \Rightarrow \quad f(x) = k`, nota: R`Solo se $I$ è un **intervallo**. Due funzioni con la stessa derivata differiscono per una costante.` },
-    { nome: 'Criterio di monotonia', formula: R`f'(x) > 0 \Rightarrow f \text{ crescente} \qquad f'(x) < 0 \Rightarrow f \text{ decrescente}`, nota: R`Su un intervallo. Su un dominio spezzato vale ramo per ramo.` },
+    { nome: 'Criterio di monotonia', formula: R`\begin{gathered} f'(x) > 0 \Rightarrow f \text{ crescente} \\ f'(x) < 0 \Rightarrow f \text{ decrescente} \end{gathered}`, nota: R`Su un intervallo. Su un dominio spezzato vale ramo per ramo.` },
     { nome: 'Teorema di Fermat', formula: R`x_0 \text{ estremo relativo interno} \ \Rightarrow \ f'(x_0) = 0`, nota: R`Vale se $f$ è derivabile in $x_0$. Non si inverte.` },
-    { nome: 'Massimi e minimi dal segno di f\'', formula: R`f': + \to - \ \Rightarrow \ \text{massimo} \qquad f': - \to + \ \Rightarrow \ \text{minimo}`, nota: R`Se $f'$ non cambia segno, il punto non è né di massimo né di minimo.` },
+    { nome: 'Massimi e minimi dal segno di f\'', formula: R`\begin{gathered} f': + \to - \ \Rightarrow \ \text{massimo} \\ f': - \to + \ \Rightarrow \ \text{minimo} \end{gathered}`, nota: R`Se $f'$ non cambia segno, il punto non è né di massimo né di minimo.` },
     { nome: 'Teorema di de l\'Hôpital', formula: R`\lim_{x \to x_0} \frac{f(x)}{g(x)} = \lim_{x \to x_0} \frac{f'(x)}{g'(x)}`, nota: R`Solo per le forme $\frac{0}{0}$ e $\frac{\infty}{\infty}$, e solo se il secondo limite esiste.` },
     { nome: 'Forma 0 · ∞ riscritta come quoziente', formula: R`f \cdot g = \frac{f}{1/g}`, nota: R`Così $0 \cdot \infty$ diventa $\frac{0}{0}$ o $\frac{\infty}{\infty}$, e de l'Hôpital si può usare.` }
   ],
@@ -391,7 +391,7 @@ La forma $0 \cdot \infty$ va prima scritta come quoziente.
     { id: 'q-11', domanda: R`In un intervallo chiuso $\Icc{a}{b}$, il massimo assoluto di una funzione continua e derivabile…`, opzioni: [R`può trovarsi anche in un estremo dell'intervallo`, R`si trova sempre in un punto stazionario`, R`esiste solo se $f'$ si annulla da qualche parte`, R`coincide sempre con il massimo relativo più alto all'interno`], corretta: 0, spiegazione: R`Fermat riguarda solo i punti **interni**: negli estremi la derivata non è tenuta ad annullarsi, eppure lì il massimo può cadere. Pensa a $f(x) = x$ in $\Icc{0}{1}$: nessun punto stazionario, massimo in $1$. Per Weierstrass il massimo esiste comunque.` },
     { id: 'q-12', domanda: R`Nel teorema di Cauchy si sceglie $g(x) = x$. Che cosa si ottiene?`, opzioni: [R`il teorema di Rolle`, R`il teorema di Lagrange`, R`il teorema di Fermat`, R`il criterio di monotonia`], corretta: 1, spiegazione: R`Con $g(x) = x$ si ha $g'(c) = 1$ e $g(b) - g(a) = b - a$. La tesi diventa $f'(c) = \dfrac{f(b) - f(a)}{b - a}$, cioè Lagrange. Rolle si ottiene solo aggiungendo $f(a) = f(b)$.` },
     { id: 'q-13', domanda: R`A quale di questi limiti si può applicare **subito** il teorema di de l'Hôpital?`, opzioni: [R`$\lim_{x \to 0} \dfrac{x + 1}{x + 2}$`, R`$\lim_{x \to 0^+} x \ln x$`, R`$\lim_{x \to +\infty} \dfrac{\ln x}{x}$`, R`$\lim_{x \to 0^+} \dfrac{\cos x}{x}$`], corretta: 2, spiegazione: R`$\frac{\ln x}{x}$ per $x \to +\infty$ è nella forma $\frac{\infty}{\infty}$. $\frac{x+1}{x+2}$ in $0$ vale $\frac{1}{2}$ e non è indeterminata. $x \ln x$ è $0 \cdot \infty$: va prima scritta come quoziente. $\frac{\cos x}{x}$ è $\frac{1}{0^+}$, che fa $+\infty$ senza teoremi.` },
-    { id: 'q-14', domanda: R`Un'auto percorre $120$ km in un'ora e mezza, senza salti di velocità. Che cosa garantisce il teorema di Lagrange?`, opzioni: [R`la velocità è stata sempre di $80$ km/h`, R`la velocità massima è stata di $80$ km/h`, R`in almeno un istante la velocità è stata zero`, R`in almeno un istante il tachimetro ha segnato $80$ km/h`], corretta: 3, spiegazione: R`La velocità media è $\frac{120}{1{,}5} = 80$ km/h, la pendenza della «corda». Lagrange dice che in almeno un istante la velocità istantanea è uguale alla media. Non dice che sia sempre quella, né che sia la massima.` },
+    { id: 'q-14', domanda: R`Un'auto percorre $120$ km in un'ora e mezza, senza salti di velocità. Che cosa garantisce il teorema di Lagrange?`, opzioni: [R`la velocità è stata sempre di $80$ km/h`, R`la velocità massima è stata di $80$ km/h`, R`in almeno un istante la velocità è stata zero`, R`in almeno un istante il tachimetro ha segnato $80$ km/h`], corretta: 3, spiegazione: R`La velocità media è $\frac{120}{1{,}5} = 80$ km/h, la pendenza della «corda». Lagrange dice che in almeno un istante la velocità istantanea è uguale alla media. Non dice che sia sempre quella, né che sia la massima.` },
     { id: 'q-15', domanda: R`$f$ è derivabile in $\mathbb{R}$, con $f'(x) = 0$ per ogni $x$ e $f(2) = 5$. Quanto vale $f(7)$?`, opzioni: [R`$0$`, R`$5$`, R`$12$`, R`non si può sapere`], corretta: 1, spiegazione: R`Derivata nulla su un intervallo (qui tutto $\mathbb{R}$) vuol dire funzione costante. Il valore costante è $f(2) = 5$, quindi anche $f(7) = 5$. Lo zero è il valore della derivata, non della funzione.` }
   ],
 

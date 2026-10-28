@@ -324,6 +324,7 @@ a.stat:hover, .stat.riprendi:hover { transform: translateY(-2px); border-color: 
 .prosa th { background: var(--sup2); font-weight: 600; }
 .prosa tr:hover td { background: color-mix(in srgb, var(--accento) 5%, transparent); }
 .prosa .tabella-scroll { overflow-x: auto; }
+@media (max-width: 420px) { .prosa th, .prosa td { padding: 6px 8px; } .prosa table { font-size: .9rem; } }   /* sul telefono le tabelle a 4-6 colonne stanno nello schermo senza scorrere */
 .prosa code { background: var(--sup2); padding: 1px 5px; border-radius: 4px; font-size: .9em; }
 .riquadro { margin: 1.1em 0; padding: 14px 18px 14px 52px; border-radius: 14px; position: relative; overflow: hidden; }
 .riquadro::before { position: absolute; left: 15px; top: 13px; width: 24px; height: 24px; font-size: 14px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: 800; }
@@ -1062,3 +1063,4 @@ body.in-lab .mascotte-bolla:not(.compatta) { max-width: min(320px, calc(100vw - 
 body { overflow-x: hidden; }
 :root[data-tema="scuro"] .g-area { fill-opacity: .4; }   /* le aree colorate dei grafici, in scuro, si vedevano appena */
 .nobr { white-space: nowrap; }   /* una formula e la punteggiatura che la segue non si separano andando a capo */
+.nobr .katex { white-space: normal; }   /* ma la formula lunga può ancora andare a capo dopo = e + (prima veniva tagliata a destra) */

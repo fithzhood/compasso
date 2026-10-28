@@ -23,7 +23,7 @@ COMPASSO.registra({
   id: 'esponenziali',
   titolo: 'Esponenziali',
 
-  introduzione: R`Un batterio si divide in due ogni $20$ minuti. Dopo un'ora i batteri sono $8$, dopo due ore $64$. Dopo cinque ore sono più di trentamila. A ogni passo il numero **raddoppia**, quindi dopo $t$ passi i batteri sono $2^t$. La variabile sta all'esponente.
+  introduzione: R`Un batterio si divide in due ogni $20$ minuti. Dopo un'ora i batteri sono $8$, dopo due ore $64$. Dopo cinque ore sono più di trentamila. A ogni passo il numero **raddoppia**, quindi dopo $t$ passi i batteri sono $2^t$. La variabile sta all'esponente.
 
 Una funzione come $y = 2^x$ si chiama **esponenziale**. In generale è $y = a^x$, con $a$ positivo. Descrive quello che cambia della stessa percentuale a ogni intervallo di tempo: un capitale in banca, una popolazione, un farmaco che si dimezza nel sangue.
 
@@ -108,7 +108,7 @@ Trascina il punto sopra $x = 1$: la sua altezza è la base $a$. Guarda quale pun
 
 >! $a^x = 0$ non ha soluzioni: la curva non tocca mai l'asse $x$.` },
 
-    { id: 'numero-e', titolo: 'Il numero di Nepero e la funzione esponenziale naturale', testo: R`Metti in banca $1$ euro al $100\%$ di interesse annuo. Dopo un anno hai $2$ euro. Se la banca accredita metà interesse ogni sei mesi, hai $\left(1 + \frac12\right)^2 = 2{,}25$ euro. Con un dodicesimo ogni mese hai $\left(1 + \frac1{12}\right)^{12} \approx 2{,}613$ euro.
+    { id: 'numero-e', titolo: 'Il numero di Nepero e la funzione esponenziale naturale', testo: R`Metti in banca $1$ euro al $100\%$ di interesse annuo. Dopo un anno hai $2$ euro. Se la banca accredita metà interesse ogni sei mesi, hai $\left(1 + \frac12\right)^2 = 2{,}25$ euro. Con un dodicesimo ogni mese hai $\left(1 + \frac1{12}\right)^{12} \approx 2{,}613$ euro.
 
 Più accrediti ci sono, più guadagni, ma sempre meno. Il risultato resta sotto un numero vicino a $2{,}718$.
 
@@ -167,7 +167,20 @@ Se compaiono $a^{2x}$ e $a^x$, la prima è il quadrato della seconda. Poni $t = 
 [ ] $x = 2$ e $x = 0$
 => $2^x = 4$ dà $x = 2$. $2^x = -1$ non ha soluzioni, perché una potenza di $2$ è sempre positiva. Chi scrive $x = -1$ confonde $t$ con $x$: $2^{-1}$ fa $\frac12$, non $-1$.
 
->! Scarta le $t$ negative o nulle **prima** di tornare alla $x$. E ricordati di tornarci: $t$ è il valore di $a^x$, non la soluzione.` },
+>! Scarta le $t$ negative o nulle **prima** di tornare alla $x$. E ricordati di tornarci: $t$ è il valore di $a^x$, non la soluzione.
+
+### Sistemi esponenziali
+Due equazioni esponenziali con due incognite formano un **sistema esponenziale**. Spesso ogni equazione si scrive con una base sola. Uguagliando gli esponenti resta un sistema lineare.
+
+~ \begin{cases} 2^x\cdot4^y=32 \\ 3^{x-y}=\frac13 \end{cases} :: due incognite, tutte e due all'esponente
+~ \begin{cases} 2^x\cdot2^{\evid{2y}}=2^{\evid{5}} \\ 3^{x-y}=3^{\evid{-1}} \end{cases} :: $4^y=2^{2y}$, $32=2^5$ e $\frac13=3^{-1}$
+~ \begin{cases} 2^{\evid{x+2y}}=2^5 \\ 3^{x-y}=3^{-1} \end{cases} :: prodotto di potenze con la stessa base: sommo gli esponenti
+~ \begin{cases} x+2y=5 \\ x-y=-1 \end{cases} :: in ogni equazione uguaglio gli esponenti
+~ 3y=6\ \Rightarrow\ y=\evidb{2},\ x=\evidb{1} :: sottraggo la seconda dalla prima; poi $x=y-1$
+
+La soluzione è la coppia $(1;2)$. Controllo: $2^1\cdot4^2=2\cdot16=32$ e $3^{1-2}=3^{-1}=\frac13$.
+
+>! Ogni equazione ha la sua base: qui $2$ nella prima e $3$ nella seconda. Uguagli gli esponenti dentro ciascuna equazione, mai fra un'equazione e l'altra.` },
 
     { id: 'disequazioni-esponenziali', titolo: 'Disequazioni esponenziali', testo: R`$2^5 = 32$ è più grande di $2^3 = 8$. Invece $\left(\frac12\right)^5 = \frac1{32}$ è più piccolo di $\left(\frac12\right)^3 = \frac18$. Con una base minore di $1$, più moltiplichi e più il numero rimpicciolisce.
 
@@ -197,7 +210,7 @@ Con base minore di $1$:
 
 >* **Modello esponenziale:** $$y(t) = y_0 \cdot a^t$$ $y_0$ è il valore iniziale, per $t = 0$. $a$ è il fattore che moltiplica a ogni unità di tempo. Crescita del $p\%$: $a = 1 + \frac{p}{100}$. Calo del $p\%$: $a = 1 - \frac{p}{100}$.
 
-**Interesse composto.** Con tasso $r$, dopo $t$ periodi il capitale è $C(t) = C_0(1 + r)^t$. Per esempio $2000$ € al $5\%$ per $3$ anni diventano $2000 \cdot 1{,}05^3 = 2315{,}25$ €.
+**Interesse composto.** Con tasso $r$, dopo $t$ periodi il capitale è $C(t) = C_0(1 + r)^t$. Per esempio $2000$ € al $5\%$ per $3$ anni diventano $2000 \cdot 1{,}05^3 = 2315{,}25$ €.
 
 ?? Un'auto perde il $20\%$ del suo valore ogni anno. Per quale numero si moltiplica il valore ogni anno?
 [x] $0{,}8$
@@ -207,8 +220,8 @@ Con base minore di $1$:
 
 **Dimezzamento.** Una sostanza si dimezza ogni intervallo $T$, il **tempo di dimezzamento**. Segue $N(t) = N_0\left(\frac12\right)^{\frac{t}{T}}$. L'esponente $\frac{t}{T}$ conta i dimezzamenti.
 
-~ N(t) = 160 \cdot \left(\frac12\right)^{\frac{t}{8}} :: $160$ mg iniziali, dimezzamento ogni $8$ giorni
-~ N(24) = 160 \cdot \left(\frac12\right)^{\evid{3}} :: dopo $24$ giorni: $\frac{24}{8} = 3$ dimezzamenti
+~ N(t) = 160 \cdot \left(\frac12\right)^{\frac{t}{8}} :: $160$ mg iniziali, dimezzamento ogni $8$ giorni
+~ N(24) = 160 \cdot \left(\frac12\right)^{\evid{3}} :: dopo $24$ giorni: $\frac{24}{8} = 3$ dimezzamenti
 ~ N(24) = 160 \cdot \evid{\frac18} :: $\left(\frac12\right)^3 = \frac18$
 ~ N(24) = \evidb{20}\ \text{mg} :: $160 \to 80 \to 40 \to 20$
 
@@ -322,9 +335,9 @@ Per esempio $y = 2^x - 3$ è $y = 2^x$ abbassata di $3$. Passa per $(0;-2)$ e ha
       R`Controllo con $x=-2$: $\left(\dfrac12\right)^{-3} = 8$, e $8>4$ è vero.`
     ], risultato: R`$x < -1$` },
 
-    { titolo: 'Un modello di crescita esponenziale', problema: R`Una coltura di batteri raddoppia ogni $20$ minuti. Se all'inizio ci sono $500$ batteri, quanti ce ne sono dopo $2$ ore?`, passi: [
+    { titolo: 'Un modello di crescita esponenziale', problema: R`Una coltura di batteri raddoppia ogni $20$ minuti. Se all'inizio ci sono $500$ batteri, quanti ce ne sono dopo $2$ ore?`, passi: [
       R`Il modello è $N(t) = N_0 \cdot a^t$: conviene misurare $t$ in periodi di raddoppio, così la base è semplicemente $a=2$.`,
-      R`$2$ ore sono $120$ minuti, cioè $120:20=6$ periodi di raddoppio.`,
+      R`$2$ ore sono $120$ minuti, cioè $120:20=6$ periodi di raddoppio.`,
       R`$N = 500 \cdot 2^6 = 500 \cdot 64 = 32\,000$.`
     ], risultato: R`$32\,000$ batteri` }
   ],
@@ -403,11 +416,12 @@ Per esempio $y = 2^x - 3$ è $y = 2^x$ abbassata di $3$. Passa per $(0;-2)$ e ha
     { id: 'es-05', difficolta: 2, testo: R`Risolvi l'equazione $4^x - 5\cdot2^x + 4 = 0$.`, suggerimenti: [R`$4^x = \left(2^x\right)^2$: poni $t=2^x$, con $t>0$.`, R`Dovresti arrivare a $t^2-5t+4=0$, con soluzioni $t=1$ e $t=4$.`], risposta: { tipo: 'numeri', valori: [0, 2] }, soluzione: [R`Con $t=2^x$: $t^2-5t+4=0$, cioè $(t-1)(t-4)=0$: $t=1$ oppure $t=4$. Entrambe positive.`, R`$2^x=1=2^0 \Rightarrow x=0$; $2^x=4=2^2 \Rightarrow x=2$.`] },
     { id: 'es-06', difficolta: 2, testo: R`Risolvi la disequazione $4^{3x-2} \ge 4^{x+2}$.`, suggerimenti: [R`La base $4$ è maggiore di $1$: che verso ha la disuguaglianza fra gli esponenti?`, R`Il verso si conserva: $3x-2 \ge x+2$.`], risposta: { tipo: 'intervallo', da: 2, a: 'inf', chiusoDa: true, chiusoA: false }, soluzione: [R`Base $4>1$: il verso si conserva. $3x-2 \ge x+2$.`, R`$2x \ge 4$, quindi $x \ge 2$.`] },
     { id: 'es-07', difficolta: 2, testo: R`Risolvi la disequazione $\left(\dfrac13\right)^{3x+1} \le \left(\dfrac13\right)^{x-3}$.`, suggerimenti: [R`La base $\frac13$ è minore di $1$: il verso della disuguaglianza fra gli esponenti si inverte.`, R`Dovresti arrivare a $3x+1 \ge x-3$.`], risposta: { tipo: 'intervallo', da: -2, a: 'inf', chiusoDa: true, chiusoA: false }, soluzione: [R`Base $0<\frac13<1$: il verso si inverte. $3x+1 \ge x-3$.`, R`$2x \ge -4$, quindi $x \ge -2$.`] },
-    { id: 'es-08', difficolta: 2, testo: R`Un capitale di $2000$ € è investito al tasso di interesse composto annuo del $5\%$. Quanto vale dopo $3$ anni? (Arrotonda ai centesimi.)`, suggerimenti: [R`Usa $C(t) = C_0(1+r)^t$, con $r$ scritto come numero decimale.`, R`$C_0=2000$, $r=0{,}05$, $t=3$.`], risposta: { tipo: 'numero', valore: 2315.25, tolleranza: 0.5 }, soluzione: [R`$C(3) = 2000\cdot(1{,}05)^3 = 2000\cdot1{,}157625$.`, R`$C(3) = 2315{,}25$ €.`] },
-    { id: 'es-09', difficolta: 3, testo: R`Una sostanza radioattiva ha un tempo di dimezzamento di $8$ giorni. Se all'inizio ce ne sono $160$ mg, quanti milligrammi restano dopo $24$ giorni?`, suggerimenti: [R`Usa $N(t) = N_0\left(\frac12\right)^{t/T}$, con $T$ tempo di dimezzamento.`, R`$24$ giorni sono $3$ tempi di dimezzamento: quante volte si è dimezzata la quantità?`], risposta: { tipo: 'numero', valore: 20 }, soluzione: [R`$t/T = 24/8 = 3$.`, R`$N(24) = 160\cdot\left(\frac12\right)^3 = 160\cdot\frac18 = 20$ mg.`] },
+    { id: 'es-08', difficolta: 2, testo: R`Un capitale di $2000$ € è investito al tasso di interesse composto annuo del $5\%$. Quanto vale dopo $3$ anni? (Arrotonda ai centesimi.)`, suggerimenti: [R`Usa $C(t) = C_0(1+r)^t$, con $r$ scritto come numero decimale.`, R`$C_0=2000$, $r=0{,}05$, $t=3$.`], risposta: { tipo: 'numero', valore: 2315.25, tolleranza: 0.5 }, soluzione: [R`$C(3) = 2000\cdot(1{,}05)^3 = 2000\cdot1{,}157625$.`, R`$C(3) = 2315{,}25$ €.`] },
+    { id: 'es-09', difficolta: 3, testo: R`Una sostanza radioattiva ha un tempo di dimezzamento di $8$ giorni. Se all'inizio ce ne sono $160$ mg, quanti milligrammi restano dopo $24$ giorni?`, suggerimenti: [R`Usa $N(t) = N_0\left(\frac12\right)^{t/T}$, con $T$ tempo di dimezzamento.`, R`$24$ giorni sono $3$ tempi di dimezzamento: quante volte si è dimezzata la quantità?`], risposta: { tipo: 'numero', valore: 20 }, soluzione: [R`$t/T = 24/8 = 3$.`, R`$N(24) = 160\cdot\left(\frac12\right)^3 = 160\cdot\frac18 = 20$ mg.`] },
     { id: 'es-10', difficolta: 2, testo: R`Determina l'equazione dell'asintoto orizzontale del grafico di $y=5^x+2$.`, suggerimenti: [R`Confronta con $y=a^x+k$: come cambia l'asintoto $y=0$ di $y=a^x$?`, R`L'asintoto si sposta verticalmente della stessa quantità del grafico.`], risposta: { tipo: 'testo', accettate: ['y=2', 'asintoto y=2', 'asintoto orizzontale y=2'], segnaposto: 'es. y = 5' }, soluzione: [R`Il grafico di $y=5^x+2$ è quello di $y=5^x$ traslato verticalmente di $2$.`, R`L'asintoto $y=0$ diventa $y=2$.`] },
     { id: 'es-11', difficolta: 3, testo: R`Risolvi l'equazione $2^{2x+1} - 3\cdot2^x - 2 = 0$.`, suggerimenti: [R`$2^{2x+1} = 2\cdot\left(2^x\right)^2$: poni $t=2^x$, con $t>0$.`, R`Dovresti arrivare a $2t^2-3t-2=0$.`], risposta: { tipo: 'numero', valore: 1 }, soluzione: [R`Con $t=2^x$: $2t^2-3t-2=0$. $\Delta=9+16=25$, $t=\dfrac{3\pm5}{4}$: $t=2$ oppure $t=-\frac12$.`, R`$t=-\frac12$ va scartata perché $2^x>0$ sempre. Da $2^x=2$ si ha $x=1$.`] },
-    { id: 'es-12', difficolta: 2, testo: R`Descrivi come si ottiene il grafico di $y=3^{x-2}+1$ a partire da quello di $y=3^x$. Nella casella scrivi l'equazione del suo asintoto, per esempio «y = 5».`, suggerimenti: [R`Separa l'effetto dell'esponente $x-2$ da quello del $+1$ fuori dalla potenza.`, R`Una trasforma il grafico orizzontalmente, l'altra verticalmente.`], risposta: { tipo: 'testo', accettate: ['y=1', 'asintoto y=1', 'asintoto orizzontale y=1'], segnaposto: 'es. y = 5' }, soluzione: [R`$x-2$ nell'esponente trasla il grafico di $y=3^x$ orizzontalmente di $2$ verso destra (l'asintoto resta $y=0$).`, R`Il $+1$ fuori dalla potenza trasla poi tutto verticalmente di $1$: il punto $(2;1)$ diventa $(2;2)$ e l'asintoto diventa $y=1$.`] }
+    { id: 'es-12', difficolta: 2, testo: R`Descrivi come si ottiene il grafico di $y=3^{x-2}+1$ a partire da quello di $y=3^x$. Nella casella scrivi l'equazione del suo asintoto, per esempio «y = 5».`, suggerimenti: [R`Separa l'effetto dell'esponente $x-2$ da quello del $+1$ fuori dalla potenza.`, R`Una trasforma il grafico orizzontalmente, l'altra verticalmente.`], risposta: { tipo: 'testo', accettate: ['y=1', 'asintoto y=1', 'asintoto orizzontale y=1'], segnaposto: 'es. y = 5' }, soluzione: [R`$x-2$ nell'esponente trasla il grafico di $y=3^x$ orizzontalmente di $2$ verso destra (l'asintoto resta $y=0$).`, R`Il $+1$ fuori dalla potenza trasla poi tutto verticalmente di $1$: il punto $(2;1)$ diventa $(2;2)$ e l'asintoto diventa $y=1$.`] },
+    { id: 'es-13', sezione: 'equazioni-esponenziali', difficolta: 2, testo: R`Risolvi il sistema $\begin{cases} 4^x\cdot2^y=8 \\ 5^{x-y}=125 \end{cases}$ Scrivi la soluzione come *x; y*.`, suggerimenti: [R`Nella prima equazione scrivi tutto in base $2$, nella seconda in base $5$.`, R`$4^x=2^{2x}$, $8=2^3$, $125=5^3$.`, R`Arrivi al sistema lineare $2x+y=3$ e $x-y=3$.`], risposta: { tipo: 'numeri', valori: [2, -1], ordinati: true, segnaposto: 'es. 3; -2', simboli: SIMB }, soluzione: [R`Prima equazione: $2^{2x}\cdot2^y=2^3$, cioè $2^{2x+y}=2^3$, quindi $2x+y=3$.`, R`Seconda equazione: $5^{x-y}=5^3$, quindi $x-y=3$.`, R`Sommo le due equazioni: $3x=6$, cioè $x=2$. Poi $y=x-3=-1$.`, R`Controllo: $4^2\cdot2^{-1}=16\cdot\frac12=8$ e $5^{2-(-1)}=5^3=125$. La soluzione è $(2;-1)$.`] }
   ],
 
   quiz: [
@@ -446,7 +460,7 @@ Per esempio $y = 2^x - 3$ è $y = 2^x$ abbassata di $3$. Passa per $(0;-2)$ e ha
     { matematico: 'Jacob Bernoulli', anni: '1655–1705', titolo: 'L\'interesse che cresce sempre più spesso', testo: R`Nel 1683 il matematico svizzero Jacob Bernoulli si pose una domanda molto pratica: se un capitale frutta un interesse del $100\%$ all'anno, conviene capitalizzarlo una volta sola, oppure due volte al $50\%$, o quattro volte al $25\%$, e così via sempre più spesso? Bernoulli calcolò che, capitalizzando $n$ volte all'anno una frazione $1/n$ di interesse, il capitale finale si ottiene elevando $\left(1+\frac1n\right)$ alla $n$: aumentando $n$ il risultato cresce, ma non senza limite. Bernoulli dimostrò che il valore resta sempre compreso fra $2$ e $3$, anche capitalizzando istante per istante. Non diede un nome a quel limite (ci avrebbe pensato Eulero mezzo secolo dopo), ma fu il primo a dimostrare che esisteva.`, legame: R`Quel limite è esattamente $e = \lim_{n\to\infty}\left(1+\frac1n\right)^n$: il problema dell'interesse composto capitalizzato sempre più spesso è la porta da cui il numero di Nepero è entrato in matematica.` },
     { matematico: 'Leonhard Euler', anni: '1707–1783', titolo: 'La lettera che Eulero scelse per un numero', testo: R`Il numero che oggi chiamiamo $e$ non porta il nome di chi lo scoprì per primo: fu Eulero, fra il 1727 e il 1731, a scegliere la lettera $e$ per indicarlo, in un manoscritto giovanile e poi in una lettera del 1731 all'amico matematico Christian Goldbach. Non si sa con certezza se $e$ stesse per "esponenziale" o fosse semplicemente la prima vocale libera, dato che $a$, $b$, $c$, $d$ erano già usate altrove nei suoi appunti: Eulero stesso non lo spiegò mai. La notazione comparve in stampa per la prima volta nel suo libro di meccanica del 1736, e nel 1748, nell'*Introductio in analysin infinitorum*, Eulero ne calcolò le prime ventitré cifre decimali e ne mostrò le proprietà fondamentali, rendendolo una delle costanti più importanti dell'analisi matematica.`, legame: R`È la stessa costante che compare come base "naturale" della funzione esponenziale $e^x$, quella con tangente di pendenza $1$ nel punto $(0;1)$.` },
     { matematico: 'Thomas Robert Malthus', anni: '1766–1834', titolo: 'Una popolazione che cresce più in fretta del cibo', testo: R`Nel 1798 l'economista inglese Thomas Malthus pubblicò anonimo il *Saggio sul principio di popolazione*, sostenendo che la popolazione umana, se non frenata, cresce **geometricamente** (cioè esponenzialmente, raddoppiando a intervalli regolari), mentre le risorse alimentari possono crescere al massimo **aritmeticamente**, cioè di quantità costanti nel tempo. La conclusione, allarmante per l'epoca, era che la popolazione avrebbe presto superato la capacità della Terra di sfamarla, portando inevitabilmente a carestie, guerre o epidemie come "correttivi" naturali. Le previsioni di Malthus si sono rivelate sbagliate nel lungo periodo, soprattutto perché non aveva previsto i progressi dell'agricoltura, ma il suo modello matematico influenzò profondamente il pensiero scientifico successivo, compresa la teoria della selezione naturale di Charles Darwin.`, legame: R`È il primo esempio storico famoso in cui la differenza fra crescita esponenziale ($a^t$) e crescita lineare viene usata per fare una previsione concreta, giusta o sbagliata che fosse.` },
-    { matematico: 'Willard Libby', anni: '1908–1980', titolo: 'Un orologio nascosto negli atomi', testo: R`Nel 1949 il chimico americano Willard Libby mise a punto un metodo per stimare l'età di reperti organici (legno, ossa, tessuti) misurando quanto carbonio-14 residuo contengono. Il carbonio-14 è un isotopo radioattivo che si forma nell'atmosfera e viene assorbito da ogni essere vivente; quando l'organismo muore smette di rinnovarlo, e la quantità presente decade seguendo una legge esponenziale con tempo di dimezzamento di circa $5730$ anni. Misurando quanto carbonio-14 resta rispetto a quello atteso, si risale a quanto tempo è passato dalla morte. Il metodo, che valse a Libby il premio Nobel per la chimica nel 1960, ha permesso di datare reperti archeologici in tutto il mondo, dai Rotoli del Mar Morto ad antichi insediamenti.`, legame: R`È l'applicazione più concreta della formula del decadimento $N(t)=N_0\left(\frac12\right)^{t/T}$, con base minore di $1$ e tempo di dimezzamento $T$ che qui vale $5730$ anni invece che pochi giorni.` }
+    { matematico: 'Willard Libby', anni: '1908–1980', titolo: 'Un orologio nascosto negli atomi', testo: R`Nel 1949 il chimico americano Willard Libby mise a punto un metodo per stimare l'età di reperti organici (legno, ossa, tessuti) misurando quanto carbonio-14 residuo contengono. Il carbonio-14 è un isotopo radioattivo che si forma nell'atmosfera e viene assorbito da ogni essere vivente; quando l'organismo muore smette di rinnovarlo, e la quantità presente decade seguendo una legge esponenziale con tempo di dimezzamento di circa $5730$ anni. Misurando quanto carbonio-14 resta rispetto a quello atteso, si risale a quanto tempo è passato dalla morte. Il metodo, che valse a Libby il premio Nobel per la chimica nel 1960, ha permesso di datare reperti archeologici in tutto il mondo, dai Rotoli del Mar Morto ad antichi insediamenti.`, legame: R`È l'applicazione più concreta della formula del decadimento $N(t)=N_0\left(\frac12\right)^{t/T}$, con base minore di $1$ e tempo di dimezzamento $T$ che qui vale $5730$ anni invece che pochi giorni.` }
   ]
 });
 })();

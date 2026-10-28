@@ -55,7 +55,7 @@ Di solito una variabile discreta **conta** qualcosa, una continua **misura** qua
 [x] La durata di una telefonata.
 [ ] Il numero di figli di una famiglia.
 [ ] La somma dei punti di due dadi.
-=> La durata si misura: può valere $2$ minuti, $2{,}5$ minuti, $2{,}51$ minuti, e così via. Gli altri tre numeri si contano: prendono valori interi, che si possono elencare.
+=> La durata si misura: può valere $2$ minuti, $2{,}5$ minuti, $2{,}51$ minuti, e così via. Gli altri tre numeri si contano: prendono valori interi, che si possono elencare.
 
 >! $X$ non è un numero fisso: è un numero che aspetta il caso. Le maiuscole come $X$ e $Y$ indicano le variabili, le minuscole come $x_1$ e $x_2$ i loro valori.` },
 
@@ -113,9 +113,9 @@ Il risultato non è un valore possibile: $1{,}5$ teste non escono mai. È la med
 
 Nell'argomento «Probabilità» hai visto il gioco equo. Con le variabili aleatorie si dice così: se $G$ è il guadagno, il gioco è equo quando $E(G) = 0$.
 
-Paghi $1$ euro e lanci due monete. Con due teste ricevi $3$ euro, con una testa $1$ euro, con nessuna testa niente. Il guadagno $G$ è quello che ricevi meno l'euro pagato.
+Paghi $1$ euro e lanci due monete. Con due teste ricevi $3$ euro, con una testa $1$ euro, con nessuna testa niente. Il guadagno $G$ è quello che ricevi meno l'euro pagato.
 
-~ P(G = 2) = \tfrac{1}{4} :: due teste: ricevi $3$ euro, ne hai pagato $1$
+~ P(G = 2) = \tfrac{1}{4} :: due teste: ricevi $3$ euro, ne hai pagato $1$
 ~ P(G = 0) = \tfrac{1}{2} :: una testa: ricevi l'euro che hai pagato
 ~ P(G = -1) = \tfrac{1}{4} :: nessuna testa: perdi l'euro
 ~ E(G) = 2 \cdot \tfrac{1}{4} + 0 \cdot \tfrac{1}{2} - 1 \cdot \tfrac{1}{4} :: il valore atteso del guadagno
@@ -125,7 +125,7 @@ Paghi $1$ euro e lanci due monete. Con due teste ricevi $3$ euro, con una testa 
 
 >* Se $a$ e $b$ sono numeri, $E(aX + b) = a\,E(X) + b$. Per due variabili qualsiasi, $E(X + Y) = E(X) + E(Y)$.
 
-Ogni testa vale $2$ euro, e in più ricevi $1$ euro fisso. Con tre monete ricevi in media $2 \cdot 1{,}5 + 1 = 4$ euro.
+Ogni testa vale $2$ euro, e in più ricevi $1$ euro fisso. Con tre monete ricevi in media $2 \cdot 1{,}5 + 1 = 4$ euro.
 
 ?? Il punteggio di un dado ha $E(X) = 3{,}5$. Quanto vale il valore atteso della somma di due dadi?
 [x] $7$
@@ -199,7 +199,7 @@ Un quiz ha $8$ domande, ognuna con $4$ risposte di cui una sola giusta. Chi risp
 ~ \text{Var}(X) = 8 \cdot \tfrac{1}{4} \cdot \tfrac{3}{4} = 1{,}5 :: qui $1 - p = \tfrac{3}{4}$
 ~ \sigma(X) = \sqrt{1{,}5} \approx \evidb{1{,}22} :: la distanza tipica da $2$
 
-?? Lanci un dado $30$ volte. $X$ è il numero di volte che esce il $6$. Quanto vale $E(X)$?
+?? Lanci un dado $30$ volte. $X$ è il numero di volte che esce il $6$. Quanto vale $E(X)$?
 [ ] $6$
 [x] $5$
 [ ] $\dfrac{1}{6}$
@@ -238,7 +238,7 @@ Una regola pratica: $n \ge 50$ e $np \le 5$. Con $n = 1000$ e $p = 0{,}002$ la b
 
 >! I valori della Poisson non finiscono a un certo $n$: sono $0, 1, 2, \dots$ senza fine. Per «almeno uno» o «almeno due» si passa sempre al contrario.` },
 
-    { id: 'continue', titolo: 'Variabili continue e densità', testo: R`L'attesa del bus può durare $3$ minuti, $3{,}2$, $3{,}21$, e così via. I valori di una variabile continua riempiono un intervallo: non si possono elencare. Allora la probabilità si descrive con una curva, la **densità**.
+    { id: 'continue', titolo: 'Variabili continue e densità', testo: R`L'attesa del bus può durare $3$ minuti, $3{,}2$, $3{,}21$, e così via. I valori di una variabile continua riempiono un intervallo: non si possono elencare. Allora la probabilità si descrive con una curva, la **densità**.
 
 [[video:variabili-aleatorie/densita]]
 
@@ -246,13 +246,13 @@ Una regola pratica: $n \ge 50$ e $np \le 5$. Con $n = 1000$ e $p = 0{,}002$ la b
 
 ### Il primo esempio: la uniforme
 
-Un bus passa ogni $10$ minuti e tu arrivi a caso. L'attesa $X$ sta fra $0$ e $10$, e nessun valore è privilegiato. La densità è costante: un rettangolo di base $10$. Perché l'area sia $1$, l'altezza è $\dfrac{1}{10}$.
+Un bus passa ogni $10$ minuti e tu arrivi a caso. L'attesa $X$ sta fra $0$ e $10$, e nessun valore è privilegiato. La densità è costante: un rettangolo di base $10$. Perché l'area sia $1$, l'altezza è $\dfrac{1}{10}$.
 
 [[grafico:uniforme]]
 
 ~ P(2 \le X \le 5) = \text{base} \cdot \text{altezza} :: l'area di un rettangolo: qui l'integrale non serve
 ~ = (5 - 2) \cdot \tfrac{1}{10} :: la base va da $2$ a $5$, l'altezza è la densità
-~ = \dfrac{3}{10} = \evidb{0{,}3} :: tre volte su dieci aspetti fra $2$ e $5$ minuti
+~ = \dfrac{3}{10} = \evidb{0{,}3} :: tre volte su dieci aspetti fra $2$ e $5$ minuti
 
 >* **Uniforme** su $\Icc{a}{b}$: $f(x) = \dfrac{1}{b - a}$ dentro l'intervallo, $0$ fuori. Media e varianza sono $$E(X) = \frac{a + b}{2}$$ $$\text{Var}(X) = \frac{(b - a)^2}{12}$$
 
@@ -301,11 +301,11 @@ La curva ha quattro proprietà da ricordare:
 
 Vale la regola della statistica. Fra $\mu - \sigma$ e $\mu + \sigma$ c'è circa il $68\%$ della probabilità. Entro $2\sigma$ dalla media circa il $95\%$, entro $3\sigma$ circa il $99{,}7\%$.
 
-?? Il peso delle confezioni di pasta è normale, con media $500$ g e deviazione standard $4$ g. Circa quante confezioni su $100$ pesano fra $492$ e $508$ g?
+?? Il peso delle confezioni di pasta è normale, con media $500$ g e deviazione standard $4$ g. Circa quante confezioni su $100$ pesano fra $492$ e $508$ g?
 [ ] circa $68$
 [x] circa $95$
 [ ] circa $99$
-=> $492$ e $508$ distano $8$ g dalla media, cioè $2\sigma$. Entro $2\sigma$ sta circa il $95\%$ della probabilità. Il $68\%$ vale entro un solo $\sigma$, fra $496$ e $504$ g.
+=> $492$ e $508$ distano $8$ g dalla media, cioè $2\sigma$. Entro $2\sigma$ sta circa il $95\%$ della probabilità. Il $68\%$ vale entro un solo $\sigma$, fra $496$ e $504$ g.
 
 ### Dalla binomiale alla normale
 
@@ -346,14 +346,14 @@ Per le altre aree bastano la simmetria della campana e l'evento contrario.
 
 [[grafico:normaleZ]]
 
-Il peso $X$ delle confezioni di pasta è normale, con media $500$ g e deviazione standard $4$ g. Quante confezioni pesano meno di $494$ g?
+Il peso $X$ delle confezioni di pasta è normale, con media $500$ g e deviazione standard $4$ g. Quante confezioni pesano meno di $494$ g?
 
-~ z = \dfrac{494 - 500}{4} = -1{,}5 :: $494$ g sta $1{,}5$ deviazioni standard sotto la media
+~ z = \dfrac{494 - 500}{4} = -1{,}5 :: $494$ g sta $1{,}5$ deviazioni standard sotto la media
 ~ P(X < 494) = P(Z < -1{,}5) :: lo stesso evento, scritto con $Z$
 ~ = \Phi(-1{,}5) = 1 - \Phi(1{,}5) :: la tavola ha solo gli $z$ positivi: uso la simmetria
 ~ = 1 - 0{,}9332 = \evidb{0{,}0668} :: circa $7$ confezioni su $100$
 
-?? Sempre con media $500$ g e deviazione standard $4$ g, quanto vale $P(494 \le X \le 510)$?
+?? Sempre con media $500$ g e deviazione standard $4$ g, quanto vale $P(494 \le X \le 510)$?
 [ ] $0{,}0606$
 [x] $0{,}9270$
 [ ] $0{,}9938$
@@ -496,11 +496,11 @@ Il peso $X$ delle confezioni di pasta è normale, con media $500$ g e deviazione
       R`Non è una binomiale: senza rimessa la probabilità di pescare rosso cambia dopo la prima estrazione.`
     ], risultato: R`$P(X = 0) = 0{,}3$, $P(X = 1) = 0{,}6$, $P(X = 2) = 0{,}1$; $E(X) = 0{,}8$, $\sigma(X) = 0{,}6$` },
 
-    { titolo: 'Il guadagno atteso di un\'assicurazione', problema: R`Un'assicurazione sul telefono costa $25$ euro all'anno. In un anno il telefono viene rubato con probabilità $0{,}02$, e allora la compagnia paga $500$ euro. Si rompe con probabilità $0{,}05$, e allora paga $100$ euro. Quanto guadagna in media la compagnia su ogni contratto?`, passi: [
+    { titolo: 'Il guadagno atteso di un\'assicurazione', problema: R`Un'assicurazione sul telefono costa $25$ euro all'anno. In un anno il telefono viene rubato con probabilità $0{,}02$, e allora la compagnia paga $500$ euro. Si rompe con probabilità $0{,}05$, e allora paga $100$ euro. Quanto guadagna in media la compagnia su ogni contratto?`, passi: [
       R`Sia $X$ quanto paga la compagnia: $500$ con probabilità $0{,}02$, $100$ con probabilità $0{,}05$, $0$ negli altri casi, cioè con probabilità $0{,}93$.`,
       R`$E(X) = 500 \cdot 0{,}02 + 100 \cdot 0{,}05 + 0 \cdot 0{,}93 = 10 + 5 = 15$ euro.`,
       R`Il guadagno della compagnia è $G = 25 - X$. Per la proprietà $E(aX + b) = a\,E(X) + b$, con $a = -1$ e $b = 25$: $E(G) = 25 - 15 = 10$ euro.`,
-      R`Su un singolo contratto la compagnia può anche perdere $475$ euro. Ma su migliaia di contratti guadagna in media $10$ euro l'uno: per lei il gioco non è equo, e lo sa.`
+      R`Su un singolo contratto la compagnia può anche perdere $475$ euro. Ma su migliaia di contratti guadagna in media $10$ euro l'uno: per lei il gioco non è equo, e lo sa.`
     ], risultato: R`$E(G) = 10$ euro a contratto` },
 
     { titolo: 'Una binomiale: i semi che non germogliano', problema: R`Il $10\%$ dei semi di una bustina non germoglia, indipendentemente dagli altri. Pianti $20$ semi. $X$ è il numero di semi che non germogliano. Trova media e deviazione standard di $X$, e la probabilità che non germogli al massimo un seme.`, passi: [
@@ -527,13 +527,13 @@ Il peso $X$ delle confezioni di pasta è normale, con media $500$ g e deviazione
       R`La media sta a sinistra di $1$, il centro dell'intervallo: la densità è più alta vicino a $0$, e lì si concentra la probabilità.`
     ], risultato: R`$k = \frac{1}{2}$, $P(X \le 1) = \frac{3}{4}$, $E(X) = \frac{2}{3}$` },
 
-    { titolo: 'La normale con la tavola', problema: R`I tempi di una gara di corsa seguono una normale con $\mu = 50$ s e $\sigma = 5$ s. Trova la probabilità che un atleta impieghi meno di $45$ s, e quella che impieghi fra $45$ e $60$ s. Poi trova il tempo superato solo dal $2{,}5\%$ degli atleti.`, passi: [
-      R`$45$ s standardizzato: $z = \frac{45 - 50}{5} = -1$. Allora $P(X < 45) = \Phi(-1) = 1 - \Phi(1) = 1 - 0{,}8413 = 0{,}1587$.`,
-      R`$60$ s standardizzato: $z = \frac{60 - 50}{5} = 2$. Allora $P(45 \le X \le 60) = \Phi(2) - \Phi(-1) = 0{,}9772 - 0{,}1587 = 0{,}8185$.`,
+    { titolo: 'La normale con la tavola', problema: R`I tempi di una gara di corsa seguono una normale con $\mu = 50$ s e $\sigma = 5$ s. Trova la probabilità che un atleta impieghi meno di $45$ s, e quella che impieghi fra $45$ e $60$ s. Poi trova il tempo superato solo dal $2{,}5\%$ degli atleti.`, passi: [
+      R`$45$ s standardizzato: $z = \frac{45 - 50}{5} = -1$. Allora $P(X < 45) = \Phi(-1) = 1 - \Phi(1) = 1 - 0{,}8413 = 0{,}1587$.`,
+      R`$60$ s standardizzato: $z = \frac{60 - 50}{5} = 2$. Allora $P(45 \le X \le 60) = \Phi(2) - \Phi(-1) = 0{,}9772 - 0{,}1587 = 0{,}8185$.`,
       R`Ora il problema è rovesciato: si conosce l'area e si cerca $z$. A destra deve restare $0{,}025$, quindi $\Phi(z) = 0{,}975$.`,
       R`Sulla tavola $\Phi(1{,}96) = 0{,}9750$: $z = 1{,}96$. Si torna a $X$ con $x = \mu + z\sigma = 50 + 1{,}96 \cdot 5 = 59{,}8$ s.`,
       R`Controllo con la regola del $95\%$: entro $2\sigma$ dalla media sta circa il $95\%$, e $1{,}96$ è appena sotto $2$.`
-    ], risultato: R`$P(X < 45) \approx 0{,}159$; $P(45 \le X \le 60) \approx 0{,}819$; il tempo cercato è $59{,}8$ s` }
+    ], risultato: R`$P(X < 45) \approx 0{,}159$; $P(45 \le X \le 60) \approx 0{,}819$; il tempo cercato è $59{,}8$ s` }
   ],
 
   formulario: [
@@ -591,10 +591,10 @@ Il peso $X$ delle confezioni di pasta è normale, con media $500$ g e deviazione
     { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Sai che $E(X) = 2$ ed $E(X^2) = 7$. Quanto vale $\text{Var}(X)$?`, suggerimenti: [R`Usa la formula rapida: media dei quadrati meno quadrato della media.`], risposta: val(3), soluzione: [R`$\text{Var}(X) = E(X^2) - [E(X)]^2 = 7 - 2^2$.`, R`$\text{Var}(X) = 3$.`] },
     { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Se $E(X) = 5$, quanto vale $E(2X + 3)$?`, suggerimenti: [R`$E(aX + b) = a\,E(X) + b$.`], risposta: val(13), soluzione: [R`$E(2X + 3) = 2 \cdot 5 + 3 = 13$.`] },
     { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Se $\text{Var}(X) = 2$, quanto vale $\text{Var}(3X)$?`, suggerimenti: [R`Il numero che moltiplica $X$ entra al quadrato.`], risposta: val(18), soluzione: [R`$\text{Var}(3X) = 3^2 \cdot \text{Var}(X) = 9 \cdot 2 = 18$.`] },
-    { id: 'b-10', livello: 'base', difficolta: 2, testo: R`Paghi $1$ euro e lanci un dado: se esce $6$ ricevi $6$ euro, altrimenti niente. Quanto vale il guadagno atteso?`, suggerimenti: [R`Il guadagno è quello che ricevi meno l'euro pagato.`, R`Con il $6$ guadagni $5$ euro, negli altri casi perdi $1$ euro.`], risposta: val(0), soluzione: [R`$G = 5$ con probabilità $\frac{1}{6}$, $G = -1$ con probabilità $\frac{5}{6}$.`, R`$E(G) = 5 \cdot \frac{1}{6} - 1 \cdot \frac{5}{6} = 0$: il gioco è equo.`] },
-    { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Lanci una moneta $4$ volte. Qual è la probabilità di ottenere esattamente $2$ teste?`, suggerimenti: [R`È una binomiale con $n = 4$ e $p = \frac{1}{2}$.`, R`$P(X = 2) = \binom{4}{2} \left(\frac{1}{2}\right)^2 \left(\frac{1}{2}\right)^2$.`], risposta: pr(0.375), soluzione: [R`$\binom{4}{2} = 6$ e $\left(\frac{1}{2}\right)^4 = \frac{1}{16}$.`, R`$P(X = 2) = \frac{6}{16} = 0{,}375$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 2, testo: R`Paghi $1$ euro e lanci un dado: se esce $6$ ricevi $6$ euro, altrimenti niente. Quanto vale il guadagno atteso?`, suggerimenti: [R`Il guadagno è quello che ricevi meno l'euro pagato.`, R`Con il $6$ guadagni $5$ euro, negli altri casi perdi $1$ euro.`], risposta: val(0), soluzione: [R`$G = 5$ con probabilità $\frac{1}{6}$, $G = -1$ con probabilità $\frac{5}{6}$.`, R`$E(G) = 5 \cdot \frac{1}{6} - 1 \cdot \frac{5}{6} = 0$: il gioco è equo.`] },
+    { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Lanci una moneta $4$ volte. Qual è la probabilità di ottenere esattamente $2$ teste?`, suggerimenti: [R`È una binomiale con $n = 4$ e $p = \frac{1}{2}$.`, R`$P(X = 2) = \binom{4}{2} \left(\frac{1}{2}\right)^2 \left(\frac{1}{2}\right)^2$.`], risposta: pr(0.375), soluzione: [R`$\binom{4}{2} = 6$ e $\left(\frac{1}{2}\right)^4 = \frac{1}{16}$.`, R`$P(X = 2) = \frac{6}{16} = 0{,}375$.`] },
     { id: 'b-12', livello: 'base', difficolta: 1, testo: R`$X$ è binomiale con $n = 3$ e $p = 0{,}2$. Quanto vale $P(X = 0)$?`, suggerimenti: [R`Nessun successo: tre insuccessi di fila, ognuno con probabilità $0{,}8$.`], risposta: pr(0.512), soluzione: [R`$P(X = 0) = \binom{3}{0} \cdot 0{,}2^0 \cdot 0{,}8^3$.`, R`$= 1 \cdot 1 \cdot 0{,}512 = 0{,}512$.`] },
-    { id: 'b-13', livello: 'base', difficolta: 1, testo: R`Lanci una moneta $50$ volte. Qual è il valore atteso del numero di teste?`, suggerimenti: [R`Per una binomiale $E(X) = np$.`], risposta: val(25), soluzione: [R`$n = 50$ e $p = \frac{1}{2}$.`, R`$E(X) = 50 \cdot \frac{1}{2} = 25$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 1, testo: R`Lanci una moneta $50$ volte. Qual è il valore atteso del numero di teste?`, suggerimenti: [R`Per una binomiale $E(X) = np$.`], risposta: val(25), soluzione: [R`$n = 50$ e $p = \frac{1}{2}$.`, R`$E(X) = 50 \cdot \frac{1}{2} = 25$.`] },
     { id: 'b-14', livello: 'base', difficolta: 1, testo: R`$X$ è binomiale con $n = 100$ e $p = 0{,}1$. Quanto vale la deviazione standard $\sigma(X)$?`, suggerimenti: [R`Prima la varianza: $np(1-p)$.`], risposta: val(3), soluzione: [R`$\text{Var}(X) = 100 \cdot 0{,}1 \cdot 0{,}9 = 9$.`, R`$\sigma(X) = \sqrt{9} = 3$.`] },
     { id: 'b-15', livello: 'base', difficolta: 1, testo: R`Una binomiale ha $n = 800$ e $p = 0{,}005$. Si approssima con una Poisson: quanto vale $\lambda$?`, suggerimenti: [R`Il parametro della Poisson è la media della binomiale.`], risposta: val(4), soluzione: [R`$\lambda = np = 800 \cdot 0{,}005 = 4$.`] },
     { id: 'b-16', livello: 'base', difficolta: 1, testo: R`$X$ segue una Poisson con $\lambda = 3$. Quanto vale $P(X = 0)$?`, suggerimenti: [R`$P(X = k) = e^{-\lambda}\frac{\lambda^k}{k!}$, e con $k = 0$ resta solo $e^{-\lambda}$.`], risposta: pr(Math.exp(-3)), soluzione: [R`$P(X = 0) = e^{-3} \cdot \frac{3^0}{0!} = e^{-3}$.`, R`$e^{-3} \approx 0{,}0498$: circa $5\%$.`] },
@@ -605,8 +605,8 @@ Il peso $X$ delle confezioni di pasta è normale, con media $500$ g e deviazione
 
     { id: 'es-01', difficolta: 2, testo: R`La variabile continua $X$ ha densità $f(x) = 2x$ per $0 \le x \le 1$, e $f(x) = 0$ altrove. Trova la funzione di ripartizione $F(x)$ per $0 \le x \le 1$, poi usala per calcolare $P(0{,}5 \le X \le 0{,}8)$.`, suggerimenti: [R`$F(x) = \int_0^x f(t)\,dt$: a sinistra di $0$ la densità vale zero.`, R`$P(a \le X \le b) = F(b) - F(a)$.`], risposta: pr(0.39), soluzione: [R`Controllo che sia una densità: $f(x) \ge 0$ e $\int_0^1 2x\,dx = \left[x^2\right]_0^1 = 1$.`, R`Per $0 \le x \le 1$: $F(x) = \int_0^x 2t\,dt = \left[t^2\right]_0^x = x^2$. Fuori, $F(x) = 0$ per $x < 0$ e $F(x) = 1$ per $x > 1$.`, R`$P(0{,}5 \le X \le 0{,}8) = F(0{,}8) - F(0{,}5) = 0{,}64 - 0{,}25 = 0{,}39$.`] },
     { id: 'es-02', difficolta: 2, testo: R`$X$ vale $0$, $1$, $2$ con probabilità $a$, $0{,}5$, $b$. Sai che $E(X) = 1{,}2$. Trova $a$ e $b$ (scrivi $a$ e $b$ in quest'ordine, separati da punto e virgola).`, suggerimenti: [R`Hai due condizioni: la somma delle probabilità e il valore atteso.`, R`Il valore atteso dà $0{,}5 + 2b = 1{,}2$.`], risposta: { tipo: 'numeri', valori: [0.15, 0.35], ordinati: true, segnaposto: 'es. 0,1; 0,4', simboli: [';'] }, soluzione: [R`$E(X) = 0 \cdot a + 1 \cdot 0{,}5 + 2b = 1{,}2$, quindi $2b = 0{,}7$ e $b = 0{,}35$.`, R`Dalla somma: $a + 0{,}5 + 0{,}35 = 1$, quindi $a = 0{,}15$.`, R`Tutte e due sono fra $0$ e $1$: la distribuzione va bene.`] },
-    { id: 'es-03', difficolta: 2, testo: R`Una lotteria vende $1000$ biglietti a $2$ euro l'uno. Mette in palio un premio da $500$ euro e quattro premi da $100$ euro. Qual è il guadagno atteso di chi compra un biglietto?`, suggerimenti: [R`Calcola prima il valore atteso della vincita.`, R`Il guadagno è la vincita meno i $2$ euro del biglietto.`], risposta: val(-1.1), soluzione: [R`La vincita $V$ vale $500$ con probabilità $\frac{1}{1000}$, $100$ con probabilità $\frac{4}{1000}$, $0$ altrimenti.`, R`$E(V) = \frac{500}{1000} + \frac{400}{1000} = 0{,}9$ euro.`, R`$E(G) = E(V) - 2 = -1{,}1$ euro: in media chi gioca perde $1{,}10$ euro a biglietto.`] },
-    { id: 'es-04', difficolta: 2, testo: R`Un tiratore colpisce il bersaglio con probabilità $0{,}3$, e i tiri sono indipendenti. Tira $5$ volte. Qual è la probabilità che colpisca almeno $2$ volte?`, suggerimenti: [R`$X \sim B(5, p)$ con $p = 0{,}3$.`, R`Passa al contrario: $1 - P(X = 0) - P(X = 1)$.`], risposta: pr(1 - Math.pow(0.7, 5) - 5 * 0.3 * Math.pow(0.7, 4)), soluzione: [R`$P(X = 0) = 0{,}7^5 \approx 0{,}1681$.`, R`$P(X = 1) = \binom{5}{1} \cdot 0{,}3 \cdot 0{,}7^4 = 1{,}5 \cdot 0{,}2401 \approx 0{,}3602$.`, R`$P(X \ge 2) = 1 - 0{,}1681 - 0{,}3602 \approx 0{,}472$.`] },
+    { id: 'es-03', difficolta: 2, testo: R`Una lotteria vende $1000$ biglietti a $2$ euro l'uno. Mette in palio un premio da $500$ euro e quattro premi da $100$ euro. Qual è il guadagno atteso di chi compra un biglietto?`, suggerimenti: [R`Calcola prima il valore atteso della vincita.`, R`Il guadagno è la vincita meno i $2$ euro del biglietto.`], risposta: val(-1.1), soluzione: [R`La vincita $V$ vale $500$ con probabilità $\frac{1}{1000}$, $100$ con probabilità $\frac{4}{1000}$, $0$ altrimenti.`, R`$E(V) = \frac{500}{1000} + \frac{400}{1000} = 0{,}9$ euro.`, R`$E(G) = E(V) - 2 = -1{,}1$ euro: in media chi gioca perde $1{,}10$ euro a biglietto.`] },
+    { id: 'es-04', difficolta: 2, testo: R`Un tiratore colpisce il bersaglio con probabilità $0{,}3$, e i tiri sono indipendenti. Tira $5$ volte. Qual è la probabilità che colpisca almeno $2$ volte?`, suggerimenti: [R`$X \sim B(5, p)$ con $p = 0{,}3$.`, R`Passa al contrario: $1 - P(X = 0) - P(X = 1)$.`], risposta: pr(1 - Math.pow(0.7, 5) - 5 * 0.3 * Math.pow(0.7, 4)), soluzione: [R`$P(X = 0) = 0{,}7^5 \approx 0{,}1681$.`, R`$P(X = 1) = \binom{5}{1} \cdot 0{,}3 \cdot 0{,}7^4 = 1{,}5 \cdot 0{,}2401 \approx 0{,}3602$.`, R`$P(X \ge 2) = 1 - 0{,}1681 - 0{,}3602 \approx 0{,}472$.`] },
     { id: 'es-05', difficolta: 2, testo: R`Una variabile binomiale ha media $6$ e varianza $4{,}2$. Trova $n$ e $p$ (scrivi $n$ e $p$ in quest'ordine, separati da punto e virgola).`, suggerimenti: [R`$np = 6$ e $np(1-p) = 4{,}2$.`, R`Dividi la seconda uguaglianza per la prima.`], risposta: { tipo: 'numeri', valori: [20, 0.3], ordinati: true, segnaposto: 'es. 10; 0,5', simboli: [';'] }, soluzione: [R`$\frac{np(1-p)}{np} = \frac{4{,}2}{6}$, cioè $1 - p = 0{,}7$.`, R`Quindi $p = 0{,}3$, e da $np = 6$ viene $n = \frac{6}{0{,}3} = 20$.`] },
     { id: 'es-06', difficolta: 2, testo: R`Una macchina ha in media $1{,}2$ guasti al mese, secondo una Poisson. Qual è la probabilità che in un mese abbia almeno $2$ guasti?`, suggerimenti: [R`$\lambda = 1{,}2$. I valori sono infiniti: passa al contrario.`, R`$P(X \ge 2) = 1 - P(X = 0) - P(X = 1)$.`], risposta: pr(1 - Math.exp(-1.2) * 2.2), soluzione: [R`$P(X = 0) = e^{-1{,}2} \approx 0{,}3012$.`, R`$P(X = 1) = e^{-1{,}2} \cdot 1{,}2 \approx 0{,}3614$.`, R`$P(X \ge 2) = 1 - e^{-1{,}2}(1 + 1{,}2) \approx 1 - 0{,}6626 = 0{,}337$: un mese su tre circa.`] },
     { id: 'es-07', difficolta: 2, testo: R`In una fabbrica ogni pezzo è difettoso con probabilità $0{,}002$, indipendentemente dagli altri. Una scatola contiene $1500$ pezzi. Con l'approssimazione di Poisson, qual è la probabilità che la scatola contenga al massimo un pezzo difettoso?`, suggerimenti: [R`$n$ è grande e $p$ è piccola: $\lambda = np$.`, R`«Al massimo uno» vuol dire $X = 0$ oppure $X = 1$.`], risposta: pr(Math.exp(-3) * 4), soluzione: [R`$\lambda = 1500 \cdot 0{,}002 = 3$.`, R`$P(X \le 1) = e^{-3} + e^{-3} \cdot 3 = 4e^{-3}$.`, R`$4e^{-3} \approx 0{,}199$. La binomiale esatta dà $0{,}1988$: l'approssimazione è ottima.`] },
@@ -619,9 +619,9 @@ c) Calcola $E(X)$.
 d) Calcola la probabilità che $X$ superi la sua media, e commenta il risultato.
 
 Scrivi $k$, $P(X \le 2)$ ed $E(X)$ in quest'ordine, separati da punto e virgola.`, suggerimenti: [R`L'area totale sotto la densità deve valere $1$: $\int_0^3 kx^2\,dx = 1$.`, R`Una primitiva di $kx^2$ è $\frac{k x^3}{3}$. Per la media integra $x \cdot f(x) = kx^3$.`, R`Per d): $P(X > E(X)) = \int_{E(X)}^{3} f(x)\,dx$.`], risposta: { tipo: 'numeri', valori: [1 / 9, 8 / 27, 9 / 4], ordinati: true, tolleranza: 0.005, segnaposto: 'es. 1/3; 0,5; 2', simboli: [';', '/'] }, soluzione: [R`a) $\int_0^3 kx^2\,dx = k\left[\frac{x^3}{3}\right]_0^3 = 9k = 1$, quindi $k = \frac{1}{9}$. Inoltre $f(x) \ge 0$: è davvero una densità.`, R`b) $P(X \le 2) = \frac{1}{9}\left[\frac{x^3}{3}\right]_0^2 = \frac{8}{27} \approx 0{,}296$.`, R`c) $E(X) = \int_0^3 x \cdot \frac{x^2}{9}\,dx = \frac{1}{9}\left[\frac{x^4}{4}\right]_0^3 = \frac{81}{36} = \frac{9}{4} = 2{,}25$.`, R`d) Per $0 \le t \le 3$ vale $P(X \le t) = \frac{t^3}{27}$. Quindi $P(X > 2{,}25) = 1 - \frac{2{,}25^3}{27} = 1 - 0{,}421875 \approx 0{,}578$.`, R`Più di metà della probabilità sta sopra la media. Non è un errore: la densità cresce verso $3$, ed è asimmetrica. La media coincide con il «punto di metà» solo per le distribuzioni simmetriche.`] },
-    { id: 'es-10', difficolta: 2, testo: R`Il quoziente d'intelligenza segue una normale con $\mu = 100$ e $\sigma = 15$. Qual è la probabilità che una persona scelta a caso abbia un QI maggiore di $130$? Sulla tavola $\Phi(2) = 0{,}9772$.`, suggerimenti: [R`Standardizza $130$.`, R`Ti serve l'area a destra: $1 - \Phi(z)$.`], risposta: pr(0.0228), soluzione: [R`$z = \frac{130 - 100}{15} = 2$.`, R`$P(X > 130) = P(Z > 2) = 1 - 0{,}9772 = 0{,}0228$: circa $2$ persone su $100$.`] },
-    { id: 'es-11', difficolta: 3, testo: R`I punteggi di un test seguono una normale con $\mu = 65$ e $\sigma = 10$. Si premia il $5\%$ dei punteggi più alti. Da quale punteggio parte il premio? Sulla tavola $\Phi(1{,}645) \approx 0{,}95$.`, suggerimenti: [R`Sopra la soglia deve restare un'area di $0{,}05$, quindi a sinistra $0{,}95$.`, R`Trova $z$, poi torna a $X$ con $x = \mu + z\sigma$.`], risposta: val(81.45, 0.1), soluzione: [R`Cerco $z$ con $\Phi(z) = 0{,}95$: sulla tavola $z \approx 1{,}645$.`, R`$x = 65 + 1{,}645 \cdot 10 = 81{,}45$.`, R`Il premio parte da circa $81{,}5$ punti.`] },
-    { id: 'es-12', difficolta: 3, testo: R`Un test ha $10$ domande, ognuna con $4$ risposte di cui una sola giusta. Si supera con almeno $6$ risposte giuste. Qual è la probabilità di superarlo rispondendo a caso?`, suggerimenti: [R`$X \sim B(10, p)$ con $p = \frac{1}{4}$.`, R`$P(X \ge 6) = P(6) + P(7) + P(8) + P(9) + P(10)$.`, R`$P(6) = \binom{10}{6} \cdot 0{,}25^6 \cdot 0{,}75^4 \approx 0{,}0162$.`], risposta: Object.assign(pr(0.019727706909179688), { tolleranza: 0.001 }), soluzione: [R`$P(6) \approx 0{,}01622$, $\ P(7) \approx 0{,}00309$, $\ P(8) \approx 0{,}00039$.`, R`$P(9)$ e $P(10)$ sono minori di $0{,}00003$.`, R`$P(X \ge 6) \approx 0{,}0197$: circa $2$ volte su $100$. Rispondere a caso non conviene.`] }
+    { id: 'es-10', difficolta: 2, testo: R`Il quoziente d'intelligenza segue una normale con $\mu = 100$ e $\sigma = 15$. Qual è la probabilità che una persona scelta a caso abbia un QI maggiore di $130$? Sulla tavola $\Phi(2) = 0{,}9772$.`, suggerimenti: [R`Standardizza $130$.`, R`Ti serve l'area a destra: $1 - \Phi(z)$.`], risposta: pr(0.0228), soluzione: [R`$z = \frac{130 - 100}{15} = 2$.`, R`$P(X > 130) = P(Z > 2) = 1 - 0{,}9772 = 0{,}0228$: circa $2$ persone su $100$.`] },
+    { id: 'es-11', difficolta: 3, testo: R`I punteggi di un test seguono una normale con $\mu = 65$ e $\sigma = 10$. Si premia il $5\%$ dei punteggi più alti. Da quale punteggio parte il premio? Sulla tavola $\Phi(1{,}645) \approx 0{,}95$.`, suggerimenti: [R`Sopra la soglia deve restare un'area di $0{,}05$, quindi a sinistra $0{,}95$.`, R`Trova $z$, poi torna a $X$ con $x = \mu + z\sigma$.`], risposta: val(81.45, 0.1), soluzione: [R`Cerco $z$ con $\Phi(z) = 0{,}95$: sulla tavola $z \approx 1{,}645$.`, R`$x = 65 + 1{,}645 \cdot 10 = 81{,}45$.`, R`Il premio parte da circa $81{,}5$ punti.`] },
+    { id: 'es-12', difficolta: 3, testo: R`Un test ha $10$ domande, ognuna con $4$ risposte di cui una sola giusta. Si supera con almeno $6$ risposte giuste. Qual è la probabilità di superarlo rispondendo a caso?`, suggerimenti: [R`$X \sim B(10, p)$ con $p = \frac{1}{4}$.`, R`$P(X \ge 6) = P(6) + P(7) + P(8) + P(9) + P(10)$.`, R`$P(6) = \binom{10}{6} \cdot 0{,}25^6 \cdot 0{,}75^4 \approx 0{,}0162$.`], risposta: Object.assign(pr(0.019727706909179688), { tolleranza: 0.001 }), soluzione: [R`$P(6) \approx 0{,}01622$, $\ P(7) \approx 0{,}00309$, $\ P(8) \approx 0{,}00039$.`, R`$P(9)$ e $P(10)$ sono minori di $0{,}00003$.`, R`$P(X \ge 6) \approx 0{,}0197$: circa $2$ volte su $100$. Rispondere a caso non conviene.`] }
   ],
 
   quiz: [
@@ -630,7 +630,7 @@ Scrivi $k$, $P(X \le 2)$ ed $E(X)$ in quest'ordine, separati da punto e virgola.
     { id: 'q-03', domanda: R`Il numero di teste in tre lanci ha $E(X) = 1{,}5$. Che cosa vuol dire?`, opzioni: [R`Su molte serie di tre lanci, le teste sono in media $1{,}5$`, R`In ogni serie di tre lanci escono una oppure due teste`, R`$1{,}5$ è il numero di teste più probabile in una serie di lanci`, R`In metà delle serie escono più di una testa e mezza`], corretta: 0, spiegazione: R`Il valore atteso è una media su tante ripetizioni. Non dice che cosa succede in una serie: si può avere anche $0$ o $3$ teste. E $1{,}5$ teste non escono mai, quindi non può essere il valore più probabile.` },
     { id: 'q-04', domanda: R`Il valore atteso di una variabile discreta è sempre uno dei suoi valori?`, opzioni: [R`Sì, è il valore che esce più spesso`, R`Sì, se la distribuzione è simmetrica rispetto alla media`, R`No, ma solo per le variabili continue`, R`No: per esempio con un dado $E(X) = 3{,}5$`], corretta: 3, spiegazione: R`Il valore atteso è un baricentro e può cadere fra due valori. Il dado dà $3{,}5$, che non è una faccia. Anche una distribuzione simmetrica può avere la media fuori dai valori: le tre monete danno $1{,}5$.` },
     { id: 'q-05', domanda: R`Se $E(X) = 4$, quanto vale $E(3X - 2)$?`, opzioni: [R`$12$`, R`$10$`, R`$-2$`, R`$14$`], corretta: 1, spiegazione: R`$E(aX + b) = a\,E(X) + b$, quindi $E(3X - 2) = 3 \cdot 4 - 2 = 10$. $12$ dimentica il $-2$; $14$ lo somma invece di toglierlo.` },
-    { id: 'q-06', domanda: R`Che relazione c'è fra $\text{Var}(X + 5)$ e $\text{Var}(X)$?`, opzioni: [R`Sono uguali`, R`$\text{Var}(X) + 5$`, R`$\text{Var}(X) + 25$`, R`$\text{Var}(X + 5)$ è $5$ volte più grande`], corretta: 0, spiegazione: R`Sommare $5$ sposta tutti i valori e anche la media della stessa quantità. Gli scarti dalla media non cambiano, quindi neanche la varianza. Conta solo un numero che **moltiplica** $X$, e conta al quadrato.` },
+    { id: 'q-06', domanda: R`Che relazione c'è fra $\text{Var}(X + 5)$ e $\text{Var}(X)$?`, opzioni: [R`Sono uguali`, R`$\text{Var}(X) + 5$`, R`$\text{Var}(X) + 25$`, R`$\text{Var}(X + 5)$ è $5$ volte più grande`], corretta: 0, spiegazione: R`Sommare $5$ sposta tutti i valori e anche la media della stessa quantità. Gli scarti dalla media non cambiano, quindi neanche la varianza. Conta solo un numero che **moltiplica** $X$, e conta al quadrato.` },
     { id: 'q-07', domanda: R`Quale uguaglianza dà la varianza di $X$?`, opzioni: [R`$\text{Var}(X) = [E(X)]^2 - E(X^2)$`, R`$\text{Var}(X) = E(X^2)$`, R`$\text{Var}(X) = E(X - \mu)$`, R`$\text{Var}(X) = E(X^2) - [E(X)]^2$`], corretta: 3, spiegazione: R`È la formula rapida: media dei quadrati meno quadrato della media. Al contrario verrebbe un numero negativo o nullo. $E(X - \mu)$ vale sempre $0$, perché gli scarti positivi e negativi si compensano: per questo si elevano al quadrato.` },
     { id: 'q-08', domanda: R`In quale caso il numero di successi **non** è una binomiale?`, opzioni: [R`I $6$ in $10$ lanci di un dado`, R`I rigori segnati su $5$, se ogni rigore entra con probabilità $0{,}8$`, R`Le palline rosse in $3$ estrazioni senza rimessa da un'urna con $4$ palline`, R`I pezzi difettosi su $20$, se ognuno lo è con probabilità $0{,}05$ e indipendentemente dagli altri`], corretta: 2, spiegazione: R`Senza rimessa, con un'urna piccola, la probabilità di pescare rosso cambia dopo ogni estrazione: le prove non sono indipendenti. Negli altri casi le prove sono indipendenti e $p$ è sempre la stessa.` },
     { id: 'q-09', domanda: R`Per una binomiale $B(n, p)$, che cosa si può dire di varianza e media?`, opzioni: [R`La varianza non supera mai la media`, R`Sono sempre uguali`, R`La varianza è sempre il quadrato della media`, R`La varianza supera sempre la media`], corretta: 0, spiegazione: R`$\text{Var}(X) = np(1-p) = E(X) \cdot (1-p)$, e $1 - p$ sta fra $0$ e $1$. Quindi la varianza è minore o uguale alla media. Varianza uguale alla media è la proprietà della Poisson.` },

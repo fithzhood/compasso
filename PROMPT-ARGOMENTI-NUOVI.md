@@ -37,6 +37,20 @@ agenti). Non toccare video, `compasso-video.js`, `compasso.js`, `compasso-grafic
 `HANDOFF*.md`, `strumenti/`, altri argomenti. Niente git, niente pubblicazione. Risposta (max 200 parole): sezioni,
 numeri (esempi, flashcard, esercizi base/avanzati, quiz, aneddoti), dove sono i video, controlli, limiti del motore, dubbi.
 
+## Ritocchi a pagine esistenti (28/10)
+
+Come il § Costruttore, ma su un argomento **che c'è già**: aggiungi le sezioni, i riquadri e gli esempi indicati nelle
+note (le righe di `COPERTURA-PROGRAMMI-2.md` citate), senza riscrivere quello che c'è. Prima leggi il file intero: molti
+buchi hanno già un video citato e due righe intorno; lì si amplia la trattazione attorno al video, che resta dov'è o si
+sposta nella sezione nuova. Stesso tono, simboli e densità della pagina. Per ogni sezione nuova: teoria con almeno un
+esempio svolto (derivazioni `~` se servono), 2–3 flashcard, 4–6 esercizi base e 1–2 avanzati (con `sezione:` giusto),
+2–3 quiz; per un riquadro o un esempio basta il testo e un esercizio. Le sezioni nuove vanno anche negli `esempi` e nel
+`formulario` se hanno formule. Gli id esistenti non cambiano (sono nei progressi degli studenti). Formule in display
+che a 384 px scorrerebbero di lato (due formule affiancate con `\qquad`): una per riga con `\begin{gathered} … \\ …
+\end{gathered}`. Numero e unità uniti con lo spazio non separabile vero (carattere U+00A0, i file sono String.raw).
+Controlli come nel § Costruttore (leggibilità solo sulle parti nuove, verifica-argomento, compatibilita), al massimo
+4 foto. Risposta (max 150 parole): che cosa hai aggiunto e dove, numeri, controlli, dubbi.
+
 ## Revisore
 
 Sei il revisore a contesto fresco di `argomenti/ARG.js` (nuovo). Non l'hai scritto tu; **non modifichi nessun file**.

@@ -441,10 +441,10 @@ Anche la somma di infiniti termini è un limite: quello della somma dei primi $n
   ],
 
   formulario: [
-    { nome: 'Intorni', formula: R`\Iaa{x_0-\delta}{x_0+\delta}, \qquad \Iaa{M}{+\infty}, \qquad \Iaa{-\infty}{-M}`, nota: R`Intorno di $x_0$, di $+\infty$ e di $-\infty$ rispettivamente, con $\delta>0$ e $M$ grande a piacere.` },
-    { nome: 'Limite finito per x → x₀', formula: R`\forall \varepsilon>0\ \exists\,\delta>0:\ 0<|x-x_0|<\delta \Rightarrow |f(x)-L|<\varepsilon` },
-    { nome: 'Limite infinito per x → x₀', formula: R`\forall M>0\ \exists\,\delta>0:\ 0<|x-x_0|<\delta \Rightarrow f(x)>M`, nota: R`Analoga per $-\infty$, con $f(x)<-M$.` },
-    { nome: 'Limite per x → ∞', formula: R`\forall \varepsilon>0\ \exists\,N>0:\ |x|>N \Rightarrow |f(x)-L|<\varepsilon`, nota: R`Versione per limite finito; per limite infinito si combina con la definizione precedente.` },
+    { nome: 'Intorni', formula: R`\begin{gathered} \Iaa{x_0-\delta}{x_0+\delta} \\ \Iaa{M}{+\infty}, \qquad \Iaa{-\infty}{-M} \end{gathered}`, nota: R`Intorno di $x_0$, di $+\infty$ e di $-\infty$ rispettivamente, con $\delta>0$ e $M$ grande a piacere.` },
+    { nome: 'Limite finito per x → x₀', formula: R`\begin{gathered} \forall \varepsilon>0\ \exists\,\delta>0: \\ 0<|x-x_0|<\delta \Rightarrow |f(x)-L|<\varepsilon \end{gathered}` },
+    { nome: 'Limite infinito per x → x₀', formula: R`\begin{gathered} \forall M>0\ \exists\,\delta>0: \\ 0<|x-x_0|<\delta \Rightarrow f(x)>M \end{gathered}`, nota: R`Analoga per $-\infty$, con $f(x)<-M$.` },
+    { nome: 'Limite per x → ∞', formula: R`\begin{gathered} \forall \varepsilon>0\ \exists\,N>0: \\ |x|>N \Rightarrow |f(x)-L|<\varepsilon \end{gathered}`, nota: R`Versione per limite finito; per limite infinito si combina con la definizione precedente.` },
     { nome: 'Somma dei limiti', formula: R`\lim (f\pm g) = \lim f \pm \lim g` },
     { nome: 'Prodotto dei limiti', formula: R`\lim (f\cdot g) = \lim f \cdot \lim g` },
     { nome: 'Quoziente dei limiti', formula: R`\lim \frac{f}{g} = \frac{\lim f}{\lim g}`, nota: R`Vale se $\lim g \ne 0$.` },

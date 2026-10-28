@@ -12,15 +12,15 @@ $$\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}$$
 
 Sono i naturali, gli interi, i razionali e i reali. Il simbolo $\subset$ si legge «è contenuto in».
 
-Qui trovi anche gli strumenti per calcolare con questi numeri: le **potenze**, la **notazione scientifica**, il **valore assoluto**, i **numeri primi** con MCD e mcm.`,
+Qui trovi anche gli strumenti per calcolare con questi numeri: le **frazioni** e le **percentuali**, le **potenze**, la **notazione scientifica**, il **valore assoluto**, i **numeri primi** con MCD e mcm.`,
 
   inBreve: [
-    R`Ogni insieme nuovo risolve un'equazione che prima non aveva soluzione: $x + 5 = 3$ chiede i negativi, $2x = 3$ chiede le frazioni.`,
-    R`Un numero sta nel **più piccolo** insieme che lo contiene. $\dfrac{6}{2} = 3$ è un intero, anche se è scritto come frazione.`,
+    R`Ogni insieme nuovo risolve un'equazione che prima non aveva soluzione: $x + 5 = 3$ chiede i negativi, $2x = 3$ chiede le frazioni. Un numero sta nel **più piccolo** insieme che lo contiene: $\dfrac{6}{2} = 3$ è un intero.`,
     R`Decimali limitati e periodici sono frazioni, quindi razionali. Un decimale infinito senza periodo, come $\sqrt{2}$ o $\pi$, è irrazionale.`,
+    R`Le frazioni si sommano solo con lo stesso denominatore: il **denominatore comune** è il mcm dei denominatori. $\dfrac{1}{2} + \dfrac{1}{3} = \dfrac{5}{6}$, non $\dfrac{2}{5}$.`,
+    R`Aumenti e sconti sono moltiplicazioni: $+20\%$ è per $1{,}2$, $-20\%$ è per $0{,}8$. Le variazioni di fila si moltiplicano: $+20\%$ e poi $-20\%$ fanno $-4\%$.`,
     R`Con la **stessa base**, nel prodotto gli esponenti si sommano. E $a^{-n} = \dfrac{1}{a^n}$: l'esponente negativo dà il reciproco, non un numero negativo.`,
-    R`$|x|$ è la distanza di $x$ da zero: non è mai negativo.`,
-    R`MCD: fattori primi comuni, con l'esponente più piccolo. mcm: tutti i fattori, con l'esponente più grande.`
+    R`$|x|$ è la distanza di $x$ da zero: non è mai negativo. MCD: fattori primi comuni, con l'esponente più piccolo. mcm: tutti i fattori, con l'esponente più grande.`
   ],
 
   sezioni: [
@@ -38,9 +38,7 @@ $$\mathbb{Q} = \left\{ \frac{m}{n} \ \middle|\ m, n \in \mathbb{Z},\ n \ne 0 \ri
 
 Si legge: le frazioni $\dfrac{m}{n}$ con $m$ e $n$ interi e $n$ diverso da zero. Con le frazioni puoi sempre dividere, tranne per $0$.
 
-Per sommare due frazioni, prima si porta tutto allo stesso denominatore.
-
-[[video:insiemi-numerici/frazioni]]
+Come si sommano, si moltiplicano e si dividono le frazioni lo vedi nella sezione «Calcolare con le frazioni».
 
 | insieme | che cosa aggiunge | equazione che risolve |
 |---|---|---|
@@ -89,10 +87,10 @@ Su una retta fissa lo $0$, un verso e un'unità di misura. Ogni numero reale ha 
 
 Un periodico può essere semplice o misto:
 
-| periodico | com'è fatto | esempio |
+| periodico | esempio | com'è fatto |
 |---|---|---|
-| semplice | il periodo parte subito dopo la virgola | $0{,}\overline{3}$ |
-| misto | prima del periodo ci sono cifre che non si ripetono: l'**antiperiodo** | $0{,}1\overline{6}$: antiperiodo $1$, periodo $6$ |
+| semplice | $0{,}\overline{3}$ | il periodo parte subito |
+| misto | $0{,}1\overline{6}$ | prima l'**antiperiodo** $1$, che non si ripete, poi il periodo $6$ |
 
 Che decimale otterrai?
 
@@ -111,9 +109,7 @@ Che decimale otterrai?
 
 Un decimale limitato è facile: $0{,}25 = \dfrac{25}{100} = \dfrac{1}{4}$. Sotto metti un $1$ con tanti zeri quante le cifre dopo la virgola. Poi semplifica.
 
-Anche una percentuale è una frazione con denominatore $100$: $20\% = \dfrac{20}{100}$.
-
-[[video:insiemi-numerici/percentuali]]
+Anche una percentuale è una frazione con denominatore $100$: $20\% = \dfrac{20}{100} = 0{,}2$.
 
 Anche un periodico viene da una frazione: la sua **frazione generatrice**. Per trovarla, fai sparire il periodo con una sottrazione:
 
@@ -132,6 +128,149 @@ Da qui viene la regola del formulario.
 >* Ogni decimale limitato o periodico è una frazione, quindi è razionale. Un decimale infinito **senza** periodo non lo è.
 
 >! $0{,}\overline{9}$ non è «quasi $1$». Con la regola, $0{,}\overline{9} = \dfrac{9}{9} = 1$: è lo stesso numero scritto in due modi.` },
+
+    { id: 'calcolo-frazioni', titolo: 'Calcolare con le frazioni', testo: R`Mezza torta più un terzo di torta: quanta torta hai? I due pezzi hanno misure diverse. Prima di contarli insieme, vanno tagliati in fette uguali.
+
+[[video:insiemi-numerici/frazioni]]
+
+Se moltiplichi numeratore e denominatore per lo stesso numero, la frazione non cambia valore: $\dfrac{1}{2} = \dfrac{3}{6}$. È lo stesso pezzo di torta, tagliato in fette più piccole. Così due frazioni si portano allo stesso denominatore.
+
+### Confrontare due frazioni
+
+Con lo stesso denominatore vince il numeratore più grande: $\dfrac{5}{7} > \dfrac{3}{7}$. Con denominatori diversi, prima portale allo stesso denominatore. Per $\dfrac{2}{3}$ e $\dfrac{3}{5}$ il denominatore comune è $15$:
+
+$$\dfrac{2}{3} = \dfrac{10}{15} > \dfrac{9}{15} = \dfrac{3}{5}$$
+
+### Somma e differenza
+
+>* Per sommare o sottrarre due frazioni, portale allo stesso denominatore: il **minimo comune multiplo** dei denominatori. Poi somma o sottrai i numeratori. Il denominatore resta quello comune.
+
+Il mcm si trova scomponendo i denominatori in fattori primi, come nella sezione su MCD e mcm.
+
+~ \dfrac{5}{6} + \dfrac{3}{4} :: denominatori diversi: $6 = 2 \cdot 3$ e $4 = 2^2$
+~ \text{mcm}(6, 4) = 2^2 \cdot 3 = \evid{12} :: tutti i fattori, ognuno con l'esponente più grande
+~ \dfrac{\evid{10}}{12} + \dfrac{\evid{9}}{12} :: $12 : 6 = 2$, quindi $5 \cdot 2 = 10$; $12 : 4 = 3$, quindi $3 \cdot 3 = 9$
+~ \dfrac{10 + 9}{12} = \evidb{\dfrac{19}{12}} :: sommo i numeratori; il denominatore resta $12$
+
+Funziona anche il prodotto dei denominatori, $24$. Ma i numeri crescono, e alla fine devi semplificare.
+
+>! $\dfrac{1}{2} + \dfrac{1}{3}$ non fa $\dfrac{2}{5}$. «Sopra con sopra, sotto con sotto» dà $\dfrac{2}{5} = 0{,}4$: meno della sola metà, $0{,}5$. Aggiungendo un numero positivo non si può calare. Il conto giusto è $\dfrac{3}{6} + \dfrac{2}{6} = \dfrac{5}{6}$.
+
+?? Quanto fa $\dfrac{1}{4} + \dfrac{1}{4}$?
+[x] $\dfrac{1}{2}$
+[ ] $\dfrac{2}{8}$
+[ ] $\dfrac{1}{16}$
+=> Stesso denominatore: si sommano solo i numeratori, $\dfrac{2}{4} = \dfrac{1}{2}$. La trappola è $\dfrac{2}{8}$: vale $\dfrac{1}{4}$, come se il secondo quarto non ci fosse. $\dfrac{1}{16}$ è il prodotto, non la somma.
+
+### Prodotto
+
+>* $\dfrac{a}{b} \cdot \dfrac{c}{d} = \dfrac{a \cdot c}{b \cdot d}$: numeratori con numeratori, denominatori con denominatori. Qui il denominatore comune non serve.
+
+Prima di moltiplicare conviene **semplificare in croce**: il numeratore di una frazione con il denominatore dell'altra.
+
+~ \dfrac{4}{9} \cdot \dfrac{15}{8} :: cerco fattori comuni fra un numeratore e un denominatore
+~ \dfrac{\evid{1}}{9} \cdot \dfrac{15}{\evid{2}} :: $4$ e $8$ si dividono per $4$: restano $1$ e $2$
+~ \dfrac{1}{\evid{3}} \cdot \dfrac{\evid{5}}{2} :: $15$ e $9$ si dividono per $3$: restano $5$ e $3$
+~ \dfrac{1 \cdot 5}{3 \cdot 2} = \evidb{\dfrac{5}{6}} :: numeri piccoli, e il risultato è già ridotto
+
+>! Si semplifica solo fra **fattori**, mai fra addendi. In $\dfrac{3 + 5}{3}$ il $3$ non si cancella: vale $\dfrac{8}{3}$, non $5$. E in una somma come $\dfrac{2}{3} + \dfrac{3}{4}$ non si semplifica in croce.
+
+### Quoziente
+
+Quante mezze pizze ci sono in $3$ pizze? Sei: $3 : \dfrac{1}{2} = 3 \cdot 2 = 6$. Dividere per $\dfrac{1}{2}$ vuol dire moltiplicare per $2$.
+
+>* Per dividere per una frazione, moltiplica per la sua **inversa**, cioè la frazione capovolta. Lo zero non ha inversa: non si divide per $0$.
+
+$$\dfrac{a}{b} : \dfrac{c}{d} = \dfrac{a}{b} \cdot \dfrac{d}{c}$$
+
+Per esempio $\dfrac{3}{4} : \dfrac{9}{8} = \dfrac{3}{4} \cdot \dfrac{8}{9} = \dfrac{2}{3}$, semplificando in croce.
+
+### Potenze
+
+Per elevare a potenza una frazione, elevi numeratore e denominatore:
+
+$$\left(\dfrac{2}{3}\right)^3 = \dfrac{2^3}{3^3} = \dfrac{8}{27}$$
+
+Con l'esponente negativo la frazione si capovolge, come nella sezione sulle potenze.
+
+>! Il segno meno conta come con gli interi. $\left(-\dfrac{1}{2}\right)^2 = \dfrac{1}{4}$, ma $-\left(\dfrac{1}{2}\right)^2 = -\dfrac{1}{4}$: senza parentesi il meno non viene elevato.
+
+### Espressioni
+
+L'ordine è quello di sempre. Prima le parentesi: tonde, poi quadre, poi graffe. Dentro, prima le potenze, poi moltiplicazioni e divisioni, infine somme e sottrazioni.
+
+~ \left(\dfrac{3}{4} - \dfrac{1}{2}\right)^2 : \dfrac{1}{8} + \dfrac{1}{2} :: si comincia dalla parentesi
+~ \left(\evid{\dfrac{1}{4}}\right)^2 : \dfrac{1}{8} + \dfrac{1}{2} :: $\dfrac{3}{4} - \dfrac{2}{4} = \dfrac{1}{4}$
+~ \evid{\dfrac{1}{16}} : \dfrac{1}{8} + \dfrac{1}{2} :: poi la potenza: $1^2 = 1$ e $4^2 = 16$
+~ \evid{\dfrac{1}{16} \cdot 8} + \dfrac{1}{2} :: la divisione viene prima della somma: moltiplico per l'inversa di $\dfrac{1}{8}$
+~ \dfrac{1}{2} + \dfrac{1}{2} = \evidb{1} :: $\dfrac{8}{16} = \dfrac{1}{2}$; per ultima, la somma` },
+
+    { id: 'rapporti-percentuali', titolo: 'Rapporti, proporzioni e percentuali', testo: R`In una classe ci sono $12$ ragazze e $18$ ragazzi. Il **rapporto** fra ragazze e ragazzi è $\dfrac{12}{18} = \dfrac{2}{3}$: ogni $2$ ragazze ci sono $3$ ragazzi.
+
+>* Il **rapporto** fra due numeri $a$ e $b$, con $b \ne 0$, è il loro quoziente: $a : b$, cioè $\dfrac{a}{b}$.
+
+### Proporzioni
+
+Una **proporzione** è un'uguaglianza fra due rapporti, $a : b = c : d$. Si legge «$a$ sta a $b$ come $c$ sta a $d$». I termini $a$ e $d$ sono gli **estremi**, $b$ e $c$ i **medi**. Per esempio $2 : 3 = 12 : 18$, perché i due rapporti valgono entrambi $\dfrac{2}{3}$.
+
+>* **Proprietà fondamentale:** in ogni proporzione il prodotto dei medi è uguale al prodotto degli estremi. Da $a : b = c : d$ segue $b \cdot c = a \cdot d$.
+
+Controllo sull'esempio: $3 \cdot 12$ e $2 \cdot 18$ fanno entrambi $36$.
+
+La proprietà serve a trovare un termine che non conosci. Per $4$ persone servono $300$ g di pasta: quanta ne serve per $6$?
+
+~ 4 : 300 = 6 : x :: persone e grammi, nello stesso ordine nei due rapporti
+~ 4 \cdot x = 300 \cdot 6 :: prodotto degli estremi uguale al prodotto dei medi
+~ x = \dfrac{1800}{4} = \evidb{450} :: divido per $4$: servono $450$ g
+
+>! L'ordine conta. Se nel primo rapporto metti persone e grammi, nel secondo metti ancora persone e grammi. Con $4 : 300 = x : 6$ verrebbe $x = 0{,}08$: un numero senza senso. Va bene anche $4 : 6 = 300 : x$: persone con persone, grammi con grammi.
+
+### Percentuali
+
+>* Una **percentuale** è una frazione con denominatore $100$: $p\% = \dfrac{p}{100}$. Il $15\%$ di $80$ € è $\dfrac{15}{100} \cdot 80 = 12$ €.
+
+Alcune percentuali sono frazioni semplici, da ricordare.
+
+| percentuale | frazione | decimale |
+|---|---|---|
+| $50\%$ | $\dfrac{1}{2}$ | $0{,}5$ |
+| $25\%$ | $\dfrac{1}{4}$ | $0{,}25$ |
+| $20\%$ | $\dfrac{1}{5}$ | $0{,}2$ |
+| $10\%$ | $\dfrac{1}{10}$ | $0{,}1$ |
+
+Che percentuale è una parte? Fai la frazione e portala a denominatore $100$. Per esempio $9$ su $36$ è $\dfrac{9}{36} = \dfrac{1}{4} = \dfrac{25}{100}$, cioè il $25\%$.
+
+### Aumenti e sconti
+
+Un prezzo sale del $20\%$: al $100\%$ del prezzo si aggiunge il $20\%$. Diventa il $120\%$, cioè si moltiplica per $1{,}2$. Uno sconto del $20\%$ lascia l'$80\%$: si moltiplica per $0{,}8$.
+
+| variazione | resta il | fattore |
+|---|---|---|
+| aumento del $20\%$ | $120\%$ | $1{,}2$ |
+| sconto del $20\%$ | $80\%$ | $0{,}8$ |
+| aumento del $p\%$ | $({100 + p})\%$ | $1 + \dfrac{p}{100}$ |
+| sconto del $p\%$ | $({100 - p})\%$ | $1 - \dfrac{p}{100}$ |
+
+Una felpa da $45$ € scontata del $30\%$ costa $45 \cdot 0{,}7 = 31{,}50$ €. Basta un prodotto, senza calcolare lo sconto a parte.
+
+### Un aumento e uno sconto di fila
+
+[[video:insiemi-numerici/percentuali]]
+
+Una giacca da $100$ € aumenta del $20\%$, poi cala del $20\%$. Torna a $100$ €?
+
+~ 100 \cdot 1{,}2 = \evid{120} :: l'aumento: il $20\%$ di $100$, cioè $20$ euro in più
+~ 120 \cdot 0{,}8 = \evid{96} :: lo sconto si prende sul prezzo nuovo: il $20\%$ di $120$, cioè $24$ euro in meno
+~ 1{,}2 \cdot 0{,}8 = \evidb{0{,}96} :: in tutto si moltiplica per $0{,}96$: il prezzo cala del $4\%$
+
+>! $+20\%$ e $-20\%$ non si annullano: il secondo $20\%$ si prende su una base più grande. Le variazioni di fila si moltiplicano, non si sommano.
+
+?? Un prezzo sale del $10\%$, poi ancora del $10\%$. Di quanto è salito in tutto?
+[ ] del $20\%$
+[x] del $21\%$
+[ ] dell'$11\%$
+[ ] del $10\%$
+=> $1{,}1 \cdot 1{,}1 = 1{,}21$: il prezzo è il $121\%$ di quello iniziale. Il secondo aumento si calcola sul prezzo già aumentato, quindi è un po' più grande del primo. Il $20\%$ viene sommando le percentuali.` },
 
     { id: 'densita-completezza', titolo: 'Densità di Q e non completezza', testo: R`Fra i naturali $3$ e $4$ non c'è nessun altro naturale. Con le frazioni è diverso. Fra due frazioni diverse ce n'è sempre un'altra: la loro **media**.
 
@@ -240,7 +379,7 @@ Con le sole potenze di $2$ si scrivono tutti i numeri naturali: è il sistema **
 
 [[video:insiemi-numerici/binario]]` },
 
-    { id: 'notazione-scientifica', titolo: 'Notazione scientifica e ordine di grandezza', testo: R`Il Sole è lontano circa $150\,000\,000$ km. Un atomo misura circa $0{,}00000005$ mm. Con le potenze di $10$ li scrivi senza contare gli zeri: $1{,}5 \times 10^8$ km e $5 \times 10^{-8}$ mm.
+    { id: 'notazione-scientifica', titolo: 'Notazione scientifica e ordine di grandezza', testo: R`Il Sole è lontano circa $150\,000\,000$ km. Un atomo misura circa $0{,}0000001$ mm. Con le potenze di $10$ li scrivi senza contare gli zeri: $1{,}5 \times 10^8$ km e $1 \times 10^{-7}$ mm.
 
 >* **Notazione scientifica:** un numero scritto come $a \times 10^n$, con $n$ intero e $1 \le |a| < 10$. Vuol dire: prima della virgola c'è **una sola cifra**, diversa da zero. $a$ si chiama coefficiente.
 
@@ -274,7 +413,24 @@ L'**ordine di grandezza** è la potenza di $10$ più vicina al numero. Serve per
 
 Attento al secondo esempio: dopo $10^{-4}$ viene $10^{-3}$, perché $-3$ è più grande di $-4$.
 
->! $34{,}6 \times 10^4$ vale $346\,000$, ma non è notazione scientifica: prima della virgola ci sono due cifre. La forma giusta è $3{,}46 \times 10^5$.` },
+>! $34{,}6 \times 10^4$ vale $346\,000$, ma non è notazione scientifica: prima della virgola ci sono due cifre. La forma giusta è $3{,}46 \times 10^5$.
+
+### Arrotondare e approssimare
+
+Spesso non servono tutte le cifre. Per un conto pratico, $\dfrac{2}{3} = 0{,}666\dots$ diventa $0{,}67$. Ci sono due modi di accorciare un numero.
+
+- **Troncare** a due decimali: si buttano le cifre dopo la seconda. $0{,}666\dots$ diventa $0{,}66$.
+- **Arrotondare** a due decimali: si guarda la terza cifra. Da $5$ in su, la seconda sale di uno; sotto il $5$ resta com'è. $0{,}666\dots$ diventa $0{,}67$, e $3{,}14159$ diventa $3{,}14$.
+
+Le **cifre significative** si contano dalla prima cifra diversa da zero. In $0{,}00340$ sono tre: $3$, $4$ e lo zero finale. Gli zeri iniziali servono solo a mettere la virgola. In notazione scientifica si vedono subito: $3{,}40 \times 10^{-3}$.
+
+>* **Errore assoluto:** la distanza fra il valore vero $v$ e quello approssimato $\tilde{v}$, cioè $|v - \tilde{v}|$. **Errore relativo:** l'errore assoluto diviso $|v|$. Moltiplicato per $100$ diventa l'errore percentuale.
+
+Con $\pi \approx 3{,}14$ l'errore assoluto è circa $0{,}0016$. Quello relativo è $0{,}0016$ diviso $\pi \approx 3{,}14$: circa $0{,}0005$, cioè lo $0{,}05\%$.
+
+L'errore relativo dice quanto pesa lo sbaglio. Sbagliare di $1$ cm su un banco di $50$ cm è il $2\%$. Su un campo di $100$ m, lo stesso centimetro è lo $0{,}01\%$.
+
+>! Conta solo la cifra subito dopo l'ultima che tieni. $2{,}449$ a un decimale fa $2{,}4$. Arrotondare a tappe, prima $2{,}45$ e poi $2{,}5$, è sbagliato. E nei conti lunghi arrotonda solo alla fine.` },
 
     { id: 'valore-assoluto', titolo: 'Il valore assoluto', testo: R`Quanto è lontano $-5$ da zero? Cinque passi a sinistra. E $5$? Cinque passi a destra. La distanza è la stessa.
 
@@ -390,6 +546,19 @@ Il **massimo comun divisore** (MCD) è il numero più grande che divide tutti e 
       R`Semplifico: $375 = 3 \cdot 5^3$ e $900 = 2^2 \cdot 3^2 \cdot 5^2$ hanno in comune $3 \cdot 5^2 = 75$. Divido sopra e sotto per $75$ e ottengo $\dfrac{5}{12}$. Controllo: $5 : 12 = 0{,}41666\dots$ ✓`
     ], risultato: R`$\dfrac{5}{12}$` },
 
+    { titolo: 'Un\'espressione con le frazioni', problema: R`Calcola $\left(\dfrac{2}{3} + \dfrac{1}{6}\right) : \dfrac{5}{4} - \dfrac{1}{3}$.`, passi: [
+      R`Prima la parentesi. Il mcm di $3$ e $6$ è $6$: $\dfrac{4}{6} + \dfrac{1}{6} = \dfrac{5}{6}$.`,
+      R`Poi la divisione, che viene prima della sottrazione. Si moltiplica per l'inversa di $\dfrac{5}{4}$: $\dfrac{5}{6} \cdot \dfrac{4}{5} = \dfrac{4}{6} = \dfrac{2}{3}$, semplificando il $5$ in croce.`,
+      R`Infine la sottrazione, che ha già lo stesso denominatore: $\dfrac{2}{3} - \dfrac{1}{3} = \dfrac{1}{3}$.`
+    ], risultato: R`$\dfrac{1}{3}$` },
+
+    { titolo: 'Due sconti di fila', problema: R`Un paio di scarpe costa $80$ €. In saldo è scontato del $25\%$. Alla cassa c'è un altro $10\%$ di sconto sul prezzo già scontato. Quanto paghi? Lo sconto totale è del $35\%$?`, passi: [
+      R`Primo sconto: resta il $75\%$, quindi $80 \cdot 0{,}75 = 60$ €.`,
+      R`Secondo sconto, sul prezzo nuovo: resta il $90\%$, quindi $60 \cdot 0{,}9 = 54$ €.`,
+      R`In tutto il prezzo è moltiplicato per $0{,}75 \cdot 0{,}9 = 0{,}675$: resta il $67{,}5\%$.`,
+      R`Lo sconto totale è $100\% - 67{,}5\% = 32{,}5\%$, non $35\%$: il secondo $10\%$ si prende su $60$ €, non su $80$ €. Controllo: $26$ € di sconto su $80$ € sono $\dfrac{26}{80} = 0{,}325$.`
+    ], risultato: R`Paghi $54$ €; lo sconto totale è del $32{,}5\%$, non del $35\%$` },
+
     { titolo: 'Notazione scientifica e ordine di grandezza', problema: R`Scrivi $0{,}0000523$ in notazione scientifica e trova il suo ordine di grandezza.`, passi: [
       R`Si sposta la virgola finché resta una sola cifra non nulla prima di essa: da $0{,}0000523$ a $5{,}23$, spostando la virgola di $5$ posizioni verso destra, quindi l'esponente è $-5$.`,
       R`Notazione scientifica: $5{,}23 \times 10^{-5}$.`,
@@ -407,7 +576,11 @@ Il **massimo comun divisore** (MCD) è il numero più grande che divide tutti e 
   formulario: [
     { nome: 'Frazione generatrice — decimale limitato', formula: R`0{,}\underbrace{a_1 a_2 \dots a_k}_{k \text{ cifre}} = \frac{a_1 a_2 \dots a_k}{10^k}` },
     { nome: 'Frazione generatrice — periodico semplice', formula: R`0{,}\overline{p_1 \dots p_k} = \frac{p_1 \dots p_k}{\underbrace{9 \dots 9}_{k}}`, nota: R`$k$ = numero di cifre del periodo.` },
-    { nome: 'Frazione generatrice — periodico misto', formula: R`0{,}a_1 \dots a_h\overline{p_1 \dots p_k} = \frac{a_1 \dots a_h p_1 \dots p_k - a_1 \dots a_h}{\underbrace{9 \dots 9}_{k}\underbrace{0 \dots 0}_{h}}`, nota: R`$h$ = cifre dell'antiperiodo, $k$ = cifre del periodo.` },
+    { nome: 'Frazione generatrice — periodico misto', formula: R`\begin{gathered} 0{,}a_1 \dots a_h\overline{p_1 \dots p_k} = \\ \frac{a_1 \dots a_h p_1 \dots p_k - a_1 \dots a_h}{\underbrace{9 \dots 9}_{k}\underbrace{0 \dots 0}_{h}} \end{gathered}`, nota: R`$h$ = cifre dell'antiperiodo, $k$ = cifre del periodo.` },
+    { nome: 'Somma di frazioni', formula: R`\frac{a}{b} + \frac{c}{d} = \frac{a \cdot d + b \cdot c}{b \cdot d}`, nota: R`Con il mcm dei denominatori al posto di $b \cdot d$ i numeri restano più piccoli.` },
+    { nome: 'Prodotto e quoziente di frazioni', formula: R`\begin{gathered} \frac{a}{b} \cdot \frac{c}{d} = \frac{a \cdot c}{b \cdot d} \\ \frac{a}{b} : \frac{c}{d} = \frac{a}{b} \cdot \frac{d}{c} \end{gathered}`, nota: R`Denominatori diversi da $0$; nel quoziente anche $c \ne 0$.` },
+    { nome: 'Proprietà fondamentale delle proporzioni', formula: R`a : b = c : d \;\Longrightarrow\; a \cdot d = b \cdot c`, nota: R`Il prodotto degli estremi è uguale al prodotto dei medi.` },
+    { nome: 'Aumento e sconto percentuale', formula: R`\begin{gathered} \text{aumento del } p\%: \; x \cdot \left(1 + \frac{p}{100}\right) \\ \text{sconto del } p\%: \; x \cdot \left(1 - \frac{p}{100}\right) \end{gathered}`, nota: R`Le variazioni di fila si moltiplicano: $+20\%$ e poi $-20\%$ fanno $\cdot\,0{,}96$.` },
     { nome: 'Prodotto di potenze', formula: R`a^m \cdot a^n = a^{m+n}` },
     { nome: 'Quoziente di potenze', formula: R`a^m : a^n = a^{m-n}`, nota: R`Richiede $a \ne 0$.` },
     { nome: 'Potenza di potenza', formula: R`(a^m)^n = a^{m \cdot n}` },
@@ -418,6 +591,7 @@ Il **massimo comun divisore** (MCD) è il numero più grande che divide tutti e 
     { nome: 'Valore assoluto', formula: R`|x| = \begin{cases} x & \text{se } x \ge 0 \\ -x & \text{se } x < 0 \end{cases}` },
     { nome: 'Notazione scientifica', formula: R`a \times 10^n, \qquad 1 \le |a| < 10` },
     { nome: 'Ordine di grandezza', formula: R`10^n \text{ se } a < 5; \qquad 10^{n+1} \text{ se } a \ge 5`, nota: R`Con il numero scritto come $a \times 10^n$.` },
+    { nome: 'Errore assoluto e relativo', formula: R`\begin{gathered} E_a = |v - \tilde{v}| \\ E_r = \frac{|v - \tilde{v}|}{|v|} \end{gathered}`, nota: R`$v$ valore vero, $\tilde{v}$ valore approssimato. $E_r \cdot 100$ è l'errore percentuale.` },
     { nome: 'MCD e mcm', formula: R`\text{MCD}(a, b) \cdot \text{mcm}(a, b) = a \cdot b` }
   ],
 
@@ -445,30 +619,42 @@ Il **massimo comun divisore** (MCD) è il numero più grande che divide tutti e 
     { id: 'fc-21', sezione: 'valore-assoluto', tipo: 'definizione', fronte: R`Valore assoluto $|x|$`, retro: R`La distanza di $x$ da $0$: $|x| = x$ se $x \ge 0$, $|x| = -x$ se $x < 0$. Non è mai negativo.` },
     { id: 'fc-22', sezione: 'numeri-primi-scomposizione', tipo: 'definizione', fronte: R`Numero primo`, retro: R`Naturale maggiore di $1$ con esattamente due divisori: $1$ e se stesso.` },
     { id: 'fc-23', sezione: 'numeri-primi-scomposizione', tipo: 'procedura', fronte: R`MCD dalla scomposizione in fattori primi`, retro: R`Si prendono i fattori primi comuni, ciascuno con l'esponente più piccolo tra i due numeri.` },
-    { id: 'fc-24', sezione: 'numeri-primi-scomposizione', tipo: 'procedura', fronte: R`mcm dalla scomposizione in fattori primi`, retro: R`Si prendono tutti i fattori primi, comuni e non, ciascuno con l'esponente più grande tra i due numeri.` }
+    { id: 'fc-24', sezione: 'numeri-primi-scomposizione', tipo: 'procedura', fronte: R`mcm dalla scomposizione in fattori primi`, retro: R`Si prendono tutti i fattori primi, comuni e non, ciascuno con l'esponente più grande tra i due numeri.` },
+    { id: 'fc-25', sezione: 'calcolo-frazioni', tipo: 'procedura', fronte: R`Somma di due frazioni con denominatori diversi`, retro: R`Si portano allo stesso denominatore, il mcm dei denominatori, e si sommano i numeratori. Es. $\dfrac{1}{2} + \dfrac{1}{3} = \dfrac{3}{6} + \dfrac{2}{6} = \dfrac{5}{6}$.` },
+    { id: 'fc-26', sezione: 'calcolo-frazioni', tipo: 'formula', fronte: R`Quoziente di due frazioni`, retro: R`$\dfrac{a}{b} : \dfrac{c}{d} = \dfrac{a}{b} \cdot \dfrac{d}{c}$: si moltiplica per l'inversa della seconda, con $c \ne 0$.` },
+    { id: 'fc-27', sezione: 'calcolo-frazioni', tipo: 'concetto', fronte: R`Quando si può semplificare in croce?`, retro: R`Solo in un prodotto di frazioni: un numeratore con il denominatore dell'altra. Mai in una somma, mai fra addendi.` },
+    { id: 'fc-28', sezione: 'rapporti-percentuali', tipo: 'formula', fronte: R`Proprietà fondamentale delle proporzioni`, retro: R`In $a : b = c : d$ il prodotto dei medi è uguale al prodotto degli estremi: $b \cdot c = a \cdot d$.` },
+    { id: 'fc-29', sezione: 'rapporti-percentuali', tipo: 'procedura', fronte: R`Aumento o sconto del $p\%$`, retro: R`Si moltiplica per $1 + \dfrac{p}{100}$ (aumento) o per $1 - \dfrac{p}{100}$ (sconto). Es. $+20\%$: per $1{,}2$; $-20\%$: per $0{,}8$.` },
+    { id: 'fc-30', sezione: 'rapporti-percentuali', tipo: 'concetto', fronte: R`$+20\%$ e poi $-20\%$: si torna al prezzo iniziale?`, retro: R`No: $1{,}2 \cdot 0{,}8 = 0{,}96$, il prezzo cala del $4\%$. Il secondo $20\%$ si calcola su una base più grande.` },
+    { id: 'fc-31', sezione: 'notazione-scientifica', tipo: 'definizione', fronte: R`Errore assoluto ed errore relativo`, retro: R`Assoluto: $|v - \tilde{v}|$, fra valore vero e approssimato. Relativo: l'assoluto diviso $|v|$; per $100$ dà l'errore percentuale.` }
   ],
 
   esercizi: [
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Scrivi $\dfrac{3}{5}$ come numero decimale.`, suggerimenti: [R`Dividi il numeratore per il denominatore: $3 : 5$.`], risposta: { tipo: 'testo', accettate: ['0.6', '0,6', '0.60', '.6'], segnaposto: 'es. 0,4' }, soluzione: [R`$3 : 5 = 0{,}6$.`, R`Il decimale è limitato: il denominatore $5$ ha solo il fattore $5$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 1, testo: R`Trova la frazione generatrice di $0{,}\overline{7}$. Scrivila nella forma *a/b*.`, suggerimenti: [R`È un periodico semplice: il periodo è $7$, una cifra.`, R`Sopra il periodo, sotto un $9$ per ogni cifra del periodo.`], risposta: { tipo: 'testo', accettate: ['7/9'], segnaposto: 'es. 2/3' }, soluzione: [R`Periodo $7$, una cifra, nessun antiperiodo.`, R`Numeratore $7$, denominatore $9$: $0{,}\overline{7} = \dfrac{7}{9}$.`] },
+    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Scrivi $0{,}125$ come frazione ridotta ai minimi termini, nella forma *a/b*.`, suggerimenti: [R`Tre cifre dopo la virgola: metti $1000$ sotto.`, R`$125 \cdot 8 = 1000$.`], risposta: { tipo: 'testo', accettate: ['1/8'], segnaposto: 'es. 2/5' }, soluzione: [R`$0{,}125 = \dfrac{125}{1000}$.`, R`Divido sopra e sotto per $125$: $\dfrac{1}{8}$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}\overline{12}$, ridotta ai minimi termini. Scrivila nella forma *a/b*.`, suggerimenti: [R`Il periodo è $12$: due cifre, quindi due $9$ sotto.`, R`$\dfrac{12}{99}$ si semplifica per $3$.`], risposta: { tipo: 'testo', accettate: ['4/33'], segnaposto: 'es. 2/3' }, soluzione: [R`Periodo $12$, due cifre: $0{,}\overline{12} = \dfrac{12}{99}$.`, R`Divido sopra e sotto per $3$: $\dfrac{4}{33}$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}1\overline{6}$, ridotta ai minimi termini. Scrivila nella forma *a/b*.`, suggerimenti: [R`Antiperiodo $1$, periodo $6$: sotto va $90$.`, R`Sopra: $16 - 1$.`], risposta: { tipo: 'testo', accettate: ['1/6'], segnaposto: 'es. 2/3' }, soluzione: [R`Numeratore: le cifre fino al periodo meno l'antiperiodo, $16 - 1 = 15$.`, R`Denominatore: un $9$ per il periodo e uno $0$ per l'antiperiodo, $90$.`, R`$\dfrac{15}{90}$ si semplifica per $15$: $\dfrac{1}{6}$.`] },
+    { id: 'b-22', sezione: 'calcolo-frazioni', livello: 'base', difficolta: 1, testo: R`Calcola $\dfrac{1}{4} + \dfrac{2}{3}$. Scrivi il risultato nella forma *a/b*.`, suggerimenti: [R`Il denominatore comune è il mcm di $4$ e $3$.`, R`$\dfrac{1}{4} = \dfrac{3}{12}$ e $\dfrac{2}{3} = \dfrac{8}{12}$.`], risposta: { tipo: 'numero', valore: 0.916667, tolleranza: 0.0005, segnaposto: 'es. 3/5' }, soluzione: [R`Il mcm di $4$ e $3$ è $12$.`, R`$\dfrac{3}{12} + \dfrac{8}{12} = \dfrac{11}{12}$.`] },
+    { id: 'b-23', sezione: 'calcolo-frazioni', livello: 'base', difficolta: 1, testo: R`Calcola $\dfrac{7}{10} - \dfrac{1}{4}$. Scrivi il risultato nella forma *a/b*.`, suggerimenti: [R`Scomponi i denominatori: $10 = 2 \cdot 5$ e $4 = 2^2$.`, R`Il mcm è $20$, non serve arrivare a $40$.`], risposta: { tipo: 'numero', valore: 0.45, tolleranza: 0.0005, segnaposto: 'es. 3/5' }, soluzione: [R`Il mcm di $10$ e $4$ è $2^2 \cdot 5 = 20$.`, R`$\dfrac{14}{20} - \dfrac{5}{20} = \dfrac{9}{20}$.`] },
+    { id: 'b-24', sezione: 'calcolo-frazioni', livello: 'base', difficolta: 1, testo: R`Calcola $\dfrac{6}{35} \cdot \dfrac{14}{9}$, semplificando in croce. Scrivi il risultato nella forma *a/b*.`, suggerimenti: [R`$6$ e $9$ hanno in comune il $3$.`, R`$14$ e $35$ hanno in comune il $7$.`], risposta: { tipo: 'numero', valore: 0.266667, tolleranza: 0.0005, segnaposto: 'es. 3/5' }, soluzione: [R`In croce: $6$ e $9$ diviso $3$ danno $2$ e $3$; $14$ e $35$ diviso $7$ danno $2$ e $5$.`, R`Resta $\dfrac{2}{5} \cdot \dfrac{2}{3} = \dfrac{4}{15}$.`] },
+    { id: 'b-25', sezione: 'calcolo-frazioni', livello: 'base', difficolta: 1, testo: R`Calcola $\dfrac{5}{8} : \dfrac{15}{4}$. Scrivi il risultato nella forma *a/b*.`, suggerimenti: [R`Dividere per una frazione vuol dire moltiplicare per la sua inversa.`, R`$\dfrac{5}{8} \cdot \dfrac{4}{15}$: ora semplifica in croce.`], risposta: { tipo: 'numero', valore: 0.166667, tolleranza: 0.0005, segnaposto: 'es. 3/5' }, soluzione: [R`$\dfrac{5}{8} : \dfrac{15}{4} = \dfrac{5}{8} \cdot \dfrac{4}{15}$.`, R`In croce: $5$ e $15$ diviso $5$; $4$ e $8$ diviso $4$. Resta $\dfrac{1}{2} \cdot \dfrac{1}{3} = \dfrac{1}{6}$.`] },
+    { id: 'b-26', sezione: 'calcolo-frazioni', livello: 'base', difficolta: 1, testo: R`Calcola $\left(-\dfrac{3}{2}\right)^3$. Scrivi il risultato nella forma *a/b*.`, suggerimenti: [R`Eleva al cubo numeratore e denominatore.`, R`Base negativa ed esponente dispari: il risultato è negativo.`], risposta: { tipo: 'numero', valore: -3.375, tolleranza: 0.0005, segnaposto: 'es. 3/5' }, soluzione: [R`$3^3 = 27$ e $2^3 = 8$.`, R`L'esponente è dispari, quindi il segno resta: $\left(-\dfrac{3}{2}\right)^3 = -\dfrac{27}{8}$.`] },
+    { id: 'b-27', sezione: 'calcolo-frazioni', livello: 'base', difficolta: 2, testo: R`Calcola $2 - \dfrac{3}{4} \cdot \dfrac{2}{9}$. Scrivi il risultato nella forma *a/b*.`, suggerimenti: [R`La moltiplicazione viene prima della sottrazione.`, R`$\dfrac{3}{4} \cdot \dfrac{2}{9} = \dfrac{1}{6}$.`], risposta: { tipo: 'numero', valore: 1.833333, tolleranza: 0.0005, segnaposto: 'es. 3/5' }, soluzione: [R`Prima il prodotto, semplificando in croce: $\dfrac{3}{4} \cdot \dfrac{2}{9} = \dfrac{1}{2} \cdot \dfrac{1}{3} = \dfrac{1}{6}$.`, R`Poi la sottrazione: $2 - \dfrac{1}{6} = \dfrac{12}{6} - \dfrac{1}{6} = \dfrac{11}{6}$.`] },
+    { id: 'b-28', sezione: 'calcolo-frazioni', livello: 'base', difficolta: 2, testo: R`Calcola $\left(\dfrac{2}{5} + \dfrac{1}{2}\right) : \dfrac{3}{10}$.`, suggerimenti: [R`Prima la parentesi: il denominatore comune è $10$.`, R`Poi moltiplica per l'inversa di $\dfrac{3}{10}$.`], risposta: { tipo: 'numero', valore: 3 }, soluzione: [R`Parentesi: $\dfrac{4}{10} + \dfrac{5}{10} = \dfrac{9}{10}$.`, R`Divisione: $\dfrac{9}{10} \cdot \dfrac{10}{3} = \dfrac{9}{3} = 3$.`] },
+    { id: 'b-29', sezione: 'rapporti-percentuali', livello: 'base', difficolta: 1, testo: R`Quanto è il $35\%$ di $60$?`, suggerimenti: [R`Il $35\%$ è $\dfrac{35}{100}$.`, R`Calcola $\dfrac{35}{100} \cdot 60$, oppure $0{,}35 \cdot 60$.`], risposta: { tipo: 'numero', valore: 21 }, soluzione: [R`$35\% = 0{,}35$.`, R`$0{,}35 \cdot 60 = 21$.`] },
+    { id: 'b-30', sezione: 'rapporti-percentuali', livello: 'base', difficolta: 1, testo: R`Trova $x$ nella proporzione $3 : 8 = x : 24$.`, suggerimenti: [R`Prodotto dei medi uguale al prodotto degli estremi.`, R`$8 \cdot x = 3 \cdot 24$.`], risposta: { tipo: 'numero', valore: 9 }, soluzione: [R`Medi: $8$ e $x$. Estremi: $3$ e $24$. Quindi $8x = 3 \cdot 24 = 72$.`, R`$x = \dfrac{72}{8} = 9$.`] },
+    { id: 'b-31', sezione: 'rapporti-percentuali', livello: 'base', difficolta: 1, testo: R`Su $75$ biglietti venduti, $27$ sono ridotti. Che percentuale dei biglietti è ridotta?`, suggerimenti: [R`Scrivi la frazione $\dfrac{27}{75}$ e semplificala.`, R`$\dfrac{27}{75} = \dfrac{9}{25}$: quanto fa su $100$?`], risposta: { tipo: 'numero', valore: 36, segnaposto: 'es. 30 %' }, soluzione: [R`$\dfrac{27}{75} = \dfrac{9}{25}$, semplificando per $3$.`, R`$\dfrac{9}{25} = \dfrac{36}{100}$: è il $36\%$.`] },
+    { id: 'b-32', sezione: 'rapporti-percentuali', livello: 'base', difficolta: 1, testo: R`Un giubbotto da $120$ € è scontato del $15\%$. Quanto costa ora, in euro?`, suggerimenti: [R`Dopo lo sconto resta l'$85\%$ del prezzo.`, R`Moltiplica $120$ per $0{,}85$.`], risposta: { tipo: 'numero', valore: 102 }, soluzione: [R`Uno sconto del $15\%$ lascia l'$85\%$: si moltiplica per $0{,}85$.`, R`$120 \cdot 0{,}85 = 102$, quindi costa $102$ €.`] },
+    { id: 'b-34', sezione: 'rapporti-percentuali', livello: 'base', difficolta: 2, testo: R`Un abbonamento da $50$ € aumenta del $10\%$. L'anno dopo cala del $10\%$. Quanto costa alla fine, in euro?`, suggerimenti: [R`Il calo del $10\%$ si prende sul prezzo già aumentato.`, R`$50 \cdot 1{,}1 = 55$; poi moltiplica per $0{,}9$.`], risposta: { tipo: 'numero', valore: 49.5 }, soluzione: [R`Aumento: $50 \cdot 1{,}1 = 55$ €.`, R`Calo, sul prezzo nuovo: $55 \cdot 0{,}9 = 49{,}50$ €. Non torna a $50$ €.`] },
     { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Scrivi come una sola potenza: $2^3 \cdot 2^4$. Per l'esponente usa ^: $3^2$ si scrive *3^2*.`, suggerimenti: [R`Stessa base: nel prodotto gli esponenti si sommano.`], risposta: { tipo: 'testo', accettate: ['2^7', '128'], segnaposto: 'es. 2^5' }, soluzione: [R`La base è la stessa, $2$: sommo gli esponenti.`, R`$2^{3 + 4} = 2^7$.`] },
     { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Scrivi come una sola potenza: $5^6 : 5^2$. Per l'esponente usa ^.`, suggerimenti: [R`Stessa base: nel quoziente gli esponenti si sottraggono.`], risposta: { tipo: 'testo', accettate: ['5^4', '625'], segnaposto: 'es. 5^3' }, soluzione: [R`La base è la stessa, $5$: sottraggo gli esponenti.`, R`$5^{6 - 2} = 5^4$.`] },
     { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Scrivi come una sola potenza: $(3^2)^3$. Per l'esponente usa ^.`, suggerimenti: [R`Potenza di potenza: gli esponenti si moltiplicano.`], risposta: { tipo: 'testo', accettate: ['3^6', '729'], segnaposto: 'es. 3^4' }, soluzione: [R`È una potenza di potenza: moltiplico gli esponenti.`, R`$3^{2 \cdot 3} = 3^6$.`] },
-    { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Quanto vale $7^0$?`, suggerimenti: [R`Ogni numero diverso da zero, elevato a $0$, fa sempre lo stesso risultato.`], risposta: { tipo: 'numero', valore: 1 }, soluzione: [R`Per ogni $a \ne 0$ vale $a^0 = 1$.`, R`Quindi $7^0 = 1$.`] },
-    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Quanto vale $2^{-1}$? Scrivi una frazione o un decimale.`, suggerimenti: [R`L'esponente negativo indica il reciproco.`], risposta: { tipo: 'numero', valore: 0.5 }, soluzione: [R`$2^{-1} = \dfrac{1}{2^1}$.`, R`Quindi $2^{-1} = \dfrac{1}{2}$.`] },
-    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Scrivi $0{,}75$ come frazione ridotta ai minimi termini, nella forma *a/b*.`, suggerimenti: [R`Due cifre dopo la virgola: metti $100$ sotto.`, R`$\dfrac{75}{100}$ si semplifica per $25$.`], risposta: { tipo: 'testo', accettate: ['3/4'], segnaposto: 'es. 2/5' }, soluzione: [R`$0{,}75 = \dfrac{75}{100}$.`, R`Divido sopra e sotto per $25$: $\dfrac{3}{4}$.`] },
-    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Scrivi $\dfrac{3}{5}$ come numero decimale.`, suggerimenti: [R`Dividi il numeratore per il denominatore: $3 : 5$.`], risposta: { tipo: 'testo', accettate: ['0.6', '0,6', '0.60', '.6'], segnaposto: 'es. 0,4' }, soluzione: [R`$3 : 5 = 0{,}6$.`, R`Il decimale è limitato: il denominatore $5$ ha solo il fattore $5$.`] },
-    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Calcola $(-2)^3$.`, suggerimenti: [R`Scrivi i tre fattori: $(-2) \cdot (-2) \cdot (-2)$.`, R`Base negativa ed esponente dispari: il risultato è negativo.`], risposta: { tipo: 'numero', valore: -8 }, soluzione: [R`$(-2) \cdot (-2) = 4$.`, R`$4 \cdot (-2) = -8$.`] },
-    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Calcola $-3^2$.`, suggerimenti: [R`Senza parentesi, il meno non è elevato al quadrato.`], risposta: { tipo: 'numero', valore: -9 }, soluzione: [R`La potenza viene prima del meno: $3^2 = 9$.`, R`Poi il meno: $-3^2 = -9$.`] },
     { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Quanto vale $3^{-2}$? Scrivi una frazione.`, suggerimenti: [R`$a^{-n} = \dfrac{1}{a^n}$.`], risposta: { tipo: 'numero', valore: 0.111111, tolleranza: 0.0005, segnaposto: 'es. 1/4' }, soluzione: [R`$3^{-2} = \dfrac{1}{3^2}$.`, R`$3^2 = 9$, quindi $3^{-2} = \dfrac{1}{9}$.`] },
-    { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Calcola $2^3 \cdot 5^3$ senza calcolare le due potenze.`, suggerimenti: [R`Le basi sono diverse, ma l'esponente è lo stesso.`, R`$2^3 \cdot 5^3 = (2 \cdot 5)^3$.`], risposta: { tipo: 'numero', valore: 1000 }, soluzione: [R`Stesso esponente: $2^3 \cdot 5^3 = (2 \cdot 5)^3$.`, R`$(2 \cdot 5)^3 = 10^3 = 1000$.`] },
-    { id: 'b-12', livello: 'base', difficolta: 1, testo: R`$\dfrac{7}{20}$ dà un decimale limitato o periodico? Scrivi *limitato* oppure *periodico*.`, suggerimenti: [R`La frazione è già ridotta. Scomponi il denominatore.`, R`$20 = 2^2 \cdot 5$.`], risposta: { tipo: 'testo', accettate: ['limitato', 'decimale limitato', 'limitata'], segnaposto: 'limitato o periodico' }, soluzione: [R`$\dfrac{7}{20}$ è ridotta: $7$ e $20$ non hanno fattori comuni.`, R`$20 = 2^2 \cdot 5$: solo i fattori $2$ e $5$, quindi il decimale è limitato.`, R`Infatti $7 : 20 = 0{,}35$.`] },
-    { id: 'b-13', livello: 'base', difficolta: 1, testo: R`Trova la frazione generatrice di $0{,}\overline{7}$. Scrivila nella forma *a/b*.`, suggerimenti: [R`È un periodico semplice: il periodo è $7$, una cifra.`, R`Sopra il periodo, sotto un $9$ per ogni cifra del periodo.`], risposta: { tipo: 'testo', accettate: ['7/9'], segnaposto: 'es. 2/3' }, soluzione: [R`Periodo $7$, una cifra, nessun antiperiodo.`, R`Numeratore $7$, denominatore $9$: $0{,}\overline{7} = \dfrac{7}{9}$.`] },
     { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Calcola $\left(\dfrac{1}{2}\right)^{-3}$.`, suggerimenti: [R`L'esponente negativo capovolge la frazione.`, R`$\left(\dfrac{1}{2}\right)^{-3} = 2^3$.`], risposta: { tipo: 'numero', valore: 8 }, soluzione: [R`Capovolgo la frazione e cambio segno all'esponente: $\left(\dfrac{1}{2}\right)^{-3} = \left(\dfrac{2}{1}\right)^3$.`, R`$2^3 = 8$.`] },
-    { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Scrivi $0{,}125$ come frazione ridotta ai minimi termini, nella forma *a/b*.`, suggerimenti: [R`Tre cifre dopo la virgola: metti $1000$ sotto.`, R`$125 \cdot 8 = 1000$.`], risposta: { tipo: 'testo', accettate: ['1/8'], segnaposto: 'es. 2/5' }, soluzione: [R`$0{,}125 = \dfrac{125}{1000}$.`, R`Divido sopra e sotto per $125$: $\dfrac{1}{8}$.`] },
     { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Calcola $5^{-2} \cdot 5^3$.`, suggerimenti: [R`Stessa base: somma gli esponenti, anche se uno è negativo.`], risposta: { tipo: 'numero', valore: 5 }, soluzione: [R`Sommo gli esponenti: $-2 + 3 = 1$.`, R`$5^{-2} \cdot 5^3 = 5^1 = 5$.`] },
-    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}\overline{12}$, ridotta ai minimi termini. Scrivila nella forma *a/b*.`, suggerimenti: [R`Il periodo è $12$: due cifre, quindi due $9$ sotto.`, R`$\dfrac{12}{99}$ si semplifica per $3$.`], risposta: { tipo: 'testo', accettate: ['4/33'], segnaposto: 'es. 2/3' }, soluzione: [R`Periodo $12$, due cifre: $0{,}\overline{12} = \dfrac{12}{99}$.`, R`Divido sopra e sotto per $3$: $\dfrac{4}{33}$.`] },
-    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}1\overline{6}$, ridotta ai minimi termini. Scrivila nella forma *a/b*.`, suggerimenti: [R`Antiperiodo $1$, periodo $6$: sotto va $90$.`, R`Sopra: $16 - 1$.`], risposta: { tipo: 'testo', accettate: ['1/6'], segnaposto: 'es. 2/3' }, soluzione: [R`Numeratore: le cifre fino al periodo meno l'antiperiodo, $16 - 1 = 15$.`, R`Denominatore: un $9$ per il periodo e uno $0$ per l'antiperiodo, $90$.`, R`$\dfrac{15}{90}$ si semplifica per $15$: $\dfrac{1}{6}$.`] },
-    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Calcola $\dfrac{2^5 \cdot 2^{-2}}{2^3}$.`, suggerimenti: [R`Prima il numeratore: stessa base, somma gli esponenti.`, R`Poi il quoziente: sottrai gli esponenti.`], risposta: { tipo: 'numero', valore: 1 }, soluzione: [R`Numeratore: $2^5 \cdot 2^{-2} = 2^{5 - 2} = 2^3$.`, R`Quoziente: $\dfrac{2^3}{2^3} = 2^{3 - 3} = 2^0$.`, R`$2^0 = 1$.`] },
     { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Calcola $(2^{-1})^3 \cdot 2^5$.`, suggerimenti: [R`Prima la potenza di potenza: moltiplica gli esponenti.`, R`$(2^{-1})^3 = 2^{-3}$. Poi somma gli esponenti.`], risposta: { tipo: 'numero', valore: 4 }, soluzione: [R`Potenza di potenza: $(2^{-1})^3 = 2^{-1 \cdot 3} = 2^{-3}$.`, R`Prodotto con la stessa base: $2^{-3} \cdot 2^5 = 2^{-3 + 5} = 2^2$.`, R`$2^2 = 4$.`] },
+    { id: 'b-35', sezione: 'notazione-scientifica', livello: 'base', difficolta: 2, testo: R`Tronchi $0{,}125$ a due decimali e ottieni $0{,}12$. Qual è l'errore relativo, in percentuale?`, suggerimenti: [R`L'errore assoluto è $0{,}125 - 0{,}12$.`, R`Dividi l'errore assoluto per il valore vero, $0{,}125$, poi moltiplica per $100$.`], risposta: { tipo: 'numero', valore: 4, segnaposto: 'es. 2 %' }, soluzione: [R`Errore assoluto: $0{,}125 - 0{,}12 = 0{,}005$.`, R`Errore relativo: $\dfrac{0{,}005}{0{,}125} = 0{,}04$, cioè il $4\%$.`] },
 
     { id: 'es-01', difficolta: 1, testo: R`Qual è il più piccolo fra gli insiemi $\mathbb{N}$, $\mathbb{Z}$, $\mathbb{Q}$ che contiene $-\dfrac{9}{3}$? Rispondi con una lettera: N, Z oppure Q.`, suggerimenti: [R`Prima semplifica la frazione.`, R`$-\dfrac{9}{3} = -3$: è un numero negativo, quindi non può essere naturale.`], risposta: { tipo: 'testo', accettate: ['z', 'zeta', 'interi'] }, soluzione: [R`$-\dfrac{9}{3} = -3$, un numero intero negativo.`, R`Non è naturale (è negativo), ma è intero: il più piccolo insieme che lo contiene è $\mathbb{Z}$.`] },
     { id: 'es-02', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}\overline{45}$, ridotta ai minimi termini.`, suggerimenti: [R`È un periodico semplice: niente antiperiodo.`, R`Numeratore = il periodo $45$; denominatore = tanti $9$ quante le cifre del periodo.`], risposta: { tipo: 'numero', valore: 0.454545, tolleranza: 0.0005 }, soluzione: [R`$0{,}\overline{45} = \dfrac{45}{99}$.`, R`Dividendo per $9$: $\dfrac{5}{11}$.`] },
@@ -481,7 +667,11 @@ Il **massimo comun divisore** (MCD) è il numero più grande che divide tutti e 
     { id: 'es-09', difficolta: 2, testo: R`Scomponi in fattori primi il numero $360$.`, suggerimenti: [R`Dividi ripetutamente per $2$, poi per $3$, poi per gli altri primi.`, R`$360 = 8 \cdot 45 = 2^3 \cdot 45$.`], risposta: { tipo: 'testo', accettate: ['2^3*3^2*5', '2^3 * 3^2 * 5', '2³·3²·5', '2^3×3^2×5', '2^3*3^2*5^1'] }, soluzione: [R`$360 = 2 \cdot 180 = 2^2 \cdot 90 = 2^3 \cdot 45$.`, R`$45 = 3^2 \cdot 5$, quindi $360 = 2^3 \cdot 3^2 \cdot 5$.`] },
     { id: 'es-10', difficolta: 2, testo: R`Calcola il MCD e il mcm di $36$ e $60$.`, suggerimenti: [R`Scomponi entrambi in fattori primi.`, R`$36 = 2^2 \cdot 3^2$, $60 = 2^2 \cdot 3 \cdot 5$: quali fattori sono comuni?`], risposta: { tipo: 'numeri', valori: [12, 180] }, soluzione: [R`$36 = 2^2 \cdot 3^2$, $60 = 2^2 \cdot 3 \cdot 5$.`, R`MCD: fattori comuni con esponente minimo, $2^2 \cdot 3 = 12$.`, R`mcm: tutti i fattori con esponente massimo, $2^2 \cdot 3^2 \cdot 5 = 180$.`] },
     { id: 'es-11', difficolta: 3, testo: R`Spiega, ripercorrendo l'idea della dimostrazione vista in questo argomento, perché non esiste nessun numero razionale $\dfrac{p}{q}$ (ridotto ai minimi termini) tale che $\left(\dfrac{p}{q}\right)^2 = 2$.`, suggerimenti: [R`Parti supponendo per assurdo che un tale $\dfrac{p}{q}$ esista, ridotto ai minimi termini.`, R`Da $p^2 = 2q^2$ deduci che $p$ deve essere pari, poi scrivi $p = 2k$.`, R`Sostituendo troverai che anche $q$ deve essere pari: dov'è l'assurdo?`], soluzione: [R`Se $\left(\dfrac{p}{q}\right)^2 = 2$ con $\dfrac{p}{q}$ ridotta ai minimi termini, allora $p^2 = 2q^2$: $p^2$ è pari, quindi $p$ è pari (il quadrato di un dispari è dispari). Si scrive $p = 2k$.`, R`Sostituendo: $4k^2 = 2q^2$, cioè $q^2 = 2k^2$: con lo stesso ragionamento, anche $q$ è pari.`, R`Ma $p$ e $q$ non possono essere entrambi pari, perché la frazione era ridotta ai minimi termini: è un assurdo, quindi un tale $\dfrac{p}{q}$ non esiste. Questo è esattamente il motivo per cui $\sqrt{2}$ è irrazionale.`] },
-    { id: 'es-12', difficolta: 3, testo: R`Trova due numeri razionali distinti compresi tra $0{,}3$ e $0{,}31$, e spiega perché in realtà se ne possono trovare infiniti.`, suggerimenti: [R`Pensa ai numeri decimali con più cifre dopo la virgola: tra $0{,}30$ e $0{,}31$ ci sono anche $0{,}301$, $0{,}302$, ...`, R`Per avere infiniti numeri, ripeti il procedimento della media tra due numeri già trovati.`], soluzione: [R`Per esempio $0{,}301$ e $0{,}305$ sono entrambi compresi tra $0{,}3$ e $0{,}31$.`, R`Presi due razionali qualsiasi in quell'intervallo, la loro media è ancora un razionale nello stesso intervallo (o in un intervallo ancora più piccolo dentro di esso): ripetendo il procedimento senza fine si trovano sempre nuovi razionali. È proprio la densità di $\mathbb{Q}$.`] }
+    { id: 'es-12', difficolta: 3, testo: R`Trova due numeri razionali distinti compresi tra $0{,}3$ e $0{,}31$, e spiega perché in realtà se ne possono trovare infiniti.`, suggerimenti: [R`Pensa ai numeri decimali con più cifre dopo la virgola: tra $0{,}30$ e $0{,}31$ ci sono anche $0{,}301$, $0{,}302$, ...`, R`Per avere infiniti numeri, ripeti il procedimento della media tra due numeri già trovati.`], soluzione: [R`Per esempio $0{,}301$ e $0{,}305$ sono entrambi compresi tra $0{,}3$ e $0{,}31$.`, R`Presi due razionali qualsiasi in quell'intervallo, la loro media è ancora un razionale nello stesso intervallo (o in un intervallo ancora più piccolo dentro di esso): ripetendo il procedimento senza fine si trovano sempre nuovi razionali. È proprio la densità di $\mathbb{Q}$.`] },
+    { id: 'es-13', sezione: 'calcolo-frazioni', difficolta: 2, testo: R`Calcola $\left[\left(\dfrac{1}{2} + \dfrac{1}{3}\right) \cdot \dfrac{6}{5} - \dfrac{1}{2}\right]^2 : \dfrac{1}{8}$.`, suggerimenti: [R`Lavora dalla parentesi tonda verso l'esterno.`, R`$\dfrac{1}{2} + \dfrac{1}{3} = \dfrac{5}{6}$, e $\dfrac{5}{6} \cdot \dfrac{6}{5} = 1$.`, R`Nella quadra resta $1 - \dfrac{1}{2}$: elevalo al quadrato, poi dividi per $\dfrac{1}{8}$.`], risposta: { tipo: 'numero', valore: 2 }, soluzione: [R`Tonda: $\dfrac{3}{6} + \dfrac{2}{6} = \dfrac{5}{6}$.`, R`Quadra: $\dfrac{5}{6} \cdot \dfrac{6}{5} - \dfrac{1}{2} = 1 - \dfrac{1}{2} = \dfrac{1}{2}$.`, R`Potenza: $\left(\dfrac{1}{2}\right)^2 = \dfrac{1}{4}$.`, R`Divisione: $\dfrac{1}{4} : \dfrac{1}{8} = \dfrac{1}{4} \cdot 8 = 2$.`] },
+    { id: 'es-14', sezione: 'calcolo-frazioni', difficolta: 2, testo: R`Marta spende $\dfrac{1}{3}$ dei suoi soldi per un libro. Poi spende $\dfrac{2}{5}$ di quello che le resta per il cinema. Che frazione dei soldi iniziali le rimane?`, suggerimenti: [R`Dopo il libro le restano i $\dfrac{2}{3}$ dei soldi.`, R`Il cinema costa $\dfrac{2}{5}$ di $\dfrac{2}{3}$, cioè $\dfrac{2}{5} \cdot \dfrac{2}{3}$.`, R`In alternativa: del resto le rimangono i $\dfrac{3}{5}$.`], risposta: { tipo: 'numero', valore: 0.4, tolleranza: 0.0005, segnaposto: 'es. 1/7' }, soluzione: [R`Dopo il libro le restano $1 - \dfrac{1}{3} = \dfrac{2}{3}$ dei soldi.`, R`Per il cinema spende $\dfrac{2}{5}$ di questi: le rimangono i $\dfrac{3}{5}$ di $\dfrac{2}{3}$.`, R`$\dfrac{3}{5} \cdot \dfrac{2}{3} = \dfrac{2}{5}$. Attenzione: $1 - \dfrac{1}{3} - \dfrac{2}{5}$ è sbagliato, perché i $\dfrac{2}{5}$ non sono dei soldi iniziali.`] },
+    { id: 'es-15', sezione: 'rapporti-percentuali', difficolta: 2, testo: R`Dopo uno sconto del $20\%$ una bicicletta costa $240$ €. Quanto costava prima dello sconto, in euro?`, suggerimenti: [R`$240$ € sono l'$80\%$ del prezzo di prima, non il $100\%$.`, R`Se $p \cdot 0{,}8 = 240$, quanto vale $p$?`], risposta: { tipo: 'numero', valore: 300 }, soluzione: [R`Il prezzo scontato è il prezzo di prima per $0{,}8$: $p \cdot 0{,}8 = 240$.`, R`$p = \dfrac{240}{0{,}8} = 300$ €.`, R`Aggiungere il $20\%$ a $240$ € darebbe $288$ €: sbagliato, perché lo sconto era calcolato su $300$ €, non su $240$ €.`] },
+    { id: 'es-16', sezione: 'rapporti-percentuali', difficolta: 3, testo: R`Un'azione perde il $20\%$ del suo valore. Di quale percentuale deve salire per tornare al valore di partenza?`, suggerimenti: [R`Dopo il calo vale $0{,}8$ volte il valore iniziale.`, R`Cerca il numero $k$ tale che $0{,}8 \cdot k = 1$.`], risposta: { tipo: 'numero', valore: 25, segnaposto: 'es. 15 %' }, soluzione: [R`Dopo il calo il valore è moltiplicato per $0{,}8$.`, R`Per tornare all'inizio serve un fattore $k$ con $0{,}8 \cdot k = 1$: $k = \dfrac{1}{0{,}8} = 1{,}25$.`, R`Moltiplicare per $1{,}25$ è un aumento del $25\%$, non del $20\%$: si parte da una base più piccola.`] }
   ],
 
   quiz: [
@@ -499,7 +689,13 @@ Il **massimo comun divisore** (MCD) è il numero più grande che divide tutti e 
     { id: 'q-12', domanda: R`Il valore assoluto $|x|$ rappresenta…`, opzioni: [R`il quadrato di $x$`, R`la distanza di $x$ dallo zero sulla retta reale`, R`l'opposto di $x$`, R`la parte intera di $x$`], corretta: 1, spiegazione: R`$|x|$ misura quanto $x$ è lontano da $0$, indipendentemente dal segno: per questo non è mai negativo.` },
     { id: 'q-13', domanda: R`Se $x < 0$, quanto vale $|x|$?`, opzioni: [R`$x$`, R`$-x$`, R`$0$`, R`$x^2$`], corretta: 1, spiegazione: R`Per $x < 0$ la definizione di valore assoluto dà $|x| = -x$, che in questo caso è un numero positivo.` },
     { id: 'q-14', domanda: R`Un numero primo è…`, opzioni: [R`un numero naturale dispari`, R`un numero naturale maggiore di $1$ con esattamente due divisori, $1$ e se stesso`, R`un numero naturale che non è multiplo di $2$`, R`qualunque numero naturale maggiore di $10$`], corretta: 1, spiegazione: R`La definizione richiede esattamente due divisori distinti: per questo il numero $1$, che ha un solo divisore, non è considerato primo.` },
-    { id: 'q-15', domanda: R`Scomponendo $a = 2^2 \cdot 3$ e $b = 2 \cdot 3^2 \cdot 5$ in fattori primi, come si calcola il MCD$(a,b)$?`, opzioni: [R`Prendendo tutti i fattori, comuni e non, con l'esponente massimo`, R`Prendendo solo i fattori comuni, con l'esponente minimo tra i due`, R`Moltiplicando semplicemente $a$ per $b$`, R`Prendendo solo i fattori non comuni`], corretta: 1, spiegazione: R`Il MCD usa solo i fattori primi comuni a entrambi i numeri, ciascuno con l'esponente più basso: qui $2^1 \cdot 3^1 = 6$. La regola con l'esponente massimo, su tutti i fattori, è quella del mcm.` }
+    { id: 'q-15', domanda: R`Scomponendo $a = 2^2 \cdot 3$ e $b = 2 \cdot 3^2 \cdot 5$ in fattori primi, come si calcola il MCD$(a,b)$?`, opzioni: [R`Prendendo tutti i fattori, comuni e non, con l'esponente massimo`, R`Prendendo solo i fattori comuni, con l'esponente minimo tra i due`, R`Moltiplicando semplicemente $a$ per $b$`, R`Prendendo solo i fattori non comuni`], corretta: 1, spiegazione: R`Il MCD usa solo i fattori primi comuni a entrambi i numeri, ciascuno con l'esponente più basso: qui $2^1 \cdot 3^1 = 6$. La regola con l'esponente massimo, su tutti i fattori, è quella del mcm.` },
+    { id: 'q-16', domanda: R`Per dividere una frazione per $\dfrac{c}{d}$, con $c \ne 0$…`, opzioni: [R`si capovolge la prima frazione e la si moltiplica per la seconda`, R`si dividono fra loro i numeratori e si tiene il denominatore`, R`si moltiplica la prima frazione per $\dfrac{d}{c}$`, R`si porta tutto allo stesso denominatore e si sottrae`], corretta: 2, spiegazione: R`Dividere per $\dfrac{c}{d}$ equivale a moltiplicare per la sua inversa $\dfrac{d}{c}$: per esempio $3 : \dfrac{1}{2} = 3 \cdot 2 = 6$. Si capovolge la frazione per cui si divide, non l'altra. Il denominatore comune serve per somme e differenze.` },
+    { id: 'q-17', domanda: R`In quale di questi calcoli si può semplificare il $3$ di un numeratore con il $3$ di un denominatore?`, opzioni: [R`$\dfrac{3 + 4}{3}$`, R`$\dfrac{2}{3} + \dfrac{3}{4}$`, R`$\dfrac{5}{3} - \dfrac{3}{7}$`, R`$\dfrac{3}{5} \cdot \dfrac{7}{3}$`], corretta: 3, spiegazione: R`Si semplifica solo fra fattori, cioè in un prodotto: $\dfrac{3}{5} \cdot \dfrac{7}{3} = \dfrac{7}{5}$. In $\dfrac{3 + 4}{3}$ il $3$ di sopra è un addendo: la frazione vale $\dfrac{7}{3}$. Nelle somme e nelle differenze di frazioni non si semplifica in croce.` },
+    { id: 'q-18', domanda: R`Perché $\dfrac{1}{4} + \dfrac{1}{5} = \dfrac{2}{9}$ è sbagliato?`, opzioni: [R`$\dfrac{2}{9}$ è meno di $\dfrac{1}{4}$, eppure si è aggiunto un numero positivo`, R`$\dfrac{2}{9}$ non è ridotta ai minimi termini`, R`bisognava moltiplicare i denominatori e sommare i numeratori`, R`il risultato giusto è $\dfrac{2}{20}$`], corretta: 0, spiegazione: R`$\dfrac{2}{9} \approx 0{,}22$ è meno del solo $\dfrac{1}{4} = 0{,}25$: aggiungendo $\dfrac{1}{5}$ non si può calare. Il conto giusto passa dal denominatore comune: $\dfrac{5}{20} + \dfrac{4}{20} = \dfrac{9}{20}$. $\dfrac{2}{9}$ è già ridotta; $\dfrac{2}{20}$ viene proprio dalla regola sbagliata di moltiplicare i denominatori e sommare i numeratori.` },
+    { id: 'q-19', domanda: R`Nella proporzione $a : b = c : d$, quale uguaglianza è sempre vera?`, opzioni: [R`$a \cdot b = c \cdot d$`, R`$a + d = b + c$`, R`$a \cdot c = b \cdot d$`, R`$a \cdot d = b \cdot c$`], corretta: 3, spiegazione: R`È la proprietà fondamentale: il prodotto degli estremi, $a$ e $d$, è uguale a quello dei medi, $b$ e $c$. Con $2 : 3 = 12 : 18$ si ha $2 \cdot 18 = 3 \cdot 12 = 36$. Le altre falliscono già qui: $2 \cdot 3 \ne 12 \cdot 18$, $2 + 18 \ne 3 + 12$, $2 \cdot 12 \ne 3 \cdot 18$.` },
+    { id: 'q-20', domanda: R`Un prezzo sale del $20\%$ e poi scende del $20\%$. Rispetto al prezzo iniziale, alla fine è…`, opzioni: [R`uguale`, R`più basso del $4\%$`, R`più alto del $4\%$`, R`più basso del $20\%$`], corretta: 1, spiegazione: R`Si moltiplica per $1{,}2$ e poi per $0{,}8$: in tutto per $0{,}96$, cioè il $4\%$ in meno. Il secondo $20\%$ si prende sul prezzo già aumentato: toglie più di quanto si era aggiunto. Per questo non torna uguale, e non sale.` },
+    { id: 'q-21', domanda: R`Per applicare uno sconto del $30\%$, il prezzo si moltiplica per…`, opzioni: [R`$0{,}7$`, R`$0{,}3$`, R`$1{,}3$`, R`$0{,}97$`], corretta: 0, spiegazione: R`Dopo lo sconto resta il $70\%$ del prezzo, cioè $\dfrac{70}{100} = 0{,}7$. Moltiplicando per $0{,}3$ si trova lo sconto, non il prezzo nuovo. Per $1{,}3$ è un aumento del $30\%$; per $0{,}97$ uno sconto del $3\%$.` }
   ],
 
   suggerimenti: [
@@ -510,7 +706,9 @@ Il **massimo comun divisore** (MCD) è il numero più grande che divide tutti e 
     { tipo: 'trucco', testo: R`Per trovare velocemente un razionale tra due dati, calcolane la media: funziona sempre, anche se i due numeri sono vicinissimi.` },
     { tipo: 'errore', testo: R`Nella notazione scientifica il coefficiente deve avere una sola cifra non nulla prima della virgola: $34{,}6 \times 10^4$ non è sbagliato come valore, ma non è forma scientifica corretta.` },
     { tipo: 'metodo', testo: R`Per MCD e mcm, scomponi sempre entrambi i numeri in fattori primi prima di ragionare: senza la scomposizione è facile sbagliare a "prendere" i fattori giusti.` },
-    { tipo: 'trucco', testo: R`Controllo lampo su MCD e mcm: il MCD non supera mai il più piccolo dei due numeri, il mcm non è mai inferiore al più grande.` }
+    { tipo: 'trucco', testo: R`Controllo lampo su MCD e mcm: il MCD non supera mai il più piccolo dei due numeri, il mcm non è mai inferiore al più grande.` },
+    { tipo: 'errore', testo: R`$\dfrac{1}{2} + \dfrac{1}{3}$ non fa $\dfrac{2}{5}$: le frazioni si sommano solo dopo averle portate allo stesso denominatore. Controllo lampo: la somma di due frazioni positive supera ciascuna delle due.` },
+    { tipo: 'trucco', testo: R`Aumenti e sconti si fanno con una moltiplicazione: $+15\%$ è per $1{,}15$, $-15\%$ è per $0{,}85$. Due variazioni di fila si moltiplicano, non si sommano.` }
   ],
 
   aneddoti: [

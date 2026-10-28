@@ -87,7 +87,7 @@ Più $h$ è piccolo, più $10 + 5h$ si avvicina a $10$.
 | 0,01 | 10,05 |
 | 0,001 | 10,005 |
 
-La velocità del sasso nell'istante $t = 1$ è il numero a cui si avvicinano: $10$ m/s.
+La velocità del sasso nell'istante $t = 1$ è il numero a cui si avvicinano: $10$ m/s.
 
 >! La velocità media non è quella istantanea. Un'auto può fare $100\ \text{km}$ in un'ora andando piano in città e forte in autostrada. Il tachimetro segna la velocità istantanea.` },
 
@@ -304,7 +304,7 @@ Il prodotto **non** si deriva come la somma. Se prendi $f(x) = g(x) = x$, il pro
 
 **Il differenziale.** Il differenziale di $f$ in $x_0$ è $df = f'(x_0)\,dx$, con $dx$ piccolo ma non nullo. Approssima la variazione vera $f(x_0 + dx) - f(x_0)$ usando la tangente. Più $dx$ è piccolo, meglio funziona.
 
-**Il polinomio di Taylor.** Vicino a $0$ la tangente dà $\sin x \approx x$; aggiungendo termini costruiti con le derivate successive in $0$ si ottengono polinomi che seguono la funzione per un tratto più lungo: $$\sin x \approx x, \qquad \sin x \approx x - \frac{x^3}{6}, \qquad \sin x \approx x - \frac{x^3}{6} + \frac{x^5}{120},$$ con $6 = 3!$ e $120 = 5!$ (sono i polinomi di Taylor centrati in $0$, detti anche di Maclaurin, di grado $1$, $3$ e $5$). È un'approssimazione: in $x = 1$ il grado $5$ vale circa $0{,}84167$ contro $\sin 1 \approx 0{,}84147$, ma lontano da $0$ il polinomio si stacca dal seno.
+**Il polinomio di Taylor.** Vicino a $0$ la tangente dà $\sin x \approx x$; aggiungendo termini costruiti con le derivate successive in $0$ si ottengono polinomi che seguono la funzione per un tratto più lungo: $$\begin{gathered} \sin x \approx x \\ \sin x \approx x - \frac{x^3}{6} \\ \sin x \approx x - \frac{x^3}{6} + \frac{x^5}{120} \end{gathered}$$ con $6 = 3!$ e $120 = 5!$ (sono i polinomi di Taylor centrati in $0$, detti anche di Maclaurin, di grado $1$, $3$ e $5$). È un'approssimazione: in $x = 1$ il grado $5$ vale circa $0{,}84167$ contro $\sin 1 \approx 0{,}84147$, ma lontano da $0$ il polinomio si stacca dal seno.
 
 [[video:derivate/taylor]]` },
 

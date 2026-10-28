@@ -239,7 +239,7 @@ La terza condizione sceglie $a$. Se la parabola passa anche per $(3; 3)$, allora
 
 Se la corda è orizzontale, $h$ è la distanza del vertice dalla corda. Prendi $y = 4 - x^2$ tagliata dall'asse $x$. La corda va da $x = -2$ a $x = 2$, quindi $b = 4$. Il vertice è $(0; 4)$, quindi $h = 4$. L'area è $\dfrac{2}{3} \cdot 4 \cdot 4 = \dfrac{32}{3}$.
 
-?? Un arco parabolico è largo $6$ m alla base e alto $3$ m. Quanto misura l'area sotto l'arco?
+?? Un arco parabolico è largo $6$ m alla base e alto $3$ m. Quanto misura l'area sotto l'arco?
 [x] $12\ \text{m}^2$
 [ ] $9\ \text{m}^2$
 [ ] $18\ \text{m}^2$

@@ -38,7 +38,7 @@ COMPASSO.registra({
   id: 'continuita-asintoti',
   titolo: 'Continuità e asintoti',
 
-  introduzione: R`Un termometro segna $36{,}5$ gradi alle otto e $37{,}8$ alle nove. È passato per $37$? Sì, se la temperatura è salita senza fare salti.
+  introduzione: R`Un termometro segna $36{,}5$ gradi alle otto e $37{,}8$ alle nove. È passato per $37$? Sì, se la temperatura è salita senza fare salti.
 
 «Senza salti» è l'idea di **funzione continua**. Il suo grafico si disegna senza staccare la penna dal foglio.
 
@@ -313,7 +313,7 @@ Esempio: $$f(x) = \begin{cases} x^2 & x \le 1 \\ 2x + k & x > 1 \end{cases}$$
 ~ 2 + k = 1 :: i tre numeri devono essere uguali
 ~ k = \evidb{-1} :: l'unico valore che ricuce i due tratti
 
-Per ogni altro $k$ resta un salto $s = (2 + k) - 1 = 1 + k$. Muovi il cursore $k$: il salto si chiude per un solo valore.
+Per ogni altro $k$ resta un salto $s = (2 + k) - 1 = 1 + k$. Nel grafico il salto si chiude per un solo valore di $k$.
 
 [[grafico:parametroK]]
 
@@ -475,16 +475,16 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
     { nome: 'Continuità in un punto', formula: R`\lim_{x \to x_0} f(x) = f(x_0)`, nota: R`Richiede tre cose insieme: $f(x_0)$ esiste, il limite esiste finito, i due valori coincidono.` },
     { nome: 'Continuità con i limiti laterali', formula: R`\lim_{x \to x_0^-} f(x) = \lim_{x \to x_0^+} f(x) = f(x_0)`, nota: R`È la forma da usare nelle funzioni definite a tratti.` },
     { nome: 'Discontinuità di prima specie (salto)', formula: R`l^- \ne l^+ \ \text{entrambi finiti}, \qquad s = l^+ - l^-`, nota: R`Il numero $s$ è il salto; non si può eliminare ridefinendo $f$.` },
-    { nome: 'Discontinuità di seconda specie', formula: R`l^- = \pm\infty \quad \text{oppure} \quad l^+ = \pm\infty \quad \text{oppure un limite laterale non esiste}` },
-    { nome: 'Discontinuità di terza specie (eliminabile)', formula: R`\lim_{x \to x_0} f(x) = l \ \text{finito}, \quad \text{ma } f(x_0) \ne l \ \text{o non definita}`, nota: R`Si elimina ponendo $f(x_0) = l$: è il prolungamento per continuità.` },
+    { nome: 'Discontinuità di seconda specie', formula: R`\begin{gathered} l^- = \pm\infty \quad \text{oppure} \quad l^+ = \pm\infty \\ \text{oppure un limite laterale non esiste} \end{gathered}` },
+    { nome: 'Discontinuità di terza specie (eliminabile)', formula: R`\begin{gathered} \lim_{x \to x_0} f(x) = l \ \text{finito} \\ \text{ma } f(x_0) \ne l \ \text{o non definita} \end{gathered}`, nota: R`Si elimina ponendo $f(x_0) = l$: è il prolungamento per continuità.` },
     { nome: 'Teorema di Weierstrass', formula: R`f \ \text{continua in} \ \Icc{a}{b} \ \Rightarrow \ \exists \ \max_{\Icc{a}{b}} f \ \text{e} \ \min_{\Icc{a}{b}} f`, nota: R`Servono intervallo chiuso e limitato, e continuità su tutto l'intervallo.` },
-    { nome: 'Teorema degli zeri (Bolzano)', formula: R`f \ \text{continua in} \ \Icc{a}{b}, \ f(a) \cdot f(b) < 0 \ \Rightarrow \ \exists \, c \in \Iaa{a}{b} : f(c) = 0`, nota: R`Garantisce almeno uno zero, non esattamente uno.` },
-    { nome: 'Teorema dei valori intermedi', formula: R`f \ \text{continua in} \ \Icc{a}{b} \ \Rightarrow \ f \ \text{assume ogni valore fra} \ \min f \ \text{e} \ \max f` },
+    { nome: 'Teorema degli zeri (Bolzano)', formula: R`\begin{gathered} f \ \text{continua in} \ \Icc{a}{b}, \ f(a) \cdot f(b) < 0 \\ \Rightarrow \ \exists \, c \in \Iaa{a}{b} : f(c) = 0 \end{gathered}`, nota: R`Garantisce almeno uno zero, non esattamente uno.` },
+    { nome: 'Teorema dei valori intermedi', formula: R`\begin{gathered} f \ \text{continua in} \ \Icc{a}{b} \ \Rightarrow \\ f \ \text{assume ogni valore} \\ \text{fra} \ \min f \ \text{e} \ \max f \end{gathered}` },
     { nome: 'Bisezione: ampiezza dopo n passi', formula: R`\frac{b - a}{2^n}`, nota: R`Prendendo il punto medio come stima, l'errore è al più $\dfrac{b-a}{2^{n+1}}$.` },
-    { nome: 'Asintoto verticale', formula: R`\lim_{x \to c^-} f(x) = \pm\infty \ \ \text{o} \ \ \lim_{x \to c^+} f(x) = \pm\infty \ \Rightarrow \ x = c`, nota: R`Si cerca solo nei punti esclusi dal dominio.` },
+    { nome: 'Asintoto verticale', formula: R`\begin{gathered} \lim_{x \to c^-} f(x) = \pm\infty \ \ \text{o} \ \ \lim_{x \to c^+} f(x) = \pm\infty \\ \Rightarrow \ x = c \end{gathered}`, nota: R`Si cerca solo nei punti esclusi dal dominio.` },
     { nome: 'Asintoto orizzontale', formula: R`\lim_{x \to +\infty} f(x) = q \ \text{finito} \ \Rightarrow \ y = q`, nota: R`Da calcolare separatamente per $x \to +\infty$ e per $x \to -\infty$.` },
-    { nome: 'Asintoto obliquo', formula: R`m = \lim_{x \to \pm\infty} \frac{f(x)}{x}, \qquad q = \lim_{x \to \pm\infty} \big(f(x) - mx\big)`, nota: R`Esiste solo se $m$ è finito e diverso da $0$ e $q$ è finito.` },
-    { nome: 'Asintoti di una funzione razionale fratta', formula: R`\frac{a_n x^n + \ldots}{b_m x^m + \ldots} \ : \quad n < m \Rightarrow y = 0; \quad n = m \Rightarrow y = \frac{a_n}{b_m}; \quad n = m + 1 \Rightarrow \text{obliquo}` }
+    { nome: 'Asintoto obliquo', formula: R`\begin{gathered} m = \lim_{x \to \pm\infty} \frac{f(x)}{x} \\ q = \lim_{x \to \pm\infty} \big(f(x) - mx\big) \end{gathered}`, nota: R`Esiste solo se $m$ è finito e diverso da $0$ e $q$ è finito.` },
+    { nome: 'Asintoti di una funzione razionale fratta', formula: R`\begin{gathered} \frac{a_n x^n + \ldots}{b_m x^m + \ldots} \\ n < m \Rightarrow y = 0 \\ n = m \Rightarrow y = \frac{a_n}{b_m} \\ n = m + 1 \Rightarrow \text{obliquo} \end{gathered}` }
   ],
 
   flashcards: [

@@ -317,7 +317,7 @@ Nel grafico la bandierina piccola ha la punta in $P$, e il rapporto $k$ cambia. 
 
 Con il centro in un punto qualsiasi $(a; b)$ la regola è $(x; y) \to (a + k(x - a); \ b + k(y - b))$.
 
->! Un rapporto negativo non rende negative le lunghezze. Con $k = -3$ un segmento di $2$ cm diventa di $6$ cm. Il segno di $k$ dice da che parte, $|k|$ dice quanto lontano.
+>! Un rapporto negativo non rende negative le lunghezze. Con $k = -3$ un segmento di $2$ cm diventa di $6$ cm. Il segno di $k$ dice da che parte, $|k|$ dice quanto lontano.
 
 >! Se $k \ne 1$ e $k \ne -1$, un'omotetia **non** è un'isometria: le distanze cambiano.
 
@@ -341,12 +341,13 @@ Nel grafico la bandierina piccola subisce un'omotetia di centro $O$ e rapporto $
 
 Come le omotetie, le similitudini conservano gli angoli e i rapporti fra le lunghezze. I perimetri si moltiplicano per $k$, le aree per $k^2$. Ma le rette non vanno sempre in rette parallele: la figura può essere girata.
 
-| proprietà | isometria | omotetia | similitudine |
+| | distanze | angoli | aree |
 |---|---|---|---|
-| distanze | uguali | per $\lvert k \rvert$ | per $k$ |
-| angoli | uguali | uguali | uguali |
-| rette | in rette | in rette parallele | in rette |
-| aree | uguali | per $k^2$ | per $k^2$ |
+| isometria | uguali | uguali | uguali |
+| omotetia | per $\lvert k \rvert$ | uguali | per $k^2$ |
+| similitudine | per $k$ | uguali | per $k^2$ |
+
+Tutte e tre mandano rette in rette. Solo l'omotetia le manda sempre in rette parallele.
 
 Una carta geografica in scala $1 : 25\,000$ è simile al terreno. Su una carta, un bosco occupa $4\ \text{cm}^2$.
 
@@ -637,17 +638,17 @@ Molte trasformazioni con centro nell'origine hanno regole del tipo $(x; y) \to (
 
   formulario: [
     { nome: 'Traslazione di vettore (a; b)', formula: R`(x; y) \to (x + a; \ y + b)`, nota: R`Il vettore è arrivo meno partenza: $\vec{v} = (x_{P'} - x_P; \ y_{P'} - y_P)$.` },
-    { nome: 'Rotazioni di 90° intorno all\'origine', formula: R`+90^\circ: \ (x; y) \to (-y; x) \qquad -90^\circ: \ (x; y) \to (y; -x)`, nota: R`Angolo positivo: senso antiorario.` },
-    { nome: 'Rotazione di angolo α intorno all\'origine', formula: R`(x; y) \to (x\cos\alpha - y\sin\alpha; \ x\sin\alpha + y\cos\alpha)`, nota: R`Serve la goniometria. Con $\alpha = 90^\circ$ ritrovi $(-y; x)$.` },
-    { nome: 'Simmetrie rispetto agli assi', formula: R`\text{asse } x: \ (x; y) \to (x; -y) \qquad \text{asse } y: \ (x; y) \to (-x; y)` },
-    { nome: 'Simmetrie rispetto alle bisettrici', formula: R`y = x: \ (x; y) \to (y; x) \qquad y = -x: \ (x; y) \to (-y; -x)` },
-    { nome: 'Simmetrie rispetto a rette parallele agli assi', formula: R`x = h: \ (x; y) \to (2h - x; \ y) \qquad y = c: \ (x; y) \to (x; \ 2c - y)`, nota: R`Viene dal punto medio: l'asse sta a metà fra $P$ e $P'$.` },
+    { nome: 'Rotazioni di 90° intorno all\'origine', formula: R`\begin{gathered} +90^\circ: \ (x; y) \to (-y; x) \\ -90^\circ: \ (x; y) \to (y; -x) \end{gathered}`, nota: R`Angolo positivo: senso antiorario.` },
+    { nome: 'Rotazione di angolo α intorno all\'origine', formula: R`\begin{gathered} (x; y) \to \\ (x\cos\alpha - y\sin\alpha; \ x\sin\alpha + y\cos\alpha) \end{gathered}`, nota: R`Serve la goniometria. Con $\alpha = 90^\circ$ ritrovi $(-y; x)$.` },
+    { nome: 'Simmetrie rispetto agli assi', formula: R`\begin{gathered} \text{asse } x: \ (x; y) \to (x; -y) \\ \text{asse } y: \ (x; y) \to (-x; y) \end{gathered}` },
+    { nome: 'Simmetrie rispetto alle bisettrici', formula: R`\begin{gathered} y = x: \ (x; y) \to (y; x) \\ y = -x: \ (x; y) \to (-y; -x) \end{gathered}` },
+    { nome: 'Simmetrie rispetto a rette parallele agli assi', formula: R`\begin{gathered} x = h: \ (x; y) \to (2h - x; \ y) \\ y = c: \ (x; y) \to (x; \ 2c - y) \end{gathered}`, nota: R`Viene dal punto medio: l'asse sta a metà fra $P$ e $P'$.` },
     { nome: 'Simmetria centrale di centro (a; b)', formula: R`(x; y) \to (2a - x; \ 2b - y)`, nota: R`Il centro è il punto medio di $PP'$. Con centro nell'origine: $(-x; -y)$.` },
     { nome: 'Omotetia di centro O e rapporto k', formula: R`(x; y) \to (kx; \ ky), \qquad k \ne 0`, nota: R`Con $k = -1$ è la simmetria centrale di centro $O$.` },
     { nome: 'Omotetia di centro (a; b)', formula: R`(x; y) \to (a + k(x - a); \ b + k(y - b))` },
     { nome: 'Lunghezze e aree nell\'omotetia', formula: R`\ell' = |k| \cdot \ell \qquad A' = k^2 \cdot A`, nota: R`Gli angoli non cambiano.` },
     { nome: 'Similitudine di rapporto k', formula: R`P'Q' = k \cdot PQ, \qquad A' = k^2 \cdot A, \qquad k > 0`, nota: R`È un'omotetia seguita da un'isometria. Con $k = 1$ è un'isometria.` },
-    { nome: 'Composizione di due simmetrie assiali', formula: R`\begin{array}{l} \text{assi incidenti con angolo } \alpha: \ \text{rotazione di } 2\alpha \\ \text{assi paralleli a distanza } d: \ \text{traslazione di } 2d \end{array}`, nota: R`La rotazione va nel verso dal primo asse al secondo; la traslazione è perpendicolare agli assi.` }
+    { nome: 'Composizione di due simmetrie assiali', formula: R`\begin{gathered} \text{assi incidenti con angolo } \alpha: \\ \text{rotazione di } 2\alpha \\ \text{assi paralleli a distanza } d: \\ \text{traslazione di } 2d \end{gathered}`, nota: R`La rotazione va nel verso dal primo asse al secondo; la traslazione è perpendicolare agli assi.` }
   ],
   flashcards: [
     { id: 'fc-01', sezione: 'trasformazioni', tipo: 'definizione', fronte: R`Trasformazione geometrica del piano`, retro: R`Una corrispondenza biunivoca fra i punti del piano: a ogni punto $P$ associa un punto $P' = T(P)$, e ogni punto è immagine di uno solo.` },
@@ -691,12 +692,12 @@ Molte trasformazioni con centro nell'origine hanno regole del tipo $(x; y) \to (
     { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Trova il punto unito della trasformazione $(x; y) \to (4 - x; \ 6 - y)$.`, suggerimenti: [R`Imponi che il punto non si muova: $x = 4 - x$ e $y = 6 - y$.`], risposta: cop(2, 3), soluzione: [R`$x = 4 - x$ dà $x = 2$; $y = 6 - y$ dà $y = 3$.`, R`Il punto unito è $(2; 3)$: è la simmetria centrale con quel centro.`] },
     { id: 'b-12', livello: 'base', difficolta: 1, testo: R`Componi la traslazione di vettore $(2; -1)$ con quella di vettore $(-5; 3)$. Trova il vettore della traslazione che ottieni.`, suggerimenti: [R`Due traslazioni in fila danno la traslazione del vettore somma.`], risposta: cop(-3, 2), soluzione: [R`$(2 - 5; \ -1 + 3)$.`, R`Vettore $(-3; 2)$.`] },
     { id: 'b-13', livello: 'base', difficolta: 1, testo: R`Gli assi di due simmetrie si incontrano in un punto e formano un angolo di $25^\circ$. Componendo le due simmetrie si ottiene una rotazione: di quanti gradi?`, suggerimenti: [R`L'angolo della rotazione è il doppio dell'angolo fra gli assi.`], risposta: num(50, 'in gradi'), soluzione: [R`$2 \cdot 25^\circ = 50^\circ$.`, R`Il centro della rotazione è il punto d'incontro degli assi.`] },
-    { id: 'b-14', livello: 'base', difficolta: 1, testo: R`Due rette parallele distano $3$ cm. Componi le simmetrie che hanno quelle rette come assi: di quanti centimetri si sposta ogni punto?`, suggerimenti: [R`Due specchi paralleli danno una traslazione: quanto è lunga?`], risposta: num(6, 'in cm'), soluzione: [R`La traslazione è lunga il doppio della distanza fra gli assi.`, R`$2 \cdot 3 = 6$ cm, in direzione perpendicolare agli assi.`] },
+    { id: 'b-14', livello: 'base', difficolta: 1, testo: R`Due rette parallele distano $3$ cm. Componi le simmetrie che hanno quelle rette come assi: di quanti centimetri si sposta ogni punto?`, suggerimenti: [R`Due specchi paralleli danno una traslazione: quanto è lunga?`], risposta: num(6, 'in cm'), soluzione: [R`La traslazione è lunga il doppio della distanza fra gli assi.`, R`$2 \cdot 3 = 6$ cm, in direzione perpendicolare agli assi.`] },
     { id: 'b-15', livello: 'base', difficolta: 1, testo: R`Trova l'immagine di $(-1; 2)$ nell'omotetia di centro $O$ e rapporto $3$.`, suggerimenti: [R`Con centro nell'origine la regola è $(x; y) \to (kx; ky)$.`], risposta: cop(-3, 6), soluzione: [R`$(3 \cdot (-1); \ 3 \cdot 2)$.`, R`$(-3; 6)$.`] },
     { id: 'b-16', livello: 'base', difficolta: 1, testo: R`Trova l'immagine di $(6; -4)$ nell'omotetia di centro $O$ e rapporto $-\frac{1}{2}$.`, suggerimenti: [R`Moltiplica tutte e due le coordinate per $-\frac{1}{2}$.`], risposta: cop(-3, 2), soluzione: [R`$\left(-\frac{1}{2} \cdot 6; \ -\frac{1}{2} \cdot (-4)\right)$.`, R`$(-3; 2)$: metà distanza da $O$, dalla parte opposta.`] },
-    { id: 'b-17', livello: 'base', difficolta: 1, testo: R`Un segmento lungo $12$ cm subisce un'omotetia di rapporto $-\frac{1}{3}$. Quanto è lungo il segmento immagine, in centimetri?`, suggerimenti: [R`Le lunghezze si moltiplicano per $|k|$, non per $k$.`], risposta: num(4, 'in cm'), soluzione: [R`$|k| = \frac{1}{3}$.`, R`$12 \cdot \frac{1}{3} = 4$ cm. Una lunghezza non è mai negativa.`] },
+    { id: 'b-17', livello: 'base', difficolta: 1, testo: R`Un segmento lungo $12$ cm subisce un'omotetia di rapporto $-\frac{1}{3}$. Quanto è lungo il segmento immagine, in centimetri?`, suggerimenti: [R`Le lunghezze si moltiplicano per $|k|$, non per $k$.`], risposta: num(4, 'in cm'), soluzione: [R`$|k| = \frac{1}{3}$.`, R`$12 \cdot \frac{1}{3} = 4$ cm. Una lunghezza non è mai negativa.`] },
     { id: 'b-18', livello: 'base', difficolta: 1, testo: R`Un triangolo ha area $7$. Qual è l'area della sua immagine nell'omotetia di rapporto $-3$?`, suggerimenti: [R`Le aree si moltiplicano per $k^2$.`], risposta: num(63), soluzione: [R`$k^2 = (-3)^2 = 9$.`, R`$7 \cdot 9 = 63$.`] },
-    { id: 'b-19', livello: 'base', difficolta: 1, testo: R`Due triangoli simili hanno due lati corrispondenti di $4$ cm e $10$ cm. Il primo ha area $6\ \text{cm}^2$. Quanto vale l'area del secondo, in centimetri quadrati?`, suggerimenti: [R`Il rapporto di similitudine è $\frac{10}{4}$.`, R`Le aree si moltiplicano per il quadrato del rapporto.`], risposta: num(37.5, 'in cm²'), soluzione: [R`$k = \frac{10}{4} = 2{,}5$, quindi $k^2 = 6{,}25$.`, R`$6 \cdot 6{,}25 = 37{,}5\ \text{cm}^2$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 1, testo: R`Due triangoli simili hanno due lati corrispondenti di $4$ cm e $10$ cm. Il primo ha area $6\ \text{cm}^2$. Quanto vale l'area del secondo, in centimetri quadrati?`, suggerimenti: [R`Il rapporto di similitudine è $\frac{10}{4}$.`, R`Le aree si moltiplicano per il quadrato del rapporto.`], risposta: num(37.5, 'in cm²'), soluzione: [R`$k = \frac{10}{4} = 2{,}5$, quindi $k^2 = 6{,}25$.`, R`$6 \cdot 6{,}25 = 37{,}5\ \text{cm}^2$.`] },
     { id: 'b-20', livello: 'base', difficolta: 1, testo: R`Trova l'equazione dell'immagine della retta $y = 3x + 1$ nella traslazione di vettore $(2; 0)$.`, suggerimenti: [R`Il punto $(x; y)$ arriva da $(x - 2; \ y)$.`, R`Metti $(x - 2; \ y)$ nell'equazione della retta.`], risposta: retta(3, -1, -5), soluzione: [R`$y = 3(x - 2) + 1$.`, R`$y = 3x - 5$: la retta si sposta a destra di $2$, e il termine noto scende di $6$.`] },
 
     { id: 'es-01', difficolta: 2, testo: R`Scrivi la regola della rotazione di $90^\circ$ in senso antiorario intorno a $C(2; 1)$. Poi trova l'immagine di $P(5; 3)$.`, suggerimenti: [R`Lavora sulla freccia da $C$ a $P$: girala di $90^\circ$ e riattaccala a $C$.`, R`La freccia $(x - 2; \ y - 1)$ diventa $(-(y - 1); \ x - 2)$.`], risposta: cop(0, 4), soluzione: [R`Da $C$ a $P$ la freccia è $(x - 2; \ y - 1)$. Girata di $90^\circ$ diventa $(1 - y; \ x - 2)$.`, R`Riattaccata a $C$: $(x; y) \to (3 - y; \ x - 1)$.`, R`$P(5; 3)$ va in $P'(0; 4)$. Controllo: $CP = CP' = \sqrt{13}$, e le frecce $(3; 2)$ e $(-2; 3)$ sono perpendicolari.`] },

@@ -387,7 +387,7 @@ La disequazione dà tutti i numeri fino a $5$. Ma il testo parla di numeri **nat
   ],
 
   formulario: [
-    { nome: 'Simboli di disuguaglianza', formula: R`a < b, \qquad a > b, \qquad a \le b, \qquad a \ge b, \qquad a \ne b`, nota: R`"Minore", "maggiore", "minore o uguale", "maggiore o uguale", "diverso".` },
+    { nome: 'Simboli di disuguaglianza', formula: R`a < b, \quad a > b, \quad a \le b, \quad a \ge b, \quad a \ne b`, nota: R`"Minore", "maggiore", "minore o uguale", "maggiore o uguale", "diverso".` },
     { nome: 'Primo principio di equivalenza', formula: R`a > b \quad\Rightarrow\quad a + c > b + c`, nota: R`Si può sommare o sottrarre lo stesso numero a entrambi i membri: il verso non cambia.` },
     { nome: 'Secondo principio (fattore positivo)', formula: R`a > b, \ \ c > 0 \quad\Rightarrow\quad ac > bc`, nota: R`Moltiplicando o dividendo per un numero positivo il verso resta invariato.` },
     { nome: 'Secondo principio (fattore negativo)', formula: R`a > b, \ \ c < 0 \quad\Rightarrow\quad ac < bc`, nota: R`Moltiplicando o dividendo per un numero negativo il verso si capovolge.` },

@@ -33,7 +33,7 @@ COMPASSO.registra({
   id: 'valore-assoluto-irrazionali',
   titolo: 'Valore assoluto e irrazionali',
 
-  introduzione: R`Una fabbrica taglia barre lunghe $50$ cm. Accetta un errore di $2$ mm, in più o in meno. Quindi una barra lunga $x$ cm va bene se $x$ dista da $50$ al massimo $0{,}2$. Si scrive $|x - 50| \le 0{,}2$.
+  introduzione: R`Una fabbrica taglia barre lunghe $50$ cm. Accetta un errore di $2$ mm, in più o in meno. Quindi una barra lunga $x$ cm va bene se $x$ dista da $50$ al massimo $0{,}2$. Si scrive $|x - 50| \le 0{,}2$.
 
 Il simbolo $|\ |$ è il **valore assoluto**. Misura quanto un numero è lontano da un altro, a destra o a sinistra.
 
@@ -411,16 +411,16 @@ Qui i casi sono due, e si **uniscono**:
   formulario: [
     { nome: 'Definizione di valore assoluto', formula: R`|a| = \begin{cases} a & \text{se } a \ge 0 \\ -a & \text{se } a < 0 \end{cases}` },
     { nome: 'Valore assoluto di un prodotto', formula: R`|a \cdot b| = |a| \cdot |b|`, nota: R`Vale la stessa proprietà per il quoziente, con $b \ne 0$.` },
-    { nome: 'Proprietà fondamentali', formula: R`|a| \ge 0, \qquad |a| = 0 \iff a = 0, \qquad |{-a}| = |a|` },
+    { nome: 'Proprietà fondamentali', formula: R`\begin{gathered} |a| \ge 0, \qquad |{-a}| = |a| \\ |a| = 0 \iff a = 0 \end{gathered}` },
     { nome: 'Quadrato del valore assoluto', formula: R`|a|^2 = a^2, \qquad \sqrt{a^2} = |a|`, nota: R`Questa identità collega il valore assoluto alle equazioni irrazionali: elevare al quadrato «toglie» il modulo.` },
-    { nome: 'Equazione |A| = k', formula: R`|A(x)| = k \ (k>0) \ \Rightarrow\ A(x) = k \ \lor\ A(x) = -k`, nota: R`Impossibile se $k<0$; se $k=0$ si risolve solo $A(x)=0$.` },
-    { nome: 'Equazione |A| = B', formula: R`|A(x)| = B(x) \ \Rightarrow\ A(x)=B(x) \ \lor\ A(x)=-B(x)`, nota: R`Le soluzioni trovate vanno accettate solo se $B(x) \ge 0$.` },
-    { nome: 'Disequazioni rapide (k costante)', formula: R`|A(x)| < k \iff -k<A(x)<k, \qquad |A(x)|>k \iff A(x)<-k \ \lor\ A(x)>k`, nota: R`Valide solo con $k>0$.` },
-    { nome: 'Disequazioni con secondo membro variabile', formula: R`|A(x)|<B(x) \iff \begin{cases} A(x)<B(x) \\ A(x)>-B(x)\end{cases}, \qquad |A(x)|>B(x) \iff A(x)>B(x) \ \lor\ A(x)<-B(x)` },
+    { nome: 'Equazione |A| = k', formula: R`\begin{gathered} |A(x)| = k \ (k>0) \ \Rightarrow \\ A(x) = k \ \lor\ A(x) = -k \end{gathered}`, nota: R`Impossibile se $k<0$; se $k=0$ si risolve solo $A(x)=0$.` },
+    { nome: 'Equazione |A| = B', formula: R`\begin{gathered} |A(x)| = B(x) \ \Rightarrow \\ A(x)=B(x) \ \lor\ A(x)=-B(x) \end{gathered}`, nota: R`Le soluzioni trovate vanno accettate solo se $B(x) \ge 0$.` },
+    { nome: 'Disequazioni rapide (k costante)', formula: R`\begin{gathered} |A(x)| < k \iff -k<A(x)<k \\ |A(x)|>k \iff \\ A(x)<-k \ \lor\ A(x)>k \end{gathered}`, nota: R`Valide solo con $k>0$.` },
+    { nome: 'Disequazioni con secondo membro variabile', formula: R`\begin{gathered} |A(x)|<B(x) \iff \begin{cases} A(x)<B(x) \\ A(x)>-B(x)\end{cases} \\ |A(x)|>B(x) \iff \\ A(x)>B(x) \ \lor\ A(x)<-B(x) \end{gathered}` },
     { nome: 'Equazione irrazionale (indice pari)', formula: R`\sqrt{A(x)} = B(x) \iff \begin{cases} B(x) \ge 0 \\ A(x) = [B(x)]^2 \end{cases}` },
     { nome: 'Equazione irrazionale (indice dispari)', formula: R`\sqrt[3]{A(x)} = B(x) \iff A(x) = [B(x)]^3`, nota: R`Nessuna condizione: il cubo è reversibile su tutto $\mathbb{R}$.` },
     { nome: 'Disequazione √A < B', formula: R`\sqrt{A(x)} < B(x) \iff \begin{cases} A(x)\ge 0 \\ B(x)>0 \\ A(x)<[B(x)]^2 \end{cases}` },
-    { nome: 'Disequazione √A > B', formula: R`\sqrt{A(x)} > B(x) \iff \begin{cases} A(x)\ge 0 \\ B(x)<0\end{cases} \ \lor\ \begin{cases} B(x)\ge 0 \\ A(x)>[B(x)]^2\end{cases}` }
+    { nome: 'Disequazione √A > B', formula: R`\begin{gathered} \sqrt{A(x)} > B(x) \iff \\ \begin{cases} A(x)\ge 0 \\ B(x)<0\end{cases} \ \lor\ \begin{cases} B(x)\ge 0 \\ A(x)>[B(x)]^2\end{cases} \end{gathered}` }
   ],
 
   flashcards: [

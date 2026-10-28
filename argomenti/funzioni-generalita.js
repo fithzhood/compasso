@@ -58,7 +58,7 @@ COMPASSO.registra({
   id: 'funzioni-generalita',
   titolo: 'Le funzioni',
 
-  introduzione: R`Un taxi chiede $3$ euro alla partenza più $1{,}20$ euro al chilometro. Una corsa di $8$ km costa $3 + 1{,}20 \cdot 8 = 12{,}60$ euro. Per ogni distanza c'è un solo prezzo: questa regola è una **funzione**, $f(x) = 3 + 1{,}2\,x$.
+  introduzione: R`Un taxi chiede $3$ euro alla partenza più $1{,}20$ euro al chilometro. Una corsa di $8$ km costa $3 + 1{,}20 \cdot 8 = 12{,}60$ euro. Per ogni distanza c'è un solo prezzo: questa regola è una **funzione**, $f(x) = 3 + 1{,}2\,x$.
 
 Quasi tutta la matematica che viene dopo parla di funzioni. Qui impari le parole che userai sempre: dominio, immagine, iniettiva, crescente, composta, inversa.
 
@@ -265,7 +265,7 @@ Con i calcoli, scrivi $f(-x)$ e confrontalo con $f(x)$ e con $-f(x)$. Per $f(x) 
 
 Una funzione è **periodica** di periodo $T > 0$ se $f(x + T) = f(x)$ per ogni $x$: il grafico si ripete ogni $T$. Succede con le funzioni goniometriche.` },
 
-    { id: 'funzione-composta', titolo: 'La funzione composta', testo: R`Un negozio fa lo sconto di $10$ euro e poi aggiunge l'IVA, un altro fa il contrario: il prezzo finale è diverso. Fare due funzioni una dopo l'altra si chiama **comporle**, e l'ordine conta.
+    { id: 'funzione-composta', titolo: 'La funzione composta', testo: R`Un negozio fa lo sconto di $10$ euro e poi aggiunge l'IVA, un altro fa il contrario: il prezzo finale è diverso. Fare due funzioni una dopo l'altra si chiama **comporle**, e l'ordine conta.
 
 [[video:funzioni-generalita/composta]]
 

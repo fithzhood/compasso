@@ -341,7 +341,7 @@ Trascina $P$: le due distanze coincidono solo sulla bisettrice, tratteggiata.
 
 [[grafico:bisettriceLuogo]]
 
-?? Un punto dista $3$ cm da un lato di un angolo e $5$ cm dall'altro. Sta sulla bisettrice?
+?? Un punto dista $3$ cm da un lato di un angolo e $5$ cm dall'altro. Sta sulla bisettrice?
 [x] no
 [ ] sì
 [ ] dipende dall'ampiezza dell'angolo
@@ -597,19 +597,19 @@ Anche nel trapezio c'è un segmento dei punti medi. Quello che unisce i punti me
       R`Per il primo criterio, LAL, $ABC\cong BAD$. I lati corrispondenti $AC$ e $BD$ stanno di fronte agli angoli retti: sono congruenti.`
     ], risultato: R`$AC=BD$: in ogni rettangolo le diagonali sono congruenti.` },
 
-    { titolo: 'Il triangolo dei punti medi', problema: R`Un triangolo ha i lati di $8$, $10$ e $12$ cm. Unisci a due a due i punti medi dei tre lati. Quanto misura il perimetro del triangolo che ottieni?`, passi: [
+    { titolo: 'Il triangolo dei punti medi', problema: R`Un triangolo ha i lati di $8$, $10$ e $12$ cm. Unisci a due a due i punti medi dei tre lati. Quanto misura il perimetro del triangolo che ottieni?`, passi: [
       R`Ogni lato del nuovo triangolo unisce i punti medi di due lati. Per il teorema dei punti medi è lungo la metà del terzo lato.`,
-      R`I tre lati misurano quindi $8:2=4$, $10:2=5$ e $12:2=6$ cm.`,
-      R`Perimetro: $4+5+6=15$ cm, la metà del perimetro di partenza, che è $30$ cm.`,
-      R`I quattro triangolini che si formano hanno tutti i lati di $4$, $5$ e $6$ cm: sono congruenti per LLL.`
-    ], risultato: R`Il perimetro è $15$ cm, la metà di quello del triangolo di partenza.` },
+      R`I tre lati misurano quindi $8:2=4$, $10:2=5$ e $12:2=6$ cm.`,
+      R`Perimetro: $4+5+6=15$ cm, la metà del perimetro di partenza, che è $30$ cm.`,
+      R`I quattro triangolini che si formano hanno tutti i lati di $4$, $5$ e $6$ cm: sono congruenti per LLL.`
+    ], risultato: R`Il perimetro è $15$ cm, la metà di quello del triangolo di partenza.` },
 
-    { titolo: 'Un isoscele con due lati dati', problema: R`Un triangolo isoscele ha due lati di $3$ cm e $7$ cm. Quanto misura il perimetro?`, passi: [
-      R`Il terzo lato è uguale a uno dei due: può essere $3$ oppure $7$ cm.`,
+    { titolo: 'Un isoscele con due lati dati', problema: R`Un triangolo isoscele ha due lati di $3$ cm e $7$ cm. Quanto misura il perimetro?`, passi: [
+      R`Il terzo lato è uguale a uno dei due: può essere $3$ oppure $7$ cm.`,
       R`Con i lati $3$, $3$ e $7$: i due lati corti in fila arrivano a $6$, meno di $7$. La disuguaglianza triangolare non vale, il triangolo non esiste.`,
       R`Con i lati $7$, $7$ e $3$: ogni lato è minore della somma degli altri due ($3<14$ e $7<10$). Il triangolo esiste.`,
-      R`Perimetro: $7+7+3=17$ cm.`
-    ], risultato: R`Il perimetro è $17$ cm: i lati sono $7$, $7$ e $3$ cm.` }
+      R`Perimetro: $7+7+3=17$ cm.`
+    ], risultato: R`Il perimetro è $17$ cm: i lati sono $7$, $7$ e $3$ cm.` }
   ],
 
   formulario: [
@@ -669,11 +669,11 @@ Anche nel trapezio c'è un segmento dei punti medi. Quello che unisce i punti me
     { id: 'b-13', livello: 'base', difficolta: 1, testo: R`Nel triangolo $ABC$ i lati misurano $BC=9$, $AC=7$ e $AB=5$. In quale vertice c'è l'angolo più grande? Scrivi la lettera.`, suggerimenti: [R`L'angolo più grande sta di fronte al lato più lungo.`, R`Il lato più lungo è $BC$: quale vertice gli sta di fronte?`], risposta: { tipo: 'testo', accettate: ['A', 'in A', 'angolo A', "l'angolo A", 'angolo in A', "l'angolo in A", 'vertice A', 'il vertice A', 'α', 'alfa', 'alpha'], segnaposto: 'una lettera', simboli: [] }, soluzione: [R`Il lato più lungo è $BC=9$.`, R`Di fronte a $BC$ c'è il vertice $A$: l'angolo più grande è $\alpha$, in $A$.`] },
     { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Un triangolo ha due lati di $3$ e $4$. Il terzo lato è un numero intero. Quanti valori diversi può avere?`, suggerimenti: [R`Il terzo lato sta fra la differenza e la somma degli altri due, estremi esclusi.`, R`Fra $1$ e $7$, esclusi: conta gli interi.`], risposta: num(5), soluzione: [R`Per la disuguaglianza triangolare il terzo lato $x$ sta fra $4-3=1$ e $4+3=7$, estremi esclusi.`, R`Gli interi possibili sono $2$, $3$, $4$, $5$, $6$: in tutto $5$ valori.`] },
     { id: 'b-15', livello: 'base', difficolta: 1, testo: R`In un triangolo rettangolo un angolo acuto misura $35^\circ$. Quanto misura l'altro angolo acuto?`, suggerimenti: [R`L'angolo retto prende già $90^\circ$: ai due angoli acuti restano $90^\circ$.`], risposta: gradi(55), soluzione: [R`I due angoli acuti insieme fanno $180^\circ-90^\circ=90^\circ$.`, R`L'altro misura $90^\circ-35^\circ=55^\circ$.`] },
-    { id: 'b-16', livello: 'base', difficolta: 1, testo: R`Un punto $P$ sta sulla bisettrice di un angolo e dista $4$ cm da uno dei due lati. Quanto dista dall'altro lato, in cm?`, suggerimenti: [R`La bisettrice è il luogo dei punti equidistanti dai lati dell'angolo.`], risposta: num(4), soluzione: [R`Ogni punto della bisettrice ha la stessa distanza dai due lati.`, R`Anche dall'altro lato $P$ dista $4$ cm.`] },
-    { id: 'b-17', livello: 'base', difficolta: 1, testo: R`Nel parallelogramma $ABCD$ le diagonali si incontrano in $O$. La diagonale $AC$ misura $14$ cm. Quanto misura $AO$, in cm?`, suggerimenti: [R`Nel parallelogramma le diagonali si tagliano a metà.`], risposta: num(7), soluzione: [R`Le diagonali di un parallelogramma si tagliano a metà: $O$ è il punto medio di $AC$.`, R`$AO=14:2=7$ cm.`] },
+    { id: 'b-16', livello: 'base', difficolta: 1, testo: R`Un punto $P$ sta sulla bisettrice di un angolo e dista $4$ cm da uno dei due lati. Quanto dista dall'altro lato, in cm?`, suggerimenti: [R`La bisettrice è il luogo dei punti equidistanti dai lati dell'angolo.`], risposta: num(4), soluzione: [R`Ogni punto della bisettrice ha la stessa distanza dai due lati.`, R`Anche dall'altro lato $P$ dista $4$ cm.`] },
+    { id: 'b-17', livello: 'base', difficolta: 1, testo: R`Nel parallelogramma $ABCD$ le diagonali si incontrano in $O$. La diagonale $AC$ misura $14$ cm. Quanto misura $AO$, in cm?`, suggerimenti: [R`Nel parallelogramma le diagonali si tagliano a metà.`], risposta: num(7), soluzione: [R`Le diagonali di un parallelogramma si tagliano a metà: $O$ è il punto medio di $AC$.`, R`$AO=14:2=7$ cm.`] },
     { id: 'b-18', livello: 'base', difficolta: 2, testo: R`In un trapezio isoscele un angolo adiacente alla base maggiore misura $64^\circ$. Quanto misura ciascun angolo adiacente alla base minore?`, suggerimenti: [R`Gli angoli sullo stesso lato obliquo sono coniugati interni fra le basi parallele.`], risposta: gradi(116), soluzione: [R`Sullo stesso lato obliquo, i due angoli sono coniugati interni fra le basi: sommano $180^\circ$.`, R`L'angolo alla base minore misura $180^\circ-64^\circ=116^\circ$. Nel trapezio isoscele gli angoli alla base minore sono uguali: tutti e due $116^\circ$.`] },
-    { id: 'b-19', livello: 'base', difficolta: 1, testo: R`Nel triangolo $ABC$ il lato $AC$ misura $18$ cm. $M$ ed $N$ sono i punti medi di $AB$ e di $BC$. Quanto misura $MN$, in cm?`, suggerimenti: [R`Il segmento che unisce i punti medi di due lati è lungo la metà del terzo lato.`], risposta: num(9), soluzione: [R`Per il teorema dei punti medi, $MN=\frac{AC}{2}$.`, R`$MN=18:2=9$ cm.`] },
-    { id: 'b-20', livello: 'base', difficolta: 1, testo: R`In un triangolo, il segmento che unisce i punti medi di due lati misura $6{,}5$ cm. Quanto misura il terzo lato, in cm?`, suggerimenti: [R`Il segmento dei punti medi è la metà del terzo lato: qui fai il contrario.`], risposta: num(13), soluzione: [R`Il segmento dei punti medi è la metà del terzo lato.`, R`Il terzo lato misura $2\cdot6{,}5=13$ cm.`] },
+    { id: 'b-19', livello: 'base', difficolta: 1, testo: R`Nel triangolo $ABC$ il lato $AC$ misura $18$ cm. $M$ ed $N$ sono i punti medi di $AB$ e di $BC$. Quanto misura $MN$, in cm?`, suggerimenti: [R`Il segmento che unisce i punti medi di due lati è lungo la metà del terzo lato.`], risposta: num(9), soluzione: [R`Per il teorema dei punti medi, $MN=\frac{AC}{2}$.`, R`$MN=18:2=9$ cm.`] },
+    { id: 'b-20', livello: 'base', difficolta: 1, testo: R`In un triangolo, il segmento che unisce i punti medi di due lati misura $6{,}5$ cm. Quanto misura il terzo lato, in cm?`, suggerimenti: [R`Il segmento dei punti medi è la metà del terzo lato: qui fai il contrario.`], risposta: num(13), soluzione: [R`Il segmento dei punti medi è la metà del terzo lato.`, R`Il terzo lato misura $2\cdot6{,}5=13$ cm.`] },
 
     { id: 'es-01', difficolta: 2, testo: R`Nel parallelogramma $ABCD$ le diagonali si incontrano in $O$. Dimostra che si tagliano a metà: $AO=OC$ e $BO=OD$. Con quale criterio confronti i triangoli $AOB$ e $COD$?`, suggerimenti: [R`$AB$ e $CD$ sono lati opposti: che cosa sai di loro?`, R`$AB\parallel CD$: con la trasversale $AC$ e con la trasversale $BD$ ci sono angoli alterni interni congruenti.`, R`Un lato e i due angoli adiacenti a esso.`], risposta: crit('ALA'), soluzione: [R`Ipotesi: $ABCD$ è un parallelogramma. Tesi: $AO=OC$ e $BO=OD$.`, R`$AB=CD$: nel parallelogramma i lati opposti sono congruenti.`, R`$O\widehat{A}B=O\widehat{C}D$: alterni interni fra le parallele $AB$ e $CD$, con la trasversale $AC$.`, R`$O\widehat{B}A=O\widehat{D}C$: alterni interni con la trasversale $BD$.`, R`Per ALA $AOB\cong COD$. I lati corrispondenti danno $AO=OC$ e $BO=OD$.`] },
 
@@ -697,7 +697,7 @@ Anche nel trapezio c'è un segmento dei punti medi. Quello che unisce i punti me
 
     { id: 'es-11', difficolta: 2, testo: R`Ogni angolo interno di un poligono regolare misura $156^\circ$. Quanti lati ha il poligono?`, suggerimenti: [R`Passa agli angoli esterni: ognuno fa $180^\circ$ con l'angolo interno.`, R`Gli angoli esterni sommano $360^\circ$ e sono tutti uguali.`], risposta: num(15), soluzione: [R`Ogni angolo esterno misura $180^\circ-156^\circ=24^\circ$.`, R`Gli angoli esterni sommano $360^\circ$: sono $360^\circ:24^\circ=15$.`, R`Il poligono ha $15$ lati. Controllo: $(15-2)\cdot180^\circ=2340^\circ$ e $2340^\circ:15=156^\circ$. ✓`] },
 
-    { id: 'es-12', difficolta: 2, testo: R`Un triangolo isoscele ha due lati di $5$ cm e $12$ cm. Quanto misura il perimetro, in cm?`, suggerimenti: [R`Il terzo lato può essere $5$ oppure $12$ cm. Prova i due casi.`, R`Con la disuguaglianza triangolare scarta il caso impossibile.`], risposta: num(29), soluzione: [R`Lati $5$, $5$ e $12$: $5+5=10$, che è minore di $12$. Il triangolo non esiste.`, R`Lati $12$, $12$ e $5$: ogni lato è minore della somma degli altri due. Il triangolo esiste.`, R`Perimetro: $12+12+5=29$ cm.`] }
+    { id: 'es-12', difficolta: 2, testo: R`Un triangolo isoscele ha due lati di $5$ cm e $12$ cm. Quanto misura il perimetro, in cm?`, suggerimenti: [R`Il terzo lato può essere $5$ oppure $12$ cm. Prova i due casi.`, R`Con la disuguaglianza triangolare scarta il caso impossibile.`], risposta: num(29), soluzione: [R`Lati $5$, $5$ e $12$: $5+5=10$, che è minore di $12$. Il triangolo non esiste.`, R`Lati $12$, $12$ e $5$: ogni lato è minore della somma degli altri due. Il triangolo esiste.`, R`Perimetro: $12+12+5=29$ cm.`] }
   ],
 
   quiz: [

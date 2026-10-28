@@ -81,7 +81,7 @@ La **frequenza relativa** di un evento è la frazione di prove in cui l'evento �
 
 >* **Legge empirica del caso.** Con molte prove, la frequenza relativa si avvicina alla probabilità. Più prove fai, più si avvicina.
 
-Buffon lanciò una moneta $4040$ volte e ottenne $2048$ teste. La frequenza è $f \approx 0{,}507$, vicina a $\dfrac{1}{2}$.
+Buffon lanciò una moneta $4040$ volte e ottenne $2048$ teste. La frequenza è $f \approx 0{,}507$, vicina a $\dfrac{1}{2}$.
 
 Nel laboratorio «Il banco e le tre porte» puoi lanciare monete e dadi migliaia di volte. Guarda la frequenza: all'inizio balla, poi si ferma sulla probabilità.
 
@@ -95,7 +95,7 @@ Nel laboratorio «Il banco e le tre porte» puoi lanciare monete e dadi migliaia
 
 ### La definizione soggettiva
 
-Certi eventi non si ripetono, come «la mia squadra vince domenica». Allora la probabilità è il **grado di fiducia** di una persona. È il prezzo che pagheresti per vincere $1$ euro se l'evento succede.
+Certi eventi non si ripetono, come «la mia squadra vince domenica». Allora la probabilità è il **grado di fiducia** di una persona. È il prezzo che pagheresti per vincere $1$ euro se l'evento succede.
 
 ### Gli assiomi
 
@@ -216,7 +216,7 @@ Un positivo può essere malato ($M$) o sano ($S$). Lo mostra un **diagramma ad a
 1. Lungo un ramo, moltiplica le probabilità.
 2. Somma i rami che finiscono nello stesso esito.
 
-Nel grafico l'albero conta $10\,000$ persone. Muovi i cursori e guarda quanti positivi sono davvero malati.
+Nel grafico l'albero conta $10\,000$ persone. Muovi i cursori e guarda quanti positivi sono davvero malati.
 
 [[grafico:albero]]
 
@@ -242,15 +242,15 @@ Per il test il conto è questo.
 ~ P(M \mid T^+) = \dfrac{0{,}0099}{\evid{0{,}0594}} :: Bayes: il ramo «malato e positivo» diviso tutti i positivi
 ~ = \evidb{\dfrac{1}{6}} \approx 16{,}7\% :: su sei positivi, uno solo è malato
 
->! Il risultato sembra assurdo, ma è giusto. Su $10\,000$ persone, i malati positivi sono $99$ e i sani positivi $495$. I sani sono tanti, quindi il loro $5\%$ di errori pesa di più.
+>! Il risultato sembra assurdo, ma è giusto. Su $10\,000$ persone, i malati positivi sono $99$ e i sani positivi $495$. I sani sono tanti, quindi il loro $5\%$ di errori pesa di più.
 
 ?? Se la malattia colpisse il $10\%$ della popolazione, con lo stesso test, quanto varrebbe $P(M \mid T^+)$?
 [x] circa $69\%$
 [ ] ancora circa $17\%$
 [ ] $99\%$
-=> Su $10\,000$ persone i malati positivi sarebbero $990$. I sani positivi sarebbero il $5\%$ di $9000$, cioè $450$. Quindi $\dfrac{990}{1440} \approx 0{,}69$. Il $99\%$ è $P(T^+ \mid M)$, la domanda rovesciata.` },
+=> Su $10\,000$ persone i malati positivi sarebbero $990$. I sani positivi sarebbero il $5\%$ di $9000$, cioè $450$. Quindi $\dfrac{990}{1440} \approx 0{,}69$. Il $99\%$ è $P(T^+ \mid M)$, la domanda rovesciata.` },
 
-    { id: 'binomiale', titolo: 'Prove ripetute e distribuzione binomiale', testo: R`Lanci un dado $5$ volte. Qual è la probabilità di fare $6$ esattamente due volte? Ogni lancio ha due esiti che ci interessano: $6$ (successo) o non $6$ (insuccesso).
+    { id: 'binomiale', titolo: 'Prove ripetute e distribuzione binomiale', testo: R`Lanci un dado $5$ volte. Qual è la probabilità di fare $6$ esattamente due volte? Ogni lancio ha due esiti che ci interessano: $6$ (successo) o non $6$ (insuccesso).
 
 >* Uno **schema di Bernoulli** è una serie di $n$ prove con tre regole. Ogni prova ha due soli esiti. La probabilità di successo $p$ è sempre la stessa. Le prove sono indipendenti.
 
@@ -258,12 +258,12 @@ Il conto si fa in due tempi: prima la probabilità di **una** sequenza precisa, 
 
 ~ P(6,\,6,\,\overline{6},\,\overline{6},\,\overline{6}) = \left(\tfrac{1}{6}\right)^2 \left(\tfrac{5}{6}\right)^3 :: una sequenza precisa: prima due $6$, poi tre lanci senza $6$; le prove sono indipendenti, quindi moltiplico
 ~ \text{sequenze con due } 6 = \binom{5}{2} = \evid{10} :: i due $6$ possono cadere in $2$ qualsiasi dei $5$ lanci
-~ P(2) = \evid{10} \cdot \dfrac{1}{36} \cdot \dfrac{125}{216} :: le $10$ sequenze hanno tutte la stessa probabilità e si escludono: sommo $10$ volte
+~ P(2) = \evid{10} \cdot \dfrac{1}{36} \cdot \dfrac{125}{216} :: le $10$ sequenze hanno tutte la stessa probabilità e si escludono: sommo $10$ volte
 ~ = \dfrac{1250}{7776} \approx \evidb{0{,}161} :: circa una volta su sei
 
 >* **Formula di Bernoulli:** la probabilità di ottenere esattamente $k$ successi in $n$ prove è $$P(k) = \binom{n}{k}\, p^k (1-p)^{n-k}$$
 
-?? Lanci una moneta $3$ volte. Qual è la probabilità di ottenere esattamente una testa?
+?? Lanci una moneta $3$ volte. Qual è la probabilità di ottenere esattamente una testa?
 [x] $\dfrac{3}{8}$
 [ ] $\dfrac{1}{8}$
 [ ] $\dfrac{1}{3}$
@@ -283,13 +283,13 @@ La macchina di Galton fa lo stesso esperimento con le palline. A ogni chiodo la 
 
     { id: 'valore-atteso-paradossi', titolo: 'Valore atteso, gioco equo e paradossi', testo: R`### Valore atteso
 
-Alla roulette francese ci sono $37$ numeri. Punti $1$ euro su un numero. Se esce ricevi $36$ euro, altrimenti niente. Quanto ricevi in media, se giochi moltissime volte?
+Alla roulette francese ci sono $37$ numeri. Punti $1$ euro su un numero. Se esce ricevi $36$ euro, altrimenti niente. Quanto ricevi in media, se giochi moltissime volte?
 
 >* Una grandezza $X$ vale $x_1, \dots, x_n$ con probabilità $p_1, \dots, p_n$. Il suo **valore atteso** è $$E(X) = \sum_{i=1}^{n} x_i\, p_i$$
 
 È la media dei valori, con ogni valore pesato dalla sua probabilità.
 
-~ E = 36 \cdot \dfrac{1}{37} + 0 \cdot \dfrac{36}{37} :: ricevi $36$ euro in $1$ caso su $37$, niente negli altri $36$
+~ E = 36 \cdot \dfrac{1}{37} + 0 \cdot \dfrac{36}{37} :: ricevi $36$ euro in $1$ caso su $37$, niente negli altri $36$
 ~ = \dfrac{36}{37} \approx \evid{0{,}973} :: in media ricevi un po' meno di un euro a giocata
 ~ 0{,}973 - 1 = \evidb{-0{,}027} :: tolgo l'euro della puntata: in media perdi quasi $3$ centesimi a giocata
 
@@ -297,11 +297,11 @@ Alla roulette francese ci sono $37$ numeri. Punti $1$ euro su un numero. Se esce
 
 La roulette non è equa. Il banco non ha bisogno di barare: gli basta che si giochi tanto.
 
-?? Paghi $2$ euro per lanciare un dado: se esce $6$ ricevi $10$ euro, altrimenti niente. Il gioco è equo?
+?? Paghi $2$ euro per lanciare un dado: se esce $6$ ricevi $10$ euro, altrimenti niente. Il gioco è equo?
 [x] no: in media perdi circa $33$ centesimi a partita
-[ ] sì, perché $10$ euro sono più della posta
+[ ] sì, perché $10$ euro sono più della posta
 [ ] no: in media guadagni circa $33$ centesimi a partita
-=> Il valore atteso di quello che ricevi è $10 \cdot \dfrac{1}{6} \approx 1{,}67$ euro. Paghi $2$ euro, quindi in media perdi $2 - 1{,}67 \approx 0{,}33$ euro. Non basta confrontare vincita e posta: la vincita va pesata con la sua probabilità.
+=> Il valore atteso di quello che ricevi è $10 \cdot \dfrac{1}{6} \approx 1{,}67$ euro. Paghi $2$ euro, quindi in media perdi $2 - 1{,}67 \approx 0{,}33$ euro. Non basta confrontare vincita e posta: la vincita va pesata con la sua probabilità.
 
 ### Monty Hall
 
@@ -311,15 +311,15 @@ Sì. La tua porta vince con probabilità $\dfrac{1}{3}$, e il conduttore non la 
 
 ### Il compleanno
 
-Prendi $23$ persone. La probabilità che almeno due compiano gli anni lo stesso giorno supera il $50\%$. Si calcola con il contrario, «compleanni tutti diversi». Il secondo evita il giorno del primo, il terzo evita due giorni, e così via:
+Prendi $23$ persone. La probabilità che almeno due compiano gli anni lo stesso giorno supera il $50\%$. Si calcola con il contrario, «compleanni tutti diversi». Il secondo evita il giorno del primo, il terzo evita due giorni, e così via:
 $$\dfrac{365}{365}\cdot\dfrac{364}{365}\cdots\dfrac{343}{365} \approx 0{,}493$$
 Quindi almeno due compleanni uguali: $1 - 0{,}493 = 0{,}507$.
 
-Muovi il cursore per cambiare il numero di persone. Guarda dove la curva supera il 50%.
+Il grafico mostra la probabilità al crescere del numero di persone: la curva supera il $50\%$ a $23$.
 
 [[grafico:compleanno]]
 
->* L'intuito guarda una coppia sola di persone. Ma fra $23$ persone le coppie sono $\binom{23}{2} = 253$.` }
+>* L'intuito guarda una coppia sola di persone. Ma fra $23$ persone le coppie sono $\binom{23}{2} = 253$.` }
   ],
 
   grafici: {
@@ -435,7 +435,7 @@ Muovi il cursore per cambiare il numero di persone. Guarda dove la curva supera 
       R`Verifica per conteggio diretto: le carte favorevoli sono le $10$ di coppe più le $9$ figure degli altri tre semi, cioè $19$. ✓`
     ], risultato: R`$P = \dfrac{19}{40} = 0{,}475$` },
 
-    { titolo: 'Almeno uno: si passa al contrario', problema: R`Si lancia un dado $4$ volte. Qual è la probabilità di ottenere almeno un $6$?`, passi: [
+    { titolo: 'Almeno uno: si passa al contrario', problema: R`Si lancia un dado $4$ volte. Qual è la probabilità di ottenere almeno un $6$?`, passi: [
       R`Contare direttamente «almeno un $6$» richiederebbe di sommare i casi con uno, due, tre o quattro $6$: lungo. Si passa all'evento **contrario**, «nessun $6$».`,
       R`I quattro lanci sono indipendenti e in ciascuno la probabilità di non fare $6$ è $\dfrac{5}{6}$, quindi $P(\text{nessun } 6) = \left(\dfrac{5}{6}\right)^4 = \dfrac{625}{1296}$.`,
       R`$P(\text{almeno un } 6) = 1 - \dfrac{625}{1296} = \dfrac{671}{1296} \approx 0{,}518$.`,
@@ -455,7 +455,7 @@ Muovi il cursore per cambiare il numero di persone. Guarda dove la curva supera 
       R`Dati del test: $P(T^+ \mid M) = 0{,}99$ e $P(T^+ \mid S) = 0{,}05$.`,
       R`Probabilità totale: $P(T^+) = 0{,}01 \cdot 0{,}99 + 0{,}99 \cdot 0{,}05 = 0{,}0099 + 0{,}0495 = 0{,}0594$.`,
       R`Bayes: $P(M \mid T^+) = \dfrac{0{,}0099}{0{,}0594} = \dfrac{1}{6} \approx 0{,}167$.`,
-      R`Lettura con i numeri interi: su $10\,000$ persone, $99$ sono malate e positive, $495$ sono sane e positive. Fra i $594$ positivi i malati sono $99$, cioè uno su sei.`
+      R`Lettura con i numeri interi: su $10\,000$ persone, $99$ sono malate e positive, $495$ sono sane e positive. Fra i $594$ positivi i malati sono $99$, cioè uno su sei.`
     ], risultato: R`$P(M \mid T^+) = \dfrac{1}{6} \approx 16{,}7\%$` },
 
     { titolo: 'Formula di Bernoulli', problema: R`Una macchina produce pezzi difettosi con probabilità $0{,}1$, indipendentemente l'uno dall'altro. Su $6$ pezzi, qual è la probabilità che ce ne sia esattamente uno difettoso? E che ce ne sia al più uno?`, passi: [
@@ -472,7 +472,7 @@ Muovi il cursore per cambiare il numero di persone. Guarda dove la curva supera 
   formulario: [
     { nome: 'Definizione classica', formula: R`P(E) = \frac{\text{casi favorevoli}}{\text{casi possibili}}`, nota: R`Vale solo se i casi possibili sono in numero finito e ugualmente possibili.` },
     { nome: 'Frequenza relativa', formula: R`f = \frac{\text{prove in cui } E \text{ si verifica}}{\text{numero delle prove}}`, nota: R`Legge empirica del caso: per un gran numero di prove $f \approx P(E)$.` },
-    { nome: 'Assiomi di Kolmogorov', formula: R`P(E) \ge 0, \quad P(U) = 1, \quad P(A \cup B) = P(A) + P(B) \ \text{ se } A \cap B = \emptyset`, nota: R`Da qui segue $0 \le P(E) \le 1$ e $P(\emptyset) = 0$.` },
+    { nome: 'Assiomi di Kolmogorov', formula: R`\begin{gathered} P(E) \ge 0, \quad P(U) = 1 \\ P(A \cup B) = P(A) + P(B) \\ \text{se } A \cap B = \emptyset \end{gathered}`, nota: R`Da qui segue $0 \le P(E) \le 1$ e $P(\emptyset) = 0$.` },
     { nome: 'Evento contrario', formula: R`P(\overline{E}) = 1 - P(E)`, nota: R`La via più corta per i problemi con «almeno uno».` },
     { nome: 'Unione di eventi incompatibili', formula: R`P(A \cup B) = P(A) + P(B)`, nota: R`Solo se $A \cap B = \emptyset$.` },
     { nome: 'Unione di eventi qualsiasi', formula: R`P(A \cup B) = P(A) + P(B) - P(A \cap B)` },
@@ -564,7 +564,7 @@ Muovi il cursore per cambiare il numero di persone. Guarda dove la curva supera 
 
     { id: 'es-04', difficolta: 1, testo: R`Si lanciano due dadi regolari. Qual è la probabilità che la somma sia $9$? (come frazione o decimale)`, suggerimenti: [R`I casi possibili sono $36$ coppie ordinate.`, R`Elenca le coppie: $(3,6), (4,5), \dots$`], risposta: { tipo: 'numero', valore: 0.1111, tolleranza: 0.01 }, soluzione: [R`Casi possibili: $6 \cdot 6 = 36$.`, R`Coppie con somma $9$: $(3,6), (4,5), (5,4), (6,3)$, cioè $4$.`, R`$P = \dfrac{4}{36} = \dfrac{1}{9} \approx 0{,}111$.`] },
 
-    { id: 'es-05', difficolta: 2, testo: R`Si lancia una moneta $4$ volte. Qual è la probabilità di ottenere almeno una croce? (come frazione o decimale)`, suggerimenti: [R`«Almeno una» chiede l'evento contrario.`, R`Il contrario è «tutte teste»: quanto vale la sua probabilità?`], risposta: { tipo: 'numero', valore: 0.9375, tolleranza: 0.01 }, soluzione: [R`Evento contrario: «nessuna croce», cioè quattro teste.`, R`I lanci sono indipendenti: $P(TTTT) = \left(\dfrac{1}{2}\right)^4 = \dfrac{1}{16}$.`, R`$P(\text{almeno una croce}) = 1 - \dfrac{1}{16} = \dfrac{15}{16} = 0{,}9375$.`] },
+    { id: 'es-05', difficolta: 2, testo: R`Si lancia una moneta $4$ volte. Qual è la probabilità di ottenere almeno una croce? (come frazione o decimale)`, suggerimenti: [R`«Almeno una» chiede l'evento contrario.`, R`Il contrario è «tutte teste»: quanto vale la sua probabilità?`], risposta: { tipo: 'numero', valore: 0.9375, tolleranza: 0.01 }, soluzione: [R`Evento contrario: «nessuna croce», cioè quattro teste.`, R`I lanci sono indipendenti: $P(TTTT) = \left(\dfrac{1}{2}\right)^4 = \dfrac{1}{16}$.`, R`$P(\text{almeno una croce}) = 1 - \dfrac{1}{16} = \dfrac{15}{16} = 0{,}9375$.`] },
 
     { id: 'es-06', difficolta: 2, testo: R`Un'urna contiene $6$ palline bianche e $4$ nere. Si estraggono due palline **senza** rimetterle dentro. Qual è la probabilità che siano entrambe nere? (come frazione o decimale)`, suggerimenti: [R`Le due estrazioni non sono indipendenti: usa la regola del prodotto con la probabilità condizionata.`, R`Dopo la prima nera restano $9$ palline di cui $3$ nere.`], risposta: { tipo: 'numero', valore: 0.1333, tolleranza: 0.01 }, soluzione: [R`Prima nera: $P = \dfrac{4}{10}$.`, R`Seconda nera sapendo che la prima lo era: $P = \dfrac{3}{9}$.`, R`$P(\text{entrambe nere}) = \dfrac{4}{10} \cdot \dfrac{3}{9} = \dfrac{12}{90} = \dfrac{2}{15} \approx 0{,}133$.`] },
 
@@ -572,13 +572,13 @@ Muovi il cursore per cambiare il numero di persone. Guarda dove la curva supera 
 
     { id: 'es-08', difficolta: 2, testo: R`Due tiratori sparano indipendentemente a un bersaglio: il primo lo colpisce con probabilità $0{,}7$, il secondo con probabilità $0{,}6$. Qual è la probabilità che il bersaglio venga colpito almeno una volta? (come frazione o decimale)`, suggerimenti: [R`Contrario: nessuno dei due colpisce.`, R`I due eventi sono indipendenti, quindi le probabilità di mancare si moltiplicano.`], risposta: { tipo: 'numero', valore: 0.88, tolleranza: 0.01 }, soluzione: [R`Il primo manca con probabilità $0{,}3$, il secondo con $0{,}4$.`, R`Per indipendenza, $P(\text{nessuno colpisce}) = 0{,}3 \cdot 0{,}4 = 0{,}12$.`, R`$P(\text{almeno uno}) = 1 - 0{,}12 = 0{,}88$.`, R`Sommare $0{,}7 + 0{,}6 = 1{,}3$ sarebbe assurdo: una probabilità non supera mai $1$.`] },
 
-    { id: 'es-09', difficolta: 2, testo: R`Si lancia un dado $6$ volte. Qual è la probabilità di ottenere esattamente due volte il numero $6$? (come frazione o decimale)`, suggerimenti: [R`È uno schema di Bernoulli con $n = 6$ e $p = \dfrac{1}{6}$.`, R`Non dimenticare il coefficiente $\dbinom{6}{2}$.`], risposta: { tipo: 'numero', valore: 0.2009, tolleranza: 0.01 }, soluzione: [R`$P(2) = \dbinom{6}{2}\left(\dfrac{1}{6}\right)^2\left(\dfrac{5}{6}\right)^4$.`, R`$\dbinom{6}{2} = 15$ e $\left(\dfrac{5}{6}\right)^4 = \dfrac{625}{1296}$.`, R`$P(2) = 15 \cdot \dfrac{1}{36} \cdot \dfrac{625}{1296} = \dfrac{9375}{46656} \approx 0{,}201$.`] },
+    { id: 'es-09', difficolta: 2, testo: R`Si lancia un dado $6$ volte. Qual è la probabilità di ottenere esattamente due volte il numero $6$? (come frazione o decimale)`, suggerimenti: [R`È uno schema di Bernoulli con $n = 6$ e $p = \dfrac{1}{6}$.`, R`Non dimenticare il coefficiente $\dbinom{6}{2}$.`], risposta: { tipo: 'numero', valore: 0.2009, tolleranza: 0.01 }, soluzione: [R`$P(2) = \dbinom{6}{2}\left(\dfrac{1}{6}\right)^2\left(\dfrac{5}{6}\right)^4$.`, R`$\dbinom{6}{2} = 15$ e $\left(\dfrac{5}{6}\right)^4 = \dfrac{625}{1296}$.`, R`$P(2) = 15 \cdot \dfrac{1}{36} \cdot \dfrac{625}{1296} = \dfrac{9375}{46656} \approx 0{,}201$.`] },
 
     { id: 'es-10', difficolta: 3, testo: R`L'urna $A$ contiene $3$ palline bianche e $7$ nere; l'urna $B$ contiene $6$ bianche e $4$ nere. Si sceglie a caso un'urna (con la stessa probabilità) e si estrae una pallina, che risulta bianca. Qual è la probabilità che provenga dall'urna $B$? (come frazione o decimale)`, suggerimenti: [R`Disegna l'albero: primo livello la scelta dell'urna, secondo livello il colore.`, R`Calcola prima $P(\text{bianca})$ con la probabilità totale.`, R`Poi applica Bayes: $P(B \mid \text{bianca}) = \dfrac{P(B)\,P(\text{bianca} \mid B)}{P(\text{bianca})}$.`], risposta: { tipo: 'numero', valore: 0.6667, tolleranza: 0.01 }, soluzione: [R`$P(A) = P(B) = 0{,}5$; $P(\text{bianca} \mid A) = 0{,}3$ e $P(\text{bianca} \mid B) = 0{,}6$.`, R`Probabilità totale: $P(\text{bianca}) = 0{,}5 \cdot 0{,}3 + 0{,}5 \cdot 0{,}6 = 0{,}15 + 0{,}30 = 0{,}45$.`, R`Bayes: $P(B \mid \text{bianca}) = \dfrac{0{,}30}{0{,}45} = \dfrac{2}{3} \approx 0{,}667$.`, R`Ha senso: l'urna $B$ ha il doppio delle palline bianche, quindi una bianca «accusa» $B$ con probabilità doppia rispetto ad $A$.`] },
 
-    { id: 'es-11', difficolta: 3, testo: R`In un gioco si lanciano due dadi: si vincono $20$ euro se la somma è $7$, niente altrimenti. Quale posta rende il gioco equo? (rispondi in euro, come frazione o decimale)`, suggerimenti: [R`Calcola il valore atteso della vincita.`, R`$P(\text{somma } 7) = \dfrac{1}{6}$.`], risposta: { tipo: 'numero', valore: 3.3333, tolleranza: 0.02 }, soluzione: [R`$P(\text{somma } 7) = \dfrac{6}{36} = \dfrac{1}{6}$.`, R`Valore atteso della vincita: $E = 20 \cdot \dfrac{1}{6} + 0 \cdot \dfrac{5}{6} = \dfrac{20}{6} = \dfrac{10}{3}$ euro.`, R`Il gioco è equo se la posta vale quanto il valore atteso: circa $3{,}33$ euro. Con una posta di $5$ euro il giocatore perderebbe in media $1{,}67$ euro a partita.`] },
+    { id: 'es-11', difficolta: 3, testo: R`In un gioco si lanciano due dadi: si vincono $20$ euro se la somma è $7$, niente altrimenti. Quale posta rende il gioco equo? (rispondi in euro, come frazione o decimale)`, suggerimenti: [R`Calcola il valore atteso della vincita.`, R`$P(\text{somma } 7) = \dfrac{1}{6}$.`], risposta: { tipo: 'numero', valore: 3.3333, tolleranza: 0.02 }, soluzione: [R`$P(\text{somma } 7) = \dfrac{6}{36} = \dfrac{1}{6}$.`, R`Valore atteso della vincita: $E = 20 \cdot \dfrac{1}{6} + 0 \cdot \dfrac{5}{6} = \dfrac{20}{6} = \dfrac{10}{3}$ euro.`, R`Il gioco è equo se la posta vale quanto il valore atteso: circa $3{,}33$ euro. Con una posta di $5$ euro il giocatore perderebbe in media $1{,}67$ euro a partita.`] },
 
-    { id: 'es-12', difficolta: 3, testo: R`In un gruppo di $4$ persone, qual è la probabilità che almeno due siano nate nello stesso giorno della settimana? (come frazione o decimale)`, suggerimenti: [R`È il paradosso del compleanno con $7$ giorni invece di $365$.`, R`Passa al contrario: tutte e quattro nate in giorni diversi.`, R`I casi possibili sono $7^4$; quelli con giorni tutti diversi sono $7 \cdot 6 \cdot 5 \cdot 4$.`], risposta: { tipo: 'numero', valore: 0.65, tolleranza: 0.01 }, soluzione: [R`Casi possibili: ogni persona può essere nata in $7$ giorni, quindi $7^4 = 2401$.`, R`Casi con tutti i giorni diversi: $7 \cdot 6 \cdot 5 \cdot 4 = 840$.`, R`$P(\text{tutti diversi}) = \dfrac{840}{2401} \approx 0{,}350$.`, R`$P(\text{almeno due uguali}) = 1 - \dfrac{840}{2401} = \dfrac{1561}{2401} \approx 0{,}650$.`] }
+    { id: 'es-12', difficolta: 3, testo: R`In un gruppo di $4$ persone, qual è la probabilità che almeno due siano nate nello stesso giorno della settimana? (come frazione o decimale)`, suggerimenti: [R`È il paradosso del compleanno con $7$ giorni invece di $365$.`, R`Passa al contrario: tutte e quattro nate in giorni diversi.`, R`I casi possibili sono $7^4$; quelli con giorni tutti diversi sono $7 \cdot 6 \cdot 5 \cdot 4$.`], risposta: { tipo: 'numero', valore: 0.65, tolleranza: 0.01 }, soluzione: [R`Casi possibili: ogni persona può essere nata in $7$ giorni, quindi $7^4 = 2401$.`, R`Casi con tutti i giorni diversi: $7 \cdot 6 \cdot 5 \cdot 4 = 840$.`, R`$P(\text{tutti diversi}) = \dfrac{840}{2401} \approx 0{,}350$.`, R`$P(\text{almeno due uguali}) = 1 - \dfrac{840}{2401} = \dfrac{1561}{2401} \approx 0{,}650$.`] }
   ],
 
   quiz: [
@@ -607,10 +607,10 @@ Muovi il cursore per cambiare il numero di persone. Guarda dove la curva supera 
     { tipo: 'errore', testo: R`$P(A \mid B)$ e $P(B \mid A)$ sono numeri diversi. «La maggior parte dei malati è positiva» non significa «la maggior parte dei positivi è malata».` },
     { tipo: 'metodo', testo: R`Nei problemi in più passi (estrazioni, urne, test) disegna l'albero: lungo un ramo si moltiplica, fra rami diversi si somma. Le probabilità che escono da uno stesso nodo devono sommare a $1$.` },
     { tipo: 'errore', testo: R`Con o senza rimessa cambia tutto: con rimessa le prove sono indipendenti e si moltiplicano probabilità uguali, senza rimessa la seconda probabilità è condizionata dalla prima.` },
-    { tipo: 'trucco', testo: R`Se un risultato di Bayes ti sembra assurdo, riscrivilo con una popolazione di $10\,000$ persone e conta le teste: i numeri interi convincono più delle frazioni.` },
+    { tipo: 'trucco', testo: R`Se un risultato di Bayes ti sembra assurdo, riscrivilo con una popolazione di $10\,000$ persone e conta le teste: i numeri interi convincono più delle frazioni.` },
     { tipo: 'errore', testo: R`Nella formula di Bernoulli non dimenticare $\binom{n}{k}$: senza, stai calcolando la probabilità di **una** particolare sequenza, non di $k$ successi in qualunque ordine.` },
     { tipo: 'metodo', testo: R`Controlla sempre la somma: le probabilità di tutti i valori di $k$ in una binomiale devono fare $1$, e $P(E) + P(\overline{E})$ pure.` },
-    { tipo: 'trucco', testo: R`Il paradosso del compleanno diventa ovvio contando le coppie: fra $23$ persone ci sono $\binom{23}{2} = 253$ coppie, non $23$ persone da confrontare con te.` }
+    { tipo: 'trucco', testo: R`Il paradosso del compleanno diventa ovvio contando le coppie: fra $23$ persone ci sono $\binom{23}{2} = 253$ coppie, non $23$ persone da confrontare con te.` }
   ],
 
   aneddoti: [

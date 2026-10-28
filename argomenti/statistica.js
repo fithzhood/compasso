@@ -27,7 +27,7 @@ Ti bastano frazioni, numeri decimali e percentuali.`,
   sezioni: [
     { id: 'popolazione-campione', titolo: 'Popolazione, unità statistica, caratteri', testo: R`Vuoi sapere quante ore dormono gli studenti del tuo liceo. Il liceo ha $900$ iscritti, e tu ne intervisti $90$.
 
->* La **popolazione** è l'insieme di tutti gli individui che studi: qui i $900$ studenti. Ogni individuo è un'**unità statistica**. Un **campione** è una parte della popolazione: qui i $90$ intervistati.
+>* La **popolazione** è l'insieme di tutti gli individui che studi: qui i $900$ studenti. Ogni individuo è un'**unità statistica**. Un **campione** è una parte della popolazione: qui i $90$ intervistati.
 
 Il campione deve somigliare alla popolazione, cioè essere **rappresentativo**. Se intervisti solo la squadra di pallavolo, ottieni un'immagine sbagliata della scuola.
 
@@ -43,7 +43,15 @@ Di ogni unità osservi un **carattere**, per esempio le ore di sonno o il colore
 [ ] quantitativo continuo
 => Il numero di maglia è un nome scritto con le cifre. La media dei numeri di maglia non vuol dire niente, e il 10 non è «più» del 5.
 
->! Un carattere fatto di numeri non è per forza quantitativo. Se fare la media non ha senso, il carattere è qualitativo.` },
+>! Un carattere fatto di numeri non è per forza quantitativo. Se fare la media non ha senso, il carattere è qualitativo.
+
+### Le fasi di un'indagine statistica
+
+1. **Definizione degli obiettivi**: che cosa vuoi sapere, su quale popolazione, con quali caratteri.
+2. **Rilevazione**: raccogli i dati, con questionari, misure o archivi, su tutta la popolazione o su un campione.
+3. **Spoglio**: conti le risposte e le metti in tabelle di frequenze.
+4. **Elaborazione**: calcoli gli indici, come media e varianza, e disegni i grafici.
+5. **Interpretazione**: leggi i risultati e rispondi alla domanda di partenza.` },
 
     { id: 'frequenze', titolo: 'Frequenze assolute, relative, percentuali e cumulate', testo: R`Ecco i voti di una verifica in una classe di $N = 25$ studenti. Il $6$ l'hanno preso in $7$. Allora $7$ è la sua frequenza assoluta, $\dfrac{7}{25} = 0{,}28$ la relativa, $28\%$ la percentuale.
 
@@ -270,7 +278,55 @@ Le altezze dei diciottenni hanno $\mu = 170$ cm e $\sigma = 8$ cm. Allora circa 
 [ ] circa $68$
 => Fra 162 e 178 cm ce ne sono circa $68$, quindi fuori ne restano $32$. La campana è simmetrica: metà sta sotto i 162 cm e metà sopra i 178 cm. Quindi circa $16$.
 
->! Non tutti i dati hanno forma di campana. I redditi, per esempio, sono molto asimmetrici: lì la regola del 68 non vale.` }
+>! Non tutti i dati hanno forma di campana. I redditi, per esempio, sono molto asimmetrici: lì la regola del 68 non vale.` },
+
+    { id: 'numeri-indice', titolo: 'Rapporti statistici e numeri indice', testo: R`Un comune ha avuto $120$ incidenti in un anno, un altro $30$. Il primo è più pericoloso? Dipende da quanti abitanti ha. Un dato da solo dice poco: va diviso per un altro dato.
+
+>* Un **rapporto statistico** è il quoziente fra due dati legati fra loro. Serve a confrontare situazioni di grandezza diversa.
+
+- **Rapporto di composizione**: una parte divisa per il tutto. In una scuola di $1200$ studenti, $300$ sono in prima. Il rapporto è $\dfrac{300}{1200} = 25\%$. È una frequenza relativa.
+- **Rapporto di densità**: una quantità divisa per lo spazio che la contiene. Un comune di $36\,000$ abitanti su $120$ km$^2$ ha $\dfrac{36\,000}{120} = 300$ abitanti per km$^2$.
+- **Rapporto di derivazione**: un fenomeno diviso per quello da cui nasce. In una città di $80\,000$ abitanti nascono $640$ bambini in un anno. Il quoziente di natalità è $\dfrac{640}{80\,000} = 0{,}008$, cioè $8$ nati ogni $1000$ abitanti.
+
+>! Non confondere la densità di popolazione con la densità di frequenza, che divide per l'ampiezza di una classe.
+
+### Numeri indice
+
+Una **serie storica** segue un dato nel tempo. Ogni valore si confronta con un riferimento posto uguale a $100$.
+
+>* Il **numero indice a base fissa** confronta ogni valore $x_t$ con quello di un anno scelto come **base**, $x_0$: $$I_t = \frac{x_t}{x_0}\cdot 100$$ Il **numero indice a base mobile**, o a catena, confronta ogni valore con quello dell'anno prima: $$I_{t/t-1} = \frac{x_t}{x_{t-1}}\cdot 100$$
+
+Ecco il prezzo di un caffè al bar, con base fissa 2021.
+
+| anno | prezzo | base fissa | base mobile |
+|---|---|---|---|
+| 2021 | 1,00 € | 100 | — |
+| 2022 | 1,10 € | 110 | 110 |
+| 2023 | 1,20 € | 120 | 109,1 |
+| 2024 | 1,20 € | 120 | 100 |
+| 2025 | 1,32 € | 132 | 110 |
+
+Dal 2021 al 2025 il prezzo è salito del $32\%$. Nel 2024 è rimasto fermo: indice a catena $100$.
+
+### Da una base all'altra
+
+Dalla base fissa alla mobile, dividi due indici consecutivi. Per il 2023: $\dfrac{120}{110}\cdot 100 \approx 109{,}1$.
+
+Dalla base mobile alla fissa, moltiplichi gli indici a catena:
+
+~ 1{,}10 \cdot 1{,}091 \cdot 1{,}00 \cdot 1{,}10 :: ogni indice a catena diviso per $100$ è il fattore di crescita di un anno
+~ \approx \evid{1{,}32} :: i fattori si moltiplicano, non si sommano
+~ I_{2025} = 1{,}32 \cdot 100 = \evidb{132} :: è l'indice a base fissa del 2025, come in tabella
+
+?? Un indice dei prezzi a base fissa passa da $125$ a $150$. Di quanto sono saliti i prezzi fra quei due anni?
+[x] del $20\%$
+[ ] del $25\%$
+[ ] del $50\%$
+=> Il rapporto è $\frac{150}{125} = 1{,}2$: più $20\%$. I $25$ sono **punti** di indice, non percentuali. Il $50\%$ è l'aumento rispetto all'anno base.
+
+>! Gli aumenti in percentuale non si sommano. Più $10\%$, poi più $9{,}1\%$, poi più $10\%$ fanno più $32\%$, non più $29{,}1\%$.
+
+L'ISTAT calcola ogni mese l'**indice dei prezzi al consumo**. Segue i prezzi di un «paniere» di beni e servizi che le famiglie comprano: cibo, bollette, trasporti. Le sue variazioni misurano l'**inflazione**. Con uno di questi indici, il FOI (famiglie di operai e impiegati), si aggiornano per esempio gli affitti.` }
   ],
 
   grafici: {
@@ -413,7 +469,14 @@ Le altezze dei diciottenni hanno $\mu = 170$ cm e $\sigma = 8$ cm. Allora circa 
       R`Quadrati degli scarti di $x$: somma $42$. Quadrati degli scarti di $y$: somma $11$.`,
       R`Coefficiente angolare: $m = \dfrac{21}{42} = 0{,}5$. Termine noto: $q = \overline{y} - m\overline{x} = 6 - 0{,}5 \cdot 4{,}5 = 3{,}75$.`,
       R`Correlazione: $r = \dfrac{21}{\sqrt{42 \cdot 11}} = \dfrac{21}{\sqrt{462}} \approx \dfrac{21}{21{,}49} \approx 0{,}98$: legame lineare positivo molto forte.`
-    ], risultato: R`$y = 0{,}5x + 3{,}75$, con $r \approx 0{,}98$.` }
+    ], risultato: R`$y = 0{,}5x + 3{,}75$, con $r \approx 0{,}98$.` },
+
+    { titolo: 'Dagli indici a catena ai prezzi', problema: R`L'abbonamento mensile a una palestra costava $40$ € nel 2022. Gli indici a base mobile dei tre anni dopo sono: 2023: $105$; 2024: $110$; 2025: $105$. Trova i prezzi di ogni anno e gli indici a base fissa, con base 2022.`, passi: [
+      R`Ogni indice a catena diviso per $100$ è il fattore di crescita rispetto all'anno prima: $1{,}05$; $1{,}10$; $1{,}05$.`,
+      R`Prezzi: $40 \cdot 1{,}05 = 42$ € nel 2023; $42 \cdot 1{,}10 = 46{,}20$ € nel 2024; $46{,}20 \cdot 1{,}05 = 48{,}51$ € nel 2025.`,
+      R`Indici a base fissa: si divide ogni prezzo per quello del 2022. $\dfrac{42}{40}\cdot 100 = 105$; $\dfrac{46{,}20}{40}\cdot 100 = 115{,}5$; $\dfrac{48{,}51}{40}\cdot 100 \approx 121{,}3$.`,
+      R`Controllo senza prezzi: $1{,}05 \cdot 1{,}10 \cdot 1{,}05 = 1{,}21275$, cioè $121{,}3$. Gli aumenti $5 + 10 + 5$ non fanno $20\%$, ma circa $21{,}3\%$.`
+    ], risultato: R`Prezzi $42$ €, $46{,}20$ €, $48{,}51$ €; indici a base fissa $105$; $115{,}5$; $121{,}3$.` }
   ]
 ,
 
@@ -424,7 +487,7 @@ Le altezze dei diciottenni hanno $\mu = 170$ cm e $\sigma = 8$ cm. Allora circa 
     { nome: 'Angolo di un settore (aerogramma)', formula: R`\alpha_i = f_i \cdot 360^\circ` },
     { nome: 'Media aritmetica', formula: R`\overline{x} = \frac{x_1 + x_2 + \dots + x_N}{N} = \frac{1}{N}\sum_{i=1}^{N} x_i` },
     { nome: 'Media ponderata (da tabella di frequenze)', formula: R`\overline{x} = \frac{\sum_{i=1}^{k} x_i\, n_i}{N}`, nota: R`Con dati in classi, al posto di $x_i$ si usa il valore centrale $c_i$.` },
-    { nome: 'Mediana', formula: R`Me = x_{\frac{N+1}{2}} \ (N \text{ dispari}), \qquad Me = \frac{x_{\frac{N}{2}} + x_{\frac{N}{2}+1}}{2} \ (N \text{ pari})`, nota: R`I dati vanno prima ordinati.` },
+    { nome: 'Mediana', formula: R`\begin{gathered} Me = x_{\frac{N+1}{2}} \quad (N \text{ dispari}) \\ Me = \frac{x_{\frac{N}{2}} + x_{\frac{N}{2}+1}}{2} \quad (N \text{ pari}) \end{gathered}`, nota: R`I dati vanno prima ordinati.` },
     { nome: 'Campo di variazione', formula: R`R = x_{\max} - x_{\min}` },
     { nome: 'Scarto medio assoluto', formula: R`S = \frac{1}{N}\sum_{i=1}^{N} \left| x_i - \overline{x} \right|` },
     { nome: 'Varianza', formula: R`\sigma^2 = \frac{1}{N}\sum_{i=1}^{N} \left( x_i - \overline{x} \right)^2` },
@@ -433,7 +496,9 @@ Le altezze dei diciottenni hanno $\mu = 170$ cm e $\sigma = 8$ cm. Allora circa 
     { nome: 'Coefficiente di variazione', formula: R`\text{CV} = \frac{\sigma}{\overline{x}}`, nota: R`Numero puro: confronta la variabilità di grandezze diverse.` },
     { nome: 'Coefficiente di correlazione lineare', formula: R`r = \frac{\sum (x_i - \overline{x})(y_i - \overline{y})}{\sqrt{\sum (x_i - \overline{x})^2 \cdot \sum (y_i - \overline{y})^2}}`, nota: R`Sempre $-1 \le r \le 1$.` },
     { nome: 'Retta di regressione (minimi quadrati)', formula: R`m = \frac{\sum (x_i - \overline{x})(y_i - \overline{y})}{\sum (x_i - \overline{x})^2}, \qquad q = \overline{y} - m\,\overline{x}`, nota: R`Passa sempre per il punto $(\overline{x}, \overline{y})$.` },
-    { nome: 'Curva normale', formula: R`y = \frac{1}{\sigma\sqrt{2\pi}}\, e^{-\frac{(x - \mu)^2}{2\sigma^2}}`, nota: R`Simmetrica rispetto a $x = \mu$; l'area totale sotto la curva vale $1$.` }
+    { nome: 'Curva normale', formula: R`y = \frac{1}{\sigma\sqrt{2\pi}}\, e^{-\frac{(x - \mu)^2}{2\sigma^2}}`, nota: R`Simmetrica rispetto a $x = \mu$; l'area totale sotto la curva vale $1$.` },
+    { nome: 'Numero indice a base fissa', formula: R`I_t = \frac{x_t}{x_0}\cdot 100`, nota: R`$x_0$ è il valore dell'anno base, che vale $100$.` },
+    { nome: 'Numero indice a base mobile (a catena)', formula: R`I_{t/t-1} = \frac{x_t}{x_{t-1}}\cdot 100`, nota: R`Dalla base mobile alla fissa si moltiplicano i fattori $\dfrac{I_{t/t-1}}{100}$; dalla fissa alla mobile si dividono due indici consecutivi.` }
   ],
 
   flashcards: [
@@ -462,7 +527,10 @@ Le altezze dei diciottenni hanno $\mu = 170$ cm e $\sigma = 8$ cm. Allora circa 
     { id: 'fc-23', sezione: 'variabilita', tipo: 'concetto', fronte: R`Quando la varianza vale zero?`, retro: R`Solo se tutti i dati sono uguali fra loro. Non è mai negativa.` },
     { id: 'fc-24', sezione: 'doppia-entrata', tipo: 'definizione', fronte: R`Frequenze marginali`, retro: R`I totali di riga e di colonna di una tabella a doppia entrata: descrivono un carattere alla volta, ignorando l'altro.` },
     { id: 'fc-25', sezione: 'doppia-entrata', tipo: 'concetto', fronte: R`Che cosa misura il coefficiente $r$?`, retro: R`Quanto i punti si allineano su una retta: $r$ vicino a $1$ o $-1$ legame lineare forte, vicino a $0$ nessun legame lineare.` },
-    { id: 'fc-26', sezione: 'normale', tipo: 'concetto', fronte: R`Regola 68 - 95 - 99,7`, retro: R`In una distribuzione normale il 68% dei dati sta entro $\sigma$ dalla media, il 95% entro $2\sigma$, il 99,7% entro $3\sigma$.` }
+    { id: 'fc-26', sezione: 'normale', tipo: 'concetto', fronte: R`Regola 68 - 95 - 99,7`, retro: R`In una distribuzione normale il 68% dei dati sta entro $\sigma$ dalla media, il 95% entro $2\sigma$, il 99,7% entro $3\sigma$.` },
+    { id: 'fc-27', sezione: 'numeri-indice', tipo: 'definizione', fronte: R`Rapporti di composizione, di densità, di derivazione`, retro: R`Composizione: parte su tutto. Densità: quantità su superficie (abitanti per km$^2$). Derivazione: fenomeno su quello da cui nasce (nati su abitanti).` },
+    { id: 'fc-28', sezione: 'numeri-indice', tipo: 'formula', fronte: R`Numero indice a base fissa e a base mobile`, retro: R`Base fissa: $\dfrac{x_t}{x_0}\cdot 100$, sempre rispetto allo stesso anno. Base mobile: $\dfrac{x_t}{x_{t-1}}\cdot 100$, rispetto all'anno prima.` },
+    { id: 'fc-29', sezione: 'numeri-indice', tipo: 'procedura', fronte: R`Dagli indici a base mobile a quelli a base fissa`, retro: R`Si dividono gli indici per $100$ e si moltiplicano i fattori anno dopo anno. Gli aumenti percentuali non si sommano.` }
   ],
 
   esercizi: [
@@ -474,25 +542,25 @@ Le altezze dei diciottenni hanno $\mu = 170$ cm e $\sigma = 8$ cm. Allora circa 
 
     { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Calcola il campo di variazione dei dati $12, 5, 9, 20, 7$.`, suggerimenti: [R`Trova il dato più grande e il più piccolo.`], risposta: num(15), soluzione: [R`Il dato più grande è $20$, il più piccolo è $5$.`, R`Campo di variazione: $20 - 5 = 15$.`] },
 
-    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`In una classe di $20$ studenti, $5$ hanno preso $8$. Qual è la frequenza relativa del voto $8$?`, suggerimenti: [R`Frequenza relativa: frequenza assoluta diviso numero totale.`], risposta: num(0.25), soluzione: [R`Frequenza assoluta: $5$. Totale: $N = 20$.`, R`$f = \dfrac{5}{20} = \dfrac{1}{4} = 0{,}25$.`] },
+    { id: 'b-05', livello: 'base', difficolta: 1, testo: R`In una classe di $20$ studenti, $5$ hanno preso $8$. Qual è la frequenza relativa del voto $8$?`, suggerimenti: [R`Frequenza relativa: frequenza assoluta diviso numero totale.`], risposta: num(0.25), soluzione: [R`Frequenza assoluta: $5$. Totale: $N = 20$.`, R`$f = \dfrac{5}{20} = \dfrac{1}{4} = 0{,}25$.`] },
 
     { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Calcola la media dei dati $3, 5, 6, 10$.`, suggerimenti: [R`I dati sono $4$: dividi la somma per $4$.`], risposta: num(6), soluzione: [R`Somma: $3 + 5 + 6 + 10 = 24$.`, R`$\overline{x} = \dfrac{24}{4} = 6$.`] },
 
     { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Qual è la mediana dei dati $9, 3, 7, 1, 5$?`, suggerimenti: [R`Prima metti i dati in ordine.`], risposta: num(5), soluzione: [R`In ordine: $1, 3, 5, 7, 9$.`, R`Il valore centrale è il terzo: la mediana è $5$.`] },
 
-    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`In una classe di $30$ studenti, $6$ vanno a scuola a piedi. Che percentuale è?`, suggerimenti: [R`Calcola la frequenza relativa, poi moltiplica per $100$.`], risposta: pc(20, '6/30', '1/5'), soluzione: [R`Frequenza relativa: $\dfrac{6}{30} = 0{,}2$.`, R`Percentuale: $0{,}2 \cdot 100 = 20\%$.`] },
+    { id: 'b-08', livello: 'base', difficolta: 1, testo: R`In una classe di $30$ studenti, $6$ vanno a scuola a piedi. Che percentuale è?`, suggerimenti: [R`Calcola la frequenza relativa, poi moltiplica per $100$.`], risposta: pc(20, '6/30', '1/5'), soluzione: [R`Frequenza relativa: $\dfrac{6}{30} = 0{,}2$.`, R`Percentuale: $0{,}2 \cdot 100 = 20\%$.`] },
 
-    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Sei amici dicono il colore preferito: rosso, blu, blu, verde, blu, rosso. Qual è la moda?`, suggerimenti: [R`Conta quante volte compare ogni colore.`], risposta: { tipo: 'testo', accettate: ['blu', 'il blu', 'moda blu', 'la moda è blu'], segnaposto: 'un colore', simboli: [] }, soluzione: [R`Rosso: $2$ volte. Blu: $3$ volte. Verde: $1$ volta.`, R`La moda è il colore più frequente: **blu**.`] },
+    { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Sei amici dicono il colore preferito: rosso, blu, blu, verde, blu, rosso. Qual è la moda?`, suggerimenti: [R`Conta quante volte compare ogni colore.`], risposta: { tipo: 'testo', accettate: ['blu', 'il blu', 'moda blu', 'la moda è blu'], segnaposto: 'un colore', simboli: [] }, soluzione: [R`Rosso: $2$ volte. Blu: $3$ volte. Verde: $1$ volta.`, R`La moda è il colore più frequente: **blu**.`] },
 
     { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Qual è la mediana dei dati $2, 5, 7, 10$?`, suggerimenti: [R`I dati sono $4$, un numero pari: i valori centrali sono due.`], risposta: num(6), soluzione: [R`I dati sono già in ordine. I due centrali sono $5$ e $7$.`, R`Mediana: $\dfrac{5 + 7}{2} = 6$.`] },
 
     { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Hai $6$ all'orale e $9$ allo scritto. Lo scritto vale il doppio dell'orale. Qual è la tua media?`, suggerimenti: [R`Media ponderata: l'orale ha peso $1$, lo scritto peso $2$.`], risposta: num(8), soluzione: [R`Moltiplica ogni voto per il suo peso: $6 \cdot 1 + 9 \cdot 2 = 24$.`, R`Dividi per la somma dei pesi, $1 + 2 = 3$: $\dfrac{24}{3} = 8$.`] },
 
-    { id: 'b-12', livello: 'base', difficolta: 1, testo: R`Le temperature minime di cinque giorni sono $-3, 2, 5, -1, 4$ gradi. Calcola il campo di variazione.`, suggerimenti: [R`Il valore più piccolo è negativo: attento al segno.`], risposta: num(8), soluzione: [R`Il valore più grande è $5$, il più piccolo è $-3$.`, R`Campo di variazione: $5 - (-3) = 5 + 3 = 8$.`] },
+    { id: 'b-12', livello: 'base', difficolta: 1, testo: R`Le temperature minime di cinque giorni sono $-3, 2, 5, -1, 4$ gradi. Calcola il campo di variazione.`, suggerimenti: [R`Il valore più piccolo è negativo: attento al segno.`], risposta: num(8), soluzione: [R`Il valore più grande è $5$, il più piccolo è $-3$.`, R`Campo di variazione: $5 - (-3) = 5 + 3 = 8$.`] },
 
     { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Qual è la mediana dei dati $4, 8, 6, 2, 8, 10$?`, suggerimenti: [R`Metti i dati in ordine.`, R`I dati sono $6$: la mediana è la media del terzo e del quarto.`], risposta: num(7), soluzione: [R`In ordine: $2, 4, 6, 8, 8, 10$.`, R`I dati sono $6$, quindi i centrali sono il terzo e il quarto: $6$ e $8$.`, R`Mediana: $\dfrac{6 + 8}{2} = 7$.`] },
 
-    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`In una verifica, $2$ studenti hanno preso $5$, $5$ hanno preso $6$ e $3$ hanno preso $7$. Calcola la media dei voti.`, suggerimenti: [R`Moltiplica ogni voto per quanti l'hanno preso.`, R`Dividi per il numero di studenti, non per il numero di voti diversi.`], risposta: num(6.1), soluzione: [R`Prodotti: $5 \cdot 2 = 10$, $6 \cdot 5 = 30$, $7 \cdot 3 = 21$.`, R`Somma: $10 + 30 + 21 = 61$.`, R`Gli studenti sono $2 + 5 + 3 = 10$: $\overline{x} = \dfrac{61}{10} = 6{,}1$.`] },
+    { id: 'b-14', livello: 'base', difficolta: 2, testo: R`In una verifica, $2$ studenti hanno preso $5$, $5$ hanno preso $6$ e $3$ hanno preso $7$. Calcola la media dei voti.`, suggerimenti: [R`Moltiplica ogni voto per quanti l'hanno preso.`, R`Dividi per il numero di studenti, non per il numero di voti diversi.`], risposta: num(6.1), soluzione: [R`Prodotti: $5 \cdot 2 = 10$, $6 \cdot 5 = 30$, $7 \cdot 3 = 21$.`, R`Somma: $10 + 30 + 21 = 61$.`, R`Gli studenti sono $2 + 5 + 3 = 10$: $\overline{x} = \dfrac{61}{10} = 6{,}1$.`] },
 
     { id: 'b-15', livello: 'base', difficolta: 2, testo: R`La media di quattro numeri è $6$. Tre di questi sono $5$, $6$ e $8$. Qual è il quarto?`, suggerimenti: [R`Se la media di $4$ numeri è $6$, la loro somma è $4 \cdot 6$.`], risposta: num(5), soluzione: [R`La somma dei quattro numeri è $4 \cdot 6 = 24$.`, R`I tre noti sommano $5 + 6 + 8 = 19$.`, R`Il quarto è $24 - 19 = 5$.`] },
 
@@ -500,11 +568,21 @@ Le altezze dei diciottenni hanno $\mu = 170$ cm e $\sigma = 8$ cm. Allora circa 
 
     { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Calcola la deviazione standard $\sigma$ dei dati $2, 8, 2, 8$. Se serve, scrivi una radice o un decimale con due cifre.`, suggerimenti: [R`Calcola prima la varianza, poi fai la radice.`], risposta: num(3), soluzione: [R`Media: $\dfrac{2 + 8 + 2 + 8}{4} = 5$.`, R`Scarti: $-3, 3, -3, 3$. Quadrati: tutti $9$.`, R`Varianza: $\dfrac{9 \cdot 4}{4} = 9$, quindi $\sigma = \sqrt{9} = 3$.`] },
 
-    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`In una classe, $12$ studenti hanno media $6$ e gli altri $8$ hanno media $7{,}5$. Qual è la media di tutta la classe?`, suggerimenti: [R`Non fare la media fra $6$ e $7{,}5$: i due gruppi hanno grandezze diverse.`, R`Usa la media ponderata, con pesi $12$ e $8$.`], risposta: num(6.6), soluzione: [R`Somma dei voti del primo gruppo: $12 \cdot 6 = 72$. Del secondo: $8 \cdot 7{,}5 = 60$.`, R`Gli studenti sono $12 + 8 = 20$.`, R`Media: $\dfrac{72 + 60}{20} = \dfrac{132}{20} = 6{,}6$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`In una classe, $12$ studenti hanno media $6$ e gli altri $8$ hanno media $7{,}5$. Qual è la media di tutta la classe?`, suggerimenti: [R`Non fare la media fra $6$ e $7{,}5$: i due gruppi hanno grandezze diverse.`, R`Usa la media ponderata, con pesi $12$ e $8$.`], risposta: num(6.6), soluzione: [R`Somma dei voti del primo gruppo: $12 \cdot 6 = 72$. Del secondo: $8 \cdot 7{,}5 = 60$.`, R`Gli studenti sono $12 + 8 = 20$.`, R`Media: $\dfrac{72 + 60}{20} = \dfrac{132}{20} = 6{,}6$.`] },
 
     { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Calcola la deviazione standard $\sigma$ dei dati $3, 5, 7, 9, 11$. Se serve, scrivi una radice o un decimale con due cifre.`, suggerimenti: [R`La media è il dato centrale, perché i dati sono equidistanti.`, R`Varianza: media dei quadrati degli scarti. Poi fai la radice.`], risposta: num(Math.sqrt(8)), soluzione: [R`Media: $\dfrac{3 + 5 + 7 + 9 + 11}{5} = 7$.`, R`Scarti: $-4, -2, 0, 2, 4$. Quadrati: $16, 4, 0, 4, 16$.`, R`Varianza: $\dfrac{40}{5} = 8$.`, R`$\sigma = \sqrt{8} \approx 2{,}83$.`] },
 
     { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Calcola la varianza dei dati $2, 3, 3, 4, 8$.`, suggerimenti: [R`La media è $4$.`, R`Gli scarti sono $-2, -1, -1, 0, 4$.`], risposta: num(4.4), soluzione: [R`Media: $\dfrac{2 + 3 + 3 + 4 + 8}{5} = \dfrac{20}{5} = 4$.`, R`Scarti: $-2, -1, -1, 0, 4$. Quadrati: $4, 1, 1, 0, 16$.`, R`Varianza: $\dfrac{4 + 1 + 1 + 0 + 16}{5} = \dfrac{22}{5} = 4{,}4$.`] },
+
+    { id: 'b-21', livello: 'base', sezione: 'popolazione-campione', difficolta: 1, testo: R`In un'indagine hai raccolto $200$ questionari. Ora conti le risposte e le metti in tabella. In quale fase dell'indagine sei?`, suggerimenti: [R`Le fasi sono: obiettivi, rilevazione, spoglio, elaborazione, interpretazione.`], risposta: { tipo: 'testo', accettate: ['spoglio', 'lo spoglio', 'fase di spoglio', 'la fase di spoglio', 'spoglio dei dati', 'lo spoglio dei dati'], segnaposto: 'il nome della fase', simboli: [] }, soluzione: [R`Contare le risposte e ordinarle in tabelle è lo **spoglio**.`, R`Viene dopo la rilevazione (la raccolta dei questionari) e prima dell'elaborazione (il calcolo degli indici).`] },
+
+    { id: 'b-22', livello: 'base', sezione: 'numeri-indice', difficolta: 1, testo: R`In un'azienda di $250$ dipendenti, $60$ sono laureati. Calcola il rapporto di composizione in percentuale.`, suggerimenti: [R`Parte divisa per il tutto, poi per $100$.`], risposta: pc(24, '60/250', '6/25'), soluzione: [R`$\dfrac{60}{250} = 0{,}24$.`, R`In percentuale: $24\%$ dei dipendenti è laureato.`] },
+
+    { id: 'b-23', livello: 'base', sezione: 'numeri-indice', difficolta: 1, testo: R`Un comune ha $18\,000$ abitanti su una superficie di $45$ km$^2$. Quanti abitanti ci sono per km$^2$?`, suggerimenti: [R`È un rapporto di densità: abitanti divisi per la superficie.`], risposta: num(400), soluzione: [R`$\dfrac{18\,000}{45} = 400$.`, R`La densità è $400$ abitanti per km$^2$.`] },
+
+    { id: 'b-24', livello: 'base', sezione: 'numeri-indice', difficolta: 1, testo: R`In un anno, in una città di $60\,000$ abitanti, muoiono $540$ persone. Quanti morti ci sono ogni $1000$ abitanti?`, suggerimenti: [R`Dividi i morti per gli abitanti, poi moltiplica per $1000$.`], risposta: num(9), soluzione: [R`È un rapporto di derivazione: $\dfrac{540}{60\,000} = 0{,}009$.`, R`Moltiplicato per $1000$: $9$ morti ogni $1000$ abitanti.`] },
+
+    { id: 'b-25', livello: 'base', sezione: 'numeri-indice', difficolta: 1, testo: R`Un litro di latte costava $1{,}25$ € nel 2020 e costa $1{,}50$ € nel 2025. Calcola il numero indice del 2025, con base 2020.`, suggerimenti: [R`$I = \dfrac{\text{prezzo 2025}}{\text{prezzo 2020}}\cdot 100$.`], risposta: num(120), soluzione: [R`$\dfrac{1{,}50}{1{,}25} = 1{,}2$.`, R`$I_{2025} = 1{,}2 \cdot 100 = 120$: il prezzo è salito del $20\%$.`] },
 
     { id: 'es-01', difficolta: 1, testo: R`Su 50 studenti intervistati, 18 vanno a scuola in autobus. Calcola la frequenza relativa di questa modalità (scrivila come numero decimale).`, suggerimenti: [R`La frequenza relativa è la frequenza assoluta divisa per il totale.`, R`Calcola $\dfrac{18}{50}$.`], risposta: { tipo: 'numero', valore: 0.36, tolleranza: 0.005 }, soluzione: [R`$f = \dfrac{18}{50} = 0{,}36$.`, R`In percentuale: il 36% degli studenti prende l'autobus.`] },
     { id: 'es-02', difficolta: 1, testo: R`I voti di 9 studenti sono $4, 5, 5, 6, 6, 7, 8, 8, 9$. Calcola la media aritmetica arrotondata ai centesimi.`, suggerimenti: [R`Somma tutti i voti e dividi per quanti sono.`, R`La somma è $58$.`], risposta: { tipo: 'numero', valore: 6.44, tolleranza: 0.01 }, soluzione: [R`Somma: $4 + 5 + 5 + 6 + 6 + 7 + 8 + 8 + 9 = 58$.`, R`$\overline{x} = \dfrac{58}{9} = 6{,}4\overline{4} \approx 6{,}44$.`] },
@@ -515,9 +593,11 @@ Le altezze dei diciottenni hanno $\mu = 170$ cm e $\sigma = 8$ cm. Allora circa 
     { id: 'es-07', difficolta: 2, testo: R`In una classe i voti hanno frequenze: $5$ preso da 6 studenti, $6$ da 9, $7$ da 7, $8$ da 3. Quanti studenti hanno preso al più $6$?`, suggerimenti: [R`«Al più 6» vuol dire 6 oppure meno di 6.`, R`È la frequenza cumulata della modalità $6$.`], risposta: { tipo: 'numero', valore: 15, tolleranza: 0.01 }, soluzione: [R`La frequenza cumulata del $6$ è $6 + 9 = 15$.`, R`Quindi 15 studenti su $6 + 9 + 7 + 3 = 25$, cioè il 60% della classe.`] },
     { id: 'es-08', difficolta: 2, testo: R`Le età degli iscritti a un circolo sono raggruppate così: $\Ica{0}{10}$ con 30 persone, $\Ica{10}{30}$ con 60, $\Ica{30}{70}$ con 80. Calcola la densità di frequenza della terza classe.`, suggerimenti: [R`La densità è la frequenza divisa per l'ampiezza della classe.`, R`L'ampiezza della terza classe è $70 - 30 = 40$.`], risposta: { tipo: 'numero', valore: 2, tolleranza: 0.01 }, soluzione: [R`Ampiezza della terza classe: $70 - 30 = 40$.`, R`$h_3 = \dfrac{80}{40} = 2$.`, R`Le altre densità valgono $\dfrac{30}{10} = 3$ e $\dfrac{60}{20} = 3$: la terza classe è la **meno** densa, pur avendo la frequenza più alta. È esattamente l'inganno che l'istogramma corretto evita.`] },
     { id: 'es-09', difficolta: 2, testo: R`In un sondaggio su 240 persone, 90 preferiscono la montagna. Quanti gradi misura il settore corrispondente in un aerogramma?`, suggerimenti: [R`Trova prima la frequenza relativa.`, R`Moltiplica la frequenza relativa per $360^\circ$.`], risposta: { tipo: 'numero', valore: 135, tolleranza: 0.5 }, soluzione: [R`$f = \dfrac{90}{240} = 0{,}375$.`, R`$\alpha = 0{,}375 \cdot 360^\circ = 135^\circ$.`] },
-    { id: 'es-10', difficolta: 3, testo: R`I compensi mensili di cinque collaboratori sono $1200$, $1300$, $1400$, $1500$ e $9600$ euro. Calcola media e mediana (scrivi i due numeri in quest'ordine: prima la media, poi la mediana).`, suggerimenti: [R`Per la media somma tutto e dividi per $5$; per la mediana i dati sono già ordinati.`, R`La somma dei cinque compensi è $15\,000$.`, R`Con $N = 5$ la mediana è il terzo valore.`], risposta: { tipo: 'numeri', valori: [3000, 1400], ordinati: true }, soluzione: [R`Somma: $1200 + 1300 + 1400 + 1500 + 9600 = 15\,000$, quindi $\overline{x} = \dfrac{15\,000}{5} = 3000$ euro.`, R`$N = 5$ è dispari: la mediana è il terzo valore, cioè $1400$ euro.`, R`Quattro collaboratori su cinque guadagnano meno della media: qui la mediana descrive molto meglio la situazione, perché il compenso di $9600$ euro è un valore anomalo.`] },
+    { id: 'es-10', difficolta: 3, testo: R`I compensi mensili di cinque collaboratori sono $1200$, $1300$, $1400$, $1500$ e $9600$ euro. Calcola media e mediana (scrivi i due numeri in quest'ordine: prima la media, poi la mediana).`, suggerimenti: [R`Per la media somma tutto e dividi per $5$; per la mediana i dati sono già ordinati.`, R`La somma dei cinque compensi è $15\,000$.`, R`Con $N = 5$ la mediana è il terzo valore.`], risposta: { tipo: 'numeri', valori: [3000, 1400], ordinati: true }, soluzione: [R`Somma: $1200 + 1300 + 1400 + 1500 + 9600 = 15\,000$, quindi $\overline{x} = \dfrac{15\,000}{5} = 3000$ euro.`, R`$N = 5$ è dispari: la mediana è il terzo valore, cioè $1400$ euro.`, R`Quattro collaboratori su cinque guadagnano meno della media: qui la mediana descrive molto meglio la situazione, perché il compenso di $9600$ euro è un valore anomalo.`] },
     { id: 'es-11', difficolta: 3, testo: R`Per quattro studenti si sono rilevate le coppie (ore di allenamento; punti segnati): $(2; 4)$, $(4; 5)$, $(6; 8)$, $(8; 9)$. Calcola il coefficiente angolare $m$ della retta di regressione.`, suggerimenti: [R`Calcola prima le due medie $\overline{x}$ e $\overline{y}$.`, R`$m$ è il rapporto fra la somma dei prodotti degli scarti e la somma dei quadrati degli scarti di $x$.`, R`Gli scarti di $x$ sono $-3, -1, 1, 3$ e quelli di $y$ sono $-2{,}5$; $-1{,}5$; $1{,}5$; $2{,}5$.`], risposta: { tipo: 'numero', valore: 0.9, tolleranza: 0.01 }, soluzione: [R`$\overline{x} = \dfrac{2 + 4 + 6 + 8}{4} = 5$ e $\overline{y} = \dfrac{4 + 5 + 8 + 9}{4} = 6{,}5$.`, R`Prodotti degli scarti: $(-3)(-2{,}5) = 7{,}5$; $(-1)(-1{,}5) = 1{,}5$; $(1)(1{,}5) = 1{,}5$; $(3)(2{,}5) = 7{,}5$. Somma: $18$.`, R`Quadrati degli scarti di $x$: $9 + 1 + 1 + 9 = 20$.`, R`$m = \dfrac{18}{20} = 0{,}9$; per completezza $q = 6{,}5 - 0{,}9 \cdot 5 = 2$, quindi la retta è $y = 0{,}9x + 2$.`] },
-    { id: 'es-12', difficolta: 3, testo: R`I tempi di produzione di un pezzo seguono una distribuzione normale con media $\mu = 50$ minuti e deviazione standard $\sigma = 4$ minuti. Fra quali due valori cade circa il 95% dei pezzi?`, suggerimenti: [R`Applica la regola 68 - 95 - 99,7.`, R`Il 95% corrisponde all'intervallo fra $\mu - 2\sigma$ e $\mu + 2\sigma$.`], risposta: { tipo: 'intervallo', da: 42, a: 58, chiusoDa: true, chiusoA: true }, soluzione: [R`Il 95% dei dati sta fra $\mu - 2\sigma$ e $\mu + 2\sigma$.`, R`$\mu - 2\sigma = 50 - 8 = 42$ e $\mu + 2\sigma = 50 + 8 = 58$.`, R`Circa il 95% dei pezzi richiede fra $42$ e $58$ minuti; fuori dall'intervallo $\Icc{38}{62}$ (tre sigma) cade solo lo $0{,}3$ per cento.`] }
+    { id: 'es-12', difficolta: 3, testo: R`I tempi di produzione di un pezzo seguono una distribuzione normale con media $\mu = 50$ minuti e deviazione standard $\sigma = 4$ minuti. Fra quali due valori cade circa il 95% dei pezzi?`, suggerimenti: [R`Applica la regola 68 - 95 - 99,7.`, R`Il 95% corrisponde all'intervallo fra $\mu - 2\sigma$ e $\mu + 2\sigma$.`], risposta: { tipo: 'intervallo', da: 42, a: 58, chiusoDa: true, chiusoA: true }, soluzione: [R`Il 95% dei dati sta fra $\mu - 2\sigma$ e $\mu + 2\sigma$.`, R`$\mu - 2\sigma = 50 - 8 = 42$ e $\mu + 2\sigma = 50 + 8 = 58$.`, R`Circa il 95% dei pezzi richiede fra $42$ e $58$ minuti; fuori dall'intervallo $\Icc{38}{62}$ (tre sigma) cade solo lo $0{,}3$ per cento.`] },
+    { id: 'es-13', sezione: 'numeri-indice', difficolta: 2, testo: R`Il prezzo di un biglietto del treno ha questi indici a base fissa (2020 = 100): 2021: $104$; 2022: $112$; 2023: $126$; 2024: $126$. Calcola l'indice a base mobile del 2023.`, suggerimenti: [R`L'indice a base mobile confronta il 2023 con il 2022.`, R`Dividi i due indici a base fissa consecutivi e moltiplica per $100$.`], risposta: { tipo: 'numero', valore: 112.5, tolleranza: 0.05 }, soluzione: [R`$I_{2023/2022} = \dfrac{126}{112}\cdot 100 = 112{,}5$.`, R`Nel 2023 il prezzo è salito del $12{,}5\%$ rispetto al 2022, anche se l'indice a base fissa è salito di $14$ punti.`, R`Gli altri: $I_{2022/2021} = \dfrac{112}{104}\cdot 100 \approx 107{,}7$ e $I_{2024/2023} = 100$, prezzo fermo.`] },
+    { id: 'es-14', sezione: 'numeri-indice', difficolta: 3, testo: R`Il fatturato di un'azienda era $500\,000$ € nel 2022. Gli indici a base mobile sono: 2023: $108$; 2024: $95$; 2025: $110$. Calcola l'indice a base fissa del 2025, con base 2022.`, suggerimenti: [R`Trasforma gli indici a catena in fattori: $1{,}08$; $0{,}95$; $1{,}10$.`, R`Moltiplica i tre fattori, poi moltiplica per $100$.`], risposta: { tipo: 'numero', valore: 112.86, tolleranza: 0.05 }, soluzione: [R`L'indice $95$ vuol dire un calo del $5\%$ nel 2024.`, R`$1{,}08 \cdot 0{,}95 \cdot 1{,}10 = 1{,}1286$, quindi $I_{2025} = 112{,}86$.`, R`Il fatturato del 2025 è $500\,000 \cdot 1{,}1286 = 564\,300$ €.`, R`Sommando le variazioni, $+8 - 5 + 10 = +13\%$, si sbaglia di poco qui. Con variazioni grandi l'errore cresce.`] }
   ],
 
   quiz: [
@@ -536,7 +616,10 @@ Le altezze dei diciottenni hanno $\mu = 170$ cm e $\sigma = 8$ cm. Allora circa 
     { id: 'q-13', domanda: R`Il coefficiente di variazione serve a…`, opzioni: [R`decidere se i dati sono normali`, R`confrontare la variabilità di grandezze con unità di misura diverse`, R`trovare la mediana`, R`misurare la correlazione fra due caratteri`], corretta: 1, spiegazione: R`$\text{CV} = \dfrac{\sigma}{\overline{x}}$ è un numero puro: permette di dire se pesano di più le oscillazioni delle altezze o quelle dei pesi, che hanno unità diverse.` },
     { id: 'q-14', domanda: R`Il coefficiente di correlazione fra due caratteri vale $r = 0$. Si può concludere che…`, opzioni: [R`i due caratteri sono certamente indipendenti`, R`fra i due caratteri non c'è alcun legame **lineare**`, R`uno dei due caratteri è costante`, R`la retta di regressione non esiste`], corretta: 1, spiegazione: R`$r$ misura solo l'allineamento su una retta: dati disposti lungo una parabola possono avere $r = 0$ pur essendo legatissimi. L'indipendenza è un'altra cosa.` },
     { id: 'q-15', domanda: R`Le vendite di gelati e il numero di annegamenti crescono insieme di mese in mese. Che cosa se ne deduce?`, opzioni: [R`che il gelato provoca annegamenti`, R`che i dati sono sbagliati`, R`che c'è correlazione, ma non necessariamente un rapporto di causa`, R`che il coefficiente $r$ vale $1$`], corretta: 2, spiegazione: R`Due grandezze possono muoversi insieme perché dipendono entrambe da una terza (qui il caldo). La correlazione misura l'andamento comune, non la causa.` },
-    { id: 'q-16', domanda: R`In una distribuzione normale con $\mu = 170$ e $\sigma = 8$, circa il 68% dei dati sta…`, opzioni: [R`fra $154$ e $186$`, R`fra $162$ e $178$`, R`fra $146$ e $194$`, R`sotto $170$`], corretta: 1, spiegazione: R`Il 68% dei dati cade entro una deviazione standard dalla media: $170 - 8 = 162$ e $170 + 8 = 178$. L'intervallo $\Icc{154}{186}$ è quello del 95% (due sigma), $\Icc{146}{194}$ quello del 99,7%.` }
+    { id: 'q-16', domanda: R`In una distribuzione normale con $\mu = 170$ e $\sigma = 8$, circa il 68% dei dati sta…`, opzioni: [R`fra $154$ e $186$`, R`fra $162$ e $178$`, R`fra $146$ e $194$`, R`sotto $170$`], corretta: 1, spiegazione: R`Il 68% dei dati cade entro una deviazione standard dalla media: $170 - 8 = 162$ e $170 + 8 = 178$. L'intervallo $\Icc{154}{186}$ è quello del 95% (due sigma), $\Icc{146}{194}$ quello del 99,7%.` },
+    { id: 'q-17', domanda: R`Il numero di abitanti per km$^2$ di un comune è un rapporto di…`, opzioni: [R`composizione`, R`derivazione`, R`densità`, R`frequenza relativa`], corretta: 2, spiegazione: R`Si divide una quantità per la superficie che la contiene: è un rapporto di densità. Composizione e frequenza relativa dividono una parte per il tutto. La derivazione divide un fenomeno per quello che lo genera, come i nati per gli abitanti.` },
+    { id: 'q-18', domanda: R`Un prezzo ha indice a base mobile $110$ in un anno e ancora $110$ l'anno dopo. In due anni è aumentato del…`, opzioni: [R`$20\%$`, R`$21\%$`, R`$10\%$`, R`$121\%$`], corretta: 1, spiegazione: R`I fattori si moltiplicano: $1{,}10 \cdot 1{,}10 = 1{,}21$, cioè più $21\%$. Il $20\%$ somma le percentuali. Il $121\%$ confonde l'indice $121$ con l'aumento.` },
+    { id: 'q-19', domanda: R`In quale fase di un'indagine statistica si calcolano media e varianza?`, opzioni: [R`rilevazione`, R`spoglio`, R`interpretazione`, R`elaborazione`], corretta: 3, spiegazione: R`Gli indici si calcolano nell'elaborazione, sui dati già ordinati dallo spoglio. La rilevazione raccoglie i dati. L'interpretazione legge i risultati e risponde alla domanda iniziale.` }
   ],
 
   suggerimenti: [

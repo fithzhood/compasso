@@ -195,7 +195,7 @@ Con più logaritmi, segui questi passi:
 
 >* Se $\log_a f(x) = \log_a g(x)$, allora $f(x) = g(x)$. Ogni soluzione però va confrontata con le c.e.
 
-~ \log(x-1) + \log(x+2) = \log(2x+10) :: tre logaritmi
+~ \begin{gathered} \log(x-1) + \log(x+2) \\ = \log(2x+10) \end{gathered} :: tre logaritmi
 ~ x - 1 > 0,\quad x + 2 > 0,\quad 2x + 10 > 0 \ \Rightarrow\ \evid{x > 1} :: c.e., sugli argomenti di partenza: devono valere tutte
 ~ \log\left[\evid{(x-1)(x+2)}\right] = \log(2x+10) :: proprietà del prodotto
 ~ (x-1)(x+2) = 2x + 10 :: tolgo i logaritmi: argomenti uguali
@@ -254,7 +254,7 @@ Serve per le domande «dopo quanto tempo». Una colonia di batteri cresce del $1
 ~ \evid{t} \ln 1{,}1 = \ln 2 :: l'esponente scende davanti
 ~ t = \frac{\ln 2}{\ln 1{,}1} \approx \frac{0{,}693}{0{,}0953} \approx \evidb{7{,}27} :: divido per $\ln 1{,}1$
 
-Poco più di $7$ ore. Lo schema funziona anche con esponenti più complicati: da $3^{x+1} = 20$ ottieni $(x + 1)\ln 3 = \ln 20$, cioè $x = \frac{\ln 20}{\ln 3} - 1 \approx 1{,}727$.
+Poco più di $7$ ore. Lo schema funziona anche con esponenti più complicati: da $3^{x+1} = 20$ ottieni $(x + 1)\ln 3 = \ln 20$, cioè $x = \frac{\ln 20}{\ln 3} - 1 \approx 1{,}727$.
 
 ?? Qual è la soluzione di $2^x = 5$?
 [x] $x = \frac{\log 5}{\log 2}$
@@ -278,13 +278,13 @@ Poco più di $7$ ore. Lo schema funziona anche con esponenti più complicati: da
 Nei decibel, $I$ è l'intensità del suono e $I_0$ quella appena udibile. Nel pH, $[\text{H}^+]$ è la concentrazione di ioni idrogeno in moli per litro. Con $[\text{H}^+] = 10^{-7}$ il pH è $7$: la soluzione è neutra.
 
 ?? Un suono passa da $60$ a $80$ decibel. Di quanto è aumentata la sua intensità?
-[x] è diventata $100$ volte maggiore
+[x] è diventata $100$ volte maggiore
 [ ] è aumentata di un terzo
-[ ] è diventata $20$ volte maggiore
+[ ] è diventata $20$ volte maggiore
 [ ] è raddoppiata
 => $+20$ dB sono due passi da $10$ dB. Ogni passo moltiplica l'intensità per $10$: $10 \cdot 10 = 100$. «$80$ è un terzo più di $60$» legge la scala come una scala normale: è l'errore tipico.
 
->! Sulle scale logaritmiche una differenza si legge come un rapporto. Fra magnitudo $7$ e $5$ ci sono due gradi: le onde sono $10 \cdot 10 = 100$ volte più ampie.` }
+>! Sulle scale logaritmiche una differenza si legge come un rapporto. Fra magnitudo $7$ e $5$ ci sono due gradi: le onde sono $10 \cdot 10 = 100$ volte più ampie.` }
   ],
 
   grafici: {
@@ -441,8 +441,8 @@ Nei decibel, $I$ è l'intensità del suono e $I_0$ quella appena udibile. Nel pH
     { id: 'es-08', difficolta: 2, testo: R`Risolvi $2^x = 12$ (usa i logaritmi, arrotonda a tre cifre decimali).`, suggerimenti: [R`Applica $\ln$ a entrambi i membri.`, R`$x = \dfrac{\ln 12}{\ln 2}$.`], risposta: { tipo: 'numero', valore: 3.585, tolleranza: 0.01 }, soluzione: [R`$\ln(2^x) = \ln 12 \Rightarrow x \ln 2 = \ln 12 \Rightarrow x = \dfrac{\ln 12}{\ln 2}$.`, R`$x \approx \dfrac{2{,}485}{0{,}693} \approx 3{,}585$.`] },
     { id: 'es-09', difficolta: 3, testo: R`Risolvi $(\log_2 x)^2 - 3\log_2 x + 2 = 0$.`, suggerimenti: [R`C.e.: $x>0$.`, R`Sostituisci $t = \log_2 x$ e risolvi l'equazione di secondo grado in $t$.`, R`Trovati i valori di $t$, ricava $x$ da $\log_2 x = t$.`], risposta: { tipo: 'numeri', valori: [2, 4] }, soluzione: [R`C.e.: $x>0$. Pongo $t=\log_2 x$: $t^2-3t+2=0 \Rightarrow t=1$ oppure $t=2$.`, R`$\log_2 x = 1 \Rightarrow x=2$. $\log_2 x = 2 \Rightarrow x=4$. Entrambe rispettano la c.e.`] },
     { id: 'es-10', difficolta: 3, testo: R`Una soluzione ha concentrazione di ioni idrogeno $[\text{H}^+] = 10^{-4}$ mol/L. Calcola il suo pH.`, suggerimenti: [R`Usa la formula $\text{pH} = -\log_{10}[\text{H}^+]$.`, R`$-\log_{10}(10^{-4}) = ?$`], risposta: { tipo: 'numero', valore: 4, tolleranza: 0.01 }, soluzione: [R`$\text{pH} = -\log_{10}(10^{-4}) = -(-4) = 4$.`] },
-    { id: 'es-11', difficolta: 3, testo: R`Un capitale cresce del $5\%$ ogni anno, cioè si moltiplica per $1{,}05$: $C = C_0 \cdot 1{,}05^{\,t}$. Dopo quanti anni raddoppia? (Approssima all'intero più vicino.)`, suggerimenti: [R`Devi risolvere $1{,}05^{\,t} = 2$.`, R`Applica il logaritmo a entrambi i membri: $t = \dfrac{\ln 2}{\ln 1{,}05}$.`], risposta: { tipo: 'numero', valore: 14, tolleranza: 0.5 }, soluzione: [R`$1{,}05^{\,t}=2 \Rightarrow t\ln(1{,}05) = \ln 2 \Rightarrow t = \dfrac{\ln 2}{\ln 1{,}05} \approx \dfrac{0{,}693}{0{,}0488} \approx 14{,}2$.`, R`Il capitale raddoppia dopo circa $14$ anni.`] },
-    { id: 'es-12', difficolta: 3, testo: R`Un terremoto di magnitudo $7$, rispetto a uno di magnitudo $5$, quante volte più ampie sono le onde sismiche che produce? (Ogni unità in più sulla scala Richter corrisponde a un fattore $10$ di ampiezza.)`, suggerimenti: [R`La differenza di magnitudo è $2$ unità.`, R`Un fattore $10$ per ogni unità, applicato due volte, si moltiplica.`], risposta: { tipo: 'numero', valore: 100, tolleranza: 1 }, soluzione: [R`La differenza è $2$ unità: il fattore di ampiezza è $10^2 = 100$.`, R`Il terremoto di magnitudo $7$ produce onde circa $100$ volte più ampie di quello di magnitudo $5$ (l'energia rilasciata, invece, è circa $1000$ volte maggiore).`] }
+    { id: 'es-11', difficolta: 3, testo: R`Un capitale cresce del $5\%$ ogni anno, cioè si moltiplica per $1{,}05$: $C = C_0 \cdot 1{,}05^{\,t}$. Dopo quanti anni raddoppia? (Approssima all'intero più vicino.)`, suggerimenti: [R`Devi risolvere $1{,}05^{\,t} = 2$.`, R`Applica il logaritmo a entrambi i membri: $t = \dfrac{\ln 2}{\ln 1{,}05}$.`], risposta: { tipo: 'numero', valore: 14, tolleranza: 0.5 }, soluzione: [R`$1{,}05^{\,t}=2 \Rightarrow t\ln(1{,}05) = \ln 2 \Rightarrow t = \dfrac{\ln 2}{\ln 1{,}05} \approx \dfrac{0{,}693}{0{,}0488} \approx 14{,}2$.`, R`Il capitale raddoppia dopo circa $14$ anni.`] },
+    { id: 'es-12', difficolta: 3, testo: R`Un terremoto di magnitudo $7$, rispetto a uno di magnitudo $5$, quante volte più ampie sono le onde sismiche che produce? (Ogni unità in più sulla scala Richter corrisponde a un fattore $10$ di ampiezza.)`, suggerimenti: [R`La differenza di magnitudo è $2$ unità.`, R`Un fattore $10$ per ogni unità, applicato due volte, si moltiplica.`], risposta: { tipo: 'numero', valore: 100, tolleranza: 1 }, soluzione: [R`La differenza è $2$ unità: il fattore di ampiezza è $10^2 = 100$.`, R`Il terremoto di magnitudo $7$ produce onde circa $100$ volte più ampie di quello di magnitudo $5$ (l'energia rilasciata, invece, è circa $1000$ volte maggiore).`] }
   ],
 
   quiz: [
@@ -460,8 +460,8 @@ Nei decibel, $I$ è l'intensità del suono e $I_0$ quella appena udibile. Nel pH
     { id: 'q-12', domanda: R`In una disequazione logaritmica con base $0 < a < 1$, tolto il logaritmo il verso della disequazione…`, opzioni: [R`si mantiene sempre`, R`dipende dal segno di $b$`, R`si inverte sempre`, R`non si può togliere il logaritmo`], corretta: 2, spiegazione: R`Con base minore di $1$ la funzione logaritmica è decrescente, quindi togliendo il logaritmo il verso della disequazione si inverte sempre.` },
     { id: 'q-13', domanda: R`Come si risolve un'equazione come $3^x = 20$, dove $20$ non è una potenza esatta di $3$?`, opzioni: [R`Non si può risolvere con i numeri reali`, R`Si applica il logaritmo a entrambi i membri`, R`Si approssima per tentativi, non esiste un metodo esatto`, R`Si cambia la base dell'esponenziale finché non torna esatta`], corretta: 1, spiegazione: R`Applicando il logaritmo a entrambi i membri si ottiene $x\log 3 = \log 20$, quindi $x = \log 20 / \log 3$: un valore esatto, anche se irrazionale.` },
     { id: 'q-14', domanda: R`Il logaritmo naturale $\ln b$ è il logaritmo di $b$ in quale base?`, opzioni: [R`$e \approx 2{,}718$`, R`$10$`, R`$2$`, R`$1$`], corretta: 0, spiegazione: R`$\ln b = \log_e b$, dove $e$ è il numero di Nepero. La base $10$ corrisponde invece al logaritmo decimale $\log b$.` },
-    { id: 'q-15', domanda: R`Dire che il pH è una scala logaritmica significa che…`, opzioni: [R`il pH cresce linearmente con la concentrazione di ioni`, R`il pH non ha un'unità di misura`, R`il pH è sempre un numero intero`, R`una differenza di un'unità di pH corrisponde a un fattore $10$ nella concentrazione di ioni idrogeno`], corretta: 3, spiegazione: R`$\text{pH}=-\log_{10}[\text{H}^+]$: una unità di pH in meno corrisponde a una concentrazione $10$ volte maggiore, non a una differenza lineare.` },
-    { id: 'q-16', domanda: R`Un terremoto di magnitudo $6$, rispetto a uno di magnitudo $4$, sulla scala Richter produce onde sismiche di ampiezza…`, opzioni: [R`doppia`, R`uguale`, R`circa $100$ volte maggiore`, R`circa $6$ volte maggiore`], corretta: 2, spiegazione: R`La differenza è di $2$ unità di magnitudo, e ogni unità corrisponde a un fattore $10$ di ampiezza: $10^2=100$. L'energia rilasciata cresce più in fretta, circa $32$ volte per ogni unità.` }
+    { id: 'q-15', domanda: R`Dire che il pH è una scala logaritmica significa che…`, opzioni: [R`il pH cresce linearmente con la concentrazione di ioni`, R`il pH non ha un'unità di misura`, R`il pH è sempre un numero intero`, R`una differenza di un'unità di pH corrisponde a un fattore $10$ nella concentrazione di ioni idrogeno`], corretta: 3, spiegazione: R`$\text{pH}=-\log_{10}[\text{H}^+]$: una unità di pH in meno corrisponde a una concentrazione $10$ volte maggiore, non a una differenza lineare.` },
+    { id: 'q-16', domanda: R`Un terremoto di magnitudo $6$, rispetto a uno di magnitudo $4$, sulla scala Richter produce onde sismiche di ampiezza…`, opzioni: [R`doppia`, R`uguale`, R`circa $100$ volte maggiore`, R`circa $6$ volte maggiore`], corretta: 2, spiegazione: R`La differenza è di $2$ unità di magnitudo, e ogni unità corrisponde a un fattore $10$ di ampiezza: $10^2=100$. L'energia rilasciata cresce più in fretta, circa $32$ volte per ogni unità.` }
   ],
 
   suggerimenti: [

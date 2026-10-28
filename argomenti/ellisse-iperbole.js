@@ -34,7 +34,7 @@ Ti servono la distanza fra due punti, la circonferenza e il $\Delta$.`,
     R`L'iperbole $\frac{x^2}{a^2}-\frac{y^2}{b^2}=1$ ha $c^2=a^2+b^2$, una somma. I suoi asintoti sono $y=\pm\frac ba x$.`,
     R`L'eccentricità è $c$ diviso il semiasse dei fuochi. Nell'ellisse sta fra $0$ e $1$, nell'iperbole è maggiore di $1$.`,
     R`Per una retta e una conica, sostituisci e guarda il $\Delta$. La tangente in un punto della curva si trova con lo sdoppiamento.`,
-    R`La funzione $y=\frac{ax+b}{cx+d}$ è un'iperbole equilatera spostata, con asintoti $x=-\frac dc$ e $y=\frac ac$.`
+    R`Con $x-x_0$ al posto di $x$ e $y-y_0$ al posto di $y$ la conica è la stessa, con il centro in $(x_0;y_0)$. Dall'equazione sviluppata ci arrivi completando i quadrati. Anche $y=\frac{ax+b}{cx+d}$ è una conica spostata: un'iperbole equilatera con asintoti $x=-\frac dc$ e $y=\frac ac$.`
   ],
 
   sezioni: [
@@ -236,6 +236,61 @@ Esempio: $xy=12$ passa per $(3;4)$ e per $(-2;-6)$, ma non per $(2;-6)$.
 
 >! $xy=k$ è un'iperbole equilatera come $x^2-y^2=a^2$, vista da assi ruotati di $45°$. Per questo anche $xy=k$ ha eccentricità $\sqrt2$.` },
 
+    { id: 'coniche-traslate', titolo: 'Coniche con il centro spostato', testo: R`Finora ellisse e iperbole avevano il centro nell'origine. Ma una curva si può spostare nel piano senza cambiarle forma. Con la circonferenza l'hai già fatto: $(x-x_0)^2+(y-y_0)^2=r^2$ ha il centro in $(x_0;y_0)$.
+
+La regola vale per ogni curva. Scrivi $x-x_0$ al posto di $x$ e $y-y_0$ al posto di $y$. La curva si sposta di $x_0$ in orizzontale e di $y_0$ in verticale.
+
+>* **Ellisse e iperbole con centro $C(x_0;y_0)$:** $$\begin{gathered}\frac{(x-x_0)^2}{a^2}+\frac{(y-y_0)^2}{b^2}=1\\ \frac{(x-x_0)^2}{a^2}-\frac{(y-y_0)^2}{b^2}=1\end{gathered}$$ I numeri $a$, $b$, $c$ sono quelli della curva con il centro nell'origine. Vertici, fuochi e asintoti si spostano insieme al centro.
+
+Con il centro in $(x_0;y_0)$ basta aggiungere $x_0$ alle ascisse e $y_0$ alle ordinate:
+
+- vertici $A$, $A'$: $(x_0\pm a;y_0)$
+- vertici $B$, $B'$ dell'ellisse: $(x_0;y_0\pm b)$
+- fuochi dell'ellisse con $a>b$, e dell'iperbole: $(x_0\pm c;y_0)$
+- fuochi dell'ellisse con $b>a$: $(x_0;y_0\pm c)$
+
+Gli asintoti dell'iperbole passano per il centro:
+$$y-y_0=\pm\frac ba(x-x_0)$$
+
+Esempio: l'iperbole $\frac{(x+1)^2}{9}-\frac{(y-2)^2}{16}=1$ ha $x_0=-1$ e $y_0=2$, quindi centro $(-1;2)$. Poi $a=3$, $b=4$ e $c^2=9+16=25$, cioè $c=5$. Vertici $(-4;2)$ e $(2;2)$, fuochi $(-6;2)$ e $(4;2)$. Gli asintoti sono $y-2=\pm\frac43(x+1)$.
+
+>! In $(x+1)^2$ c'è $x-(-1)$: il centro ha ascissa $-1$, non $1$. Il segno nella parentesi è l'opposto della coordinata.
+
+?? Qual è il centro dell'ellisse $\frac{(x+4)^2}{25}+\frac{(y-3)^2}{9}=1$?
+[x] $(-4;3)$
+[ ] $(4;-3)$
+[ ] $(4;3)$
+[ ] $(5;3)$
+=> In $(x+4)^2$ c'è $x-(-4)$, quindi $x_0=-4$. In $(y-3)^2$ c'è $y_0=3$. Con $(4;-3)$ hai preso i segni delle parentesi; $5$ e $3$ sono i semiassi.
+
+### Dall'equazione sviluppata al centro
+Spesso l'equazione arriva sviluppata: oltre a $x^2$ e $y^2$ ci sono anche $x$ e $y$ di primo grado. Per trovare il centro **completi i quadrati**, come per il vertice della parabola.
+
+[[video:ellisse-iperbole/traslata]]
+
+Esempio: che curva è $4x^2+9y^2-16x+18y-11=0$?
+
+~ 4x^2+9y^2-16x+18y-11=0 :: $x^2$ e $y^2$ hanno lo stesso segno: ci aspettiamo un'ellisse
+~ 4(x^2-4x)+9(y^2+2y)=11 :: raggruppo i termini in $x$ e in $y$, raccolgo $4$ e $9$, porto $-11$ a destra
+~ x^2-4x\evid{+4}=(x-2)^2 :: per avere un quadrato di binomio in $x$ manca $4$
+~ y^2+2y\evid{+1}=(y+1)^2 :: in $y$ manca $1$
+~ 4(x-2)^2+9(y+1)^2=11\evid{+16+9} :: aggiungo $4$ e $1$ dentro le parentesi; a sinistra entrano $4\cdot4$ e $9\cdot1$, e li aggiungo anche a destra
+~ 4(x-2)^2+9(y+1)^2=36 :: sommo a destra
+~ \evidb{\frac{(x-2)^2}{9}+\frac{(y+1)^2}{4}=1} :: divido per $36$, così a destra resta $1$
+
+È l'ellisse $\frac{x^2}{9}+\frac{y^2}{4}=1$ spostata nel centro $C(2;-1)$. I semiassi sono $a=3$ e $b=2$, quindi $c^2=9-4=5$. Vertici $(-1;-1)$, $(5;-1)$, $(2;-3)$ e $(2;1)$. Fuochi $(2\pm\sqrt5;-1)$.
+
+[[grafico:traslata]]
+
+>! Dentro $4(\ldots)$ aggiungi $4$, ma il membro di sinistra cresce di $4\cdot4=16$. A destra va aggiunto $16$, non $4$.
+
+Se alla fine a destra resta $0$, l'equazione ha un punto solo, il centro. Con un numero negativo non ha nessun punto: due quadrati sommati non sono mai negativi.
+
+### L'ellisse come circonferenza schiacciata
+Prendi la circonferenza $x^2+y^2=9$. Moltiplica per $\frac23$ l'ordinata di ogni punto, lasciando ferma l'ascissa. Il punto $(0;3)$ va in $(0;2)$, il punto $(3;0)$ resta dov'è. La circonferenza diventa l'ellisse $\frac{x^2}{9}+\frac{y^2}{4}=1$.
+
+> L'ellisse di semiassi $a$ e $b$ è la circonferenza di raggio $a$ dilatata in verticale di un fattore $\frac ba$. Anche l'area si moltiplica per $\frac ba$: da $\pi a^2$ diventa $\pi ab$.` },
+
     { id: 'omografica', titolo: 'La funzione omografica', testo: R`Che grafico ha $y=\frac{2x+1}{x-1}$? Con un piccolo trucco diventa un'iperbole che conosci.
 
 ~ y=\frac{2x+1}{x-1} :: la funzione; condizione di esistenza $x\ne1$
@@ -243,7 +298,7 @@ Esempio: $xy=12$ passa per $(3;4)$ e per $(-2;-6)$, ma non per $(2;-6)$.
 ~ y=\evid{2}+\frac{3}{x-1} :: spezzo la frazione in due
 ~ \evidb{(y-2)(x-1)=3} :: porto il $2$ a sinistra e moltiplico per $x-1$
 
-L'ultima riga è l'iperbole $xy=3$ spostata di $1$ a destra e di $2$ in alto. Gli asintoti diventano $x=1$ e $y=2$.
+L'ultima riga è l'iperbole $xy=3$ spostata di $1$ a destra e di $2$ in alto: al posto di $x$ c'è $x-1$, al posto di $y$ c'è $y-2$. Gli asintoti diventano $x=1$ e $y=2$.
 
 >* Una **funzione omografica** è $$y=\frac{ax+b}{cx+d}\qquad c\ne0,\ \ ad-bc\ne0$$ Il grafico è un'iperbole equilatera traslata. L'asintoto verticale è $x=-\frac dc$, dove si annulla il denominatore. L'asintoto orizzontale è $y=\frac ac$. Il **centro** $\left(-\frac dc;\frac ac\right)$ è dove si incrociano.
 
@@ -260,11 +315,7 @@ Muovi i cursori e guarda gli asintoti. Poi prova $a=2$, $b=4$, $c=1$, $d=2$: con
 [ ] $y=-3$
 => È il rapporto dei coefficienti di $x$: $\frac42=2$. Per $x$ molto grande $y$ si avvicina a $\frac{4x}{2x}=2$. Con $4$ non hai diviso per $c$, e $-3$ dà l'asintoto verticale.
 
->! Il punto $x=-\frac dc$ va escluso dal dominio, come in ogni frazione.
-
-Anche ellisse e iperbole si possono spostare. Se al posto di $x$ e di $y$ trovi $x-1$ e $y-2$, la curva è quella di sempre con il centro in $(1;2)$. Quando l'equazione è sviluppata, ci arrivi completando i quadrati.
-
-[[video:ellisse-iperbole/traslata]]` },
+>! Il punto $x=-\frac dc$ va escluso dal dominio, come in ogni frazione.` },
 
     { id: 'determinare-equazione', titolo: "Determinare l'equazione dai dati", testo: R`Negli esercizi hai un fuoco, un vertice, un punto della curva o l'eccentricità. Da questi dati ricostruisci $a$ e $b$. Le incognite sono due, quindi servono due dati.
 
@@ -355,6 +406,27 @@ Esempio con l'iperbole: vertice in $A(4;0)$ e asintoti $y=\pm\frac32x$. Il verti
       ],
       didascalia: "Trascina P: la curva è xy = k, l'insieme dei punti che fanno un rettangolo con la stessa area di quello colorato. Nel II e IV quadrante k è negativo."
     },
+    traslata: {
+      tipo: 'piano', x: [-4.5, 7.5], y: [-5.5, 5], passo: [2, 2], proporzioni: 'uguali',
+      parametri: [
+        { nome: 'h', min: -1, max: 4, passo: 0.5, valore: 2, nascosto: true },
+        { nome: 'k', min: -2, max: 2, passo: 0.5, valore: -1, nascosto: true }
+      ],
+      elementi: [
+        { tipo: 'ellisse', centro: [0, 0], a: 3, b: 2, tratteggio: true, colore: 4 },
+        { tipo: 'vettore', da: [0, 0], a: ['h', 'k'], colore: 4 },
+        { tipo: 'ellisse', centro: ['h', 'k'], a: 3, b: 2, colore: 1 },
+        { tipo: 'punto', p: ['h - 3', 'k'], colore: 1 },
+        { tipo: 'punto', p: ['h + 3', 'k'], colore: 1 },
+        { tipo: 'punto', p: ['h', 'k - 2'], colore: 1 },
+        { tipo: 'punto', p: ['h', 'k + 2'], colore: 1 },
+        { tipo: 'punto', p: ['h - sqrt(5)', 'k'], etichetta: 'F₁', posizione: 'alto-sinistra', colore: 2 },
+        { tipo: 'punto', p: ['h + sqrt(5)', 'k'], etichetta: 'F₂', posizione: 'alto', colore: 2 },
+        { tipo: 'punto', p: ['h', 'k'], trascina: true, etichetta: 'C', posizione: 'basso-destra', colore: 4 },
+        { tipo: 'testo', p: [0.5, -5.1], testo: 'F({{h}} ± √5; {{k}})', ancora: 'start' }
+      ],
+      didascalia: "Trascina il centro C. La curva tratteggiata è x²/9 + y²/4 = 1: spostata lungo la freccia diventa (x − x₀)²/9 + (y − y₀)²/4 = 1. Semiassi e fuochi restano gli stessi rispetto al centro."
+    },
     omografica: {
       tipo: 'piano', x: [-8, 8], y: [-8, 8],
       parametri: [
@@ -409,6 +481,15 @@ Esempio con l'iperbole: vertice in $A(4;0)$ e asintoti $y=\pm\frac32x$. Il verti
       R`Eccentricità: $e=c/a=5/3\approx1{,}67$.`
     ], risultato: R`$A(\pm3;0),\ F(\pm5;0),\ y=\pm\dfrac43x,\ e\approx1{,}67$` },
 
+    { titolo: "Un'iperbole con il centro spostato", problema: R`Riconosci la curva $x^2-4y^2-2x-8y-7=0$ e trova centro, vertici, fuochi e asintoti.`, passi: [
+      R`$x^2$ e $y^2$ hanno segni opposti: ci aspettiamo un'iperbole. Raggruppo i termini in $x$ e in $y$, raccogliendo $-4$: $(x^2-2x)-4(y^2+2y)=7$.`,
+      R`Completo i quadrati. Nella prima parentesi aggiungo $1$; nella seconda aggiungo $1$, ma davanti c'è $-4$, quindi a destra aggiungo $-4$: $(x^2-2x+1)-4(y^2+2y+1)=7+1-4$.`,
+      R`Riconosco i quadrati di binomio: $(x-1)^2-4(y+1)^2=4$. Divido per $4$: $\dfrac{(x-1)^2}{4}-(y+1)^2=1$.`,
+      R`È l'iperbole $\dfrac{x^2}{4}-y^2=1$ con il centro in $(1;-1)$. Quindi $a=2$, $b=1$ e $c^2=4+1=5$.`,
+      R`Vertici $(1\pm2;-1)$, cioè $(-1;-1)$ e $(3;-1)$. Fuochi $(1\pm\sqrt5;-1)$.`,
+      R`Asintoti $y+1=\pm\dfrac12(x-1)$, cioè $y=\dfrac12x-\dfrac32$ e $y=-\dfrac12x-\dfrac12$.`
+    ], risultato: R`Centro $(1;-1)$, vertici $(-1;-1)$ e $(3;-1)$, fuochi $(1\pm\sqrt5;-1)$, asintoti $y=\dfrac12x-\dfrac32$ e $y=-\dfrac12x-\dfrac12$` },
+
     { titolo: 'Centro e asintoti di una funzione omografica', problema: R`Della funzione $y=\dfrac{3x-1}{x+2}$ trova centro di simmetria e asintoti.`, passi: [
       R`Confronto con $y=\dfrac{ax+b}{cx+d}$: $a=3$, $b=-1$, $c=1$, $d=2$. Controllo $ad-bc=3\cdot2-(-1)\cdot1=6+1=7\ne0$: è davvero una funzione omografica.`,
       R`Asintoto verticale: si annulla il denominatore, $x+2=0$, cioè $x=-2$.`,
@@ -430,6 +511,9 @@ Esempio con l'iperbole: vertice in $A(4;0)$ e asintoti $y=\pm\frac32x$. Il verti
     { nome: R`Eccentricità dell'iperbole`, formula: R`e=\frac{c}{a}`, nota: R`Sempre $e>1$, perché $c>a$.` },
     { nome: R`Asintoti dell'iperbole`, formula: R`y=\pm\frac{b}{a}x` },
     { nome: R`Iperbole equilatera riferita agli asintoti`, formula: R`xy=k`, nota: R`Curva $x^2-y^2=a^2$ vista negli assi dei propri asintoti.` },
+    { nome: R`Ellisse con centro (x₀; y₀)`, formula: R`\frac{(x-x_0)^2}{a^2}+\frac{(y-y_0)^2}{b^2}=1`, nota: R`Stessi $a$, $b$, $c$ dell'ellisse con centro in $O$; vertici e fuochi si spostano di $x_0$ in orizzontale e di $y_0$ in verticale.` },
+    { nome: R`Area dell'ellisse`, formula: R`A=\pi ab`, nota: R`L'area $\pi a^2$ del cerchio di raggio $a$, moltiplicata per il fattore di schiacciamento $\frac ba$.` },
+    { nome: R`Iperbole con centro (x₀; y₀)`, formula: R`\frac{(x-x_0)^2}{a^2}-\frac{(y-y_0)^2}{b^2}=1`, nota: R`Asintoti $y-y_0=\pm\frac ba(x-x_0)$, fuochi $(x_0\pm c;y_0)$ con $c^2=a^2+b^2$.` },
     { nome: R`Funzione omografica: centro e asintoti`, formula: R`x=-\frac{d}{c}, \quad y=\frac{a}{c}`, nota: R`Per $y=\frac{ax+b}{cx+d}$, con $c \ne 0$ e $ad-bc \ne 0$.` }
   ],
 
@@ -458,7 +542,10 @@ Esempio con l'iperbole: vertice in $A(4;0)$ e asintoti $y=\pm\frac32x$. Il verti
     { id: 'fc-22', sezione: 'omografica', tipo: 'definizione', fronte: R`Funzione omografica`, retro: R`$y=\dfrac{ax+b}{cx+d}$, con $c\ne0$ e $ad-bc\ne0$: il suo grafico è un'iperbole equilatera traslata.` },
     { id: 'fc-23', sezione: 'omografica', tipo: 'formula', fronte: R`Centro e asintoti della funzione omografica $y=\dfrac{ax+b}{cx+d}$`, retro: R`Asintoto verticale $x=-d/c$, asintoto orizzontale $y=a/c$; centro $\left(-\dfrac{d}{c};\dfrac{a}{c}\right)$.` },
     { id: 'fc-24', sezione: 'omografica', tipo: 'concetto', fronte: R`Perché serve $ad-bc\ne0$ nella funzione omografica?`, retro: R`Se $ad=bc$ la frazione si riduce a una costante: non è più un'iperbole, ma una retta orizzontale privata di un punto.` },
-    { id: 'fc-25', sezione: 'determinare-equazione', tipo: 'procedura', fronte: R`Come trovare l'equazione di un'ellisse o iperbole dai dati?`, retro: R`Si individua l'orientamento (fuochi su $x$ o su $y$), si traducono i dati in equazioni su $a$, $b$, $c$ con le relazioni note, e si risolve il sistema.` }
+    { id: 'fc-25', sezione: 'determinare-equazione', tipo: 'procedura', fronte: R`Come trovare l'equazione di un'ellisse o iperbole dai dati?`, retro: R`Si individua l'orientamento (fuochi su $x$ o su $y$), si traducono i dati in equazioni su $a$, $b$, $c$ con le relazioni note, e si risolve il sistema.` },
+    { id: 'fc-26', sezione: 'coniche-traslate', tipo: 'formula', fronte: R`Ellisse con il centro in $C(x_0;y_0)$`, retro: R`$\dfrac{(x-x_0)^2}{a^2}+\dfrac{(y-y_0)^2}{b^2}=1$. Stessi $a$, $b$, $c$ di quella con centro in $O$; vertici e fuochi spostati con il centro.` },
+    { id: 'fc-27', sezione: 'coniche-traslate', tipo: 'procedura', fronte: R`Come trovi il centro di un'ellisse scritta come $4x^2+9y^2-16x+18y-11=0$?`, retro: R`Completi i quadrati: raggruppi i termini in $x$ e in $y$, raccogli i coefficienti di $x^2$ e $y^2$, aggiungi a destra ciò che aggiungi a sinistra. Qui viene $\dfrac{(x-2)^2}{9}+\dfrac{(y+1)^2}{4}=1$: centro $(2;-1)$.` },
+    { id: 'fc-28', sezione: 'coniche-traslate', tipo: 'formula', fronte: R`Asintoti dell'iperbole $\dfrac{(x-x_0)^2}{a^2}-\dfrac{(y-y_0)^2}{b^2}=1$`, retro: R`$y-y_0=\pm\dfrac ba(x-x_0)$: passano per il centro $(x_0;y_0)$.` }
   ],
 
   esercizi: [
@@ -482,6 +569,11 @@ Esempio con l'iperbole: vertice in $A(4;0)$ e asintoti $y=\pm\frac32x$. Il verti
     { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Un'ellisse ha i fuochi in $(0;\pm4)$ e un vertice in $(0;5)$. Scrivi la sua equazione.`, suggerimenti: [R`I fuochi sono sull'asse $y$: il vertice dà $b=5$.`, R`Qui $a^2=b^2-c^2$.`], risposta: conica(9, 25, '+'), soluzione: [R`$b=5$ e $c=4$, fuochi sull'asse $y$.`, R`$a^2=25-16=9$.`, R`$\dfrac{x^2}{9}+\dfrac{y^2}{25}=1$.`] },
     { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Un'iperbole ha i fuochi in $(\pm5;0)$ e i vertici in $(\pm4;0)$. Scrivi la sua equazione.`, suggerimenti: [R`$a=4$ e $c=5$.`, R`Nell'iperbole $b^2=c^2-a^2$.`], risposta: conica(16, 9, '-'), soluzione: [R`$a=4$ e $c=5$.`, R`$b^2=25-16=9$.`, R`$\dfrac{x^2}{16}-\dfrac{y^2}{9}=1$.`] },
     { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Un'ellisse ha i fuochi sull'asse $x$, un vertice in $(5;0)$ ed eccentricità $\dfrac35$. Scrivi la sua equazione.`, suggerimenti: [R`Da $e=\dfrac ca$ con $a=5$ trovi $c$.`, R`Poi $b^2=a^2-c^2$.`], risposta: conica(25, 16, '+'), soluzione: [R`$a=5$ e $\dfrac c5=\dfrac35$, quindi $c=3$.`, R`$b^2=25-9=16$.`, R`$\dfrac{x^2}{25}+\dfrac{y^2}{16}=1$.`] },
+    { id: 'b-21', livello: 'base', sezione: 'coniche-traslate', difficolta: 1, testo: R`Trova il centro dell'ellisse $\dfrac{(x-3)^2}{16}+\dfrac{(y+2)^2}{9}=1$. Scrivi *x; y*.`, suggerimenti: [R`Confronta con $(x-x_0)^2$ e $(y-y_0)^2$.`, R`$y+2=y-(-2)$.`], risposta: cop(3, -2), soluzione: [R`$(x-3)^2$ dà $x_0=3$.`, R`$(y+2)^2=(y-(-2))^2$ dà $y_0=-2$.`, R`Il centro è $(3;-2)$.`] },
+    { id: 'b-22', livello: 'base', sezione: 'coniche-traslate', difficolta: 1, testo: R`Trova il fuoco di ascissa maggiore dell'ellisse $\dfrac{(x-2)^2}{25}+\dfrac{(y+3)^2}{9}=1$. Scrivi *x; y*.`, suggerimenti: [R`Trova prima il centro, poi $c$ con $c^2=a^2-b^2$.`, R`I fuochi sono $(x_0\pm c;y_0)$.`], risposta: cop(6, -3), soluzione: [R`Centro $(2;-3)$. Il denominatore più grande è sotto la $x$: fuochi in orizzontale.`, R`$c^2=25-9=16$, quindi $c=4$.`, R`Fuochi $(2\pm4;-3)$: quello di ascissa maggiore è $(6;-3)$.`] },
+    { id: 'b-23', livello: 'base', sezione: 'coniche-traslate', difficolta: 2, testo: R`Trova il centro dell'iperbole $x^2-y^2-4x+6y-6=0$. Scrivi *x; y*.`, suggerimenti: [R`Raggruppa: $(x^2-4x)-(y^2-6y)=6$.`, R`Completa i quadrati con $4$ e con $9$. Attento al meno davanti alla seconda parentesi.`], risposta: cop(2, 3), soluzione: [R`$(x^2-4x+4)-(y^2-6y+9)=6+4-9$.`, R`$(x-2)^2-(y-3)^2=1$.`, R`Il centro è $(2;3)$.`] },
+    { id: 'b-24', livello: 'base', sezione: 'coniche-traslate', difficolta: 2, testo: R`Trova il centro dell'ellisse $x^2+4y^2+6x-8y+9=0$. Scrivi *x; y*.`, suggerimenti: [R`Raggruppa e raccogli il $4$: $(x^2+6x)+4(y^2-2y)=-9$.`, R`Dentro le parentesi aggiungi $9$ e $1$; a destra $9$ e $4\cdot1$.`], risposta: cop(-3, 1), soluzione: [R`$(x^2+6x+9)+4(y^2-2y+1)=-9+9+4$.`, R`$(x+3)^2+4(y-1)^2=4$, cioè $\dfrac{(x+3)^2}{4}+(y-1)^2=1$.`, R`Il centro è $(-3;1)$.`] },
+    { id: 'b-25', livello: 'base', sezione: 'coniche-traslate', difficolta: 2, testo: R`Scrivi l'asintoto con coefficiente angolare positivo dell'iperbole $\dfrac{(x-1)^2}{4}-\dfrac{(y-2)^2}{9}=1$, nella forma $y=mx+q$.`, suggerimenti: [R`Gli asintoti passano per il centro $(1;2)$.`, R`$y-2=\pm\dfrac ba(x-1)$, con $a=2$ e $b=3$.`], risposta: { tipo: 'testo', accettate: ['y=3/2x+1/2', 'y=(3/2)x+1/2', 'y=3x/2+1/2', 'y=1.5x+0.5', 'y=(3x+1)/2', 'y=1/2+3/2x', 'y=0.5+1.5x', '2y=3x+1', '3x-2y+1=0', 'y-2=3/2(x-1)', 'y-2=(3/2)(x-1)', 'y=3/2*x+1/2'], segnaposto: 'es. y = 2x − 1', simboli: ['/', '(', ')', '−', '='] }, soluzione: [R`Centro $(1;2)$, $a=2$, $b=3$.`, R`Asintoti $y-2=\pm\dfrac32(x-1)$.`, R`Con il più: $y=\dfrac32x-\dfrac32+2=\dfrac32x+\dfrac12$.`] },
 
     { id: 'es-01', difficolta: 1, testo: R`Data l'ellisse $\dfrac{x^2}{25}+\dfrac{y^2}{9}=1$, trova le coordinate del fuoco di ascissa positiva (x; y).`, suggerimenti: [R`I fuochi sono sull'asse del denominatore maggiore.`, R`Calcola $c$ con $c^2=a^2-b^2$.`], risposta: { tipo: 'numeri', valori: [4, 0], ordinati: true }, soluzione: [R`$a^2=25$, $b^2=9$, quindi $a=5$, $b=3$: poiché $a>b$ i fuochi sono sull'asse $x$.`, R`$c^2=25-9=16$, $c=4$: il fuoco di ascissa positiva è $F'(4;0)$.`] },
     { id: 'es-02', difficolta: 1, testo: R`Per la stessa ellisse $\dfrac{x^2}{25}+\dfrac{y^2}{9}=1$, calcola l'eccentricità.`, suggerimenti: [R`$e=c/a$: hai già trovato $a$ e $c$ nell'esercizio precedente.`, R`$a=5$, $c=4$.`], risposta: { tipo: 'numero', valore: 0.8, tolleranza: 0.01 }, soluzione: [R`$a=5$ e $c=4$ (vedi sopra).`, R`$e=c/a=4/5=0{,}8$.`] },
@@ -493,7 +585,10 @@ Esempio con l'iperbole: vertice in $A(4;0)$ e asintoti $y=\pm\frac32x$. Il verti
     { id: 'es-08', difficolta: 2, testo: R`L'iperbole equilatera $xy=k$, riferita ai propri asintoti, passa per il punto $(4;3)$. Trova $k$.`, suggerimenti: [R`Sostituisci le coordinate del punto nell'equazione.`, R`$k=x\cdot y$ calcolato in quel punto.`], risposta: { tipo: 'numero', valore: 12, tolleranza: 0.01 }, soluzione: [R`Il punto $(4;3)$ soddisfa $xy=k$: $k=4\cdot3=12$.`] },
     { id: 'es-09', difficolta: 3, testo: R`Data la funzione omografica $y=\dfrac{3x-1}{x+2}$, trova le coordinate del centro di simmetria (x; y).`, suggerimenti: [R`Confrontala con $y=\dfrac{ax+b}{cx+d}$ per riconoscere $a,b,c,d$.`, R`Il centro è $\left(-\dfrac{d}{c};\dfrac{a}{c}\right)$.`], risposta: { tipo: 'numeri', valori: [-2, 3], ordinati: true }, soluzione: [R`$a=3$, $b=-1$, $c=1$, $d=2$.`, R`Centro: $x=-d/c=-2$, $y=a/c=3$: $(-2;3)$.`] },
     { id: 'es-10', difficolta: 3, testo: R`Determina i coefficienti angolari delle rette tangenti condotte dal punto $P(0;2)$ all'ellisse $\dfrac{x^2}{3}+y^2=1$.`, suggerimenti: [R`Le rette per $P$ hanno equazione $y=mx+2$: usa la condizione di tangenza $q^2=a^2m^2+b^2$.`, R`$a^2=3$, $b^2=1$, $q=2$.`], risposta: { tipo: 'numeri', valori: [1, -1] }, soluzione: [R`Retta per $P$: $y=mx+2$, quindi $q=2$; $a^2=3$, $b^2=1$.`, R`$q^2=a^2m^2+b^2 \Rightarrow 4=3m^2+1 \Rightarrow m^2=1$.`, R`$m=1$ oppure $m=-1$.`] },
-    { id: 'es-11', difficolta: 3, testo: R`Un pianeta descrive un'orbita ellittica con il Sole in un fuoco: il semiasse maggiore vale $10$ (unità astronomiche) e l'eccentricità $0{,}2$. Trova le distanze minima e massima dal Sole (perielio e afelio).`, suggerimenti: [R`Calcola $c=e\cdot a$.`, R`Perielio $=a-c$, afelio $=a+c$.`], risposta: { tipo: 'numeri', valori: [8, 12] }, soluzione: [R`$c=e\cdot a=0{,}2\cdot10=2$.`, R`Perielio: $a-c=10-2=8$. Afelio: $a+c=10+2=12$.`] }
+    { id: 'es-11', difficolta: 3, testo: R`Un pianeta descrive un'orbita ellittica con il Sole in un fuoco: il semiasse maggiore vale $10$ (unità astronomiche) e l'eccentricità $0{,}2$. Trova le distanze minima e massima dal Sole (perielio e afelio).`, suggerimenti: [R`Calcola $c=e\cdot a$.`, R`Perielio $=a-c$, afelio $=a+c$.`], risposta: { tipo: 'numeri', valori: [8, 12] }, soluzione: [R`$c=e\cdot a=0{,}2\cdot10=2$.`, R`Perielio: $a-c=10-2=8$. Afelio: $a+c=10+2=12$.`] },
+    { id: 'es-12', sezione: 'coniche-traslate', difficolta: 2, testo: R`Dell'ellisse $9x^2+4y^2+36x-8y+4=0$ trova centro, semiassi, fuochi ed eccentricità. Nella casella scrivi l'eccentricità.`, suggerimenti: [R`Raggruppa e raccogli: $9(x^2+4x)+4(y^2-2y)=-4$.`, R`Completa i quadrati: a destra aggiungi $9\cdot4$ e $4\cdot1$.`, R`Il denominatore più grande sta sotto la $y$: i fuochi sono sulla verticale per il centro, ed $e=\dfrac cb$.`], risposta: num(Math.sqrt(5) / 3), soluzione: [R`$9(x^2+4x+4)+4(y^2-2y+1)=-4+36+4$, cioè $9(x+2)^2+4(y-1)^2=36$.`, R`Divido per $36$: $\dfrac{(x+2)^2}{4}+\dfrac{(y-1)^2}{9}=1$. Centro $(-2;1)$, semiassi $a=2$ e $b=3$.`, R`$b>a$: i fuochi stanno sulla retta $x=-2$. $c^2=9-4=5$, fuochi $(-2;1\pm\sqrt5)$.`, R`$e=\dfrac cb=\dfrac{\sqrt5}{3}\approx0{,}75$.`] },
+    { id: 'es-13', sezione: 'coniche-traslate', difficolta: 2, testo: R`Un'ellisse ha centro $(1;3)$, un vertice in $(6;3)$ e un fuoco in $(4;3)$. Scrivi la sua equazione.`, suggerimenti: [R`Vertice e fuoco stanno sulla retta $y=3$ del centro: misura le distanze dal centro.`, R`$a=5$ e $c=3$; poi $b^2=a^2-c^2$.`], risposta: { tipo: 'testo', accettate: ['(x-1)^2/25+(y-3)^2/16=1', '(y-3)^2/16+(x-1)^2/25=1', '(x-1)^2/5^2+(y-3)^2/4^2=1', '(y-3)^2/4^2+(x-1)^2/5^2=1', '16(x-1)^2+25(y-3)^2=400', '16x^2+25y^2-32x-150y-159=0'], segnaposto: 'es. (x − 2)²/9 + (y + 1)²/4 = 1', simboli: ['x²', 'y²', '(', ')', '/', '+', '−', '='] }, soluzione: [R`Il vertice dista $6-1=5$ dal centro: $a=5$. Il fuoco dista $4-1=3$: $c=3$.`, R`$b^2=a^2-c^2=25-9=16$.`, R`$\dfrac{(x-1)^2}{25}+\dfrac{(y-3)^2}{16}=1$.`] },
+    { id: 'es-14', sezione: 'coniche-traslate', difficolta: 2, testo: R`Un'aiuola ha la forma di un'ellisse larga $10$ m e profonda $8$ m. Quanti metri quadrati misura?`, suggerimenti: [R`Larghezza e profondità sono i due assi: i semiassi sono la loro metà.`, R`L'ellisse è un cerchio di raggio $a$ schiacciato di un fattore $\frac ba$: l'area è $\pi ab$.`], risposta: { tipo: 'numero', valore: 20 * Math.PI, tolleranza: 0.1, segnaposto: 'es. 3π oppure 9,42' }, soluzione: [R`I semiassi sono $a=5$ e $b=4$.`, R`Area $=\pi ab=\pi\cdot5\cdot4=20\pi\approx62{,}83\ \text{m}^2$.`] }
   ],
 
   quiz: [
@@ -512,7 +607,10 @@ Esempio con l'iperbole: vertice in $A(4;0)$ e asintoti $y=\pm\frac32x$. Il verti
     { id: 'q-13', domanda: R`Che cos'è un'iperbole equilatera?`, opzioni: [R`un'iperbole in cui i due semiassi sono uguali, $a=b$`, R`un'iperbole con un solo asintoto`, R`un'iperbole senza fuochi`, R`un'iperbole con eccentricità uguale a $1$`], corretta: 0, spiegazione: R`Equilatera significa $a=b$: gli asintoti diventano le rette perpendicolari $y=\pm x$, e $e=\sqrt2$.` },
     { id: 'q-14', domanda: R`L'iperbole equilatera, riferita ai propri asintoti, ha equazione…`, opzioni: [R`$x^2-y^2=k$`, R`$xy=k$`, R`$y=kx$`, R`$x^2+y^2=k$`], corretta: 1, spiegazione: R`Scegliendo gli asintoti come assi (rotazione di $45°$), l'equazione diventa $xy=k$.` },
     { id: 'q-15', domanda: R`Perché nella funzione omografica $y=\dfrac{ax+b}{cx+d}$ si richiede $c\ne0$ e $ad-bc\ne0$?`, opzioni: [R`perché altrimenti il grafico sarebbe una circonferenza`, R`perché altrimenti $a$ e $b$ dovrebbero essere negativi`, R`perché con $c=0$ non c'è l'asintoto verticale, e con $ad=bc$ la funzione degenera in una costante`, R`per nessun motivo, sono condizioni di stile`], corretta: 2, spiegazione: R`Con $c=0$ la funzione è una retta (nessuna $x$ al denominatore); con $ad=bc$ il numeratore è multiplo del denominatore e la frazione si riduce a un valore costante.` },
-    { id: 'q-16', domanda: R`Il grafico della funzione omografica $y=\dfrac{ax+b}{cx+d}$, con $c\ne0$ e $ad-bc\ne0$, è…`, opzioni: [R`una parabola`, R`una retta`, R`un'ellisse`, R`un'iperbole equilatera traslata, con centro in $\left(-\dfrac{d}{c};\dfrac{a}{c}\right)$`], corretta: 3, spiegazione: R`È un'iperbole equilatera con gli asintoti spostati in $x=-d/c$ e $y=a/c$, quindi traslata rispetto all'origine.` }
+    { id: 'q-16', domanda: R`Il grafico della funzione omografica $y=\dfrac{ax+b}{cx+d}$, con $c\ne0$ e $ad-bc\ne0$, è…`, opzioni: [R`una parabola`, R`una retta`, R`un'ellisse`, R`un'iperbole equilatera traslata, con centro in $\left(-\dfrac{d}{c};\dfrac{a}{c}\right)$`], corretta: 3, spiegazione: R`È un'iperbole equilatera con gli asintoti spostati in $x=-d/c$ e $y=a/c$, quindi traslata rispetto all'origine.` },
+    { id: 'q-17', domanda: R`Qual è il centro dell'ellisse $\dfrac{(x+2)^2}{16}+\dfrac{(y-5)^2}{4}=1$?`, opzioni: [R`$(2;-5)$`, R`$(-2;5)$`, R`$(-2;-5)$`, R`$(4;2)$`], corretta: 1, spiegazione: R`$(x+2)^2=(x-(-2))^2$, quindi $x_0=-2$; da $(y-5)^2$ viene $y_0=5$. Con $(2;-5)$ hai copiato i segni delle parentesi; $4$ e $2$ sono i semiassi.` },
+    { id: 'q-18', domanda: R`Rispetto a $\dfrac{x^2}{a^2}-\dfrac{y^2}{b^2}=1$, l'iperbole $\dfrac{(x-x_0)^2}{a^2}-\dfrac{(y-y_0)^2}{b^2}=1$ ha…`, opzioni: [R`gli stessi asintoti, perché $a$ e $b$ non cambiano`, R`un'eccentricità diversa, perché cambia $c$`, R`i fuochi ancora in $(\pm c;0)$, sull'asse $x$`, R`la stessa eccentricità e asintoti paralleli`], corretta: 3, spiegazione: R`Spostare una curva non la deforma: $a$, $b$, $c$ ed $e$ restano gli stessi. Gli asintoti passano ora per il centro $(x_0;y_0)$: hanno le stesse pendenze $\pm\frac ba$, quindi sono paralleli a quelli di prima ma non uguali. Anche i fuochi si spostano, sulla retta $y=y_0$.` },
+    { id: 'q-19', domanda: R`Per completare il quadrato scrivi $4(y^2-2y)$ come $4(y^2-2y+1)$. Che cosa devi aggiungere all'altro membro?`, opzioni: [R`$4$`, R`$1$`, R`$2$`, R`niente: dentro la parentesi hai aggiunto e tolto $1$`], corretta: 0, spiegazione: R`Dentro la parentesi aggiungi $1$, ma la parentesi è moltiplicata per $4$: il membro cresce di $4\cdot1=4$. Per tenere l'uguaglianza aggiungi $4$ anche all'altro membro. Con $1$ dimentichi il coefficiente raccolto.` }
   ],
 
   suggerimenti: [
@@ -523,6 +621,7 @@ Esempio con l'iperbole: vertice in $A(4;0)$ e asintoti $y=\pm\frac32x$. Il verti
     { tipo: 'metodo', testo: R`Per determinare l'equazione da un fuoco e un punto (o un vertice), scrivi tutto in funzione di $a$, $b$, $c$ e usa $c^2=a^2\mp b^2$ solo alla fine.` },
     { tipo: 'trucco', testo: R`Nella funzione omografica, il denominatore uguagliato a zero dà subito l'asintoto verticale, senza bisogno di ricordare la formula $-d/c$.` },
     { tipo: 'errore', testo: R`Lo sdoppiamento per la tangente funziona solo se il punto è già sulla curva: verificalo sempre prima di applicarlo.` },
+    { tipo: 'errore', testo: R`In $\frac{(x+3)^2}{4}+\frac{(y-1)^2}{9}=1$ il centro è $(-3;1)$: il segno nella parentesi è l'opposto della coordinata.` },
     { tipo: 'trucco', testo: R`Un'iperbole equilatera $x^2-y^2=a^2$, ruotata di $45°$, prende la forma $xy=k$: la forma della curva non cambia, quindi anche $xy=k$ ha eccentricità $\sqrt2$.` }
   ],
 

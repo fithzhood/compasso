@@ -478,7 +478,7 @@ Esempio: tre sensori stanno in $A(0;0)$, $B(6;0)$ e $C(0;8)$. Il ripetitore va n
     { nome: 'Sdoppiamento (forma generale)', formula: R`x\,x_0+y\,y_0+a\,\frac{x+x_0}{2}+b\,\frac{y+y_0}{2}+c=0`, nota: R`Tangente nel punto $P_0(x_0;y_0)$ della circonferenza $x^2+y^2+ax+by+c=0$.` },
     { nome: 'Sdoppiamento (forma canonica)', formula: R`(x_0-\alpha)(x-\alpha)+(y_0-\beta)(y-\beta)=r^2`, nota: R`Stessa idea, per la forma canonica $(x-\alpha)^2+(y-\beta)^2=r^2$.` },
     { nome: 'Asse radicale', formula: R`(a_1-a_2)x+(b_1-b_2)y+(c_1-c_2)=0`, nota: R`Si ottiene sottraendo le equazioni di $x^2+y^2+a_1x+b_1y+c_1=0$ e $x^2+y^2+a_2x+b_2y+c_2=0$.` },
-    { nome: 'Fascio di circonferenze', formula: R`\left(x^2+y^2+a_1x+b_1y+c_1\right)+k\left(x^2+y^2+a_2x+b_2y+c_2\right)=0`, nota: R`Al variare di $k\in\mathbb{R}$; per $k=-1$ si ottiene l'asse radicale.` }
+    { nome: 'Fascio di circonferenze', formula: R`\begin{gathered} \left(x^2+y^2+a_1x+b_1y+c_1\right) \\ {}+k\left(x^2+y^2+a_2x+b_2y+c_2\right)=0 \end{gathered}`, nota: R`Al variare di $k\in\mathbb{R}$; per $k=-1$ si ottiene l'asse radicale.` }
   ],
 
   flashcards: [

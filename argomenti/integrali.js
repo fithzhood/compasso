@@ -24,7 +24,7 @@ COMPASSO.registra({
   id: 'integrali',
   titolo: 'Integrali',
 
-  introduzione: R`Un'auto va sempre a $60$ km/h per un'ora: fa $60$ km. È l'area di un rettangolo alto $60$ e largo $1$. Ma se la velocità cambia, la strada è l'area sotto la curva della velocità. Quella figura ha un lato storto, e la geometria non basta.
+  introduzione: R`Un'auto va sempre a $60$ km/h per un'ora: fa $60$ km. È l'area di un rettangolo alto $60$ e largo $1$. Ma se la velocità cambia, la strada è l'area sotto la curva della velocità. Quella figura ha un lato storto, e la geometria non basta.
 
 L'**integrale** misura queste aree. Più in generale misura tutto quello che si accumula, come l'acqua in una vasca o il volume di un solido.
 
@@ -204,9 +204,9 @@ Nell'integrale definito metti gli estremi su tutti e due i pezzi: $\int_a^b f g'
     { id: 'razionali-fratte', titolo: 'Funzioni razionali fratte', testo: R`Una **funzione razionale fratta** è un rapporto di due polinomi, $\dfrac{N(x)}{D(x)}$. Per integrarla segui sempre lo stesso ordine.
 
 1. **Confronta i gradi.** Se il numeratore ha grado maggiore o uguale, esegui la divisione. Ottieni un polinomio più una frazione con il numeratore di grado più basso.
-2. **Guarda il denominatore.** Il metodo dipende dal suo grado e dal suo $\Delta$.
+2. **Guarda il denominatore $D(x)$.** Il metodo dipende dal suo grado e dal suo $\Delta$.
 
-| denominatore | metodo | risultato |
+| $D(x)$ | metodo | risultato |
 |---|---|---|
 | 1° grado | divisione | logaritmo |
 | $\Delta > 0$ | fratti semplici | due logaritmi |
@@ -366,7 +366,7 @@ Gli estremi $a$ e $b$ sono le ascisse dei punti dove le curve si incontrano. La 
 
 ### Valore medio
 
-Un'auto fa $150$ km in $2$ ore. La velocità media è $75$ km/h: a quella velocità costante farebbe la stessa strada.
+Un'auto fa $150$ km in $2$ ore. La velocità media è $75$ km/h: a quella velocità costante farebbe la stessa strada.
 
 >* **Teorema della media.** Se $f$ è continua in $\Icc{a}{b}$, esiste un punto $c$ in $\Icc{a}{b}$ tale che $$f(c) = \frac{1}{b-a}\int_a^b f(x)\,dx.$$ $f(c)$ è il **valor medio**: l'altezza del rettangolo di base $b-a$ con la stessa area.
 
@@ -376,9 +376,30 @@ Esempio: il valor medio di $x^2$ in $\Icc{0}{3}$ è $\dfrac{1}{3}\int_0^3 x^2\,d
 
 ### Il metodo dei trapezi
 
-Quando non serve il valore esatto, l'integrale si stima. Dividi $\Icc{a}{b}$ in $n$ strisce larghe $\Delta x = \dfrac{b-a}{n}$ (nel video la larghezza si chiama $h$: $h = \Delta x$), con estremi $x_0 = a,\ x_1,\ \dots,\ x_n = b$. Su ogni striscia sostituisci l'arco di curva con il segmento che ne unisce gli estremi: ogni striscia diventa un trapezio, e la somma delle aree è $$T = \Delta x\left[\frac{f(x_0)}{2} + f(x_1) + \dots + f(x_{n-1}) + \frac{f(x_n)}{2}\right].$$ Se la curva ha la concavità verso l'alto, sopra la curva c'è il lato inclinato di ogni trapezio e la stima è per eccesso. Per $x^2$ fra $0$ e $2$, con $4$ trapezi, $T = 2{,}75$ contro $\dfrac{8}{3} \approx 2{,}667$. Ogni volta che $\Delta x$ si dimezza, l'errore diventa un quarto: esattamente per $x^2$, circa un quarto in generale.
+Quando non serve il valore esatto, l'integrale si stima. Dividi $\Icc{a}{b}$ in $n$ strisce larghe $\Delta x = \dfrac{b-a}{n}$ (nel video la larghezza si chiama $h$: $h = \Delta x$), con estremi $x_0 = a$, $x_1$, …, $x_n = b$. Su ogni striscia sostituisci l'arco di curva con il segmento che ne unisce gli estremi. Ogni striscia diventa un trapezio, e la somma delle aree è $$\begin{gathered} T = \Delta x\left[\frac{f(x_0)}{2} + f(x_1) + f(x_2) + \dots\right. \\ \left.\dots + f(x_{n-1}) + \frac{f(x_n)}{2}\right] \end{gathered}$$ Se la curva ha la concavità verso l'alto, il lato inclinato di ogni trapezio sta sopra la curva. Allora la stima è per eccesso. Per $x^2$ fra $0$ e $2$, con $4$ trapezi, $T = 2{,}75$ contro $\dfrac{8}{3} \approx 2{,}667$. Ogni volta che $\Delta x$ si dimezza, l'errore diventa un quarto: esattamente per $x^2$, circa un quarto in generale.
 
-[[video:integrali/trapezi]]` },
+[[video:integrali/trapezi]]
+
+### Il metodo delle parabole (Cavalieri-Simpson)
+
+I trapezi seguono la curva con dei segmenti. Gli archi di parabola la seguono meglio. Prendi le strisce a due a due. Per i tre punti di ogni coppia passa una parabola, e l'area sotto quell'arco si calcola esattamente.
+
+>* **Metodo delle parabole**, con $n$ **pari**: $$\begin{gathered} P = \frac{\Delta x}{3}\big[f(x_0) + 4f(x_1) + {} \\ {} + 2f(x_2) + 4f(x_3) + \dots \\ \dots + 4f(x_{n-1}) + f(x_n)\big] \end{gathered}$$ I pesi sono $1, 4, 2, 4, \dots, 2, 4, 1$. Il peso $4$ va ai punti di posto dispari, il peso $2$ a quelli interni di posto pari.
+
+Prova i due metodi su $\int_0^1 \dfrac{4}{1+x^2}\,dx = 4\arctan 1 = \pi$, con $n = 4$ e $\Delta x = 0{,}25$.
+
+| $x$ | $0$ | $0{,}25$ | $0{,}5$ | $0{,}75$ | $1$ |
+|---|---|---|---|---|---|
+| $f(x)$ | $4$ | $3{,}7647$ | $3{,}2$ | $2{,}56$ | $2$ |
+
+~ T = 0{,}25 \cdot \evid{12{,}5247} :: trapezi: gli estremi contano a metà, quindi sommo $2 + 3{,}7647 + 3{,}2 + 2{,}56 + 1$
+~ T \approx \evid{3{,}1312} :: errore di circa $0{,}01$
+~ P = \frac{0{,}25}{3}\big[4 + \evid{4 \cdot 3{,}7647} + \evid{2 \cdot 3{,}2} + \evid{4 \cdot 2{,}56} + 2\big] :: parabole: pesi $1, 4, 2, 4, 1$
+~ P \approx \evidb{3{,}14157} :: contro $\pi \approx 3{,}14159$: l'errore è circa quattrocento volte più piccolo
+
+Con gli stessi cinque valori di $f$, il metodo delle parabole è molto più preciso. Per $x^2$ fra $0$ e $2$ dà proprio $\frac{8}{3}$: lì la curva è già una parabola. Il nome ricorda Bonaventura Cavalieri, che usò la formula nel 1639, e Thomas Simpson, che la rese famosa nel 1743.
+
+>! Con le parabole il numero $n$ di strisce deve essere **pari**: ogni arco ne copre due.` },
 
     { id: 'volumi-impropri', titolo: 'Volumi di rotazione e integrali impropri', testo: R`### Solidi di rotazione
 
@@ -402,9 +423,7 @@ Taglialo nel punto $x$: la sezione è un cerchio di raggio $f(x)$. La sua area �
 [ ] $2\pi\int_0^3 x\,dx$
 => Ogni sezione è un cerchio di raggio $x$, di area $\pi x^2$. Il volume è $\pi\int_0^3 x^2\,dx = 9\pi$. Senza il quadrato usi il raggio al posto dell'area del cerchio.
 
-Le sezioni non devono per forza essere cerchi: se nel punto $x$ la sezione ha area $A(x)$, il volume è $V = \int_a^b A(x)\,dx$.
-
-[[video:integrali/volumi-sezioni]]
+Le sezioni non devono per forza essere cerchi. Il caso generale, con sezioni di forma qualunque, è nella sezione «Volumi per sezioni».
 
 ### Integrali impropri
 
@@ -426,6 +445,54 @@ La regione è infinitamente lunga, ma ha area finita. Con $\frac{1}{x}$ invece $
 **Funzione illimitata.** Se $f$ ha un asintoto verticale in un estremo, ti avvicini a quell'estremo con un limite: $\int_0^1 \dfrac{dx}{\sqrt{x}} = \lim_{\varepsilon \to 0^+}\big[2\sqrt{x}\big]_\varepsilon^1 = \lim_{\varepsilon \to 0^+}\big(2 - 2\sqrt{\varepsilon}\big) = 2$.
 
 >! Non sostituire $+\infty$ come se fosse un numero. Calcola l'integrale con l'estremo $b$ e **poi** fai il limite.` },
+
+    { id: 'volumi-sezioni', titolo: 'Volumi per sezioni', testo: R`Taglia una pagnotta a fette. Ogni fetta è quasi un prisma basso. Il suo volume è circa l'area della faccia per lo spessore. Sommi le fette e hai il volume del pane.
+
+[[video:integrali/volumi-sezioni]]
+
+>* **Volume per sezioni.** Un solido sta fra i piani $x = a$ e $x = b$. Taglialo con un piano perpendicolare all'asse $x$: la sezione in $x$ ha area $S(x)$. Allora $$V = \int_a^b S(x)\,dx.$$
+
+Nel video l'area della sezione si chiama $A(x)$: è la stessa cosa. La piramide del video ha sezioni quadrate di lato $x$. Quindi $S(x) = x^2$ e $V = \int_0^3 x^2\,dx = 9$.
+
+Il volume di rotazione è un caso particolare. Lì ogni sezione è un cerchio di raggio $f(x)$. Allora $S(x) = \pi[f(x)]^2$, e ritrovi $V = \pi\int_a^b [f(x)]^2\,dx$.
+
+### Sezioni su una base nota
+
+Nella seconda prova il solido si descrive spesso così. Si dà la **base**, una regione del piano $xy$. Poi si dice che forma hanno le sezioni perpendicolari all'asse $x$.
+
+Esempio: la base è la regione fra la parabola $y = 4 - x^2$ e l'asse $x$. Le sezioni sono quadrati.
+
+[[grafico:base-quadrati]]
+
+~ \ell(x) = 4 - x^2 :: in $x$ il piano taglia la base in un segmento, dall'asse alla parabola: è il lato del quadrato
+~ S(x) = \evid{(4 - x^2)^2} :: l'area del quadrato è il lato al quadrato
+~ V = \int_{-2}^{2} \big(\evid{16 - 8x^2 + x^4}\big)\,dx :: la parabola taglia l'asse in $-2$ e $2$; sviluppo il quadrato
+~ V = \evid{2}\left[16x - \frac{8x^3}{3} + \frac{x^5}{5}\right]_0^2 :: la funzione è pari: integro fra $0$ e $2$ e raddoppio
+~ V = 2\left(32 - \frac{64}{3} + \frac{32}{5}\right) = \evidb{\frac{512}{15}} :: circa $34{,}1$
+
+Se le sezioni sono triangoli equilateri di lato $\ell$, l'area è $\frac{\sqrt3}{4}\ell^2$. Con la stessa base viene $V = \frac{\sqrt3}{4}\cdot\frac{512}{15} = \frac{128\sqrt3}{15} \approx 14{,}8$.
+
+?? Le sezioni sono semicerchi con il diametro $\ell$ sulla base. Quanto vale $S(x)$?
+[x] $\dfrac{\pi \ell^2}{8}$
+[ ] $\dfrac{\pi \ell^2}{2}$
+[ ] $\dfrac{\pi \ell^2}{4}$
+=> Il raggio è $\frac{\ell}{2}$, quindi il cerchio intero ha area $\pi\frac{\ell^2}{4}$. Il semicerchio ne è la metà: $\frac{\pi\ell^2}{8}$. Chi scrive $\frac{\pi\ell^2}{2}$ usa $\ell$ come raggio.
+
+>! $\ell(x)$ è una lunghezza, non un'area. Nell'integrale va l'area della sezione: $\ell^2$ per il quadrato, $\frac{\sqrt3}{4}\ell^2$ per il triangolo equilatero.
+
+### Gusci cilindrici
+
+La regione sotto $y = f(x)$, con $0 \le a \le x \le b$, ruota attorno all'asse $y$. Ora i dischi sono scomodi. Conviene affettare il solido in tubi sottili, attorno all'asse $y$.
+
+Il tubo in $x$ ha raggio $x$, altezza $f(x)$ e spessore $dx$. Srotolato è quasi una lastra lunga $2\pi x$, alta $f(x)$ e spessa $dx$.
+
+>* **Gusci cilindrici** (rotazione attorno all'asse $y$): $$V = 2\pi\int_a^b x\,f(x)\,dx$$
+
+Esempio: la regione sotto $y = 4 - x^2$, per $x$ fra $0$ e $2$, ruota attorno all'asse $y$. Allora $V = 2\pi\int_0^2 (4x - x^3)\,dx = 2\pi\left[2x^2 - \frac{x^4}{4}\right]_0^2 = 8\pi$. Controllo con i dischi orizzontali, di raggio $\sqrt{4-y}$: $\pi\int_0^4 (4-y)\,dy = 8\pi$.
+
+### Lunghezza d'arco e superficie
+
+Un cenno a due formule della stessa famiglia, con $f'$ continua. La **lunghezza** del grafico fra $a$ e $b$ è $L = \int_a^b \sqrt{1 + [f'(x)]^2}\,dx$. Per $y = x$ fra $0$ e $3$ dà $3\sqrt2$, la diagonale del quadrato di lato $3$. La **superficie** del solido di rotazione attorno all'asse $x$, con $f \ge 0$, è $2\pi\int_a^b f(x)\sqrt{1 + [f'(x)]^2}\,dx$.` },
 
   ],
 
@@ -478,6 +545,20 @@ La regione è infinitamente lunga, ma ha area finita. Con $\frac{1}{x}$ invece $
         { tipo: 'testo', p: [5, 1.02], testo: 'area sotto 1/x: {{ln(b)}}', ancora: 'start' }
       ],
       didascalia: 'Trascina b verso destra: l\'area sotto 1/x² si avvicina a 1 senza superarlo, quella sotto 1/x continua a crescere.'
+    },
+    'base-quadrati': {
+      tipo: 'piano', x: [-2.6, 2.6], y: [-0.7, 5.2], passo: [1, 1], altezza: 340,
+      funzioni: [{ f: '4 - x^2', colore: 1, dominio: [-2.25, 2.25] }],
+      parametri: [{ nome: 't', min: -1.9, max: 1.9, passo: 0.1, valore: 1, nascosto: true }],
+      elementi: [
+        { tipo: 'area', f: '4 - x^2', da: -2, a: 2, colore: 1 },
+        { tipo: 'segmento', da: ['t', 0], a: ['t', '4 - t^2'], colore: 2 },
+        { tipo: 'punto', p: ['t', '4 - t^2'], colore: 2 },
+        { tipo: 'punto', p: ['t', 0], trascina: true, etichetta: 'x', posizione: 'basso', colore: 2 },
+        { tipo: 'testo', p: [-2.5, 4.85], testo: 'ℓ(x) = 4 − x² = {{4 - t^2}}', ancora: 'start' },
+        { tipo: 'testo', p: [-2.5, 4.35], testo: 'S(x) = ℓ² = {{(4 - t^2)^2}}', ancora: 'start' }
+      ],
+      didascalia: 'La base del solido, vista dall\'alto: la regione sotto y = 4 − x². Trascina x: il segmento arancione è il lato ℓ(x) del quadrato che sta sopra la base in quel punto.'
     }
   },
 
@@ -528,24 +609,36 @@ La regione è infinitamente lunga, ma ha area finita. Con $\frac{1}{x}$ invece $
       R`Formula: $V = \pi\int_0^4 \left(\sqrt{x}\right)^2 dx = \pi\int_0^4 x\,dx$. Elevare al quadrato ha fatto sparire la radice.`,
       R`$\pi\left[\dfrac{x^2}{2}\right]_0^4 = \pi\left(8 - 0\right) = 8\pi$.`,
       R`Controllo di ordine di grandezza: il solido sta dentro il cilindro di raggio $2$ e altezza $4$, che ha volume $16\pi$. Il risultato $8\pi$ è esattamente la metà: plausibile.`
-    ], risultato: R`$V = 8\pi \approx 25{,}13$` }
+    ], risultato: R`$V = 8\pi \approx 25{,}13$` },
+
+    { titolo: 'Un solido con sezioni note', problema: R`Un solido ha per base il cerchio $x^2 + y^2 \le 4$. Le sezioni perpendicolari all'asse $x$ sono triangoli equilateri. Calcola il volume.`, passi: [
+      R`In $x$, con $-2 \le x \le 2$, il piano taglia il cerchio in una corda. Va da $y = -\sqrt{4-x^2}$ a $y = \sqrt{4-x^2}$, quindi è lunga $\ell(x) = 2\sqrt{4-x^2}$.`,
+      R`La corda è il lato del triangolo equilatero. La sua area è $S(x) = \dfrac{\sqrt3}{4}\ell^2 = \dfrac{\sqrt3}{4}\cdot 4(4-x^2) = \sqrt3\,(4-x^2)$.`,
+      R`Formula dei volumi per sezioni: $V = \int_{-2}^{2} \sqrt3\,(4-x^2)\,dx$.`,
+      R`La funzione è pari: $V = 2\sqrt3\left[4x - \dfrac{x^3}{3}\right]_0^2 = 2\sqrt3\left(8 - \dfrac83\right) = 2\sqrt3\cdot\dfrac{16}{3}$.`,
+      R`Controllo: la sezione più grande, in $x = 0$, ha area $4\sqrt3 \approx 6{,}9$. Il solido è lungo $4$, quindi il volume deve stare sotto $6{,}9 \cdot 4 \approx 27{,}7$. Lo è.`
+    ], risultato: R`$V = \dfrac{32\sqrt3}{3} \approx 18{,}48$` }
   ],
 
   formulario: [
     { nome: 'Integrale indefinito', formula: R`\int f(x)\,dx = F(x) + c \iff F'(x) = f(x)`, nota: R`Vale in un **intervallo**: lì due primitive differiscono solo per una costante.` },
-    { nome: 'Linearità', formula: R`\int [\alpha f(x) + \beta g(x)]\,dx = \alpha\!\int\! f(x)\,dx + \beta\!\int\! g(x)\,dx`, nota: R`Non esiste nulla di simile per prodotti e quozienti.` },
+    { nome: 'Linearità', formula: R`\begin{gathered} \int [\alpha f(x) + \beta g(x)]\,dx = \\ = \alpha\!\int\! f(x)\,dx + \beta\!\int\! g(x)\,dx \end{gathered}`, nota: R`Non esiste nulla di simile per prodotti e quozienti.` },
     { nome: 'Integrale di una potenza', formula: R`\int x^{\alpha}\,dx = \frac{x^{\alpha+1}}{\alpha+1} + c \quad (\alpha \ne -1)`, nota: R`Il caso escluso è $\alpha = -1$: $\int \dfrac{1}{x}\,dx = \ln \lvert x \rvert + c$.` },
-    { nome: 'Esponenziali', formula: R`\int e^{x}\,dx = e^{x} + c, \qquad \int a^{x}\,dx = \frac{a^{x}}{\ln a} + c` },
-    { nome: 'Goniometrici immediati', formula: R`\int \sin x\,dx = -\cos x + c, \qquad \int \cos x\,dx = \sin x + c`, nota: R`Attenzione al segno: è il seno che, integrato, cambia segno.` },
-    { nome: 'Che danno tangente e arcotangente', formula: R`\int \frac{dx}{\cos^2 x} = \tan x + c, \qquad \int \frac{dx}{1+x^2} = \arctan x + c` },
-    { nome: 'Integrali quasi immediati', formula: R`\int [f(x)]^{\alpha} f'(x)\,dx = \frac{[f(x)]^{\alpha+1}}{\alpha+1} + c, \qquad \int \frac{f'(x)}{f(x)}\,dx = \ln \lvert f(x) \rvert + c`, nota: R`Se manca solo un fattore numerico, si aggiusta moltiplicando e dividendo per una **costante**.` },
-    { nome: 'Integrazione per parti', formula: R`\int f(x)\,g'(x)\,dx = f(x)\,g(x) - \int f'(x)\,g(x)\,dx`, nota: R`Fattore finito $f$ (si deriva): logaritmi, arcotangenti, polinomi. Fattore differenziale $g'$ (si integra): $e^x$, $\sin x$, $\cos x$.` },
-    { nome: 'Integrazione per sostituzione', formula: R`\int f(g(x))\,g'(x)\,dx = \int f(t)\,dt \quad \text{con } t = g(x),\ dt = g'(x)\,dx`, nota: R`Negli integrali definiti gli estremi diventano $g(a)$ e $g(b)$, e non si torna alla variabile $x$.` },
+    { nome: 'Esponenziali', formula: R`\begin{gathered} \int e^{x}\,dx = e^{x} + c \\ \int a^{x}\,dx = \frac{a^{x}}{\ln a} + c \end{gathered}` },
+    { nome: 'Goniometrici immediati', formula: R`\begin{gathered} \int \sin x\,dx = -\cos x + c \\ \int \cos x\,dx = \sin x + c \end{gathered}`, nota: R`Attenzione al segno: è il seno che, integrato, cambia segno.` },
+    { nome: 'Che danno tangente e arcotangente', formula: R`\begin{gathered} \int \frac{dx}{\cos^2 x} = \tan x + c \\ \int \frac{dx}{1+x^2} = \arctan x + c \end{gathered}` },
+    { nome: 'Integrali quasi immediati', formula: R`\begin{gathered} \int [f(x)]^{\alpha} f'(x)\,dx = \frac{[f(x)]^{\alpha+1}}{\alpha+1} + c \\ \int \frac{f'(x)}{f(x)}\,dx = \ln \lvert f(x) \rvert + c \end{gathered}`, nota: R`Se manca solo un fattore numerico, si aggiusta moltiplicando e dividendo per una **costante**.` },
+    { nome: 'Integrazione per parti', formula: R`\begin{gathered} \int f(x)\,g'(x)\,dx = \\ = f(x)\,g(x) - \int f'(x)\,g(x)\,dx \end{gathered}`, nota: R`Fattore finito $f$ (si deriva): logaritmi, arcotangenti, polinomi. Fattore differenziale $g'$ (si integra): $e^x$, $\sin x$, $\cos x$.` },
+    { nome: 'Integrazione per sostituzione', formula: R`\begin{gathered} \int f(g(x))\,g'(x)\,dx = \int f(t)\,dt \\ \text{con } t = g(x),\ dt = g'(x)\,dx \end{gathered}`, nota: R`Negli integrali definiti gli estremi diventano $g(a)$ e $g(b)$, e non si torna alla variabile $x$.` },
     { nome: 'Formula fondamentale (Leibniz–Newton)', formula: R`\int_a^b f(x)\,dx = \big[G(x)\big]_a^b = G(b) - G(a)`, nota: R`$G$ è una primitiva **qualunque** di $f$: la costante si semplifica nella differenza.` },
     { nome: 'Derivata della funzione integrale', formula: R`\frac{d}{dx}\int_a^x f(t)\,dt = f(x)`, nota: R`Teorema di Torricelli–Barrow, con $f$ continua. Con estremo $g(x)$ si moltiplica per $g'(x)$.` },
     { nome: 'Area fra due curve', formula: R`A = \int_a^b \big[f(x) - g(x)\big]\,dx`, nota: R`Con $f$ sopra e $g$ sotto in tutto $\Icc{a}{b}$; $a$ e $b$ sono di solito le ascisse delle intersezioni.` },
     { nome: 'Valor medio', formula: R`f(c) = \frac{1}{b-a}\int_a^b f(x)\,dx`, nota: R`Teorema della media: con $f$ continua un tale $c \in \Icc{a}{b}$ esiste sempre.` },
-    { nome: 'Volume di rotazione attorno all\'asse x', formula: R`V = \pi \int_a^b [f(x)]^2\,dx` }
+    { nome: 'Volume di rotazione attorno all\'asse x', formula: R`V = \pi \int_a^b [f(x)]^2\,dx`, nota: R`È il volume per sezioni con $S(x) = \pi[f(x)]^2$.` },
+    { nome: 'Volume per sezioni', formula: R`V = \int_a^b S(x)\,dx`, nota: R`$S(x)$ è l'area della sezione perpendicolare all'asse $x$ nel punto $x$.` },
+    { nome: 'Gusci cilindrici (rotazione attorno all\'asse y)', formula: R`V = 2\pi\int_a^b x\,f(x)\,dx`, nota: R`Per la regione sotto $y = f(x)$, con $0 \le a \le x \le b$.` },
+    { nome: 'Lunghezza d\'arco e superficie di rotazione', formula: R`\begin{gathered} L = \int_a^b \sqrt{1 + [f'(x)]^2}\,dx \\ \Sigma = 2\pi\int_a^b f(x)\sqrt{1 + [f'(x)]^2}\,dx \end{gathered}`, nota: R`Con $f'$ continua; $\Sigma$ è la superficie laterale del solido di rotazione attorno all'asse $x$, con $f \ge 0$.` },
+    { nome: 'Metodo delle parabole (Cavalieri-Simpson)', formula: R`\begin{gathered} P = \frac{\Delta x}{3}\big[f(x_0) + 4f(x_1) + 2f(x_2) + \dots \\ \dots + 4f(x_{n-1}) + f(x_n)\big] \end{gathered}`, nota: R`Con $n$ pari e $\Delta x = \dfrac{b-a}{n}$. Pesi $1, 4, 2, 4, \dots, 4, 1$.` }
   ],
 
   flashcards: [
@@ -573,7 +666,11 @@ La regione è infinitamente lunga, ma ha area finita. Con $\frac{1}{x}$ invece $
     { id: 'fc-22', sezione: 'aree', tipo: 'concetto', fronte: R`Integrale definito e area: che differenza c'è?`, retro: R`L'integrale è un'area **con segno**: dove $f < 0$ conta negativamente. Per l'area si spezza l'intervallo e si sommano i valori assoluti.` },
     { id: 'fc-23', sezione: 'aree', tipo: 'formula', fronte: R`Valor medio di $f$ in $\Icc{a}{b}$`, retro: R`$\dfrac{1}{b-a}\int_a^b f(x)\,dx$: l'altezza del rettangolo di base $b-a$ con la stessa area.` },
     { id: 'fc-24', sezione: 'volumi-impropri', tipo: 'formula', fronte: R`Volume di un solido di rotazione attorno all'asse $x$`, retro: R`$V = \pi\int_a^b [f(x)]^2\,dx$: ogni sezione è un cerchio di raggio $f(x)$.` },
-    { id: 'fc-25', sezione: 'volumi-impropri', tipo: 'definizione', fronte: R`Integrale improprio su intervallo illimitato`, retro: R`$\int_a^{+\infty} f\,dx = \lim_{b \to +\infty}\int_a^b f\,dx$. Converge se il limite è finito, altrimenti diverge.` }
+    { id: 'fc-25', sezione: 'volumi-impropri', tipo: 'definizione', fronte: R`Integrale improprio su intervallo illimitato`, retro: R`$\int_a^{+\infty} f\,dx = \lim_{b \to +\infty}\int_a^b f\,dx$. Converge se il limite è finito, altrimenti diverge.` },
+    { id: 'fc-26', sezione: 'volumi-sezioni', tipo: 'formula', fronte: R`Volume di un solido per sezioni`, retro: R`$V = \int_a^b S(x)\,dx$, dove $S(x)$ è l'area della sezione perpendicolare all'asse $x$ nel punto $x$.` },
+    { id: 'fc-27', sezione: 'volumi-sezioni', tipo: 'formula', fronte: R`Volume con i gusci cilindrici (rotazione attorno all'asse $y$)`, retro: R`$V = 2\pi\int_a^b x\,f(x)\,dx$: ogni guscio ha raggio $x$, altezza $f(x)$, spessore $dx$.` },
+    { id: 'fc-28', sezione: 'volumi-sezioni', tipo: 'formula', fronte: R`Lunghezza del grafico di $f$ fra $a$ e $b$`, retro: R`$L = \int_a^b \sqrt{1 + [f'(x)]^2}\,dx$, con $f'$ continua.` },
+    { id: 'fc-29', sezione: 'aree', tipo: 'procedura', fronte: R`Metodo delle parabole (Cavalieri-Simpson)`, retro: R`Con $n$ pari: $P = \dfrac{\Delta x}{3}\big[f(x_0) + 4f(x_1) + 2f(x_2) + \dots + 4f(x_{n-1}) + f(x_n)\big]$. Più preciso dei trapezi.` }
   ],
 
   esercizi: [
@@ -597,6 +694,11 @@ La regione è infinitamente lunga, ma ha area finita. Con $\frac{1}{x}$ invece $
     { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Calcola $\displaystyle\int_0^1 x\,e^{x^2}\,dx$ con la sostituzione $t = x^2$.`, suggerimenti: [R`$dt = 2x\,dx$, quindi $x\,dx = \dfrac{dt}{2}$.`, R`Gli estremi diventano $t = 0$ e $t = 1$.`], risposta: val((Math.E - 1) / 2), soluzione: [R`$t = x^2$, $x\,dx = \dfrac{dt}{2}$. Estremi: da $t = 0$ a $t = 1$.`, R`L'integrale diventa $\dfrac{1}{2}\displaystyle\int_0^1 e^t\,dt$.`, R`$\dfrac{1}{2}\big[e^t\big]_0^1 = \dfrac{e - 1}{2}$, circa $0{,}86$.`] },
     { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Calcola $\displaystyle\int_0^1 x\,e^x\,dx$ per parti.`, suggerimenti: [R`Deriva $x$ e integra $e^x$.`, R`Una primitiva è $x\,e^x - e^x$.`], risposta: val(1), soluzione: [R`$f = x$, $g' = e^x$: allora $f' = 1$ e $g = e^x$.`, R`$\int x\,e^x\,dx = x\,e^x - \int e^x\,dx = x\,e^x - e^x$.`, R`$\big[x\,e^x - e^x\big]_0^1 = (e - e) - (0 - 1) = 1$.`] },
     { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Calcola $\displaystyle\int_0^{\pi/2} x\cos x\,dx$ per parti.`, suggerimenti: [R`Deriva $x$ e integra $\cos x$.`, R`Una primitiva è $x\sin x + \cos x$.`], risposta: val(Math.PI / 2 - 1), soluzione: [R`$f = x$, $g' = \cos x$: allora $f' = 1$ e $g = \sin x$.`, R`$\int x\cos x\,dx = x\sin x - \int \sin x\,dx = x\sin x + \cos x$.`, R`In $\dfrac{\pi}{2}$ vale $\dfrac{\pi}{2} + 0$. In $0$ vale $0 + 1$.`, R`Risultato: $\dfrac{\pi}{2} - 1$, circa $0{,}57$.`] },
+    { id: 'b-21', livello: 'base', sezione: 'volumi-sezioni', difficolta: 1, testo: R`Un solido sta fra i piani $x = 0$ e $x = 2$. La sua sezione nel punto $x$ ha area $S(x) = 3x^2$. Calcola il volume.`, suggerimenti: [R`$V = \int_0^2 S(x)\,dx$.`], risposta: val(8), soluzione: [R`$V = \displaystyle\int_0^2 3x^2\,dx$.`, R`Primitiva: $x^3$. $\big[x^3\big]_0^2 = 8$.`] },
+    { id: 'b-22', livello: 'base', sezione: 'volumi-sezioni', difficolta: 2, testo: R`Un solido ha per base la regione sotto $y = \sqrt{x}$, per $x$ fra $0$ e $2$. Le sezioni perpendicolari all'asse $x$ sono quadrati. Calcola il volume.`, suggerimenti: [R`Il lato del quadrato in $x$ è $\sqrt{x}$.`, R`L'area della sezione è $(\sqrt{x})^2 = x$.`], risposta: val(2), soluzione: [R`Lato: $\ell(x) = \sqrt{x}$. Area: $S(x) = x$.`, R`$V = \displaystyle\int_0^2 x\,dx = \left[\dfrac{x^2}{2}\right]_0^2 = 2$.`] },
+    { id: 'b-23', livello: 'base', sezione: 'volumi-sezioni', difficolta: 2, testo: R`Un solido ha per base il triangolo sotto $y = 2 - x$, per $x$ fra $0$ e $2$. Le sezioni perpendicolari all'asse $x$ sono semicerchi con il diametro sulla base. Calcola il volume. Puoi scrivere π.`, suggerimenti: [R`Il diametro in $x$ è $2 - x$, quindi il raggio è $\dfrac{2-x}{2}$.`, R`L'area del semicerchio è $\dfrac{\pi(2-x)^2}{8}$.`], risposta: val(Math.PI / 3), soluzione: [R`Diametro $2 - x$, raggio $\dfrac{2-x}{2}$. Area: $S(x) = \dfrac{1}{2}\pi\dfrac{(2-x)^2}{4} = \dfrac{\pi(2-x)^2}{8}$.`, R`$V = \dfrac{\pi}{8}\displaystyle\int_0^2 (2-x)^2\,dx = \dfrac{\pi}{8}\left[-\dfrac{(2-x)^3}{3}\right]_0^2 = \dfrac{\pi}{8}\cdot\dfrac{8}{3}$.`, R`$V = \dfrac{\pi}{3} \approx 1{,}05$.`] },
+    { id: 'b-24', livello: 'base', sezione: 'volumi-sezioni', difficolta: 2, testo: R`La regione sotto $y = x$, per $x$ fra $0$ e $2$, ruota attorno all'asse $y$. Calcola il volume con i gusci cilindrici. Puoi scrivere π.`, suggerimenti: [R`$V = 2\pi\int_0^2 x\cdot f(x)\,dx$, con $f(x) = x$.`], risposta: val(16 * Math.PI / 3), soluzione: [R`$V = 2\pi\displaystyle\int_0^2 x\cdot x\,dx = 2\pi\left[\dfrac{x^3}{3}\right]_0^2$.`, R`$V = 2\pi\cdot\dfrac{8}{3} = \dfrac{16\pi}{3} \approx 16{,}76$.`, R`Controllo: è un cilindro di raggio $2$ e altezza $2$ ($8\pi$) meno un cono ($\frac{8\pi}{3}$).`] },
+    { id: 'b-25', livello: 'base', sezione: 'aree', difficolta: 2, testo: R`Stima $\displaystyle\int_1^3 \frac{dx}{x}$ con il metodo delle parabole e $n = 2$ strisce. Puoi scrivere una frazione.`, suggerimenti: [R`$\Delta x = 1$: i punti sono $1$, $2$, $3$.`, R`Pesi $1, 4, 1$, poi moltiplica per $\dfrac{\Delta x}{3}$.`], risposta: val(10 / 9), soluzione: [R`$\Delta x = \dfrac{3-1}{2} = 1$. Valori: $f(1) = 1$, $f(2) = \dfrac12$, $f(3) = \dfrac13$.`, R`$P = \dfrac{1}{3}\left[1 + 4\cdot\dfrac12 + \dfrac13\right] = \dfrac13\cdot\dfrac{10}{3} = \dfrac{10}{9} \approx 1{,}111$.`, R`Il valore vero è $\ln 3 \approx 1{,}099$. Con i trapezi verrebbe $\dfrac{7}{6} \approx 1{,}167$: più lontano.`] },
 
     { id: 'es-01', difficolta: 1, testo: R`Calcola $\displaystyle\int (3x^2 - 4x + 1)\,dx$.`, suggerimenti: [R`Spezza con la linearità e integra un termine alla volta.`, R`Ogni potenza aumenta di uno l'esponente e si divide per il nuovo esponente.`], risposta: prim(['x^3', '-2x^2', 'x']), soluzione: [R`$\int 3x^2 dx = 3\cdot\dfrac{x^3}{3} = x^3$.`, R`$\int -4x\,dx = -4\cdot\dfrac{x^2}{2} = -2x^2$, e $\int 1\,dx = x$.`, R`Risultato: $x^3 - 2x^2 + x + c$. Verifica derivando: $3x^2 - 4x + 1$. ✓`] },
 
@@ -620,7 +722,11 @@ La regione è infinitamente lunga, ma ha area finita. Con $\frac{1}{x}$ invece $
 
     { id: 'es-11', difficolta: 3, testo: R`Stabilisci se $\displaystyle\int_1^{+\infty} \frac{dx}{x^3}$ converge e, in caso affermativo, calcolane il valore.`, suggerimenti: [R`Sostituisci $+\infty$ con un estremo $b$ finito, integra, e solo alla fine fai il limite.`, R`Una primitiva di $x^{-3}$ è $-\dfrac{1}{2x^2}$.`], risposta: { tipo: 'numero', valore: 0.5, tolleranza: 0.01 }, soluzione: [R`$\displaystyle\int_1^{b} x^{-3} dx = \left[-\dfrac{1}{2x^2}\right]_1^{b} = -\dfrac{1}{2b^2} + \dfrac{1}{2}$.`, R`$\lim_{b \to +\infty}\left(\dfrac{1}{2} - \dfrac{1}{2b^2}\right) = \dfrac{1}{2}$: il limite è finito, quindi l'integrale **converge**.`, R`Valore: $\dfrac{1}{2}$. Con $\dfrac{1}{x}$ al posto di $\dfrac{1}{x^3}$ l'integrale divergerebbe.`] },
 
-    { id: 'es-12', difficolta: 3, testo: R`Sia $F(x) = \displaystyle\int_0^x (t^2 - 4t)\,dt$. Determina l'ascissa del punto di minimo di $F$ nell'intervallo $\Icc{0}{5}$.`, suggerimenti: [R`Non serve calcolare $F$: serve la sua derivata.`, R`Per il teorema fondamentale $F'(x) = x^2 - 4x$.`, R`Studia il segno di $x(x-4)$ in $\Icc{0}{5}$.`], risposta: { tipo: 'numero', valore: 4, tolleranza: 0.01 }, soluzione: [R`Per il teorema fondamentale del calcolo integrale $F'(x) = x^2 - 4x = x(x-4)$.`, R`In $\Icc{0}{5}$: $F' < 0$ per $0 < x < 4$ (la funzione integrale scende), $F' > 0$ per $x > 4$ (risale).`, R`Il minimo è in $x = 4$. Vale $F(4) = \left[\dfrac{t^3}{3} - 2t^2\right]_0^4 = \dfrac{64}{3} - 32 = -\dfrac{32}{3}$.`] }
+    { id: 'es-12', difficolta: 3, testo: R`Sia $F(x) = \displaystyle\int_0^x (t^2 - 4t)\,dt$. Determina l'ascissa del punto di minimo di $F$ nell'intervallo $\Icc{0}{5}$.`, suggerimenti: [R`Non serve calcolare $F$: serve la sua derivata.`, R`Per il teorema fondamentale $F'(x) = x^2 - 4x$.`, R`Studia il segno di $x(x-4)$ in $\Icc{0}{5}$.`], risposta: { tipo: 'numero', valore: 4, tolleranza: 0.01 }, soluzione: [R`Per il teorema fondamentale del calcolo integrale $F'(x) = x^2 - 4x = x(x-4)$.`, R`In $\Icc{0}{5}$: $F' < 0$ per $0 < x < 4$ (la funzione integrale scende), $F' > 0$ per $x > 4$ (risale).`, R`Il minimo è in $x = 4$. Vale $F(4) = \left[\dfrac{t^3}{3} - 2t^2\right]_0^4 = \dfrac{64}{3} - 32 = -\dfrac{32}{3}$.`] },
+
+    { id: 'es-13', sezione: 'volumi-sezioni', difficolta: 3, testo: R`Sia $R$ la regione limitata dalla retta $y = 2x$ e dalla parabola $y = x^2$. a) Calcola l'area di $R$. b) $R$ è la base di un solido. Le sue sezioni perpendicolari all'asse $x$ sono quadrati. Calcola il volume del solido. c) Calcola il volume del solido ottenuto ruotando $R$ attorno all'asse $x$. Il risultato da dare è quello di b).`, suggerimenti: [R`Le curve si incontrano in $x = 0$ e $x = 2$; in mezzo la retta sta sopra.`, R`Il lato del quadrato è la distanza verticale fra le curve: $2x - x^2$.`, R`Per c) ogni sezione è una corona circolare: $S(x) = \pi\big[(2x)^2 - (x^2)^2\big]$.`], risposta: val(16 / 15), soluzione: [R`a) $x^2 = 2x$ per $x = 0$ e $x = 2$. Area: $\displaystyle\int_0^2 (2x - x^2)\,dx = 4 - \dfrac83 = \dfrac43$.`, R`b) $S(x) = (2x - x^2)^2 = 4x^2 - 4x^3 + x^4$.`, R`$V = \left[\dfrac{4x^3}{3} - x^4 + \dfrac{x^5}{5}\right]_0^2 = \dfrac{32}{3} - 16 + \dfrac{32}{5} = \dfrac{16}{15} \approx 1{,}07$.`, R`c) La sezione è un cerchio di raggio $2x$ meno un cerchio di raggio $x^2$. $V = \pi\displaystyle\int_0^2 (4x^2 - x^4)\,dx = \pi\left(\dfrac{32}{3} - \dfrac{32}{5}\right) = \dfrac{64\pi}{15} \approx 13{,}40$.`] },
+
+    { id: 'es-14', sezione: 'volumi-sezioni', difficolta: 3, testo: R`La regione fra la parabola $y = 4x - x^2$ e l'asse $x$ ruota attorno all'asse $y$. Calcola il volume del solido con i gusci cilindrici.`, suggerimenti: [R`La parabola taglia l'asse $x$ in $0$ e in $4$.`, R`$V = 2\pi\int_0^4 x\,(4x - x^2)\,dx$.`], risposta: { tipo: 'numero', valore: 128 * Math.PI / 3, tolleranza: 0.1 }, soluzione: [R`$4x - x^2 = 0$ per $x = 0$ e $x = 4$; in mezzo la parabola sta sopra l'asse.`, R`$V = 2\pi\displaystyle\int_0^4 (4x^2 - x^3)\,dx = 2\pi\left[\dfrac{4x^3}{3} - \dfrac{x^4}{4}\right]_0^4$.`, R`$= 2\pi\left(\dfrac{256}{3} - 64\right) = 2\pi\cdot\dfrac{64}{3} = \dfrac{128\pi}{3} \approx 134{,}04$.`, R`Con i dischi orizzontali servirebbe risolvere la parabola rispetto a $x$: i gusci evitano quel passaggio.`] }
   ],
 
   quiz: [
@@ -640,7 +746,10 @@ La regione è infinitamente lunga, ma ha area finita. Con $\frac{1}{x}$ invece $
     { id: 'q-14', domanda: R`L'area della regione compresa fra $y = f(x)$ (sopra) e $y = g(x)$ (sotto) per $a \le x \le b$ vale…`, opzioni: [R`$\int_a^b [f(x) - g(x)]\,dx$`, R`$\int_a^b [g(x) - f(x)]\,dx$`, R`$\int_a^b f(x)\,dx \cdot \int_a^b g(x)\,dx$`, R`$\left\lvert \int_a^b f(x)\,dx \right\rvert - \left\lvert \int_a^b g(x)\,dx \right\rvert$`], corretta: 0, spiegazione: R`Si integra la differenza fra la curva superiore e quella inferiore. La formula vale anche se le curve stanno sotto l'asse $x$: conta solo quale sta sopra l'altra.` },
     { id: 'q-15', domanda: R`Il valor medio di una funzione continua $f$ in $\Icc{a}{b}$ è…`, opzioni: [R`$\dfrac{f(a)+f(b)}{2}$`, R`$\dfrac{1}{b-a}\int_a^b f(x)\,dx$`, R`$\int_a^b f(x)\,dx$`, R`il massimo di $f$ in $\Icc{a}{b}$`], corretta: 1, spiegazione: R`È l'altezza del rettangolo di base $b-a$ che ha la stessa area della regione sotto la curva. La media fra i valori agli estremi non tiene conto di ciò che succede in mezzo.` },
     { id: 'q-16', domanda: R`Il volume del solido ottenuto ruotando attorno all'asse $x$ la regione sotto $y = f(x)$ fra $a$ e $b$ è…`, opzioni: [R`$\pi\int_a^b f(x)\,dx$`, R`$2\pi\int_a^b f(x)\,dx$`, R`$\pi\int_a^b [f(x)]^2\,dx$`, R`$\pi^2\int_a^b f(x)\,dx$`], corretta: 2, spiegazione: R`Ogni sezione perpendicolare all'asse è un cerchio di raggio $f(x)$, quindi di area $\pi[f(x)]^2$; sommando i dischi si ottiene la formula. Senza il quadrato non si otterrebbe nemmeno un'area.` },
-    { id: 'q-17', domanda: R`Che cosa si può dire di $\displaystyle\int_1^{+\infty}\frac{dx}{x}$?`, opzioni: [R`converge a $1$`, R`converge a $0$`, R`diverge`, R`non ha senso, perché $+\infty$ non è un numero`], corretta: 2, spiegazione: R`$\int_1^b \frac{dx}{x} = \ln b$, e $\ln b \to +\infty$: l'integrale diverge. Ha senso eccome, purché lo si definisca come limite; $\int_1^{+\infty}\frac{dx}{x^2}$, invece, converge a $1$.` }
+    { id: 'q-17', domanda: R`Che cosa si può dire di $\displaystyle\int_1^{+\infty}\frac{dx}{x}$?`, opzioni: [R`converge a $1$`, R`converge a $0$`, R`diverge`, R`non ha senso, perché $+\infty$ non è un numero`], corretta: 2, spiegazione: R`$\int_1^b \frac{dx}{x} = \ln b$, e $\ln b \to +\infty$: l'integrale diverge. Ha senso eccome, purché lo si definisca come limite; $\int_1^{+\infty}\frac{dx}{x^2}$, invece, converge a $1$.` },
+    { id: 'q-18', domanda: R`Un solido sta fra i piani $x = a$ e $x = b$, e la sua sezione perpendicolare all'asse $x$ ha area $S(x)$. Il volume è…`, opzioni: [R`$\pi\int_a^b [S(x)]^2\,dx$`, R`$\int_a^b S(x)\,dx$`, R`$\pi\int_a^b S(x)\,dx$`, R`$\int_a^b \sqrt{S(x)}\,dx$`], corretta: 1, spiegazione: R`Ogni fetta ha volume circa $S(x)\,dx$, e l'integrale le somma. Il $\pi$ e il quadrato compaiono solo nella rotazione, dove $S(x) = \pi[f(x)]^2$: lì entrano già dentro $S(x)$.` },
+    { id: 'q-19', domanda: R`La regione sotto $y = f(x)$, con $0 \le a \le x \le b$, ruota attorno all'asse $y$. Con i gusci cilindrici il volume è…`, opzioni: [R`$\pi\int_a^b [f(x)]^2\,dx$`, R`$2\pi\int_a^b f(x)\,dx$`, R`$\pi\int_a^b x^2 f(x)\,dx$`, R`$2\pi\int_a^b x\,f(x)\,dx$`], corretta: 3, spiegazione: R`Il guscio in $x$ ha circonferenza $2\pi x$, altezza $f(x)$ e spessore $dx$. $\pi\int_a^b [f(x)]^2\,dx$ è la rotazione attorno all'asse $x$. In $2\pi\int_a^b f(x)\,dx$ manca il raggio $x$.` },
+    { id: 'q-20', domanda: R`Nel metodo delle parabole (Cavalieri-Simpson) il numero $n$ di strisce deve essere…`, opzioni: [R`pari`, R`dispari`, R`un multiplo di $3$`, R`qualunque, come nei trapezi`], corretta: 0, spiegazione: R`Ogni arco di parabola passa per tre punti e copre due strisce. Quindi le strisce vanno a coppie. Il $3$ al denominatore della formula non c'entra con $n$.` }
   ],
 
   suggerimenti: [

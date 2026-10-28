@@ -476,18 +476,18 @@ Per sommare, usa come denominatore comune il **mcm** dei denominatori:
 
   formulario: [
     { nome: 'Raccoglimento totale', formula: R`AB + AC = A\,(B + C)`, nota: R`$A$ è il MCD dei termini: MCD dei coefficienti e lettere comuni con l'esponente minimo.` },
-    { nome: 'Raccoglimento parziale', formula: R`AX + AY + BX + BY = (A + B)(X + Y)`, nota: R`Funziona solo se, dopo il primo raccoglimento, le parentesi coincidono.` },
+    { nome: 'Raccoglimento parziale', formula: R`\begin{gathered} AX + AY + BX + BY \\ = (A + B)(X + Y) \end{gathered}`, nota: R`Funziona solo se, dopo il primo raccoglimento, le parentesi coincidono.` },
     { nome: 'Differenza di quadrati', formula: R`A^2 - B^2 = (A + B)(A - B)`, nota: R`La somma di quadrati $A^2 + B^2$ è irriducibile.` },
     { nome: 'Quadrato di binomio', formula: R`A^2 \pm 2AB + B^2 = (A \pm B)^2`, nota: R`Controllo: il termine di mezzo deve essere il doppio prodotto delle basi.` },
-    { nome: 'Quadrato di trinomio', formula: R`A^2 + B^2 + C^2 + 2AB + 2AC + 2BC = (A + B + C)^2`, nota: R`Sei termini: tre quadrati e tre doppi prodotti.` },
+    { nome: 'Quadrato di trinomio', formula: R`\begin{gathered} A^2 + B^2 + C^2 + 2AB + 2AC + 2BC \\ = (A + B + C)^2 \end{gathered}`, nota: R`Sei termini: tre quadrati e tre doppi prodotti.` },
     { nome: 'Cubo di binomio', formula: R`A^3 \pm 3A^2B + 3AB^2 \pm B^3 = (A \pm B)^3`, nota: R`Quattro termini: due cubi e due tripli prodotti.` },
     { nome: 'Somma di cubi', formula: R`A^3 + B^3 = (A + B)(A^2 - AB + B^2)`, nota: R`Il secondo fattore è il falso quadrato, irriducibile.` },
     { nome: 'Differenza di cubi', formula: R`A^3 - B^3 = (A - B)(A^2 + AB + B^2)` },
-    { nome: 'Trinomio speciale', formula: R`x^2 + sx + p = (x + m)(x + n), \quad m + n = s,\ mn = p` },
-    { nome: 'Trinomio con a ≠ 1', formula: R`ax^2 + bx + c = ax^2 + mx + nx + c, \quad m + n = b,\ mn = ac`, nota: R`Poi si conclude con un raccoglimento parziale.` },
+    { nome: 'Trinomio speciale', formula: R`\begin{gathered} x^2 + sx + p = (x + m)(x + n) \\ m + n = s,\ mn = p \end{gathered}` },
+    { nome: 'Trinomio con a ≠ 1', formula: R`\begin{gathered} ax^2 + bx + c \\ = ax^2 + mx + nx + c \\ m + n = b,\ mn = ac \end{gathered}`, nota: R`Poi si conclude con un raccoglimento parziale.` },
     { nome: 'Teorema del resto', formula: R`P(x) : (x - a) \ \text{ha resto } P(a)` },
     { nome: 'Teorema di Ruffini', formula: R`(x - a) \mid P(x) \iff P(a) = 0`, nota: R`Gli zeri interi si cercano fra i divisori del termine noto; quelli frazionari $\frac{p}{q}$ con $p$ divisore del termine noto e $q$ divisore del primo coefficiente.` },
-    { nome: 'MCD e mcm di polinomi', formula: R`\text{MCD}: \text{fattori comuni, esponente minimo} \qquad \text{mcm}: \text{fattori comuni e non, esponente massimo}` },
+    { nome: 'MCD e mcm di polinomi', formula: R`\begin{gathered} \text{MCD}: \text{fattori comuni,} \\ \text{esponente minimo} \\ \text{mcm}: \text{fattori comuni e non,} \\ \text{esponente massimo} \end{gathered}` },
     { nome: 'Frazione algebrica', formula: R`\frac{N(x)}{D(x)}, \qquad \text{c.e.: } D(x) \ne 0`, nota: R`Si semplifica dividendo numeratore e denominatore per i fattori comuni, mai per gli addendi.` }
   ],
 

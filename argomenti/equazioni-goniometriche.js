@@ -14,7 +14,7 @@ COMPASSO.registra({
   id: 'equazioni-goniometriche',
   titolo: 'Equazioni e disequazioni goniometriche',
 
-  introduzione: R`Una cabina della ruota panoramica sale e scende a ogni giro. In quali istanti si trova a $10$ metri di quota? In ogni giro ci sono due istanti: uno mentre sale, uno mentre scende.
+  introduzione: R`Una cabina della ruota panoramica sale e scende a ogni giro. In quali istanti si trova a $10$ metri di quota? In ogni giro ci sono due istanti: uno mentre sale, uno mentre scende.
 
 Le **equazioni goniometriche** funzionano allo stesso modo. Hanno l'incognita dentro $\sin x$, $\cos x$ o $\tan x$. Seno e coseno si ripetono a ogni giro, cioè ogni $2\pi$. La tangente si ripete ogni mezzo giro, cioè ogni $\pi$. Per questo le soluzioni si scrivono con $+2n\pi$ (o $+n\pi$), dove $n$ è un intero qualsiasi.
 
@@ -412,17 +412,17 @@ Usa lo stesso giro per tutte le condizioni. Scrivile su righe una sotto l'altra,
   ],
 
   formulario: [
-    { nome: 'Equazione elementare: seno', formula: R`\sin x = k \quad\Longrightarrow\quad x = \arcsin k + 2n\pi \ \lor\ x = \pi - \arcsin k + 2n\pi`, nota: R`Ha soluzioni solo se $-1 \le k \le 1$; con $n \in \mathbb{Z}$.` },
+    { nome: 'Equazione elementare: seno', formula: R`\begin{gathered} \sin x = k \quad\Longrightarrow \\ x = \arcsin k + 2n\pi \ \lor \\ x = \pi - \arcsin k + 2n\pi \end{gathered}`, nota: R`Ha soluzioni solo se $-1 \le k \le 1$; con $n \in \mathbb{Z}$.` },
     { nome: 'Equazione elementare: coseno', formula: R`\cos x = k \quad\Longrightarrow\quad x = \pm\arccos k + 2n\pi`, nota: R`Ha soluzioni solo se $-1 \le k \le 1$.` },
     { nome: 'Equazione elementare: tangente', formula: R`\tan x = k \quad\Longrightarrow\quad x = \arctan k + n\pi`, nota: R`Ha sempre soluzione, per ogni $k \in \mathbb{R}$: il periodo è $\pi$, non $2\pi$.` },
-    { nome: 'Archi con lo stesso seno, coseno o tangente', formula: R`\sin\alpha = \sin\beta \iff \alpha = \beta + 2n\pi \ \lor\ \alpha = \pi - \beta + 2n\pi`, nota: R`Analogamente $\cos\alpha = \cos\beta \iff \alpha = \pm\beta + 2n\pi$ e $\tan\alpha = \tan\beta \iff \alpha = \beta + n\pi$.` },
+    { nome: 'Archi con lo stesso seno, coseno o tangente', formula: R`\begin{gathered} \sin\alpha = \sin\beta \iff \\ \alpha = \beta + 2n\pi \ \lor \\ \alpha = \pi - \beta + 2n\pi \end{gathered}`, nota: R`Analogamente $\cos\alpha = \cos\beta \iff \alpha = \pm\beta + 2n\pi$ e $\tan\alpha = \tan\beta \iff \alpha = \beta + n\pi$.` },
     { nome: 'Sostituzione nel secondo grado in una funzione', formula: R`a\,t^2+b\,t+c=0, \qquad t=\sin x \ \text{(o } \cos x\text{)}`, nota: R`Si accettano solo le soluzioni $t$ con $-1 \le t \le 1$; nessun limite se $t = \tan x$.` },
-    { nome: 'Metodo dell\'angolo aggiunto', formula: R`a\sin x + b\cos x = R\sin(x + \varphi), \qquad R = \sqrt{a^2+b^2}`, nota: R`Con $\cos\varphi = \dfrac{a}{R}$ e $\sin\varphi = \dfrac{b}{R}$.` },
-    { nome: 'Condizione di esistenza (equazione lineare)', formula: R`a\sin x + b\cos x = c \quad \text{ha soluzioni} \iff a^2+b^2 \ge c^2`, nota: R`Cioè $R \ge |c|$, con $R = \sqrt{a^2+b^2}$.` },
-    { nome: 'Formule parametriche', formula: R`\sin x = \frac{2t}{1+t^2}, \qquad \cos x = \frac{1-t^2}{1+t^2}, \qquad t = \tan\frac{x}{2}`, nota: R`Va sempre controllato a parte $x = \pi + 2n\pi$, dove $t$ non è definito.` },
+    { nome: 'Metodo dell\'angolo aggiunto', formula: R`\begin{gathered} a\sin x + b\cos x = R\sin(x + \varphi) \\ R = \sqrt{a^2+b^2} \end{gathered}`, nota: R`Con $\cos\varphi = \dfrac{a}{R}$ e $\sin\varphi = \dfrac{b}{R}$.` },
+    { nome: 'Condizione di esistenza (equazione lineare)', formula: R`\begin{gathered} a\sin x + b\cos x = c \\ \text{ha soluzioni} \iff a^2+b^2 \ge c^2 \end{gathered}`, nota: R`Cioè $R \ge |c|$, con $R = \sqrt{a^2+b^2}$.` },
+    { nome: 'Formule parametriche', formula: R`\begin{gathered} \sin x = \frac{2t}{1+t^2}, \qquad \cos x = \frac{1-t^2}{1+t^2} \\ t = \tan\frac{x}{2} \end{gathered}`, nota: R`Va sempre controllato a parte $x = \pi + 2n\pi$, dove $t$ non è definito.` },
     { nome: 'Equazione omogenea di secondo grado', formula: R`a\sin^2x + b\sin x\cos x + c\cos^2x = 0`, nota: R`Se $\cos x \ne 0$ si divide per $\cos^2x$: $a\tan^2x + b\tan x + c = 0$.` },
     { nome: 'Caso cos x = 0 nell\'omogenea', formula: R`\cos x = 0 \ \text{è soluzione} \iff a = 0`, nota: R`Va controllato prima di dividere per $\cos^2x$.` },
-    { nome: 'Disequazione elementare: schema risolutivo', formula: R`\sin x > k \quad\Longrightarrow\quad x \in (\text{arco dove l'ordinata supera } k), \ \text{ripetuto ogni } 2\pi`, nota: R`Analogo per $\cos x$ (ascissa) e per $\tan x$ (periodo $\pi$).` }
+    { nome: 'Disequazione elementare: schema risolutivo', formula: R`\begin{gathered} \sin x > k \quad\Longrightarrow \\ x \in (\text{arco dove l'ordinata supera } k) \\ \text{ripetuto ogni } 2\pi \end{gathered}`, nota: R`Analogo per $\cos x$ (ascissa) e per $\tan x$ (periodo $\pi$).` }
   ],
 
   flashcards: [

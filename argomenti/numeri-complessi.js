@@ -438,7 +438,7 @@ La **formula di Eulero** dice che $e^{i\theta} = \cos\theta+i\sin\theta$, con $\
   ],
 
   formulario: [
-    { nome: 'Unità immaginaria e potenze di i', formula: R`i^2 = -1, \qquad i^0=1,\ i^1=i,\ i^2=-1,\ i^3=-i`, nota: R`Le potenze di $i$ si ripetono con periodo $4$.` },
+    { nome: 'Unità immaginaria e potenze di i', formula: R`\begin{gathered} i^2 = -1 \\ i^0=1,\ i^1=i,\ i^2=-1,\ i^3=-i \end{gathered}`, nota: R`Le potenze di $i$ si ripetono con periodo $4$.` },
     { nome: 'Forma algebrica', formula: R`z = a+bi, \quad a,b \in \mathbb{R}`, nota: R`$a = \text{Re}(z)$ parte reale, $b = \text{Im}(z)$ parte immaginaria.` },
     { nome: 'Modulo', formula: R`|z| = \sqrt{a^2+b^2}` },
     { nome: 'Coniugato', formula: R`\overline{z} = a - bi`, nota: R`$z \cdot \overline{z} = a^2+b^2 = |z|^2$.` },
@@ -449,7 +449,7 @@ La **formula di Eulero** dice che $e^{i\theta} = \cos\theta+i\sin\theta$, con $\
     { nome: 'Prodotto in forma trigonometrica', formula: R`z_1 z_2 = \rho_1\rho_2\left[\cos(\theta_1+\theta_2) + i\sin(\theta_1+\theta_2)\right]` },
     { nome: 'Quoziente in forma trigonometrica', formula: R`\frac{z_1}{z_2} = \frac{\rho_1}{\rho_2}\left[\cos(\theta_1-\theta_2) + i\sin(\theta_1-\theta_2)\right]` },
     { nome: 'Formula di De Moivre', formula: R`z^n = \rho^n\left(\cos(n\theta) + i\sin(n\theta)\right)` },
-    { nome: 'Radici n-esime', formula: R`z_k = \sqrt[n]{\rho}\left(\cos\frac{\theta+360^\circ k}{n} + i\sin\frac{\theta+360^\circ k}{n}\right), \quad k=0,1,\ldots,n-1` },
+    { nome: 'Radici n-esime', formula: R`\begin{gathered} z_k = \sqrt[n]{\rho}\,\left(\cos\varphi_k + i\sin\varphi_k\right) \\ \varphi_k = \frac{\theta+360^\circ k}{n}, \quad k=0,1,\ldots,n-1 \end{gathered}` },
     { nome: 'Equazione di secondo grado in C con Δ negativo', formula: R`x_{1,2} = \frac{-b \pm i\sqrt{|\Delta|}}{2a}`, nota: R`Valida quando $\Delta = b^2-4ac < 0$; le due soluzioni sono complesse coniugate.` },
     { nome: 'Forma esponenziale e identità di Eulero', formula: R`z = \rho e^{i\theta}, \qquad e^{i\pi}+1=0` }
   ],

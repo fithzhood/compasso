@@ -38,7 +38,7 @@ COMPASSO.registra({
   id: 'disequazioni-secondo-grado',
   titolo: 'Disequazioni di secondo grado',
 
-  introduzione: R`Un sasso lanciato verso l'alto, dopo $t$ secondi, è a un'altezza di $20t-5t^2$ metri. Per quanto tempo sta sopra i $15$ metri? Devi risolvere $20t-5t^2>15$. La risposta è un intervallo di tempo: da $t=1$ a $t=3$ secondi.
+  introduzione: R`Un sasso lanciato verso l'alto, dopo $t$ secondi, è a un'altezza di $20t-5t^2$ metri. Per quanto tempo sta sopra i $15$ metri? Devi risolvere $20t-5t^2>15$. La risposta è un intervallo di tempo: da $t=1$ a $t=3$ secondi.
 
 Questa è una **disequazione di secondo grado**. In forma normale si scrive $ax^2+bx+c>0$ (oppure con $<$, $\le$, $\ge$), con $a\ne 0$.
 
@@ -255,7 +255,7 @@ Il lato deve essere fra $3$ e $7\ \text{cm}$, estremi esclusi.
 
 >* Confronta sempre la soluzione con i limiti del problema. Un lato negativo risolve la disequazione, ma non il problema.
 
-?? Il sasso dell'introduzione ha altezza $h=20t-5t^2$. In quale intervallo di tempo sta sopra i $15$ metri?
+?? Il sasso dell'introduzione ha altezza $h=20t-5t^2$. In quale intervallo di tempo sta sopra i $15$ metri?
 [x] $1<t<3$
 [ ] $t<1\ \lor\ t>3$
 [ ] $0<t<4$
@@ -329,7 +329,7 @@ Il lato deve essere fra $3$ e $7\ \text{cm}$, estremi esclusi.
     ], risultato: R`$x<2 \ \lor\ x>3$` },
 
     { titolo: 'Disequazione con Δ=0: un punto escluso', problema: R`Risolvi $2x^2-4x+2>0$.`, passi: [
-      R`Raccolgo $2$: $2(x^2-2x+1)=2(x-1)^2$. Il trinomio è $2$ volte un quadrato perfetto.`,
+      R`Raccolgo $2$: $2(x^2-2x+1)=2(x-1)^2$. Il trinomio è $2$ volte un quadrato perfetto.`,
       R`$(x-1)^2$ è sempre $\ge 0$, e vale $0$ solo per $x=1$: quindi $2(x-1)^2$ è sempre $\ge 0$, con lo stesso unico zero.`,
       R`La disequazione chiede $>0$ (stretto): è vera per ogni $x$ tranne $x=1$, dove il trinomio vale esattamente $0$.`
     ], risultato: R`$x \ne 1$` },
@@ -368,8 +368,8 @@ Il lato deve essere fra $3$ e $7\ \text{cm}$, estremi esclusi.
     { nome: 'Segno del trinomio (Δ>0)', formula: R`ax^2+bx+c = a(x-x_1)(x-x_2)`, nota: R`Il trinomio ha il segno di $a$ per $x$ esterno alle radici, il segno opposto fra le radici.` },
     { nome: 'Segno del trinomio (Δ=0)', formula: R`ax^2+bx+c = a(x - x_V)^2, \quad x_V = -\frac{b}{2a}`, nota: R`Ha sempre il segno di $a$; vale $0$ solo nel vertice $x_V$.` },
     { nome: 'Segno del trinomio (Δ<0)', formula: R`\Delta = b^2-4ac < 0`, nota: R`Il trinomio ha sempre il segno di $a$, per ogni $x$ reale: non si annulla mai.` },
-    { nome: 'Schema dei valori esterni', formula: R`ax^2+bx+c>0 \ \ (a>0,\ \Delta>0) \quad\Leftrightarrow\quad x<x_1 \ \lor\ x>x_2`, nota: R`Con $x_1<x_2$ radici del trinomio.` },
-    { nome: 'Schema dei valori interni', formula: R`ax^2+bx+c<0 \ \ (a>0,\ \Delta>0) \quad\Leftrightarrow\quad x_1<x<x_2`, nota: R`Con $\ge$ o $\le$ si includono anche gli estremi.` },
+    { nome: 'Schema dei valori esterni', formula: R`\begin{gathered} ax^2+bx+c>0 \ \ (a>0,\ \Delta>0) \\ \Leftrightarrow\quad x<x_1 \ \lor\ x>x_2 \end{gathered}`, nota: R`Con $x_1<x_2$ radici del trinomio.` },
+    { nome: 'Schema dei valori interni', formula: R`\begin{gathered} ax^2+bx+c<0 \ \ (a>0,\ \Delta>0) \\ \Leftrightarrow\quad x_1<x<x_2 \end{gathered}`, nota: R`Con $\ge$ o $\le$ si includono anche gli estremi.` },
     { nome: 'Radici della disequazione', formula: R`x_{1,2} = \frac{-b \pm \sqrt{\Delta}}{2a}`, nota: R`Le stesse radici dell'equazione associata $ax^2+bx+c=0$: individuano i confini degli intervalli.` },
     { nome: 'Soluzione di un sistema', formula: R`S = S_1 \cap S_2 \cap \ldots`, nota: R`L'intersezione, non l'unione, delle soluzioni delle singole disequazioni.` },
     { nome: 'Condizione di esistenza (fratte)', formula: R`D(x) \ne 0`, nota: R`Nelle disequazioni fratte non si eliminano i denominatori moltiplicando i due membri, perché il loro segno non è noto; i valori che annullano il denominatore sono sempre esclusi dalla soluzione.` },

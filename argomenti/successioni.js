@@ -6,7 +6,7 @@ COMPASSO.registra({
   id: 'successioni',
   titolo: 'Successioni e progressioni',
 
-  introduzione: R`Metti $1000$ euro in banca al $2\%$ all'anno. Dopo un anno hai $1020$ euro. Dopo due anni ne hai $1040{,}40$, dopo tre $1061{,}21$. Questi importi, uno per anno, formano una **successione**: un elenco di numeri in fila che non finisce mai.
+  introduzione: R`Metti $1000$ euro in banca al $2\%$ all'anno. Dopo un anno hai $1020$ euro. Dopo due anni ne hai $1040{,}40$, dopo tre $1061{,}21$. Questi importi, uno per anno, formano una **successione**: un elenco di numeri in fila che non finisce mai.
 
 Le successioni descrivono le cose che cambiano a passi. Due tipi hanno un nome.
 
@@ -65,7 +65,7 @@ Per dimostrare che una successione cresce, studia il segno di $a_{n+1} - a_n$. C
 
 >! Tre termini che crescono non bastano. La disuguaglianza deve valere per **ogni** $n$, quindi va dimostrata in generale.` },
 
-    { id: 'progressioni-aritmetiche', titolo: 'Le progressioni aritmetiche', testo: R`Una palestra costa $30$ euro di iscrizione più $20$ euro al mese. Dopo $1, 2, 3, \dots$ mesi hai speso $50, 70, 90, \dots$ euro. Ogni volta aggiungi $20$.
+    { id: 'progressioni-aritmetiche', titolo: 'Le progressioni aritmetiche', testo: R`Una palestra costa $30$ euro di iscrizione più $20$ euro al mese. Dopo $1, 2, 3, \dots$ mesi hai speso $50, 70, 90, \dots$ euro. Ogni volta aggiungi $20$.
 
 [[video:successioni/aritmetiche]]
 
@@ -249,10 +249,10 @@ Con l'**interesse composto** gli interessi entrano nel capitale, e l'anno dopo f
 
 Con $0 < q < 1$ lo stesso schema descrive le cose che calano, come un farmaco nel sangue. Se a ogni passo ne resta metà, si parla di **dimezzamento**.
 
-?? Un'auto da $20\,000$ euro perde il $15\%$ del suo valore ogni anno. Quanto vale dopo $3$ anni?
-[x] $20\,000 \cdot 0{,}85^3 = 12\,282{,}50$ euro
-[ ] $20\,000 \cdot (1 - 3 \cdot 0{,}15) = 11\,000$ euro
-[ ] $20\,000 \cdot 0{,}15^3 = 67{,}50$ euro
+?? Un'auto da $20\,000$ euro perde il $15\%$ del suo valore ogni anno. Quanto vale dopo $3$ anni?
+[x] $20\,000 \cdot 0{,}85^3 = 12\,282{,}50$ euro
+[ ] $20\,000 \cdot (1 - 3 \cdot 0{,}15) = 11\,000$ euro
+[ ] $20\,000 \cdot 0{,}15^3 = 67{,}50$ euro
 => Ogni anno resta l'$85\%$. Quindi moltiplichi tre volte per $0{,}85$. Il conto $1 - 3 \cdot 0{,}15$ calcola il $15\%$ sempre sul prezzo **iniziale**. Il conto $0{,}15^3$ usa la parte che si perde.` }
   ],
 
@@ -379,7 +379,7 @@ Con $0 < q < 1$ lo stesso schema descrive le cose che calano, come un farmaco ne
     { nome: 'Somma della serie geometrica infinita', formula: R`S = \frac{a_1}{1-q}`, nota: R`Valida solo se $|q| < 1$.` },
     { nome: 'Successione di Fibonacci', formula: R`F_1 = F_2 = 1, \quad F_{n+1} = F_n + F_{n-1}` },
     { nome: 'Rapporto aureo', formula: R`\varphi = \frac{1+\sqrt{5}}{2} \approx 1{,}618\dots`, nota: R`Limite di $F_{n+1}/F_n$.` },
-    { nome: 'Principio di induzione', formula: R`P(n_0) \text{ vera}, \quad P(k) \text{ vera} \Rightarrow P(k+1) \text{ vera} \quad\Longrightarrow\quad P(n) \text{ vera per ogni } n \ge n_0` },
+    { nome: 'Principio di induzione', formula: R`\begin{gathered} P(n_0) \text{ vera} \\ P(k) \text{ vera} \Rightarrow P(k+1) \text{ vera} \\ \Downarrow \\ P(n) \text{ vera per ogni } n \ge n_0 \end{gathered}` },
     { nome: 'Somma dei primi n numeri dispari', formula: R`1 + 3 + 5 + \dots + (2n-1) = n^2` },
     { nome: 'Interesse semplice', formula: R`C_n = C_0(1 + ni)`, nota: R`Progressione aritmetica di ragione $d = C_0 i$.` },
     { nome: 'Interesse composto', formula: R`C_n = C_0(1+i)^n`, nota: R`Progressione geometrica di ragione $q = 1+i$.` }
@@ -444,7 +444,7 @@ Con $0 < q < 1$ lo stesso schema descrive le cose che calano, come un farmaco ne
     { id: 'es-09', difficolta: 2, testo: R`Nella successione di Fibonacci ($F_1=F_2=1$), calcola $F_8$.`, suggerimenti: [R`Calcola i termini uno alla volta: ogni termine è la somma dei due precedenti.`, R`$F_6 = 8$, $F_7=13$: manca solo l'ultimo passo.`], risposta: { tipo: 'numero', valore: 21 }, soluzione: [R`$1, 1, 2, 3, 5, 8, 13, 21$: l'ottavo termine è $F_8 = 21$.`] },
     { id: 'es-10', difficolta: 2, testo: R`Due termini consecutivi di una progressione aritmetica di ragione $5$ hanno somma $37$. Quali sono i due termini?`, suggerimenti: [R`Chiama $x$ il primo termine: il secondo è $x+5$.`, R`Risolvi $x + (x+5) = 37$.`], risposta: { tipo: 'numeri', valori: [16, 21] }, soluzione: [R`$2x + 5 = 37 \Rightarrow 2x = 32 \Rightarrow x = 16$.`, R`I due termini sono $16$ e $16+5=21$. Verifica: $16+21=37$. ✓`] },
     { id: 'es-11', difficolta: 1, testo: R`Stabilisci se la successione $a_n = 10 - n$ è crescente, decrescente o costante, e se è limitata superiormente, inferiormente, in entrambi i modi o in nessuno dei due.`, suggerimenti: [R`Calcola $a_{n+1} - a_n$.`, R`Guarda cosa succede al primo termine e a cosa tende la successione per $n$ molto grande.`], soluzione: [R`$a_{n+1} - a_n = \bigl(10-(n+1)\bigr) - (10-n) = -1 < 0$ per ogni $n$: la successione è **decrescente**.`, R`È una progressione aritmetica di ragione $d=-1$: $a_1 = 9$ è il valore più grande, quindi la successione è **limitata superiormente** (per esempio da $9$).`, R`Diminuendo sempre di $1$, i termini superano qualunque valore negativo: la successione **non è limitata inferiormente**.`] },
-    { id: 'es-12', difficolta: 3, testo: R`Un capitale di $2000$ € è investito per $4$ anni al tasso del $4\%$ annuo, a interesse composto. Quanto vale il montante finale (arrotonda ai centesimi)?`, suggerimenti: [R`Il capitale segue una progressione geometrica: $C_n = C_0(1+i)^n$.`, R`Qui $C_0=2000$, $i=0{,}04$, $n=4$.`], risposta: { tipo: 'numero', valore: 2339.72, tolleranza: 0.02 }, soluzione: [R`$C_4 = 2000 \cdot (1{,}04)^4$.`, R`$(1{,}04)^4 = 1{,}16985856$, quindi $C_4 = 2000 \cdot 1{,}16985856 = 2339{,}71712$.`, R`Arrotondato ai centesimi: $C_4 \approx 2339{,}72$ €.`] }
+    { id: 'es-12', difficolta: 3, testo: R`Un capitale di $2000$ € è investito per $4$ anni al tasso del $4\%$ annuo, a interesse composto. Quanto vale il montante finale (arrotonda ai centesimi)?`, suggerimenti: [R`Il capitale segue una progressione geometrica: $C_n = C_0(1+i)^n$.`, R`Qui $C_0=2000$, $i=0{,}04$, $n=4$.`], risposta: { tipo: 'numero', valore: 2339.72, tolleranza: 0.02 }, soluzione: [R`$C_4 = 2000 \cdot (1{,}04)^4$.`, R`$(1{,}04)^4 = 1{,}16985856$, quindi $C_4 = 2000 \cdot 1{,}16985856 = 2339{,}71712$.`, R`Arrotondato ai centesimi: $C_4 \approx 2339{,}72$ €.`] }
   ],
 
   quiz: [

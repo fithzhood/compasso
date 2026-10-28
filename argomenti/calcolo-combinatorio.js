@@ -126,7 +126,7 @@ I numeri $n_1, n_2, \ldots$ si chiamano **molteplicità**: dicono quante volte c
 [[video:calcolo-combinatorio/disposizioni-combinazioni]]
 
 ~ 8 \cdot 7 \cdot 6 = 336 :: se l'ordine contasse (presidente, vice, segretario) sarebbero disposizioni
-~ \dfrac{336}{\evid{3!}} :: ma ogni terzetto, come Anna-Bruno-Carla, compare nel conto $3! = 6$ volte, una per ogni ordine possibile
+~ \dfrac{336}{\evid{3!}} :: ma ogni terzetto, come Anna-Bruno-Carla, compare nel conto $3! = 6$ volte, una per ogni ordine possibile
 ~ \dfrac{336}{6} = \evidb{56} :: le commissioni sono 56
 
 Un gruppo di $k$ elementi scelti fra $n$ senza ordine è una **combinazione semplice**.
@@ -329,7 +329,7 @@ Nella griglia qui sotto vai da $A$ a $B$ solo a destra (D) o in alto (A). Ogni p
     { nome: 'Simmetria del coefficiente binomiale', formula: R`\binom{n}{k} = \binom{n}{n-k}`, nota: R`Scegliere chi entra equivale a scegliere chi resta fuori. Conviene calcolare con il $k$ più piccolo.` },
     { nome: 'Formula di Stifel', formula: R`\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}`, nota: R`Con $1 \le k \le n-1$: è la regola che costruisce il triangolo di Tartaglia.` },
     { nome: 'Somma di una riga del triangolo', formula: R`\sum_{k=0}^{n} \binom{n}{k} = 2^n`, nota: R`È il numero dei sottoinsiemi di un insieme di $n$ elementi.` },
-    { nome: 'Casi limite', formula: R`\binom{n}{0} = \binom{n}{n} = 1, \qquad \binom{n}{1} = \binom{n}{n-1} = n` },
+    { nome: 'Casi limite', formula: R`\begin{gathered} \binom{n}{0} = \binom{n}{n} = 1 \\ \binom{n}{1} = \binom{n}{n-1} = n \end{gathered}` },
     { nome: 'Binomio di Newton', formula: R`(a+b)^n = \sum_{k=0}^{n} \binom{n}{k} a^{n-k} b^k`, nota: R`Lo sviluppo ha $n+1$ termini e i coefficienti sono la riga $n$ del triangolo di Tartaglia.` },
     { nome: 'Termine generale dello sviluppo', formula: R`T_{k+1} = \binom{n}{k} a^{n-k} b^k`, nota: R`Serve quando si cerca un solo termine: si impone la condizione sull'esponente e si ricava $k$.` }
   ],
