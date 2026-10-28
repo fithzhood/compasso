@@ -135,7 +135,8 @@
     /* righe di derivazione "~ LATEX :: commento": il LaTeX va reso prima dell'escape */
     s = s.replace(/^[ \t]*~[ \t]+(.+?)(?:[ \t]+::[ \t]+(.*))?[ \t]*$/gm, (_, t, c) => { mat.push(tex(t, true)); return '~ \x01' + (mat.length - 1) + '\x01' + (c ? ' \x02 ' + c : ''); });
     s = s.replace(/\$\$([\s\S]+?)\$\$/g, (_, t) => { mat.push(tex(t, true)); return '' + (mat.length - 1) + ''; });
-    s = s.replace(/\$([^$\n]+?)\$([.,;:!?»)]*)/g, (_, t, p) => { mat.push(p ? '<span class="nobr">' + tex(t, false) + p + '</span>' : tex(t, false)); return '' + (mat.length - 1) + ''; });
+    /* anche «$4$ newton» con lo spazio non separabile: il numero e l'unità non si separano */
+    s = s.replace(/\$([^$\n]+?)\$((?: [^\s$<>&*_]+)?[.,;:!?»)]*)/g, (_, t, p) => { mat.push(p ? '<span class="nobr">' + tex(t, false) + p + '</span>' : tex(t, false)); return '' + (mat.length - 1) + ''; });
     s = esc(s);
     const righe = s.split('\n'); const out = []; let par = [], lista = null, tipoLista = '', quote = null, tipoQuote = '', tab = null;
     const chiudiPar = () => { if (par.length) { out.push('<p>' + inline(par.join(' ')) + '</p>'); par = []; } };
@@ -951,15 +952,20 @@
   }
   function controllaRisposta(r, valoreUtente) {
     if (r.tipo === 'numero') {
+      /* «160,40 €», «€ 160,40», «12 euro»: il simbolo della moneta non conta */
+      if (/€|\beuro\b/i.test(String(valoreUtente))) valoreUtente = String(valoreUtente).replace(/€|\beuro\b/gi, '').trim();
       if (/%\s*$/.test(String(valoreUtente))) { const p = numeroDa(String(valoreUtente).replace(/%\s*$/, '')); return isFinite(p) && (vicino(p / 100, r.valore, r.tolleranza) || vicino(p, r.valore, r.tolleranza)); }
       const n = numeroDa(valoreUtente); if (isFinite(n) && vicino(n, r.valore, r.tolleranza)) return true;
-      const mig = String(valoreUtente).trim(); if (/^-?[1-9]\d{0,2}(\.\d{3})+$/.test(mig)) return vicino(+mig.replace(/\./g, ''), r.valore, r.tolleranza);
+      /* «C′(30) = 11», «x = 4»: conta quello che sta dopo l'ultimo uguale */
+      if (/=/.test(String(valoreUtente))) { const dopo = String(valoreUtente).split('=').pop().trim(); if (dopo && controllaRisposta(r, dopo) === true) return true; }
+      /* punto delle migliaia, anche con i decimali: «2.000», «2.121,80» */
+      const mig = String(valoreUtente).trim(); if (/^-?[1-9]\d{0,2}(\.\d{3})+(,\d+)?$/.test(mig)) return vicino(+mig.replace(/\./g, '').replace(',', '.'), r.valore, r.tolleranza);
       return false;
     }
     if (r.tipo === 'numeri') {
       if (r.valori.length === 1 && controllaRisposta({ tipo: 'numero', valore: r.valori[0], tolleranza: r.tolleranza }, String(valoreUtente).replace(/^\s*[a-z][\d₀-₉]?\s*=\s*/i, ''))) return true;
       /* coppie con il punto delle migliaia («3.000; 1.400») */
-      if (/(^|[;\s])[1-9]\d{0,2}(\.\d{3})+($|[;\s])/.test(valoreUtente) && controllaRisposta(r, String(valoreUtente).replace(/(\d)\.(?=\d{3}(\D|$))/g, '$1'))) return true;
+      if (/(^|[;\s(])[1-9]\d{0,2}(\.\d{3})+(,\d+)?($|[;\s)])/.test(valoreUtente) && controllaRisposta(r, String(valoreUtente).replace(/(\d)\.(?=\d{3}(\D|$))/g, '$1'))) return true;
       const combacia = dati => {
         if (dati.length !== r.valori.length) return false;
         if (r.ordinati) return dati.every((d, i) => vicino(d, r.valori[i], r.tolleranza));
@@ -968,6 +974,11 @@
         return true;
       };
       if (combacia(numeriDa(valoreUtente))) return true;
+      /* matrici scritte a righe, «(−2 1; 6 5)» o «-2, 1; 6, 5»: se i conti non tornano, spazi e «, » separano gli elementi */
+      if (/;/.test(valoreUtente)) {
+        const alt = String(valoreUtente).replace(/,\s+/g, '; ').replace(/([\dπ)])\s+(?=[-+−]?[\d√π(])/g, '$1; ');
+        if (alt !== String(valoreUtente) && combacia(numeriDa(alt))) return true;
+      }
       /* chi scrive «-5,5» per dire -5 e 5, o «π/2,3π/2»: se i conti non tornano, la virgola si legge come separatore */
       if (/,/.test(valoreUtente) && !/;/.test(valoreUtente)) return combacia(numeriDa(String(valoreUtente).replace(/,\s*/g, '; ')));
       return false;

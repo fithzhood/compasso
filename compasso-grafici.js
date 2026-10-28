@@ -242,7 +242,8 @@
       /* frecce */
       gAssi.appendChild(el('path', { d: 'M' + (m.l + pw) + ',' + y0 + ' l-8,-4 v8 z', class: 'cg-freccia' }));
       gAssi.appendChild(el('path', { d: 'M' + x0 + ',' + m.t + ' l-4,8 h8 z', class: 'cg-freccia' }));
-      const lx = (spec.etichette && spec.etichette.x) || 'x', ly = (spec.etichette && spec.etichette.y) || 'y';
+      /* etichetta '' = nessun nome sull'asse (prima diventava «x»/«y») */
+      const et = spec.etichette || {}, lx = et.x != null ? et.x : 'x', ly = et.y != null ? et.y : 'y';
       gAssi.appendChild(el('text', { x: m.l + pw - 4, y: y0 - 6, class: 'cg-nome-asse', 'text-anchor': 'end' }, lx));
       gAssi.appendChild(el('text', { x: x0 + 8, y: m.t + 12, class: 'cg-nome-asse' }, ly));
       /* tacche numeriche */
