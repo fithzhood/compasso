@@ -456,7 +456,7 @@
     const ultimo = stato.ultimo && voce(stato.ultimo);
     const eroe = h(`<section class="scheda eroe">
       <div>
-        <div class="eroe-sopra">Matematica per il liceo</div>
+        <div class="eroe-sopra">Matematica per le superiori</div>
         <h1>La matematica, <em>un passo alla volta</em></h1>
         <p>Per ogni argomento c'è la spiegazione, con i calcoli che si aprono un passaggio per volta, poi esempi, esercizi e quiz per metterti alla prova. Nei laboratori i concetti si toccano con le mani. Ada, il computer qui in basso, ti dà un consiglio quando serve.</p>
         <div class="eroe-stat">
