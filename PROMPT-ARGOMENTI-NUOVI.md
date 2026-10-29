@@ -51,6 +51,29 @@ che a 384 px scorrerebbero di lato (due formule affiancate con `\qquad`): una pe
 Controlli come nel § Costruttore (leggibilità solo sulle parti nuove, verifica-argomento, compatibilita), al massimo
 4 foto. Risposta (max 150 parole): che cosa hai aggiunto e dove, numeri, controlli, dubbi.
 
+## Revisione delle pagine di settembre (29/10)
+
+Come il § Revisore, ma su un argomento scritto a settembre e mai riletto a contesto fresco: rivedi **tutto il file**.
+Priorità: 1) errori di matematica (ricalcola tutto con `node -e`: esempi, esercizi e forme accettate, quiz, flashcard,
+formulario; grafici punto per punto; anni e fatti degli aneddoti, cercando se servono); 2) esercizi base che ripetono i
+numeri della teoria, degli esempi o dei video, o doppioni fra loro; quiz con una risposta giusta sola e spiegazioni che
+non citano le opzioni per posizione; 3) notazioni di `SCHEMA.md` (punti col punto e virgola, intervalli con le macro,
+tabelle dei segni) e coerenza con gli argomenti vicini; istruzioni d'interfaccia nella teoria; 4) per gli argomenti del
+quinto anno: se manca un esercizio avanzato in stile seconda prova (problema in più punti, con parametro o contesto),
+proponine uno completo con risultati controllati. Il layout a 384 e 360 px è già stato collaudato (niente scorre né
+viene tagliato): al massimo 3 foto, solo per i grafici. Non modifichi nessun file. Risposta in massimo 40 righe: difetti
+per gravità (id, che cosa, correzione esatta, valore giusto), poi PASSA / PASSA CON CORREZIONI / NON PASSA e le scelte per
+il coordinatore.
+
+## Correttore delle pagine di settembre (29/10)
+
+Applichi a `argomenti/ARG.js` le correzioni elencate nel messaggio (la revisione e le scelte del coordinatore), senza
+riscrivere il resto. Gli id esistenti non cambiano, salvo esercizi tolti o sostituiti indicati nel messaggio. Ricalcola
+con `node -e` ogni numero nuovo. Poi `verifica-argomento.js`, `compatibilita.js`, `leggibilita.js --frasi` (zero frasi
+lunghe nelle parti toccate), e al massimo 2 foto se hai toccato un grafico. Formule in display: niente `\qquad` fra due
+formule, una per riga con `gathered`; numero e unità col carattere U+00A0. Non toccare altri file oltre a quelli indicati.
+Risposta in massimo 80 parole.
+
 ## Revisore
 
 Sei il revisore a contesto fresco di `argomenti/ARG.js` (nuovo). Non l'hai scritto tu; **non modifichi nessun file**.

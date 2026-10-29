@@ -89,6 +89,7 @@ input, select, textarea { font: inherit; color: inherit; }
 h1, h2, h3, h4 { font-family: var(--font-titoli); font-weight: 600; line-height: 1.15; margin: 0; letter-spacing: -.015em; font-variation-settings: "opsz" 72, "SOFT" 30; }
 .katex { font-size: 1.08em; }
 .katex-display { margin: .8em 0; overflow-x: auto; overflow-y: hidden; padding: 4px 2px; }
+@media (max-width: 380px) { .katex-display > .katex { font-size: .98em; } }   /* telefoni da 360 px: le formule in display un po' più piccole, così non scorrono di lato */
 ::selection { background: var(--evid); }
 
 /* --------- intelaiatura --------- */
@@ -325,6 +326,7 @@ a.stat:hover, .stat.riprendi:hover { transform: translateY(-2px); border-color: 
 .prosa tr:hover td { background: color-mix(in srgb, var(--accento) 5%, transparent); }
 .prosa .tabella-scroll { overflow-x: auto; }
 @media (max-width: 420px) { .prosa th, .prosa td { padding: 6px 8px; } .prosa table { font-size: .9rem; } }   /* sul telefono le tabelle a 4-6 colonne stanno nello schermo senza scorrere */
+@media (max-width: 380px) { .prosa th, .prosa td { padding: 6px 5px; } }   /* a 360 px anche la tabella delle funzioni goniometriche (5 colonne) */
 .prosa code { background: var(--sup2); padding: 1px 5px; border-radius: 4px; font-size: .9em; }
 .riquadro { margin: 1.1em 0; padding: 14px 18px 14px 52px; border-radius: 14px; position: relative; overflow: hidden; }
 .riquadro::before { position: absolute; left: 15px; top: 13px; width: 24px; height: 24px; font-size: 14px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: 800; }

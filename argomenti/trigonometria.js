@@ -40,13 +40,13 @@ Nel grafico tieni fermo l'angolo e ingrandisci il triangolo. I lati cambiano, ma
 
 Moltiplica per l'ipotenusa, o per l'altro cateto, e ottieni i due teoremi.
 
->* **Primo teorema:** un cateto è l'ipotenusa per il seno dell'angolo **opposto**, oppure per il coseno dell'angolo **adiacente**: $$a = c\sin\alpha \qquad\qquad b = c\cos\alpha$$ **Secondo teorema:** un cateto è l'altro cateto per la tangente dell'angolo opposto al primo: $$a = b\tan\alpha$$
+>* **Primo teorema:** un cateto è l'ipotenusa per il seno dell'angolo **opposto**, oppure per il coseno dell'angolo **adiacente**: $$\begin{gathered} a = c\sin\alpha \\ b = c\cos\alpha \end{gathered}$$ **Secondo teorema:** un cateto è l'altro cateto per la tangente dell'angolo opposto al primo: $$a = b\tan\alpha$$
 
 Con la scala: l'altezza è opposta all'angolo di $60^\circ$, quindi $h = 5\sin 60^\circ = 5 \cdot \dfrac{\sqrt3}{2} \approx 4{,}33\ \text{m}$. Il piede della scala dista dal muro $5\cos 60^\circ = 2{,}5\ \text{m}$.
 
 Il secondo teorema viene dal primo:
 
-~ a = c\sin\alpha \qquad b = c\cos\alpha :: le due formule del primo teorema
+~ \begin{gathered} a = c\sin\alpha \\ b = c\cos\alpha \end{gathered} :: le due formule del primo teorema
 ~ \dfrac{a}{b} = \dfrac{\evid{c}\sin\alpha}{\evid{c}\cos\alpha} :: divido la prima per la seconda: $c$ si semplifica
 ~ \dfrac{a}{b} = \evid{\tan\alpha} :: seno diviso coseno è la tangente
 ~ a = \evidb{b\tan\alpha} :: moltiplico per $b$: è il secondo teorema
@@ -136,7 +136,7 @@ Se $\gamma$ è ottuso la formula vale lo stesso, perché $\sin\gamma$ resta posi
 
 Allora metti $V$ nel posto più comodo: all'altro estremo del diametro che parte da $A$. Chiama $A'$ quel punto e guarda il triangolo $ABA'$:
 
-~ A\widehat{B}A' = 90^\circ :: è inscritto in una semicirconferenza (teorema di Talete)
+~ A\widehat{B}A' = 90^\circ :: è inscritto in una semicirconferenza
 ~ A\widehat{A'}B = \gamma :: insiste sulla stessa corda $AB$, quindi è uguale all'angolo in $V$
 ~ AB = \evid{AA'} \cdot \sin\gamma :: primo teorema: $AB$ è il cateto opposto a $\gamma$, $AA'$ l'ipotenusa
 ~ AB = \evidb{2R\sin\gamma} :: l'ipotenusa $AA'$ è un diametro
@@ -400,38 +400,39 @@ Con la **triangolazione** misuri una distanza che non puoi percorrere, per esemp
       R`Verifica con Pitagora: $a^2+b^2 \approx 64{,}5 + 79{,}6 = 144{,}1 \approx 12^2$. ✓ (la piccola differenza è dovuta agli arrotondamenti)`
     ], risultato: R`$a \approx 8{,}03\ \text{cm}$, $\ b \approx 8{,}92\ \text{cm}$, $\ \beta = 48^\circ$` },
 
-    { titolo: "Applicazione: l'altezza di una torre", problema: R`Da un punto a $40\ \text{m}$ dalla base di una torre, l'angolo di elevazione della cima è $35^\circ$. Quanto è alta la torre? (Trascura l'altezza degli occhi dell'osservatore.)`, passi: [
-      R`La distanza orizzontale ($40\ \text{m}$) è il cateto adiacente all'angolo di elevazione; l'altezza $h$ cercata è il cateto opposto: si usa il secondo teorema, $h = d\tan\alpha$.`,
-      R`$h = 40 \cdot \tan 35^\circ \approx 40 \cdot 0{,}7002 \approx 28{,}01\ \text{m}$.`,
-      R`Il risultato è ragionevole: con un angolo minore di $45^\circ$ (dove $\tan 45^\circ = 1$), l'altezza deve venire minore della distanza orizzontale, e infatti $28 < 40$.`
-    ], risultato: R`$h \approx 28{,}0\ \text{m}$` },
+    { titolo: "Applicazione: l'altezza di una torre", problema: R`Da un punto a $50\ \text{m}$ dalla base di una torre, l'angolo di elevazione della cima è $28^\circ$. Quanto è alta la torre? (Trascura l'altezza degli occhi dell'osservatore.)`, passi: [
+      R`La distanza orizzontale ($50\ \text{m}$) è il cateto adiacente all'angolo di elevazione. L'altezza $h$ è il cateto opposto: serve il secondo teorema, $h = d\tan\alpha$.`,
+      R`$h = 50 \cdot \tan 28^\circ \approx 50 \cdot 0{,}5317 \approx 26{,}59\ \text{m}$.`,
+      R`Il risultato è ragionevole. Sotto $45^\circ$ la tangente è minore di $1$, quindi l'altezza viene minore della distanza: $26{,}59 < 50$.`
+    ], risultato: R`$h \approx 26{,}59\ \text{m}$` },
 
-    { titolo: "Area con due lati e l'angolo compreso", problema: R`Un triangolo ha $a = 8\ \text{cm}$, $b = 5\ \text{cm}$ e l'angolo compreso $\gamma = 30^\circ$. Calcola l'area.`, passi: [
+    { titolo: "Area con due lati e l'angolo compreso", problema: R`Un triangolo ha $a = 10\ \text{cm}$, $b = 7\ \text{cm}$ e l'angolo compreso $\gamma = 135^\circ$. Calcola l'area.`, passi: [
       R`Si applica direttamente la formula $\text{Area} = \frac{1}{2}ab\sin\gamma$, senza bisogno di conoscere l'altezza.`,
-      R`$\text{Area} = \frac{1}{2}\cdot 8\cdot 5\cdot \sin 30^\circ = 20 \cdot 0{,}5 = 10\ \text{cm}^2$.`
-    ], risultato: R`$\text{Area} = 10\ \text{cm}^2$` },
+      R`L'angolo è ottuso, ma il seno è positivo: $\sin 135^\circ = \sin 45^\circ = \dfrac{\sqrt2}{2} \approx 0{,}7071$.`,
+      R`$\text{Area} = \frac{1}{2}\cdot 10\cdot 7\cdot \sin 135^\circ \approx 35 \cdot 0{,}7071 \approx 24{,}75\ \text{cm}^2$.`
+    ], risultato: R`$\text{Area} \approx 24{,}75\ \text{cm}^2$` },
 
-    { titolo: 'Teorema dei seni: due angoli e un lato', problema: R`In un triangolo, $\alpha = 50^\circ$, $\beta = 60^\circ$ e il lato $a$ (opposto ad $\alpha$) misura $10\ \text{cm}$. Trova $\gamma$, $b$ e $c$.`, passi: [
-      R`Il terzo angolo si trova per differenza: $\gamma = 180^\circ - 50^\circ - 60^\circ = 70^\circ$.`,
-      R`Il lato $a$ e l'angolo $\alpha$ sono una coppia completa (lato e angolo opposto): danno il rapporto comune del teorema dei seni, $\dfrac{a}{\sin\alpha} = \dfrac{10}{\sin 50^\circ} \approx 13{,}054$.`,
-      R`Lo stesso rapporto vale per $b$ e $\beta$: $b = 13{,}054\cdot\sin 60^\circ \approx 11{,}31\ \text{cm}$.`,
-      R`E per $c$ e $\gamma$: $c = 13{,}054\cdot\sin 70^\circ \approx 12{,}27\ \text{cm}$.`
-    ], risultato: R`$\gamma = 70^\circ$, $\ b \approx 11{,}31\ \text{cm}$, $\ c \approx 12{,}27\ \text{cm}$` },
+    { titolo: 'Teorema dei seni: due angoli e un lato', problema: R`In un triangolo, $\alpha = 45^\circ$, $\beta = 75^\circ$ e il lato $a$ (opposto ad $\alpha$) misura $8\ \text{cm}$. Trova $\gamma$, $b$ e $c$.`, passi: [
+      R`Il terzo angolo si trova per differenza: $\gamma = 180^\circ - 45^\circ - 75^\circ = 60^\circ$.`,
+      R`Il lato $a$ e l'angolo $\alpha$ sono una coppia completa. Danno il rapporto comune del teorema dei seni: $\dfrac{a}{\sin\alpha} = \dfrac{8}{\sin 45^\circ} \approx 11{,}314$.`,
+      R`Lo stesso rapporto vale per $b$ e $\beta$: $b = 11{,}314\cdot\sin 75^\circ \approx 10{,}93\ \text{cm}$.`,
+      R`E per $c$ e $\gamma$: $c = 11{,}314\cdot\sin 60^\circ \approx 9{,}80\ \text{cm}$.`
+    ], risultato: R`$\gamma = 60^\circ$, $\ b \approx 10{,}93\ \text{cm}$, $\ c \approx 9{,}80\ \text{cm}$` },
 
-    { titolo: 'Il caso ambiguo del teorema dei seni', problema: R`In un triangolo, $a = 5\ \text{cm}$ (opposto ad $\alpha$), $b = 8\ \text{cm}$ e $\alpha = 30^\circ$. Trova tutte le possibili misure di $c$.`, passi: [
-      R`Prima si controlla se il caso è ambiguo: $b\sin\alpha = 8 \cdot 0{,}5 = 4$. Poiché $4 < 5 < 8$ (cioè $b\sin\alpha < a < b$), esistono **due** triangoli.`,
-      R`Dal teorema dei seni, $\sin\beta = \dfrac{b\sin\alpha}{a} = \dfrac{4}{5} = 0{,}8$, quindi $\beta_1 \approx 53{,}13^\circ$ oppure $\beta_2 = 180^\circ - 53{,}13^\circ \approx 126{,}87^\circ$.`,
-      R`Il rapporto comune viene dalla coppia completa $a$, $\alpha$: $\dfrac{a}{\sin\alpha} = \dfrac{5}{0{,}5} = 10$.`,
-      R`Primo triangolo: il terzo angolo è $\gamma_1 = 180^\circ - 30^\circ - 53{,}13^\circ \approx 96{,}87^\circ$, quindi $c_1 = 10\cdot\sin 96{,}87^\circ \approx 9{,}93\ \text{cm}$.`,
-      R`Secondo triangolo: $\gamma_2 = 180^\circ - 30^\circ - 126{,}87^\circ \approx 23{,}13^\circ$, quindi $c_2 = 10\cdot\sin 23{,}13^\circ \approx 3{,}93\ \text{cm}$.`
-    ], risultato: R`$c_1 \approx 9{,}93\ \text{cm}$ oppure $c_2 \approx 3{,}93\ \text{cm}$` },
+    { titolo: 'Il caso ambiguo del teorema dei seni', problema: R`In un triangolo, $a = 6\ \text{cm}$ (opposto ad $\alpha$), $b = 10\ \text{cm}$ e $\alpha = 30^\circ$. Trova tutte le possibili misure di $c$.`, passi: [
+      R`Prima si controlla se il caso è ambiguo: $b\sin\alpha = 10 \cdot 0{,}5 = 5$. Poiché $5 < 6 < 10$, cioè $b\sin\alpha < a < b$, i triangoli sono **due**.`,
+      R`Dal teorema dei seni, $\sin\beta = \dfrac{b\sin\alpha}{a} = \dfrac{5}{6} \approx 0{,}8333$. Quindi $\beta_1 \approx 56{,}44^\circ$ oppure $\beta_2 = 180^\circ - 56{,}44^\circ = 123{,}56^\circ$.`,
+      R`Il rapporto comune viene dalla coppia completa $a$, $\alpha$: $\dfrac{a}{\sin\alpha} = \dfrac{6}{0{,}5} = 12$.`,
+      R`Primo triangolo: il terzo angolo è $\gamma_1 = 180^\circ - 30^\circ - 56{,}44^\circ = 93{,}56^\circ$, quindi $c_1 = 12\cdot\sin 93{,}56^\circ \approx 11{,}98\ \text{cm}$.`,
+      R`Secondo triangolo: $\gamma_2 = 180^\circ - 30^\circ - 123{,}56^\circ = 26{,}44^\circ$, quindi $c_2 = 12\cdot\sin 26{,}44^\circ \approx 5{,}34\ \text{cm}$.`
+    ], risultato: R`$c_1 \approx 11{,}98\ \text{cm}$ oppure $c_2 \approx 5{,}34\ \text{cm}$` },
 
-    { titolo: 'Teorema del coseno: due lati e l\'angolo compreso', problema: R`Un triangolo ha $a = 6\ \text{cm}$, $b = 9\ \text{cm}$ e l'angolo compreso $\gamma = 70^\circ$. Trova il terzo lato $c$.`, passi: [
-      R`Nessun lato ha di fronte un angolo noto, quindi il teorema dei seni non parte: si usa il teorema del coseno, $c^2 = a^2+b^2-2ab\cos\gamma$.`,
-      R`$c^2 = 36 + 81 - 2\cdot 6\cdot 9\cdot\cos 70^\circ \approx 117 - 108\cdot 0{,}342 \approx 117 - 36{,}94 = 80{,}06$.`,
-      R`$c \approx \sqrt{80{,}06} \approx 8{,}95\ \text{cm}$.`,
-      R`Controllo di ragionevolezza: se $\gamma$ fosse stato $90^\circ$ (Pitagora), sarebbe stato $c = \sqrt{36+81} = \sqrt{117} \approx 10{,}82\ \text{cm}$; con $\gamma = 70^\circ < 90^\circ$ il lato $c$ deve venire più corto, e infatti $8{,}95 < 10{,}82$.`
-    ], risultato: R`$c \approx 8{,}95\ \text{cm}$` }
+    { titolo: 'Teorema del coseno: due lati e l\'angolo compreso', problema: R`Un triangolo ha $a = 8\ \text{cm}$, $b = 11\ \text{cm}$ e l'angolo compreso $\gamma = 55^\circ$. Trova il terzo lato $c$.`, passi: [
+      R`Nessun lato ha di fronte un angolo noto, quindi il teorema dei seni non parte. Serve il teorema del coseno, $c^2 = a^2+b^2-2ab\cos\gamma$.`,
+      R`$c^2 = 64 + 121 - 2\cdot 8\cdot 11\cdot\cos 55^\circ \approx 185 - 176\cdot 0{,}5736 \approx 185 - 100{,}95 = 84{,}05$.`,
+      R`$c \approx \sqrt{84{,}05} \approx 9{,}17\ \text{cm}$.`,
+      R`Controllo: con $\gamma = 90^\circ$ (Pitagora) verrebbe $c = \sqrt{185} \approx 13{,}60\ \text{cm}$. Con $\gamma = 55^\circ$, acuto, $c$ deve venire più corto, e infatti $9{,}17 < 13{,}60$.`
+    ], risultato: R`$c \approx 9{,}17\ \text{cm}$` }
   ],
 
   formulario: [
@@ -456,11 +457,11 @@ Con la **triangolazione** misuri una distanza che non puoi percorrere, per esemp
     { id: 'fc-05', sezione: 'risoluzione-triangoli-rettangoli', tipo: 'concetto', fronte: R`Come si trova il secondo angolo acuto, noto il primo?`, retro: R`$\beta = 90^\circ - \alpha$, perché l'angolo retto vale già $90^\circ$ e la somma degli angoli è $180^\circ$.` },
     { id: 'fc-06', sezione: 'applicazioni', tipo: 'definizione', fronte: R`Angolo di elevazione`, retro: R`L'angolo, misurato dall'orizzontale verso l'alto, sotto cui si vede un oggetto più in alto dell'osservatore.` },
     { id: 'fc-07', sezione: 'applicazioni', tipo: 'definizione', fronte: R`Angolo di depressione`, retro: R`L'angolo, misurato dall'orizzontale verso il basso, sotto cui si vede un oggetto più in basso. È congruente all'angolo di elevazione visto dall'altro punto.` },
-    { id: 'fc-08', sezione: 'applicazioni', tipo: 'concetto', fronte: R`Pendenza di una strada del 10%`, retro: R`Significa $\tan\alpha = 0{,}10$: ogni 100 m percorsi in orizzontale si sale di 10 m. Non è l'angolo in gradi.` },
+    { id: 'fc-08', sezione: 'applicazioni', tipo: 'concetto', fronte: R`Pendenza di una strada del 10%`, retro: R`Significa $\tan\alpha = 0{,}10$: ogni 100 m percorsi in orizzontale si sale di 10 m. Non è l'angolo in gradi.` },
     { id: 'fc-09', sezione: 'area-triangolo', tipo: 'formula', fronte: R`Area di un triangolo con due lati e l'angolo compreso`, retro: R`$\text{Area} = \dfrac{1}{2}ab\sin\gamma$, con $\gamma$ compreso fra $a$ e $b$.` },
     { id: 'fc-10', sezione: 'area-triangolo', tipo: 'concetto', fronte: R`Perché $\frac12 ab\sin\gamma$ funziona anche con $\gamma$ ottuso?`, retro: R`Perché il seno di un angolo ottuso è comunque positivo: la formula resta valida senza modifiche.` },
     { id: 'fc-11', sezione: 'teorema-della-corda', tipo: 'formula', fronte: R`Teorema della corda`, retro: R`$AB = 2R\sin\gamma$, con $\gamma$ angolo alla circonferenza che sottende la corda $AB$.` },
-    { id: 'fc-12', sezione: 'teorema-della-corda', tipo: 'procedura', fronte: R`Idea della dimostrazione del teorema della corda`, retro: R`Si traccia il diametro da un estremo della corda: per Talete l'angolo opposto è retto, e si applica il primo teorema dei triangoli rettangoli.` },
+    { id: 'fc-12', sezione: 'teorema-della-corda', tipo: 'procedura', fronte: R`Idea della dimostrazione del teorema della corda`, retro: R`Si traccia il diametro da un estremo della corda. L'angolo inscritto in una semicirconferenza è retto, e si applica il primo teorema dei triangoli rettangoli.` },
     { id: 'fc-13', sezione: 'teorema-dei-seni', tipo: 'formula', fronte: R`Teorema dei seni`, retro: R`$\dfrac{a}{\sin\alpha} = \dfrac{b}{\sin\beta} = \dfrac{c}{\sin\gamma} = 2R$, con $R$ raggio della circonferenza circoscritta.` },
     { id: 'fc-14', sezione: 'teorema-dei-seni', tipo: 'concetto', fronte: R`Quando può presentarsi il caso ambiguo?`, retro: R`Quando si conoscono due lati e l'angolo opposto a uno di essi (non compreso fra i due lati).` },
     { id: 'fc-15', sezione: 'teorema-dei-seni', tipo: 'concetto', fronte: R`Condizione per due triangoli nel caso ambiguo (con $\alpha$ acuto)`, retro: R`$b\sin\alpha < a < b$: la calcolatrice dà una soluzione acuta per $\beta$, ma va controllata anche $180^\circ - \beta$.` },
@@ -484,8 +485,8 @@ Con la **triangolazione** misuri una distanza che non puoi percorrere, per esemp
     { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Un triangolo rettangolo ha l'ipotenusa di $9$ e un angolo acuto di $40^\circ$. Quanto misura il cateto adiacente a quell'angolo? Rispondi con due decimali.`, suggerimenti: [R`Ipotenusa per il coseno dell'angolo, con la calcolatrice in gradi.`], risposta: num(6.89, 0.015), soluzione: [R`Il cateto è adiacente all'angolo: $9\cos 40^\circ$.`, R`$9 \cdot 0{,}7660 \approx 6{,}89$.`] },
     { id: 'b-08', livello: 'base', difficolta: 1, testo: R`In un triangolo rettangolo un cateto misura $5$ e l'angolo acuto adiacente a lui misura $35^\circ$. Quanto misura l'altro cateto? Rispondi con due decimali.`, suggerimenti: [R`L'altro cateto è opposto all'angolo: usa la tangente.`], risposta: num(3.50, 0.015), soluzione: [R`Secondo teorema: l'altro cateto è $5\tan 35^\circ$.`, R`$5 \cdot 0{,}7002 \approx 3{,}50$.`] },
     { id: 'b-09', livello: 'base', difficolta: 1, testo: R`I cateti di un triangolo rettangolo misurano $5$ e $12$. Quanto misura l'angolo opposto al cateto $5$? Rispondi in gradi, con due decimali.`, suggerimenti: [R`La tangente dell'angolo è opposto diviso adiacente: $\frac{5}{12}$.`, R`Poi usa il tasto $\tan^{-1}$, con la calcolatrice in gradi.`], risposta: gradi(22.62, 0.015), soluzione: [R`$\tan\alpha = \frac{5}{12} \approx 0{,}4167$.`, R`$\alpha = \tan^{-1} 0{,}4167 \approx 22{,}62^\circ$.`] },
-    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`L'ipotenusa di un triangolo rettangolo misura $10$ e un cateto $6$. Quanto misura l'angolo opposto al cateto $6$? Rispondi in gradi, con due decimali.`, suggerimenti: [R`Il seno dell'angolo è opposto diviso ipotenusa: $\frac{6}{10}$.`, R`Poi usa il tasto $\sin^{-1}$.`], risposta: gradi(36.87, 0.015), soluzione: [R`$\sin\alpha = \frac{6}{10} = 0{,}6$.`, R`$\alpha = \sin^{-1} 0{,}6 \approx 36{,}87^\circ$.`] },
-    { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Sei a $20$ m dalla base di un albero e vedi la cima sotto un angolo di $40^\circ$. Quanto è alto l'albero, in metri? Considerati a terra e rispondi con due decimali.`, suggerimenti: [R`I $20$ m sono il cateto adiacente all'angolo, l'altezza è il cateto opposto.`, R`Usa la tangente.`], risposta: num(16.78, 0.015), soluzione: [R`L'altezza è il cateto opposto all'angolo di $40^\circ$, i $20$ m sono il cateto adiacente.`, R`$h = 20\tan 40^\circ \approx 20 \cdot 0{,}8391 \approx 16{,}78$ m.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`L'ipotenusa di un triangolo rettangolo misura $7$ e un cateto $4$. Quanto misura l'angolo opposto al cateto $4$? Rispondi in gradi, con due decimali.`, suggerimenti: [R`Il seno dell'angolo è opposto diviso ipotenusa: $\frac{4}{7}$.`, R`Poi usa il tasto $\sin^{-1}$.`], risposta: gradi(34.85, 0.015), soluzione: [R`$\sin\alpha = \frac{4}{7} \approx 0{,}5714$.`, R`$\alpha = \sin^{-1} 0{,}5714 \approx 34{,}85^\circ$.`] },
+    { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Sei a $20$ m dalla base di un albero e vedi la cima sotto un angolo di $40^\circ$. Quanto è alto l'albero, in metri? Considerati a terra e rispondi con due decimali.`, suggerimenti: [R`I $20$ m sono il cateto adiacente all'angolo, l'altezza è il cateto opposto.`, R`Usa la tangente.`], risposta: num(16.78, 0.015), soluzione: [R`L'altezza è il cateto opposto all'angolo di $40^\circ$, i $20$ m sono il cateto adiacente.`, R`$h = 20\tan 40^\circ \approx 20 \cdot 0{,}8391 \approx 16{,}78$ m.`] },
     { id: 'b-12', livello: 'base', difficolta: 1, testo: R`Un triangolo ha due lati di $6$ e $8$, e l'angolo fra loro misura $30^\circ$. Quanto vale l'area?`, suggerimenti: [R`Usa $\text{Area} = \frac12 ab\sin\gamma$.`], risposta: num(12), soluzione: [R`$\text{Area} = \frac12 \cdot 6 \cdot 8 \cdot \sin 30^\circ$.`, R`$= 24 \cdot \frac12 = 12$.`] },
     { id: 'b-13', livello: 'base', difficolta: 1, testo: R`Un triangolo ha due lati di $4$ e $10$, e l'angolo fra loro misura $150^\circ$. Quanto vale l'area?`, suggerimenti: [R`Usa $\text{Area} = \frac12 ab\sin\gamma$.`, R`$\sin 150^\circ = \sin 30^\circ = \frac12$.`], risposta: num(10), soluzione: [R`$\text{Area} = \frac12 \cdot 4 \cdot 10 \cdot \sin 150^\circ$.`, R`$\sin 150^\circ = \frac12$, quindi $\text{Area} = 20 \cdot \frac12 = 10$.`] },
     { id: 'b-14', livello: 'base', difficolta: 1, testo: R`Un triangolo ha due lati di $5$ e $7$, e l'angolo fra loro misura $50^\circ$. Quanto vale l'area? Rispondi con due decimali.`, suggerimenti: [R`Usa $\text{Area} = \frac12 ab\sin\gamma$, con la calcolatrice in gradi.`], risposta: num(13.41, 0.015), soluzione: [R`$\text{Area} = \frac12 \cdot 5 \cdot 7 \cdot \sin 50^\circ = 17{,}5 \cdot \sin 50^\circ$.`, R`$17{,}5 \cdot 0{,}7660 \approx 13{,}41$.`] },
@@ -493,7 +494,7 @@ Con la **triangolazione** misuri una distanza che non puoi percorrere, per esemp
     { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Un triangolo ha due lati di $7$ e $8$, e l'angolo fra loro misura $120^\circ$. Quanto misura il terzo lato?`, suggerimenti: [R`Usa il teorema del coseno.`, R`$\cos 120^\circ = -\frac12$: attento al segno.`], risposta: num(13), soluzione: [R`Teorema del coseno: $c^2 = 7^2 + 8^2 - 2\cdot 7\cdot 8\cos 120^\circ$.`, R`$\cos 120^\circ = -\frac12$, quindi $c^2 = 113 - 112\cdot\left(-\frac12\right) = 113 + 56 = 169$.`, R`$c = \sqrt{169} = 13$.`] },
     { id: 'b-17', livello: 'base', difficolta: 2, testo: R`In un triangolo il lato $a = 10$ ha di fronte l'angolo $\alpha = 30^\circ$, e l'angolo $\beta$ misura $45^\circ$. Quanto misura il lato $b$, opposto a $\beta$? Rispondi con due decimali.`, suggerimenti: [R`$a$ e $\alpha$ sono una coppia completa: usa il teorema dei seni.`, R`$\frac{b}{\sin 45^\circ} = \frac{10}{\sin 30^\circ}$.`], risposta: num(14.14, 0.015), soluzione: [R`Teorema dei seni: $\frac{b}{\sin 45^\circ} = \frac{10}{\sin 30^\circ} = \frac{10}{0{,}5} = 20$.`, R`$b = 20\sin 45^\circ = 20 \cdot \frac{\sqrt2}{2} = 10\sqrt2$.`, R`$10\sqrt2 \approx 14{,}14$.`] },
     { id: 'b-18', livello: 'base', difficolta: 2, testo: R`In un triangolo $a = 8$, $b = 6$ e l'angolo $\alpha = 30^\circ$ sta di fronte ad $a$. Quanto misura l'angolo $\beta$, opposto a $b$? Rispondi in gradi, con due decimali.`, suggerimenti: [R`Teorema dei seni: $\sin\beta = \frac{b\sin\alpha}{a}$.`, R`Poi usa $\sin^{-1}$. Controlla se anche il supplementare va bene.`], risposta: gradi(22.02, 0.015), soluzione: [R`$\sin\beta = \frac{6 \cdot 0{,}5}{8} = 0{,}375$.`, R`$\beta = \sin^{-1} 0{,}375 \approx 22{,}02^\circ$.`, R`Il supplementare, $157{,}98^\circ$, non va: sommato a $30^\circ$ supera $180^\circ$.`] },
-    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`I lati di un triangolo misurano $5$, $7$ e $8$. Quanto misura l'angolo opposto al lato $7$, in gradi?`, suggerimenti: [R`Conosci tre lati: usa il teorema del coseno, isolando il coseno.`, R`$\cos\gamma = \frac{a^2 + b^2 - c^2}{2ab}$, con $c = 7$.`], risposta: gradi(60), soluzione: [R`$\cos\gamma = \frac{5^2 + 8^2 - 7^2}{2\cdot 5\cdot 8}$.`, R`$\cos\gamma = \frac{25 + 64 - 49}{80} = \frac{40}{80} = \frac12$.`, R`L'angolo con coseno $\frac12$ è $\gamma = 60^\circ$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`I lati di un triangolo misurano $3$, $7$ e $8$. Quanto misura l'angolo opposto al lato $7$, in gradi?`, suggerimenti: [R`Conosci tre lati: usa il teorema del coseno, isolando il coseno.`, R`$\cos\gamma = \frac{a^2 + b^2 - c^2}{2ab}$, con $c = 7$.`], risposta: gradi(60), soluzione: [R`$\cos\gamma = \frac{3^2 + 8^2 - 7^2}{2\cdot 3\cdot 8}$.`, R`$\cos\gamma = \frac{9 + 64 - 49}{48} = \frac{24}{48} = \frac12$.`, R`L'angolo con coseno $\frac12$ è $\gamma = 60^\circ$.`] },
     { id: 'b-20', livello: 'base', difficolta: 2, testo: R`In un triangolo $\alpha = 50^\circ$, $\beta = 70^\circ$ e il lato $c = 10$. Quanto misura il lato $a$, opposto ad $\alpha$? Rispondi con due decimali.`, suggerimenti: [R`Trova prima $\gamma$, che sta di fronte a $c$.`, R`Poi usa il teorema dei seni con la coppia $c$, $\gamma$.`], risposta: num(8.85, 0.015), soluzione: [R`$\gamma = 180^\circ - 50^\circ - 70^\circ = 60^\circ$.`, R`Teorema dei seni: $\frac{a}{\sin 50^\circ} = \frac{10}{\sin 60^\circ}$.`, R`$a = \frac{10\sin 50^\circ}{\sin 60^\circ} \approx \frac{7{,}660}{0{,}866} \approx 8{,}85$.`] },
     { id: 'es-01', difficolta: 1, testo: R`Un triangolo rettangolo ha ipotenusa $c = 10\ \text{cm}$ e un angolo acuto $\alpha = 36{,}87^\circ$. Calcola i due cateti $a$ (opposto ad $\alpha$) e $b$ (adiacente), arrotondati al centesimo.`, suggerimenti: [
       R`Usa il primo teorema sui triangoli rettangoli: un cateto è ipotenusa per seno o coseno dell'angolo.`,
@@ -501,47 +502,53 @@ Con la **triangolazione** misuri una distanza che non puoi percorrere, per esemp
     ], risposta: { tipo: 'numeri', valori: [6, 8], ordinati: true, tolleranza: 0.05 }, soluzione: [
       R`$a = 10 \cdot \sin 36{,}87^\circ \approx 10 \cdot 0{,}6 = 6\ \text{cm}$.`,
       R`$b = 10 \cdot \cos 36{,}87^\circ \approx 10 \cdot 0{,}8 = 8\ \text{cm}$.`,
-      R`Non è un caso: $36{,}87^\circ$ è l'angolo del triangolo 3-4-5, con $\sin\alpha = 0{,}6$ e $\cos\alpha = 0{,}8$ esatti.`
+      R`Non è un caso: $36{,}87^\circ$ è l'angolo del triangolo 3-4-5, con $\sin\alpha = 0{,}6$ e $\cos\alpha = 0{,}8$ quasi esatti.`
     ] },
     { id: 'es-02', difficolta: 1, testo: R`In un triangolo rettangolo un cateto misura $6\ \text{cm}$ ed è opposto a un angolo di $25^\circ$. Quanto misura l'ipotenusa? (arrotonda al centesimo)`, suggerimenti: [
       R`Il cateto è opposto all'angolo dato: quale dei tre teoremi lo lega direttamente all'ipotenusa?`,
       R`$a = c\sin\alpha$, quindi $c = a/\sin\alpha$.`
-    ], risposta: { tipo: 'numero', valore: 14.2, tolleranza: 0.05 }, soluzione: [
+    ], risposta: num(14.20, 0.015), soluzione: [
       R`Da $a = c\sin\alpha$ si ricava $c = \dfrac{a}{\sin\alpha} = \dfrac{6}{\sin 25^\circ} \approx \dfrac{6}{0{,}4226} \approx 14{,}20\ \text{cm}$.`
     ] },
     { id: 'es-03', difficolta: 1, testo: R`Una strada ha una pendenza dell'$8\%$. Quanti gradi misura l'angolo di inclinazione rispetto all'orizzontale? (arrotonda al centesimo di grado)`, suggerimenti: [
       R`La pendenza in percentuale è $100\tan\alpha$.`,
       R`$\tan\alpha = 0{,}08$; usa l'arcotangente.`
-    ], risposta: { tipo: 'numero', valore: 4.57, tolleranza: 0.1 }, soluzione: [
+    ], risposta: gradi(4.57, 0.015), soluzione: [
       R`$\tan\alpha = \dfrac{8}{100} = 0{,}08$.`,
       R`$\alpha = \arctan(0{,}08) \approx 4{,}57^\circ$.`
     ] },
-    { id: 'es-04', difficolta: 2, testo: R`Da un punto a $25\ \text{m}$ dalla base di una torre, l'angolo di elevazione della cima è $40^\circ$. Quanto è alta la torre? (trascura l'altezza dell'osservatore; arrotonda al centesimo)`, suggerimenti: [
-      R`La distanza orizzontale è il cateto adiacente all'angolo di elevazione.`,
-      R`Usa il secondo teorema: $h = d\tan\alpha$.`
-    ], risposta: { tipo: 'numero', valore: 20.98, tolleranza: 0.1 }, soluzione: [
-      R`$h = 25\cdot\tan 40^\circ \approx 25\cdot 0{,}8391 \approx 20{,}98\ \text{m}$.`
+    { id: 'es-04', difficolta: 3, testo: R`Da un punto $A$ vedi la cima di una torre con un angolo di elevazione di $30^\circ$. Fai $20\ \text{m}$ in linea retta verso la torre e ora la vedi con un angolo di $45^\circ$. Quanto è alta la torre? (trascura l'altezza dell'osservatore; arrotonda al centesimo)`, suggerimenti: [
+      R`Chiama $h$ l'altezza e $x$ la distanza dalla torre del secondo punto. Da $A$ la distanza è $x + 20$.`,
+      R`Scrivi il secondo teorema due volte: $h = x\tan 45^\circ$ e $h = (x + 20)\tan 30^\circ$.`
+    ], risposta: num(27.32, 0.015), soluzione: [
+      R`Dal secondo punto: $h = x\tan 45^\circ = x$.`,
+      R`Da $A$: $h = (x + 20)\tan 30^\circ$. Al posto di $x$ metto $h$: $h = (h + 20)\tan 30^\circ$.`,
+      R`Porto a sinistra i termini con $h$: $h\,(1 - \tan 30^\circ) = 20\tan 30^\circ$.`,
+      R`$h = \dfrac{20\tan 30^\circ}{1 - \tan 30^\circ} \approx \dfrac{20\cdot 0{,}5774}{0{,}4226} \approx 27{,}32\ \text{m}$.`,
+      R`In generale, con due angoli $\alpha < \beta$ e uno spostamento $d$: $h = \dfrac{d\tan\alpha\tan\beta}{\tan\beta - \tan\alpha}$.`
     ] },
-    { id: 'es-05', difficolta: 1, testo: R`Calcola l'area di un triangolo con lati $a = 8\ \text{cm}$, $b = 5\ \text{cm}$ e l'angolo compreso $\gamma = 30^\circ$.`, suggerimenti: [
-      R`Non serve l'altezza: c'è una formula diretta con due lati e l'angolo compreso.`,
-      R`$\text{Area} = \frac12 ab\sin\gamma$.`
-    ], risposta: { tipo: 'numero', valore: 10, tolleranza: 0.05 }, soluzione: [
-      R`$\text{Area} = \frac12\cdot 8\cdot 5\cdot\sin 30^\circ = 20\cdot 0{,}5 = 10\ \text{cm}^2$.`
+    { id: 'es-05', difficolta: 2, testo: R`Un triangolo ha due lati di $6\ \text{cm}$ e $9\ \text{cm}$, e area $20\ \text{cm}^2$. Quanto può misurare l'angolo $\gamma$ compreso fra i due lati? Le soluzioni sono due: trovale in gradi (arrotonda al centesimo).`, suggerimenti: [
+      R`Scrivi la formula dell'area con due lati e l'angolo compreso, e isola $\sin\gamma$.`,
+      R`$\sin\gamma = \dfrac{2\cdot\text{Area}}{ab}$. Un angolo acuto e il suo supplementare hanno lo stesso seno.`
+    ], risposta: { tipo: 'numeri', valori: [47.79, 132.21], tolleranza: 0.05, simboli: ['°'] }, soluzione: [
+      R`Da $\text{Area} = \frac12 ab\sin\gamma$: $\sin\gamma = \dfrac{2\cdot 20}{6\cdot 9} = \dfrac{40}{54} \approx 0{,}7407$.`,
+      R`L'arcoseno dà l'angolo acuto: $\gamma_1 \approx 47{,}79^\circ$.`,
+      R`Anche il supplementare ha lo stesso seno: $\gamma_2 = 180^\circ - 47{,}79^\circ = 132{,}21^\circ$. Va bene anche lui, perché un triangolo può avere un angolo ottuso.`
     ] },
-    { id: 'es-06', difficolta: 2, testo: R`In una circonferenza di raggio $7{,}5\ \text{cm}$, una corda lunga $10\ \text{cm}$ sottende un angolo alla circonferenza $\gamma$. Quanto misura $\gamma$, l'angolo acuto, in gradi? (arrotonda al centesimo)`, suggerimenti: [
+    { id: 'es-06', difficolta: 2, testo: R`In una circonferenza una corda lunga $9\ \text{cm}$ è vista da un punto della circonferenza sotto un angolo di $40^\circ$. Quanto misura il raggio? (arrotonda al centesimo)`, suggerimenti: [
       R`Usa il teorema della corda: $AB = 2R\sin\gamma$.`,
-      R`$\sin\gamma = \dfrac{AB}{2R} = \dfrac{10}{15}$.`
-    ], risposta: { tipo: 'numero', valore: 41.81, tolleranza: 0.1 }, soluzione: [
-      R`$\sin\gamma = \dfrac{10}{2\cdot 7{,}5} = \dfrac{10}{15} \approx 0{,}6667$.`,
-      R`$\gamma = \arcsin(0{,}6667) \approx 41{,}81^\circ$ (l'angolo acuto; dall'altra parte della corda l'angolo sarebbe il supplementare, $\approx 138{,}19^\circ$).`
+      R`$R = \dfrac{AB}{2\sin\gamma}$.`
+    ], risposta: num(7.00, 0.015), soluzione: [
+      R`Dal teorema della corda: $R = \dfrac{AB}{2\sin\gamma} = \dfrac{9}{2\sin 40^\circ}$.`,
+      R`$R \approx \dfrac{9}{2\cdot 0{,}6428} \approx \dfrac{9}{1{,}2856} \approx 7{,}00\ \text{cm}$.`
     ] },
-    { id: 'es-07', difficolta: 2, testo: R`In un triangolo, $\alpha = 50^\circ$, $\beta = 60^\circ$ e il lato $a$ (opposto ad $\alpha$) misura $10\ \text{cm}$. Trova i lati $b$ e $c$ (arrotonda al centesimo).`, suggerimenti: [
-      R`Prima trova $\gamma$ per differenza da $180^\circ$.`,
+    { id: 'es-07', difficolta: 2, testo: R`In un triangolo, $\alpha = 40^\circ$, $\gamma = 75^\circ$ e il lato $b$ misura $12\ \text{cm}$. Trova i lati $a$ e $c$, in quest'ordine (arrotonda al centesimo).`, suggerimenti: [
+      R`$b$ sta di fronte a $\beta$: trova prima $\beta$ per differenza da $180^\circ$.`,
       R`Usa il teorema dei seni: $\dfrac{a}{\sin\alpha} = \dfrac{b}{\sin\beta} = \dfrac{c}{\sin\gamma}$.`
-    ], risposta: { tipo: 'numeri', valori: [11.31, 12.27], ordinati: true, tolleranza: 0.05 }, soluzione: [
-      R`$\gamma = 180^\circ - 50^\circ - 60^\circ = 70^\circ$.`,
-      R`Rapporto comune: $\dfrac{a}{\sin\alpha} = \dfrac{10}{\sin 50^\circ} \approx 13{,}05$.`,
-      R`$b \approx 13{,}05\cdot\sin 60^\circ \approx 11{,}31\ \text{cm}$; $c \approx 13{,}05\cdot\sin 70^\circ \approx 12{,}27\ \text{cm}$.`
+    ], risposta: { tipo: 'numeri', valori: [8.51, 12.79], ordinati: true, tolleranza: 0.05 }, soluzione: [
+      R`$\beta = 180^\circ - 40^\circ - 75^\circ = 65^\circ$.`,
+      R`Rapporto comune, dalla coppia $b$, $\beta$: $\dfrac{b}{\sin\beta} = \dfrac{12}{\sin 65^\circ} \approx 13{,}24$.`,
+      R`$a \approx 13{,}24\cdot\sin 40^\circ \approx 8{,}51\ \text{cm}$; $c \approx 13{,}24\cdot\sin 75^\circ \approx 12{,}79\ \text{cm}$.`
     ] },
     { id: 'es-08', difficolta: 3, testo: R`In un triangolo, $\alpha = 35^\circ$, $a = 7\ \text{cm}$ (opposto ad $\alpha$) e $b = 10\ \text{cm}$. Il problema ha due soluzioni: trova le due possibili misure del lato $c$ (arrotonda al centesimo).`, suggerimenti: [
       R`Controlla prima che sia davvero il caso ambiguo: confronta $a$ con $b\sin\alpha$ e con $b$.`,
@@ -553,12 +560,12 @@ Con la **triangolazione** misuri una distanza che non puoi percorrere, per esemp
       R`Rapporto comune: $\dfrac{a}{\sin\alpha} = \dfrac{7}{\sin 35^\circ} \approx 12{,}20$.`,
       R`Primo triangolo: $\gamma_1 = 180^\circ-35^\circ-55{,}02^\circ \approx 89{,}98^\circ$, $c_1 \approx 12{,}20\cdot\sin 89{,}98^\circ \approx 12{,}20\ \text{cm}$. Secondo: $\gamma_2 = 180^\circ-35^\circ-124{,}98^\circ \approx 20{,}02^\circ$, $c_2 \approx 12{,}20\cdot\sin 20{,}02^\circ \approx 4{,}18\ \text{cm}$.`
     ] },
-    { id: 'es-09', difficolta: 3, testo: R`Un triangolo ha lati $a = 7\ \text{cm}$, $b = 8\ \text{cm}$, $c = 5\ \text{cm}$. Trova l'ampiezza dell'angolo $\gamma$, opposto al lato $c$, in gradi (arrotonda al centesimo).`, suggerimenti: [
+    { id: 'es-09', difficolta: 3, testo: R`Un triangolo ha lati $a = 7\ \text{cm}$, $b = 9\ \text{cm}$, $c = 6\ \text{cm}$. Trova l'ampiezza dell'angolo $\gamma$, opposto al lato $c$, in gradi (arrotonda al centesimo).`, suggerimenti: [
       R`Con i tre lati noti serve il teorema del coseno, risolto rispetto al coseno.`,
       R`$\cos\gamma = \dfrac{a^2+b^2-c^2}{2ab}$.`
-    ], risposta: { tipo: 'numero', valore: 38.21, tolleranza: 0.1 }, soluzione: [
-      R`$\cos\gamma = \dfrac{49+64-25}{2\cdot 7\cdot 8} = \dfrac{88}{112} \approx 0{,}7857$.`,
-      R`$\gamma = \arccos(0{,}7857) \approx 38{,}21^\circ$.`
+    ], risposta: gradi(41.75, 0.015), soluzione: [
+      R`$\cos\gamma = \dfrac{49+81-36}{2\cdot 7\cdot 9} = \dfrac{94}{126} \approx 0{,}7460$.`,
+      R`$\gamma = \arccos(0{,}7460) \approx 41{,}75^\circ$.`
     ] },
     { id: 'es-10', difficolta: 2, testo: R`Un esagono regolare ha lato $6\ \text{cm}$. Calcola la sua area (arrotonda al centesimo).`, suggerimenti: [
       R`L'esagono si divide in 6 triangoli isosceli dal centro; l'apotema è l'altezza di ciascuno.`,
@@ -567,32 +574,33 @@ Con la **triangolazione** misuri una distanza che non puoi percorrere, per esemp
       R`Per l'esagono $n = 6$, quindi $\dfrac{180^\circ}{n} = 30^\circ$: $\text{apotema} = \dfrac{6}{2\tan 30^\circ} \approx \dfrac{6}{1{,}1547} \approx 5{,}196\ \text{cm}$.`,
       R`Il perimetro è $6\cdot 6 = 36\ \text{cm}$, e l'area di un poligono regolare è metà perimetro per apotema: $\text{Area} = \dfrac12\cdot 36\cdot 5{,}196 \approx 93{,}53\ \text{cm}^2$.`
     ] },
-    { id: 'es-11', difficolta: 2, testo: R`Un quadrilatero ha le diagonali di $8\ \text{cm}$ e $10\ \text{cm}$, che si incontrano formando un angolo di $70^\circ$. Calcola l'area del quadrilatero (arrotonda al centesimo).`, suggerimenti: [
+    { id: 'es-11', difficolta: 2, testo: R`Un quadrilatero ha le diagonali di $12\ \text{cm}$ e $7\ \text{cm}$, che si incontrano formando un angolo di $120^\circ$. Calcola l'area del quadrilatero (arrotonda al centesimo).`, suggerimenti: [
       R`C'è una formula diretta per l'area di un quadrilatero dalle sue diagonali e dall'angolo fra loro.`,
-      R`$\text{Area} = \frac12 d_1 d_2\sin\theta$.`
-    ], risposta: { tipo: 'numero', valore: 37.59, tolleranza: 0.1 }, soluzione: [
-      R`$\text{Area} = \frac12\cdot 8\cdot 10\cdot\sin 70^\circ \approx 40\cdot 0{,}9397 \approx 37{,}59\ \text{cm}^2$.`
+      R`$\text{Area} = \frac12 d_1 d_2\sin\theta$, e $\sin 120^\circ = \sin 60^\circ$.`
+    ], risposta: num(36.37, 0.015), soluzione: [
+      R`$\text{Area} = \frac12\cdot 12\cdot 7\cdot\sin 120^\circ = 42\cdot\dfrac{\sqrt3}{2} = 21\sqrt3$.`,
+      R`$21\sqrt3 \approx 36{,}37\ \text{cm}^2$.`
     ] }
   ],
 
   quiz: [
     { id: 'q-01', domanda: R`In un triangolo rettangolo, il cateto adiacente a un angolo acuto $\alpha$ è...`, opzioni: [
-      R`il cateto che, insieme all'ipotenusa, forma l'angolo $\alpha$`,
-      R`il cateto opposto ad $\alpha$`,
-      R`l'ipotenusa`,
-      R`sempre il cateto più corto`
+      R`quello che forma $\alpha$ con l'ipotenusa`,
+      R`quello che sta di fronte ad $\alpha$`,
+      R`il lato opposto all'angolo retto`,
+      R`sempre il più corto dei due cateti del triangolo`
     ], corretta: 0, spiegazione: R`Il cateto adiacente è quello che "tocca" l'angolo, insieme all'ipotenusa. Il cateto opposto non lo tocca; l'ipotenusa è sempre opposta all'angolo retto, non ad $\alpha$; quale cateto sia più corto dipende dai valori, non dalla definizione.` },
     { id: 'q-02', domanda: R`Il teorema del coseno $c^2 = a^2+b^2-2ab\cos\gamma$, quando $\gamma = 90^\circ$, diventa...`, opzioni: [
       R`$c^2 = a^2 - b^2$`,
-      R`il teorema di Pitagora, $c^2 = a^2+b^2$`,
+      R`$c^2 = a^2+b^2$`,
       R`$c = a+b$`,
-      R`$c^2 = 2ab$`
-    ], corretta: 1, spiegazione: R`$\cos 90^\circ = 0$, quindi il termine $-2ab\cos\gamma$ sparisce e resta $c^2=a^2+b^2$: il teorema del coseno generalizza Pitagora.` },
+      R`$c^2 = a^2+b^2-2ab$`
+    ], corretta: 1, spiegazione: R`$\cos 90^\circ = 0$, quindi il termine $-2ab\cos\gamma$ sparisce e resta $c^2=a^2+b^2$, il teorema di Pitagora. Chi tiene $-2ab$ ha usato $\cos 90^\circ = 1$, che è il coseno di $0^\circ$.` },
     { id: 'q-03', domanda: R`Il teorema dei seni $\dfrac{a}{\sin\alpha} = \dfrac{b}{\sin\beta} = \dfrac{c}{\sin\gamma}$ è anche uguale a...`, opzioni: [
       R`il perimetro del triangolo`,
       R`il raggio $R$ della circonferenza circoscritta`,
-      R`il diametro $2R$ della circonferenza circoscritta`,
-      R`l'area del triangolo`
+      R`il diametro $2R$ del cerchio circoscritto`,
+      R`il doppio dell'area del triangolo`
     ], corretta: 2, spiegazione: R`Ogni lato è una corda che sottende l'angolo opposto, quindi $a=2R\sin\alpha$ e così via: il rapporto comune vale $2R$, il diametro, non il raggio.` },
     { id: 'q-04', domanda: R`Quando si presenta il "caso ambiguo" nella risoluzione di un triangolo?`, opzioni: [
       R`quando si conoscono i tre lati`,
@@ -611,16 +619,16 @@ Con la **triangolazione** misuri una distanza che non puoi percorrere, per esemp
     ], corretta: 2, spiegazione: R`La formula usa l'angolo compreso fra i due lati noti, perché è da lì che si ricava l'altezza $h = b\sin\gamma$. Un angolo qualsiasi del triangolo non basta.` },
     { id: 'q-07', domanda: R`Il teorema della corda lega la lunghezza di una corda $AB$ a...`, opzioni: [
       R`il raggio della circonferenza e l'angolo al centro`,
-      R`il diametro della circonferenza e un angolo alla circonferenza che la sottende`,
+      R`il diametro e un angolo alla circonferenza`,
       R`solo il raggio della circonferenza`,
       R`la lunghezza dell'arco sotteso`
     ], corretta: 1, spiegazione: R`$AB = 2R\sin\gamma$: compaiono il diametro $2R$ e un angolo alla circonferenza $\gamma$, non l'angolo al centro né la lunghezza dell'arco.` },
     { id: 'q-08', domanda: R`Nella risoluzione di un triangolo rettangolo, se sono noti i due cateti $a$ e $b$, come si trova un angolo acuto?`, opzioni: [
-      R`con il teorema del coseno`,
+      R`con $\sin\alpha = a/b$ e poi l'arcoseno`,
       R`con $\tan\alpha = a/b$ e poi l'arcotangente`,
       R`con il teorema della corda`,
       R`non è possibile senza conoscere un angolo`
-    ], corretta: 1, spiegazione: R`Il rapporto fra i due cateti è la tangente dell'angolo opposto al primo; l'arcotangente lo restituisce. Il teorema del coseno e quello della corda non sono necessari in un triangolo rettangolo con i cateti noti.` },
+    ], corretta: 1, spiegazione: R`Il rapporto fra i due cateti è la tangente dell'angolo opposto al primo, e l'arcotangente dà l'angolo. Il seno è cateto diviso ipotenusa, non cateto diviso cateto. Il teorema della corda non serve.` },
     { id: 'q-09', domanda: R`Una strada con pendenza del $100\%$ corrisponde a un'inclinazione di...`, opzioni: [
       R`$100^\circ$`, R`$90^\circ$ (parete verticale)`, R`$45^\circ$`, R`$50^\circ$`
     ], corretta: 2, spiegazione: R`Pendenza $100\%$ significa $\tan\alpha = 1$, cioè $\alpha = 45^\circ$: molto ripida, ma non verticale. La pendenza in percentuale non è l'angolo in gradi.` },
@@ -638,10 +646,10 @@ Con la **triangolazione** misuri una distanza che non puoi percorrere, per esemp
     ], corretta: 0, spiegazione: R`Le due linee orizzontali (in $A$ e in $B$) sono parallele, e i due angoli sono alterni interni rispetto alla linea di vista $AB$: quindi sono congruenti.` },
     { id: 'q-12', domanda: R`Nel caso ambiguo del teorema dei seni, quando la calcolatrice restituisce l'arcoseno di un valore, quale soluzione dà?`, opzioni: [
       R`sempre entrambe le soluzioni possibili`,
-      R`solo la soluzione ottusa`,
-      R`solo la soluzione acuta; l'eventuale soluzione ottusa va cercata a mano`,
-      R`nessuna delle due, serve un'altra funzione`
-    ], corretta: 2, spiegazione: R`L'arcoseno restituisce per convenzione un valore fra $-90^\circ$ e $90^\circ$, quindi solo l'angolo acuto. La soluzione ottusa, se esiste, è il suo supplementare e va controllata separatamente.` },
+      R`solo quella ottusa`,
+      R`solo quella acuta`,
+      R`nessuna delle due: serve un'altra funzione`
+    ], corretta: 2, spiegazione: R`L'arcoseno restituisce per convenzione un valore fra $-90^\circ$ e $90^\circ$, quindi solo l'angolo acuto. La soluzione ottusa, se esiste, è il suo supplementare: va cercata a mano e controllata.` },
     { id: 'q-13', domanda: R`In un poligono regolare di $n$ lati, l'apotema è...`, opzioni: [
       R`la distanza fra due vertici opposti`,
       R`la distanza dal centro a un vertice`,
@@ -655,10 +663,10 @@ Con la **triangolazione** misuri una distanza che non puoi percorrere, per esemp
       R`la formula vale solo per i quadrati`
     ], corretta: 1, spiegazione: R`La formula $\frac12 d_1 d_2\sin\theta$ vale per qualunque quadrilatero, non solo per quelli regolari, ed è la formula $\frac12 ab\sin\gamma$ applicata ai quattro triangoli in cui le diagonali tagliano il quadrilatero. Il coseno darebbe un'area negativa con $\theta$ ottuso; il prodotto delle diagonali da solo è il doppio dell'area di un rombo, e non vale in generale.` },
     { id: 'q-15', domanda: R`Nel teorema del coseno, per trovare un angolo conoscendo i tre lati, quale lato va isolato a sinistra dell'uguale?`, opzioni: [
-      R`uno qualunque dei tre, è indifferente`,
-      R`il lato più corto`,
-      R`il lato opposto all'angolo che si vuole trovare`,
-      R`il lato più lungo, sempre`
+      R`uno qualunque dei tre, tanto il risultato non cambia`,
+      R`il lato più corto dei tre`,
+      R`quello opposto all'angolo cercato`,
+      R`sempre il lato più lungo del triangolo`
     ], corretta: 2, spiegazione: R`La formula $c^2=a^2+b^2-2ab\cos\gamma$ lega $\gamma$ al lato $c$ che gli sta opposto: per trovare un certo angolo, va isolato il lato a esso opposto, non uno scelto a caso.` }
   ],
 
@@ -674,10 +682,10 @@ Con la **triangolazione** misuri una distanza che non puoi percorrere, per esemp
   ],
 
   aneddoti: [
-    { matematico: 'Ipparco di Nicea', anni: '190–120 a.C. circa', titolo: 'Le tavole delle corde e la Terra dondolante', testo: R`Ipparco è considerato il padre della trigonometria: per calcolare le posizioni di Sole e Luna costruì la prima tavola delle corde della storia, un elenco che associava a ogni arco di circonferenza la lunghezza della corda corrispondente, l'antenato diretto delle nostre tavole di seni. Usò questo strumento anche per un risultato sorprendente: confrontando le sue osservazioni astronomiche con quelle di Timocari di Alessandria, vecchie di circa 150 anni, si accorse che le stelle sembravano essersi spostate rispetto agli equinozi. Non erano le stelle a muoversi: era l'asse terrestre a "dondolare" lentamente come una trottola, un fenomeno oggi chiamato precessione degli equinozi, con un periodo di circa 26.000 anni. Quasi nessuna delle sue opere originali è sopravvissuta: le conosciamo soprattutto attraverso Tolomeo, che le riprese tre secoli dopo.`, legame: R`La tavola delle corde di Ipparco è esattamente l'oggetto descritto dal teorema della corda: la relazione fra un arco (o l'angolo che vede) e la lunghezza della corda sottesa.` },
-    { matematico: 'Eratostene di Cirene', anni: '276–194 a.C.', titolo: "La circonferenza della Terra misurata con un bastone", testo: R`Bibliotecario ad Alessandria, Eratostene sapeva che a Siene (l'odierna Assuan), a mezzogiorno del solstizio d'estate, il Sole illuminava il fondo di un pozzo senza proiettare ombra: era allo zenit. Nello stesso istante, ad Alessandria, un bastone verticale (uno gnomone) proiettava un'ombra che formava un angolo di circa $7{,}2^\circ$ con la verticale, cioè un cinquantesimo di angolo giro. Se le due città stavano sullo stesso meridiano, quell'angolo doveva essere anche l'angolo al centro della Terra fra le due località. Conoscendo la distanza fra Alessandria e Siene (circa 5000 stadi, misurata da uomini addestrati a contare i passi con un ritmo costante), Eratostene moltiplicò per 50 e ottenne la circonferenza dell'intero pianeta: un risultato notevolmente vicino a quello reale, anche se la lunghezza esatta dello "stadio" usato resta incerta oggi.`, legame: R`Il metodo di Eratostene è lo stesso delle applicazioni con l'angolo di elevazione: un'ombra, un angolo e una distanza nota bastano per misurare qualcosa di irraggiungibile.` },
+    { matematico: 'Ipparco di Nicea', anni: '190–120 a.C. circa', titolo: 'Le tavole delle corde e la Terra dondolante', testo: R`Ipparco è considerato il padre della trigonometria: per calcolare le posizioni di Sole e Luna costruì la prima tavola delle corde della storia, un elenco che associava a ogni arco di circonferenza la lunghezza della corda corrispondente, l'antenato diretto delle nostre tavole di seni. Usò questo strumento anche per un risultato sorprendente: confrontando le sue osservazioni astronomiche con quelle di Timocari di Alessandria, vecchie di circa 150 anni, si accorse che le stelle sembravano essersi spostate rispetto agli equinozi. Oggi sappiamo che non erano le stelle a muoversi: era l'asse terrestre a "dondolare" lentamente come una trottola, un fenomeno oggi chiamato precessione degli equinozi, con un periodo di circa 26.000 anni. Quasi nessuna delle sue opere originali è sopravvissuta: le conosciamo soprattutto attraverso Tolomeo, che le riprese tre secoli dopo.`, legame: R`La tavola delle corde di Ipparco è esattamente l'oggetto descritto dal teorema della corda: la relazione fra un arco (o l'angolo che vede) e la lunghezza della corda sottesa.` },
+    { matematico: 'Eratostene di Cirene', anni: '276–194 a.C.', titolo: "La circonferenza della Terra misurata con un bastone", testo: R`Bibliotecario ad Alessandria, Eratostene sapeva che a Siene (l'odierna Assuan), a mezzogiorno del solstizio d'estate, il Sole illuminava il fondo di un pozzo senza proiettare ombra: era allo zenit. Nello stesso istante, ad Alessandria, un bastone verticale (uno gnomone) proiettava un'ombra che formava un angolo di circa $7{,}2^\circ$ con la verticale, cioè un cinquantesimo di angolo giro. Se le due città stavano sullo stesso meridiano, quell'angolo doveva essere anche l'angolo al centro della Terra fra le due località. Conoscendo la distanza fra Alessandria e Siene (circa 5000 stadi; si racconta che l'avessero misurata uomini addestrati a contare i passi con un ritmo costante), Eratostene moltiplicò per 50 e ottenne la circonferenza dell'intero pianeta: un risultato notevolmente vicino a quello reale, anche se la lunghezza esatta dello "stadio" usato resta incerta oggi.`, legame: R`Il metodo di Eratostene è lo stesso delle applicazioni con l'angolo di elevazione: un'ombra, un angolo e una distanza nota bastano per misurare qualcosa di irraggiungibile.` },
     { matematico: 'Regiomontano (Johannes Müller)', anni: '1436–1476', titolo: 'Il trattato che rese la trigonometria indipendente', testo: R`Il vero nome di Regiomontano era Johannes Müller, nato a Königsberg in Franconia ("monte del re", da cui il nome latinizzato). Nel 1464 completò il *De triangulis omnimodis*, il primo trattato europeo a studiare la trigonometria come disciplina a sé stante, staccata dall'astronomia che l'aveva sempre ospitata: vi compaiono il teorema dei seni per i triangoli piani e sferici e metodi sistematici per risolverli in ogni caso. Il libro fu pubblicato solo nel 1533, dopo la sua morte, ma le sue tavole astronomiche circolavano già prima: pare che Cristoforo Colombo, bloccato in Giamaica nel 1504 con le navi in avaria, le abbia usate per prevedere un'eclissi di Luna e convincere gli abitanti del posto, spaventati dalla scomparsa della Luna, a continuare a rifornirlo di cibo.`, legame: R`Il *De triangulis* è il primo libro a raccogliere in modo sistematico proprio quello che si fa qui: risolvere un triangolo qualunque conoscendo alcuni dei suoi elementi.` },
-    { matematico: 'Willebrord Snellius', anni: '1580–1626', titolo: 'Misurare l\'Olanda senza percorrerla tutta', testo: R`Professore a Leida, nel 1615 Snellius affrontò un problema pratico: misurare la lunghezza di un grado di meridiano nei Paesi Bassi, per stimare le dimensioni della Terra senza ripetere il viaggio di Eratostene. Invece di percorrere a passi l'intera distanza fra due città, misurò con cura una sola breve base e una rete di triangoli che collegava torri e campanili visibili da un punto all'altro, per circa 130 km fra Alkmaar e Bergen op Zoom: misurando solo gli angoli di ogni triangolo, il teorema dei seni permetteva di calcolare tutti i lati della catena a partire da quell'unica base. Pubblicò il risultato nel 1617 in un'opera che chiamò, in onore del suo predecessore greco, *Eratosthenes Batavus* ("l'Eratostene d'Olanda").`, legame: R`È il primo esempio moderno di triangolazione: la tecnica descritta a fine scheda per misurare grandi distanze incatenando triangoli risolti con il teorema dei seni.` },
+    { matematico: 'Willebrord Snellius', anni: '1580–1626', titolo: 'Misurare l\'Olanda senza percorrerla tutta', testo: R`Professore a Leida, nel 1615 Snellius affrontò un problema pratico: misurare la lunghezza di un grado di meridiano nei Paesi Bassi, per stimare le dimensioni della Terra senza ripetere il viaggio di Eratostene. Invece di percorrere a passi l'intera distanza fra due città, misurò con cura una sola breve base e una rete di triangoli che collegava torri e campanili visibili da un punto all'altro, per circa 130 km fra Alkmaar e Bergen op Zoom: misurando solo gli angoli di ogni triangolo, il teorema dei seni permetteva di calcolare tutti i lati della catena a partire da quell'unica base. Pubblicò il risultato nel 1617 in un'opera che chiamò, in onore del suo predecessore greco, *Eratosthenes Batavus* ("l'Eratostene d'Olanda").`, legame: R`È la prima misura di un arco di meridiano per triangolazione: la tecnica descritta a fine scheda per misurare grandi distanze incatenando triangoli risolti con il teorema dei seni.` },
     { matematico: 'Lazare Carnot', anni: '1753–1823', titolo: 'Un generale rivoluzionario e Pitagora generalizzato', testo: R`Ingegnere militare e matematico, Carnot fu anche una figura politica di primo piano nella Rivoluzione francese: come organizzatore degli eserciti della giovane Repubblica contro le monarchie europee coalizzate, guadagnò il soprannome di "l'organizzatore della vittoria". Nel tempo che gli restava alla matematica, nel trattato *Géométrie de position* (1803) trattò sistematicamente lunghezze e angoli con segno, ottenendo in forma generale la relazione che oggi porta il suo nome in Italia. La stessa relazione, però, era già nota: in forma puramente geometrica compare nel libro II degli *Elementi* di Euclide, e già nel Quattrocento l'astronomo persiano al-Kashi l'aveva usata a Samarcanda per costruire tavole trigonometriche accuratissime. Non a caso, in Francia lo stesso teorema si chiama spesso "teorema di al-Kashi": il nome cambia da un paese all'altro a seconda di chi se ne prende il merito.`, legame: R`Il teorema del coseno, generalizzazione di Pitagora a un angolo qualunque, è chiamato in Italia proprio "teorema di Carnot".` }
   ]
 });

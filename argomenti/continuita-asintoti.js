@@ -105,7 +105,7 @@ Le discontinuità stanno in pochi posti:
 
 >! Continua non vuol dire derivabile: $|x|$ è continua in $0$, ma lì fa un angolo. Invece una funzione derivabile è sempre continua.` },
 
-    { id: 'discontinuita', titolo: 'I punti di discontinuità e la loro classificazione', testo: R`Dove $f$ non è continua, il grafico ha un buco, un salto o una fuga verso l'infinito. Per sapere quale, calcola i due **limiti laterali**: $$l^- = \lim_{x \to x_0^-} f(x), \qquad l^+ = \lim_{x \to x_0^+} f(x).$$
+    { id: 'discontinuita', titolo: 'I punti di discontinuità e la loro classificazione', testo: R`Dove $f$ non è continua, il grafico ha un buco, un salto o una fuga verso l'infinito. Per sapere quale, calcola i due **limiti laterali**: $$\begin{gathered} l^- = \lim_{x \to x_0^-} f(x) \\ l^+ = \lim_{x \to x_0^+} f(x) \end{gathered}$$
 
 [[video:continuita-asintoti/discontinuita]]
 
@@ -175,8 +175,6 @@ Se manca un'ipotesi, il teorema può fallire:
 
 Esempio: $x^3 - x - 1 = 0$ ha una soluzione fra $1$ e $2$. Infatti il polinomio è continuo, $f(1) = -1$ e $f(2) = 5$.
 
-Trascina $A$ e $B$ sulla curva e guarda il segno di $f(a) \cdot f(b)$.
-
 [[grafico:zeri]]
 
 >! Il teorema degli zeri vale in un verso solo. $x^2 - 1$ su $\Icc{-2}{2}$ ha $f(-2) \cdot f(2) = 9 > 0$, eppure ha due zeri. E garantisce **almeno** uno zero, non uno solo.
@@ -232,7 +230,7 @@ Con $f(x) = x^2 - 2$ e $x_0 = 1$, dopo tre passi $x_3 \approx 1{,}414216$: sbagl
 
 >* **Asintoto verticale.** La retta $x = c$ è asintoto verticale se in $c$ almeno un limite laterale è infinito.
 
-Cercalo **solo** dove $f$ non è definita, per esempio dove si annulla un denominatore. Per $f(x) = \frac{3x - 1}{x + 2}$ l'unico candidato è $x = -2$.
+Cercalo **solo** dove $f$ non è definita o nei punti di raccordo di una funzione a tratti. Il caso tipico è un denominatore che si annulla. Per $f(x) = \frac{3x - 1}{x + 2}$ l'unico candidato è $x = -2$.
 
 ~ \lim_{x \to -2^-} \frac{3x - 1}{x + 2} :: il denominatore si annulla: vediamo che cosa fa il numeratore
 ~ = \frac{\evid{-7}}{\evid{0^-}} :: in $-2$ il numeratore vale $-7$; a sinistra di $-2$ il denominatore è negativo e vicinissimo a zero
@@ -260,7 +258,7 @@ Per $\frac{3x - 1}{x + 2}$ i gradi sono uguali. L'asintoto è $y = \frac{3}{1} =
 [ ] sì, sempre
 [ ] solo se il denominatore è di primo grado
 [x] no: può esserci un buco
-=> Dipende dal numeratore. Se in $3$ si annulla anche lui, esce $\frac{0}{0}$: prima semplifica. Per esempio $\frac{x^2 - 9}{x - 3}$ in $3$ tende a $6$. Il grafico ha un buco, non un asintoto.
+=> Dipende dal numeratore. Se in $3$ si annulla anche lui, esce $\frac{0}{0}$: prima semplifica. Per esempio $\frac{x^2 - 2x - 3}{x - 3}$ in $3$ tende a $4$. Il grafico ha un buco, non un asintoto.
 
 >! Un asintoto orizzontale si può **attraversare**. $\frac{\sin x}{x}$ ha l'asintoto $y = 0$ e lo taglia in ogni $x = k\pi$, con $k \ne 0$.` },
 
@@ -281,7 +279,7 @@ Esempio: $f(x) = \frac{x^2 + 1}{x - 1}$.
 ~ q = \lim_{x \to \infty} \frac{x + 1}{x - 1} = \evidb{1} :: di nuovo gradi uguali
 ~ y = x + 1 :: l'asintoto obliquo, a destra e a sinistra
 
-C'è anche l'asintoto verticale $x = 1$. Trascina $P$ lontano e guarda quanto manca alla retta.
+C'è anche l'asintoto verticale $x = 1$.
 
 [[grafico:obliquo]]
 
@@ -401,14 +399,14 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
         { x: 1, y: 1, etichetta: 'f(1) = 1', posizione: 'basso-destra', vuoto: false, colore: 1 },
         { x: 1, y: '2 + k', etichetta: 'limite destro = {{2 + k}}', posizione: 'destra', vuoto: true, colore: 3 }
       ],
-      elementi: [{ tipo: 'testo', p: [-4.2, 11], testo: 'salto = {{2 + k - 1}}', ancora: 'start' }],
+      elementi: [{ tipo: 'testo', p: [-4.2, -4.3], testo: 'salto = {{2 + k - 1}}', ancora: 'start' }],
       didascalia: 'Muovi k: il salto vale 1 + k e si annulla solo per k = −1, l\'unico valore che rende continua la funzione a tratti.'
     },
     zeri: {
       tipo: 'piano', x: [-2.5, 2.5], y: [-4, 5],
       parametri: [
-        { nome: 'a', min: -2.4, max: 2.4, passo: 0.05, valore: -1.5, nascosto: true },
-        { nome: 'b', min: -2.4, max: 2.4, passo: 0.05, valore: 1, nascosto: true }
+        { nome: 'a', min: -2.1, max: 2.1, passo: 0.05, valore: -1.5, nascosto: true },
+        { nome: 'b', min: -2.1, max: 2.1, passo: 0.05, valore: 1, nascosto: true }
       ],
       funzioni: [{ f: 'x^3 - 3x + 1', etichetta: 'y = x³ − 3x + 1', colore: 1 }],
       elementi: [
@@ -446,12 +444,12 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
       R`Controllo: con $k = 4$ il ramo destro è $4x - 3$, che in $2$ vale $5$. I due tratti si raccordano. ✓`
     ], risultato: R`$k = 4$` },
 
-    { titolo: 'Asintoto verticale e orizzontale', problema: R`Trova gli asintoti di $f(x) = \dfrac{3x - 1}{x + 2}$.`, passi: [
-      R`Dominio: $x \ne -2$. L'unico candidato per un asintoto verticale è $x = -2$.`,
-      R`In $x = -2$ il numeratore vale $-7 \ne 0$, quindi il limite è infinito: $\lim_{x \to -2^-} f(x) = \dfrac{-7}{0^-} = +\infty$ e $\lim_{x \to -2^+} f(x) = \dfrac{-7}{0^+} = -\infty$. La retta $x = -2$ è asintoto verticale.`,
-      R`All'infinito, numeratore e denominatore hanno lo stesso grado: $\lim_{x \to \pm\infty} \dfrac{3x-1}{x+2} = 3$, il rapporto dei coefficienti di $x$.`,
-      R`La retta $y = 3$ è asintoto orizzontale da entrambe le parti; l'obliquo non si cerca nemmeno, perché su ogni lato c'è al massimo un asintoto non verticale.`
-    ], risultato: R`Asintoto verticale $x = -2$, asintoto orizzontale $y = 3$.` },
+    { titolo: 'Asintoto verticale e orizzontale', problema: R`Trova gli asintoti di $f(x) = \dfrac{2x + 3}{1 - x}$.`, passi: [
+      R`Dominio: $x \ne 1$. L'unico candidato per un asintoto verticale è $x = 1$.`,
+      R`In $x = 1$ il numeratore vale $5 \ne 0$, quindi il limite è infinito. A sinistra di $1$ il denominatore $1 - x$ è positivo: $\lim_{x \to 1^-} f(x) = \dfrac{5}{0^+} = +\infty$. A destra è negativo: $\lim_{x \to 1^+} f(x) = \dfrac{5}{0^-} = -\infty$. La retta $x = 1$ è asintoto verticale.`,
+      R`All'infinito numeratore e denominatore hanno lo stesso grado. Il limite è il rapporto dei coefficienti di $x$, con il loro segno: $\lim_{x \to \pm\infty} \dfrac{2x + 3}{1 - x} = \dfrac{2}{-1} = -2$.`,
+      R`La retta $y = -2$ è asintoto orizzontale da entrambe le parti. L'obliquo non si cerca nemmeno: su ogni lato c'è al massimo un asintoto non verticale.`
+    ], risultato: R`Asintoto verticale $x = 1$, asintoto orizzontale $y = -2$.` },
 
     { titolo: 'Asintoto obliquo', problema: R`Trova tutti gli asintoti di $f(x) = \dfrac{2x^2 - x + 1}{x - 1}$.`, passi: [
       R`Dominio: $x \ne 1$. In $x = 1$ il numeratore vale $2 - 1 + 1 = 2 \ne 0$, quindi $x = 1$ è asintoto verticale ($-\infty$ da sinistra, $+\infty$ da destra).`,
@@ -461,27 +459,26 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
       R`Verifica con la divisione fra polinomi: $\dfrac{2x^2 - x + 1}{x - 1} = 2x + 1 + \dfrac{2}{x-1}$, e il resto $\dfrac{2}{x-1}$ tende a zero. ✓`
     ], risultato: R`Asintoto verticale $x = 1$ e asintoto obliquo $y = 2x + 1$ (da entrambe le parti).` },
 
-    { titolo: 'Teorema degli zeri e bisezione', problema: R`Mostra che $x^3 - x - 1 = 0$ ha una soluzione in $\Icc{1}{2}$ e localizzala con tre passi di bisezione.`, passi: [
-      R`$f(x) = x^3 - x - 1$ è polinomiale, quindi continua in $\Icc{1}{2}$. Inoltre $f(1) = 1 - 1 - 1 = -1 < 0$ e $f(2) = 8 - 2 - 1 = 5 > 0$: per il teorema degli zeri esiste $c \in \Iaa{1}{2}$ con $f(c) = 0$.`,
-      R`Primo passo: $m = 1{,}5$ e $f(1{,}5) = 3{,}375 - 2{,}5 = 0{,}875 > 0$. Lo zero sta dove i segni sono discordi, cioè in $\Icc{1}{1{,}5}$.`,
-      R`Secondo passo: $m = 1{,}25$ e $f(1{,}25) = 1{,}953125 - 2{,}25 = -0{,}296875 < 0$. Ora il cambio di segno è fra $1{,}25$ e $1{,}5$: nuovo intervallo $\Icc{1{,}25}{1{,}5}$.`,
-      R`Terzo passo: $m = 1{,}375$ e $f(1{,}375) = 2{,}599609\ldots - 2{,}375 = 0{,}2246\ldots > 0$. Nuovo intervallo $\Icc{1{,}25}{1{,}375}$, lungo $\dfrac{1}{8}$.`,
-      R`Come stima si prende il punto medio, $1{,}3125$, con errore al più $0{,}0625$. Il valore esatto è $1{,}3247\ldots$ ✓`
-    ], risultato: R`Lo zero esiste ed è compreso fra $1{,}25$ e $1{,}375$.` }
+    { titolo: 'Teorema degli zeri e bisezione', problema: R`Mostra che $e^x + x - 3 = 0$ ha una soluzione in $\Icc{0}{1}$ e localizzala con due passi di bisezione.`, passi: [
+      R`$g(x) = e^x + x - 3$ è somma di funzioni continue, quindi è continua in $\Icc{0}{1}$. Inoltre $g(0) = 1 + 0 - 3 = -2 < 0$ e $g(1) = e - 2 \approx 0{,}718 > 0$. Per il teorema degli zeri esiste $c \in \Iaa{0}{1}$ con $g(c) = 0$.`,
+      R`Primo passo: $m = 0{,}5$ e $g(0{,}5) = e^{0{,}5} - 2{,}5 \approx -0{,}851 < 0$. Il segno cambia fra $0{,}5$ e $1$: nuovo intervallo $\Icc{0{,}5}{1}$.`,
+      R`Secondo passo: $m = 0{,}75$ e $g(0{,}75) = e^{0{,}75} - 2{,}25 \approx -0{,}133 < 0$. Il segno cambia ancora fra $0{,}75$ e $1$: nuovo intervallo $\Icc{0{,}75}{1}$, lungo $\dfrac{1}{4}$.`,
+      R`Come stima si prende il punto medio, $0{,}875$, con errore al più $0{,}125$. Il valore vero è $0{,}7921\ldots$ ✓`
+    ], risultato: R`Lo zero esiste ed è compreso fra $0{,}75$ e $1$.` }
   ]
 ,
 
   formulario: [
     { nome: 'Continuità in un punto', formula: R`\lim_{x \to x_0} f(x) = f(x_0)`, nota: R`Richiede tre cose insieme: $f(x_0)$ esiste, il limite esiste finito, i due valori coincidono.` },
     { nome: 'Continuità con i limiti laterali', formula: R`\lim_{x \to x_0^-} f(x) = \lim_{x \to x_0^+} f(x) = f(x_0)`, nota: R`È la forma da usare nelle funzioni definite a tratti.` },
-    { nome: 'Discontinuità di prima specie (salto)', formula: R`l^- \ne l^+ \ \text{entrambi finiti}, \qquad s = l^+ - l^-`, nota: R`Il numero $s$ è il salto; non si può eliminare ridefinendo $f$.` },
+    { nome: 'Discontinuità di prima specie (salto)', formula: R`\begin{gathered} l^- \ne l^+ \ \text{entrambi finiti} \\ s = l^+ - l^- \end{gathered}`, nota: R`Il numero $s$ è il salto; non si può eliminare ridefinendo $f$.` },
     { nome: 'Discontinuità di seconda specie', formula: R`\begin{gathered} l^- = \pm\infty \quad \text{oppure} \quad l^+ = \pm\infty \\ \text{oppure un limite laterale non esiste} \end{gathered}` },
     { nome: 'Discontinuità di terza specie (eliminabile)', formula: R`\begin{gathered} \lim_{x \to x_0} f(x) = l \ \text{finito} \\ \text{ma } f(x_0) \ne l \ \text{o non definita} \end{gathered}`, nota: R`Si elimina ponendo $f(x_0) = l$: è il prolungamento per continuità.` },
     { nome: 'Teorema di Weierstrass', formula: R`f \ \text{continua in} \ \Icc{a}{b} \ \Rightarrow \ \exists \ \max_{\Icc{a}{b}} f \ \text{e} \ \min_{\Icc{a}{b}} f`, nota: R`Servono intervallo chiuso e limitato, e continuità su tutto l'intervallo.` },
     { nome: 'Teorema degli zeri (Bolzano)', formula: R`\begin{gathered} f \ \text{continua in} \ \Icc{a}{b}, \ f(a) \cdot f(b) < 0 \\ \Rightarrow \ \exists \, c \in \Iaa{a}{b} : f(c) = 0 \end{gathered}`, nota: R`Garantisce almeno uno zero, non esattamente uno.` },
     { nome: 'Teorema dei valori intermedi', formula: R`\begin{gathered} f \ \text{continua in} \ \Icc{a}{b} \ \Rightarrow \\ f \ \text{assume ogni valore} \\ \text{fra} \ \min f \ \text{e} \ \max f \end{gathered}` },
     { nome: 'Bisezione: ampiezza dopo n passi', formula: R`\frac{b - a}{2^n}`, nota: R`Prendendo il punto medio come stima, l'errore è al più $\dfrac{b-a}{2^{n+1}}$.` },
-    { nome: 'Asintoto verticale', formula: R`\begin{gathered} \lim_{x \to c^-} f(x) = \pm\infty \ \ \text{o} \ \ \lim_{x \to c^+} f(x) = \pm\infty \\ \Rightarrow \ x = c \end{gathered}`, nota: R`Si cerca solo nei punti esclusi dal dominio.` },
+    { nome: 'Asintoto verticale', formula: R`\begin{gathered} \lim_{x \to c^-} f(x) = \pm\infty \ \ \text{o} \ \ \lim_{x \to c^+} f(x) = \pm\infty \\ \Rightarrow \ x = c \end{gathered}`, nota: R`Si cerca solo nei punti esclusi dal dominio o nei punti di raccordo di una funzione a tratti.` },
     { nome: 'Asintoto orizzontale', formula: R`\lim_{x \to +\infty} f(x) = q \ \text{finito} \ \Rightarrow \ y = q`, nota: R`Da calcolare separatamente per $x \to +\infty$ e per $x \to -\infty$.` },
     { nome: 'Asintoto obliquo', formula: R`\begin{gathered} m = \lim_{x \to \pm\infty} \frac{f(x)}{x} \\ q = \lim_{x \to \pm\infty} \big(f(x) - mx\big) \end{gathered}`, nota: R`Esiste solo se $m$ è finito e diverso da $0$ e $q$ è finito.` },
     { nome: 'Asintoti di una funzione razionale fratta', formula: R`\begin{gathered} \frac{a_n x^n + \ldots}{b_m x^m + \ldots} \\ n < m \Rightarrow y = 0 \\ n = m \Rightarrow y = \frac{a_n}{b_m} \\ n = m + 1 \Rightarrow \text{obliquo} \end{gathered}` }
@@ -526,7 +523,7 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
     { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Trova l'asintoto orizzontale di $f(x) = \dfrac{3x^2 + 1}{x^2 + 4}$.`, suggerimenti: [R`I gradi sono uguali: conta il rapporto dei coefficienti di $x^2$.`], risposta: orizz(3), soluzione: [R`I gradi sono uguali: tutti e due $2$.`, R`Il rapporto dei coefficienti di $x^2$ è $\dfrac{3}{1} = 3$.`, R`L'asintoto orizzontale è $y = 3$.`] },
     { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Di che specie è la discontinuità di $f(x) = \dfrac{x^2 - 16}{x - 4}$ in $x = 4$? Rispondi prima, seconda o terza.`, suggerimenti: [R`Scomponi il numeratore: è una differenza di quadrati.`, R`Il limite è finito? E $f(4)$ esiste?`], risposta: TERZA, soluzione: [R`$x^2 - 16 = (x - 4)(x + 4)$, quindi per $x \ne 4$ hai $f(x) = x + 4$.`, R`Il limite vale $8$, finito. Però $f(4)$ non esiste.`, R`È di terza specie: la discontinuità è eliminabile.`] },
     { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Di che specie è la discontinuità di $f(x) = \dfrac{3}{x + 1}$ in $x = -1$?`, suggerimenti: [R`Calcola i due limiti laterali in $-1$.`], risposta: SECONDA, soluzione: [R`Da sinistra: $\dfrac{3}{0^-} = -\infty$.`, R`Da destra: $\dfrac{3}{0^+} = +\infty$.`, R`Basta un limite laterale infinito: seconda specie.`] },
-    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Sia $f(x) = \begin{cases} x + 2 & x < 0 \\ x - 1 & x \ge 0 \end{cases}$. Di che specie è la discontinuità in $x = 0$?`, suggerimenti: [R`Da sinistra usa $x + 2$, da destra $x - 1$.`], risposta: PRIMA, soluzione: [R`Da sinistra: $l^- = 0 + 2 = 2$.`, R`Da destra: $l^+ = 0 - 1 = -1$.`, R`Sono finiti e diversi: prima specie, con salto $-3$.`] },
+    { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Sia $f(x) = \begin{cases} x - 1 & x < 0 \\ x^2 + 2 & x \ge 0 \end{cases}$. Di che specie è la discontinuità in $x = 0$?`, suggerimenti: [R`Da sinistra usa $x - 1$, da destra $x^2 + 2$.`], risposta: piu(PRIMA, 'prima, salto 3', 'prima specie, salto 3', 'prima (salto 3)', 'prima specie (salto 3)'), soluzione: [R`Da sinistra: $l^- = 0 - 1 = -1$.`, R`Da destra: $l^+ = 0^2 + 2 = 2$.`, R`Sono finiti e diversi: prima specie, con salto $s = 2 - (-1) = 3$.`] },
     { id: 'b-11', livello: 'base', difficolta: 2, testo: R`Quale valore deve avere $f(0)$ perché $f(x) = \dfrac{x^2 + 3x}{x}$ diventi continua in $0$?`, suggerimenti: [R`Raccogli $x$ al numeratore e semplifica.`, R`Il valore giusto è il limite per $x \to 0$.`], risposta: num(3), soluzione: [R`$\dfrac{x(x + 3)}{x} = x + 3$ per $x \ne 0$.`, R`Il limite per $x \to 0$ è $3$.`, R`Poni $f(0) = 3$: la discontinuità sparisce.`] },
     { id: 'b-12', livello: 'base', difficolta: 2, testo: R`Di che specie è la discontinuità di $f(x) = \dfrac{|x|}{x}$ in $x = 0$?`, suggerimenti: [R`Togli il valore assoluto: per $x > 0$ vale $|x| = x$, per $x < 0$ vale $|x| = -x$.`], risposta: PRIMA, soluzione: [R`Per $x > 0$: $f(x) = \dfrac{x}{x} = 1$.`, R`Per $x < 0$: $f(x) = \dfrac{-x}{x} = -1$.`, R`$l^- = -1$ e $l^+ = 1$: finiti e diversi, prima specie.`] },
     { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Trova $k$ perché sia continua in $x = 2$: $$f(x) = \begin{cases} x + k & x \le 2 \\ 3x & x > 2 \end{cases}$$`, suggerimenti: [R`In $x = 2$ vale la prima formula. Il limite destro viene dalla seconda.`, R`Uguaglia i due numeri.`], risposta: num(4), soluzione: [R`Valore e limite sinistro: $f(2) = 2 + k$.`, R`Limite destro: $3 \cdot 2 = 6$.`, R`$2 + k = 6$, quindi $k = 4$.`] },
@@ -540,17 +537,15 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
 
     { id: 'es-01', difficolta: 1, testo: R`Determina $k$ in modo che $f(x) = \begin{cases} 3x + k & x \le 1 \\ x^2 & x > 1 \end{cases}$ sia continua in $x = 1$.`, suggerimenti: [R`L'unico punto da controllare è il raccordo $x = 1$.`, R`Calcola $f(1)$ con la prima formula e il limite destro con la seconda, poi uguagliali.`], risposta: { tipo: 'numero', valore: -2, tolleranza: 0.01 }, soluzione: [R`Limite sinistro e valore: $f(1) = 3 + k$.`, R`Limite destro: $\lim_{x \to 1^+} x^2 = 1$.`, R`Continuità: $3 + k = 1$, quindi $k = -2$.`] },
 
-    { id: 'es-02', difficolta: 1, testo: R`Di che specie è la discontinuità di $f(x) = \dfrac{x^2 - 1}{x - 1}$ in $x = 1$?`, suggerimenti: [R`Semplifica la frazione: il numeratore è una differenza di quadrati.`, R`Se il limite esiste finito ma il punto non appartiene al dominio, la discontinuità è eliminabile.`], risposta: piu(TERZA, 'terza specie o eliminabile'), soluzione: [R`$\dfrac{x^2-1}{x-1} = \dfrac{(x-1)(x+1)}{x-1} = x + 1$ per $x \ne 1$.`, R`$\lim_{x \to 1} f(x) = 2$, finito, ma $f(1)$ non esiste.`, R`È una discontinuità di **terza specie**, cioè eliminabile: ponendo $f(1) = 2$ la funzione diventa continua.`] },
+    { id: 'es-02', difficolta: 1, testo: R`Di che specie è la discontinuità di $f(x) = \dfrac{x^2 + x - 6}{x^2 - 4}$ in $x = 2$?`, suggerimenti: [R`In $x = 2$ si annullano sia il numeratore sia il denominatore: scomponili tutti e due.`, R`Se il limite esiste finito ma il punto non appartiene al dominio, la discontinuità è eliminabile.`], risposta: piu(TERZA, 'terza specie o eliminabile'), soluzione: [R`$x^2 + x - 6 = (x - 2)(x + 3)$ e $x^2 - 4 = (x - 2)(x + 2)$. Per $x \ne \pm 2$ si ha $f(x) = \dfrac{x + 3}{x + 2}$.`, R`$\lim_{x \to 2} f(x) = \dfrac{5}{4}$, finito, ma $f(2)$ non esiste.`, R`È una discontinuità di **terza specie**, cioè eliminabile: ponendo $f(2) = \dfrac{5}{4}$ la funzione diventa continua in $2$. In $x = -2$, invece, il limite è infinito.`] },
 
-    { id: 'es-03', difficolta: 1, testo: R`Trova l'asintoto orizzontale di $f(x) = \dfrac{2x + 5}{x - 3}$.`, suggerimenti: [R`Numeratore e denominatore hanno lo stesso grado.`, R`In questo caso il limite all'infinito è il rapporto dei coefficienti di $x$.`], risposta: piu(orizz(2), '2'), soluzione: [R`$\lim_{x \to \pm\infty} \dfrac{2x+5}{x-3} = \dfrac{2}{1} = 2$.`, R`L'asintoto orizzontale è la retta $y = 2$, sia a destra sia a sinistra.`] },
-
-    { id: 'es-04', difficolta: 1, testo: R`Trova l'asintoto verticale di $f(x) = \dfrac{x + 1}{x - 4}$.`, suggerimenti: [R`Cerca i punti esclusi dal dominio.`, R`Controlla che in quel punto il numeratore non si annulli.`], risposta: piu(vert(4), '4'), soluzione: [R`Il denominatore si annulla per $x = 4$, dove il numeratore vale $5 \ne 0$.`, R`$\lim_{x \to 4^-} f(x) = -\infty$ e $\lim_{x \to 4^+} f(x) = +\infty$: la retta $x = 4$ è asintoto verticale.`] },
+    { id: 'es-03', difficolta: 1, testo: R`Trova l'asintoto orizzontale di $f(x) = \dfrac{6x^2 - x}{3 - 2x^2}$.`, suggerimenti: [R`Numeratore e denominatore hanno lo stesso grado.`, R`Il limite all'infinito è il rapporto dei coefficienti di $x^2$, con il loro segno.`], risposta: piu(orizz(-3), '-3'), soluzione: [R`I gradi sono uguali: tutti e due $2$.`, R`$\lim_{x \to \pm\infty} \dfrac{6x^2 - x}{3 - 2x^2} = \dfrac{6}{-2} = -3$.`, R`L'asintoto orizzontale è la retta $y = -3$, sia a destra sia a sinistra.`] },
 
     { id: 'es-05', difficolta: 2, testo: R`Classifica la discontinuità di $f(x) = \dfrac{1}{x - 2}$ in $x = 2$.`, suggerimenti: [R`Calcola i due limiti laterali.`, R`Se anche uno solo dei due è infinito, la specie è già decisa.`], risposta: piu(SECONDA, 'specie seconda'), soluzione: [R`$\lim_{x \to 2^-} \dfrac{1}{x-2} = \dfrac{1}{0^-} = -\infty$ e $\lim_{x \to 2^+} \dfrac{1}{x-2} = +\infty$.`, R`Entrambi i limiti laterali sono infiniti: discontinuità di **seconda specie**. La retta $x = 2$ è asintoto verticale.`] },
 
     { id: 'es-06', difficolta: 2, testo: R`Trova l'asintoto obliquo di $f(x) = \dfrac{x^2 + 3x}{x - 1}$.`, suggerimenti: [R`Il grado del numeratore supera di uno quello del denominatore: l'asintoto obliquo c'è.`, R`Calcola prima $m = \lim \dfrac{f(x)}{x}$, poi $q = \lim (f(x) - mx)$.`, R`In alternativa, esegui la divisione fra polinomi e guarda il quoziente.`], risposta: piu(obliquo(1, 4), 'x+4'), soluzione: [R`$m = \lim_{x \to \pm\infty} \dfrac{x^2+3x}{x(x-1)} = 1$.`, R`$q = \lim_{x \to \pm\infty}\left(\dfrac{x^2+3x}{x-1} - x\right) = \lim_{x \to \pm\infty} \dfrac{x^2+3x-x^2+x}{x-1} = \lim_{x \to \pm\infty} \dfrac{4x}{x-1} = 4$.`, R`L'asintoto obliquo è $y = x + 4$. Verifica con la divisione: $\dfrac{x^2+3x}{x-1} = x + 4 + \dfrac{4}{x-1}$. ✓`] },
 
-    { id: 'es-07', difficolta: 2, testo: R`Calcola il salto di $f(x) = \dfrac{x - 3}{|x - 3|}$ nel suo punto di discontinuità.`, suggerimenti: [R`Il punto critico è $x = 3$: togli il valore assoluto distinguendo $x > 3$ e $x < 3$.`, R`Il salto è $s = l^+ - l^-$, e l'ordine dei due limiti conta.`], risposta: { tipo: 'numero', valore: 2, tolleranza: 0.01 }, soluzione: [R`Per $x > 3$: $|x-3| = x-3$, quindi $f(x) = 1$ e $l^+ = 1$.`, R`Per $x < 3$: $|x-3| = 3-x$, quindi $f(x) = -1$ e $l^- = -1$.`, R`Prima specie, con salto $s = 1 - (-1) = 2$.`] },
+    { id: 'es-07', difficolta: 2, testo: R`Calcola il salto di $f(x) = \dfrac{x^2 - 2x}{|x - 2|}$ nel suo punto di discontinuità.`, suggerimenti: [R`Il punto critico è $x = 2$: raccogli $x$ al numeratore e togli il valore assoluto distinguendo $x > 2$ e $x < 2$.`, R`Il salto è $s = l^+ - l^-$, e l'ordine dei due limiti conta.`], risposta: { tipo: 'numero', valore: 4, tolleranza: 0.01 }, soluzione: [R`Il numeratore è $x(x - 2)$.`, R`Per $x > 2$: $|x - 2| = x - 2$, quindi $f(x) = x$ e $l^+ = 2$.`, R`Per $x < 2$: $|x - 2| = 2 - x$, quindi $f(x) = -x$ e $l^- = -2$.`, R`Prima specie, con salto $s = 2 - (-2) = 4$.`] },
 
     { id: 'es-08', difficolta: 2, testo: R`L'equazione $x^3 + x - 3 = 0$ ha una soluzione in $\Icc{1}{2}$. Applica **due** passi di bisezione e indica l'intervallo che ottieni.`, suggerimenti: [R`Verifica prima che $f(1)$ e $f(2)$ abbiano segni opposti.`, R`Primo punto medio: $m = 1{,}5$. Calcola $f(1{,}5)$ e guarda con quale estremo ha segno discorde.`], risposta: { tipo: 'intervallo', da: 1, a: 1.25, chiusoDa: true, chiusoA: true }, soluzione: [R`$f(1) = 1 + 1 - 3 = -1 < 0$ e $f(2) = 8 + 2 - 3 = 7 > 0$: le ipotesi del teorema degli zeri valgono.`, R`Primo passo: $f(1{,}5) = 3{,}375 + 1{,}5 - 3 = 1{,}875 > 0$. Il segno cambia fra $1$ e $1{,}5$: nuovo intervallo $\Icc{1}{1{,}5}$.`, R`Secondo passo: $f(1{,}25) = 1{,}953125 + 1{,}25 - 3 = 0{,}203125 > 0$. Il segno cambia fra $1$ e $1{,}25$.`, R`Intervallo finale $\Icc{1}{1{,}25}$, di ampiezza $0{,}25$.`] },
 
@@ -560,11 +555,30 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
 
     { id: 'es-11', difficolta: 3, testo: R`Sia $f(x) = \dfrac{x^2 - k^2}{x - k}$ per $x \ne k$ e $f(k) = 6$, con $k > 0$. Per quale valore di $k$ la funzione è continua?`, suggerimenti: [R`Scomponi il numeratore come differenza di quadrati.`, R`Calcola il limite per $x \to k$ e imponi che valga $6$.`], risposta: { tipo: 'numero', valore: 3, tolleranza: 0.01 }, soluzione: [R`$\dfrac{x^2 - k^2}{x - k} = \dfrac{(x-k)(x+k)}{x-k} = x + k$ per $x \ne k$.`, R`$\lim_{x \to k} f(x) = 2k$.`, R`Continuità: $2k = 6$, cioè $k = 3$ (accettabile perché positivo).`] },
 
-    { id: 'es-12', difficolta: 3, testo: R`Trova tutti gli asintoti di $f(x) = \dfrac{2x^2 + 3}{x + 1}$ e scrivi l'equazione di quello obliquo.`, suggerimenti: [R`Il dominio esclude un solo punto: lì cerca l'asintoto verticale.`, R`Il grado del numeratore supera di uno quello del denominatore: niente orizzontale, ma c'è l'obliquo.`, R`$m = \lim \dfrac{2x^2+3}{x^2+x}$, poi $q = \lim \left(f(x) - mx\right)$.`], risposta: piu(obliquo(2, -2), '2x-2'), soluzione: [R`Dominio $x \ne -1$; in $-1$ il numeratore vale $5 \ne 0$, quindi $x = -1$ è asintoto verticale.`, R`$m = \lim_{x \to \pm\infty} \dfrac{2x^2+3}{x^2+x} = 2$.`, R`$q = \lim_{x \to \pm\infty}\left(\dfrac{2x^2+3}{x+1} - 2x\right) = \lim_{x \to \pm\infty} \dfrac{2x^2+3-2x^2-2x}{x+1} = \lim_{x \to \pm\infty}\dfrac{3-2x}{x+1} = -2$.`, R`Asintoto obliquo $y = 2x - 2$. Verifica: $\dfrac{2x^2+3}{x+1} = 2x - 2 + \dfrac{5}{x+1}$. ✓`] }
+    { id: 'es-12', difficolta: 3, testo: R`Trova tutti gli asintoti di $f(x) = \dfrac{2x^2 + 3}{x + 1}$ e scrivi l'equazione di quello obliquo.`, suggerimenti: [R`Il dominio esclude un solo punto: lì cerca l'asintoto verticale.`, R`Il grado del numeratore supera di uno quello del denominatore: niente orizzontale, ma c'è l'obliquo.`, R`$m = \lim \dfrac{2x^2+3}{x^2+x}$, poi $q = \lim \left(f(x) - mx\right)$.`], risposta: piu(obliquo(2, -2), '2x-2'), soluzione: [R`Dominio $x \ne -1$; in $-1$ il numeratore vale $5 \ne 0$, quindi $x = -1$ è asintoto verticale.`, R`$m = \lim_{x \to \pm\infty} \dfrac{2x^2+3}{x^2+x} = 2$.`, R`$q = \lim_{x \to \pm\infty}\left(\dfrac{2x^2+3}{x+1} - 2x\right) = \lim_{x \to \pm\infty} \dfrac{2x^2+3-2x^2-2x}{x+1} = \lim_{x \to \pm\infty}\dfrac{3-2x}{x+1} = -2$.`, R`Asintoto obliquo $y = 2x - 2$. Verifica: $\dfrac{2x^2+3}{x+1} = 2x - 2 + \dfrac{5}{x+1}$. ✓`] },
+
+    { id: 'es-13', difficolta: 3, testo: R`Sia $f_a(x) = \dfrac{x^2 + ax - 2}{x - 1}$.
+
+1. Per quale $a$ la discontinuità in $1$ è eliminabile, e quanto va posto $f(1)$?
+2. Di che specie è per gli altri $a$?
+3. Con $a = -3$ trova gli asintoti.
+4. Da che parte dell'obliquo sta il grafico?
+5. Mostra che c'è uno zero in $\Icc{3}{4}$ e fai un passo di bisezione.
+
+Rispondi con $a$ e $f(1)$ del punto 1, in quest'ordine.`, suggerimenti: [R`Calcola il numeratore in $x = 1$: se non si annulla, il limite è infinito.`, R`Con $a = -3$ dividi il numeratore per $x - 1$. Il quoziente è l'asintoto obliquo, il segno del resto dice da che parte sta il grafico.`, R`Per la bisezione calcola $f(3)$, $f(4)$ e poi $f(3{,}5)$.`], risposta: { tipo: 'numeri', valori: [1, 3], ordinati: true }, soluzione: [
+      R`In $x = 1$ il numeratore vale $1 + a - 2 = a - 1$. Si annulla solo per $a = 1$.`,
+      R`Con $a = 1$: $x^2 + x - 2 = (x - 1)(x + 2)$, quindi $f(x) = x + 2$ per $x \ne 1$. Il limite vale $3$: la discontinuità è eliminabile ponendo $f(1) = 3$.`,
+      R`Con $a \ne 1$ il numeratore tende a $a - 1 \ne 0$ e il denominatore a $0$: il limite è infinito. Discontinuità di seconda specie, e $x = 1$ è asintoto verticale.`,
+      R`Con $a = -3$ il numeratore in $1$ vale $-4$. A sinistra di $1$ il denominatore è negativo: $f(x) \to +\infty$. A destra è positivo: $f(x) \to -\infty$. Asintoto verticale $x = 1$.`,
+      R`Obliquo: $m = \lim_{x \to \pm\infty} \dfrac{x^2 - 3x - 2}{x^2 - x} = 1$ e $q = \lim_{x \to \pm\infty} \dfrac{x^2 - 3x - 2 - x^2 + x}{x - 1} = \lim_{x \to \pm\infty} \dfrac{-2x - 2}{x - 1} = -2$. Asintoto $y = x - 2$, da tutte e due le parti. Niente orizzontale.`,
+      R`La divisione dà $f(x) = x - 2 - \dfrac{4}{x - 1}$. Per $x < 1$ il termine $-\dfrac{4}{x - 1}$ è positivo: il grafico sta sopra l'asintoto. Per $x > 1$ è negativo: sta sotto. Non si annulla mai, quindi il grafico non taglia l'obliquo.`,
+      R`$f$ è continua in $\Icc{3}{4}$, con $f(3) = \dfrac{-2}{2} = -1 < 0$ e $f(4) = \dfrac{2}{3} > 0$. Per il teorema degli zeri c'è uno zero in $\Iaa{3}{4}$.`,
+      R`Bisezione: $f(3{,}5) = \dfrac{-0{,}25}{2{,}5} = -0{,}1 < 0$. Il segno cambia fra $3{,}5$ e $4$: nuovo intervallo $\Icc{3{,}5}{4}$. Lo zero esatto è $\dfrac{3 + \sqrt{17}}{2} \approx 3{,}5616$. ✓`
+    ] }
   ],
 
   quiz: [
-    { id: 'q-01', domanda: R`Una funzione $f$ è continua in $x_0$ quando…`, opzioni: [R`$f$ è definita in $x_0$`, R`il limite di $f$ per $x \to x_0$ esiste finito`, R`il limite di $f$ per $x \to x_0$ esiste, è finito e vale $f(x_0)$`, R`i limiti laterali in $x_0$ sono entrambi infiniti`], corretta: 2, spiegazione: R`Servono tutte e tre le condizioni insieme: esistenza di $f(x_0)$, esistenza del limite finito, e coincidenza dei due valori. «Definita in $x_0$» e «limite finito» sono ciascuna solo un pezzo della definizione; due limiti laterali infiniti descrivono una discontinuità di seconda specie.` },
+    { id: 'q-01', domanda: R`Una funzione $f$ è continua in $x_0$ quando…`, opzioni: [R`$f$ è definita in $x_0$ e lì assume un valore finito`, R`il limite di $f$ per $x \to x_0$ esiste ed è finito`, R`il limite per $x \to x_0$ esiste e vale $f(x_0)$`, R`i limiti laterali in $x_0$ sono entrambi infiniti`], corretta: 2, spiegazione: R`Servono tutte e tre le condizioni insieme: esistenza di $f(x_0)$, esistenza del limite finito, e coincidenza dei due valori. «Definita in $x_0$» e «limite finito» sono ciascuna solo un pezzo della definizione; due limiti laterali infiniti descrivono una discontinuità di seconda specie.` },
 
     { id: 'q-02', domanda: R`In $x_0$ il limite sinistro di $f$ vale $3$ e il limite destro vale $-1$. La discontinuità è…`, opzioni: [R`di prima specie, con salto $-4$`, R`di prima specie, con salto $4$`, R`di seconda specie`, R`eliminabile`], corretta: 0, spiegazione: R`I limiti laterali sono finiti e diversi: prima specie. Il salto è $s = l^+ - l^- = -1 - 3 = -4$; scriverlo $+4$ significa aver invertito destra e sinistra. Non è di seconda specie (nessun limite infinito) né eliminabile (i limiti sono diversi).` },
 
@@ -574,11 +588,11 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
 
     { id: 'q-05', domanda: R`Che tipo di discontinuità presenta $f(x) = \dfrac{1}{x - 1}$ in $x = 1$?`, opzioni: [R`di prima specie`, R`di terza specie, eliminabile`, R`nessuna, perché in $1$ la funzione non è definita`, R`di seconda specie`], corretta: 3, spiegazione: R`I limiti laterali valgono $-\infty$ e $+\infty$: basta che uno sia infinito perché la discontinuità sia di seconda specie. Il fatto che $1$ non appartenga al dominio non annulla la domanda: la funzione è definita in punti vicini quanto vuoi a $1$, e la retta $x = 1$ è asintoto verticale.` },
 
-    { id: 'q-06', domanda: R`Perché nella ricerca dell'asintoto obliquo si richiede $m \ne 0$?`, opzioni: [R`perché altrimenti il limite di $f(x) - mx$ non esiste`, R`perché con $m = 0$ la retta è orizzontale, e si ricade nell'asintoto orizzontale`, R`perché con $m = 0$ la funzione non è continua`, R`perché $m$ compare a denominatore`], corretta: 1, spiegazione: R`Se $m = 0$ la retta $y = q$ è orizzontale: non è un caso escluso, è semplicemente un asintoto di un altro tipo, già trovato con il limite di $f(x)$. Il limite di $f(x) - mx$ esiste eccome (vale $q$), e $m$ non sta a nessun denominatore.` },
+    { id: 'q-06', domanda: R`Perché nella ricerca dell'asintoto obliquo si richiede $m \ne 0$?`, opzioni: [R`perché altrimenti il limite di $f(x) - mx$ non esiste`, R`perché con $m = 0$ la retta è orizzontale`, R`perché con $m = 0$ la funzione non è continua`, R`perché $m$ compare a denominatore`], corretta: 1, spiegazione: R`Se $m = 0$ la retta $y = q$ è orizzontale: non è un caso escluso, è semplicemente un asintoto di un altro tipo, già trovato con il limite di $f(x)$. Il limite di $f(x) - mx$ esiste eccome (vale $q$), e $m$ non sta a nessun denominatore.` },
 
-    { id: 'q-07', domanda: R`Quante volte il grafico di una funzione può intersecare un suo asintoto orizzontale?`, opzioni: [R`mai`, R`al massimo una volta`, R`anche infinite volte`, R`esattamente due volte`], corretta: 2, spiegazione: R`L'asintoto descrive il comportamento all'infinito, non vieta gli incontri al finito: $f(x) = \frac{\sin x}{x}$ ha asintoto $y = 0$ e lo taglia in tutti i punti $x = k\pi$. Sono gli asintoti verticali a non poter essere attraversati, perché lì la funzione non è definita.` },
+    { id: 'q-07', domanda: R`Quante volte il grafico di una funzione può intersecare un suo asintoto orizzontale?`, opzioni: [R`mai`, R`al massimo una volta`, R`anche infinite volte`, R`esattamente due volte`], corretta: 2, spiegazione: R`L'asintoto descrive il comportamento all'infinito, non vieta gli incontri al finito: $f(x) = \frac{\sin x}{x}$ ha asintoto $y = 0$ e lo taglia in tutti i punti $x = k\pi$. Un asintoto verticale invece il grafico lo incontra al più in un punto: a ogni $x$ corrisponde un solo valore.` },
 
-    { id: 'q-08', domanda: R`Una discontinuità si dice eliminabile quando…`, opzioni: [R`i limiti laterali sono finiti e diversi`, R`il limite esiste finito ma non coincide con $f(x_0)$, oppure $f(x_0)$ non esiste`, R`almeno un limite laterale è infinito`, R`la funzione non è derivabile in $x_0$`], corretta: 1, spiegazione: R`Se il limite esiste finito, basta ridefinire (o definire) $f(x_0)$ uguale al limite. Limiti laterali diversi danno la prima specie, un limite infinito la seconda; la derivabilità non c'entra con la classificazione delle discontinuità.` },
+    { id: 'q-08', domanda: R`Una discontinuità si dice eliminabile quando…`, opzioni: [R`i limiti laterali esistono, sono finiti ma diversi`, R`il limite è finito, ma $f(x_0)$ manca o è diverso`, R`almeno uno dei due limiti laterali è infinito`, R`la funzione non è derivabile nel punto $x_0$`], corretta: 1, spiegazione: R`Se il limite esiste finito, basta ridefinire (o definire) $f(x_0)$ uguale al limite. Limiti laterali diversi danno la prima specie, un limite infinito la seconda; la derivabilità non c'entra con la classificazione delle discontinuità.` },
 
     { id: 'q-09', domanda: R`La funzione $f(x) = \dfrac{1}{x}$ è continua su $\Iac{0}{1}$ ma non ha massimo. Perché questo non contraddice Weierstrass?`, opzioni: [R`perché $f$ non è continua`, R`perché l'intervallo non è chiuso`, R`perché $f$ non è limitata inferiormente`, R`perché Weierstrass vale solo per i polinomi`], corretta: 1, spiegazione: R`L'estremo $0$ è escluso: l'intervallo non è chiuso, quindi un'ipotesi del teorema non vale. La funzione è continua in tutto $\Iac{0}{1}$, ed è limitata inferiormente (vale sempre almeno $1$); il teorema si applica a qualunque funzione continua, non solo ai polinomi.` },
 
@@ -590,11 +604,11 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
 
     { id: 'q-13', domanda: R`Se $f$ e $g$ sono continue in $x_0$, la funzione $\dfrac{f}{g}$…`, opzioni: [R`è sempre continua in $x_0$`, R`è continua in $x_0$ purché $g(x_0) \ne 0$`, R`non è mai continua in $x_0$`, R`è continua solo se $f(x_0) = 0$`], corretta: 1, spiegazione: R`Il quoziente di funzioni continue è continuo dove il denominatore non si annulla; se $g(x_0) = 0$ il punto è addirittura escluso dal dominio. La condizione riguarda $g$, non $f$.` },
 
-    { id: 'q-14', domanda: R`Una funzione può avere, per $x \to +\infty$, sia un asintoto orizzontale sia uno obliquo?`, opzioni: [R`sì, se è periodica`, R`sì, sempre`, R`no: il limite di $\dfrac{f(x)}{x}$ è unico, o vale $0$ o vale $m \ne 0$`, R`sì, se ha anche un asintoto verticale`], corretta: 2, spiegazione: R`Su ogni lato c'è al massimo un asintoto non verticale, perché il limite di $\frac{f(x)}{x}$, se esiste, è un solo numero: se è $0$ l'asintoto (eventuale) è orizzontale, altrimenti è obliquo. La presenza di asintoti verticali o la periodicità non cambiano nulla.` },
+    { id: 'q-14', domanda: R`Una funzione può avere, per $x \to +\infty$, sia un asintoto orizzontale sia uno obliquo?`, opzioni: [R`sì, se la funzione è periodica`, R`sì, succede sempre`, R`no: da ogni lato ce n'è al massimo uno`, R`sì, se ha anche un asintoto verticale`], corretta: 2, spiegazione: R`Su ogni lato c'è al massimo un asintoto non verticale, perché il limite di $\frac{f(x)}{x}$, se esiste, è un solo numero: se è $0$ l'asintoto (eventuale) è orizzontale, altrimenti è obliquo. La presenza di asintoti verticali o la periodicità non cambiano nulla.` },
 
-    { id: 'q-15', domanda: R`Se $f$ è continua in $\Icc{a}{b}$ e $f(a) \cdot f(b) > 0$, allora…`, opzioni: [R`$f$ non ha zeri in $\Icc{a}{b}$`, R`$f$ ha esattamente due zeri`, R`il teorema degli zeri non dice nulla: zeri possono esserci oppure no`, R`$f$ ha almeno uno zero`], corretta: 2, spiegazione: R`Il teorema dà una condizione **sufficiente**, non necessaria. Con $f(x) = x^2 - 1$ su $\Icc{-2}{2}$ il prodotto vale $9 > 0$ eppure ci sono due zeri; con $f(x) = x^2 + 1$ non ce n'è nessuno. Senza il cambio di segno non si può concludere niente.` },
+    { id: 'q-15', domanda: R`Se $f$ è continua in $\Icc{a}{b}$ e $f(a) \cdot f(b) > 0$, allora…`, opzioni: [R`$f$ non ha nessuno zero in $\Icc{a}{b}$`, R`$f$ ha esattamente due zeri in $\Icc{a}{b}$`, R`zeri possono esserci oppure no`, R`$f$ ha almeno uno zero in $\Iaa{a}{b}$`], corretta: 2, spiegazione: R`Il teorema dà una condizione **sufficiente**, non necessaria. Con $f(x) = x^2 - 1$ su $\Icc{-2}{2}$ il prodotto vale $9 > 0$ eppure ci sono due zeri; con $f(x) = x^2 + 1$ non ce n'è nessuno. Senza il cambio di segno non si può concludere niente.` },
 
-    { id: 'q-16', domanda: R`Dove si cercano gli asintoti verticali di una funzione?`, opzioni: [R`nei punti in cui la funzione si annulla`, R`nei punti esclusi dal dominio e negli estremi finiti esclusi`, R`solo in $x = 0$`, R`nei punti di massimo e di minimo`], corretta: 1, spiegazione: R`Un asintoto verticale nasce da un limite infinito, che può accadere solo dove la funzione non è definita: denominatori che si annullano, argomenti di logaritmi che tendono a zero, estremi esclusi del dominio. Dove la funzione vale zero il grafico taglia l'asse $x$, il contrario di un asintoto verticale.` }
+    { id: 'q-16', domanda: R`Dove si cercano gli asintoti verticali di una funzione?`, opzioni: [R`nei punti in cui la funzione si annulla`, R`nei punti esclusi dal dominio o di raccordo`, R`solo in $x = 0$, dove sta l'asse $y$`, R`nei punti di massimo e di minimo relativo`], corretta: 1, spiegazione: R`Un asintoto verticale nasce da un limite infinito. Succede dove la funzione non è definita (denominatori che si annullano, argomenti di logaritmi che tendono a zero, estremi esclusi del dominio) o nei punti di raccordo di una funzione a tratti. Dove la funzione vale zero il grafico taglia l'asse $x$, il contrario di un asintoto verticale.` }
   ],
 
   suggerimenti: [
@@ -612,11 +626,9 @@ Con continuità, limiti e asintoti puoi già abbozzare un grafico. Segui quest'o
   aneddoti: [
     { matematico: 'Bernard Bolzano', anni: '1781–1848', titolo: 'Il prete di Praga che diffidava dei disegni', testo: R`Bolzano era un sacerdote cattolico e insegnava scienza della religione all'Università di Praga. Le sue prediche pacifiste e le sue idee sociali non piacquero alle autorità austriache: nel 1819 fu rimosso dalla cattedra, messo sotto sorveglianza dalla polizia e gli fu proibito di pubblicare. Due anni prima, nel 1817, aveva stampato un opuscolo dal titolo che è già un programma: *Dimostrazione puramente analitica del teorema che fra due valori di segno opposto sta almeno una radice dell'equazione*. Fino ad allora quel fatto si dava per ovvio guardando il grafico: la curva passa dall'altra parte, quindi da qualche parte taglia l'asse. Bolzano rifiutò l'evidenza del disegno e pretese una dimostrazione fatta solo di disuguaglianze. Stampate in poche copie a Praga, le sue opere restarono quasi sconosciute per decenni; quando furono riscoperte si vide che aveva anticipato Cauchy e Weierstrass.`, legame: R`Il teorema degli zeri porta il suo nome: è lui a trasformare un'evidenza grafica in un teorema dimostrato.` },
 
-    { matematico: 'Karl Weierstrass', anni: '1815–1897', titolo: 'Il professore di ginnastica che rifondò l\'analisi', testo: R`Il padre lo voleva funzionario delle imposte e lo mandò a studiare legge a Bonn: Weierstrass passò quattro anni fra scherma e birra e tornò a casa senza laurea. Ripiegò sull'insegnamento e per quattordici anni fece il professore in licei di provincia, con in orario anche ginnastica e calligrafia, facendo matematica di notte e senza una biblioteca. Nel 1854 un suo lavoro sulle funzioni abeliane, uscito su una rivista che contava, fece il giro d'Europa: Königsberg gli diede la laurea honoris causa e due anni dopo era professore a Berlino, saltando tutta la gavetta. È lui a dare al limite e alla continuità la definizione con $\varepsilon$ e $\delta$ che si usa ancora. Nel 1872 presentò all'Accademia di Berlino una funzione continua in ogni punto e derivabile in nessuno: molti colleghi la giudicarono una mostruosità inutile.`, legame: R`La definizione rigorosa di funzione continua e il teorema del massimo e del minimo sono suoi.` },
+    { matematico: 'Karl Weierstrass', anni: '1815–1897', titolo: 'Le lezioni private a una studentessa respinta', testo: R`Nel 1870 una giovane russa si presentò a casa di Weierstrass, a Berlino. Era Sof'ja Kovalevskaja. L'università non la lasciava nemmeno ascoltare le lezioni, perché era una donna. Weierstrass, per metterla alla prova, le affidò alcuni problemi difficili. Lei tornò con soluzioni chiare e originali, e lui accettò di farle lezione in privato. Andarono avanti così per quattro anni. Nel 1874 Kovalevskaja aveva pronti tre lavori, uno dei quali sulle equazioni alle derivate parziali. Weierstrass li giudicò degni di un dottorato e cercò un'università disposta a concederlo. Lo trovò a Gottinga, che le diede il titolo con la lode, senza la discussione orale e senza che lei fosse presente. Nel 1889 Kovalevskaja diventò professoressa ordinaria a Stoccolma, una delle prime donne in Europa.`, legame: R`La definizione rigorosa di funzione continua e il teorema del massimo e del minimo sono suoi.` },
 
-    { matematico: 'Peter Gustav Lejeune Dirichlet', anni: '1805–1859', titolo: 'La funzione che non si può disegnare', testo: R`Dirichlet insegnò a Berlino e poi a Gottinga, sulla cattedra che era stata di Gauss, e sposò Rebecka Mendelssohn, sorella del compositore Felix. Era famoso per essere laconico: si racconta che alla nascita del primo figlio abbia mandato al suocero un telegramma con scritto soltanto «$2+1=3$». Nel 1829, studiando la convergenza delle serie di Fourier, ebbe bisogno di un esempio estremo e costruì la funzione che oggi porta il suo nome: vale $1$ se $x$ è razionale e $0$ se $x$ è irrazionale. In ogni intervallo, per quanto piccolo, si trovano sia razionali sia irrazionali, quindi la funzione salta di continuo fra $0$ e $1$ ed è discontinua in **ogni** punto della retta reale. Non la si può disegnare, eppure è definita in modo perfettamente preciso.`, legame: R`È il controesempio che misura quanto sia forte la richiesta di continuità: senza di essa nessuno dei tre teoremi funziona.` },
-
-    { matematico: 'Giuseppe Peano', anni: '1858–1932', titolo: 'La curva che riempie tutto il quadrato', testo: R`Nato in una cascina vicino a Cuneo e diventato professore a Torino, Peano aveva il gusto del controesempio: correggeva i colleghi in pubblico e si divertiva a trovare errori nei manuali più diffusi. Nel 1890 pubblicò un articolo di poche pagine, senza una sola figura, in cui costruiva una curva continua che passa per **tutti** i punti di un quadrato. Fino a quel momento sembrava ovvio che una curva fosse un oggetto a una dimensione e che la continuità bastasse a garantirlo: Peano dimostrò di no, con una costruzione puramente aritmetica basata sulle cifre dei numeri scritti in base tre. Negli ultimi anni si dedicò al *latino sine flexione*, una lingua internazionale ottenuta dal latino togliendo le declinazioni, e ci scriveva perfino articoli di matematica.`, legame: R`Un promemoria severo: «continua» non significa «come me l'aspetto», e l'intuizione grafica va sempre controllata con la definizione.` }
+    { matematico: 'Giuseppe Peano', anni: '1858–1932', titolo: 'La curva che riempie tutto il quadrato', testo: R`Nato in una cascina vicino a Cuneo e diventato professore a Torino, Peano aveva il gusto del controesempio: correggeva i colleghi in pubblico e si divertiva a trovare errori nei manuali più diffusi. Nel 1890 pubblicò un articolo di poche pagine, senza una sola figura, in cui costruiva una curva continua che passa per **tutti** i punti di un quadrato. Fino a quel momento sembrava ovvio che una curva fosse un oggetto a una dimensione e che la continuità bastasse a garantirlo: Peano dimostrò di no, con una costruzione puramente aritmetica basata sulle cifre dei numeri scritti in base tre.`, legame: R`Un promemoria severo: «continua» non significa «come me l'aspetto», e l'intuizione grafica va sempre controllata con la definizione.` }
   ]
 });
 })();

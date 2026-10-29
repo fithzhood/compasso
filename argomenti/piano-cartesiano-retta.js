@@ -258,7 +258,15 @@ Il numero di soluzioni del sistema dice come stanno le due rette:
 
 ### Disequazioni in due incognite
 
-Le soluzioni di una **disequazione in due incognite**, come $y > 2x - 1$, sono i punti di un **semipiano**. Il bordo è la retta $y = 2x - 1$: tratteggiata con $>$ e $<$, perché i suoi punti non sono soluzioni, continua con $\ge$ e $\le$. Per scegliere la metà giusta provi un punto fuori dalla retta, per esempio $(0; 0)$: se la disuguaglianza viene vera, è la metà che contiene il punto; se viene falsa, l'altra. Con più disequazioni insieme le soluzioni stanno nell'intersezione dei semipiani.
+Prendi la **disequazione in due incognite** $y > 2x - 1$. Le sue soluzioni sono coppie $(x; y)$, cioè punti del piano. Formano un **semipiano**: la metà del piano che sta da una parte di una retta. Qui il bordo è la retta $y = 2x - 1$.
+
+>* Il bordo si disegna **tratteggiato** con $>$ e $<$: i suoi punti non sono soluzioni. Si disegna **continuo** con $\ge$ e $\le$: i suoi punti sono soluzioni.
+
+Per scegliere la metà giusta, prova un punto fuori dalla retta. Il più comodo è l'origine $(0; 0)$. In $y > 2x - 1$ viene $0 > -1$, che è vero. Quindi le soluzioni sono la metà che contiene l'origine. Se viene falso, sono l'altra metà.
+
+>! Se la retta passa per $(0; 0)$, l'origine non serve come punto di prova: sta proprio sul bordo. Scegli un altro punto, per esempio $(1; 0)$ o $(0; 1)$.
+
+Con più disequazioni insieme, le soluzioni sono i punti comuni a tutti i semipiani.
 
 [[video:piano-cartesiano-retta/semipiano]]` },
 
@@ -277,7 +285,7 @@ Se la retta è in forma esplicita, portala prima in forma implicita. $y = mx + q
 [x] $\dfrac{4}{\sqrt{5}}$
 [ ] $\dfrac{6}{\sqrt{5}}$
 [ ] $\dfrac{5}{\sqrt{29}}$
-=> Prima la forma implicita: $2x - y + 5 = 0$. Poi $d = \dfrac{|2 \cdot 0 - 1 + 5|}{\sqrt{4 + 1}} = \dfrac{4}{\sqrt{5}}$. Chi trova $\dfrac{5}{\sqrt{29}}$ ha usato $m = 2$ e $q = 5$ al posto di $a$ e $b$. Chi trova $\dfrac{6}{\sqrt{5}}$ ha scritto $+y$ invece di $-y$.
+=> Prima la forma implicita: $2x - y + 5 = 0$. Poi $d = \dfrac{|2 \cdot 0 - 1 + 5|}{\sqrt{4 + 1}} = \dfrac{4}{\sqrt{5}}$. Chi trova $\dfrac{5}{\sqrt{29}}$ ha usato $m = 2$ e $q = 5$ al posto di $a$ e $b$, con $c = 0$. Chi trova $\dfrac{6}{\sqrt{5}}$ ha scritto $+y$ invece di $-y$.
 
 >! La formula vuole la retta con **zero** a destra. Non usare $m$ e $q$ al posto di $a$ e $b$. Attento anche al meno davanti a $y$.` },
 
@@ -331,7 +339,7 @@ Il **fascio improprio** raccoglie tutte le rette parallele fra loro, cioè con l
     },
     perpendicolari: {
       tipo: 'piano', x: [-4, 4], y: [-4, 4],
-      parametri: [ { nome: 'm1', min: -3, max: 3, passo: 0.1, valore: 2, nascosto: true } ],
+      parametri: [ { nome: 'm1', min: 0.2, max: 3, passo: 0.1, valore: 2, nascosto: true } ],
       funzioni: [
         { f: 'm1*x', etichetta: 'r', colore: 1 },
         { f: '-x/m1', etichetta: 's', colore: 3 }
@@ -342,45 +350,45 @@ Il **fascio improprio** raccoglie tutte le rette parallele fra loro, cioè con l
         { tipo: 'testo', p: [-3.8, 3.5], testo: 'm₁ = {{m1}},  m₂ = {{-1/m1}}', ancora: 'start' },
         { tipo: 'testo', p: [-3.8, 2.9], testo: 'm₁ · m₂ = {{m1*(-1/m1)}}', ancora: 'start' }
       ],
-      didascalia: 'Trascina il punto blu su e giù: r ruota e s ruota con lei, sempre ad angolo retto. Il prodotto m₁ · m₂ resta −1. Che cosa succede a s quando r diventa orizzontale?'
+      didascalia: 'Trascina il punto blu su e giù: r ruota e s ruota con lei, sempre ad angolo retto. Il prodotto m₁ · m₂ resta −1. Più r si fa ripida, più s si fa piatta.'
     }
   },
 
   esempi: [
-    { titolo: 'Distanza fra due punti', problema: R`Calcola la distanza fra $A(1; -2)$ e $B(5; 1)$.`, passi: [
-      R`Calcolo le differenze: $\Delta x = 5 - 1 = 4$, $\Delta y = 1 - (-2) = 3$.`,
-      R`Applico il teorema di Pitagora: $\overline{AB} = \sqrt{4^2 + 3^2} = \sqrt{16 + 9} = \sqrt{25} = 5$.`
-    ], risultato: R`$\overline{AB} = 5$` },
+    { titolo: 'Distanza fra due punti', problema: R`Calcola la distanza fra $A(-3; -5)$ e $B(5; 10)$.`, passi: [
+      R`Calcolo le differenze: $\Delta x = 5 - (-3) = 8$, $\Delta y = 10 - (-5) = 15$.`,
+      R`Applico il teorema di Pitagora: $\overline{AB} = \sqrt{8^2 + 15^2} = \sqrt{64 + 225} = \sqrt{289} = 17$.`
+    ], risultato: R`$\overline{AB} = 17$` },
 
     { titolo: 'Punto medio e baricentro', problema: R`Dati $A(-1; 2)$, $B(5; -2)$ e $C(2; 6)$, trova il punto medio di $AB$ e il baricentro del triangolo $ABC$.`, passi: [
       R`Punto medio di $AB$: $M\left(\dfrac{-1+5}{2}; \dfrac{2-2}{2}\right) = M(2; 0)$.`,
       R`Baricentro: $G\left(\dfrac{-1+5+2}{3}; \dfrac{2-2+6}{3}\right) = G\left(\dfrac{6}{3}; \dfrac{6}{3}\right) = G(2; 2)$.`
     ], risultato: R`$M(2; 0)$, $G(2; 2)$` },
 
-    { titolo: 'Equazione della retta per due punti', problema: R`Scrivi l'equazione della retta passante per $A(-3; 1)$ e $B(1; 5)$.`, passi: [
-      R`Calcolo il coefficiente angolare: $m = \dfrac{5 - 1}{1 - (-3)} = \dfrac{4}{4} = 1$.`,
-      R`Uso $y - y_A = m(x - x_A)$ con $A(-3; 1)$: $y - 1 = 1 \cdot (x + 3)$, cioè $y = x + 4$.`,
-      R`Verifico con $B(1; 5)$: $y = 1 + 4 = 5$. ✓`
-    ], risultato: R`$y = x + 4$` },
+    { titolo: 'Equazione della retta per due punti', problema: R`Scrivi l'equazione della retta passante per $A(-2; 5)$ e $B(2; -3)$.`, passi: [
+      R`Calcolo il coefficiente angolare: $m = \dfrac{-3 - 5}{2 - (-2)} = \dfrac{-8}{4} = -2$.`,
+      R`Uso $y - y_A = m(x - x_A)$ con $A(-2; 5)$: $y - 5 = -2(x + 2)$, cioè $y - 5 = -2x - 4$ e quindi $y = -2x + 1$.`,
+      R`Verifico con $B(2; -3)$: $y = -2 \cdot 2 + 1 = -3$. ✓`
+    ], risultato: R`$y = -2x + 1$` },
 
-    { titolo: 'Retta perpendicolare a una retta data', problema: R`Data la retta $r: y = \dfrac{1}{2}x + 1$, scrivi l'equazione della retta perpendicolare a $r$ passante per $P(2; 3)$.`, passi: [
-      R`Il coefficiente angolare di $r$ è $m_1 = \dfrac{1}{2}$; quello della perpendicolare è $m_2 = -\dfrac{1}{m_1} = -2$.`,
-      R`Scrivo la retta per $P(2; 3)$ con $m_2 = -2$: $y - 3 = -2(x - 2)$, cioè $y = -2x + 7$.`,
-      R`Verifico la perpendicolarità: $m_1 \cdot m_2 = \dfrac{1}{2} \cdot (-2) = -1$. ✓`
-    ], risultato: R`$y = -2x + 7$` },
+    { titolo: 'Retta perpendicolare a una retta data', problema: R`Data la retta $r: y = \dfrac{1}{3}x - 2$, scrivi l'equazione della retta perpendicolare a $r$ passante per $P(-1; 2)$.`, passi: [
+      R`Il coefficiente angolare di $r$ è $m_1 = \dfrac{1}{3}$; quello della perpendicolare è $m_2 = -\dfrac{1}{m_1} = -3$.`,
+      R`Scrivo la retta per $P(-1; 2)$ con $m_2 = -3$: $y - 2 = -3(x + 1)$, cioè $y = -3x - 1$.`,
+      R`Verifico la perpendicolarità: $m_1 \cdot m_2 = \dfrac{1}{3} \cdot (-3) = -1$. ✓`
+    ], risultato: R`$y = -3x - 1$` },
 
-    { titolo: 'Intersezione di due rette', problema: R`Trova il punto di intersezione fra $r: y = 2x - 3$ e $s: y = -x + 3$.`, passi: [
-      R`Uguaglio i due secondi membri: $2x - 3 = -x + 3 \Rightarrow 3x = 6 \Rightarrow x = 2$.`,
-      R`Sostituisco in $r$: $y = 2 \cdot 2 - 3 = 1$.`,
-      R`Verifico in $s$: $y = -2 + 3 = 1$. ✓ Le rette si incontrano in $(2; 1)$.`
-    ], risultato: R`$(2; 1)$` },
+    { titolo: 'Intersezione di due rette', problema: R`Trova il punto di intersezione fra $r: y = 3x + 1$ e $s: y = -x - 7$.`, passi: [
+      R`Uguaglio i due secondi membri: $3x + 1 = -x - 7 \Rightarrow 4x = -8 \Rightarrow x = -2$.`,
+      R`Sostituisco in $r$: $y = 3 \cdot (-2) + 1 = -5$.`,
+      R`Verifico in $s$: $y = 2 - 7 = -5$. ✓ Le rette si incontrano in $(-2; -5)$.`
+    ], risultato: R`$(-2; -5)$` },
 
-    { titolo: 'Distanza di un punto da una retta', problema: R`Calcola la distanza del punto $P(1; 5)$ dalla retta $r: 3x - 4y + 1 = 0$.`, passi: [
-      R`Individuo i coefficienti della forma implicita: $a = 3$, $b = -4$, $c = 1$.`,
-      R`Sostituisco le coordinate di $P$ nel numeratore: $|3 \cdot 1 - 4 \cdot 5 + 1| = |3 - 20 + 1| = 16$.`,
-      R`Calcolo il denominatore: $\sqrt{3^2 + (-4)^2} = \sqrt{9 + 16} = \sqrt{25} = 5$.`,
-      R`$d(P, r) = \dfrac{16}{5} = 3{,}2$.`
-    ], risultato: R`$d(P, r) = \dfrac{16}{5} = 3{,}2$` }
+    { titolo: 'Distanza di un punto da una retta', problema: R`Calcola la distanza del punto $P(1; 3)$ dalla retta $r: 5x - 12y + 5 = 0$.`, passi: [
+      R`Individuo i coefficienti della forma implicita: $a = 5$, $b = -12$, $c = 5$.`,
+      R`Sostituisco le coordinate di $P$ nel numeratore: $|5 \cdot 1 - 12 \cdot 3 + 5| = |5 - 36 + 5| = |-26| = 26$.`,
+      R`Calcolo il denominatore: $\sqrt{5^2 + (-12)^2} = \sqrt{25 + 144} = \sqrt{169} = 13$.`,
+      R`$d(P, r) = \dfrac{26}{13} = 2$.`
+    ], risultato: R`$d(P, r) = 2$` }
   ],
 
   formulario: [
@@ -393,7 +401,7 @@ Il **fascio improprio** raccoglie tutte le rette parallele fra loro, cioè con l
     { nome: 'Retta parallela all\'asse y', formula: R`x = k`, nota: R`Non ha coefficiente angolare né forma esplicita.` },
     { nome: 'Coefficiente angolare fra due punti', formula: R`m = \dfrac{y_B - y_A}{x_B - x_A}`, nota: R`Richiede $x_A \ne x_B$.` },
     { nome: 'Retta per un punto, con la pendenza nota', formula: R`y - y_0 = m(x - x_0)` },
-    { nome: 'Retta per due punti', formula: R`m = \dfrac{y_B - y_A}{x_B - x_A}, \qquad y - y_A = m(x - x_A)` },
+    { nome: 'Retta per due punti', formula: R`\begin{gathered} m = \dfrac{y_B - y_A}{x_B - x_A} \\ y - y_A = m(x - x_A) \end{gathered}` },
     { nome: 'Condizione di parallelismo', formula: R`m_1 = m_2` },
     { nome: 'Condizione di perpendicolarità', formula: R`m_1 \cdot m_2 = -1` },
     { nome: 'Distanza punto-retta', formula: R`d(P, r) = \dfrac{|ax_0 + by_0 + c|}{\sqrt{a^2 + b^2}}` },
@@ -402,7 +410,7 @@ Il **fascio improprio** raccoglie tutte le rette parallele fra loro, cioè con l
 
   flashcards: [
     { id: 'fc-01', sezione: 'coordinate-piano', tipo: 'definizione', fronte: R`Cosa sono ascissa e ordinata?`, retro: R`In un punto $P(x; y)$, $x$ è l'ascissa (quanto ci si sposta a destra o a sinistra dell'origine), $y$ è l'ordinata (quanto si sale o si scende).` },
-    { id: 'fc-02', sezione: 'coordinate-piano', tipo: 'concetto', fronte: R`Segni delle coordinate nei quattro quadranti`, retro: R`I: $(+,+)$. II: $(-,+)$. III: $(-,-)$. IV: $(+,-)$, numerati in senso antiorario a partire da quello in alto a destra.` },
+    { id: 'fc-02', sezione: 'coordinate-piano', tipo: 'concetto', fronte: R`Segni delle coordinate nei quattro quadranti`, retro: R`I: $(+; +)$. II: $(-; +)$. III: $(-; -)$. IV: $(+; -)$, numerati in senso antiorario a partire da quello in alto a destra.` },
     { id: 'fc-03', sezione: 'coordinate-piano', tipo: 'concetto', fronte: R`Dove sta un punto con $y = 0$?`, retro: R`Sull'asse $x$. Analogamente, $x = 0$ vuol dire punto sull'asse $y$.` },
     { id: 'fc-04', sezione: 'distanza-punto-medio', tipo: 'formula', fronte: R`Formula della distanza fra due punti`, retro: R`$\overline{AB} = \sqrt{(x_B-x_A)^2+(y_B-y_A)^2}$.` },
     { id: 'fc-05', sezione: 'distanza-punto-medio', tipo: 'formula', fronte: R`Formula del punto medio`, retro: R`$M\left(\dfrac{x_A+x_B}{2};\dfrac{y_A+y_B}{2}\right)$: media delle ascisse e media delle ordinate.` },
@@ -423,30 +431,31 @@ Il **fascio improprio** raccoglie tutte le rette parallele fra loro, cioè con l
     { id: 'fc-20', sezione: 'parallele-perpendicolari', tipo: 'concetto', fronte: R`Una verticale e un'orizzontale sono perpendicolari?`, retro: R`Sì, sempre: ma la formula $m_1 m_2=-1$ non si applica, perché la verticale non ha coefficiente angolare.` },
     { id: 'fc-21', sezione: 'intersezione-rette', tipo: 'procedura', fronte: R`Come si trova il punto di intersezione fra due rette?`, retro: R`Si risolve il sistema formato dalle due equazioni; se sono in forma esplicita, si uguagliano i secondi membri.` },
     { id: 'fc-22', sezione: 'intersezione-rette', tipo: 'concetto', fronte: R`Sistema senza soluzioni: cosa significa per le due rette?`, retro: R`Le rette sono parallele e distinte ($m_1=m_2$, $q_1\ne q_2$): non hanno punti in comune.` },
+    { id: 'fc-25', sezione: 'intersezione-rette', tipo: 'procedura', fronte: R`Come si trova il semipiano soluzione di una disequazione come $y > 2x - 1$?`, retro: R`Disegna il bordo $y = 2x - 1$: tratteggiato con $>$ e $<$, continuo con $\ge$ e $\le$. Prova un punto fuori dal bordo, come $(0; 0)$: se rende vera la disequazione, la soluzione è la metà che lo contiene.` },
     { id: 'fc-23', sezione: 'distanza-punto-retta', tipo: 'formula', fronte: R`Formula della distanza di un punto da una retta`, retro: R`$d(P,r)=\dfrac{|ax_0+by_0+c|}{\sqrt{a^2+b^2}}$, con la retta in forma implicita.` },
     { id: 'fc-24', sezione: 'fasci-di-rette', tipo: 'definizione', fronte: R`Differenza fra fascio proprio e improprio`, retro: R`Proprio: tutte le rette per uno stesso punto, $y-y_0=m(x-x_0)$. Improprio: tutte le rette parallele a una direzione data, $y=mx+k$.` }
   ],
 
   esercizi: [
     { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Trova il punto medio di $A(2; 4)$ e $B(6; 8)$. Scrivi le coordinate come *x; y*.`, suggerimenti: [R`Fai la media delle ascisse e la media delle ordinate.`], risposta: cop(4, 6), soluzione: [R`Ascissa: $\dfrac{2 + 6}{2} = 4$.`, R`Ordinata: $\dfrac{4 + 8}{2} = 6$.`, R`$M(4; 6)$.`] },
-    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Calcola la distanza fra $A(0; 0)$ e $B(3; 4)$.`, suggerimenti: [R`I cateti sono $\Delta x = 3$ e $\Delta y = 4$: usa Pitagora.`], risposta: num(5, 'es. 5 o √2'), soluzione: [R`$\Delta x = 3$, $\Delta y = 4$.`, R`$\overline{AB} = \sqrt{9 + 16} = \sqrt{25} = 5$.`] },
-    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Calcola il coefficiente angolare della retta per $A(1; 2)$ e $B(3; 6)$.`, suggerimenti: [R`$m = \dfrac{y_B - y_A}{x_B - x_A}$: sopra le ordinate, sotto le ascisse.`], risposta: num(2), soluzione: [R`$m = \dfrac{6 - 2}{3 - 1} = \dfrac{4}{2}$.`, R`$m = 2$.`] },
+    { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Calcola la distanza fra $A(0; 0)$ e $B(5; 12)$.`, suggerimenti: [R`I cateti sono $\Delta x = 5$ e $\Delta y = 12$: usa Pitagora.`], risposta: num(13, 'es. 5 o √2'), soluzione: [R`$\Delta x = 5$, $\Delta y = 12$.`, R`$\overline{AB} = \sqrt{25 + 144} = \sqrt{169} = 13$.`] },
+    { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Calcola il coefficiente angolare della retta per $A(4; 1)$ e $B(6; 7)$.`, suggerimenti: [R`$m = \dfrac{y_B - y_A}{x_B - x_A}$: sopra le ordinate, sotto le ascisse.`], risposta: num(3), soluzione: [R`$m = \dfrac{7 - 1}{6 - 4} = \dfrac{6}{2}$.`, R`$m = 3$.`] },
     { id: 'b-04', livello: 'base', difficolta: 1, testo: R`Scrivi l'equazione della retta con $m = 2$ e $q = -3$.`, suggerimenti: [R`Metti $m$ e $q$ al loro posto in $y = mx + q$.`], risposta: retta(2, -1, -3), soluzione: [R`In $y = mx + q$ metto $m = 2$ e $q = -3$.`, R`$y = 2x - 3$.`] },
     { id: 'b-05', livello: 'base', difficolta: 1, testo: R`Il punto $P(2; 7)$ sta sulla retta $y = 3x + 1$? Scrivi *sì* o *no*.`, suggerimenti: [R`Metti $x = 2$ nell'equazione e guarda se viene $y = 7$.`], risposta: { tipo: 'testo', accettate: ['sì', 'si', 'sì, ci sta', 'si, ci sta', 'ci sta', 'appartiene', 'sì, appartiene', 'sì appartiene', 'sta sulla retta'], segnaposto: 'sì o no', simboli: [] }, soluzione: [R`Con $x = 2$: $y = 3 \cdot 2 + 1 = 7$.`, R`Viene proprio l'ordinata di $P$: sì, $P$ sta sulla retta.`] },
-    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Trova il punto medio di $A(-2; 5)$ e $B(4; -1)$. Scrivi le coordinate come *x; y*.`, suggerimenti: [R`Fai la media delle ascisse e la media delle ordinate. Attento ai segni.`], risposta: cop(1, 2), soluzione: [R`Ascissa: $\dfrac{-2 + 4}{2} = \dfrac{2}{2} = 1$.`, R`Ordinata: $\dfrac{5 + (-1)}{2} = \dfrac{4}{2} = 2$.`, R`$M(1; 2)$.`] },
-    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Calcola la distanza fra $A(-2; 3)$ e $B(1; -1)$.`, suggerimenti: [R`Calcola $\Delta x$ e $\Delta y$ come «arrivo meno partenza».`, R`Il segno di $\Delta y$ non conta: va al quadrato.`], risposta: num(5, 'es. 5 o √2'), soluzione: [R`$\Delta x = 1 - (-2) = 3$, $\Delta y = -1 - 3 = -4$.`, R`$\overline{AB} = \sqrt{3^2 + (-4)^2} = \sqrt{9 + 16} = \sqrt{25} = 5$.`] },
+    { id: 'b-06', livello: 'base', difficolta: 1, testo: R`Calcola la distanza del punto $P(2; 1)$ dalla retta $4x + 3y + 4 = 0$.`, suggerimenti: [R`La retta è già nella forma $ax + by + c = 0$: $a = 4$, $b = 3$, $c = 4$.`, R`Usa $d = \dfrac{|ax_0 + by_0 + c|}{\sqrt{a^2 + b^2}}$.`], risposta: num(3, 'es. 5 o √2'), soluzione: [R`Numeratore: $|4 \cdot 2 + 3 \cdot 1 + 4| = |8 + 3 + 4| = 15$.`, R`Denominatore: $\sqrt{4^2 + 3^2} = \sqrt{25} = 5$.`, R`$d = \dfrac{15}{5} = 3$.`] },
+    { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Trova il punto d'incontro delle rette $y = 3x - 2$ e $y = -x + 6$. Scrivi le coordinate come *x; y*.`, suggerimenti: [R`Nel punto comune le due $y$ sono uguali: $3x - 2 = -x + 6$.`, R`Trovata la $x$, mettila in una delle due equazioni.`], risposta: cop(2, 4), soluzione: [R`$3x - 2 = -x + 6$, quindi $4x = 8$ e $x = 2$.`, R`$y = 3 \cdot 2 - 2 = 4$. Controllo nella seconda: $-2 + 6 = 4$.`, R`Il punto è $(2; 4)$.`] },
     { id: 'b-08', livello: 'base', difficolta: 1, testo: R`Calcola il coefficiente angolare della retta per $A(-1; 4)$ e $B(2; -2)$.`, suggerimenti: [R`$m = \dfrac{y_B - y_A}{x_B - x_A}$. Sopra e sotto parti dallo stesso punto.`], risposta: num(-2), soluzione: [R`$m = \dfrac{-2 - 4}{2 - (-1)} = \dfrac{-6}{3}$.`, R`$m = -2$: la retta scende.`] },
     { id: 'b-09', livello: 'base', difficolta: 1, testo: R`Qual è il coefficiente angolare della retta $3x + y - 2 = 0$?`, suggerimenti: [R`Isola la $y$: porta a destra tutto il resto, cambiando segno.`], risposta: num(-3), soluzione: [R`Isolo la $y$: $y = -3x + 2$.`, R`$m = -3$.`] },
     { id: 'b-10', livello: 'base', difficolta: 1, testo: R`Qual è il coefficiente angolare di una retta perpendicolare a $y = 4x - 1$?`, suggerimenti: [R`Capovolgi $4$ e cambia il segno.`], risposta: num(-0.25), soluzione: [R`La retta data ha $m_1 = 4$.`, R`La perpendicolare ha $m_2 = -\dfrac{1}{4}$. Controllo: $4 \cdot \left(-\dfrac{1}{4}\right) = -1$.`] },
     { id: 'b-11', livello: 'base', difficolta: 1, testo: R`Le rette $y = 2x + 1$ e $y = -\dfrac{1}{2}x + 3$ sono parallele, perpendicolari o nessuna delle due?`, suggerimenti: [R`Confronta i coefficienti angolari: sono uguali? Il loro prodotto fa $-1$?`], risposta: { tipo: 'testo', accettate: ['perpendicolari', 'perpendicolare', 'sono perpendicolari'], segnaposto: 'parallele, perpendicolari o nessuna', simboli: [] }, soluzione: [R`I coefficienti angolari sono $2$ e $-\dfrac{1}{2}$: non sono uguali.`, R`Il prodotto è $2 \cdot \left(-\dfrac{1}{2}\right) = -1$: le rette sono perpendicolari.`] },
-    { id: 'b-12', livello: 'base', difficolta: 2, testo: R`Calcola la distanza fra $A(1; 2)$ e $B(3; 3)$. Scrivi la radice con il tasto √.`, suggerimenti: [R`$\Delta x = 2$ e $\Delta y = 1$.`, R`La somma dei quadrati non è un quadrato perfetto: lascia la radice.`], risposta: num(Math.sqrt(5), 'es. 5 o √2'), soluzione: [R`$\Delta x = 3 - 1 = 2$, $\Delta y = 3 - 2 = 1$.`, R`$\overline{AB} = \sqrt{4 + 1} = \sqrt{5}$.`] },
-    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Scrivi l'equazione della retta per $P(1; 3)$ con $m = 2$, nella forma $y = mx + q$.`, suggerimenti: [R`Usa $y - y_0 = m(x - x_0)$.`, R`Togli la parentesi e isola la $y$.`], risposta: retta(2, -1, 1), soluzione: [R`$y - 3 = 2(x - 1)$.`, R`$y - 3 = 2x - 2$.`, R`$y = 2x + 1$.`] },
+    { id: 'b-12', livello: 'base', difficolta: 2, testo: R`Calcola la distanza fra $A(1; 2)$ e $B(3; 3)$. Lascia il risultato sotto radice.`, suggerimenti: [R`$\Delta x = 2$ e $\Delta y = 1$.`, R`La somma dei quadrati non è un quadrato perfetto: lascia la radice.`], risposta: num(Math.sqrt(5), 'es. 5 o √2'), soluzione: [R`$\Delta x = 3 - 1 = 2$, $\Delta y = 3 - 2 = 1$.`, R`$\overline{AB} = \sqrt{4 + 1} = \sqrt{5}$.`] },
+    { id: 'b-13', livello: 'base', difficolta: 2, testo: R`Scrivi l'equazione della retta per $P(1; 4)$ con $m = 2$, nella forma $y = mx + q$.`, suggerimenti: [R`Usa $y - y_0 = m(x - x_0)$.`, R`Togli la parentesi e isola la $y$.`], risposta: retta(2, -1, 2), soluzione: [R`$y - 4 = 2(x - 1)$.`, R`$y - 4 = 2x - 2$.`, R`$y = 2x + 2$.`] },
     { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Scrivi l'equazione della retta per $P(-2; 1)$ con $m = -3$, nella forma $y = mx + q$.`, suggerimenti: [R`Usa $y - y_0 = m(x - x_0)$. Con $x_0 = -2$ la parentesi diventa $x + 2$.`], risposta: retta(3, 1, 5), soluzione: [R`$y - 1 = -3(x - (-2)) = -3(x + 2)$.`, R`$y - 1 = -3x - 6$.`, R`$y = -3x - 5$.`] },
     { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Scrivi l'equazione della retta per $A(1; 1)$ e $B(3; 5)$, nella forma $y = mx + q$.`, suggerimenti: [R`Prima calcola $m$ con i due punti.`, R`Poi usa $y - y_A = m(x - x_A)$.`], risposta: retta(2, -1, -1), soluzione: [R`$m = \dfrac{5 - 1}{3 - 1} = \dfrac{4}{2} = 2$.`, R`$y - 1 = 2(x - 1)$, cioè $y = 2x - 1$.`, R`Controllo con $B$: $2 \cdot 3 - 1 = 5$.`] },
     { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Scrivi l'equazione della retta per $A(0; 3)$ e $B(2; -1)$, nella forma $y = mx + q$.`, suggerimenti: [R`Prima calcola $m$.`, R`$A$ sta sull'asse $y$: ti dà subito $q$.`], risposta: retta(2, 1, -3), soluzione: [R`$m = \dfrac{-1 - 3}{2 - 0} = \dfrac{-4}{2} = -2$.`, R`$A(0; 3)$ sta sull'asse $y$, quindi $q = 3$.`, R`$y = -2x + 3$.`] },
-    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Scrivi l'equazione della retta per $A(2; 1)$ e $B(2; 6)$.`, suggerimenti: [R`Guarda le ascisse dei due punti.`, R`Se $\Delta x = 0$ la retta è verticale.`], risposta: retta(1, 0, -2), soluzione: [R`I due punti hanno la stessa ascissa: $\Delta x = 0$ e $m$ non esiste.`, R`La retta è verticale: $x = 2$.`] },
+    { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Scrivi l'equazione della retta per $A(-1; 3)$ e $B(-1; 6)$.`, suggerimenti: [R`Guarda le ascisse dei due punti.`, R`Se $\Delta x = 0$ la retta è verticale.`], risposta: retta(1, 0, 1), soluzione: [R`I due punti hanno la stessa ascissa: $\Delta x = 0$ e $m$ non esiste.`, R`La retta è verticale: $x = -1$.`] },
     { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Scrivi la retta parallela a $y = 3x + 2$ che passa per $P(1; 1)$, nella forma $y = mx + q$.`, suggerimenti: [R`Una parallela ha lo stesso $m$.`, R`Poi usa $y - y_0 = m(x - x_0)$.`], risposta: retta(3, -1, -2), soluzione: [R`Parallela: $m = 3$.`, R`$y - 1 = 3(x - 1)$, cioè $y - 1 = 3x - 3$.`, R`$y = 3x - 2$.`] },
-    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Scrivi la retta perpendicolare a $y = -x + 4$ che passa per $P(1; 2)$, nella forma $y = mx + q$.`, suggerimenti: [R`La retta data ha $m_1 = -1$: capovolgi e cambia il segno.`, R`Poi usa $y - y_0 = m(x - x_0)$.`], risposta: retta(1, -1, 1), soluzione: [R`$m_1 = -1$, quindi $m_2 = -\dfrac{1}{-1} = 1$.`, R`$y - 2 = 1 \cdot (x - 1)$.`, R`$y = x + 1$.`] },
+    { id: 'b-19', livello: 'base', difficolta: 2, testo: R`Scrivi la retta perpendicolare a $y = -x + 4$ che passa per $P(3; 2)$, nella forma $y = mx + q$.`, suggerimenti: [R`La retta data ha $m_1 = -1$: capovolgi e cambia il segno.`, R`Poi usa $y - y_0 = m(x - x_0)$.`], risposta: retta(1, -1, -1), soluzione: [R`$m_1 = -1$, quindi $m_2 = -\dfrac{1}{-1} = 1$.`, R`$y - 2 = 1 \cdot (x - 3)$.`, R`$y = x - 1$.`] },
     { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Scrivi la retta perpendicolare a $y = 2x + 1$ che passa per $P(2; 0)$, nella forma $y = mx + q$.`, suggerimenti: [R`La perpendicolare ha $m = -\dfrac{1}{2}$.`, R`Poi usa $y - y_0 = m(x - x_0)$ e togli la parentesi.`], risposta: retta(1, 2, -2), soluzione: [R`$m_1 = 2$, quindi $m_2 = -\dfrac{1}{2}$.`, R`$y - 0 = -\dfrac{1}{2}(x - 2)$.`, R`$y = -\dfrac{1}{2}x + 1$.`] },
 
     { id: 'es-01', difficolta: 1, testo: R`Calcola la distanza fra i punti $A(-2; 3)$ e $B(4; -5)$.`, suggerimenti: [R`Applica il teorema di Pitagora ai cateti $\Delta x$ e $\Delta y$.`, R`$\Delta x = 4-(-2)=6$, $\Delta y=-5-3=-8$.`], risposta: { tipo: 'numero', valore: 10, tolleranza: 0.01 }, soluzione: [R`$\Delta x = 4-(-2)=6$, $\Delta y=-5-3=-8$.`, R`$\overline{AB}=\sqrt{6^2+(-8)^2}=\sqrt{36+64}=\sqrt{100}=10$.`] },
@@ -455,9 +464,7 @@ Il **fascio improprio** raccoglie tutte le rette parallele fra loro, cioè con l
 
     { id: 'es-03', difficolta: 1, testo: R`Trova il baricentro del triangolo di vertici $A(-3; 0)$, $B(3; 0)$, $C(0; 9)$. Scrivi le sue coordinate nella forma x; y.`, suggerimenti: [R`Il baricentro è la media delle coordinate dei tre vertici.`, R`Somma le tre ascisse e dividi per 3; fai lo stesso con le ordinate.`], risposta: { tipo: 'numeri', ordinati: true, valori: [0, 3] }, soluzione: [R`$x_G=\dfrac{-3+3+0}{3}=0$.`, R`$y_G=\dfrac{0+0+9}{3}=3$.`, R`$G(0; 3)$.`] },
 
-    { id: 'es-04', difficolta: 1, testo: R`Scrivi l'equazione della retta passante per l'origine con coefficiente angolare $m=3$.`, suggerimenti: [R`Una retta per l'origine ha $q=0$.`, R`Usa $y=mx$.`], risposta: retta(3, -1, 0), soluzione: [R`Passando per l'origine, $q=0$: $y=mx+0=mx$.`, R`Con $m=3$: $y=3x$.`] },
-
-    { id: 'es-05', difficolta: 2, testo: R`Scrivi l'equazione della retta passante per $P(2; -1)$ con coefficiente angolare $m=-2$.`, suggerimenti: [R`Usa $y-y_0=m(x-x_0)$ con $P_0=P$.`, R`Sviluppa e isola $y$.`], risposta: retta(2, 1, -3), soluzione: [R`$y-(-1)=-2(x-2)$.`, R`$y+1=-2x+4$.`, R`$y=-2x+3$.`] },
+    { id: 'es-05', difficolta: 2, testo: R`Scrivi l'equazione della retta passante per $P(1; -4)$ con coefficiente angolare $m=-2$.`, suggerimenti: [R`Usa $y-y_0=m(x-x_0)$ con $P_0=P$.`, R`Sviluppa e isola $y$.`], risposta: retta(2, 1, 2), soluzione: [R`$y-(-4)=-2(x-1)$.`, R`$y+4=-2x+2$.`, R`$y=-2x-2$.`] },
 
     { id: 'es-06', difficolta: 2, testo: R`Scrivi l'equazione della retta passante per $A(1; 2)$ e $B(3; 8)$.`, suggerimenti: [R`Calcola prima $m$ con la formula del coefficiente angolare.`, R`Poi usa $y-y_A=m(x-x_A)$.`], risposta: retta(3, -1, -1), soluzione: [R`$m=\dfrac{8-2}{3-1}=\dfrac{6}{2}=3$.`, R`$y-2=3(x-1)$.`, R`$y=3x-1$.`] },
 
@@ -467,26 +474,31 @@ Il **fascio improprio** raccoglie tutte le rette parallele fra loro, cioè con l
 
     { id: 'es-09', difficolta: 3, testo: R`Calcola la distanza del punto $P(4; 1)$ dalla retta $3x+4y-12=0$.`, suggerimenti: [R`La retta è già in forma implicita: individua $a$, $b$, $c$.`, R`Applica $d=\dfrac{|ax_0+by_0+c|}{\sqrt{a^2+b^2}}$.`], risposta: { tipo: 'numero', valore: 0.8, tolleranza: 0.01 }, soluzione: [R`$a=3$, $b=4$, $c=-12$.`, R`$d=\dfrac{|3\cdot4+4\cdot1-12|}{\sqrt{3^2+4^2}}=\dfrac{|12+4-12|}{5}=\dfrac{4}{5}=0{,}8$.`] },
 
-    { id: 'es-10', difficolta: 3, testo: R`Dati $A(-1; -1)$, $B(5; -1)$, $C(2; 5)$, stabilisci se il triangolo $ABC$ è isoscele, calcolando i tre lati.`, suggerimenti: [R`Calcola $\overline{AB}$, $\overline{AC}$ e $\overline{BC}$ con la formula della distanza.`, R`Confronta i tre valori: due lati uguali bastano per dire che è isoscele.`], soluzione: [R`$\overline{AB}=\sqrt{(5-(-1))^2+(-1-(-1))^2}=\sqrt{36}=6$.`, R`$\overline{AC}=\sqrt{(2-(-1))^2+(5-(-1))^2}=\sqrt{9+36}=\sqrt{45}=3\sqrt5$.`, R`$\overline{BC}=\sqrt{(2-5)^2+(5-(-1))^2}=\sqrt{9+36}=\sqrt{45}=3\sqrt5$.`, R`$\overline{AC}=\overline{BC}$: il triangolo è isoscele sulla base $AB$.`] }
+    { id: 'es-10', difficolta: 3, testo: R`Dati $A(-1; -1)$, $B(5; -1)$, $C(2; 5)$, stabilisci se il triangolo $ABC$ è isoscele, calcolando i tre lati.`, suggerimenti: [R`Calcola $\overline{AB}$, $\overline{AC}$ e $\overline{BC}$ con la formula della distanza.`, R`Confronta i tre valori: due lati uguali bastano per dire che è isoscele.`], soluzione: [R`$\overline{AB}=\sqrt{(5-(-1))^2+(-1-(-1))^2}=\sqrt{36}=6$.`, R`$\overline{AC}=\sqrt{(2-(-1))^2+(5-(-1))^2}=\sqrt{9+36}=\sqrt{45}=3\sqrt5$.`, R`$\overline{BC}=\sqrt{(2-5)^2+(5-(-1))^2}=\sqrt{9+36}=\sqrt{45}=3\sqrt5$.`, R`$\overline{AC}=\overline{BC}$: il triangolo è isoscele sulla base $AB$.`] },
+
+    { id: 'es-11', difficolta: 2, testo: R`Quali fra $A(1; 3)$, $B(2; 2)$, $C(0; 3)$ risolvono insieme $y > 2x$ e $y \le -x + 4$? Scrivi le lettere, per esempio *A e B*.`, suggerimenti: [R`Metti le coordinate di ogni punto in tutte e due le disequazioni: devono venire vere entrambe.`, R`Un punto sul bordo va bene solo se la disequazione ha $\le$ o $\ge$.`], risposta: { tipo: 'testo', accettate: ['aec', 'a.c', 'ac', 'cea', 'a;c', 'a,c', 'a e c', 'ca', 'c.a', 'c;a'], segnaposto: 'es. A e B', simboli: [] }, soluzione: [R`$A(1; 3)$: $3 > 2$ vero; $3 \le -1 + 4 = 3$ vero, perché $A$ sta sul bordo e il $\le$ lo include.`, R`$B(2; 2)$: $2 > 4$ falso. Basta questo per scartarlo.`, R`$C(0; 3)$: $3 > 0$ vero; $3 \le 4$ vero.`, R`Risolvono il sistema $A$ e $C$. Nota che qui l'origine non serve come punto di prova: sta sulla retta $y = 2x$.`] },
+
+    { id: 'es-12', difficolta: 3, testo: R`Calcola l'area del triangolo di vertici $A(0; 1)$, $B(6; 9)$, $C(5; 0)$.`, suggerimenti: [R`Prendi $AB$ come base: la sua lunghezza viene dalla formula della distanza.`, R`L'altezza è la distanza di $C$ dalla retta $AB$.`, R`La retta $AB$ è $y = \dfrac{4}{3}x + 1$, cioè $4x - 3y + 3 = 0$.`], risposta: num(23, 'es. 12'), soluzione: [R`Base: $\overline{AB} = \sqrt{6^2 + 8^2} = \sqrt{100} = 10$.`, R`Retta $AB$: $m = \dfrac{9 - 1}{6 - 0} = \dfrac{4}{3}$ e $q = 1$, quindi $y = \dfrac{4}{3}x + 1$, cioè $4x - 3y + 3 = 0$.`, R`Altezza: $d(C, AB) = \dfrac{|4 \cdot 5 - 3 \cdot 0 + 3|}{\sqrt{4^2 + (-3)^2}} = \dfrac{23}{5}$.`, R`Area: $\dfrac{1}{2} \cdot 10 \cdot \dfrac{23}{5} = 23$.`] }
   ],
 
   quiz: [
     { id: 'q-01', domanda: R`In quale quadrante si trova un punto con $x<0$ e $y<0$?`, opzioni: [R`Terzo quadrante`, R`Primo quadrante`, R`Secondo quadrante`, R`Quarto quadrante`], corretta: 0, spiegazione: R`Il terzo quadrante raccoglie i punti con entrambe le coordinate negative; i quadranti si numerano in senso antiorario a partire da quello con coordinate entrambe positive.` },
-    { id: 'q-02', domanda: R`Un punto ha ascissa $x=0$. Dove si trova?`, opzioni: [R`Sull'asse $x$`, R`Sull'asse $y$`, R`Nell'origine, sempre`, R`In nessun quadrante ma non necessariamente sugli assi`], corretta: 1, spiegazione: R`Ascissa nulla significa che il punto sta sull'asse delle ordinate (asse $y$), qualunque sia $y$; sta nell'origine solo se anche $y=0$.` },
-    { id: 'q-03', domanda: R`Quale delle seguenti è la formula corretta della distanza fra $A(x_A;y_A)$ e $B(x_B;y_B)$?`, opzioni: [R`$(x_B-x_A)+(y_B-y_A)$`, R`$\sqrt{x_B^2+y_B^2}$`, R`$\dfrac{x_B-x_A}{y_B-y_A}$`, R`$\sqrt{(x_B-x_A)^2+(y_B-y_A)^2}$`], corretta: 3, spiegazione: R`È il teorema di Pitagora applicato ai cateti $\Delta x$ e $\Delta y$: le altre opzioni non corrispondono a nessuna proprietà della distanza.` },
+    { id: 'q-02', domanda: R`Un punto ha ascissa $x=0$. Dove si trova?`, opzioni: [R`Sull'asse $x$`, R`Sull'asse $y$`, R`Nell'origine, sempre`, R`In un quadrante, che dipende dal segno di $y$`], corretta: 1, spiegazione: R`Ascissa nulla significa che il punto sta sull'asse delle ordinate (asse $y$), qualunque sia $y$; sta nell'origine solo se anche $y=0$. I punti sugli assi non stanno in nessun quadrante.` },
+    { id: 'q-03', domanda: R`Quale delle seguenti è la formula corretta della distanza fra $A(x_A;y_A)$ e $B(x_B;y_B)$?`, opzioni: [R`$(x_B-x_A)^2+(y_B-y_A)^2$`, R`$\sqrt{(x_B+x_A)^2+(y_B+y_A)^2}$`, R`$\dfrac{x_B-x_A}{y_B-y_A}$`, R`$\sqrt{(x_B-x_A)^2+(y_B-y_A)^2}$`], corretta: 3, spiegazione: R`È il teorema di Pitagora applicato ai cateti $\Delta x$ e $\Delta y$. Senza la radice ottieni il quadrato della distanza. Con le somme non misuri gli spostamenti da $A$ a $B$. Il rapporto fra le differenze è legato alla pendenza, non alla distanza.` },
     { id: 'q-04', domanda: R`Il punto medio di $A(2;6)$ e $B(8;2)$ è…`, opzioni: [R`$(3;4)$`, R`$(10;8)$`, R`$(5;4)$`, R`$(6;3)$`], corretta: 2, spiegazione: R`$M=\left(\dfrac{2+8}{2};\dfrac{6+2}{2}\right)=(5;4)$: media delle ascisse e media delle ordinate, non la loro somma.` },
     { id: 'q-05', domanda: R`Il baricentro di un triangolo è…`, opzioni: [R`la media delle coordinate dei tre vertici`, R`il punto medio di uno dei lati`, R`il punto di intersezione delle altezze`, R`sempre l'origine degli assi`], corretta: 0, spiegazione: R`Si ottiene mediando le coordinate di $A$, $B$ e $C$; è anche il punto in cui si incontrano le tre mediane, non le altezze.` },
-    { id: 'q-06', domanda: R`Perché una retta verticale non si può scrivere in forma esplicita $y=mx+q$?`, opzioni: [R`Perché ha $q=0$`, R`Perché ha $m=0$`, R`Perché non ha equazione`, R`Perché non esiste il coefficiente angolare $m$ per una retta verticale`], corretta: 3, spiegazione: R`La forma esplicita richiede di isolare $y$, possibile solo se $b\ne0$; una retta verticale ($x=k$) non ha $y$ nell'equazione.` },
+    { id: 'q-06', domanda: R`Perché una retta verticale non si può scrivere in forma esplicita $y=mx+q$?`, opzioni: [R`Perché ha $m=0$`, R`Perché passa per l'origine`, R`Perché la sua equazione non contiene $x$`, R`Perché non ha coefficiente angolare`], corretta: 3, spiegazione: R`La forma esplicita richiede di isolare $y$, possibile solo se $b\ne0$. Una retta verticale $x=k$ non ha $y$ nell'equazione, quindi non ha coefficiente angolare. Le rette con $m=0$ sono quelle orizzontali. Molte verticali non passano per l'origine. E l'equazione $x=k$ contiene proprio la $x$, non la $y$.` },
     { id: 'q-07', domanda: R`Una retta ha equazione implicita $ax+by+c=0$ con $c=0$. Che cosa significa?`, opzioni: [R`È parallela all'asse $x$`, R`Passa per l'origine`, R`È verticale`, R`Ha coefficiente angolare nullo`], corretta: 1, spiegazione: R`Mettendo $x=0$ e $y=0$ nell'equazione resta solo $c$: l'origine $O(0; 0)$ la soddisfa proprio quando $c=0$. La direzione della retta dipende invece da $a$ e $b$.` },
     { id: 'q-08', domanda: R`Il coefficiente angolare $m$ di una retta rappresenta…`, opzioni: [R`l'ordinata del punto in cui la retta taglia l'asse $y$`, R`la distanza della retta dall'origine`, R`di quanto varia $y$ per ogni unità di aumento di $x$`, R`l'ascissa del punto in cui la retta taglia l'asse $x$`], corretta: 2, spiegazione: R`$m=\Delta y/\Delta x$: è il tasso di variazione di $y$ rispetto a $x$. L'ordinata del punto in cui la retta taglia l'asse $y$ è $q$, non $m$.` },
-    { id: 'q-09', domanda: R`Se $m<0$, la retta $y=mx+q$…`, opzioni: [R`è decrescente: scende da sinistra a destra`, R`è crescente`, R`è orizzontale`, R`è parallela all'asse $y$`], corretta: 0, spiegazione: R`Un coefficiente angolare negativo vuol dire che $y$ diminuisce quando $x$ aumenta: la retta scende.` },
-    { id: 'q-10', domanda: R`Perché $\dfrac{\Delta y}{\Delta x}$ non è definito per una retta verticale?`, opzioni: [R`Perché $\Delta y=0$ sempre`, R`Perché il rapporto darebbe sempre $1$`, R`Perché servono tre punti, non due`, R`Perché $\Delta x=0$ per ogni coppia di punti della retta, e non si può dividere per $0$`], corretta: 3, spiegazione: R`Su una retta verticale tutti i punti hanno la stessa ascissa, quindi $\Delta x = 0$ per qualunque coppia scelta.` },
+    { id: 'q-09', domanda: R`Se $m<0$, la retta $y=mx+q$…`, opzioni: [R`è decrescente`, R`è crescente`, R`è orizzontale`, R`è parallela all'asse $y$`], corretta: 0, spiegazione: R`Un coefficiente angolare negativo vuol dire che $y$ diminuisce quando $x$ aumenta: la retta scende.` },
+    { id: 'q-10', domanda: R`Senza guardare l'equazione, quale fatto dice che una retta è verticale?`, opzioni: [R`$\Delta y=0$ fra due suoi punti qualsiasi`, R`il rapporto $\dfrac{\Delta y}{\Delta x}$ vale sempre $1$`, R`$\Delta x$ e $\Delta y$ sono entrambi $0$`, R`$\Delta x=0$ fra due suoi punti qualsiasi`], corretta: 3, spiegazione: R`Su una retta verticale tutti i punti hanno la stessa ascissa: fra due punti qualsiasi $\Delta x = 0$. Con $\Delta y = 0$ la retta è orizzontale. Rapporto $1$ vuol dire $m = 1$, una retta inclinata. Se $\Delta x$ e $\Delta y$ sono entrambi $0$, i due punti coincidono.` },
     { id: 'q-11', domanda: R`Due rette con $m_1=m_2$ e $q_1\ne q_2$ sono…`, opzioni: [R`perpendicolari`, R`parallele e distinte`, R`coincidenti`, R`incidenti in un solo punto`], corretta: 1, spiegazione: R`Stessa pendenza ma diversa ordinata all'origine: le rette non si incontrano mai. Se anche $q_1=q_2$ sarebbero coincidenti.` },
     { id: 'q-12', domanda: R`Quale coppia di coefficienti angolari corrisponde a rette perpendicolari?`, opzioni: [R`$m_1=2$, $m_2=2$`, R`$m_1=2$, $m_2=\dfrac{1}{2}$`, R`$m_1=2$, $m_2=-\dfrac{1}{2}$`, R`$m_1=-2$, $m_2=-\dfrac{1}{2}$`], corretta: 2, spiegazione: R`$2\cdot\left(-\dfrac12\right)=-1$: prodotto $-1$, condizione di perpendicolarità. Nelle altre il prodotto vale $4$, $1$ o $1$.` },
     { id: 'q-13', domanda: R`Un sistema fra le equazioni di due rette ha infinite soluzioni. Cosa significa?`, opzioni: [R`Le due equazioni descrivono la stessa retta`, R`Le rette sono parallele distinte`, R`Le rette sono perpendicolari`, R`Non esiste alcuna retta con quell'equazione`], corretta: 0, spiegazione: R`Infinite soluzioni vogliono dire che ogni punto che soddisfa una equazione soddisfa anche l'altra: sono la stessa retta scritta in due modi.` },
     { id: 'q-14', domanda: R`Nella formula $d(P,r)=\dfrac{|ax_0+by_0+c|}{\sqrt{a^2+b^2}}$, cosa succede se $P$ appartiene a $r$?`, opzioni: [R`La formula non si può applicare`, R`Il denominatore si annulla`, R`La distanza diventa negativa`, R`Il numeratore vale $0$ e quindi $d=0$`], corretta: 3, spiegazione: R`Se $P$ sta sulla retta, le sue coordinate soddisfano $ax_0+by_0+c=0$: il numeratore è nullo e la distanza, correttamente, è $0$.` },
     { id: 'q-15', domanda: R`Che cos'è un fascio proprio di rette?`, opzioni: [R`L'insieme di tutte le rette parallele a una direzione data`, R`L'insieme di tutte le rette che passano per uno stesso punto`, R`L'insieme delle rette con lo stesso $q$`, R`L'insieme delle rette con $m=0$`], corretta: 1, spiegazione: R`"Proprio" indica un centro reale, un punto comune a tutte le rette del fascio; le rette parallele fra loro formano invece il fascio improprio.` },
-    { id: 'q-16', domanda: R`Nell'equazione del fascio proprio $y-y_0=m(x-x_0)$, quale retta per $P_0$ manca?`, opzioni: [R`La retta orizzontale $y=y_0$`, R`Nessuna: sono comprese tutte`, R`La retta verticale $x=x_0$`, R`La retta con $m=1$`], corretta: 2, spiegazione: R`La retta orizzontale corrisponde a $m=0$ ed è compresa; quella verticale non ha coefficiente angolare e va aggiunta a parte.` }
+    { id: 'q-16', domanda: R`Nell'equazione del fascio proprio $y-y_0=m(x-x_0)$, quale retta per $P_0$ manca?`, opzioni: [R`La retta orizzontale $y=y_0$`, R`Nessuna: sono comprese tutte`, R`La retta verticale $x=x_0$`, R`La retta con $m=1$`], corretta: 2, spiegazione: R`La retta orizzontale corrisponde a $m=0$ ed è compresa; quella verticale non ha coefficiente angolare e va aggiunta a parte.` },
+    { id: 'q-17', domanda: R`Come si disegna il bordo del semipiano soluzione di $y \le 3x + 1$?`, opzioni: [R`Continuo: i punti della retta sono soluzioni`, R`Tratteggiato: i punti della retta non sono soluzioni`, R`Tratteggiato, perché una disequazione non è un'equazione`, R`Continuo solo se la retta passa per l'origine`], corretta: 0, spiegazione: R`Con $\le$ vale anche l'uguale: i punti con $y = 3x + 1$ rendono vera la disequazione, quindi il bordo fa parte delle soluzioni e si disegna continuo. Il tratteggio serve con $<$ e $>$. Passare o no per l'origine non c'entra.` }
   ],
 
   suggerimenti: [

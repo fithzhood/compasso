@@ -10,9 +10,9 @@ Ogni volta che i numeri non bastano, se ne aggiunge un tipo nuovo. Nasce così u
 
 $$\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}$$
 
-Sono i naturali, gli interi, i razionali e i reali. Il simbolo $\subset$ si legge «è contenuto in».
+Sono i naturali, gli interi, i razionali e i reali. $\mathbb{N} \subset \mathbb{Z}$ si legge «$\mathbb{N}$ è contenuto strettamente in $\mathbb{Z}$».
 
-Qui trovi anche gli strumenti per calcolare con questi numeri: le **frazioni** e le **percentuali**, le **potenze**, la **notazione scientifica**, il **valore assoluto**, i **numeri primi** con MCD e mcm.`,
+Qui trovi anche gli strumenti per calcolare con questi numeri: i **numeri primi** con MCD e mcm, le **frazioni** e le **percentuali**, le **potenze**, la **notazione scientifica**, il **valore assoluto**.`,
 
   inBreve: [
     R`Ogni insieme nuovo risolve un'equazione che prima non aveva soluzione: $x + 5 = 3$ chiede i negativi, $2x = 3$ chiede le frazioni. Un numero sta nel **più piccolo** insieme che lo contiene: $\dfrac{6}{2} = 3$ è un intero.`,
@@ -59,6 +59,50 @@ Ogni intero è anche una frazione: $5 = \dfrac{5}{1}$. Quindi $\mathbb{N} \subse
 
 >! «Intero» non vuol dire «positivo»: anche $-8$ è un intero. Sono i **naturali** a non avere i negativi.` },
 
+    { id: 'numeri-primi-scomposizione', titolo: 'Numeri primi, scomposizione, MCD e mcm', testo: R`Il $12$ si può scrivere come $3 \cdot 4$ o come $2 \cdot 6$. Il $7$ invece si divide solo per $1$ e per $7$.
+
+>* Un naturale maggiore di $1$ è **primo** se ha esattamente due divisori: $1$ e sé stesso. Gli altri si dicono **composti**. Il numero $1$ non è primo: ha un solo divisore.
+
+Per trovare i primi c'è il **crivello di Eratostene**.
+
+1. Parti dal $2$ e cancella tutti i suoi multipli.
+2. Passa al primo numero non cancellato e cancella i suoi multipli.
+3. Ripeti. I numeri che restano sono i primi.
+
+[[animazione:crivello]]
+
+?? Quale di questi numeri è primo?
+[ ] $51$
+[ ] $57$
+[x] $59$
+[ ] $91$
+=> $59$ non si divide per $2$, $3$, $5$, $7$. Non serve provare oltre: $8^2 = 64$ supera già $59$. Gli altri sembrano primi ma non lo sono: $51 = 3 \cdot 17$, $57 = 3 \cdot 19$, $91 = 7 \cdot 13$.
+
+### Scomporre in fattori primi
+
+Ogni numero composto è un prodotto di primi in **un solo modo**, a parte l'ordine. È il **teorema fondamentale dell'aritmetica**. Per trovare i fattori dividi per i primi, dal più piccolo.
+
+I fattori uguali si raccolgono in una **potenza**: $2 \cdot 2 \cdot 2 = 2^3$, tre fattori uguali a $2$. L'esponente conta quante volte il fattore si ripete. Le potenze hanno poi una sezione tutta loro.
+
+~ 360 :: il numero da scomporre
+~ 2 \cdot 180 :: $360$ è pari: divido per $2$
+~ 2 \cdot 2 \cdot 90 = 2^{\evid{2}} \cdot 90 :: anche $180$ è pari
+~ 2^{\evid{3}} \cdot 45 :: e anche $90$
+~ 2^3 \cdot \evid{3^2} \cdot 5 :: $45$ è dispari; $45 = 9 \cdot 5 = 3^2 \cdot 5$
+
+### MCD e mcm
+
+Il **massimo comun divisore** (MCD) è il numero più grande che divide tutti e due. Il **minimo comune multiplo** (mcm) è il numero più piccolo che è multiplo di tutti e due. Con la scomposizione li trovi senza tentativi:
+
+~ 36 = 2^2 \cdot 3^2 :: scompongo il primo numero
+~ 60 = 2^2 \cdot 3 \cdot 5 :: e poi il secondo
+~ \text{MCD} = 2^{\evid{2}} \cdot 3^{\evid{1}} = 12 :: solo i fattori **comuni** ($2$ e $3$), con l'esponente **più piccolo**
+~ \text{mcm} = 2^{\evid{2}} \cdot 3^{\evid{2}} \cdot \evid{5} = 180 :: **tutti** i fattori, anche il $5$ che sta solo nel $60$, con l'esponente **più grande**
+
+>* MCD: fattori comuni, esponente minimo. mcm: fattori comuni e non comuni, esponente massimo.
+
+>! Scambiare le due regole è l'errore tipico. Controlla così: il MCD non supera il numero più piccolo ($12 \le 36$). Il mcm non è minore del più grande ($180 \ge 60$).` },
+
     { id: 'numeri-reali', titolo: 'I numeri reali e la retta', testo: R`Disegna un quadrato di lato $1$. Per il teorema di Pitagora la diagonale misura $\sqrt{2}$: il numero che al quadrato fa $2$.
 
 Nessuna frazione al quadrato fa esattamente $2$: lo dimostriamo nella sezione sui numeri irrazionali.
@@ -95,7 +139,7 @@ Un periodico può essere semplice o misto:
 Che decimale otterrai?
 
 1. Riduci la frazione ai minimi termini.
-2. Scomponi il denominatore in fattori primi.
+2. Scomponi il denominatore in fattori primi, come nella sezione sui numeri primi.
 3. Se ci sono **solo** i fattori $2$ e $5$, il decimale è limitato. Altrimenti è periodico.
 
 ?? Quale di queste frazioni dà un decimale limitato?
@@ -145,7 +189,7 @@ $$\dfrac{2}{3} = \dfrac{10}{15} > \dfrac{9}{15} = \dfrac{3}{5}$$
 
 >* Per sommare o sottrarre due frazioni, portale allo stesso denominatore: il **minimo comune multiplo** dei denominatori. Poi somma o sottrai i numeratori. Il denominatore resta quello comune.
 
-Il mcm si trova scomponendo i denominatori in fattori primi, come nella sezione su MCD e mcm.
+Il mcm si trova scomponendo i denominatori in fattori primi, come hai visto nella sezione su MCD e mcm.
 
 ~ \dfrac{5}{6} + \dfrac{3}{4} :: denominatori diversi: $6 = 2 \cdot 3$ e $4 = 2^2$
 ~ \text{mcm}(6, 4) = 2^2 \cdot 3 = \evid{12} :: tutti i fattori, ognuno con l'esponente più grande
@@ -191,7 +235,7 @@ Per elevare a potenza una frazione, elevi numeratore e denominatore:
 
 $$\left(\dfrac{2}{3}\right)^3 = \dfrac{2^3}{3^3} = \dfrac{8}{27}$$
 
-Con l'esponente negativo la frazione si capovolge, come nella sezione sulle potenze.
+Con l'esponente negativo la frazione si capovolge: lo vedrai più avanti, nella sezione sulle potenze.
 
 >! Il segno meno conta come con gli interi. $\left(-\dfrac{1}{2}\right)^2 = \dfrac{1}{4}$, ma $-\left(\dfrac{1}{2}\right)^2 = -\dfrac{1}{4}$: senza parentesi il meno non viene elevato.
 
@@ -404,7 +448,7 @@ Nei prodotti moltiplica i coefficienti fra loro e le potenze di $10$ fra loro.
 
 ### Ordine di grandezza
 
-L'**ordine di grandezza** è la potenza di $10$ più vicina al numero. Serve per le stime veloci. Scrivi il numero come $a \times 10^n$ e guarda il coefficiente $a$:
+L'**ordine di grandezza** è la potenza di $10$ che approssima il numero, con una regola fissa. Si arrotonda il coefficiente: sotto $5$ resta $10^n$, da $5$ in su diventa $10^{n+1}$. Serve per le stime veloci. Scrivi il numero come $a \times 10^n$ e guarda il coefficiente $a$:
 
 | coefficiente | ordine di grandezza | esempio |
 |---|---|---|
@@ -450,69 +494,29 @@ La seconda riga sembra dare un numero negativo. Ma se $x$ è negativo, $-x$ è p
 
 ### Distanza fra due numeri
 
-La distanza fra due numeri $a$ e $b$ è $|a - b|$. Trascina $A$ e $B$. Le due sottrazioni $a - b$ e $b - a$ sono opposte, ma il valore assoluto è lo stesso: è la lunghezza del tratteggio.
+La distanza fra due numeri $a$ e $b$ è $|a - b|$. Le due sottrazioni $a - b$ e $b - a$ sono opposte, ma il valore assoluto è lo stesso: è la lunghezza del tratteggio.
 
 [[grafico:distanza]]
 
 La distanza fra $3$ e $7$ è $|3 - 7| = 4$. Quella fra $-2$ e $3$ è $|3 - (-2)| = 5$.
 
->! $|a + b|$ non è sempre $|a| + |b|$. Con $a = 3$ e $b = -5$: $|3 + (-5)| = |-2| = 2$, ma $|3| + |-5| = 8$. Prima fai la somma, **poi** il valore assoluto.` },
-
-    { id: 'numeri-primi-scomposizione', titolo: 'Numeri primi, scomposizione, MCD e mcm', testo: R`Il $12$ si può scrivere come $3 \cdot 4$ o come $2 \cdot 6$. Il $7$ invece si divide solo per $1$ e per $7$.
-
->* Un naturale maggiore di $1$ è **primo** se ha esattamente due divisori: $1$ e sé stesso. Gli altri si dicono **composti**. Il numero $1$ non è primo: ha un solo divisore.
-
-Per trovare i primi c'è il **crivello di Eratostene**.
-
-1. Parti dal $2$ e cancella tutti i suoi multipli.
-2. Passa al primo numero non cancellato e cancella i suoi multipli.
-3. Ripeti. I numeri che restano sono i primi.
-
-[[animazione:crivello]]
-
-?? Quale di questi numeri è primo?
-[ ] $51$
-[ ] $57$
-[x] $59$
-[ ] $91$
-=> $59$ non si divide per $2$, $3$, $5$, $7$. Non serve provare oltre: $8^2 = 64$ supera già $59$. Gli altri sembrano primi ma non lo sono: $51 = 3 \cdot 17$, $57 = 3 \cdot 19$, $91 = 7 \cdot 13$.
-
-### Scomporre in fattori primi
-
-Ogni numero composto è un prodotto di primi in **un solo modo**, a parte l'ordine. È il **teorema fondamentale dell'aritmetica**. Per trovare i fattori dividi per i primi, dal più piccolo.
-
-~ 360 :: il numero da scomporre
-~ 2 \cdot 180 :: $360$ è pari: divido per $2$
-~ 2 \cdot 2 \cdot 90 = 2^{\evid{2}} \cdot 90 :: anche $180$ è pari
-~ 2^{\evid{3}} \cdot 45 :: e anche $90$
-~ 2^3 \cdot \evid{3^2} \cdot 5 :: $45$ è dispari; $45 = 9 \cdot 5 = 3^2 \cdot 5$
-
-### MCD e mcm
-
-Il **massimo comun divisore** (MCD) è il numero più grande che divide tutti e due. Il **minimo comune multiplo** (mcm) è il numero più piccolo che è multiplo di tutti e due. Con la scomposizione li trovi senza tentativi:
-
-~ 36 = 2^2 \cdot 3^2 \qquad 60 = 2^2 \cdot 3 \cdot 5 :: scompongo tutti e due
-~ \text{MCD} = 2^{\evid{2}} \cdot 3^{\evid{1}} = 12 :: solo i fattori **comuni** ($2$ e $3$), con l'esponente **più piccolo**
-~ \text{mcm} = 2^{\evid{2}} \cdot 3^{\evid{2}} \cdot \evid{5} = 180 :: **tutti** i fattori, anche il $5$ che sta solo nel $60$, con l'esponente **più grande**
-
->* MCD: fattori comuni, esponente minimo. mcm: fattori comuni e non comuni, esponente massimo.
-
->! Scambiare le due regole è l'errore tipico. Controlla così: il MCD non supera il numero più piccolo ($12 \le 36$). Il mcm non è minore del più grande ($180 \ge 60$).` }
+>! $|a + b|$ non è sempre $|a| + |b|$. Con $a = 3$ e $b = -5$: $|3 + (-5)| = |-2| = 2$, ma $|3| + |-5| = 8$. Prima fai la somma, **poi** il valore assoluto.` }
   ],
 
   grafici: {
     distanza: {
-      tipo: 'piano', x: [-5.5, 5.5], y: [-1, 3], passo: [1, 1], griglia: false, etichette: { x: '', y: '' },
+      tipo: 'piano', x: [-5.5, 5.5], y: [-1, 3], passo: [1, 5], griglia: false, etichette: { x: '', y: '' },
       parametri: [
         { nome: 'a', min: -5, max: 5, passo: 0.5, valore: -2, nascosto: true },
         { nome: 'b', min: -5, max: 5, passo: 0.5, valore: 3, nascosto: true }
       ],
       elementi: [
-        { tipo: 'segmento', da: ['a', 0], a: ['b', 0], tratteggio: true, colore: 4 },
+        { tipo: 'segmento', da: ['a', 0.4], a: ['b', 0.4], tratteggio: true, colore: 4 },
         { tipo: 'punto', p: [0, 0] },
         { tipo: 'punto', p: ['a', 0], trascina: true, etichetta: 'A', posizione: 'alto', colore: 1 },
         { tipo: 'punto', p: ['b', 0], trascina: true, etichetta: 'B', posizione: 'alto', colore: 2 },
-        { tipo: 'testo', p: [-5.2, 2.5], testo: 'a − b = {{a - b}}      b − a = {{b - a}}', ancora: 'start' },
+        { tipo: 'testo', p: [-5.2, 2.5], testo: 'a − b = {{a - b}}', ancora: 'start' },
+        { tipo: 'testo', p: [0.6, 2.5], testo: 'b − a = {{b - a}}', ancora: 'start' },
         { tipo: 'testo', p: [-5.2, 1.6], testo: 'distanza = |a − b| = {{abs(a - b)}}', ancora: 'start' }
       ],
       didascalia: 'Trascina A e B: le due sottrazioni cambiano segno, il valore assoluto resta la lunghezza del tratteggio.'
@@ -538,13 +542,13 @@ Il **massimo comun divisore** (MCD) è il numero più grande che divide tutti e 
       R`Per l'esponente negativo, $2^{-1} = \dfrac{1}{2^1} = \dfrac{1}{2}$.`
     ], risultato: R`$\dfrac{1}{2} = 0{,}5$` },
 
-    { titolo: 'Frazione generatrice di un periodico misto', problema: R`Trova la frazione generatrice, ridotta ai minimi termini, di $0{,}41\overline{6}$.`, passi: [
-      R`Antiperiodo: $41$ (due cifre). Periodo: $6$ (una cifra).`,
-      R`Numeratore: numero intero fino a un periodo, $416$, meno la parte non periodica, $41$: $416 - 41 = 375$.`,
-      R`Denominatore: tanti $9$ quante le cifre del periodo (uno) seguiti da tanti $0$ quante le cifre dell'antiperiodo (due): $900$.`,
-      R`Quindi $0{,}41\overline{6} = \dfrac{375}{900}$.`,
-      R`Semplifico: $375 = 3 \cdot 5^3$ e $900 = 2^2 \cdot 3^2 \cdot 5^2$ hanno in comune $3 \cdot 5^2 = 75$. Divido sopra e sotto per $75$ e ottengo $\dfrac{5}{12}$. Controllo: $5 : 12 = 0{,}41666\dots$ ✓`
-    ], risultato: R`$\dfrac{5}{12}$` },
+    { titolo: 'Frazione generatrice di un periodico misto', problema: R`Trova la frazione generatrice, ridotta ai minimi termini, di $0{,}3\overline{18}$.`, passi: [
+      R`Antiperiodo: $3$ (una cifra). Periodo: $18$ (due cifre).`,
+      R`Numeratore: le cifre fino al primo periodo, $318$, meno l'antiperiodo, $3$: $318 - 3 = 315$.`,
+      R`Denominatore: un $9$ per ogni cifra del periodo (due), poi uno $0$ per ogni cifra dell'antiperiodo (una): $990$.`,
+      R`Quindi $0{,}3\overline{18} = \dfrac{315}{990}$.`,
+      R`Semplifico: $315 = 3^2 \cdot 5 \cdot 7$ e $990 = 2 \cdot 3^2 \cdot 5 \cdot 11$ hanno in comune $3^2 \cdot 5 = 45$. Divido sopra e sotto per $45$ e ottengo $\dfrac{7}{22}$. Controllo: $7 : 22 = 0{,}31818\dots$ ✓`
+    ], risultato: R`$\dfrac{7}{22}$` },
 
     { titolo: 'Un\'espressione con le frazioni', problema: R`Calcola $\left(\dfrac{2}{3} + \dfrac{1}{6}\right) : \dfrac{5}{4} - \dfrac{1}{3}$.`, passi: [
       R`Prima la parentesi. Il mcm di $3$ e $6$ è $6$: $\dfrac{4}{6} + \dfrac{1}{6} = \dfrac{5}{6}$.`,
@@ -589,8 +593,8 @@ Il **massimo comun divisore** (MCD) è il numero più grande che divide tutti e 
     { nome: 'Esponente zero', formula: R`a^0 = 1`, nota: R`Richiede $a \ne 0$; $0^0$ non si definisce.` },
     { nome: 'Esponente negativo', formula: R`a^{-n} = \frac{1}{a^n}`, nota: R`Richiede $a \ne 0$.` },
     { nome: 'Valore assoluto', formula: R`|x| = \begin{cases} x & \text{se } x \ge 0 \\ -x & \text{se } x < 0 \end{cases}` },
-    { nome: 'Notazione scientifica', formula: R`a \times 10^n, \qquad 1 \le |a| < 10` },
-    { nome: 'Ordine di grandezza', formula: R`10^n \text{ se } a < 5; \qquad 10^{n+1} \text{ se } a \ge 5`, nota: R`Con il numero scritto come $a \times 10^n$.` },
+    { nome: 'Notazione scientifica', formula: R`a \times 10^n \text{ con } 1 \le |a| < 10` },
+    { nome: 'Ordine di grandezza', formula: R`\begin{gathered} 10^n \text{ se } a < 5 \\ 10^{n+1} \text{ se } a \ge 5 \end{gathered}`, nota: R`Con il numero scritto come $a \times 10^n$: si arrotonda il coefficiente.` },
     { nome: 'Errore assoluto e relativo', formula: R`\begin{gathered} E_a = |v - \tilde{v}| \\ E_r = \frac{|v - \tilde{v}|}{|v|} \end{gathered}`, nota: R`$v$ valore vero, $\tilde{v}$ valore approssimato. $E_r \cdot 100$ è l'errore percentuale.` },
     { nome: 'MCD e mcm', formula: R`\text{MCD}(a, b) \cdot \text{mcm}(a, b) = a \cdot b` }
   ],
@@ -630,23 +634,21 @@ Il **massimo comun divisore** (MCD) è il numero più grande che divide tutti e 
   ],
 
   esercizi: [
+    { id: 'b-36', sezione: 'insiemi-n-z-q', livello: 'base', difficolta: 1, testo: R`Qual è il più piccolo fra gli insiemi $\mathbb{N}$, $\mathbb{Z}$, $\mathbb{Q}$ che contiene $-\dfrac{9}{3}$? Rispondi con una lettera: N, Z oppure Q.`, suggerimenti: [R`Prima semplifica la frazione.`, R`$-\dfrac{9}{3} = -3$: è un numero negativo, quindi non può essere naturale.`], risposta: { tipo: 'testo', accettate: ['z', 'zeta', 'interi', 'ℤ'], segnaposto: 'N, Z o Q' }, soluzione: [R`$-\dfrac{9}{3} = -3$, un numero intero negativo.`, R`Non è naturale (è negativo), ma è intero: il più piccolo insieme che lo contiene è $\mathbb{Z}$.`] },
+    { id: 'b-37', sezione: 'numeri-primi-scomposizione', livello: 'base', difficolta: 2, testo: R`Calcola il MCD e il mcm di $90$ e $120$. Scrivi i due numeri separati da punto e virgola.`, suggerimenti: [R`Scomponi tutti e due in fattori primi.`, R`$90 = 2 \cdot 3^2 \cdot 5$ e $120 = 2^3 \cdot 3 \cdot 5$: quali fattori sono comuni?`], risposta: { tipo: 'numeri', valori: [30, 360], segnaposto: 'es. 6; 72' }, soluzione: [R`$90 = 2 \cdot 3^2 \cdot 5$ e $120 = 2^3 \cdot 3 \cdot 5$.`, R`MCD: fattori comuni con l'esponente minimo, $2 \cdot 3 \cdot 5 = 30$.`, R`mcm: tutti i fattori con l'esponente massimo, $2^3 \cdot 3^2 \cdot 5 = 360$.`, R`Controllo: $30 \cdot 360 = 10\,800$, proprio come $90 \cdot 120$.`] },
     { id: 'b-07', livello: 'base', difficolta: 1, testo: R`Scrivi $\dfrac{3}{5}$ come numero decimale.`, suggerimenti: [R`Dividi il numeratore per il denominatore: $3 : 5$.`], risposta: { tipo: 'testo', accettate: ['0.6', '0,6', '0.60', '.6'], segnaposto: 'es. 0,4' }, soluzione: [R`$3 : 5 = 0{,}6$.`, R`Il decimale è limitato: il denominatore $5$ ha solo il fattore $5$.`] },
     { id: 'b-13', livello: 'base', difficolta: 1, testo: R`Trova la frazione generatrice di $0{,}\overline{7}$. Scrivila nella forma *a/b*.`, suggerimenti: [R`È un periodico semplice: il periodo è $7$, una cifra.`, R`Sopra il periodo, sotto un $9$ per ogni cifra del periodo.`], risposta: { tipo: 'testo', accettate: ['7/9'], segnaposto: 'es. 2/3' }, soluzione: [R`Periodo $7$, una cifra, nessun antiperiodo.`, R`Numeratore $7$, denominatore $9$: $0{,}\overline{7} = \dfrac{7}{9}$.`] },
     { id: 'b-15', livello: 'base', difficolta: 2, testo: R`Scrivi $0{,}125$ come frazione ridotta ai minimi termini, nella forma *a/b*.`, suggerimenti: [R`Tre cifre dopo la virgola: metti $1000$ sotto.`, R`$125 \cdot 8 = 1000$.`], risposta: { tipo: 'testo', accettate: ['1/8'], segnaposto: 'es. 2/5' }, soluzione: [R`$0{,}125 = \dfrac{125}{1000}$.`, R`Divido sopra e sotto per $125$: $\dfrac{1}{8}$.`] },
     { id: 'b-17', livello: 'base', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}\overline{12}$, ridotta ai minimi termini. Scrivila nella forma *a/b*.`, suggerimenti: [R`Il periodo è $12$: due cifre, quindi due $9$ sotto.`, R`$\dfrac{12}{99}$ si semplifica per $3$.`], risposta: { tipo: 'testo', accettate: ['4/33'], segnaposto: 'es. 2/3' }, soluzione: [R`Periodo $12$, due cifre: $0{,}\overline{12} = \dfrac{12}{99}$.`, R`Divido sopra e sotto per $3$: $\dfrac{4}{33}$.`] },
-    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}1\overline{6}$, ridotta ai minimi termini. Scrivila nella forma *a/b*.`, suggerimenti: [R`Antiperiodo $1$, periodo $6$: sotto va $90$.`, R`Sopra: $16 - 1$.`], risposta: { tipo: 'testo', accettate: ['1/6'], segnaposto: 'es. 2/3' }, soluzione: [R`Numeratore: le cifre fino al periodo meno l'antiperiodo, $16 - 1 = 15$.`, R`Denominatore: un $9$ per il periodo e uno $0$ per l'antiperiodo, $90$.`, R`$\dfrac{15}{90}$ si semplifica per $15$: $\dfrac{1}{6}$.`] },
+    { id: 'b-18', livello: 'base', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}7\overline{2}$, ridotta ai minimi termini. Scrivila nella forma *a/b*.`, suggerimenti: [R`Antiperiodo $7$, periodo $2$: sotto va $90$.`, R`Sopra: $72 - 7$.`], risposta: { tipo: 'testo', accettate: ['13/18'], segnaposto: 'es. 2/3' }, soluzione: [R`Numeratore: le cifre fino al periodo meno l'antiperiodo, $72 - 7 = 65$.`, R`Denominatore: un $9$ per il periodo e uno $0$ per l'antiperiodo, $90$.`, R`$\dfrac{65}{90}$ si semplifica per $5$: $\dfrac{13}{18}$.`] },
     { id: 'b-22', sezione: 'calcolo-frazioni', livello: 'base', difficolta: 1, testo: R`Calcola $\dfrac{1}{4} + \dfrac{2}{3}$. Scrivi il risultato nella forma *a/b*.`, suggerimenti: [R`Il denominatore comune è il mcm di $4$ e $3$.`, R`$\dfrac{1}{4} = \dfrac{3}{12}$ e $\dfrac{2}{3} = \dfrac{8}{12}$.`], risposta: { tipo: 'numero', valore: 0.916667, tolleranza: 0.0005, segnaposto: 'es. 3/5' }, soluzione: [R`Il mcm di $4$ e $3$ è $12$.`, R`$\dfrac{3}{12} + \dfrac{8}{12} = \dfrac{11}{12}$.`] },
-    { id: 'b-23', sezione: 'calcolo-frazioni', livello: 'base', difficolta: 1, testo: R`Calcola $\dfrac{7}{10} - \dfrac{1}{4}$. Scrivi il risultato nella forma *a/b*.`, suggerimenti: [R`Scomponi i denominatori: $10 = 2 \cdot 5$ e $4 = 2^2$.`, R`Il mcm è $20$, non serve arrivare a $40$.`], risposta: { tipo: 'numero', valore: 0.45, tolleranza: 0.0005, segnaposto: 'es. 3/5' }, soluzione: [R`Il mcm di $10$ e $4$ è $2^2 \cdot 5 = 20$.`, R`$\dfrac{14}{20} - \dfrac{5}{20} = \dfrac{9}{20}$.`] },
     { id: 'b-24', sezione: 'calcolo-frazioni', livello: 'base', difficolta: 1, testo: R`Calcola $\dfrac{6}{35} \cdot \dfrac{14}{9}$, semplificando in croce. Scrivi il risultato nella forma *a/b*.`, suggerimenti: [R`$6$ e $9$ hanno in comune il $3$.`, R`$14$ e $35$ hanno in comune il $7$.`], risposta: { tipo: 'numero', valore: 0.266667, tolleranza: 0.0005, segnaposto: 'es. 3/5' }, soluzione: [R`In croce: $6$ e $9$ diviso $3$ danno $2$ e $3$; $14$ e $35$ diviso $7$ danno $2$ e $5$.`, R`Resta $\dfrac{2}{5} \cdot \dfrac{2}{3} = \dfrac{4}{15}$.`] },
     { id: 'b-25', sezione: 'calcolo-frazioni', livello: 'base', difficolta: 1, testo: R`Calcola $\dfrac{5}{8} : \dfrac{15}{4}$. Scrivi il risultato nella forma *a/b*.`, suggerimenti: [R`Dividere per una frazione vuol dire moltiplicare per la sua inversa.`, R`$\dfrac{5}{8} \cdot \dfrac{4}{15}$: ora semplifica in croce.`], risposta: { tipo: 'numero', valore: 0.166667, tolleranza: 0.0005, segnaposto: 'es. 3/5' }, soluzione: [R`$\dfrac{5}{8} : \dfrac{15}{4} = \dfrac{5}{8} \cdot \dfrac{4}{15}$.`, R`In croce: $5$ e $15$ diviso $5$; $4$ e $8$ diviso $4$. Resta $\dfrac{1}{2} \cdot \dfrac{1}{3} = \dfrac{1}{6}$.`] },
     { id: 'b-26', sezione: 'calcolo-frazioni', livello: 'base', difficolta: 1, testo: R`Calcola $\left(-\dfrac{3}{2}\right)^3$. Scrivi il risultato nella forma *a/b*.`, suggerimenti: [R`Eleva al cubo numeratore e denominatore.`, R`Base negativa ed esponente dispari: il risultato è negativo.`], risposta: { tipo: 'numero', valore: -3.375, tolleranza: 0.0005, segnaposto: 'es. 3/5' }, soluzione: [R`$3^3 = 27$ e $2^3 = 8$.`, R`L'esponente è dispari, quindi il segno resta: $\left(-\dfrac{3}{2}\right)^3 = -\dfrac{27}{8}$.`] },
     { id: 'b-27', sezione: 'calcolo-frazioni', livello: 'base', difficolta: 2, testo: R`Calcola $2 - \dfrac{3}{4} \cdot \dfrac{2}{9}$. Scrivi il risultato nella forma *a/b*.`, suggerimenti: [R`La moltiplicazione viene prima della sottrazione.`, R`$\dfrac{3}{4} \cdot \dfrac{2}{9} = \dfrac{1}{6}$.`], risposta: { tipo: 'numero', valore: 1.833333, tolleranza: 0.0005, segnaposto: 'es. 3/5' }, soluzione: [R`Prima il prodotto, semplificando in croce: $\dfrac{3}{4} \cdot \dfrac{2}{9} = \dfrac{1}{2} \cdot \dfrac{1}{3} = \dfrac{1}{6}$.`, R`Poi la sottrazione: $2 - \dfrac{1}{6} = \dfrac{12}{6} - \dfrac{1}{6} = \dfrac{11}{6}$.`] },
-    { id: 'b-28', sezione: 'calcolo-frazioni', livello: 'base', difficolta: 2, testo: R`Calcola $\left(\dfrac{2}{5} + \dfrac{1}{2}\right) : \dfrac{3}{10}$.`, suggerimenti: [R`Prima la parentesi: il denominatore comune è $10$.`, R`Poi moltiplica per l'inversa di $\dfrac{3}{10}$.`], risposta: { tipo: 'numero', valore: 3 }, soluzione: [R`Parentesi: $\dfrac{4}{10} + \dfrac{5}{10} = \dfrac{9}{10}$.`, R`Divisione: $\dfrac{9}{10} \cdot \dfrac{10}{3} = \dfrac{9}{3} = 3$.`] },
-    { id: 'b-29', sezione: 'rapporti-percentuali', livello: 'base', difficolta: 1, testo: R`Quanto è il $35\%$ di $60$?`, suggerimenti: [R`Il $35\%$ è $\dfrac{35}{100}$.`, R`Calcola $\dfrac{35}{100} \cdot 60$, oppure $0{,}35 \cdot 60$.`], risposta: { tipo: 'numero', valore: 21 }, soluzione: [R`$35\% = 0{,}35$.`, R`$0{,}35 \cdot 60 = 21$.`] },
     { id: 'b-30', sezione: 'rapporti-percentuali', livello: 'base', difficolta: 1, testo: R`Trova $x$ nella proporzione $3 : 8 = x : 24$.`, suggerimenti: [R`Prodotto dei medi uguale al prodotto degli estremi.`, R`$8 \cdot x = 3 \cdot 24$.`], risposta: { tipo: 'numero', valore: 9 }, soluzione: [R`Medi: $8$ e $x$. Estremi: $3$ e $24$. Quindi $8x = 3 \cdot 24 = 72$.`, R`$x = \dfrac{72}{8} = 9$.`] },
     { id: 'b-31', sezione: 'rapporti-percentuali', livello: 'base', difficolta: 1, testo: R`Su $75$ biglietti venduti, $27$ sono ridotti. Che percentuale dei biglietti è ridotta?`, suggerimenti: [R`Scrivi la frazione $\dfrac{27}{75}$ e semplificala.`, R`$\dfrac{27}{75} = \dfrac{9}{25}$: quanto fa su $100$?`], risposta: { tipo: 'numero', valore: 36, segnaposto: 'es. 30 %' }, soluzione: [R`$\dfrac{27}{75} = \dfrac{9}{25}$, semplificando per $3$.`, R`$\dfrac{9}{25} = \dfrac{36}{100}$: è il $36\%$.`] },
     { id: 'b-32', sezione: 'rapporti-percentuali', livello: 'base', difficolta: 1, testo: R`Un giubbotto da $120$ € è scontato del $15\%$. Quanto costa ora, in euro?`, suggerimenti: [R`Dopo lo sconto resta l'$85\%$ del prezzo.`, R`Moltiplica $120$ per $0{,}85$.`], risposta: { tipo: 'numero', valore: 102 }, soluzione: [R`Uno sconto del $15\%$ lascia l'$85\%$: si moltiplica per $0{,}85$.`, R`$120 \cdot 0{,}85 = 102$, quindi costa $102$ €.`] },
-    { id: 'b-34', sezione: 'rapporti-percentuali', livello: 'base', difficolta: 2, testo: R`Un abbonamento da $50$ € aumenta del $10\%$. L'anno dopo cala del $10\%$. Quanto costa alla fine, in euro?`, suggerimenti: [R`Il calo del $10\%$ si prende sul prezzo già aumentato.`, R`$50 \cdot 1{,}1 = 55$; poi moltiplica per $0{,}9$.`], risposta: { tipo: 'numero', valore: 49.5 }, soluzione: [R`Aumento: $50 \cdot 1{,}1 = 55$ €.`, R`Calo, sul prezzo nuovo: $55 \cdot 0{,}9 = 49{,}50$ €. Non torna a $50$ €.`] },
     { id: 'b-01', livello: 'base', difficolta: 1, testo: R`Scrivi come una sola potenza: $2^3 \cdot 2^4$. Per l'esponente usa ^: $3^2$ si scrive *3^2*.`, suggerimenti: [R`Stessa base: nel prodotto gli esponenti si sommano.`], risposta: { tipo: 'testo', accettate: ['2^7', '128'], segnaposto: 'es. 2^5' }, soluzione: [R`La base è la stessa, $2$: sommo gli esponenti.`, R`$2^{3 + 4} = 2^7$.`] },
     { id: 'b-02', livello: 'base', difficolta: 1, testo: R`Scrivi come una sola potenza: $5^6 : 5^2$. Per l'esponente usa ^.`, suggerimenti: [R`Stessa base: nel quoziente gli esponenti si sottraggono.`], risposta: { tipo: 'testo', accettate: ['5^4', '625'], segnaposto: 'es. 5^3' }, soluzione: [R`La base è la stessa, $5$: sottraggo gli esponenti.`, R`$5^{6 - 2} = 5^4$.`] },
     { id: 'b-03', livello: 'base', difficolta: 1, testo: R`Scrivi come una sola potenza: $(3^2)^3$. Per l'esponente usa ^.`, suggerimenti: [R`Potenza di potenza: gli esponenti si moltiplicano.`], risposta: { tipo: 'testo', accettate: ['3^6', '729'], segnaposto: 'es. 3^4' }, soluzione: [R`È una potenza di potenza: moltiplico gli esponenti.`, R`$3^{2 \cdot 3} = 3^6$.`] },
@@ -654,18 +656,16 @@ Il **massimo comun divisore** (MCD) è il numero più grande che divide tutti e 
     { id: 'b-14', livello: 'base', difficolta: 2, testo: R`Calcola $\left(\dfrac{1}{2}\right)^{-3}$.`, suggerimenti: [R`L'esponente negativo capovolge la frazione.`, R`$\left(\dfrac{1}{2}\right)^{-3} = 2^3$.`], risposta: { tipo: 'numero', valore: 8 }, soluzione: [R`Capovolgo la frazione e cambio segno all'esponente: $\left(\dfrac{1}{2}\right)^{-3} = \left(\dfrac{2}{1}\right)^3$.`, R`$2^3 = 8$.`] },
     { id: 'b-16', livello: 'base', difficolta: 2, testo: R`Calcola $5^{-2} \cdot 5^3$.`, suggerimenti: [R`Stessa base: somma gli esponenti, anche se uno è negativo.`], risposta: { tipo: 'numero', valore: 5 }, soluzione: [R`Sommo gli esponenti: $-2 + 3 = 1$.`, R`$5^{-2} \cdot 5^3 = 5^1 = 5$.`] },
     { id: 'b-20', livello: 'base', difficolta: 2, testo: R`Calcola $(2^{-1})^3 \cdot 2^5$.`, suggerimenti: [R`Prima la potenza di potenza: moltiplica gli esponenti.`, R`$(2^{-1})^3 = 2^{-3}$. Poi somma gli esponenti.`], risposta: { tipo: 'numero', valore: 4 }, soluzione: [R`Potenza di potenza: $(2^{-1})^3 = 2^{-1 \cdot 3} = 2^{-3}$.`, R`Prodotto con la stessa base: $2^{-3} \cdot 2^5 = 2^{-3 + 5} = 2^2$.`, R`$2^2 = 4$.`] },
-    { id: 'b-35', sezione: 'notazione-scientifica', livello: 'base', difficolta: 2, testo: R`Tronchi $0{,}125$ a due decimali e ottieni $0{,}12$. Qual è l'errore relativo, in percentuale?`, suggerimenti: [R`L'errore assoluto è $0{,}125 - 0{,}12$.`, R`Dividi l'errore assoluto per il valore vero, $0{,}125$, poi moltiplica per $100$.`], risposta: { tipo: 'numero', valore: 4, segnaposto: 'es. 2 %' }, soluzione: [R`Errore assoluto: $0{,}125 - 0{,}12 = 0{,}005$.`, R`Errore relativo: $\dfrac{0{,}005}{0{,}125} = 0{,}04$, cioè il $4\%$.`] },
+    { id: 'b-38', sezione: 'notazione-scientifica', livello: 'base', difficolta: 2, testo: R`Scrivi in notazione scientifica il numero $0{,}00047$. Per l'esponente usa ^.`, suggerimenti: [R`Sposta la virgola finché resta una sola cifra non nulla prima di essa.`, R`Conta di quante posizioni ti sei spostato: quello è l'esponente (negativo, perché il numero è minore di $1$).`], risposta: { tipo: 'testo', accettate: ['4.7×10^-4', '4.7*10^-4', '4,7×10^-4', '4.7e-4', '4.7·10^-4', '4,7*10^-4', '4.7x10^-4', '4.7*10^(-4)', '4.7×10^(-4)', '4.7x10^(-4)'], segnaposto: 'es. 3,2×10^5' }, soluzione: [R`Si sposta la virgola di $4$ posizioni verso destra: $4{,}7$.`, R`$0{,}00047 = 4{,}7 \times 10^{-4}$.`] },
+    { id: 'b-35', sezione: 'notazione-scientifica', livello: 'base', difficolta: 2, testo: R`Tronchi $0{,}625$ a due decimali e ottieni $0{,}62$. Qual è l'errore relativo, in percentuale?`, suggerimenti: [R`L'errore assoluto è $0{,}625 - 0{,}62$.`, R`Dividi l'errore assoluto per il valore vero, $0{,}625$, poi moltiplica per $100$.`], risposta: { tipo: 'numero', valore: 0.8, tolleranza: 0.005, segnaposto: 'es. 2 %' }, soluzione: [R`Errore assoluto: $0{,}625 - 0{,}62 = 0{,}005$.`, R`Errore relativo: $\dfrac{0{,}005}{0{,}625} = 0{,}008$, cioè lo $0{,}8\%$.`] },
+    { id: 'b-39', sezione: 'valore-assoluto', livello: 'base', difficolta: 1, testo: R`Risolvi $|x - 3| = 5$.`, suggerimenti: [R`$|x-3|=5$ significa "$x$ è a distanza $5$ da $3$".`, R`Ci sono due punti a distanza $5$ da $3$ sulla retta: uno a destra e uno a sinistra.`], risposta: { tipo: 'numeri', valori: [8, -2] }, soluzione: [R`$x - 3 = 5 \Rightarrow x = 8$, oppure $x - 3 = -5 \Rightarrow x = -2$.`, R`Verifica: $|8-3|=5$ ✓ e $|-2-3|=|-5|=5$ ✓.`] },
 
-    { id: 'es-01', difficolta: 1, testo: R`Qual è il più piccolo fra gli insiemi $\mathbb{N}$, $\mathbb{Z}$, $\mathbb{Q}$ che contiene $-\dfrac{9}{3}$? Rispondi con una lettera: N, Z oppure Q.`, suggerimenti: [R`Prima semplifica la frazione.`, R`$-\dfrac{9}{3} = -3$: è un numero negativo, quindi non può essere naturale.`], risposta: { tipo: 'testo', accettate: ['z', 'zeta', 'interi'] }, soluzione: [R`$-\dfrac{9}{3} = -3$, un numero intero negativo.`, R`Non è naturale (è negativo), ma è intero: il più piccolo insieme che lo contiene è $\mathbb{Z}$.`] },
-    { id: 'es-02', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}\overline{45}$, ridotta ai minimi termini.`, suggerimenti: [R`È un periodico semplice: niente antiperiodo.`, R`Numeratore = il periodo $45$; denominatore = tanti $9$ quante le cifre del periodo.`], risposta: { tipo: 'numero', valore: 0.454545, tolleranza: 0.0005 }, soluzione: [R`$0{,}\overline{45} = \dfrac{45}{99}$.`, R`Dividendo per $9$: $\dfrac{5}{11}$.`] },
-    { id: 'es-03', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}2\overline{3}$, ridotta ai minimi termini.`, suggerimenti: [R`Antiperiodo: $2$. Periodo: $3$.`, R`Numeratore: $23 - 2$. Denominatore: un $9$ (una cifra di periodo) e uno $0$ (una cifra di antiperiodo).`], risposta: { tipo: 'numero', valore: 0.233333, tolleranza: 0.0005 }, soluzione: [R`$0{,}2\overline{3} = \dfrac{23 - 2}{90} = \dfrac{21}{90}$.`, R`Dividendo per $3$: $\dfrac{7}{30}$.`] },
-    { id: 'es-04', difficolta: 1, testo: R`Calcola $2^3 \cdot 2^{-5}$.`, suggerimenti: [R`Stessa base: somma gli esponenti.`, R`$3 + (-5) = -2$.`], risposta: { tipo: 'numero', valore: 0.25, tolleranza: 0.001 }, soluzione: [R`$2^3 \cdot 2^{-5} = 2^{3-5} = 2^{-2}$.`, R`$2^{-2} = \dfrac{1}{2^2} = \dfrac{1}{4} = 0{,}25$.`] },
-    { id: 'es-05', difficolta: 1, testo: R`Calcola $\left(\dfrac{2}{3}\right)^{-2}$.`, suggerimenti: [R`Un esponente negativo su una frazione la capovolge.`, R`$\left(\dfrac{2}{3}\right)^{-2} = \left(\dfrac{3}{2}\right)^2$.`], risposta: { tipo: 'numero', valore: 2.25, tolleranza: 0.001 }, soluzione: [R`$\left(\dfrac{2}{3}\right)^{-2} = \left(\dfrac{3}{2}\right)^2 = \dfrac{9}{4}$.`, R`$\dfrac{9}{4} = 2{,}25$.`] },
-    { id: 'es-06', difficolta: 2, testo: R`Scrivi in notazione scientifica il numero $0{,}00047$.`, suggerimenti: [R`Sposta la virgola finché resta una sola cifra non nulla prima di essa.`, R`Conta di quante posizioni ti sei spostato: quello è l'esponente (negativo, perché il numero è minore di $1$).`], risposta: { tipo: 'testo', accettate: ['4.7×10^-4', '4.7*10^-4', '4,7×10^-4', '4.7e-4', '4.7·10^-4', '4,7*10^-4', '4.7x10^-4'] }, soluzione: [R`Si sposta la virgola di $4$ posizioni verso destra: $4{,}7$.`, R`$0{,}00047 = 4{,}7 \times 10^{-4}$.`] },
+    { id: 'es-02', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}\overline{45}$, ridotta ai minimi termini. Scrivila nella forma *a/b*.`, suggerimenti: [R`È un periodico semplice: niente antiperiodo.`, R`Numeratore = il periodo $45$; denominatore = tanti $9$ quante le cifre del periodo.`], risposta: { tipo: 'testo', accettate: ['5/11'], segnaposto: 'es. 2/7' }, soluzione: [R`$0{,}\overline{45} = \dfrac{45}{99}$.`, R`Dividendo per $9$: $\dfrac{5}{11}$.`] },
+    { id: 'es-03', difficolta: 2, testo: R`Trova la frazione generatrice di $0{,}2\overline{3}$, ridotta ai minimi termini. Scrivila nella forma *a/b*.`, suggerimenti: [R`Antiperiodo: $2$. Periodo: $3$.`, R`Numeratore: $23 - 2$. Denominatore: un $9$ (una cifra di periodo) e uno $0$ (una cifra di antiperiodo).`], risposta: { tipo: 'testo', accettate: ['7/30'], segnaposto: 'es. 3/40' }, soluzione: [R`$0{,}2\overline{3} = \dfrac{23 - 2}{90} = \dfrac{21}{90}$.`, R`Dividendo per $3$: $\dfrac{7}{30}$.`] },
+    { id: 'es-04', difficolta: 1, testo: R`Calcola $10^3 \cdot 10^{-5}$ e scrivi il risultato come numero decimale.`, suggerimenti: [R`Stessa base: somma gli esponenti.`, R`$3 + (-5) = -2$.`], risposta: { tipo: 'numero', valore: 0.01, tolleranza: 0.0001, segnaposto: 'es. 0,5' }, soluzione: [R`$10^3 \cdot 10^{-5} = 10^{3-5} = 10^{-2}$.`, R`$10^{-2} = \dfrac{1}{10^2} = \dfrac{1}{100} = 0{,}01$.`] },
+    { id: 'es-05', difficolta: 1, testo: R`Calcola $\left(\dfrac{3}{4}\right)^{-2}$.`, suggerimenti: [R`Un esponente negativo su una frazione la capovolge.`, R`$\left(\dfrac{3}{4}\right)^{-2} = \left(\dfrac{4}{3}\right)^2$.`], risposta: { tipo: 'numero', valore: 1.777778, tolleranza: 0.0005, segnaposto: 'es. 5/2' }, soluzione: [R`$\left(\dfrac{3}{4}\right)^{-2} = \left(\dfrac{4}{3}\right)^2 = \dfrac{16}{9}$.`, R`$\dfrac{16}{9} = 1{,}\overline{7}$.`] },
     { id: 'es-07', difficolta: 2, testo: R`Qual è l'ordine di grandezza del numero $68\,000$?`, suggerimenti: [R`Scrivilo prima in notazione scientifica.`, R`$68\,000 = 6{,}8 \times 10^4$: confronta il coefficiente con $5$.`], risposta: { tipo: 'testo', accettate: ['10^5', '10⁵', '1e5', '100000'] }, soluzione: [R`$68\,000 = 6{,}8 \times 10^4$.`, R`Il coefficiente $6{,}8$ è maggiore di $5$, quindi l'ordine di grandezza è la potenza successiva: $10^5$.`] },
-    { id: 'es-08', difficolta: 1, testo: R`Risolvi $|x - 3| = 5$.`, suggerimenti: [R`$|x-3|=5$ significa "$x$ è a distanza $5$ da $3$".`, R`Ci sono due punti a distanza $5$ da $3$ sulla retta: uno a destra e uno a sinistra.`], risposta: { tipo: 'numeri', valori: [8, -2] }, soluzione: [R`$x - 3 = 5 \Rightarrow x = 8$, oppure $x - 3 = -5 \Rightarrow x = -2$.`, R`Verifica: $|8-3|=5$ ✓ e $|-2-3|=|-5|=5$ ✓.`] },
-    { id: 'es-09', difficolta: 2, testo: R`Scomponi in fattori primi il numero $360$.`, suggerimenti: [R`Dividi ripetutamente per $2$, poi per $3$, poi per gli altri primi.`, R`$360 = 8 \cdot 45 = 2^3 \cdot 45$.`], risposta: { tipo: 'testo', accettate: ['2^3*3^2*5', '2^3 * 3^2 * 5', '2³·3²·5', '2^3×3^2×5', '2^3*3^2*5^1'] }, soluzione: [R`$360 = 2 \cdot 180 = 2^2 \cdot 90 = 2^3 \cdot 45$.`, R`$45 = 3^2 \cdot 5$, quindi $360 = 2^3 \cdot 3^2 \cdot 5$.`] },
-    { id: 'es-10', difficolta: 2, testo: R`Calcola il MCD e il mcm di $36$ e $60$.`, suggerimenti: [R`Scomponi entrambi in fattori primi.`, R`$36 = 2^2 \cdot 3^2$, $60 = 2^2 \cdot 3 \cdot 5$: quali fattori sono comuni?`], risposta: { tipo: 'numeri', valori: [12, 180] }, soluzione: [R`$36 = 2^2 \cdot 3^2$, $60 = 2^2 \cdot 3 \cdot 5$.`, R`MCD: fattori comuni con esponente minimo, $2^2 \cdot 3 = 12$.`, R`mcm: tutti i fattori con esponente massimo, $2^2 \cdot 3^2 \cdot 5 = 180$.`] },
+    { id: 'es-09', difficolta: 2, testo: R`Scomponi in fattori primi il numero $540$. Per l'esponente usa ^.`, suggerimenti: [R`Dividi ripetutamente per $2$, poi per $3$, poi per gli altri primi.`, R`$540 = 4 \cdot 135 = 2^2 \cdot 135$.`], risposta: { tipo: 'testo', accettate: ['2^2*3^3*5', '2^2 * 3^3 * 5', '2²·3³·5', '2^2×3^3×5', '2^2·3^3·5', '2^2*3^3*5^1', '2*2*3*3*3*5', '2·2·3·3·3·5', '2×2×3×3×3×5'], segnaposto: 'es. 2^3*7' }, soluzione: [R`$540 = 2 \cdot 270 = 2^2 \cdot 135$.`, R`$135 = 27 \cdot 5 = 3^3 \cdot 5$, quindi $540 = 2^2 \cdot 3^3 \cdot 5$.`] },
     { id: 'es-11', difficolta: 3, testo: R`Spiega, ripercorrendo l'idea della dimostrazione vista in questo argomento, perché non esiste nessun numero razionale $\dfrac{p}{q}$ (ridotto ai minimi termini) tale che $\left(\dfrac{p}{q}\right)^2 = 2$.`, suggerimenti: [R`Parti supponendo per assurdo che un tale $\dfrac{p}{q}$ esista, ridotto ai minimi termini.`, R`Da $p^2 = 2q^2$ deduci che $p$ deve essere pari, poi scrivi $p = 2k$.`, R`Sostituendo troverai che anche $q$ deve essere pari: dov'è l'assurdo?`], soluzione: [R`Se $\left(\dfrac{p}{q}\right)^2 = 2$ con $\dfrac{p}{q}$ ridotta ai minimi termini, allora $p^2 = 2q^2$: $p^2$ è pari, quindi $p$ è pari (il quadrato di un dispari è dispari). Si scrive $p = 2k$.`, R`Sostituendo: $4k^2 = 2q^2$, cioè $q^2 = 2k^2$: con lo stesso ragionamento, anche $q$ è pari.`, R`Ma $p$ e $q$ non possono essere entrambi pari, perché la frazione era ridotta ai minimi termini: è un assurdo, quindi un tale $\dfrac{p}{q}$ non esiste. Questo è esattamente il motivo per cui $\sqrt{2}$ è irrazionale.`] },
     { id: 'es-12', difficolta: 3, testo: R`Trova due numeri razionali distinti compresi tra $0{,}3$ e $0{,}31$, e spiega perché in realtà se ne possono trovare infiniti.`, suggerimenti: [R`Pensa ai numeri decimali con più cifre dopo la virgola: tra $0{,}30$ e $0{,}31$ ci sono anche $0{,}301$, $0{,}302$, ...`, R`Per avere infiniti numeri, ripeti il procedimento della media tra due numeri già trovati.`], soluzione: [R`Per esempio $0{,}301$ e $0{,}305$ sono entrambi compresi tra $0{,}3$ e $0{,}31$.`, R`Presi due razionali qualsiasi in quell'intervallo, la loro media è ancora un razionale nello stesso intervallo (o in un intervallo ancora più piccolo dentro di esso): ripetendo il procedimento senza fine si trovano sempre nuovi razionali. È proprio la densità di $\mathbb{Q}$.`] },
     { id: 'es-13', sezione: 'calcolo-frazioni', difficolta: 2, testo: R`Calcola $\left[\left(\dfrac{1}{2} + \dfrac{1}{3}\right) \cdot \dfrac{6}{5} - \dfrac{1}{2}\right]^2 : \dfrac{1}{8}$.`, suggerimenti: [R`Lavora dalla parentesi tonda verso l'esterno.`, R`$\dfrac{1}{2} + \dfrac{1}{3} = \dfrac{5}{6}$, e $\dfrac{5}{6} \cdot \dfrac{6}{5} = 1$.`, R`Nella quadra resta $1 - \dfrac{1}{2}$: elevalo al quadrato, poi dividi per $\dfrac{1}{8}$.`], risposta: { tipo: 'numero', valore: 2 }, soluzione: [R`Tonda: $\dfrac{3}{6} + \dfrac{2}{6} = \dfrac{5}{6}$.`, R`Quadra: $\dfrac{5}{6} \cdot \dfrac{6}{5} - \dfrac{1}{2} = 1 - \dfrac{1}{2} = \dfrac{1}{2}$.`, R`Potenza: $\left(\dfrac{1}{2}\right)^2 = \dfrac{1}{4}$.`, R`Divisione: $\dfrac{1}{4} : \dfrac{1}{8} = \dfrac{1}{4} \cdot 8 = 2$.`] },
@@ -676,23 +676,23 @@ Il **massimo comun divisore** (MCD) è il numero più grande che divide tutti e 
 
   quiz: [
     { id: 'q-01', domanda: R`Quale fra gli insiemi $\mathbb{N}$, $\mathbb{Z}$, $\mathbb{Q}$, $\mathbb{R}$ contiene tutti gli altri?`, opzioni: [R`$\mathbb{Q}$`, R`$\mathbb{Z}$`, R`$\mathbb{R}$`, R`$\mathbb{N}$`], corretta: 2, spiegazione: R`La catena è $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}$: $\mathbb{R}$ è il più grande e contiene tutti gli altri. $\mathbb{Q}$ contiene $\mathbb{N}$ e $\mathbb{Z}$, ma non gli irrazionali come $\sqrt{2}$.` },
-    { id: 'q-02', domanda: R`Il numero $-\dfrac{3}{4}$ appartiene…`, opzioni: [R`a $\mathbb{N}$ e a $\mathbb{Z}$`, R`solo a $\mathbb{Z}$`, R`a $\mathbb{Q}$ (e quindi a $\mathbb{R}$), ma non a $\mathbb{Z}$`, R`a $\mathbb{R}$, ma non a $\mathbb{Q}$`], corretta: 2, spiegazione: R`$-\dfrac{3}{4}$ non è un numero intero, quindi non appartiene a $\mathbb{Z}$; è una frazione, quindi appartiene a $\mathbb{Q}$ e di conseguenza a $\mathbb{R}$.` },
+    { id: 'q-02', domanda: R`Il numero $-\dfrac{3}{4}$ appartiene…`, opzioni: [R`a $\mathbb{N}$ e a $\mathbb{Z}$, ma non a $\mathbb{Q}$`, R`a $\mathbb{Z}$, ma non a $\mathbb{N}$`, R`a $\mathbb{Q}$, ma non a $\mathbb{Z}$`, R`a $\mathbb{R}$, ma non a $\mathbb{Q}$`], corretta: 2, spiegazione: R`$-\dfrac{3}{4}$ non è un intero: non sta in $\mathbb{Z}$, e tanto meno in $\mathbb{N}$. È una frazione, quindi sta in $\mathbb{Q}$, e di conseguenza anche in $\mathbb{R}$.` },
     { id: 'q-03', domanda: R`Quale affermazione sulla densità di $\mathbb{Q}$ è corretta?`, opzioni: [R`Tra due razionali distinti c'è sempre un altro razionale`, R`Tra due razionali distinti non c'è mai un altro razionale`, R`Solo tra alcune coppie di razionali c'è un altro razionale`, R`La densità riguarda solo i numeri interi`], corretta: 0, spiegazione: R`Basta prendere la media dei due razionali per trovarne sempre un altro compreso fra loro: si può ripetere all'infinito.` },
-    { id: 'q-04', domanda: R`In che senso $\mathbb{Q}$ non è "completo"?`, opzioni: [R`Perché contiene troppi pochi numeri negativi`, R`Perché esistono punti della retta reale a cui non corrisponde nessun numero razionale`, R`Perché non tutte le frazioni sono in forma ridotta`, R`Perché non contiene lo $0$`], corretta: 1, spiegazione: R`Un punto come quello a distanza $\sqrt{2}$ dall'origine non corrisponde a nessun razionale: sono proprio questi "buchi" a rendere $\mathbb{Q}$ incompleto. $\mathbb{R}$ li colma.` },
+    { id: 'q-04', domanda: R`In che senso $\mathbb{Q}$ non è "completo"?`, opzioni: [R`Ha meno numeri negativi che positivi`, R`Alcuni punti della retta non sono razionali`, R`Non tutte le sue frazioni sono ridotte`, R`Fra due razionali a volte non ce n'è un altro`], corretta: 1, spiegazione: R`Il punto a distanza $\sqrt{2}$ dall'origine non corrisponde a nessun razionale. Sono questi "buchi" a rendere $\mathbb{Q}$ incompleto, e $\mathbb{R}$ li colma. Fra due razionali, invece, ce n'è sempre un altro: questa è la densità, che $\mathbb{Q}$ ha.` },
     { id: 'q-05', domanda: R`Un numero decimale periodico è sempre…`, opzioni: [R`irrazionale`, R`razionale`, R`intero`, R`naturale`], corretta: 1, spiegazione: R`Ogni decimale periodico ha una frazione generatrice: è per definizione un numero razionale.` },
-    { id: 'q-06', domanda: R`Nella dimostrazione che $\sqrt{2}$ è irrazionale, l'assurdo finale è che…`, opzioni: [R`$p$ e $q$ sono entrambi dispari`, R`$p$ e $q$ sono entrambi pari, pur avendo supposto che non avessero fattori comuni`, R`$p^2$ non è un numero intero`, R`$q$ è uguale a zero`], corretta: 1, spiegazione: R`Si era supposto $\dfrac{p}{q}$ ridotta ai minimi termini; scoprire che sono entrambi pari contraddice questa ipotesi.` },
+    { id: 'q-06', domanda: R`Nella dimostrazione che $\sqrt{2}$ è irrazionale, l'assurdo finale è che…`, opzioni: [R`$p$ e $q$ risultano entrambi dispari`, R`$p$ e $q$ risultano entrambi pari`, R`$p^2$ non risulta un numero intero`, R`$q$ risulta uguale a zero`], corretta: 1, spiegazione: R`Si era supposto $\dfrac{p}{q}$ ridotta ai minimi termini, cioè senza fattori comuni. Scoprire che $p$ e $q$ sono entrambi pari, con il fattore $2$ in comune, contraddice questa ipotesi.` },
     { id: 'q-07', domanda: R`Quale uguaglianza è corretta, per $a \ne 0$?`, opzioni: [R`$a^m \cdot a^n = a^{mn}$`, R`$a^m \cdot a^n = a^{m+n}$`, R`$a^m \cdot a^n = (a \cdot a)^{m+n}$`, R`$a^m \cdot a^n = a^m + a^n$`], corretta: 1, spiegazione: R`Il prodotto di potenze con la stessa base si calcola sommando gli esponenti, non moltiplicandoli né sommando le potenze stesse.` },
     { id: 'q-08', domanda: R`Quanto vale $a^0$, con $a \ne 0$?`, opzioni: [R`$0$`, R`$a$`, R`$1$`, R`Non è definito`], corretta: 2, spiegazione: R`Per convenzione (coerente con le proprietà delle potenze) $a^0 = 1$ per ogni $a \ne 0$. Il caso $0^0$ non si definisce.` },
     { id: 'q-09', domanda: R`Quanto vale $a^{-n}$, con $a \ne 0$?`, opzioni: [R`$-a^n$`, R`$\dfrac{1}{a^n}$`, R`$\dfrac{1}{a} \cdot n$`, R`$a^n$ cambiato di segno solo se $n$ è dispari`], corretta: 1, spiegazione: R`L'esponente negativo indica il reciproco della potenza con esponente positivo: $a^{-n} = \dfrac{1}{a^n}$.` },
     { id: 'q-10', domanda: R`Nella notazione scientifica $a \times 10^n$, quale condizione deve rispettare il coefficiente $a$?`, opzioni: [R`$0 < a < 1$`, R`$a$ deve essere un numero intero`, R`$1 \le |a| < 10$`, R`$a$ deve essere negativo`], corretta: 2, spiegazione: R`Il coefficiente ha esattamente una cifra non nulla prima della virgola: questo equivale a $1 \le |a| < 10$.` },
-    { id: 'q-11', domanda: R`Per trovare l'ordine di grandezza di un numero scritto come $a \times 10^n$…`, opzioni: [R`si confronta $a$ con $5$: se $a < 5$ è $10^n$, altrimenti $10^{n+1}$`, R`è sempre $10^n$, qualunque sia $a$`, R`è sempre $10^{n+1}$, qualunque sia $a$`, R`dipende dal segno di $n$`], corretta: 0, spiegazione: R`Il coefficiente $a$ dice quale potenza di $10$ è più vicina al numero: sotto $5$ resta $10^n$, da $5$ in su si arrotonda a $10^{n+1}$.` },
-    { id: 'q-12', domanda: R`Il valore assoluto $|x|$ rappresenta…`, opzioni: [R`il quadrato di $x$`, R`la distanza di $x$ dallo zero sulla retta reale`, R`l'opposto di $x$`, R`la parte intera di $x$`], corretta: 1, spiegazione: R`$|x|$ misura quanto $x$ è lontano da $0$, indipendentemente dal segno: per questo non è mai negativo.` },
+    { id: 'q-11', domanda: R`Per trovare l'ordine di grandezza di un numero scritto come $a \times 10^n$…`, opzioni: [R`sotto $5$ è $10^n$, da $5$ in su $10^{n+1}$`, R`è sempre $10^n$, qualunque sia $a$`, R`è sempre $10^{n+1}$, per eccesso`, R`è $10^n$ se $n > 0$, $10^{n+1}$ se $n < 0$`], corretta: 0, spiegazione: R`La regola è fissa: si arrotonda il coefficiente $a$. Sotto $5$ resta $10^n$, da $5$ in su diventa $10^{n+1}$. Il segno di $n$ non c'entra, e la potenza non è sempre la stessa.` },
+    { id: 'q-12', domanda: R`Il valore assoluto $|x|$ rappresenta…`, opzioni: [R`il quadrato di $x$, mai negativo`, R`la distanza di $x$ da $0$`, R`l'opposto di $x$, cioè $-x$`, R`la parte intera di $x$`], corretta: 1, spiegazione: R`$|x|$ misura quanto $x$ è lontano da $0$, indipendentemente dal segno: per questo non è mai negativo. Non è il quadrato: $|3| = 3$, mentre $3^2 = 9$. E coincide con $-x$ solo quando $x$ è negativo.` },
     { id: 'q-13', domanda: R`Se $x < 0$, quanto vale $|x|$?`, opzioni: [R`$x$`, R`$-x$`, R`$0$`, R`$x^2$`], corretta: 1, spiegazione: R`Per $x < 0$ la definizione di valore assoluto dà $|x| = -x$, che in questo caso è un numero positivo.` },
-    { id: 'q-14', domanda: R`Un numero primo è…`, opzioni: [R`un numero naturale dispari`, R`un numero naturale maggiore di $1$ con esattamente due divisori, $1$ e se stesso`, R`un numero naturale che non è multiplo di $2$`, R`qualunque numero naturale maggiore di $10$`], corretta: 1, spiegazione: R`La definizione richiede esattamente due divisori distinti: per questo il numero $1$, che ha un solo divisore, non è considerato primo.` },
+    { id: 'q-14', domanda: R`Un numero primo è…`, opzioni: [R`un naturale dispari, diverso da $1$`, R`un naturale con esattamente due divisori`, R`un naturale con almeno due divisori`, R`un naturale non divisibile per $2$ né per $3$`], corretta: 1, spiegazione: R`I divisori devono essere esattamente due: $1$ e il numero stesso. Per questo $1$, che ha un solo divisore, non è primo. «Almeno due» non basta: $6$ ne ha quattro. E $2$ è primo pur essendo pari. Invece $25$ non si divide né per $2$ né per $3$, ma vale $5 \cdot 5$.` },
     { id: 'q-15', domanda: R`Scomponendo $a = 2^2 \cdot 3$ e $b = 2 \cdot 3^2 \cdot 5$ in fattori primi, come si calcola il MCD$(a,b)$?`, opzioni: [R`Prendendo tutti i fattori, comuni e non, con l'esponente massimo`, R`Prendendo solo i fattori comuni, con l'esponente minimo tra i due`, R`Moltiplicando semplicemente $a$ per $b$`, R`Prendendo solo i fattori non comuni`], corretta: 1, spiegazione: R`Il MCD usa solo i fattori primi comuni a entrambi i numeri, ciascuno con l'esponente più basso: qui $2^1 \cdot 3^1 = 6$. La regola con l'esponente massimo, su tutti i fattori, è quella del mcm.` },
     { id: 'q-16', domanda: R`Per dividere una frazione per $\dfrac{c}{d}$, con $c \ne 0$…`, opzioni: [R`si capovolge la prima frazione e la si moltiplica per la seconda`, R`si dividono fra loro i numeratori e si tiene il denominatore`, R`si moltiplica la prima frazione per $\dfrac{d}{c}$`, R`si porta tutto allo stesso denominatore e si sottrae`], corretta: 2, spiegazione: R`Dividere per $\dfrac{c}{d}$ equivale a moltiplicare per la sua inversa $\dfrac{d}{c}$: per esempio $3 : \dfrac{1}{2} = 3 \cdot 2 = 6$. Si capovolge la frazione per cui si divide, non l'altra. Il denominatore comune serve per somme e differenze.` },
     { id: 'q-17', domanda: R`In quale di questi calcoli si può semplificare il $3$ di un numeratore con il $3$ di un denominatore?`, opzioni: [R`$\dfrac{3 + 4}{3}$`, R`$\dfrac{2}{3} + \dfrac{3}{4}$`, R`$\dfrac{5}{3} - \dfrac{3}{7}$`, R`$\dfrac{3}{5} \cdot \dfrac{7}{3}$`], corretta: 3, spiegazione: R`Si semplifica solo fra fattori, cioè in un prodotto: $\dfrac{3}{5} \cdot \dfrac{7}{3} = \dfrac{7}{5}$. In $\dfrac{3 + 4}{3}$ il $3$ di sopra è un addendo: la frazione vale $\dfrac{7}{3}$. Nelle somme e nelle differenze di frazioni non si semplifica in croce.` },
-    { id: 'q-18', domanda: R`Perché $\dfrac{1}{4} + \dfrac{1}{5} = \dfrac{2}{9}$ è sbagliato?`, opzioni: [R`$\dfrac{2}{9}$ è meno di $\dfrac{1}{4}$, eppure si è aggiunto un numero positivo`, R`$\dfrac{2}{9}$ non è ridotta ai minimi termini`, R`bisognava moltiplicare i denominatori e sommare i numeratori`, R`il risultato giusto è $\dfrac{2}{20}$`], corretta: 0, spiegazione: R`$\dfrac{2}{9} \approx 0{,}22$ è meno del solo $\dfrac{1}{4} = 0{,}25$: aggiungendo $\dfrac{1}{5}$ non si può calare. Il conto giusto passa dal denominatore comune: $\dfrac{5}{20} + \dfrac{4}{20} = \dfrac{9}{20}$. $\dfrac{2}{9}$ è già ridotta; $\dfrac{2}{20}$ viene proprio dalla regola sbagliata di moltiplicare i denominatori e sommare i numeratori.` },
+    { id: 'q-18', domanda: R`Perché $\dfrac{1}{4} + \dfrac{1}{5} = \dfrac{2}{9}$ è sbagliato?`, opzioni: [R`$\dfrac{2}{9}$ è meno di $\dfrac{1}{4}$: non può calare`, R`$\dfrac{2}{9}$ va ancora ridotta ai minimi termini`, R`andavano moltiplicati i denominatori, non sommati`, R`il risultato giusto è $\dfrac{2}{20}$, non $\dfrac{2}{9}$`], corretta: 0, spiegazione: R`$\dfrac{2}{9} \approx 0{,}22$ è meno del solo $\dfrac{1}{4} = 0{,}25$: aggiungendo $\dfrac{1}{5}$ non si può calare. Il conto giusto passa dal denominatore comune: $\dfrac{5}{20} + \dfrac{4}{20} = \dfrac{9}{20}$. $\dfrac{2}{9}$ è già ridotta; $\dfrac{2}{20}$ viene proprio dalla regola sbagliata di moltiplicare i denominatori e sommare i numeratori.` },
     { id: 'q-19', domanda: R`Nella proporzione $a : b = c : d$, quale uguaglianza è sempre vera?`, opzioni: [R`$a \cdot b = c \cdot d$`, R`$a + d = b + c$`, R`$a \cdot c = b \cdot d$`, R`$a \cdot d = b \cdot c$`], corretta: 3, spiegazione: R`È la proprietà fondamentale: il prodotto degli estremi, $a$ e $d$, è uguale a quello dei medi, $b$ e $c$. Con $2 : 3 = 12 : 18$ si ha $2 \cdot 18 = 3 \cdot 12 = 36$. Le altre falliscono già qui: $2 \cdot 3 \ne 12 \cdot 18$, $2 + 18 \ne 3 + 12$, $2 \cdot 12 \ne 3 \cdot 18$.` },
     { id: 'q-20', domanda: R`Un prezzo sale del $20\%$ e poi scende del $20\%$. Rispetto al prezzo iniziale, alla fine è…`, opzioni: [R`uguale`, R`più basso del $4\%$`, R`più alto del $4\%$`, R`più basso del $20\%$`], corretta: 1, spiegazione: R`Si moltiplica per $1{,}2$ e poi per $0{,}8$: in tutto per $0{,}96$, cioè il $4\%$ in meno. Il secondo $20\%$ si prende sul prezzo già aumentato: toglie più di quanto si era aggiunto. Per questo non torna uguale, e non sale.` },
     { id: 'q-21', domanda: R`Per applicare uno sconto del $30\%$, il prezzo si moltiplica per…`, opzioni: [R`$0{,}7$`, R`$0{,}3$`, R`$1{,}3$`, R`$0{,}97$`], corretta: 0, spiegazione: R`Dopo lo sconto resta il $70\%$ del prezzo, cioè $\dfrac{70}{100} = 0{,}7$. Moltiplicando per $0{,}3$ si trova lo sconto, non il prezzo nuovo. Per $1{,}3$ è un aumento del $30\%$; per $0{,}97$ uno sconto del $3\%$.` }
@@ -712,10 +712,10 @@ Il **massimo comun divisore** (MCD) è il numero più grande che divide tutti e 
   ],
 
   aneddoti: [
-    { matematico: 'Pitagora e Ippaso di Metaponto', anni: 'VI secolo a.C.', titolo: 'Il numero che non doveva esistere', testo: R`Per la scuola pitagorica, una comunità quasi religiosa fondata a Crotone, "tutto è numero": ogni lunghezza doveva potersi esprimere come rapporto tra due numeri interi. Fu quindi uno shock enorme scoprire che la diagonale di un quadrato di lato $1$, lunga $\sqrt{2}$, non si può scrivere come nessuna frazione: esisteva una lunghezza reale che il loro sistema numerico non riusciva a catturare. Si racconta che fu Ippaso di Metaponto a rendere pubblica questa scoperta, violando la segretezza della setta, e che per punizione venisse annegato in mare. È una leggenda tramandata dagli antichi e impossibile da verificare, ma rende bene l'idea di quanto la scoperta degli irrazionali sconvolgesse la visione del mondo dei pitagorici.`, legame: R`È la prima scoperta storica di un numero irrazionale: esattamente il $\sqrt{2}$ di cui in questo argomento si vede l'idea della dimostrazione.` },
-    { matematico: 'Euclide', anni: 'IV–III secolo a.C.', titolo: 'Infiniti numeri primi, dimostrato senza contarli', testo: R`Negli "Elementi", il libro di geometria più ristampato della storia, Euclide non si limita alla geometria: nel nono libro dimostra che i numeri primi non finiscono mai, con un argomento che si può ripetere ancora oggi tale e quale. Si supponga che i numeri primi siano in numero finito, $p_1, p_2, \dots, p_n$: moltiplicandoli tutti insieme e aggiungendo $1$ si ottiene un numero che, diviso per uno qualsiasi dei $p_i$, dà sempre resto $1$. Questo numero, allora, o è esso stesso primo (e non era nell'elenco), oppure ha un fattore primo che non è nell'elenco: in entrambi i casi, l'elenco "completo" non lo era. Sempre negli Elementi, nel settimo libro, Euclide descrive anche un metodo per calcolare il massimo comun divisore di due numeri che i computer usano ancora oggi.`, legame: R`L'infinità dei numeri primi e l'algoritmo per il MCD vengono entrambi dagli Elementi di Euclide, duemilatrecento anni prima di questa pagina.` },
+    { matematico: 'Pitagora e Ippaso di Metaponto', anni: 'VI–V secolo a.C.', titolo: 'Il numero che non doveva esistere', testo: R`Per la scuola pitagorica, una comunità quasi religiosa fondata a Crotone, "tutto è numero": ogni lunghezza doveva potersi esprimere come rapporto tra due numeri interi. Fu quindi uno shock enorme scoprire che la diagonale di un quadrato di lato $1$, lunga $\sqrt{2}$, non si può scrivere come nessuna frazione: esisteva una lunghezza reale che il loro sistema numerico non riusciva a catturare. Si racconta che fu Ippaso di Metaponto a rendere pubblica questa scoperta, violando la segretezza della setta, e che per punizione venisse annegato in mare. È una leggenda tramandata dagli antichi e impossibile da verificare, ma rende bene l'idea di quanto la scoperta degli irrazionali sconvolgesse la visione del mondo dei pitagorici.`, legame: R`Secondo la tradizione è la prima scoperta di un numero irrazionale: proprio $\sqrt{2}$, di cui qui si dimostra l'irrazionalità.` },
+    { matematico: 'Euclide', anni: 'circa 325–265 a.C.', titolo: 'Infiniti numeri primi, dimostrato senza contarli', testo: R`Negli "Elementi", il libro di geometria più ristampato della storia, Euclide non si limita alla geometria: nel nono libro dimostra che i numeri primi non finiscono mai, con un argomento che si può ripetere ancora oggi tale e quale. Si supponga che i numeri primi siano in numero finito, $p_1, p_2, \dots, p_n$: moltiplicandoli tutti insieme e aggiungendo $1$ si ottiene un numero che, diviso per uno qualsiasi dei $p_i$, dà sempre resto $1$. Questo numero, allora, o è esso stesso primo (e non era nell'elenco), oppure ha un fattore primo che non è nell'elenco: in entrambi i casi, l'elenco "completo" non lo era.`, legame: R`L'infinità dei numeri primi viene dagli Elementi di Euclide, duemilatrecento anni prima di questa pagina.` },
     { matematico: 'Eratostene di Cirene', anni: 'circa 276–194 a.C.', titolo: R`Un bastone, un'ombra e un crivello`, testo: R`Eratostene dirigeva la Biblioteca di Alessandria, il più grande centro di sapere del mondo antico, ed è ricordato soprattutto per un calcolo sorprendente: misurando l'ombra di un bastone verticale ad Alessandria e confrontandola con l'assenza di ombra nello stesso istante a Siene (l'odierna Assuan), stimò la circonferenza della Terra con un risultato sorprendentemente vicino al vero, usando solo geometria elementare. Ma Eratostene diede il suo nome anche a un metodo molto più semplice, che ogni studente può eseguire a mano: il "crivello", un setaccio che elimina via via tutti i multipli dei numeri già trovati, lasciando alla fine solo i numeri primi.`, legame: R`È il crivello dell'animazione nella sezione sui numeri primi: si cancellano i multipli, uno dopo l'altro, e restano i primi.` },
-    { matematico: 'Georg Cantor', anni: '1845–1918', titolo: 'Infiniti di misure diverse', testo: R`Cantor si chiese se tutti gli insiemi infiniti avessero "la stessa quantità" di elementi, e trovò una risposta che scandalizzò molti matematici del suo tempo: $\mathbb{Q}$, per quanto denso, si può mettere in corrispondenza biunivoca con $\mathbb{N}$ (è "numerabile"), mentre $\mathbb{R}$ no. Con il suo celebre argomento diagonale, Cantor dimostrò che nessuna lista, per quanto lunga, può contenere tutti i numeri reali: esistono infiniti "più grandi" di altri infiniti. Matematici autorevoli come Leopold Kronecker lo attaccarono duramente, arrivando a definirlo un "ciarlatano" e un "corruttore della gioventù"; Cantor soffrì di gravi crisi depressive e trascorse gli ultimi anni in una clinica. La sua teoria degli insiemi, però, è oggi alla base di tutta la matematica moderna.`, legame: R`La differenza fra $\mathbb{Q}$, denso ma "numerabile" e pieno di buchi, e $\mathbb{R}$, che quei buchi li riempie, è la stessa distinzione che Cantor rese precisa con il concetto di cardinalità.` }
+    { matematico: 'Georg Cantor', anni: '1845–1918', titolo: 'Infiniti di misure diverse', testo: R`Cantor si chiese se tutti gli insiemi infiniti avessero "la stessa quantità" di elementi, e trovò una risposta che scandalizzò molti matematici del suo tempo: $\mathbb{Q}$, per quanto denso, si può mettere in corrispondenza biunivoca con $\mathbb{N}$ (è "numerabile"), mentre $\mathbb{R}$ no. Con il suo celebre argomento diagonale, Cantor dimostrò che nessuna lista, per quanto lunga, può contenere tutti i numeri reali: esistono infiniti "più grandi" di altri infiniti. Matematici autorevoli come Leopold Kronecker lo attaccarono duramente, arrivando a definirlo un "ciarlatano" e un "corruttore della gioventù". Cantor soffrì di gravi crisi depressive. Morì nel 1918 nella clinica di Halle, dove era ricoverato dal 1917. La sua teoria degli insiemi, però, è oggi alla base di tutta la matematica moderna.`, legame: R`La differenza fra $\mathbb{Q}$, denso ma "numerabile" e pieno di buchi, e $\mathbb{R}$, che quei buchi li riempie, è la stessa distinzione che Cantor rese precisa con il concetto di cardinalità.` }
   ]
 });
 })();

@@ -941,7 +941,7 @@
     const trovati = s.match(/[-+]?(?:\d+(?:\.\d+)?)?π(?:\/\d+(?:\.\d+)?)?|[-+]?\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)?/g) || [];
     return trovati.map(numeroDa).filter(n => isFinite(n));
   }
-  const vicino = (a, b, tol) => (!isFinite(b) || !isFinite(a)) ? a === b : Math.abs(a - b) <= (tol != null ? tol : Math.max(0.01, Math.abs(b) * 1e-3));
+  const vicino = (a, b, tol) => (!isFinite(b) || !isFinite(a)) ? a === b : Math.abs(a - b) <= (tol != null ? tol : Math.max(0.01, Math.abs(b) * 1e-3)) + 1e-9;   /* +1e-9: 0,38 contro 0,375 con tolleranza 0,005 è al limite, e in virgola mobile lo sforava */
   /* il testo grigio d'esempio non deve mai essere la risposta: se lo è, se ne cambiano le cifre (3√2 → 4√3) */
   function segnapostoSicuro(r, ph) {
     if (!ph || !/\d/.test(ph)) return ph;
